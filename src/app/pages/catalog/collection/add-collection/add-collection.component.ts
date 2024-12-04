@@ -28,6 +28,7 @@ export class AddCollectionComponent implements OnInit {
   productDetails: Array<any> = [];
   base: string = `${environment.base}`;
   cover: string = '';
+  mobileCover : string = '';
   thumbnail: string = '';
 
   constructor(
@@ -46,6 +47,7 @@ export class AddCollectionComponent implements OnInit {
       isActive: new FormControl(true),
       thumbnail: new FormControl(null),
       cover: new FormControl(null),
+      mobileCover: new FormControl(null),
       metaTitle: new FormControl(''),
       metaDescription: new FormControl(''),
       metaKeywords: new FormControl(''),
@@ -69,6 +71,11 @@ export class AddCollectionComponent implements OnInit {
     this.form.get('cover')?.setValue(event.path);
     this.cover = event.path;
   }
+  
+  handleCollectionMobileCover(event: any) {
+    this.form.get('mobileCover')?.setValue(event.path);
+    this.mobileCover = event.path;
+  }
 
   get formControls() {
     return this.form.controls;
@@ -84,6 +91,10 @@ export class AddCollectionComponent implements OnInit {
       case 'cover':
         this.form.get('cover')?.setValue(null);
         this.cover = '';
+        break;
+      case 'mobileCover':
+        this.form.get('mobileCover')?.setValue(null);
+        this.mobileCover = '';
         break;
       case 'thumbnail':
         this.form.get('thumbnail')?.setValue(null);

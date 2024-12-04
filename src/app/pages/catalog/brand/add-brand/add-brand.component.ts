@@ -18,6 +18,7 @@ export class AddBrandComponent implements OnInit {
   appRoute = appRoutes;
   isSubmitted = false;
   cover: string = '';
+  mobileCover: string = '';
   thumbnail: string = '';
 
   constructor(
@@ -44,11 +45,20 @@ export class AddBrandComponent implements OnInit {
     this.cover = event?.path;
   }
 
+  onMobileCoverTriggered(event: any) {
+    this.form.get('mobileCover')?.setValue(event?.path);
+    this.mobileCover = event?.path;
+  }
+
   onRemove(mediaType: string) {
     switch (mediaType) {
       case 'cover':
         this.form.get('cover')?.setValue(null);
         this.cover = '';
+        break;
+      case 'mobileCover':
+        this.form.get('mobileCover')?.setValue(null);
+        this.mobileCover = '';
         break;
       case 'thumbnail':
         this.form.get('thumbnail')?.setValue(null);
@@ -69,6 +79,7 @@ export class AddBrandComponent implements OnInit {
       metaKeywords: new FormControl(''),
       thumbnail: new FormControl(''),
       cover: new FormControl(''),
+      mobileCover: new FormControl(''),
     });
   }
 

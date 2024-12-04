@@ -30,12 +30,25 @@
         <form [formGroup]="form" (keydown.Enter)="$event.preventDefault()">
 
           <div>
+            <div class="pb-1">Cover</div>
             <div class="ratio ratio-21x9">
               <app-assets (mediaClicked)="handleCollectionCover($event)"
                 [previewDetails]="previews.coverPreview"></app-assets>
               <div *ngIf="previews.coverPreview">
                 <div class="position-absolute bottom-0 end-0 m-4">
                   <button class="btn btn-danger" (click)="onRemove('cover')">Remove</button>
+                </div>
+              </div>
+              
+            </div>
+            <label for="pt-2">mobile Cover</label>
+            <div class="ratio ratio-21x9 mt-3">
+              <div class="pt-1">mobile Cover</div>
+              <app-assets (mediaClicked)="handleCollectionMobileCover($event)"
+                [previewDetails]="previews.mobileCoverPreview"></app-assets>
+              <div *ngIf="previews.mobileCoverPreview">
+                <div class="position-absolute bottom-0 end-0 m-4">
+                  <button class="btn btn-danger" (click)="onRemove('mobileCover')">Remove</button>
                 </div>
               </div>
             </div>

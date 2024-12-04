@@ -37,6 +37,7 @@ export class UpdateCategoryComponent implements OnInit {
   };
   categorySlug: string = '';
   cover: string = '';
+  mobileCover: string = '';
   thumbnail: string = '';
 
   constructor(
@@ -61,11 +62,20 @@ export class UpdateCategoryComponent implements OnInit {
     this.cover = event.path;
   }
 
+  onMobileCoverTriggered(event: any) {
+    this.form.get('mobileCover')?.setValue(event?.path);  
+    this.mobileCover = event.path;
+  }
+
   onRemove(mediaType: string) {
     switch (mediaType) {
       case 'cover':
         this.form.get('cover')?.setValue(null);
         this.cover = '';
+        break;
+      case 'mobileCover':
+        this.form.get('mobileCover')?.setValue(null);
+        this.mobileCover = '';
         break;
       case 'thumbnail':
         this.form.get('thumbnail')?.setValue(null);
@@ -87,6 +97,7 @@ export class UpdateCategoryComponent implements OnInit {
         if (res?.errorCode == 0) {
           this.details = res?.result;
           this.cover = res?.result?.cover;
+          this.mobileCover = res?.result?.mobileCover;
           this.thumbnail = res?.result?.thumbnail;
           this.parentDetails = {
             refid: res?.result?.parent?.refid?._id,
@@ -108,6 +119,7 @@ export class UpdateCategoryComponent implements OnInit {
       name: new FormControl('', Validators.required),
       thumbnail: new FormControl(null),
       cover: new FormControl(null),
+      mobileCover: new FormControl(null),
       isRoot: new FormControl(true),
       parent: new FormControl(''),
       isActive: new FormControl(true),
@@ -212,6 +224,7 @@ export class UpdateCategoryComponent implements OnInit {
       metaKeywords: this.form.get('metaKeywords')?.value,
       thumbnail: this.form.get('thumbnail')?.value,
       cover: this.form.get('cover')?.value,
+      mobileCover: this.form.get('mobileCover')?.value,
       catid: this.details.catid,
       isActive: this.form.get('isActive')?.value,
       isFeatured: this.form.get('isFeatured')?.value,

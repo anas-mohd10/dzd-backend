@@ -28,9 +28,10 @@ export class UpdateCollectionComponent implements OnInit {
   productDetails: Array<any> = [];
   base: string = environment.base;
   collectionSlug: string = '';
-  previews: any = { thumbnailPreview: '', coverPreview: '' };
+  previews: any = { thumbnailPreview: '', coverPreview: '', mobileCover: '' };
   collectionDetails: any;
   cover: string = '';
+  mobileCover: string = '';
   icons: Array<string> = [];
   thumbnail: string = '';
 
@@ -53,6 +54,10 @@ export class UpdateCollectionComponent implements OnInit {
           this.form.patchValue(res?.result);
           this.collectionDetails = res?.result;
           this.icons = res?.result?.icons;
+          if(res?.result?.mobileCover) {
+            this.previews.mobileCoverPreview = res?.result?.mobileCover;
+            this.form.get('mobileCover')?.setValue(res?.result?.mobileCover);
+          }
           if (res?.result?.thumbnail)
             this.previews.thumbnailPreview = res?.result?.thumbnail;
           if (res?.result?.cover)
@@ -72,6 +77,7 @@ export class UpdateCollectionComponent implements OnInit {
       thumbnail: new FormControl(null),
       icons: new FormControl([]),
       cover: new FormControl(null),
+      mobileCover: new FormControl(null),
       metaTitle: new FormControl(''),
       metaDescription: new FormControl(''),
       metaKeywords: new FormControl(''),
@@ -104,6 +110,11 @@ export class UpdateCollectionComponent implements OnInit {
     this.previews.thumbnailPreview = event.path;
   }
 
+  handleCollectionMobileCover(event: any) {
+    this.form.get('mobileCover')?.setValue(event.path);
+    this.previews.mobileCoverPreview = event.path;
+  }
+
   onDelete() {
     this.CollectionService.updateCollection({
       isDelete: true,
@@ -128,6 +139,10 @@ export class UpdateCollectionComponent implements OnInit {
       case 'cover':
         this.form.get('cover')?.setValue(null);
         this.previews.coverPreview = '';
+        break;
+      case 'mobileCover':
+        this.form.get('mobileCover')?.setValue(null);
+        this.previews.mobileCoverPreview = '';
         break;
       case 'thumbnail':
         this.form.get('thumbnail')?.setValue(null);

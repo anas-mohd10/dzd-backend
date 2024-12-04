@@ -27,6 +27,7 @@ export class UpdateBrandComponent implements OnInit {
   isSubmitted = false;
   thumbnail: string;
   cover: string;
+  mobileCover: string;
 
   constructor(
     private FormBuilder: FormBuilder,
@@ -57,6 +58,7 @@ export class UpdateBrandComponent implements OnInit {
       metaKeywords: new FormControl(''),
       thumbnail: new FormControl(''),
       cover: new FormControl(''),
+      mobileCover: new FormControl(''),
     });
 
     this.slug = this.ActivatedRoute.snapshot.queryParams.brand || '';
@@ -68,6 +70,7 @@ export class UpdateBrandComponent implements OnInit {
           this.form.patchValue(res?.result);
           this.thumbnail = res?.result?.thumbnail;
           this.cover = res?.result?.cover;
+          this.mobileCover = res?.result?.mobileCover;
         }
       }, error: (err: any) => { }
     });
@@ -80,12 +83,20 @@ export class UpdateBrandComponent implements OnInit {
   onCoverTriggered(event: any) {
     this.form.get('cover')?.setValue(event?.path);
   }
+  onMobileCoverTriggered(event: any) {
+    this.form.get('mobileCover')?.setValue(event?.path);
+  }
+
 
   onRemove(mediaType: string) {
     switch (mediaType) {
       case 'cover':
         this.form.get('cover')?.setValue(null);
         this.cover = '';
+        break;
+      case 'mobileCover':
+        this.form.get('mobileCover')?.setValue(null);
+        this.mobileCover = '';
         break;
       case 'thumbnail':
         this.form.get('thumbnail')?.setValue(null);
