@@ -153,8 +153,7 @@
                       <div
                         class="p-1 rounded mt-1 border border-secondary d-flex align-items-center justify-content-center gap-2"
                         *ngFor="let attribute of product?.attributes">
-                        <div>{{attribute?.title}} : </div>
-                        <div>{{attribute?.value}}</div>
+                        <div>{{attribute?.title}} : {{attribute?.value}}</div>
                       </div>
                     </div>
                   </div>
@@ -223,7 +222,7 @@
         </table>
       </div>
 
-      <div *ngIf="loaded">
+      <div class="my-3" *ngIf="loaded">
         <app-pagination [totalResults]="totalResults" [totalPages]="totalPages" [pageIndex]="page" [pageSize]="limit"
           (pageTrigger)="onPageTriggered($event)"></app-pagination>
       </div>

@@ -159,7 +159,7 @@ export class AddOrdersComponent implements OnInit {
       countryCode: new FormControl(''),
       mobile: new FormControl('', Validators.pattern('^[0-9]{10}$')),
       state: new FormControl('', Validators.required),
-      landmark: new FormControl('', Validators.required),
+      landmark: new FormControl(''),
       latitude: new FormControl(''),
       longitude: new FormControl(''),
     });

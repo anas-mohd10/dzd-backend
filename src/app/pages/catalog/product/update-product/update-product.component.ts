@@ -19,6 +19,7 @@ import { TabsetComponent } from 'ngx-bootstrap/tabs';
 import { HotToastService } from '@ngneat/hot-toast';
 import { debounceTime } from 'rxjs/operators';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
+import { BrandService } from 'src/app/includes/services/brand.service';
 
 interface StoreField {
   title: string;
@@ -85,7 +86,10 @@ export class UpdateProductComponent implements OnInit {
   parentForm: FormGroup;
   taxClassDetails: Array<any> = [];
   brand: FormControl = new FormControl('', Validators.required);
+
   brands: Array<any> = [];
+  brandsMap: any = {}
+
   productCategories: Array<any> = [];
   images: Array<any> = [];
   defaultCategories: Array<any> = [];
@@ -140,7 +144,6 @@ export class UpdateProductComponent implements OnInit {
   addOnsRef?: BsModalRef
   addOnsKeyword: FormControl = new FormControl('', Validators.required)
   addOnSearchResults: Array<any> = []
-
   addOnProducts: Array<any> = []
   addOnForm: FormGroup = new FormGroup({})
   addOnOptionForm: FormGroup = new FormGroup({})
@@ -153,7 +156,7 @@ export class UpdateProductComponent implements OnInit {
   addOnOptions: AddOnOption[] = []
   addOns: AddOns[] = []
   isAddOnForm: boolean = false
-  isAddOnEditable: boolean = false
+  isAddOnEditable: boolean = false;
 
   constructor(
     private ActivatedRoute: ActivatedRoute,
@@ -164,7 +167,8 @@ export class UpdateProductComponent implements OnInit {
     private ChangeDetectorRef: ChangeDetectorRef,
     private HotToastService: HotToastService,
     private AppSettingsService: AppSettingsService,
-    private BsModalService: BsModalService
+    private BsModalService: BsModalService,
+    private BrandService: BrandService
   ) {
     this.addOnsKeyword.valueChanges
       .pipe(debounceTime(500))
@@ -226,19 +230,19 @@ export class UpdateProductComponent implements OnInit {
     this.addOnOptions.splice(index, 1)
   }
 
-  removeAddOn(index: number){
+  removeAddOn(index: number) {
     this.HotToastService.error('AddOn removed successfully')
     this.addOns.splice(index, 1)
   }
 
-  editAddOn(index: number){
+  editAddOn(index: number) {
     this.addOnForm.patchValue(this.addOns[index])
     this.addOnOptions = this.addOns[index].options
     this.isAddOnForm = true
     this.isAddOnEditable = true
   }
 
-  closeAddOnItems(){
+  closeAddOnItems() {
     this.addOnForm.reset()
     this.addOnForm.patchValue({
       title: "",
@@ -305,7 +309,7 @@ export class UpdateProductComponent implements OnInit {
       this.HotToastService.info('Category already added');
     } else {
       this.productCategories.push(event);
-      this.getDefaultCategories(event.slug);
+      this.getDefaultCategories();
     }
     this.parentForm.get('parentCategories')?.setValue(this.productCategories);
   }
@@ -377,11 +381,11 @@ export class UpdateProductComponent implements OnInit {
     }
   }
 
-  getDefaultCategories(category: string) {
-    this.categoryService.defaultCategories(category).subscribe({
+  getDefaultCategories() {
+    this.categoryService.getCategories({}, '').subscribe({
       next: (res: any) => {
         if (res?.errorCode == 0) {
-          this.defaultCategories = [...this.defaultCategories, ...res?.result];
+          this.defaultCategories = res?.result;
           this.ChangeDetectorRef.markForCheck();
         } else {
         }
@@ -422,19 +426,22 @@ export class UpdateProductComponent implements OnInit {
     this.form.get('thumbnail')?.setValue(event.path);
   }
 
-  toggleProductCategory(event: any, type: string) {
+  toggleProductCategory(categoryEvent: any, type: string) {
     if (type == 'add') {
-      let categoryDetails = this.defaultCategories.filter(
-        (item: any) => item?._id == event.target.value
-      );
-      this.categories.includes(categoryDetails[0])
-        ? this.HotToastService.info('Category already added')
-        : this.categories.push(categoryDetails[0]);
+      this.defaultCategories.forEach((defaultCategory: any) => {
+        if (defaultCategory.slug == categoryEvent.target.value) {
+          let isExists: boolean = this.categories.some((item: any) => item?.slug == defaultCategory.slug);
+          if (isExists) {
+            this.HotToastService.info('Category already added')
+          } else {
+            this.categories.push(defaultCategory);
+          }
+        }
+      })
     } else {
-      this.categories = this.categories.filter(
-        (item: any) => item?._id != event
-      );
+      this.categories = this.categories.filter((item: any) => item.slug != categoryEvent);
     }
+
     this.productCategory.setValue('');
   }
 
@@ -463,12 +470,16 @@ export class UpdateProductComponent implements OnInit {
       slug: this.form.get('slug')?.value,
       addOns: this.addOns,
       files: this.images.map((file: any) => file.path),
-      relatedProducts: this.relatedProducts
-        ? this.relatedProducts.map((product: any) => product?._id)
-        : [],
+      relatedProducts: this.relatedProducts ? this.relatedProducts.map((product: any) => product?._id) : [],
       product: {
         id: this.parentDetails?._id,
         refid: this.productDetails?.product?.refid,
+      },
+      brand: {
+        name: this.brandsMap[this.form.get('brand')?.value]?.name,
+        slug: this.brandsMap[this.form.get('brand')?.value]?.slug,
+        thumbnail: this.brandsMap[this.form.get('brand')?.value]?.thumbnail,
+        cover: this.brandsMap[this.form.get('brand')?.value]?.cover,
       },
       parentId: this.parentDetails?._id,
       tagIcons: this.tagIcons,
@@ -480,10 +491,38 @@ export class UpdateProductComponent implements OnInit {
         ...this.productDetails.localizedNames,
         [this.settings.primaryLang]: this.form.get('name')?.value,
       },
+      localizedOverview: {
+        ...this.productDetails.localizedOverview,
+        [this.settings.primaryLang]: this.form.get('overview')?.value,
+      },
+      localizedOrigin: {
+        ...this.productDetails.localizedOrigin,
+        [this.settings.primaryLang]: this.form.get('origin')?.value,
+      },
+      localizedDetails: {
+        description :{
+          ...this.productDetails.localizedDetails?.description,
+          [this.settings.primaryLang]: this.form.get('description')?.value, 
+        },
+        features: {
+          ...this.productDetails.localizedDetails?.features,
+          [this.settings.primaryLang]: this.form.get('features')?.value,
+        },
+        longDescription: {
+          ...this.productDetails.localizedDetails?.longDescription,
+          [this.settings.primaryLang]: this.form.get('longDescription')?.value,
+        }
+      },
       category: {
         id: this.categories.map((category: any) => category?._id),
         refid: this.categories.map((category: any) => category?.catid),
       },
+      categories: this.categories.map((category: any) => ({
+        name: category.name,
+        slug: category.slug,
+        thumbnail: category.thumbnail,
+        cover: category.cover,
+      })),
       productTags: this.tagsForm.value,
     }).subscribe({
       next: (res: any) => {
@@ -606,6 +645,18 @@ export class UpdateProductComponent implements OnInit {
   ngOnInit(): void {
     this.base = environment.base;
 
+    this.BrandService.getActiveBrands().subscribe({
+      next: (res: any) => {
+        if (res.errorCode == 0) {
+          this.brands = res.result
+          this.brands.forEach((brand: any) => {
+            this.brandsMap[brand.slug] = brand
+          })
+          this.ChangeDetectorRef.markForCheck()
+        } else { }
+      }, error: (err: any) => { }
+    })
+
     this.addOnOptionForm = new FormGroup({
       product: new FormControl('', Validators.required),
       price: new FormControl('', Validators.required),
@@ -677,7 +728,9 @@ export class UpdateProductComponent implements OnInit {
             res?.result?.productBanner && res?.result?.productBanner;
           this.form.patchValue({
             productBanner: res?.result?.productBanner?._id,
+            brand: res?.result?.brand?.slug
           });
+
           this.attributes = res?.result?.attributes;
           this.relatedProducts = res?.result?.relatedProducts;
           this.searchKeywords = res?.result?.searchKeywords || [];
@@ -766,6 +819,7 @@ export class UpdateProductComponent implements OnInit {
       boostScore: new FormControl(0, [
         Validators.pattern('^-?[0-9]\\d*(\\.\\d+)?$'),
       ]),
+      brand: new FormControl(''),
       origin: new FormControl(''),
       overview: new FormControl(''),
       details: new FormGroup({
