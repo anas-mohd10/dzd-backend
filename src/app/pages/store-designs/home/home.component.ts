@@ -756,6 +756,7 @@ export class HomeComponent implements OnInit {
               this.widgetImages.push({
                 url: widgetImage?.media,
                 title: widgetImage?.title,
+                customStyles: widgetImage?.customStyles,
                 description: widgetImage?.description,
                 button: widgetImage?.button,
                 redirection: widgetImage?.redirection,
