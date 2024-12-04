@@ -37,7 +37,7 @@ export class BrandService {
   }
 
   getActiveBrands() {
-    const url = this.commonService.getFullUrl(this.brandEndpoints.get_active_brand);
+    const url = this.commonService.getFullUrl(this.brandEndpoints.getActiveBrands);
     return this.http.get(`${url}`);
   }
 

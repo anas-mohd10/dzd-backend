@@ -24,7 +24,7 @@
         <form [formGroup]="form" (keydown.Enter)="$event.preventDefault()">
 
           <div class="row">
-            <div class="col-md-6">
+            <div class="col-lg-6">
               <label class="fs-6 mb-3">Cover</label>
               <div class="ratio ratio-21x9 position-relative">
                 <app-assets [previewDetails]="cover" (mediaClicked)="handleCollectionCover($event)"></app-assets>
@@ -35,7 +35,7 @@
                 </div>
               </div>
             </div>
-            <div class="col-md-6">
+            <div class="col-lg-6">
               <label class="fs-6 mb-3">Mobile Cover</label>
               <div class="ratio ratio-21x9 position-relative">
                 <app-assets [previewDetails]="mobileCover" (mediaClicked)="handleCollectionMobileCover($event)"></app-assets>

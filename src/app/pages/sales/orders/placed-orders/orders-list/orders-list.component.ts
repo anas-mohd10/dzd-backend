@@ -344,9 +344,14 @@ export class OrdersListComponent implements OnInit {
           this.toggledOrders.push(order.order.split('#')[1])
       }
     } else {
+      let isPlacedOrders = 0
       this.toggledOrders.length == this.orders.length ?
         this.toggledOrders = [] :
-        this.toggledOrders = this.orders.map((order: any) => this.checkStatusList.includes(order.orderStatus) ? this.HotToastService.error('Please accept orders to confirm your selection') : order.orderNo.split('#')[1])
+        this.toggledOrders = this.orders.map((order: any) => this.checkStatusList.includes(order.orderStatus) ? isPlacedOrders++ : order.orderNo.split('#')[1])
+
+      if (isPlacedOrders > 0) {
+        this.HotToastService.error('Please accept orders to confirm your selection')
+      }
     }
   }
 

@@ -316,7 +316,7 @@ export class UpdateCustomersComponent implements OnInit {
       secondlane: new FormControl(''),
       city: new FormControl('', Validators.required),
       area: new FormControl(''),
-      landmark: new FormControl('', Validators.required),
+      landmark: new FormControl(''),
       type: new FormControl('', Validators.required),
       pincode: new FormControl(''),
       state: new FormControl('', Validators.required),

@@ -121,11 +121,9 @@ export class CategoryService {
     return this.http.get(`${url}`);
   }
 
-  getCategories(data: any, query: any) {
-    const url = this.commonService.getFullUrl(
-      this.categoryEndpoints.get_categories + `?type=${query}`
-    );
-    return this.http.post(`${url}`, data);
+  getCategories(query: any, pageQuery: any) {
+    const url = this.commonService.getFullUrl(this.categoryEndpoints.get_categories + `?type=${pageQuery}`);
+    return this.http.post(`${url}`, query);
   }
 
   getSubCategories(data: any) {

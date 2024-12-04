@@ -2,7 +2,7 @@
   <div class="page-header d-flex align-items-start justify-content-between">
     <div>
       <div class="page-title">
-        <h1 class="fw-bold">Update product</h1>
+        <h1 class="fw-bold">Update Product</h1>
       </div>
       <ul class="breadcrumb">
         <li class="breadcrumb-item fs-6">
@@ -13,7 +13,7 @@
         </li>
         <li class="breadcrumb-item active fs-6">
           <a routerLink="{{ appRoute.product.UPDATE_PRODUCT }}" [queryParams]="{ product: productSlug }">
-            Update product
+            Update Product
           </a>
         </li>
       </ul>
@@ -46,321 +46,315 @@
           <tabset type="tabs" [justified]="true" type="pills" #staticTabs>
             <tab heading="Product Details">
               <div class="my-6">
-
                 <div class="row">
-                  <div class="mb-3 form-group">
-                    <label class="fs-6 mb-3 required">Name</label>
-                    <input type="text" class="form-control fs-6" formControlName="name"
-                      [ngClass]="{ 'is-invalid': (formControls.name.touched || isSubmitted) && formControls.name.errors?.required }" />
-                  </div>
-                </div>
-
-                <div class="row align-items-end">
-                  <div class="col-lg-10 mb-3 form-group">
-                    <label class="fs-6 mb-3 required">Slug</label>
-                    <input type="text" class="form-control fs-6" formControlName="slug"
-                      [ngClass]="{ 'is-invalid': (formControls.slug.touched || isSubmitted) && formControls.slug.errors?.required }" />
-                  </div>
-                  <div class="col-lg-2 mb-3 form-group">
-                    <button class="w-100 btn btn-secondary" (click)="generateSlug()">Generate slug</button>
-                  </div>
-                </div>
-
-                <div class="row">
-                  <div class="col-lg-8 mb-3 form-group">
-                    <label class="fs-6 mb-3">Overview</label>
-                    <input type="text" class="form-control fs-6" placeholder="Eg. 2 - 3 pieces per 500 gm"
-                      formControlName="overview" />
-                  </div>
-                  <div class="col-lg-4 mb-3 form-group">
-                    <label class="fs-6 mb-3">Origin</label>
-                    <input type="text" class="form-control fs-6" placeholder="Eg. Australia" formControlName="origin" />
-                  </div>
-                </div>
-
-                <div class="mb-3 form-group">
-                  <label class="fs-6 mb-3">Boost Score</label>
-                  <input type="text" class="form-control fs-6" formControlName="boostScore"
-                    [ngClass]="{ 'is-invalid': (formControls.boostScore.touched || isSubmitted) && formControls.boostScore.errors?.pattern }" />
-                </div>
-
-                <div class="my-8">
-                  <div class="fs-3 fw-bold">Price Details</div>
-                  <p class="text-muted">Easily manage price details to showacse your product</p>
-                  <div class="row" formGroupName="price">
-                    <div class="col-lg-6 mb-3 form-group">
-                      <label class="fs-6 mb-3 required">Maximum retail price</label>
-                      <input type="text" class="form-control fs-6" formControlName="mrp" placeholder="Eg. 18" />
+                  <div class="col-lg-9">
+                    <div class="mb-3 form-group">
+                      <label class="fs-6 mb-3 required">Name</label>
+                      <input type="text" class="form-control fs-6" formControlName="name"
+                        [ngClass]="{ 'is-invalid': (formControls.name.touched || isSubmitted) && formControls.name.errors?.required }" />
                     </div>
-                    <div class="col-lg-6 mb-3 form-group">
-                      <label class="fs-6 mb-3 required">Offer price</label>
-                      <input type="text" class="form-control fs-6" formControlName="offer" placeholder="Eg. 10.95" />
-                    </div>
-                  </div>
-                </div>
-
-                <div>
-                  <div class="fs-3 fw-bold">Product category and attributes</div>
-                  <p class="text-muted">Easily manage price details to showacse your product</p>
-                  <div class="row mb-3">
-                    <div class="col-lg-6 mb-3 form-group">
-                      <label class="fs-6 mb-3" for="productCategory">Category</label>
-                      <select [formControl]="productCategory" id="productCategory"
-                        (change)="toggleProductCategory($event, 'add')" class="form-select">
-                        <option value="" disabled>-- Select an option --</option>
-                        <option *ngFor="let category of defaultCategories" value="{{category?._id}}">
-                          {{category.name}}
-                        </option>
-                      </select>
-                    </div>
-                    <ng-container *ngIf="categories.length > 0">
-                      <div class="d-flex flex-wrap overflow-hidden align-items-center justify-content-start gap-3">
-                        <ng-container *ngFor="let category of categories">
-                          <div
-                            class="bg-secondary cursor-pointer p-2 rounded d-flex align-items-center justify-content-center gap-2"
-                            (click)="toggleProductCategory(category?._id, 'remove')">
-                            <div>
-                              {{category.name}}
-                            </div>
-                            <div>
-                              <svg height="16" width="16" xmlns="http://www.w3.org/2000/svg" fill="none"
-                                viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
-                              </svg>
-                            </div>
-                          </div>
-                        </ng-container>
+                    <div class="mb-3">
+                      <label class="fs-6 mb-3 required" for="slug">Slug</label>
+                      <div class="position-relative" id="slug">
+                        <div class="mb-3 form-group">
+                          <input type="text" class="form-control fs-6" formControlName="slug"
+                            [ngClass]="{ 'is-invalid': (formControls.slug.touched || isSubmitted) && formControls.slug.errors?.required }" />
+                        </div>
+                        <div class="position-absolute top-50 end-0 translate-middle-y mx-4 cursor-pointer"
+                          (click)="generateSlug()">
+                          <svg height="20" width="20" data-slot="icon" fill="none" stroke-width="1.5"
+                            stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"
+                            aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                              d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0 3.181 3.183a8.25 8.25 0 0 0 13.803-3.7M4.031 9.865a8.25 8.25 0 0 1 13.803-3.7l3.181 3.182m0-4.991v4.99">
+                            </path>
+                          </svg>
+                        </div>
                       </div>
-                    </ng-container>
-                  </div>
-                </div>
-
-                <div class="my-8">
-                  <div class="form-group">
-                    <div class="fs-3 fw-bold">
-                      Attributes <span class="text-primary cursor-pointer fs-5 ms-4 text-decoration-underline"
-                        (click)="open(template)">Add
-                        variants</span>
                     </div>
-                    <p class="text-muted">Manage your product variants to showcase your product. Create combination of
-                      attributes for your product.</p>
-
-                    <div class="d-flex flex-wrap align-items-center justify-content-start gap-2">
-                      <ng-container *ngFor="let attribute of attributes; let i = index">
-                        <div
-                          class="d-flex cursor-pointer align-items-center bg-secondary p-2 rounded justify-content-start gap-2">
-                          <div class="d-flex align-items-center justify-content-start gap-2">
-                            <div class="fs-5 fw-bold">{{attribute?.title}} : </div>
-                            <div class="fs-5">{{attribute?.value}}</div>
-                          </div>
-                          <div (click)="removeAttribute(i)">
-                            <svg height="18" width="18" data-slot="icon" fill="none" stroke-width="1.5"
-                              stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"
-                              aria-hidden="true">
-                              <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12"></path>
-                            </svg>
-                          </div>
+                    <div class="mb-3 form-group">
+                      <label class="fs-6 mb-3">Overview</label>
+                      <input type="text" class="form-control fs-6" placeholder="Eg. 2 - 3 pieces per 500 gm"
+                        formControlName="overview" />
+                    </div>
+                    <div class="my-3">
+                      <div class="row" formGroupName="price">
+                        <div class="col-lg-6 mb-3 form-group">
+                          <label class="fs-6 mb-3 required">Store Price</label>
+                          <input type="text" class="form-control fs-6" formControlName="mrp" placeholder="Eg. 18" />
+                        </div>
+                        <div class="col-lg-6 mb-3 form-group">
+                          <label class="fs-6 mb-3 required">Offer Price</label>
+                          <input type="text" class="form-control fs-6" formControlName="offer"
+                            placeholder="Eg. 10.95" />
+                        </div>
+                      </div>
+                    </div>
+                    <div class="mb-3">
+                      <div class="mb-3 form-group">
+                        <label class="fs-6 mb-3" for="productCategory">Category</label>
+                        <select [formControl]="productCategory" id="productCategory"
+                          (change)="toggleProductCategory($event, 'add')" class="form-select">
+                          <option value="" disabled>-- Select an option --</option>
+                          <option *ngFor="let category of defaultCategories" value="{{category?.slug}}">
+                            {{category.name}}
+                          </option>
+                        </select>
+                      </div>
+                      <ng-container *ngIf="categories.length > 0">
+                        <div class="d-flex flex-wrap overflow-hidden align-items-center justify-content-start gap-3">
+                          <ng-container *ngFor="let category of categories">
+                            <div
+                              class="bg-secondary cursor-pointer p-2 rounded d-flex align-items-center justify-content-center gap-2"
+                              (click)="toggleProductCategory(category.slug, 'remove')">
+                              <div>
+                                {{category.name}}
+                              </div>
+                              <div>
+                                <svg height="16" width="16" xmlns="http://www.w3.org/2000/svg" fill="none"
+                                  viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                                  <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
+                                </svg>
+                              </div>
+                            </div>
+                          </ng-container>
                         </div>
                       </ng-container>
                     </div>
-
-                    <ng-container *ngIf="attributes.length == 0">
-                      <div class="fs-4 text-muted">No variants found</div>
-                    </ng-container>
-
-                  </div>
-                </div>
-
-                <div>
-                  <div class="fs-3 fw-bold">Inventory details</div>
-                  <p class="text-muted">Manage your stock levels seamlessly to keep up with customer demand.</p>
-                  <div class="row">
-                    <div class="col-lg-6 mb-3 form-group">
-                      <label class="fs-6 mb-3 required">Stock</label>
-                      <input type="text" class="form-control fs-6" formControlName="stock"
-                        [ngClass]="{ 'is-invalid': (formControls.stock.touched || isSubmitted) && (formControls.stock.errors?.required || formControls.stock.errors?.pattern)}" />
+                    <div class="row mb-3">
+                      <div class="col-lg-6 mb-3 form-group">
+                        <label class="fs-6 mb-3 required">Stock</label>
+                        <input type="text" class="form-control fs-6" formControlName="stock"
+                          [ngClass]="{ 'is-invalid': (formControls.stock.touched || isSubmitted) && (formControls.stock.errors?.required || formControls.stock.errors?.pattern)}" />
+                      </div>
+                      <div class="col-lg-6 mb-3 form-group">
+                        <label class="fs-6 mb-3 required">SKU</label>
+                        <input type="text" class="form-control fs-6" formControlName="sku" />
+                      </div>
+                      <div class="col-lg-6 mb-3 form-group">
+                        <label class="fs-6 mb-3 required">Minimum Order Quantity</label>
+                        <input type="text" class="form-control fs-6" formControlName="moq"
+                          [ngClass]="{ 'is-invalid': (formControls.moq.touched || isSubmitted) && (formControls.moq.errors?.required || formControls.moq.errors?.pattern)}" />
+                      </div>
+                      <div class="col-lg-6 mb-3 form-group">
+                        <label class="fs-6 mb-3 required">Maximum Order Quantity</label>
+                        <input type="text" class="form-control fs-6" formControlName="maxOrderQuantity"
+                          [ngClass]="{ 'is-invalid': (formControls.maxOrderQuantity.touched || isSubmitted) && (formControls.maxOrderQuantity.errors?.required || formControls.maxOrderQuantity.errors?.pattern)}" />
+                      </div>
+                      <div class="col-lg-6 mb-3 form-group">
+                        <label class="fs-6 mb-3">Stock Warning</label>
+                        <input type="text" class="form-control fs-6" formControlName="stockWarning" />
+                      </div>
                     </div>
-                    <div class="col-lg-6 mb-3 form-group">
-                      <label class="fs-6 mb-3 required">SKU</label>
-                      <input type="text" class="form-control fs-6" formControlName="sku" />
-                    </div>
-                    <div class="col-lg-6 mb-3 form-group">
-                      <label class="fs-6 mb-3 required">Minimum order quantity</label>
-                      <input type="text" class="form-control fs-6" formControlName="moq"
-                        [ngClass]="{ 'is-invalid': (formControls.moq.touched || isSubmitted) && (formControls.moq.errors?.required || formControls.moq.errors?.pattern)}" />
-                    </div>
-                    <div class="col-lg-6 mb-3 form-group">
-                      <label class="fs-6 mb-3 required">Maximum order quantity</label>
-                      <input type="text" class="form-control fs-6" formControlName="maxOrderQuantity"
-                        [ngClass]="{ 'is-invalid': (formControls.maxOrderQuantity.touched || isSubmitted) && (formControls.maxOrderQuantity.errors?.required || formControls.maxOrderQuantity.errors?.pattern)}" />
-                    </div>
-                    <div class="col-lg-6 mb-3 form-group">
-                      <label class="fs-6 mb-3">Stock warning</label>
-                      <input type="text" class="form-control fs-6" formControlName="stockWarning" />
-                    </div>
-                  </div>
-                </div>
-
-                <div class="my-8">
-                  <div class="fs-3 fw-bold">Unit and measurement</div>
-                  <p class="text-muted">Update the unit of measurement details of the product easily</p>
-                  <div class="form-group mb-3 col-lg-6">
-                    <label for="weight" class="fs-6 mb-3">Unit</label>
-                    <input type="text" id="weight" class="form-control fs-6" formControlName="unit" />
-                  </div>
-                </div>
-
-                <div>
-                  <div class="fs-3 fw-bold">Additional details</div>
-                  <p class="text-muted">Update the additional details of the product</p>
-                  <div class="row" formGroupName="details">
-                    <div class="mb-3 form-group">
-                      <label class="fs-6 mb-3">Description</label>
-                      <angular-editor class="form-control fs-6 about-textarea" formControlName="description"
-                        [config]="editorConfig"></angular-editor>
-                    </div>
-                    <div class="mb-3 form-group">
-                      <label class="fs-6 mb-3">Long Description</label>
-                      <angular-editor class="form-control fs-6 about-textarea" formControlName="longDescription"
-                        [config]="editorConfig"></angular-editor>
-                    </div>
-                    <div class="form-group">
-                      <label class="fs-6 mb-3">Features</label>
-                      <angular-editor class="form-control fs-6 about-textarea" formControlName="features"
-                        [config]="editorConfig"></angular-editor>
-                    </div>
-                  </div>
-                </div>
-
-                <div class="my-8">
-                  <div class="col-lg-6 mb-3 form-group">
-                    <label for="searchKeywords" class="fs-6 mb-3">Search keywords</label>
-                    <input id="searchKeywords" class="form-control fs-6"
-                      (keyup.enter)="toggleSearchKeywords($event, 'add')" [formControl]="searchKeyword" />
-                    <ng-container *ngIf="searchKeywords && searchKeywords.length > 0">
-                      <div class="mt-2 d-flex flex-wrap overflow-hidden align-items-center justify-content-start gap-3">
-                        <ng-container *ngFor="let keyword of searchKeywords">
+                    <div class="mb-3">
+                      <div class="mb-3 form-group">
+                        <label for="searchKeywords" class="fs-6 mb-3">Search Keywords</label>
+                        <input id="searchKeywords" class="form-control fs-6"
+                          (keyup.enter)="toggleSearchKeywords($event, 'add')" [formControl]="searchKeyword" />
+                        <ng-container *ngIf="searchKeywords && searchKeywords.length > 0">
                           <div
-                            class="bg-secondary d-flex align-items-center justify-content-center gap-2 cursor-pointer p-2 rounded"
-                            (click)="toggleSearchKeywords(keyword, 'remove')">
-                            {{keyword}}
-                            <svg height="16" width="16" data-slot="icon" fill="none" stroke-width="1.5"
-                              stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"
-                              aria-hidden="true">
-                              <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12"></path>
-                            </svg>
+                            class="mt-2 d-flex flex-wrap overflow-hidden align-items-center justify-content-start gap-3">
+                            <ng-container *ngFor="let keyword of searchKeywords">
+                              <div
+                                class="bg-secondary d-flex align-items-center justify-content-center gap-2 cursor-pointer p-2 rounded"
+                                (click)="toggleSearchKeywords(keyword, 'remove')">
+                                {{keyword}}
+                                <svg height="16" width="16" data-slot="icon" fill="none" stroke-width="1.5"
+                                  stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"
+                                  aria-hidden="true">
+                                  <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12"></path>
+                                </svg>
+                              </div>
+                            </ng-container>
                           </div>
                         </ng-container>
                       </div>
-                    </ng-container>
-                  </div>
 
-                  <div class="col-lg-6 mb-3 form-group">
-                    <label for="relatedProducts" class="fs-6 mb-3">Related products</label>
-                    <select id="relatedProducts" [formControl]="relatedProduct" class="form-select"
-                      (change)="onProductsTriggered()">
-                      <option value="" disabled>-- Select an option--</option>
-                      <option *ngFor="let activeRelatedProduct of activeRelatedProducts"
-                        value="{{activeRelatedProduct?._id}}">{{activeRelatedProduct.name}}
-                      </option>
-                    </select>
-                    <ng-container *ngIf="relatedProducts.length > 0">
-                      <div class="mt-2 d-flex flex-wrap align-items-center gap-2 justify-content-start">
-                        <ng-container *ngFor="let product of relatedProducts; let i = index">
-                          <div class="bg-secondary d-flex align-items-center justify-content-center gap-2 p-2 rounded">
-                            {{product.name}}
-                            <div (click)="onProductsTriggered(product)">
-                              <svg data-slot="icon" height="16" width="16" fill="none" stroke-width="1.5"
-                                stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"
-                                aria-hidden="true">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12"></path>
-                              </svg>
-                            </div>
+                      <div class="mb-3 form-group">
+                        <label for="relatedProducts" class="fs-6 mb-3">Related Products</label>
+                        <select id="relatedProducts" [formControl]="relatedProduct" class="form-select"
+                          (change)="onProductsTriggered()">
+                          <option value="" disabled>-- Select an option--</option>
+                          <option *ngFor="let activeRelatedProduct of activeRelatedProducts"
+                            value="{{activeRelatedProduct?._id}}">{{activeRelatedProduct.name}}
+                          </option>
+                        </select>
+                        <ng-container *ngIf="relatedProducts.length > 0">
+                          <div class="mt-2 d-flex flex-wrap align-items-center gap-2 justify-content-start">
+                            <ng-container *ngFor="let product of relatedProducts; let i = index">
+                              <div
+                                class="bg-secondary d-flex align-items-center justify-content-center gap-2 p-2 rounded">
+                                {{product.name}}
+                                <div (click)="onProductsTriggered(product)">
+                                  <svg data-slot="icon" height="16" width="16" fill="none" stroke-width="1.5"
+                                    stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"
+                                    aria-hidden="true">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12">
+                                    </path>
+                                  </svg>
+                                </div>
+                              </div>
+                            </ng-container>
                           </div>
                         </ng-container>
                       </div>
+                    </div>
+                  </div>
+                  <div class="col-lg-3 rightSideBg p-4 rounded">
+                    <div class="mb-3 form-group">
+                      <label class="fs-6 mb-3">Origin</label>
+                      <input type="text" class="form-control fs-6" placeholder="Eg. Australia"
+                        formControlName="origin" />
+                    </div>
+                    <div class="mb-3 form-group">
+                      <label class="fs-6 mb-3">Boost Score</label>
+                      <input type="text" class="form-control fs-6" formControlName="boostScore"
+                        [ngClass]="{ 'is-invalid': (formControls.boostScore.touched || isSubmitted) && formControls.boostScore.errors?.pattern }" />
+                    </div>
+                    <div class="mb-3 form-group">
+                      <label for="weight" class="fs-6 mb-3">Unit</label>
+                      <input type="text" id="weight" class="form-control fs-6" formControlName="unit" />
+                    </div>
+                    <div class="mb-3 form-group">
+                      <label class="fs-6 mb-3" for="status">Active Status</label>
+                      <select formControlName="isActive" id="status" class="form-select">
+                        <option value="" disabled>-- Select an option --</option>
+                        <option *ngFor="let value of [true, false]" value="{{value}}">{{value == true ? 'Yes' : 'No'}}
+                        </option>
+                      </select>
+                    </div>
+                    <div class="mb-3 form-group">
+                      <label class="fs-6 mb-3" for="visibility">Visibility</label>
+                      <select formControlName="isVisible" id="visibility" class="form-select">
+                        <option value="" disabled>-- Select an option --</option>
+                        <option *ngFor="let value of [true, false]" value="{{value}}">{{value == true ? 'Visible' :
+                          'Hidden'}}</option>
+                      </select>
+                    </div>
+                    <div class="mb-3 form-group">
+                      <label for="brand" class="fs-6 mb-3">Brand</label>
+                      <select formControlName="brand" class="form-select">
+                        <option value="" disabled>-- Select an option --</option>
+                        <option *ngFor="let brand of brands" value="{{brand?.slug}}">{{brand?.name}}</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+                <div class="row" formGroupName="details">
+                  <div class="mb-3 form-group">
+                    <label class="fs-6 mb-3">Description</label>
+                    <angular-editor class="form-control fs-6 about-textarea" formControlName="description"
+                      [config]="editorConfig"></angular-editor>
+                  </div>
+                  <div class="mb-3 form-group">
+                    <label class="fs-6 mb-3">Long Description</label>
+                    <angular-editor class="form-control fs-6 about-textarea" formControlName="longDescription"
+                      [config]="editorConfig"></angular-editor>
+                  </div>
+                  <div class="form-group">
+                    <label class="fs-6 mb-3">Features</label>
+                    <angular-editor class="form-control fs-6 about-textarea" formControlName="features"
+                      [config]="editorConfig"></angular-editor>
+                  </div>
+                </div>
+              </div>
+              <div class="d-flex align-items-center justify-content-center gap-2">
+                <button class="btn btn-secondary" (click)="saveChanges()">Save and Close</button>
+                <button class="btn btn-primary" (click)="toggleTab(1)">Continue</button>
+              </div>
+            </tab>
+
+            <tab heading="Variants">
+              <div class="my-6">
+                <div class="form-group">
+                  <div class="d-flex align-items-center justify-content-end gap-2">
+                    <button class="btn btn-secondary d-flex align-items-center justify-content-center gap-2" (click)="open(template)">
+                      <svg height="16" width="16" data-slot="icon" fill="none" stroke-width="1.5" stroke="currentColor"
+                      viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"></path>
+                    </svg>
+                      Add Variants
+                    </button>
+                  </div>
+                  <div class="d-flex flex-wrap align-items-center justify-content-start gap-2 mt-6">
+                    <ng-container *ngFor="let attribute of attributes; let i = index">
+                      <div
+                        class="d-flex cursor-pointer align-items-center bg-secondary p-2 rounded justify-content-start gap-2">
+                        <div class="d-flex align-items-center justify-content-start gap-2">
+                          <div class="fs-5">{{attribute?.title}} : </div>
+                          <div class="fs-5">{{attribute?.value}}</div>
+                        </div>
+                        <div (click)="removeAttribute(i)">
+                          <svg height="18" width="18" data-slot="icon" fill="none" stroke-width="1.5"
+                            stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"
+                            aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12"></path>
+                          </svg>
+                        </div>
+                      </div>
                     </ng-container>
                   </div>
                 </div>
+              </div>
+              <div class="d-flex align-items-center justify-content-center gap-2">
+                <button class="btn border border-primary bg-white text-primary" (click)="toggleTab(0)">Back</button>
+                <button class="btn btn-primary" (click)="toggleTab(2)">Continue</button>
+              </div>
+            </tab>
 
-                <div class="my-8">
-                  <div class="fs-3 fw-bold">Store fields</div>
-                  <p class="text-muted mb-3">Add dynamic fields to your product which will be shown in PDP pages</p>
-                  <div class="mb-3">
-                    <div class="row mb-3" *ngFor="let storeField of storeFields; let i = index">
-                      <div class="col-lg-4 form-group">
-                        <input type="text" class="form-control" value="{{storeField.title}}" disabled>
-                      </div>
-                      <div class="col-lg-6 form-group">
-                        <input type="text" class="form-control" value="{{storeField.description}}" disabled>
-                      </div>
-                      <div class="col-lg-2 form-group">
-                        <button class="btn btn-danger w-100" value="Remove fields"
-                          (click)="removeStoreField(i)">Remove</button>
-                      </div>
+            <tab heading="Specifications">
+              <div class="my-6">
+                <div class="mb-3">
+                  <div class="row mb-3" *ngFor="let storeField of storeFields; let i = index">
+                    <div class="col-lg-4 form-group">
+                      <input type="text" class="form-control" value="{{storeField.title}}" disabled>
                     </div>
-                  </div>
-                  <form [formGroup]="storeFieldForm" class="row mb-3">
-                    <div class="form-group col-lg-4">
-                      <label for="storeTitle" class="fs-6 mb-3">Title</label>
-                      <input type="text" id="storeTitle" formControlName="title" class="form-control"
-                        [ngClass]="{
-                        'is-invalid': (storeFieldControls.title.touched || isStoreSubmitted) && storeFieldControls.title.errors?.required }">
+                    <div class="col-lg-6 form-group">
+                      <input type="text" class="form-control" value="{{storeField.description}}" disabled>
                     </div>
-                    <div class="form-group col-lg-6">
-                      <label for="storeDescription" class="fs-6 mb-3">Description</label>
-                      <input type="text" id="storeDescription" formControlName="description" class="form-control"
-                        [ngClass]="{
-                        'is-invalid': (storeFieldControls.description.touched || isStoreSubmitted) && storeFieldControls.description.errors?.required }">
+                    <div class="col-lg-2 form-group">
+                      <button class="btn btn-danger w-100" value="Remove fields"
+                        (click)="removeStoreField(i)">Remove</button>
                     </div>
-                    <div class="form-group col-lg-2">
-                      <label for="storeSave" class="fs-6 mb-3">&nbsp;</label>
-                      <input type="button" class="btn btn-secondary w-100" (click)="onSaveStoreField()"
-                        value="Save fields">
-                    </div>
-                  </form>
-                </div>
-
-                <div class="row my-8">
-                  <div class="col-lg-6 mb-3 form-group">
-                    <label class="fs-6 mb-3" for="status">Active status</label>
-                    <select formControlName="isActive" id="status" class="form-select">
-                      <option value="" disabled>-- Select an option --</option>
-                      <option *ngFor="let value of [true, false]" value="{{value}}">{{value == true ? 'Yes' : 'No'}}
-                      </option>
-                    </select>
-                  </div>
-                  <div class="col-lg-6 mb-3 form-group">
-                    <label class="fs-6 mb-3" for="visibility">Visibility</label>
-                    <select formControlName="isVisible" id="visibility" class="form-select">
-                      <option value="" disabled>-- Select an option --</option>
-                      <option *ngFor="let value of [true, false]" value="{{value}}">{{value == true ? 'Visible' :
-                        'Hidden'}}</option>
-                    </select>
                   </div>
                 </div>
-
-
+                <form [formGroup]="storeFieldForm" class="row mb-3">
+                  <div class="form-group col-lg-4">
+                    <label for="storeTitle" class="fs-6 mb-3">Title</label>
+                    <input type="text" id="storeTitle" formControlName="title" class="form-control"
+                      [ngClass]="{
+                      'is-invalid': (storeFieldControls.title.touched || isStoreSubmitted) && storeFieldControls.title.errors?.required }">
+                  </div>
+                  <div class="form-group col-lg-6">
+                    <label for="storeDescription" class="fs-6 mb-3">Description</label>
+                    <input type="text" id="storeDescription" formControlName="description" class="form-control"
+                      [ngClass]="{
+                      'is-invalid': (storeFieldControls.description.touched || isStoreSubmitted) && storeFieldControls.description.errors?.required }">
+                  </div>
+                  <div class="form-group col-lg-2">
+                    <label for="storeSave" class="fs-6 mb-3">&nbsp;</label>
+                    <input type="button" class="btn btn-secondary w-100" (click)="onSaveStoreField()"
+                      value="Save fields">
+                  </div>
+                </form>
               </div>
 
               <div class="d-flex align-items-center justify-content-center gap-2">
-                <button class="btn btn-primary" (click)="toggleTab(1)">Continue</button>
+                <button class="btn border border-primary bg-white text-primary" (click)="toggleTab(1)">Back</button>
+                <button class="btn btn-primary" (click)="toggleTab(3)">Continue</button>
               </div>
             </tab>
 
             <tab heading="Product Medias">
               <div class="my-6">
-
                 <form [formGroup]="form">
-
                   <div class="mb-3 form-group">
                     <label class="fs-6 mb-3" id="video">Video</label>
                     <input type="text" class="form-control" id="video" formControlName="video" />
                   </div>
-
                   <div class="mb-3 form-group">
-                    <label class="fs-6 mb-3" id="productBanner">Product banner</label>
-                    <p class="text-muted">
+                    <label class="fs-6 mb-3" id="productBanner">Product Banner</label>
+                    <p class="text-muted fs-5">
                       Priority will be given to dedicated product details if a banner has been uploaded here.
                       The banner for product details can be added from the banner images section, which will be common
                       throughout all the PDP design.</p>
@@ -373,9 +367,8 @@
                       </div>
                     </div>
                   </div>
-
                   <div class="mb-3">
-                    <label for="images" class="fs-6 mb-3">Product images</label>
+                    <label for="images" class="fs-6 mb-3">Product Images</label>
                     <div class="row" id="images">
                       <ng-container *ngFor="let image of images">
                         <div class="col-lg-2">
@@ -399,9 +392,8 @@
                       </div>
                     </div>
                   </div>
-
                   <div class="mb-3">
-                    <label for="thumbnail" class="fs-6 mb-3">Product thumbnail</label>
+                    <label for="thumbnail" class="fs-6 mb-3">Product Thumbnail</label>
                     <div class="row" id="thumbnail">
                       <div class="col-lg-2">
                         <div class="ratio ratio-1x1 h-auto w-100 rounded">
@@ -411,11 +403,10 @@
                       </div>
                     </div>
                   </div>
-
                   <div class="mb-3">
-                    <label for="images" class="fs-6 mb-3">Product icons</label>
-                    <div class="icons" id="images">
-                      <ng-container *ngFor="let icon of icons">
+                    <label for="images" class="fs-6 mb-3">Product Icons</label>
+                    <div class="row" id="images">
+                      <div class="col-lg-2" *ngFor="let icon of icons">
                         <div class="ratio border ratio-1x1 h-auto w-100 rounded position-relative">
                           <div class="close-icon rounded bg-danger text-white" (click)="productIconClicked(icon)">
                             <svg height="18" width="18" data-slot="icon" fill="none" stroke-width="1.5"
@@ -426,17 +417,18 @@
                           </div>
                           <img src="{{base}}{{icon}}" class="rounded object-fit-cover" class="h-100 w-100 object-cover">
                         </div>
-                      </ng-container>
-                      <div class="ratio ratio-1x1 h-auto w-100 rounded">
-                        <app-assets (mediaClicked)="productIconClicked($event)" [previewEnabled]="false"></app-assets>
+                      </div>
+                      <div class="col-lg-2">
+                        <div class="ratio ratio-1x1 h-auto w-100 rounded">
+                          <app-assets (mediaClicked)="productIconClicked($event)" [previewEnabled]="false"></app-assets>
+                        </div>
                       </div>
                     </div>
                   </div>
-
                   <div class="mb-3">
                     <label for="images" class="fs-6 mb-3">Product Tags</label>
-                    <div class="icons" id="images">
-                      <ng-container *ngFor="let icon of tagIcons">
+                    <div class="row" id="images">
+                      <div class="col-lg-2" *ngFor="let icon of tagIcons">
                         <div class="ratio border ratio-1x1 h-auto w-100 rounded position-relative">
                           <div class="close-icon rounded bg-danger text-white" (click)="removeTagIcons(icon)">
                             <svg height="18" width="18" data-slot="icon" fill="none" stroke-width="1.5"
@@ -447,9 +439,11 @@
                           </div>
                           <img src="{{base}}{{icon}}" class="rounded" class="h-100 w-100 ">
                         </div>
-                      </ng-container>
-                      <div class="ratio ratio-1x1 h-auto w-100 rounded">
-                        <app-assets (mediaClicked)="handleTagIcons($event)" [previewEnabled]="false"></app-assets>
+                      </div>
+                      <div class="col-lg-2">
+                        <div class="ratio ratio-1x1 h-auto w-100 rounded">
+                          <app-assets (mediaClicked)="handleTagIcons($event)" [previewEnabled]="false"></app-assets>
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -457,8 +451,8 @@
               </div>
 
               <div class="d-flex align-items-center justify-content-center gap-2">
-                <button class="btn border border-primary bg-white text-primary" (click)="toggleTab(0)">Back</button>
-                <button class="btn btn-primary" (click)="toggleTab(2)">Continue</button>
+                <button class="btn border border-primary bg-white text-primary" (click)="toggleTab(2)">Back</button>
+                <button class="btn btn-primary" (click)="toggleTab(4)">Continue</button>
               </div>
             </tab>
 
@@ -479,13 +473,13 @@
               </div>
 
               <div class="d-flex align-items-center justify-content-center gap-2">
-                <button class="btn border border-primary bg-white text-primary" (click)="toggleTab(1)">Back</button>
-                <button class="btn btn-primary" (click)="toggleTab(3)">Continue</button>
+                <button class="btn border border-primary bg-white text-primary" (click)="toggleTab(3)">Back</button>
+                <button class="btn btn-primary" (click)="toggleTab(5)">Continue</button>
               </div>
             </tab>
 
             <tab heading="Add Ons">
-              <div class="my-12">
+              <div class="my-6">
                 <div class="alert alert-danger fs-5">
                   This module is currently under development and will be operational soon.
                 </div>
@@ -510,7 +504,8 @@
                       <div class="text-muted">{{addOn.description}}</div>
                     </div>
                     <div class="d-flex align-items-center justify-content-end gap-2">
-                      <button (click)="editAddOn(i)" class="d-flex align-items-center justify-content-center gap-2 btn btn-secondary">
+                      <button (click)="editAddOn(i)"
+                        class="d-flex align-items-center justify-content-center gap-2 btn btn-secondary">
                         <svg height="16" width="16" data-slot="icon" fill="none" stroke-width="1.5"
                           stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"
                           aria-hidden="true">
@@ -522,7 +517,8 @@
                         </svg>
                         Edit
                       </button>
-                      <button (click)="removeAddOn(i)" class="d-flex align-items-center justify-content-center gap-2 btn btn-danger">
+                      <button (click)="removeAddOn(i)"
+                        class="d-flex align-items-center justify-content-center gap-2 btn btn-danger">
                         <svg height="16" width="16" data-slot="icon" fill="none" stroke-width="1.5"
                           stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"
                           aria-hidden="true">
@@ -662,7 +658,7 @@
               </div>
 
               <div class="d-flex align-items-center justify-content-center gap-2">
-                <button class="btn border border-primary bg-white text-primary" (click)="toggleTab(2)">Back</button>
+                <button class="btn border border-primary bg-white text-primary" (click)="toggleTab(4)">Back</button>
                 <button class="btn btn-primary" (click)="saveChanges()">Save changes</button>
               </div>
             </tab>
@@ -759,9 +755,9 @@
           </div>
           <div class="mb-3 form-group">
             <label for="attributeValue" class="fs-6 mb-3 required">Option Values</label>
-            <input type="text" id="attributeValue" class="form-control fs-6"
+            <input type="text" id="attributeValue" class="form-control fs-6" placeholder="Value"
               [ngClass]="{ 'is-invalid': (attributeControls.value.touched || isAttributeSubmitted) && attributeControls.value.errors?.required }"
-              placeholder="8.5 kg" formControlName="value">
+              formControlName="value">
           </div>
         </div>
       </div>
