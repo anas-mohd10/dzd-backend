@@ -43,6 +43,7 @@ export class UploadsListComponent implements OnInit {
     { title: 'Collection', type: 'collection' },
     { title: 'Orders', type: 'order' },
     { title: 'Subscribers', type: 'subscriber' },
+    { title: 'Update Products', type: 'update-product' },
   ];
   fileData: any;
   fileName: string;
@@ -242,6 +243,24 @@ export class UploadsListComponent implements OnInit {
               this.isSubmitting = false;
             },
           });
+          break;
+        case 'update-product':
+          this.ProductService.bulkUpdateProducts(formdata).subscribe({
+            next: (res: any) => {
+              if (res?.errorCode == 0) {
+                this.onSuccess(res?.message);
+              } else {
+                this.HotToastService.error(res?.message);
+              }
+            },
+            error: (err: any) => {
+              this.HotToastService.error(err?.error?.message);
+              this.isSubmitting = false;
+            },
+          });
+          break;
+        default:
+          this.HotToastService.error('Please select an import type');
           break;
       }
     } else {

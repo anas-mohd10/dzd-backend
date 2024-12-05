@@ -179,5 +179,10 @@ export class ProductService {
     const url = this.commonService.getFullUrl(this.productEndpoints.getProducts);
     return this.http.post(`${url}`, query);
   }
-  //Get products from query
+  
+  //update product status
+  bulkUpdateProducts(query: any) {
+    const url = this.commonService.getFullUrl(this.productEndpoints.bulkUpdateProducts);
+    return this.http.post(`${url}`, query);
+  }
 }
