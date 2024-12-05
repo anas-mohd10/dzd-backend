@@ -527,6 +527,10 @@ w<app-design-topbar [page]="'home'" [isDraft]="isDraft" (device)="deviceToggled(
                         <div class="mb-2 p-4 rounded border border-secondary">
                             <div cdkDropList cdkDropListOrientation="horizontal" class="modal-images"
                                 (cdkDropListDropped)="dropWidgetImages($event)">
+                                <div class="modal-image w-100 ratio ratio-1x1 h-auto">
+                                    <app-assets (mediaClicked)="addMediaTriggered($event)"
+                                        [previewDetails]="widgetPreviewDetails" [previewEnabled]="false"></app-assets>
+                                </div>
 
                                 <div class="modal-image rounded border border-secondary ratio ratio-1x1"
                                     *ngFor="let image of widgetImages; let i = index" cdkDrag
@@ -535,10 +539,7 @@ w<app-design-topbar [page]="'home'" [isDraft]="isDraft" (device)="deviceToggled(
                                         alt="{{image?.url?.title}}">
                                 </div>
 
-                                <div class="modal-image w-100 ratio ratio-1x1 h-auto">
-                                    <app-assets (mediaClicked)="addMediaTriggered($event)"
-                                        [previewDetails]="widgetPreviewDetails" [previewEnabled]="false"></app-assets>
-                                </div>
+                                
                             </div>
                         </div>
                         <div *ngIf="widgetImagePreviewIndex >= 0 && widgetImagePreview">

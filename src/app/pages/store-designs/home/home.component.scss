@@ -41,9 +41,15 @@
 }
 
 .modal-images {
-    display: grid;
-    grid-template-columns: repeat(9, 1fr);
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    overflow-x: auto;
     gap: 10px;
+    > div{
+        width: 120px !important;
+        flex: none;
+    }
 
     .modal-image {
         position: relative;
