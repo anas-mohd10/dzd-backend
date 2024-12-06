@@ -60,6 +60,9 @@ export class SmsSettingsComponent implements OnInit {
     { title: 'Cart', value: 'cart' },
     { title: 'Order Out for Delivery', value: 'order-out-for-delivery' },
     { title: 'Registration OTP', value: 'registration-otp' },
+    { title: 'Order Packed', value: 'order-packed' },
+    { title: 'Order Shipped', value: 'order-shipped' },
+    { title: 'Order Failed', value: 'order-failed' },
   ];
 
   constructor(
