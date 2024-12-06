@@ -78,6 +78,7 @@ export class UpdateProductComponent implements OnInit {
       { class: 'comic-sans-ms', name: 'Comic Sans MS' },
       { class: 'manrope', name: 'Sen' },
       { class: 'Sen', name: 'Sen' },
+      { class: 'noto-naskh-arabic', name: "Noto Naskh Arabic" },
       { class: 'be-vietnam-pro', name: 'Be Vietnam Pro' },
     ],
   };
@@ -500,18 +501,30 @@ export class UpdateProductComponent implements OnInit {
         [this.settings.primaryLang]: this.form.get('origin')?.value,
       },
       localizedDetails: {
-        description :{
+        description: {
           ...this.productDetails.localizedDetails?.description,
-          [this.settings.primaryLang]: this.form.get('description')?.value, 
+          [this.settings.primaryLang]: this.form.get('details.description')?.value,
         },
         features: {
           ...this.productDetails.localizedDetails?.features,
-          [this.settings.primaryLang]: this.form.get('features')?.value,
+          [this.settings.primaryLang]: this.form.get('details.features')?.value,
         },
         longDescription: {
           ...this.productDetails.localizedDetails?.longDescription,
-          [this.settings.primaryLang]: this.form.get('longDescription')?.value,
+          [this.settings.primaryLang]: this.form.get('details.longDescription')?.value,
         }
+      },
+      localizedMetaTitles: {
+        ...this.productDetails.localizedMetaTitles,
+        [this.settings.primaryLang]: this.form.get('metaTitle')?.value,
+      },
+      localizedMetaDescriptions: {
+        ...this.productDetails.localizedMetaDescriptions,
+        [this.settings.primaryLang]: this.form.get('metaDescription')?.value,
+      },
+      localizedMetaKeywords: {
+        ...this.productDetails.localizedMetaKeywords,
+        [this.settings.primaryLang]: this.form.get('metaKeywords')?.value,
       },
       category: {
         id: this.categories.map((category: any) => category?._id),
@@ -657,6 +670,17 @@ export class UpdateProductComponent implements OnInit {
       }, error: (err: any) => { }
     })
 
+    this.AppSettingsService.getGeneralSettingsbyId('1').subscribe({
+      next: (res: any) => {
+        if (res?.errorCode == 0) {
+          this.settings = res?.result;
+          this.languages = res?.result?.languages;
+          this.ChangeDetectorRef.markForCheck();
+        } else { }
+      }, error: (err: any) => { }
+    }
+    );
+
     this.addOnOptionForm = new FormGroup({
       product: new FormControl('', Validators.required),
       price: new FormControl('', Validators.required),
@@ -702,56 +726,45 @@ export class UpdateProductComponent implements OnInit {
           this.productDetails = res?.result;
           this.images = res?.result?.files ? res?.result?.files : [];
           // Remove null and undefined values from array of images
-          this.images = this.images
-            .map((item) => {
-              if (item !== null) {
-                return {
-                  path: item,
-                };
-              }
-            })
-            .filter(Boolean);
+          this.images = this.images.map((item) => {
+            if (item !== null) {
+              return {
+                path: item,
+              };
+            }
+          }).filter(Boolean);
+
           this.storeFields = res?.result?.storeFrontFields;
           this.tagIcons = res?.result?.tagIcons ? res?.result?.tagIcons : [];
           this.categories = res?.result?.category?.id;
-          if (res?.result?.productTags) {
-            this.tagsForm.patchValue(res?.result?.productTags);
-            this.productTags = {
-              topRightTag: res?.result?.productTags?.topRightTag,
-              topLeftTag: res?.result?.productTags?.topLeftTag,
-              bottomRightTag: res?.result?.productTags?.bottomRightTag,
-              bottomLeftTag: res?.result?.productTags?.bottomLeftTag,
-            };
-          }
           this.parentDetails = res?.result?.product?.id;
-          this.productBannerDetails =
-            res?.result?.productBanner && res?.result?.productBanner;
+          this.productBannerDetails = res?.result?.productBanner && res?.result?.productBanner;
+
           this.form.patchValue({
             productBanner: res?.result?.productBanner?._id,
-            brand: res?.result?.brand?.slug
+            brand: res?.result?.brand?.slug,
+            name: res.result.localizedNames[this.settings.primaryLang] || res.result.name,
+            overview: res.result.localizedOverview[this.settings.primaryLang] || res.result.overview,
+            origin: res.result.localizedOrigin[this.settings.primaryLang] || res.result.origin,
+            details: {
+              description: res.result.localizedDetails?.description[this.settings.primaryLang] || res.result.details.description,
+              features: res.result.localizedDetails?.features[this.settings.primaryLang] || res.result.details.features,
+              longDescription: res.result.localizedDetails?.longDescription[this.settings.primaryLang] || res.result.details.longDescription,
+            },
+            metaTitle: res?.result?.localizedMetaTitles[this.settings.primaryLang] || res.result.metaTitle,
+            metaDescription: res.result.localizedMetaDescriptions[this.settings.primaryLang] || res.result.metaDescription,
+            metaKeywords: res.result.localizedMetaKeywords[this.settings.primaryLang] || res.result.metaKeywords,
           });
 
           this.attributes = res?.result?.attributes;
           this.relatedProducts = res?.result?.relatedProducts;
           this.searchKeywords = res?.result?.searchKeywords || [];
-          this.icons = res?.result?.productIcons
-            ? res?.result?.productIcons
-            : [];
+          this.icons = res?.result?.productIcons || [];
           this.thumbnailPreview = res?.result?.thumbnail;
           this.ChangeDetectorRef.markForCheck();
         }
       },
     });
-
-    this.AppSettingsService.getGeneralSettingsbyId('1').subscribe(
-      (res: any) => {
-        if (res?.errorCode == 0) {
-          this.settings = res?.result;
-          this.languages = res?.result?.languages;
-          this.ChangeDetectorRef.markForCheck();
-        }
-      }
-    );
 
     this.parentForm = new FormGroup({
       name: new FormControl('', Validators.required),
