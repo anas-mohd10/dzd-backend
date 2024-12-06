@@ -778,6 +778,10 @@
                                                 <input type="text" formControlName="button" class="form-control">
                                             </div>
                                             <div class="form-group mb-3">
+                                                <label for="title" class="form-label">Custom Styles</label>
+                                                <textarea type="text" rows="3" formControlName="customStyles" class="form-control"></textarea>
+                                            </div>
+                                            <div class="form-group mb-3">
                                                 <label for="redirectionType" class="form-label">Call to action</label>
                                                 <select id="redirectionType" formControlName="redirectionType"
                                                     class="form-select" (change)="onRedirectionSelected()">

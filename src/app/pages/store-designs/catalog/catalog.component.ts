@@ -812,6 +812,7 @@ export class CatalogComponent implements OnInit {
               this.widgetImages.push({
                 url: widgetImage?.media,
                 title: widgetImage?.title,
+                customStyles: widgetImage?.customStyles,
                 description: widgetImage?.description,
                 button: widgetImage?.button,
                 redirection: widgetImage?.redirection,
@@ -1899,6 +1900,7 @@ export class CatalogComponent implements OnInit {
       buttonText: new FormControl(''),
       buttonRedirection: new FormControl(''),
       redirectionQuery: new FormControl(''),
+      customStyles: new FormControl(''),
     });
   }
 }
