@@ -1327,6 +1327,7 @@ export class CatalogComponent implements OnInit {
                 description: widgetImage?.description,
                 button: widgetImage?.button,
                 redirection: widgetImage?.redirection,
+                customStyles: widgetImage?.customStyles,
               });
             }
             this.widgetImagePreview =
