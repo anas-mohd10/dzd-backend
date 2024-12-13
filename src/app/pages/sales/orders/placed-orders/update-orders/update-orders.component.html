@@ -70,12 +70,15 @@
     <div *ngIf="isCancelled">
       <div class="alert mb-4 alert-danger">
         <div class="fs-3 fw-bold">{{orderNumber}} Order has been cancelled</div>
-        <div class="my-3">
+        <div class="my-3" *ngIf="order?.cancel?.reason">
           <div class="fs-6">Reason for cancellation :</div>
           <div class="fs-5">{{order?.cancel?.reason}}</div>
         </div>
-        <div class="fs-6">Cancelled on {{getLocaleDateFormat(order?.cancel?.date)}}
-          {{getLocaleTimeFormat(order?.cancel?.date)}}</div>
+        <div class="fs-6">
+          Cancelled on
+          {{getLocaleDateFormat(order?.cancel?.date)}}
+          {{getLocaleTimeFormat(order?.cancel?.date)}}
+        </div>
       </div>
     </div>
 
@@ -89,237 +92,242 @@
                 {{orderStatus}}
               </span>
             </div>
-            <div class="my-2">
-              <div class="itemDetails">
-                <div class="itemTitle">Order Placed on</div>
-                <div class="itemResponse"> {{getLocaleDateFormat(order?.orderDate)}},
-                  {{getLocaleTimeFormat(order?.orderDate)}}</div>
-              </div>
-              <div class="itemDetails">
-                <div class="itemTitle">Payment Method</div>
-                <div class="itemResponse">{{order?.paymentMethod}}</div>
-              </div>
-              <div class="itemDetails" *ngIf="order?.paymentGateway">
-                <div class="itemTitle">Payment Gateway</div>
-                <div class="itemResponse fw-normal">
-                  <div class="bg-secondary p-2 rounded">{{order?.paymentGateway ?
-                    order?.paymentGateway : '-'}}</div>
-                </div>
-              </div>
-              <div class="itemDetails" *ngIf="order?.paymentMethod == 'ONLINE'">
-                <div class="itemTitle">Gateway Status</div>
-                <div class="itemResponse">{{order?.gatewayStatus}}</div>
-              </div>
-              <div class="itemDetails">
-                <div class="itemTitle">Payment Status</div>
-                <div class="itemResponse">{{order?.paymentStatus}}</div>
-              </div>
-              <div class="itemDetails">
-                <div class="itemTitle">Invoice Reference</div>
-                <div class="itemResponse">{{order?.invoiceNo}}</div>
-              </div>
-              <div class="itemDetails">
-                <div class="itemTitle">Order Source</div>
-                <div class="itemResponse">{{order?.source}}
-                </div>
-              </div>
-              <div class="itemDetails">
-                <div class="itemTitle">Customer Type</div>
-                <div class="itemResponse">{{order?.customerType}}
-                </div>
-              </div>
-              <div class="itemDetails">
-                <div class="itemTitle">Order Total</div>
-                <div class="itemResponse">{{settings?.currency}} {{order?.total}}</div>
-              </div>
-              <div class="itemDetails">
-                <div class="itemTitle">Shipping Method</div>
-                <div class="itemResponse">{{order?.shippingMethod ? order?.shippingMethod : '-'}}</div>
-              </div>
-              <div class="itemDetails">
-                <div class="itemTitle">Delivery</div>
-                <div class="itemResponse alert alert-success fs-6 fw-normal p-1 m-0">
-                  {{order?.deliveryType == '1' ? 'Click and collect' : 'Home delivery' }}
-                </div>
-              </div>
+            <div class="mt-4">
+              <table class="table table-bordered fs-5">
+                <tr>
+                  <th class="p-2 text-muted">Date</th>
+                  <td class="p-2">
+                    {{getLocaleDateFormat(order?.orderDate)}},
+                    {{getLocaleTimeFormat(order?.orderDate)}}
+                  </td>
+                </tr>
+                <tr>
+                  <th class="p-2 text-muted">Method</th>
+                  <td class="p-2">
+                    {{order?.paymentMethod}}
+                  </td>
+                </tr>
+                <tr>
+                  <th class="p-2 text-muted">Gateway</th>
+                  <td class="p-2">
+                    {{order?.paymentGateway}}
+                  </td>
+                </tr>
+                <tr>
+                  <th class="p-2 text-muted">Gateway Status</th>
+                  <td class="p-2">
+                    {{order?.gatewayStatus}}
+                  </td>
+                </tr>
+                <tr>
+                  <th class="p-2 text-muted">Status</th>
+                  <td class="p-2">
+                    {{order?.paymentStatus}}
+                  </td>
+                </tr>
+                <tr>
+                  <th class="p-2 text-muted">Invoice Reference</th>
+                  <td class="p-2">
+                    {{order?.invoiceNo}}
+                  </td>
+                </tr>
+                <tr>
+                  <th class="p-2 text-muted">Source</th>
+                  <td class="p-2">
+                    {{order?.source}}
+                  </td>
+                </tr>
+                <tr>
+                  <th class="p-2 text-muted">Customer Type</th>
+                  <td class="p-2">
+                    {{order?.customerType}}
+                  </td>
+                </tr>
+                <tr>
+                  <th class="p-2 text-muted">Order Total</th>
+                  <td class="p-2">
+                    {{settings?.currency}} {{order?.total}}
+                  </td>
+                </tr>
+                <tr>
+                  <th class="p-2 text-muted">Delivery</th>
+                  <td class="p-2">
+                    {{order?.deliveryType == '1' ? 'Click and collect' : 'Home delivery' }}
+                  </td>
+                </tr>
+              </table>
             </div>
           </div>
         </div>
       </div>
+
       <div class="col-lg-6 mb-3">
         <div class="card h-100">
           <div class="card-body">
             <div class="fs-3 fw-bold">
               Order Amount Details
             </div>
-            <div class="my-2 p-3 border border-secondary rounded">
-              <div class="itemDetails">
-                <div class="itemTitle">Price excluding tax</div>
-                <div class="itemResponse">{{settings?.currency}} {{order?.priceBeforeTax ? order?.priceBeforeTax :
-                  '0.00'}}</div>
-              </div>
-              <div class="itemDetails">
-                <div class="itemTitle">Tax</div>
-                <div class="itemResponse">{{settings?.currency}} {{order?.tax ? order?.tax : '0.00'}}</div>
-              </div>
-              <div class="itemDetails">
-                <div class="itemTitle">Price including tax</div>
-                <div class="itemResponse">
-                  {{settings?.currency}}
-                  {{order?.priceAfterTax ? order?.priceAfterTax: '0.00'}}
-                </div>
-              </div>
-              <div class="itemDetails">
-                <div class="itemTitle">Shipping charge</div>
-                <div class="itemResponse">
-                  {{settings?.currency}}
-                  {{order?.shippingCost ? order?.shippingCost : '0.00'}}
-                </div>
-              </div>
-              <div class="itemDetails">
-                <div class="itemTitle">Cash on delivery charge</div>
-                <div class="itemResponse">{{settings?.currency}} {{order?.codCost ? order?.codCost : '0.00'}}</div>
-              </div>
-              <div class="itemDetails">
-                <div class="itemTitle">Additional charge</div>
-                <div class="itemResponse">
-                  {{settings?.currency}}
-                  {{order?.additionalCharge ? order?.additionalCharge : '0.00'}}
-                </div>
-              </div>
-              <div class="itemDetails">
-                <div class="itemTitle">Gift charge</div>
-                <div class="itemResponse">
-                  {{settings?.currency}}
-                  {{order?.giftCharge ? order?.giftCharge : '0.00'}}
-                </div>
-              </div>
-              <div class="itemDetails">
-                <div class="itemTitle">Discount</div>
-                <div class="itemResponse text-success">
-                  {{settings?.currency}}
-                  {{order?.discount ? order?.discount : '0.00'}}
-                </div>
-              </div>
-              <div class="itemDetails">
-                <div class="itemTitle">Credit used</div>
-                <div class="itemResponse text-success">
-                  {{settings?.currency}}
-                  {{order?.credit?.amount ? order?.credit?.amount : '0.00'}}
-                </div>
-              </div>
-              <div class="itemDetails" *ngIf="order?.isTokenized == true">
-                <div class="itemTitle">Pending Amount</div>
-                <div class="itemResponse">
-                  {{settings?.currency}}
-                  {{order?.pendingAmount ? order?.pendingAmount : '0.00'}}
-                </div>
-              </div>
-              <div class="itemDetails fs-3 fw-bold">
-                <div class="itemTitle">Grand total</div>
-                <div class="itemResponse">
-                  {{settings?.currency}}
-                  {{order?.total ? order?.total : '0.00'}}
-                </div>
-              </div>
+            <div class="mt-4">
+              <table class="table table-bordered fs-5">
+                <tr>
+                  <th class="p-2 text-muted">Price Without Tax</th>
+                  <td>{{settings?.currency}} {{order?.priceBeforeTax}}</td>
+                </tr>
+                <tr>
+                  <th class="p-2 text-muted">Tax</th>
+                  <td>{{settings?.currency}} {{order?.tax}}</td>
+                </tr>
+                <tr>
+                  <th class="p-2 text-muted">Price With Tax</th>
+                  <td>{{settings?.currency}} {{order?.priceAfterTax}}</td>
+                </tr>
+                <tr>
+                  <th class="p-2 text-muted">Shipping Charge</th>
+                  <td>{{settings?.currency}} {{order?.shippingCost}}</td>
+                </tr>
+                <tr>
+                  <th class="p-2 text-muted">COD</th>
+                  <td>{{settings?.currency}} {{order?.codCost}}</td>
+                </tr>
+                <tr>
+                  <th class="p-2 text-muted">Additional Charge</th>
+                  <td>{{settings?.currency}} {{order?.additionalCharge}}</td>
+                </tr>
+                <tr>
+                  <th class="p-2 text-muted">Discount</th>
+                  <td class="text-success">{{settings?.currency}} {{order?.discount}}</td>
+                </tr>
+                <tr>
+                  <th class="p-2 text-muted">Credit</th>
+                  <td>{{settings?.currency}} {{order?.credit?.amount}}</td>
+                </tr>
+                <tr>
+                  <th class="p-2 text-muted">Amount Pending</th>
+                  <td>{{settings?.currency}} {{order?.amountPending}}</td>
+                </tr>
+                <tr>
+                  <th class="p-2 text-muted">Total</th>
+                  <td>{{settings?.currency}} {{order?.total}}</td>
+                </tr>
+              </table>
             </div>
           </div>
         </div>
       </div>
+
       <div class="col-lg-6 mb-3">
-        <div class="d-flex gap-3 flex-column">
-          <div class="card h-100">
+        <div class="d-flex gap-3 h-100 justify-content-between flex-column">
+          <div class="card">
             <div class="card-body">
-              <div class="fs-3 fw-bold">
-                Customer Address
-              </div>
-              <div class="mt-4 fs-5">
-                <div class="fs-4 fw-bold">
-                  <p *ngIf="order?.customerId">
-                    {{order?.customerId?.name}}, {{order?.customerId?.mobile}}, {{order?.customerId?.email}}
-                  </p>
-                  <p *ngIf="order?.guestId">
-                    {{order?.guestId?.name}}, {{order?.guestId?.mobile}}, {{order?.guestId?.email}}
-                  </p>
-                </div>
-                <div class="my-2">
-                  {{order?.address?.firstlane}}, {{order?.address?.secondlane}},
-                  {{order?.address?.area}}, {{order?.address?.landmark}},
-                  {{order?.address?.city}}, {{order?.address?.state}},
-                  {{order?.address?.pincode}}
-                </div>
-                <div>
-                  Location : {{order?.address?.formattedAddress}}
-                </div>
-                <div class="mt-2">
-                  <div class="mb-1">Coordinates : </div>
-                  <div class="d-flex align-items-center justify-content-start gap-2">
-                    <div class="bg-secondary rounded-pill px-2">{{order?.address?.coordinates?.latitude}}</div>
-                    <div class="bg-secondary rounded-pill px-2">{{order?.address?.coordinates?.longitude}}</div>
-                  </div>
-                </div>
+              <div class="fs-3 fw-bold">Customer Address</div>
+              <div class="mt-4">
+                <table class="table table-bordered fs-5">
+                  <tr>
+                    <th class="p-2">Name</th>
+                    <td class="p-2">{{order?.customerId?.name || order?.guestId?.name}}</td>
+                  </tr>
+                  <tr>
+                    <th class="p-2">Mobile</th>
+                    <td class="p-2">{{order?.customerId?.mobile || order?.guestId?.mobile}}</td>
+                  </tr>
+                  <tr>
+                    <th class="p-2">Email</th>
+                    <td class="p-2">{{order?.customerId?.email || order?.guestId?.email}}</td>
+                  </tr>
+                  <tr>
+                    <th class="p-2">Address</th>
+                    <td class="p-2">
+                      {{order?.address?.firstlane}}, {{order?.address?.secondlane}},
+                      {{order?.address?.area}}, {{order?.address?.landmark}},
+                      {{order?.address?.city}}, {{order?.address?.state}},
+                      {{order?.address?.pincode}}
+                    </td>
+                  </tr>
+                  <tr>
+                    <th class="p-2">Location</th>
+                    <td class="p-2">{{order?.address?.formattedAddress || '-'}}</td>
+                  </tr>
+                  <tr>
+                    <th class="p-2">Coordinates</th>
+                    <td class="p-2">
+                      {{order?.address?.coordinates?.latitude || '-'}}
+                      {{order?.address?.coordinates?.longitude}}
+                    </td>
+                  </tr>
+                </table>
               </div>
             </div>
           </div>
-          <div class="card h-100">
+          <div class="card">
             <div class="card-body">
-              <div class="fs-3 fw-bold">
-                Shipping Address
-              </div>
-              <div class="mt-4 fs-5">
-                <div class="fs-4 fw-bold">
-                  <p *ngIf="order?.customerId">
-                    {{order?.customerId?.name}}, {{order?.customerId?.mobile}}, {{order?.customerId?.email}}
-                  </p>
-                  <p *ngIf="order?.guestId">
-                    {{order?.guestId?.name}}, {{order?.guestId?.mobile}}, {{order?.guestId?.email}}
-                  </p>
-                </div>
-                <div class="my-2">
-                  {{order?.address?.firstlane}}, {{order?.address?.secondlane}},
-                  {{order?.address?.area}}, {{order?.address?.landmark}},
-                  {{order?.address?.city}}, {{order?.address?.state}},
-                  {{order?.address?.pincode}}
-                </div>
-                <div>
-                  Location : {{order?.address?.formattedAddress}}
-                </div>
-                <div class="mt-2">
-                  <div class="mb-1">Coordinates : </div>
-                  <div class="d-flex align-items-center justify-content-start gap-2">
-                    <div class="bg-secondary rounded-pill px-2">{{order?.address?.coordinates?.latitude}}</div>
-                    <div class="bg-secondary rounded-pill px-2">{{order?.address?.coordinates?.longitude}}</div>
-                  </div>
-                </div>
+              <div class="fs-3 fw-bold">Shipping Address</div>
+              <div class="mt-4">
+                <table class="table table-bordered fs-5">
+                  <tr>
+                    <th class="p-2">Name</th>
+                    <td class="p-2">{{order?.customerId?.name || order?.guestId?.name}}</td>
+                  </tr>
+                  <tr>
+                    <th class="p-2">Mobile</th>
+                    <td class="p-2">{{order?.customerId?.mobile || order?.guestId?.mobile}}</td>
+                  </tr>
+                  <tr>
+                    <th class="p-2">Email</th>
+                    <td class="p-2">{{order?.customerId?.email || order?.guestId?.email}}</td>
+                  </tr>
+                  <tr>
+                    <th class="p-2">Address</th>
+                    <td class="p-2">
+                      {{order?.address?.firstlane}}, {{order?.address?.secondlane}},
+                      {{order?.address?.area}}, {{order?.address?.landmark}},
+                      {{order?.address?.city}}, {{order?.address?.state}},
+                      {{order?.address?.pincode}}
+                    </td>
+                  </tr>
+                  <tr>
+                    <th class="p-2">Location</th>
+                    <td class="p-2">{{order?.address?.formattedAddress || '-'}}</td>
+                  </tr>
+                  <tr>
+                    <th class="p-2">Coordinates</th>
+                    <td class="p-2">
+                      {{order?.address?.coordinates?.latitude || '-'}}
+                      {{order?.address?.coordinates?.longitude}}
+                    </td>
+                  </tr>
+                </table>
               </div>
             </div>
           </div>
-          <div class="card h-100">
+          <div class="card" *ngIf="settings.isPickUp == true">
             <div class="card-body">
               <div class="fs-3 fw-bold">Branch Details</div>
-              <div class="my-2">
-                <div class="d-flex align-items-center justify-content-between">
-                  <div class="fs-6">Date</div>
-                  <div class="fs-6">{{order?.deliveryDate ? formdateDate(order?.deliveryDate) : 'Not avaialble'}}</div>
-                </div>
-                <div class="d-flex align-items-center justify-content-between my-1">
-                  <div class="fs-6">Store</div>
-                  <div class="fs-6">
-                    {{order?.clickPoint ? order?.clickPoint?.address?.city : order?.pickUpLocation ?
-                    order?.pickUpLocation?.name : '-'}}
-                  </div>
-                </div>
-                <div class="d-flex align-items-center justify-content-between">
-                  <div class="fs-6">Delivery slot</div>
-                  <div class="fs-6">
-                    {{order?.deliverySlot ? order?.deliverySlot?.from + ' to ' + order?.deliverySlot?.to : '-'}}
-                  </div>
-                </div>
+              <div class="mt-4">
+                <table class="table table-bordered fs-5">
+                  <tr>
+                    <th class="p-2">Date</th>
+                    <td class="p-2">{{order?.deliveryDate && getLocaleDateFormat(order?.deliveryDate)}}</td>
+                  </tr>
+                  <tr>
+                    <th class="p-2">Store</th>
+                    <td class="p-2">
+                      {{ order?.clickPoint ? order?.clickPoint?.address?.city :
+                      order?.pickUpLocation ? order?.pickUpLocation?.name : '-'}}
+                    </td>
+                  </tr>
+                  <tr>
+                    <th class="p-2">Delivery slot</th>
+                    <td class="p-2">
+                      {{order?.deliverySlot ? order?.deliverySlot?.from + ' to ' + order?.deliverySlot?.to : '-'}}
+                    </td>
+                  </tr>
+                </table>
               </div>
             </div>
           </div>
         </div>
       </div>
+
       <div class="col-lg-6 mb-3">
         <div class="d-flex gap-3 flex-column h-100 justify-content-between">
           <div class="card h-50">
@@ -329,7 +337,7 @@
               </div>
               <div class="my-2">
                 <div class="form-group">
-                  <textarea [formControl]="orderNote" (click)="isNoteDetected = true" rows="4" class="form-control"
+                  <textarea [formControl]="orderNote" (click)="isNoteDetected = true" rows="5" class="form-control"
                     draggable="true"></textarea>
                 </div>
                 <div class="my-2 d-flex align-items-center justify-content-end">
@@ -345,7 +353,7 @@
               </div>
               <div class="my-2">
                 <div class="form-group">
-                  <textarea value="{{order?.shippingNote}}" readonly="true" rows="4" draggable="false"
+                  <textarea value="{{order?.shippingNote}}" readonly="true" rows="5" draggable="false"
                     class="form-control"></textarea>
                 </div>
               </div>
@@ -353,167 +361,211 @@
           </div>
         </div>
       </div>
-    </div>
 
-    <div [ngClass]="{'cancelledWrapper': isCancelled}">
-      <div>
-        <div class="card">
-          <div class="card-body">
-            <div class="fs-3 fw-bold">
-              Product Details
-            </div>
-            <div class="products my-2">
-              <div class="row mb-4">
-                <div class="col-lg-1 d-flex align-items-center">
-                  <div class="checkbox"
-                    [ngClass]="{'checked': bulkProducts.length == order?.products?.length, 'pe-none' : order?.paymentMethod == 'ONLINE' && order?.paymentStatus == 'PENDING'}"
-                    (click)="toggleBulkProduct()"></div>
-                </div>
-                <div class="col-lg-7"> </div>
-                <div class="col-lg-4">
-                  <div class="d-flex align-items-center justify-content-end gap-2">
-                    <label for="bulkStatus" class="fs-6">Status :</label>
-                    <select id="bulkStatus" [formControl]="bulkOrderStatus"
-                      [ngClass]="{'pe-none' : order?.paymentMethod == 'ONLINE' && order?.paymentStatus == 'PENDING' || bulkProducts.length == 0}"
-                      class="form-select w-50 fs-6" (change)="updateBulkProduct($event)">
-                      <option value="" disabled>-- Select a status --</option>
-                      <option *ngFor="let status of bulkStatus" value={{status.value}}>{{status.key}}</option>
-                    </select>
-                  </div>
-                </div>
+      <div [ngClass]="{'cancelledWrapper': isCancelled}">
+        <div>
+          <div class="card">
+            <div class="card-body">
+              <div class="fs-3 fw-bold">
+                Product Details
               </div>
-              <ng-container *ngFor="let product of order?.products; let i = index">
-                <div class="row mb-8 pb-8 border-secondary"
-                  [ngClass]="{'pe-none opacity-50': product?.currentStatus?.status == 'Cancelled', 'border-bottom': i < order?.products?.length - 1}">
-                  <div class="col-lg-1">
+              <div class="products my-2">
+                <div class="row mb-4">
+                  <div class="col-lg-1 d-flex align-items-center">
                     <div class="checkbox"
-                      [ngClass]="{'checked': bulkProducts.includes(product), 'pe-none' : order?.paymentMethod == 'ONLINE' && order?.paymentStatus == 'PENDING'}"
-                      (click)="toggleBulkProduct(product)"> </div>
+                      [ngClass]="{'checked': bulkProducts.length == order?.products?.length, 'pe-none' : order?.paymentMethod == 'ONLINE' && order?.paymentStatus == 'PENDING'}"
+                      (click)="toggleBulkProduct()"></div>
                   </div>
-                  <div class="col-lg-11">
-                    <div class="d-flex flex-wrap align-items-start justify-content-between">
-                      <div class="w-50 d-flex fs-6 gap-3 align-items-start justify-content-start">
-                        <div class="productThumbnail">
-                          <img class="border border-secondary rounded" src="{{base}}{{product?.productId?.thumbnail}}"
-                            alt="{{product?.productId?.name}}" onerror="this.src =  'assets/images/default.png'">
-                        </div>
-                        <div>
-                          <div>{{product?.productId?.name}}</div>
-                          <div class="d-flex align-items-center justify-content-start gap-2"
-                            *ngIf="product?.productId?.attributes?.length > 0">
-                            <div *ngFor="let attribute of product?.productId?.attributes">
-                              {{attribute?.title}} : {{attribute?.value}}
+                  <div class="col-lg-7"> </div>
+                  <div class="col-lg-4">
+                    <div class="d-flex align-items-center justify-content-end gap-2">
+                      <label for="bulkStatus" class="fs-6">Status :</label>
+                      <select id="bulkStatus" [formControl]="bulkOrderStatus"
+                        [ngClass]="{'pe-none' : order?.paymentMethod == 'ONLINE' && order?.paymentStatus == 'PENDING' || bulkProducts.length == 0}"
+                        class="form-select w-50 fs-6" (change)="updateBulkProduct($event)">
+                        <option value="" disabled>-- Select a status --</option>
+                        <option *ngFor="let status of bulkStatus" value={{status.value}}>{{status.key}}</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+                <ng-container *ngFor="let product of order?.products; let i = index">
+                  <div class="row mb-8 pb-8 border-secondary"
+                    [ngClass]="{'pe-none opacity-50': product?.currentStatus?.status == 'Cancelled', 'border-bottom': i < order?.products?.length - 1}">
+                    <div class="col-lg-1">
+                      <div class="checkbox"
+                        [ngClass]="{'checked': bulkProducts.includes(product), 'pe-none' : order?.paymentMethod == 'ONLINE' && order?.paymentStatus == 'PENDING'}"
+                        (click)="toggleBulkProduct(product)"> </div>
+                    </div>
+                    <div class="col-lg-11">
+                      <div class="d-flex flex-wrap align-items-start justify-content-between">
+                        <div class="w-50 d-flex fs-6 gap-3 align-items-start justify-content-start">
+                          <div class="productThumbnail">
+                            <img class="border border-secondary rounded" src="{{base}}{{product?.productId?.thumbnail}}"
+                              alt="{{product?.productId?.name}}" onerror="this.src =  'assets/images/default.png'">
+                          </div>
+                          <div>
+                            <div>{{product?.productId?.name}}</div>
+                            <div class="d-flex align-items-center justify-content-start gap-2"
+                              *ngIf="product?.productId?.attributes?.length > 0">
+                              <div *ngFor="let attribute of product?.productId?.attributes">
+                                {{attribute?.title}} : {{attribute?.value}}
+                              </div>
+                            </div>
+                            <div class="my-1 w-max">
+                              <div class="p-2 rounded productStatusAlert">
+                                {{product?.currentStatus?.status}},
+                                {{getLocaleDateFormat(product?.currentStatus?.date)}}
+                                {{getLocaleTimeFormat(product?.currentStatus?.date)}}
+                              </div>
                             </div>
                           </div>
-                          <div class="my-1 w-max">
-                            <div class="p-2 rounded productStatusAlert">
-                              {{product?.currentStatus?.status}},
-                              {{getLocalDate(product?.currentStatus?.date)}}
+                        </div>
+                        <div class="w-50">
+                          <div class="mb-2 d-flex align-items-center fs-6 justify-content-start">
+                            <div class="w-25">SKU:</div>
+                            <div class="fw-bold">{{product?.productId?.sku}}</div>
+                          </div>
+                          <div class="mb-2 d-flex fs-6 align-items-center justify-content-start">
+                            <div class="w-25">Qty:</div>
+                            <div class="fw-bold">{{product?.quantity}}</div>
+                          </div>
+                          <div class="mb-2 d-flex fs-6 align-items-center justify-content-start">
+                            <div class="w-25">Price:</div>
+                            <div class="fw-bold">{{settings?.currency}} {{product?.pricePerUnit}}</div>
+                          </div>
+                          <div class="mb-2 d-flex fs-6 align-items-center justify-content-start">
+                            <div class="w-25">Total:</div>
+                            <div class="fw-bold">{{settings?.currency}} {{product?.total}}</div>
+                          </div>
+                          <div class="mb-2 d-flex fs-6 align-items-center justify-content-start">
+                            <div class="w-25">Status:</div>
+                            <div class="w-75"
+                              [ngClass]="{'pe-none' : order?.paymentMethod == 'ONLINE' && order?.paymentStatus == 'PENDING'}">
+                              <select class="form-select w-50 p-2" [formControl]="productOrderStatus"
+                                (click)="getStatusList(product.currentStatus.status)"
+                                (change)="updateOrderStatus($event, product?.productId?._id)">
+                                <option value="" disabled>-- Select a option --</option>
+                                <option *ngFor="let status of statusList" value="{{status.value}}">{{status.key}}
+                                </option>
+                              </select>
                             </div>
                           </div>
                         </div>
-                      </div>
-                      <div class="w-50">
-                        <div class="mb-2 d-flex align-items-center fs-6 justify-content-start">
-                          <div class="w-25">SKU:</div>
-                          <div class="fw-bold">{{product?.productId?.sku}}</div>
-                        </div>
-                        <div class="mb-2 d-flex fs-6 align-items-center justify-content-start">
-                          <div class="w-25">Qty:</div>
-                          <div class="fw-bold">{{product?.quantity}}</div>
-                        </div>
-                        <div class="mb-2 d-flex fs-6 align-items-center justify-content-start">
-                          <div class="w-25">Price:</div>
-                          <div class="fw-bold">{{settings?.currency}} {{product?.pricePerUnit}}</div>
-                        </div>
-                        <div class="mb-2 d-flex fs-6 align-items-center justify-content-start">
-                          <div class="w-25">Total:</div>
-                          <div class="fw-bold">{{settings?.currency}} {{product?.total}}</div>
-                        </div>
-                        <div class="mb-2 d-flex fs-6 align-items-center justify-content-start">
-                          <div class="w-25">Status:</div>
-                          <div class="w-75"
-                            [ngClass]="{'pe-none' : order?.paymentMethod == 'ONLINE' && order?.paymentStatus == 'PENDING'}">
-                            <select class="form-select w-50 p-2" [formControl]="productOrderStatus"
-                              (click)="getStatusList(product.currentStatus.status)"
-                              (change)="updateOrderStatus($event, product?.productId?._id)">
-                              <option value="" disabled>-- Select a option --</option>
-                              <option *ngFor="let status of statusList" value="{{status.value}}">{{status.key}}</option>
-                            </select>
+                        <div class="w-100 mt-4">
+                          <div class="historySwiper">
+                            <swiper [config]="swiperConfig">
+                              <ng-container *ngFor="let history of product?.history; let i = index">
+                                <ng-template swiperSlide>
+                                  <div class="order-tracking completed">
+                                    <span class="is-complete"></span>
+                                    <p>
+                                      {{history?.status}}
+                                      <br>
+                                      <span>{{getLocaleDateFormat(history?.date)}}</span>
+                                      <br>
+                                      <span>{{getLocaleTimeFormat(history?.date)}}</span>
+                                    </p>
+                                  </div>
+                                </ng-template>
+                              </ng-container>
+                            </swiper>
                           </div>
-                        </div>
-                      </div>
-                      <div class="w-100 mt-4">
-                        <div class="historySwiper">
-                          <swiper [config]="swiperConfig">
-                            <ng-container *ngFor="let history of product?.history; let i = index">
-                              <ng-template swiperSlide>
-                                <div class="order-tracking completed">
-                                  <span class="is-complete"></span>
-                                  <p>{{history?.status}}<br><span>{{getLocalDate(history?.date)}}</span></p>
-                                </div>
-                              </ng-template>
-                            </ng-container>
-                          </swiper>
                         </div>
                       </div>
                     </div>
                   </div>
-                </div>
-              </ng-container>
+                </ng-container>
+              </div>
             </div>
           </div>
-        </div>
-        <div class="card mt-3" *ngIf="order?.paymentMethod != 'COD'">
-          <div class="card-body">
-            <div class="fs-3 my-2 fw-bold">
-              Payment Details
-            </div>
-            <form [formGroup]="form">
-              <div class="row">
-                <div class="col-lg-6 mb-3">
-                  <div class="form-group">
-                    <label for="orderId" class="form-label mb-3">Payment Order</label>
-                    <input type="text" placeholder="Order ID" class="form-control" formControlName="orderId">
-                  </div>
-                </div>
-                <div class="col-lg-6 mb-3">
-                  <div class="form-group">
-                    <label for="orderId" class="form-label mb-3">Transaction Reference</label>
-                    <input type="text" placeholder="Transaction Reference ID" class="form-control"
-                      formControlName="paymentId">
-                  </div>
-                </div>
-                <div class="form-group mb-3">
-                  <label for="orderId" class="form-label mb-3">Payment Message</label>
-                  <input type="text" placeholder="Payment Message" class="form-control"
-                    formControlName="paymentMessage">
-                </div>
-                <div class="mb-3" *ngIf="form.get('transactionTime')?.value">
-                  <label for="transactionTime" class="form-label mb-3">Transaction Time</label>
-                  <input type="text" id="transactionTime" readonly class="form-control"
-                    value="{{getLocalDate(form.get('transactionTime')?.value)}}">
-                </div>
+
+          <div class="card mt-3"
+            *ngIf="order && order.paymentMethod == 'ONLINE' && order?.paymentGateway != 'network-international-tokenized'">
+            <div class="card-body">
+              <div class="fs-3 mb-2 fw-bold">
+                Payment Details
               </div>
-            </form>
+              <form [formGroup]="form">
+                <div class="row">
+                  <div class="col-lg-6 mb-3">
+                    <div class="form-group">
+                      <label for="orderId" class="form-label mb-3">Payment Order</label>
+                      <input type="text" placeholder="Order ID" class="form-control" formControlName="orderId">
+                    </div>
+                  </div>
+                  <div class="col-lg-6 mb-3">
+                    <div class="form-group">
+                      <label for="orderId" class="form-label mb-3">Transaction Reference</label>
+                      <input type="text" placeholder="Transaction Reference ID" class="form-control"
+                        formControlName="paymentId">
+                    </div>
+                  </div>
+                  <div class="form-group mb-3">
+                    <label for="orderId" class="form-label mb-3">Payment Message</label>
+                    <input type="text" placeholder="Payment Message" class="form-control"
+                      formControlName="paymentMessage">
+                  </div>
+                  <div class="mb-3" *ngIf="form.get('transactionTime')?.value">
+                    <label for="transactionTime" class="form-label mb-3">Transaction Time</label>
+                    <input type="text" id="transactionTime" readonly class="form-control"
+                      value="{{getLocalDate(form.get('transactionTime')?.value)}}">
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+
+          <div class="card mt-3"
+            *ngIf="order && order.paymentMethod == 'ONLINE' && order.paymentGateway == 'network-international-tokenized'">
+            <div class="card-body">
+              <div class="fs-3 mb-2 fw-bold">Payment Events</div>
+              <div class="my-8" *ngFor="let tokenizedItem of order?.tokenizedDetails; let i = index">
+
+                <table class="table table-bordered fs-5">
+                  <tr>
+                    <th class="p-2 text-muted">Date</th>
+                    <td>
+                      {{ getLocaleDateFormat(tokenizedItem.updateDateTime) }}
+                      {{ getLocaleTimeFormat(tokenizedItem.updateDateTime) }}
+                    </td>
+                  </tr>
+                  <tr>
+                    <th class="p-2 text-muted">Response</th>
+                    <td>{{tokenizedItem.authResponse.resultMessage}}</td>
+                  </tr>
+                  <tr>
+                    <th class="p-2 text-muted">Reference</th>
+                    <td>{{tokenizedItem.orderReference}}</td>
+                  </tr>
+                  <tr>
+                    <th class="p-2 text-muted">Status</th>
+                    <td>{{tokenizedItem.state}}</td>
+                  </tr>
+                  <tr>
+                    <th class="p-2 text-muted">Amount</th>
+                    <td>{{tokenizedItem.amount.currencyCode}} {{tokenizedItem.amount.value / 100}}</td>
+                  </tr>
+                </table>
+              </div>
+            </div>
           </div>
         </div>
       </div>
     </div>
   </div>
-</div>
 
-<ng-template #confirmation>
-  <div class="modal-body">
-    <div class="fs-5 mb-6">Do you want to cancel this order?</div>
-    <div class="form-group mb-4 mt-4">
-      <textarea type="text" cols="30" rows="5" autocomplete="off" [formControl]="reason"
-        placeholder="Type reason for cancellation" class="form-control">
+  <ng-template #confirmation>
+    <div class="modal-body">
+      <div class="fs-5 mb-6">Do you want to cancel this order?</div>
+      <div class="form-group mb-4 mt-4">
+        <textarea type="text" cols="30" rows="5" autocomplete="off" [formControl]="reason"
+          placeholder="Type reason for cancellation" class="form-control">
         </textarea>
+      </div>
+      <div class="d-flex align-items-center justify-content-between">
+        <button type="button" class="btn btn-default p-2" (click)="confirm()">Yes</button>
+        <button type="button" class="btn btn-primary p-2" (click)="decline()">No</button>
+      </div>
     </div>
-    <div class="d-flex align-items-center justify-content-between">
-      <button type="button" class="btn btn-default p-2" (click)="confirm()">Yes</button>
-      <button type="button" class="btn btn-primary p-2" (click)="decline()">No</button>
-    </div>
-  </div>
-</ng-template>
+  </ng-template>
