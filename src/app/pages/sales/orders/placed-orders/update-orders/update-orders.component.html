@@ -74,7 +74,8 @@
           <div class="fs-6">Reason for cancellation :</div>
           <div class="fs-5">{{order?.cancel?.reason}}</div>
         </div>
-        <div class="fs-6">Cancelled on
+        <div class="fs-6">
+          Cancelled on
           {{getLocaleDateFormat(order?.cancel?.date)}}
           {{getLocaleTimeFormat(order?.cancel?.date)}}
         </div>
@@ -91,138 +92,124 @@
                 {{orderStatus}}
               </span>
             </div>
-            <div class="my-2">
-              <div class="itemDetails">
-                <div class="itemTitle">Date</div>
-                <div class="itemResponse">
-                  {{getLocaleDateFormat(order?.orderDate)}},
-                  {{getLocaleTimeFormat(order?.orderDate)}}
-                </div>
-              </div>
-              <div class="itemDetails">
-                <div class="itemTitle">Payment Method</div>
-                <div class="itemResponse">{{order?.paymentMethod}}</div>
-              </div>
-              <div class="itemDetails" *ngIf="order?.paymentGateway">
-                <div class="itemTitle">Payment Gateway</div>
-                <div class="itemResponse fw-normal">
-                  <div class="bg-secondary p-2 rounded">
-                    {{order?.paymentGateway ? order?.paymentGateway : '-'}}
-                  </div>
-                </div>
-              </div>
-              <div class="itemDetails" *ngIf="order?.paymentMethod == 'ONLINE'">
-                <div class="itemTitle">Gateway Status</div>
-                <div class="itemResponse">{{order?.gatewayStatus}}</div>
-              </div>
-              <div class="itemDetails">
-                <div class="itemTitle">Payment Status</div>
-                <div class="itemResponse">{{order?.paymentStatus}}</div>
-              </div>
-              <div class="itemDetails">
-                <div class="itemTitle">Invoice Reference</div>
-                <div class="itemResponse">{{order?.invoiceNo}}</div>
-              </div>
-              <div class="itemDetails">
-                <div class="itemTitle">Order Source</div>
-                <div class="itemResponse">{{order?.source}}
-                </div>
-              </div>
-              <div class="itemDetails">
-                <div class="itemTitle">Customer Type</div>
-                <div class="itemResponse">{{order?.customerType}}
-                </div>
-              </div>
-              <div class="itemDetails">
-                <div class="itemTitle">Order Total</div>
-                <div class="itemResponse">{{settings?.currency}} {{order?.total}}</div>
-              </div>
-              <div class="itemDetails">
-                <div class="itemTitle">Delivery</div>
-                <div class="itemResponse alert alert-success fs-6 fw-normal p-1 m-0">
-                  {{order?.deliveryType == '1' ? 'Click and collect' : 'Home delivery' }}
-                </div>
-              </div>
+            <div class="mt-4">
+              <table class="table table-bordered fs-5">
+                <tr>
+                  <th class="p-2 text-muted">Date</th>
+                  <td class="p-2">
+                    {{getLocaleDateFormat(order?.orderDate)}},
+                    {{getLocaleTimeFormat(order?.orderDate)}}
+                  </td>
+                </tr>
+                <tr>
+                  <th class="p-2 text-muted">Method</th>
+                  <td class="p-2">
+                    {{order?.paymentMethod}}
+                  </td>
+                </tr>
+                <tr>
+                  <th class="p-2 text-muted">Gateway</th>
+                  <td class="p-2">
+                    {{order?.paymentGateway}}
+                  </td>
+                </tr>
+                <tr>
+                  <th class="p-2 text-muted">Gateway Status</th>
+                  <td class="p-2">
+                    {{order?.gatewayStatus}}
+                  </td>
+                </tr>
+                <tr>
+                  <th class="p-2 text-muted">Status</th>
+                  <td class="p-2">
+                    {{order?.paymentStatus}}
+                  </td>
+                </tr>
+                <tr>
+                  <th class="p-2 text-muted">Invoice Reference</th>
+                  <td class="p-2">
+                    {{order?.invoiceNo}}
+                  </td>
+                </tr>
+                <tr>
+                  <th class="p-2 text-muted">Source</th>
+                  <td class="p-2">
+                    {{order?.source}}
+                  </td>
+                </tr>
+                <tr>
+                  <th class="p-2 text-muted">Customer Type</th>
+                  <td class="p-2">
+                    {{order?.customerType}}
+                  </td>
+                </tr>
+                <tr>
+                  <th class="p-2 text-muted">Order Total</th>
+                  <td class="p-2">
+                    {{settings?.currency}} {{order?.total}}
+                  </td>
+                </tr>
+                <tr>
+                  <th class="p-2 text-muted">Delivery</th>
+                  <td class="p-2">
+                    {{order?.deliveryType == '1' ? 'Click and collect' : 'Home delivery' }}
+                  </td>
+                </tr>
+              </table>
             </div>
           </div>
         </div>
       </div>
+
       <div class="col-lg-6 mb-3">
         <div class="card h-100">
           <div class="card-body">
             <div class="fs-3 fw-bold">
               Order Amount Details
             </div>
-            <div class="my-2 p-3 border border-secondary rounded">
-              <div class="itemDetails">
-                <div class="itemTitle">Price excluding tax</div>
-                <div class="itemResponse">{{settings?.currency}} {{order?.priceBeforeTax ? order?.priceBeforeTax :
-                  '0.00'}}</div>
-              </div>
-              <div class="itemDetails">
-                <div class="itemTitle">Tax</div>
-                <div class="itemResponse">{{settings?.currency}} {{order?.tax ? order?.tax : '0.00'}}</div>
-              </div>
-              <div class="itemDetails">
-                <div class="itemTitle">Price including tax</div>
-                <div class="itemResponse">
-                  {{settings?.currency}}
-                  {{order?.priceAfterTax ? order?.priceAfterTax: '0.00'}}
-                </div>
-              </div>
-              <div class="itemDetails">
-                <div class="itemTitle">Shipping charge</div>
-                <div class="itemResponse">
-                  {{settings?.currency}}
-                  {{order?.shippingCost ? order?.shippingCost : '0.00'}}
-                </div>
-              </div>
-              <div class="itemDetails">
-                <div class="itemTitle">Cash on delivery charge</div>
-                <div class="itemResponse">{{settings?.currency}} {{order?.codCost ? order?.codCost : '0.00'}}</div>
-              </div>
-              <div class="itemDetails">
-                <div class="itemTitle">Additional charge</div>
-                <div class="itemResponse">
-                  {{settings?.currency}}
-                  {{order?.additionalCharge ? order?.additionalCharge : '0.00'}}
-                </div>
-              </div>
-              <div class="itemDetails">
-                <div class="itemTitle">Gift charge</div>
-                <div class="itemResponse">
-                  {{settings?.currency}}
-                  {{order?.giftCharge ? order?.giftCharge : '0.00'}}
-                </div>
-              </div>
-              <div class="itemDetails">
-                <div class="itemTitle">Discount</div>
-                <div class="itemResponse text-success">
-                  {{settings?.currency}}
-                  {{order?.discount ? order?.discount : '0.00'}}
-                </div>
-              </div>
-              <div class="itemDetails">
-                <div class="itemTitle">Credit used</div>
-                <div class="itemResponse text-success">
-                  {{settings?.currency}}
-                  {{order?.credit?.amount ? order?.credit?.amount : '0.00'}}
-                </div>
-              </div>
-              <div class="itemDetails" *ngIf="order?.isTokenized == true">
-                <div class="itemTitle">Pending Amount</div>
-                <div class="itemResponse">
-                  {{settings?.currency}}
-                  {{order?.pendingAmount ? order?.pendingAmount : '0.00'}}
-                </div>
-              </div>
-              <div class="itemDetails fs-3 fw-bold">
-                <div class="itemTitle">Grand total</div>
-                <div class="itemResponse">
-                  {{settings?.currency}}
-                  {{order?.total ? order?.total : '0.00'}}
-                </div>
-              </div>
+            <div class="mt-4">
+              <table class="table table-bordered fs-5">
+                <tr>
+                  <th class="p-2 text-muted">Price Without Tax</th>
+                  <td>{{settings?.currency}} {{order?.priceBeforeTax}}</td>
+                </tr>
+                <tr>
+                  <th class="p-2 text-muted">Tax</th>
+                  <td>{{settings?.currency}} {{order?.tax}}</td>
+                </tr>
+                <tr>
+                  <th class="p-2 text-muted">Price With Tax</th>
+                  <td>{{settings?.currency}} {{order?.priceAfterTax}}</td>
+                </tr>
+                <tr>
+                  <th class="p-2 text-muted">Shipping Charge</th>
+                  <td>{{settings?.currency}} {{order?.shippingCost}}</td>
+                </tr>
+                <tr>
+                  <th class="p-2 text-muted">COD</th>
+                  <td>{{settings?.currency}} {{order?.codCost}}</td>
+                </tr>
+                <tr>
+                  <th class="p-2 text-muted">Additional Charge</th>
+                  <td>{{settings?.currency}} {{order?.additionalCharge}}</td>
+                </tr>
+                <tr>
+                  <th class="p-2 text-muted">Discount</th>
+                  <td class="text-success">{{settings?.currency}} {{order?.discount}}</td>
+                </tr>
+                <tr>
+                  <th class="p-2 text-muted">Credit</th>
+                  <td>{{settings?.currency}} {{order?.credit?.amount}}</td>
+                </tr>
+                <tr>
+                  <th class="p-2 text-muted">Amount Pending</th>
+                  <td>{{settings?.currency}} {{order?.amountPending}}</td>
+                </tr>
+                <tr>
+                  <th class="p-2 text-muted">Total</th>
+                  <td>{{settings?.currency}} {{order?.total}}</td>
+                </tr>
+              </table>
             </div>
           </div>
         </div>
@@ -340,6 +327,7 @@
           </div>
         </div>
       </div>
+
       <div class="col-lg-6 mb-3">
         <div class="d-flex gap-3 flex-column h-100 justify-content-between">
           <div class="card h-50">
@@ -527,29 +515,38 @@
               </form>
             </div>
           </div>
+
           <div class="card mt-3"
             *ngIf="order && order.paymentMethod == 'ONLINE' && order.paymentGateway == 'network-international-tokenized'">
             <div class="card-body">
               <div class="fs-3 mb-2 fw-bold">Payment Events</div>
-              <div class="my-8" *ngFor="let tokenizedItem of order?.tokenizedDetails">
-                <div class="fs-4 mb-2 text-primary">
-                  <svg height="20" width="20" data-slot="icon" fill="none" stroke-width="1.5" stroke="currentColor"
-                    viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                    <path stroke-linecap="round" stroke-linejoin="round"
-                      d="M20.25 6.375c0 2.278-3.694 4.125-8.25 4.125S3.75 8.653 3.75 6.375m16.5 0c0-2.278-3.694-4.125-8.25-4.125S3.75 4.097 3.75 6.375m16.5 0v11.25c0 2.278-3.694 4.125-8.25 4.125s-8.25-1.847-8.25-4.125V6.375m16.5 0v3.75m-16.5-3.75v3.75m16.5 0v3.75C20.25 16.153 16.556 18 12 18s-8.25-1.847-8.25-4.125v-3.75m16.5 0c0 2.278-3.694 4.125-8.25 4.125s-8.25-1.847-8.25-4.125">
-                    </path>
-                  </svg>
-                  {{tokenizedItem.state}}
-                </div>
-                <div class="fs-5">ID: {{tokenizedItem.orderReference}} ( {{tokenizedItem.authResponse.resultMessage}} )
-                </div>
-                <div class="fs-5 my-2">Amount : {{tokenizedItem.amount.currencyCode}} {{tokenizedItem.amount.value /
-                  100}}</div>
-                <div class="fs-5">Customer Name : {{tokenizedItem.paymentMethod.cardholderName}}</div>
-                <div class="fs-5 text-muted mt-2">
-                  {{ getLocaleDateFormat(tokenizedItem.updateDateTime) }}
-                  {{ getLocaleTimeFormat(tokenizedItem.updateDateTime) }}
-                </div>
+              <div class="my-8" *ngFor="let tokenizedItem of order?.tokenizedDetails; let i = index">
+
+                <table class="table table-bordered fs-5">
+                  <tr>
+                    <th class="p-2 text-muted">Date</th>
+                    <td>
+                      {{ getLocaleDateFormat(tokenizedItem.updateDateTime) }}
+                      {{ getLocaleTimeFormat(tokenizedItem.updateDateTime) }}
+                    </td>
+                  </tr>
+                  <tr>
+                    <th class="p-2 text-muted">Response</th>
+                    <td>{{tokenizedItem.authResponse.resultMessage}}</td>
+                  </tr>
+                  <tr>
+                    <th class="p-2 text-muted">Reference</th>
+                    <td>{{tokenizedItem.orderReference}}</td>
+                  </tr>
+                  <tr>
+                    <th class="p-2 text-muted">Status</th>
+                    <td>{{tokenizedItem.state}}</td>
+                  </tr>
+                  <tr>
+                    <th class="p-2 text-muted">Amount</th>
+                    <td>{{tokenizedItem.amount.currencyCode}} {{tokenizedItem.amount.value / 100}}</td>
+                  </tr>
+                </table>
               </div>
             </div>
           </div>
