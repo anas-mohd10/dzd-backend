@@ -354,7 +354,7 @@ export class AddProductComponent implements OnInit {
           this.getProducts();
           this.parentForm.patchValue(res.result);
           this.brandDetails = res?.result?.brand;
-          this.previewDetails = res?.result?.thumbnail?.path;
+          this.previewDetails = res?.result?.thumbnail;
           this.parentCategories = res?.result?.parentCategory.id;
           let categories = this.parentCategories.map((item: any) => item?._id);
           this.getChildCategory();

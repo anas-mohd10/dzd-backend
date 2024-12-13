@@ -743,17 +743,17 @@ export class UpdateProductComponent implements OnInit {
           this.form.patchValue({
             productBanner: res?.result?.productBanner?._id,
             brand: res?.result?.brand?.slug,
-            name: res.result.localizedNames[this.settings.primaryLang] || res.result.name,
-            overview: res.result.localizedOverview[this.settings.primaryLang] || res.result.overview,
-            origin: res.result.localizedOrigin[this.settings.primaryLang] || res.result.origin,
+            name: res.result.localizedNames?.[this.settings.primaryLang] || res.result.name,
+            overview: res.result.localizedOverview?.[this.settings.primaryLang] || res.result.overview,
+            origin: res.result.localizedOrigin?.[this.settings.primaryLang] || res.result.origin,
             details: {
-              description: res.result.localizedDetails?.description[this.settings.primaryLang] || res.result.details.description,
-              features: res.result.localizedDetails?.features[this.settings.primaryLang] || res.result.details.features,
-              longDescription: res.result.localizedDetails?.longDescription[this.settings.primaryLang] || res.result.details.longDescription,
+              description: res.result.localizedDetails?.description?.[this.settings.primaryLang] || res.result.details.description,
+              features: res.result.localizedDetails?.features?.[this.settings.primaryLang] || res.result.details.features,
+              longDescription: res.result.localizedDetails?.longDescription?.[this.settings.primaryLang] || res.result.details.longDescription,
             },
-            metaTitle: res?.result?.localizedMetaTitles[this.settings.primaryLang] || res.result.metaTitle,
-            metaDescription: res.result.localizedMetaDescriptions[this.settings.primaryLang] || res.result.metaDescription,
-            metaKeywords: res.result.localizedMetaKeywords[this.settings.primaryLang] || res.result.metaKeywords,
+            metaTitle: res?.result?.localizedMetaTitles?.[this.settings.primaryLang] || res.result.metaTitle,
+            metaDescription: res.result.localizedMetaDescriptions?.[this.settings.primaryLang] || res.result.metaDescription,
+            metaKeywords: res.result.localizedMetaKeywords?.[this.settings.primaryLang] || res.result.metaKeywords,
           });
 
           this.attributes = res?.result?.attributes;
@@ -863,7 +863,6 @@ export class UpdateProductComponent implements OnInit {
       error: (err: any) => { },
     });
 
-    //Get active products
     this.ProductService.getActiveProduct().subscribe({
       next: (res: any) => {
         if (res?.errorCode == 0) {
@@ -874,9 +873,7 @@ export class UpdateProductComponent implements OnInit {
       },
       error: (err: any) => { },
     });
-    //Get active products
 
-    //Tax class details
     this.taxClassService.getTaxClasses().subscribe({
       next: (res: any) => {
         if (res?.errorCode == 0) {
@@ -886,10 +883,8 @@ export class UpdateProductComponent implements OnInit {
       },
       error: (err: any) => { },
     });
-    //Tax class details
   }
 
-  //Store fields
   onSaveStoreField() {
     if (!this.storeFieldForm.valid) {
       this.isStoreSubmitted = true;
@@ -904,9 +899,7 @@ export class UpdateProductComponent implements OnInit {
   removeStoreField(storeFieldIndex: number) {
     this.storeFields.splice(storeFieldIndex, 1);
   }
-  //Store fields
 
-  //Attributes
   removeAttribute(attributeIndex: number) {
     this.HotToastService.info('Attribute removed successfully');
     this.attributes.splice(attributeIndex, 1);
@@ -948,7 +941,6 @@ export class UpdateProductComponent implements OnInit {
       this.close();
     }
   }
-  //Attributes
 
   onDelete() {
     this.ProductService.deleteProduct(this.productDetails?._id).subscribe({
