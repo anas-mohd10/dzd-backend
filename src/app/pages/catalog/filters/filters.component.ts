@@ -37,7 +37,8 @@ export class FiltersComponent implements OnInit {
       isPriceFilter: new FormControl(false),
       isBrandFilter: new FormControl(false),
       isRatingFilter: new FormControl(false),
-      isOriginFilter: new FormControl(false)
+      isOriginFilter: new FormControl(false),
+      isDiscountFilter: new FormControl(false),
     })
   }
 
