@@ -52,7 +52,7 @@
                       <label class="fs-6 mb-3">HSN</label>
                       <input type="text" class="form-control fs-6" formControlName="hsn" />
                     </div>
-                    
+
                     <div class="col-lg-6 mb-3 form-group">
                       <label class="fs-6 mb-3 required">SKU</label>
                       <input type="text" class="form-control fs-6" formControlName="sku" [ngClass]="{
@@ -219,42 +219,40 @@
                 <div class="my-4">
                   <div class="fs-3 fw-bold">Product category and attributes</div>
                   <p class="text-muted">Easily manage price details to showacse your product</p>
-                  <div class="row mb-3">
-                    <div class="col-lg-6 mb-3 form-group">
-                      <label class="fs-6 mb-3" for="productCategory">Category</label>
-                      <select [formControl]="productCategory" id="productCategory"
-                        (change)="toggleProductCategory($event, 'add')" class="form-select">
-                        <option value="" disabled>-- Select an option --</option>
-                        <option *ngFor="let category of defaultCategories" value="{{category?._id}}">
-                          {{category.name}}
-                        </option>
-                      </select>
-                    </div>
-                    <ng-container *ngIf="categories.length > 0">
-                      <div class="d-flex flex-wrap overflow-hidden align-items-center justify-content-start gap-3">
-                        <ng-container *ngFor="let category of categories">
-                          <div
-                            class="bg-secondary d-flex align-items-center justify-content-center gap-2 cursor-pointer p-2 rounded"
-                            (click)="toggleProductCategory(category?._id, 'remove')">
-                            <div>{{category.name}}</div>
-                            <div>
-                              <svg height="16" width="16" xmlns="http://www.w3.org/2000/svg" fill="none"
-                                viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
-                              </svg>
-                            </div>
-                          </div>
-                        </ng-container>
-                      </div>
-                    </ng-container>
+                  <div class="mb-3 form-group">
+                    <label class="fs-6 mb-3" for="productCategory">Category</label>
+                    <select [formControl]="productCategory" id="productCategory"
+                      (change)="toggleProductCategory($event, 'add')" class="form-select">
+                      <option value="" disabled>-- Select an option --</option>
+                      <option *ngFor="let category of defaultCategories" value="{{category?._id}}">
+                        {{category.name}}
+                      </option>
+                    </select>
                   </div>
+                  <ng-container *ngIf="categories.length > 0">
+                    <div class="d-flex flex-wrap overflow-hidden align-items-center justify-content-start gap-3">
+                      <ng-container *ngFor="let category of categories">
+                        <div
+                          class="bg-secondary d-flex align-items-center justify-content-center gap-2 cursor-pointer p-2 rounded"
+                          (click)="toggleProductCategory(category?._id, 'remove')">
+                          <div>{{category.name}}</div>
+                          <div>
+                            <svg height="16" width="16" xmlns="http://www.w3.org/2000/svg" fill="none"
+                              viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                              <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
+                            </svg>
+                          </div>
+                        </div>
+                      </ng-container>
+                    </div>
+                  </ng-container>
                 </div>
 
                 <div class="my-4">
                   <label for="brand" class="fs-6 mb-3">Brand</label>
                   <select formControlName="brand" id="brand" class="form-select">
                     <option value="" disabled>-- Select an option --</option>
-                    <option *ngFor="let brand of brands" value="{{brand?._id}}">{{brand.name}}></option>
+                    <option *ngFor="let brand of brands" value="{{brand?.slug}}">{{brand.name}}></option>
                   </select>
                 </div>
 

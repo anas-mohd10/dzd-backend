@@ -644,7 +644,6 @@ export class AddProductComponent implements OnInit {
     this.generateSlug();
   }
 
-  //Auto generate slug starts here
   autoGenerateSlug() {
     this.generateSlug();
   }
@@ -658,9 +657,7 @@ export class AddProductComponent implements OnInit {
       .replace(/\s+/g, '-'); // Replace spaces with '-'
     this.form.patchValue({ slug });
   }
-  //Auto generate slug ends here
 
-  //Get child products for corresponding parentId
   getProducts() {
     this.ProductService.getProducts({
       parentId: this.parentDetails?._id,
@@ -683,9 +680,7 @@ export class AddProductComponent implements OnInit {
       },
     });
   }
-  //Get child products for corresponding parentId
 
-  //Store fields
   onSaveStoreField() {
     if (!this.storeFieldForm.valid) {
       this.isStoreSubmitted = true;
@@ -700,9 +695,7 @@ export class AddProductComponent implements OnInit {
   removeStoreField(storeFieldIndex: number) {
     this.storeFields.splice(storeFieldIndex, 1);
   }
-  //Store fields
 
-  //Attributes
   removeAttribute(attributeIndex: number) {
     this.HotToastService.info('Attribute removed successfully');
     this.attributes.splice(attributeIndex, 1);
@@ -744,7 +737,6 @@ export class AddProductComponent implements OnInit {
       this.close();
     }
   }
-  //Attributes
 
   handleTagIcons(event: any) {
     if (this.tagIcons.includes(event)) {
