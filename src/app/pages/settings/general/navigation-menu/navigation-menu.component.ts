@@ -175,6 +175,7 @@ export class NavigationMenuComponent implements OnInit {
   isMegaMenuItemDetailsSubmitted: boolean = false;
   subMenus: Array<any> = [];
   megaMenuAdvertisement: string = '';
+  megaMenuAdvertisementMobile: string = '';
   megaMenuEdit: boolean = false;
   menuItemIcon: string = '';
   megaMenuItemIndex: any;
@@ -286,6 +287,7 @@ export class NavigationMenuComponent implements OnInit {
             this.subMenus = res?.result?.subMenus;
             this.megaMenuIcon = res?.result?.icon;
             this.megaMenuAdvertisement = res?.result?.advertisement;
+            this.megaMenuAdvertisementMobile = res?.result?.advertisementMobile;
             this.megaMenuForm.patchValue(res?.result);
             this.subMenuBoxes = res?.result?.subMenuBoxes?.menuBoxes;
             this.ChangeDetectorRef.markForCheck();
@@ -302,6 +304,7 @@ export class NavigationMenuComponent implements OnInit {
   closeMegaMenuModal() {
     this.megaMenuModalRef?.hide();
     this.megaMenuAdvertisement = '';
+    this.megaMenuAdvertisementMobile = '';
     this.megaMenuIcon = '';
     this.megaMenuDetails = {};
     this.megaMenuForm.reset();
@@ -310,14 +313,31 @@ export class NavigationMenuComponent implements OnInit {
   }
 
   handleMegaMenuMedia(type: string, event: any) {
-    this.megaMenuForm.patchValue({ [type]: event.path });
+    if (type === 'advertisement') {
+      this.megaMenuAdvertisement = event.path;
+      this.megaMenuForm.patchValue({ advertisement: event.path });
+    }
+  }
+
+  handleMegaMenuMobileMedia(type: string, event: any) {
+    if (type === 'advertisementMobile') {
+      this.megaMenuAdvertisementMobile = event.path;
+      this.megaMenuForm.patchValue({ advertisementMobile: event.path });
+    }
   }
 
   removeMegaMenuMedia(type: string) {
-    this.megaMenuForm.patchValue({ [type]: '' });
-    type == 'icon'
-      ? (this.megaMenuIcon = '')
-      : (this.megaMenuAdvertisement = '');
+    if (type === 'advertisement') {
+      this.megaMenuAdvertisement = '';
+      this.megaMenuForm.patchValue({ advertisement: '' });
+    }
+  }
+
+  removeMegaMenuMediaMobile(type: string) {
+    if (type === 'advertisementMobile') {
+      this.megaMenuAdvertisementMobile = '';
+      this.megaMenuForm.patchValue({ advertisementMobile: '' });
+    }
   }
 
   handleMegaMenuBoxMedia(event: any) {
@@ -340,6 +360,7 @@ export class NavigationMenuComponent implements OnInit {
         _id: this.megaMenuDetails?._id,
         ...this.megaMenuForm.value,
         subMenus: this.subMenus,
+        advertisementMobile: this.megaMenuAdvertisementMobile
       }).subscribe({
         next: (res: any) => {
           if (res?.errorCode == 0) {
