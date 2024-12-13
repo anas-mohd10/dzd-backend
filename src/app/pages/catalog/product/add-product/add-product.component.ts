@@ -105,7 +105,7 @@ export class AddProductComponent implements OnInit {
   isParentSubmitted: boolean = false;
   activeRelatedProducts: Array<any> = [];
   relatedProduct: FormControl = new FormControl('');
-
+  brandsMap: any = {};
   storeFields: Array<StoreField> = [];
   storeFieldForm: FormGroup = new FormGroup({});
   isStoreSubmitted: boolean = false;
@@ -133,7 +133,7 @@ export class AddProductComponent implements OnInit {
     private HotToastService: HotToastService,
     private AppSettingsService: AppSettingsService,
     private BsModalService: BsModalService
-  ) {}
+  ) { }
 
   get parentControls() {
     return this.parentForm.controls;
@@ -210,8 +210,8 @@ export class AddProductComponent implements OnInit {
     }
   }
 
-  getChildCategory(categories: Array<any>) {
-    this.CategoryService.childCategories({ categories: categories }).subscribe({
+  getChildCategory() {
+    this.CategoryService.getActiveCategory().subscribe({
       next: (res: any) => {
         if (res?.errorCode == 0) {
           this.defaultCategories = res?.result;
@@ -305,7 +305,7 @@ export class AddProductComponent implements OnInit {
       let categories = this.parentCategories.map(
         (category: any) => category?._id
       );
-      this.getChildCategory(categories);
+      this.getChildCategory();
       this.HotToastService.success('Category added to list');
     }
     this.parentForm.get('category')?.setValue('');
@@ -330,7 +330,7 @@ export class AddProductComponent implements OnInit {
       (category: any) => category?._id
     );
     this.HotToastService.error('Category removed from list');
-    this.getChildCategory(categories);
+    this.getChildCategory();
     if (this.parentCategories.length > 0) {
       let parentCategory = {
         id: this.parentCategories.map((category: any) => {
@@ -357,25 +357,25 @@ export class AddProductComponent implements OnInit {
           this.previewDetails = res?.result?.thumbnail?.path;
           this.parentCategories = res?.result?.parentCategory.id;
           let categories = this.parentCategories.map((item: any) => item?._id);
-          this.getChildCategory(categories);
+          this.getChildCategory();
           res?.result?.brand
             ? this.parentForm.get('brand')?.setValue(res?.result?.brand?._id)
             : this.parentForm.get('brand')?.setValue('');
           res?.result?.defaultCategory
             ? this.parentForm
-                .get('defaultCategory')
-                ?.setValue(res?.result?.defaultCategory?.id?._id)
+              .get('defaultCategory')
+              ?.setValue(res?.result?.defaultCategory?.id?._id)
             : this.parentForm.get('defaultCategory')?.setValue('');
           this.parentForm.get('tax')?.setValue(res?.result?.tax?._id);
           this.ChangeDetectorRef.markForCheck();
         } else {
         }
       },
-      error: (err: any) => {},
+      error: (err: any) => { },
     });
   }
 
-  toggleAddOnItems() {}
+  toggleAddOnItems() { }
 
   saveChanges() {
     let files = this.images.map((item: any) => item.path) || [];
@@ -399,9 +399,16 @@ export class AddProductComponent implements OnInit {
       localizedNames: {
         [this.settings.primaryLang]: this.form.get('name')?.value,
       },
+      brand: {
+        name: this.brandsMap[this.form.get('brand')?.value]?.name,
+        slug: this.brandsMap[this.form.get('brand')?.value]?.slug,
+        thumbnail: this.brandsMap[this.form.get('brand')?.value]?.thumbnail,
+        cover: this.brandsMap[this.form.get('brand')?.value]?.cover,
+      },
       parentId: this.parentDetails?._id,
       productIcons: this.icons,
       storeFrontFields: this.storeFields,
+      categories: this.categories.map((category: any) => category),
       category: {
         id: this.categories.map((category: any) => category?._id),
         refid: this.categories.map((category: any) => category?.catid),
@@ -430,54 +437,20 @@ export class AddProductComponent implements OnInit {
   }
 
   createParent() {
-    if (this.parentCategories.length > 0) {
-      let parentCategory = {
-        id: this.parentCategories.map((category: any) => {
-          return category?._id;
-        }),
-        refid: this.parentCategories.map((category: any) => {
-          return category.catid;
-        }),
-      };
-      this.parentForm.get('parentCategory')?.setValue(parentCategory);
-    }
-    if (this.parentForm.get('defaultCategory')?.value) {
-      // Get the category details
-      const selectedCategory = this.defaultCategories.find(
-        (category: any) =>
-          category?._id === this.parentForm.get('defaultCategory')?.value
-      );
-
-      // Only create the object if we found the category
-      if (selectedCategory) {
-        const defaultCategory = {
-          id: selectedCategory._id,
-          refid: selectedCategory.catid,
-        };
-        this.parentForm.get('defaultCategory')?.setValue(defaultCategory);
-      }
-    }
-
     if (!this.parentForm.valid) {
       this.isParentSubmitted = true;
       return;
     }
-
-    this.parentForm.get('brand')?.value
-      ? null
-      : this.parentForm.get('brand')?.setValue(null);
-    this.parentForm.get('defaultCategory')?.value
-      ? null
-      : this.parentForm.get('defaultCategory')?.setValue(null);
 
     this.ProductHeadService.addProductHead(this.parentForm.value).subscribe({
       next: (res: any) => {
         if (res?.errorCode == 0) {
           this.HotToastService.success(res.message);
           this.getParentDetails(res?.result?.slug);
-          this.Router.navigate([appRoutes.product.ADD_PRODUCT], {
-            queryParams: { product: res?.result?.slug },
-          });
+          this.Router.navigate(
+            [appRoutes.product.ADD_PRODUCT],
+            { queryParams: { product: res?.result?.slug } }
+          );
           this.form.get('name')?.setValue(this.parentForm.value.name);
         } else {
           this.HotToastService.error(res.message);
@@ -509,7 +482,7 @@ export class AddProductComponent implements OnInit {
     }
   }
 
-  searchProducts() {}
+  searchProducts() { }
 
   get formControls() {
     return this.form.controls;
@@ -552,10 +525,6 @@ export class AddProductComponent implements OnInit {
 
     this.parentForm = new FormGroup({
       name: new FormControl('', Validators.required),
-      brand: new FormControl(''),
-      defaultCategory: new FormControl(null), // Default category
-      parentCategory: new FormControl('', Validators.required), //Main category
-      category: new FormControl(''),
       thumbnail: new FormControl(null, Validators.required),
       isActive: new FormControl(true),
       sku: new FormControl('', Validators.required),
@@ -618,6 +587,7 @@ export class AddProductComponent implements OnInit {
       boostScore: new FormControl(0, [
         Validators.pattern('^-?[0-9]\\d*(\\.\\d+)?$'),
       ]),
+      brand: new FormControl(''),
       details: new FormGroup({
         additionalButton: new FormControl(''),
         buttonRedirectUrl: new FormControl(''),
@@ -635,30 +605,18 @@ export class AddProductComponent implements OnInit {
       isVisible: new FormControl(true),
     });
 
-    this.CategoryService.getMainCategories().subscribe({
-      next: (res: any) => {
-        if (res?.errorCode == 0) {
-          this.mainCategories = res?.result;
-          this.ChangeDetectorRef.markForCheck();
-        }
-      },
-      error: (err: any) => {
-        this.HotToastService.error(err?.message);
-      },
-    });
-
-    //Get brands
     this.BrandService.getActiveBrands().subscribe({
       next: (res: any) => {
         if (res?.errorCode == 0) {
           this.brands = res?.result;
+          this.brands.forEach((brand: any) => {
+            this.brandsMap[brand.slug] = brand
+          })
           this.ChangeDetectorRef.markForCheck();
         }
       },
     });
-    //Get brands
 
-    //Get active products
     this.ProductService.getActiveProduct().subscribe({
       next: (res: any) => {
         if (res?.errorCode == 0) {
@@ -667,11 +625,11 @@ export class AddProductComponent implements OnInit {
         } else {
         }
       },
-      error: (err: any) => {},
+      error: (err: any) => { },
     });
-    //Get active products
 
-    //Tax class details
+    this.getChildCategory();
+
     this.taxClassService.getTaxClasses().subscribe({
       next: (res: any) => {
         if (res?.errorCode == 0) {
@@ -680,9 +638,8 @@ export class AddProductComponent implements OnInit {
         } else {
         }
       },
-      error: (err: any) => {},
+      error: (err: any) => { },
     });
-    //Tax class details
 
     this.generateSlug();
   }

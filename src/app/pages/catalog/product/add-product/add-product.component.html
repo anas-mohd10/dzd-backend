@@ -250,6 +250,14 @@
                   </div>
                 </div>
 
+                <div class="my-4">
+                  <label for="brand" class="fs-6 mb-3">Brand</label>
+                  <select formControlName="brand" id="brand" class="form-select">
+                    <option value="" disabled>-- Select an option --</option>
+                    <option *ngFor="let brand of brands" value="{{brand?._id}}">{{brand.name}}></option>
+                  </select>
+                </div>
+
                 <div>
                   <div class="form-group">
                     <div class="fs-3 fw-bold">

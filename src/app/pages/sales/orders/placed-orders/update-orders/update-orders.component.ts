@@ -3,7 +3,6 @@ import {
   OnInit,
   ChangeDetectorRef,
   ViewChild,
-  ElementRef,
   TemplateRef,
 } from '@angular/core';
 import {
@@ -15,7 +14,6 @@ import {
 import { ActivatedRoute, Router } from '@angular/router';
 import { PageTasks } from 'src/app/config/constants';
 import { appRoutes } from 'src/app/config/routes';
-import { InvoiceSettingsService } from 'src/app/includes/services/invoice.settings.service';
 import { OrdersService } from 'src/app/includes/services/orders.service';
 import { environment } from 'src/environments/environment';
 import { AppSettingsService } from 'src/app/includes/services/app.settings.service';
@@ -119,6 +117,8 @@ export class UpdateOrdersComponent implements OnInit {
     'Dec',
   ];
   domainUrl: string = '';
+  bulkProducts: Array<any> = [];
+  bulkStatus: Array<any> = [];
 
   constructor(
     private OrdersService: OrdersService,
@@ -126,7 +126,6 @@ export class UpdateOrdersComponent implements OnInit {
     private router: Router,
     private formBuilder: FormBuilder,
     private ChangeDetectorRef: ChangeDetectorRef,
-    private invoiceService: InvoiceSettingsService,
     private AppSettingsService: AppSettingsService,
     private BsModalService: BsModalService,
     private Toast: HotToastService
@@ -447,9 +446,6 @@ export class UpdateOrdersComponent implements OnInit {
     this.deliveryPerson.setValue(productDetails?.deliveryPerson);
     this.productReference = productDetails?.productId?._id;
   }
-
-  bulkProducts: Array<any> = [];
-  bulkStatus: Array<any> = [];
 
   toggleBulkProduct(product?: any) {
     if (product) {
