@@ -186,7 +186,7 @@
         <th>Order</th>
         <th>Date</th>
         <th>Customer</th>
-        <th>Store</th>
+        <th *ngIf="settings.isPickUp == true">Store</th>
         <th>Total</th>
         <th>Source</th>
         <th>Tags</th>
@@ -215,10 +215,13 @@
               {{order?.customerType}}
             </div>
           </td>
-          <td>
-            <div *ngIf="order?.pickUpLocation">{{order?.pickUpLocation?.name + ", " + order?.pickUpLocation?.city}}
+          <td *ngIf="settings.isPickUp == true">
+            <div *ngIf="order?.pickUpLocation">
+              {{order?.pickUpLocation?.name + ", " + order?.pickUpLocation?.city}}
             </div>
-            <div *ngIf="order?.clickPoint">{{order?.clickPoint?.address?.city}}</div>
+            <div *ngIf="order?.clickPoint">
+              {{order?.clickPoint?.address?.city}}
+            </div>
             <div *ngIf="order?.deliverySlot">
               {{convertTimeFormat(order?.deliverySlot?.from + ' - ' + order?.deliverySlot?.to)}}
             </div>

@@ -246,11 +246,11 @@ export class UpdateOrdersComponent implements OnInit {
   }
 
   getLocaleDateFormat(data: any) {
-    return new Date(data).toLocaleDateString();
+    return new Date(data).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
   }
 
   getLocaleTimeFormat(data: any) {
-    return new Date(data).toLocaleTimeString();
+    return new Date(data).toLocaleTimeString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true });
   }
 
   getOrderDetails() {
@@ -259,7 +259,7 @@ export class UpdateOrdersComponent implements OnInit {
         if (res?.errorCode == 0) {
           this.order = res?.result;
           this.orderNumber = res?.result?.orderNo;
-          this.productCount = this.order.products.length;
+          this.productCount = this.order.products.length;         
           this.form.get('paymentStatus')?.setValue(this.order?.paymentStatus);
           this.orderNote?.setValue(this.order?.orderNote);
           this.form
