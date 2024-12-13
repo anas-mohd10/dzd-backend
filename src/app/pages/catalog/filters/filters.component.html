@@ -15,95 +15,90 @@
     </div>
   </div>
 
-    <div>
-        <div class="mt-8">
-            <div class="fs-3">Predefined Filters</div>
-            <p class="text-muted">Following are predefined filters, You can show/hide them on product listing page filters.</p>
-            <div class="card my-4">
-                <div class="card-body">
-                    <div class="d-flex align-items-center justify-content-start gap-4">
-                        <div>
-                            <app-switch (switchToggled)="onSettingsSwitchTriggered($event)"
-                                [isToggledProps]="settingsForm.get('isCategoryFilter')?.value || false"
-                                [switchId]="'isCategoryFilter'"></app-switch>
-                        </div>
-                        <div class="fs-5">Category Filter</div>
-                    </div>
-                </div>
+  <div>
+    <div class="mt-8">
+      <div class="fs-3">Predefined Filters</div>
+      <p class="text-muted">Following are predefined filters, You can show/hide them on product listing page filters.
+      </p>
+      <div class="card my-4">
+        <div class="card-body">
+          <div class="d-flex align-items-center justify-content-start gap-4">
+            <div>
+              <app-switch (switchToggled)="onSettingsSwitchTriggered($event)"
+                [isToggledProps]="settingsForm.get('isCategoryFilter')?.value || false"
+                [switchId]="'isCategoryFilter'"></app-switch>
             </div>
-            <div class="card">
-                <div class="card-body">
-                    <div class="d-flex align-items-center justify-content-start gap-4">
-                        <div>
-                            <app-switch (switchToggled)="onSettingsSwitchTriggered($event)"
-                                [isToggledProps]="settingsForm.get('isBrandFilter')?.value || false"
-                                [switchId]="'isBrandFilter'"></app-switch>
-                        </div>  
-                        <div class="fs-5">Brand Filter</div>
-                    </div>
-                </div>
-            </div>
-            <div class="card my-4">
-                <div class="card-body">
-                    <div class="d-flex align-items-center justify-content-start gap-4">
-                        <div>
-                            <app-switch (switchToggled)="onSettingsSwitchTriggered($event)"
-                                [isToggledProps]="settingsForm.get('isOriginFilter')?.value || false"
-                                [switchId]="'isOriginFilter'"></app-switch>
-                        </div>  
-                        <div class="fs-5">Origin Filter</div>
-                    </div>
-                </div>
-            </div>
-            <div class="card">
-                <div class="card-body">
-                    <div class="d-flex align-items-center justify-content-start gap-4">
-                        <div>
-                            <app-switch (switchToggled)="onSettingsSwitchTriggered($event)"
-                                [isToggledProps]="settingsForm.get('isRatingFilter')?.value || false"
-                                [switchId]="'isRatingFilter'"></app-switch>
-                        </div>  
-                        <div class="fs-5">Rating Filter</div>
-                    </div>
-                </div>
-            </div>
-            <div class="card my-4">
-                <div class="card-body">
-                    <div class="d-flex align-items-center justify-content-start gap-4">
-                        <div>
-                            <app-switch (switchToggled)="onSettingsSwitchTriggered($event)"
-                                [isToggledProps]="settingsForm.get('isPriceFilter')?.value || false"
-                                [switchId]="'isPriceFilter'"></app-switch>
-                        </div>  
-                        <div class="fs-5">Price Filter</div>
-                    </div>
-                </div>
-            </div>
+            <div class="fs-5">Category Filter</div>
+          </div>
         </div>
+      </div>
+      <div class="card">
+        <div class="card-body">
+          <div class="d-flex align-items-center justify-content-start gap-4">
+            <div>
+              <app-switch (switchToggled)="onSettingsSwitchTriggered($event)"
+                [isToggledProps]="settingsForm.get('isBrandFilter')?.value || false"
+                [switchId]="'isBrandFilter'"></app-switch>
+            </div>
+            <div class="fs-5">Brand Filter</div>
+          </div>
+        </div>
+      </div>
+      <div class="card my-4">
+        <div class="card-body">
+          <div class="d-flex align-items-center justify-content-start gap-4">
+            <div>
+              <app-switch (switchToggled)="onSettingsSwitchTriggered($event)"
+                [isToggledProps]="settingsForm.get('isOriginFilter')?.value || false"
+                [switchId]="'isOriginFilter'"></app-switch>
+            </div>
+            <div class="fs-5">Origin Filter</div>
+          </div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-body">
+          <div class="d-flex align-items-center justify-content-start gap-4">
+            <div>
+              <app-switch (switchToggled)="onSettingsSwitchTriggered($event)"
+                [isToggledProps]="settingsForm.get('isRatingFilter')?.value || false"
+                [switchId]="'isRatingFilter'"></app-switch>
+            </div>
+            <div class="fs-5">Rating Filter</div>
+          </div>
+        </div>
+      </div>
+      <div class="card my-4">
+        <div class="card-body">
+          <div class="d-flex align-items-center justify-content-start gap-4">
+            <div>
+              <app-switch (switchToggled)="onSettingsSwitchTriggered($event)"
+                [isToggledProps]="settingsForm.get('isPriceFilter')?.value || false"
+                [switchId]="'isPriceFilter'"></app-switch>
+            </div>
+            <div class="fs-5">Price Filter</div>
+          </div>
+        </div>
+      </div>
+    </div>
 
-      <hr class="my-8" />
+    <hr class="my-8" />
 
-      <div>
-        <div class="fs-3">Store Front Fields Filters</div>
-        <p class="text-muted">
-          Following are product store front field, You can show/hide them on
-          product listing page filters.
-        </p>
-        <div *ngFor="let storeFrontField of storeFrontFields">
-          <div class="card my-4">
-            <div class="card-body">
-              <div
-                class="d-flex align-items-center justify-content-start gap-4"
-              >
-                <div>
-                  <app-switch
-                    (switchToggled)="onSwitchTriggered($event)"
-                    [isToggledProps]="storeFrontField.isFilter || false"
-                    [switchId]="storeFrontField.title"
-                  ></app-switch>
-                </div>
-                <div class="fs-5">{{ storeFrontField.title }}</div>
+    <div>
+      <div class="fs-3">Store Front Fields Filters</div>
+      <p class="text-muted">
+        Following are product store front field, You can show/hide them on
+        product listing page filters.
+      </p>
+      <div *ngFor="let storeFrontField of storeFrontFields">
+        <div class="card my-4">
+          <div class="card-body">
+            <div class="d-flex align-items-center justify-content-start gap-4">
+              <div>
+                <app-switch (switchToggled)="onSwitchTriggered($event)"
+                  [isToggledProps]="storeFrontField.isFilter || false" [switchId]="storeFrontField.title"></app-switch>
               </div>
+              <div class="fs-5">{{ storeFrontField.title }}</div>
             </div>
           </div>
         </div>
