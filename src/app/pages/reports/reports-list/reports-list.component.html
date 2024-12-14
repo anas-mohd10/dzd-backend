@@ -77,6 +77,30 @@
 
 <div class="my-4">
   <div class="items">
+    <a *ngFor="let report of reportItems" class="item rounded"
+      (click)="openDateRangeModal(report.type, dateRangeModal)">
+      <div class="d-flex align-items-center  gap-2">
+        <div class="icon p-2 rounded ">
+          <svg width="60" height="60" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect width="48" height="48" rx="24" fill="#FBE2FF" />
+            <path fill-rule="evenodd" clip-rule="evenodd"
+              d="M24 12.3867L34.4516 18.1932V29.8061L24 35.6125L13.5483 29.8061V18.1932L24 12.3867Z" stroke="#A200BC"
+              stroke-width="1.5" stroke-linejoin="round" />
+            <path d="M13.5483 18.1934L24 23.9998L34.4516 18.1934" stroke="#A200BC" stroke-width="1.5" />
+            <path d="M24.0002 24V35.6129" stroke="#A200BC" stroke-width="1.5" />
+          </svg>
+        </div>
+        <div>
+          <div class="fs-4 mt-2">{{report.title}}</div>
+          <p class="text-muted">{{report.description}}</p>
+        </div>
+      </div>
+    </a>
+  </div>
+</div>
+
+<div class="my-4">
+  <div class="items">
     <a class="item rounded" (click)="generateOtherReports('product')">
       <div class="d-flex align-items-center gap-2">
         <div class="icon p-2 rounded">
@@ -96,7 +120,7 @@
       </div>
     </a>
 
-    <a class="item rounded" (click)="generateOtherReports('basic-product')">
+    <!-- <a class="item rounded" (click)="generateOtherReports('basic-product')">
       <div class="d-flex align-items-center gap-2">
         <div class="icon p-2 rounded">
           <svg width="60" height="60" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -113,7 +137,7 @@
           <p class="text-muted">Get the basic report of all products</p>
         </div>
       </div>
-    </a>
+    </a> -->
 
     <a class="item rounded" (click)="generateOtherReports('product-order')" target="_blank">
       <div class="d-flex align-items-center gap-2">
@@ -173,25 +197,7 @@
       </div>
     </a>
 
-    <a *ngFor="let report of reportItems" class="item rounded"
-      (click)="openDateRangeModal(report.type, dateRangeModal)">
-      <div class="d-flex align-items-center gap-2">
-        <div class="icon p-2 rounded">
-          <svg width="60" height="60" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <rect width="48" height="48" rx="24" fill="#FBE2FF" />
-            <path fill-rule="evenodd" clip-rule="evenodd"
-              d="M24 12.3867L34.4516 18.1932V29.8061L24 35.6125L13.5483 29.8061V18.1932L24 12.3867Z" stroke="#A200BC"
-              stroke-width="1.5" stroke-linejoin="round" />
-            <path d="M13.5483 18.1934L24 23.9998L34.4516 18.1934" stroke="#A200BC" stroke-width="1.5" />
-            <path d="M24.0002 24V35.6129" stroke="#A200BC" stroke-width="1.5" />
-          </svg>
-        </div>
-        <div>
-          <div class="fs-4 mt-2">{{report.title}}</div>
-          <p class="text-muted">{{report.description}}</p>
-        </div>
-      </div>
-    </a>
+
 
     <a class="item rounded" (click)="generateOtherReports('lowstock')">
       <div class="d-flex align-items-center gap-2">
@@ -266,8 +272,8 @@
         <div (click)="toggleProducts(product)"
           class="products-card cursor-pointer d-flex align-items-center justify-content-start gap-2 my-3 py-2 border-bottom border-secondary">
           <div>
-            <img class="border border-secondary rounded" src="{{base}}{{product?.thumbnail}}"
-              alt="{{product?.name}}" onerror="this.src = 'assets/images/default.png'">
+            <img class="border border-secondary rounded" src="{{base}}{{product?.thumbnail}}" alt="{{product?.name}}"
+              onerror="this.src = 'assets/images/default.png'">
           </div>
           <div>
             <div class="fs-5">{{product?.name}}</div>

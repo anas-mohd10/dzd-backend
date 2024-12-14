@@ -8,5 +8,6 @@ export const reportsEndpoints = {
     orderReport: '/order-report',
     productOrderReport: '/product-order-report',
     salesReport: '/sales-report',
-    basicProductReport: '/product-report/basic'
+    basicProductReport: '/product-report/basic',
+    orderOverTimeReport:'/order-over-time'
 }

@@ -39,14 +39,24 @@ export class ReportsListComponent implements OnInit {
 
   reportItems: Array<any> = [
     {
-      title: 'Sales Report',
-      description: 'Get the sales report for the selected date range',
+      title: 'Sale Over Time Report',
+      description: 'The Sales over time report shows the number of orders and the total sales that you made over time. You can select custom date range and filters as well.',
       type: 'sales',
     },
     {
-      title: 'Order Report',
-      description: 'Get the list of orders in your store',
-      type: 'order-report',
+      title: 'Order Over Time Report',
+      description: 'The Order over time report shows the number of orders and the total Order that you made over time. You can select custom date range and filters as well.',
+      type: 'order-over-time-report',
+    },
+    {
+      title: 'Detailed Orders report',
+      description: 'Export your order sales report, Each row contains order id and associated details. To see details of product with each order, Please choose the productwise detailed order report.',
+      type: 'orders-time',
+    },
+    {
+      title: 'Product Wise Detailed Order Report',
+      description: 'This report shows total orders with order id and each product in seperate row with each respect to date.',
+      type: 'productwiseorder',
     },
     {
       title: 'Customer Order Report',
@@ -69,19 +79,9 @@ export class ReportsListComponent implements OnInit {
       type: 'abandonedorder-report',
     },
     {
-      title: 'Product Wise Detailed Order Report',
-      description: 'Get the product wise detailed order report',
-      type: 'productwiseorder',
-    },
-    {
       title: 'Products Sales Report',
       description: 'Get the list of products with details',
       type: 'productwisereport',
-    },
-    {
-      title: 'Orders over time report',
-      description: 'Get the orders over time frame report for the selected date range',
-      type: 'orders-time',
     },
     {
       title: 'Basic Product Report',
@@ -317,6 +317,9 @@ export class ReportsListComponent implements OnInit {
       case 'sales':
         this.generateSalesReport(params);
         break;
+      case 'order-over-time-report':
+        this.generateOrdersReport(params);
+        break;
       case 'order-report':
         this.generateOrdersReport(params);
         break;
@@ -403,10 +406,25 @@ export class ReportsListComponent implements OnInit {
     });
   }
 
+  generateOrderOverTimeReport(params: any) {
+    this.reportsService.orderOverTimeReport(
+      params.dateRange,
+      params.startDate,
+      params.endDate
+    ).subscribe({
+      next: (res: any) => {
+        this.handleReportResponse(res);
+      },
+      error: (err: any) => {
+        this.handleError(err);
+      },
+    });
+  }
+
 
 
   generateOrdersReport(params: any) {
-    this.reportsService.orderReport(
+    this.reportsService.orderOverTimeReport(
       params.dateRange,
       params.startDate,
       params.endDate
@@ -467,7 +485,7 @@ export class ReportsListComponent implements OnInit {
 
   generateOrdersTimeReport(params: any) {
     // Include both date range and custom dates
-    this.reportsService.ordersOverTimeReport(
+    this.reportsService.detailedOrdersOverTimeReport(
       params.dateRange,
       params.startDate,
       params.endDate
