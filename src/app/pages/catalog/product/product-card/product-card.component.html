@@ -48,7 +48,6 @@
       <table class="table table-bordered">
          <thead>
             <tr>
-               <th>&nbsp;</th>
                <th>Name</th>
                <th>SKU</th>
                <th>Tax</th>
@@ -59,10 +58,6 @@
          </thead>
          <tbody>
                <tr *ngFor="let product of products; let i = index">
-                  <td>
-                     <img src="{{base}}{{product?.thumbnail}}" alt="Product" height="45" width="45" class="rounded"
-                        onerror="this.src = 'assets/images/default.png'">
-                  </td>
                   <td>
                      <div class="productName">{{product?.name}}</div>
                   </td>
@@ -110,7 +105,7 @@
                   </td>
                </tr>
                <tr *ngIf="products.length == 0">
-                  <td colspan="7">
+                  <td colspan="6">
                      <app-no-results></app-no-results>
                   </td>
                </tr>
@@ -163,39 +158,6 @@
                   <option value="" disabled>-- Select an option --</option>
                   <option *ngFor="let tax of taxes" value="{{tax?._id}}">{{tax?.name}}</option>
                </select>
-            </div>
-
-            <div class="mb-3">
-               <label class="fs-6 mb-1" for="brand">Brand</label>
-               <select id="brand" formControlName="brand" class="form-select">
-                  <option value="" disabled>-- Select an option --</option>
-                  <option *ngFor="let brand of brands" value="{{brand?._id}}">{{brand?.name}}</option>
-               </select>
-            </div>
-
-            <div class="mb-3">
-               <label class="fs-6 mb-3" for="tax">Category</label>
-               <select id="parentCategory" formControlName="parentCategory" class="form-select"
-                  (change)="addCategory()">
-                  <option value="" disabled>-- Select an option --</option>
-                  <option *ngFor="let category of categories" value="{{category?._id}}">{{category?.name}}</option>
-               </select>
-
-               <div class="mt-3 d-flex flex-wrap gap-2 align-items-center jusitfy-content-start"
-                  *ngIf="parentCategories.length > 0">
-                  <ng-container *ngFor="let category of parentCategories; let i = index">
-                     <div class="bg-secondary p-2 d-flex align-items-center justify-content-center gap-2 rounded"
-                        (click)="removeCategory(category?._id)">
-                        <div>{{category?.name}}</div>
-                        <div>
-                           <svg height="16" width="16" xmlns="http://www.w3.org/2000/svg" fill="none"
-                              viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-                              <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
-                           </svg>
-                        </div>
-                     </div>
-                  </ng-container>
-               </div>
             </div>
 
             <div class="row">
@@ -331,7 +293,7 @@
       </div>
 
       <div class="my-4">
-         <table class="table table-head-custom table-vertical-center table-head-bg table-borderless">
+         <table class="table table-bordered">
             <thead>
                <tr>
                   <th>&nbsp;</th>
@@ -373,12 +335,12 @@
                         <div class="productSku">{{product?.sku}}</div>
                      </td>
                      <td>
-                        {{product?.product?.id?.brand?.name}}
+                        {{product?.brand?.name}}
                      </td>
                      <td>
-                        <ng-container *ngFor="let category of product?.category?.id; let i = index">
+                        <ng-container *ngFor="let category of product?.categories; let i = index">
                            <div>{{category?.name}}</div>
-                        </ng-container>
+                         </ng-container>
                      </td>
                      <td>{{product?.price?.offer}}</td>
                      <td>{{product?.stock}}</td>

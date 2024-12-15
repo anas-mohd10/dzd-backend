@@ -23,12 +23,14 @@ export class UploadDetailsComponent implements OnInit {
   uploadId: string;
   appRoute = appRoutes;
   uploadDetails: UploadDetails;
+  logs: Array<any> = [];
+  logDetails: any = {};
 
   constructor(
     private ActivatedRoute: ActivatedRoute,
     private CsvService: CsvService,
     private ChangeDetectorRef: ChangeDetectorRef
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.uploadId = this.ActivatedRoute.snapshot.params.uploadId || '';
@@ -37,13 +39,33 @@ export class UploadDetailsComponent implements OnInit {
       next: (res: any) => {
         if (res?.errorCode == 0) {
           this.uploadDetails = res?.result;
-          this.uploadDetails.logs = this.uploadDetails.logs.reverse();
+          this.ChangeDetectorRef.markForCheck();
+        } else { }
+      }, error: (err: any) => { },
+    });
+
+    this.fetchLogs();
+  }
+
+  formatDate(date: string) {
+    return new Date(date).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' })
+  }
+
+  formatTime(time: string) {
+    return new Date(time).toLocaleTimeString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true })
+  }
+
+  fetchLogs() {
+    this.CsvService.fetchLogs(this.uploadId, 1).subscribe({
+      next: (res: any) => {
+        if (res.errorCode == 0) {
+          this.logDetails = res.result;
+          this.logs = res.result.results;          
           this.ChangeDetectorRef.markForCheck();
         } else {
         }
-      },
-      error: (err: any) => {},
-    });
+      }, error: (err: any) => { },
+    })
   }
 
   getMinutes(seconds: number) {
