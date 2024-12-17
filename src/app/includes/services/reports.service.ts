@@ -48,6 +48,11 @@ export class ReportsService {
     return this.http.get(`${url}`);
   }
 
+  detailedOrderReport(dateRange: string, startDate?: string, endDate?: string) {
+    const url = this.commonService.getFullUrl(reportsEndpoints.detailedOrderReport + `?dateRange=${dateRange}&startDate=${startDate}&endDate=${endDate}`);
+    return this.http.get(`${url}`);
+  }
+
   unfullfilledStockReport() {
     const url = this.commonService.getFullUrl(reportsEndpoints.unfullfilledStockReport);
     return this.http.get(`${url}`);
@@ -91,12 +96,16 @@ export class ReportsService {
   }
 
   basicProductReport() {
+    console.log("rescched here--------------")
     const url = this.commonService.getFullUrl(reportsEndpoints.basicProductReport);
     return this.http.get(`${url}`);
   }
 
-  productOrderReport() {
-    const url = this.commonService.getFullUrl(reportsEndpoints.productOrderReport);
+
+
+
+  productOrderReport(dateRange: string, startDate?: string, endDate?: string) {
+    const url = this.commonService.getFullUrl(reportsEndpoints.productOrderReport + `?dateRange=${dateRange}&startDate=${startDate}&endDate=${endDate}`);
     return this.http.get(`${url}`);
   }
 }

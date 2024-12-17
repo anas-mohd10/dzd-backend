@@ -13,7 +13,8 @@
   }
 }
 
-.btn, label {
+.btn,
+label {
   font-weight: 400 !important;
 }
 
@@ -29,5 +30,29 @@
       width: 60px;
     }
 
+  }
+}
+
+
+.sales-heading {
+  margin-top: 40px;
+  font-size: 20px;
+  font-weight: 500;
+}
+
+.sales-items {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+  margin-bottom: 20px;
+
+
+  .sales-item {
+    padding: 10px;
+    background: #ffffff;
+    min-height: 100px;
+    color: #00BDAB;
+    border: 1px solid #eeeeee;
+    cursor: pointer;
   }
 }
