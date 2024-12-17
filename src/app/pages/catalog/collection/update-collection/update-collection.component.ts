@@ -34,6 +34,7 @@ export class UpdateCollectionComponent implements OnInit {
   mobileCover: string = '';
   icons: Array<string> = [];
   thumbnail: string = '';
+  _id: string = '';
 
   constructor(
     private CollectionService: CollectionService,
@@ -62,9 +63,11 @@ export class UpdateCollectionComponent implements OnInit {
             this.previews.thumbnailPreview = res?.result?.thumbnail;
           if (res?.result?.cover)
             this.previews.coverPreview = res?.result?.cover;
-          this.productDetails = res?.result?.products;
-          this.productIds = res?.result?.products.map((item: any) => item?._id);
+          this.productDetails = res?.result?.products.map((item: any) => item.product);
+          this.productIds = res?.result?.products.map((item: any) => item.product._id);
           this.ChangeDetectorRef.markForCheck();
+          this._id = res?.result?._id;
+
         }
       },
     });
@@ -81,6 +84,8 @@ export class UpdateCollectionComponent implements OnInit {
       metaTitle: new FormControl(''),
       metaDescription: new FormControl(''),
       metaKeywords: new FormControl(''),
+      isSku: new FormControl(false),
+      _id: new FormControl(''),
     });
   }
 
@@ -187,39 +192,53 @@ export class UpdateCollectionComponent implements OnInit {
   }
 
   onSubmit() {
+    this.form.get('_id')?.setValue(this._id);
     this.selectedProducts = [];
     if (this.isAutoCompleteEnabled) {
-      for (let product of this.productDetails)
-        this.selectedProducts.push(product?._id);
+      this.selectedProducts = this.productDetails.map((product: any, index: number) => ({
+        product: product._id,
+        order: index
+      }));
       this.form.get('products')?.setValue(this.selectedProducts);
     } else {
-      this.selectedProducts = this.productSku?.value.split(',');
-      this.form.get('products')?.setValue(this.selectedProducts);
+      const selectedProducts = this.productSku?.value.split(',').map((sku: string, index: number) => ({
+        product: sku.trim(),
+        order: index
+      }));
+      this.selectedProducts = selectedProducts;
+      this.form.get('products')?.setValue(selectedProducts);
+      this.form.get("isSku")?.setValue(true);
     }
 
     if (!this.form.valid) {
+      console.log(this.form.get('products')?.get('products'));
+      Object.keys(this.form.controls).forEach((key) => {
+        const control = this.form.controls[key];
+        if (control.errors) {
+          console.log(`${key} errors:`, control.errors);
+        }
+      });
+      
       this.isSubmitted = true;
       return;
     }
-
-    this.CollectionService.updateCollection({
-      ...this.form.value,
-      _id: this.collectionDetails?._id,
-      colid: this.collectionDetails.colid,
-      slug: this.collectionSlug,
-      isSku: this.isAutoCompleteEnabled ? false : true,
-    }).subscribe({
+    
+    // Proceed with form submission
+    this.isSubmitted = false;
+    const payload = this.form.value;
+    
+    this.CollectionService.updateCollection(payload).subscribe({
       next: (res: any) => {
-        if (res.errorCode != 0) {
-          this.HotToastService.error(res?.messaage);
-        } else if (res.errorCode == 0) {
-          this.HotToastService.success(res?.message);
+        if (res?.errorCode == 0) {
           this.Router.navigate([this.appRoute.collection.COLLECTION_LIST]);
+          this.HotToastService.success(res.message);
+        } else {
+          this.HotToastService.error(res.message);
         }
       },
       error: (err: any) => {
         this.HotToastService.error(err.error.message);
-      },
+      }
     });
   }
 
