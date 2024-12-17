@@ -35,6 +35,8 @@ export class UpdateCollectionComponent implements OnInit {
   icons: Array<string> = [];
   thumbnail: string = '';
   _id: string = '';
+  hasUnsavedOrderChanges: boolean = false;
+
 
   constructor(
     private CollectionService: CollectionService,
@@ -69,6 +71,7 @@ export class UpdateCollectionComponent implements OnInit {
           this._id = res?.result?._id;
 
         }
+        this.updateProductOrders();
       },
     });
 
@@ -87,6 +90,9 @@ export class UpdateCollectionComponent implements OnInit {
       isSku: new FormControl(false),
       _id: new FormControl(''),
     });
+
+    // Initialize product orders
+    this.updateProductOrders();
   }
 
   handleCollectionCover(event: any) {
@@ -242,9 +248,73 @@ export class UpdateCollectionComponent implements OnInit {
     });
   }
 
+  setProductOrder(product: any, newIndex: number) {
+    // Validate input
+    if (newIndex < 0 || newIndex >= this.productDetails.length) {
+      this.HotToastService.error('Invalid order position');
+      return;
+    }
+
+    // Remove the product from its current position
+    const currentIndex = this.productDetails.findIndex(p => p._id === product._id);
+    if (currentIndex === -1) return;
+
+    // Remove the product from its current position
+    const removedProduct = this.productDetails.splice(currentIndex, 1)[0];
+
+    // Insert the product at the new position
+    this.productDetails.splice(newIndex, 0, removedProduct);
+
+    // Adjust the order of subsequent products
+    this.productDetails.forEach((p, index) => {
+      p.order = index + 1;
+    });
+
+    // Mark that order has changed
+    this.hasUnsavedOrderChanges = true;
+
+    // Trigger change detection
+    this.ChangeDetectorRef.detectChanges();
+  }
+
+  setOrderValue(value: any): number {
+    return Number(value) || 0; // Converts to number and defaults to 0 if invalid
+  }
+
+  // Utility method to initialize and update product orders
+  updateProductOrders() {
+    // Sort products by their current order or by their index if order is not set
+    this.productDetails.sort((a, b) => {
+      const orderA = a.order || this.productDetails.indexOf(a) + 1;
+      const orderB = b.order || this.productDetails.indexOf(b) + 1;
+      return orderA - orderB;
+    });
+
+    // Reassign orders to ensure consecutive numbering
+    this.productDetails.forEach((product, index) => {
+      product.order = index + 1;
+    });
+
+    // Mark that order has changed
+    this.hasUnsavedOrderChanges = true;
+
+    // Trigger change detection
+    this.ChangeDetectorRef.detectChanges();
+  }
+
   drop(event: CdkDragDrop<string[]>) {
+    // Create a copy of the current product details
     let products = [...this.productDetails];
+
+    // Move the item in the array
     moveItemInArray(products, event.previousIndex, event.currentIndex);
-    this.productDetails = [...products];
+
+    // Update the productDetails with the new order
+    this.productDetails = products;
+
+    // Call the utility method to update orders
+    this.updateProductOrders();
+
+    console.log('Previous Index:', event.previousIndex, 'Current Index:', event.currentIndex);
   }
 }

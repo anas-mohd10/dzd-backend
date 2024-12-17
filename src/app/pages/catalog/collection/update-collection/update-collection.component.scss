@@ -177,3 +177,47 @@ label,
   transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
 }
 //Drag and Drop style
+
+.product-order-container {
+  display: flex;
+  align-items: center;
+  column-gap: 10px;
+  margin-top: 10px;
+
+  .order-input {
+    width: 70px;
+    height: 38px;
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+    padding: 0 10px;
+    font-size: 0.95rem;
+    outline: none;
+    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+
+    &:focus {
+      border-color: #80bdff;
+      box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+    }
+  }
+
+  .set-order-btn {
+    height: 38px;
+    padding: 0 15px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-size: 0.95rem;
+    cursor: pointer;
+    transition: background-color 0.15s ease-in-out;
+
+    &:hover {
+      background-color: #0069d9;
+    }
+
+    &:focus {
+      outline: none;
+      box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+    }
+  }
+}
