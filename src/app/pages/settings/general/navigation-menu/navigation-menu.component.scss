@@ -11,15 +11,19 @@ $background: #f1f1f1;
 $error: #F1416C;
 $black: #000000;
 
-.icon{
+.ratio-9x16 {
+    aspect-ratio: 9/16;
+}
+
+.icon {
     height: 60px;
     width: 60px;
     object-fit: contain;
 }
 
-.store-facility{
+.store-facility {
 
-    img{
+    img {
         height: 100%;
         width: 100%;
         object-fit: cover;
@@ -30,14 +34,26 @@ textarea {
     resize: none;
 }
 
-.menuboxes{
+.rightSideBg {
+    background: #f9f9f9;
+}
+
+.iconBox {
+    height: 32px;
+    width: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.menuboxes {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(5, 1fr);
     place-content: center;
     gap: 10px;
 }
 
-.remove-submenu{
+.remove-submenu {
     height: 24px;
     width: 24px;
     display: flex;
@@ -111,6 +127,11 @@ label,
     }
 }
 
+.rotate45{
+    transform: rotate(180deg);
+    transition: 0.3s all ease-in;
+}
+
 .subcategoryWrapper {
     display: none;
 
@@ -144,7 +165,7 @@ label,
     }
 }
 
-.handle-advance-menuitem{
+.handle-advance-menuitem {
     height: 32px;
     width: 32px;
     display: flex;
@@ -275,6 +296,6 @@ label,
     }
 }
 
-.wrapperBody{
+.wrapperBody {
     height: 240px;
 }

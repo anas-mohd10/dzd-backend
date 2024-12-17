@@ -80,6 +80,18 @@
           </div>
         </div>
       </div>
+      <div class="card my-4">
+        <div class="card-body">
+          <div class="d-flex align-items-center justify-content-start gap-4">
+            <div>
+              <app-switch (switchToggled)="onSettingsSwitchTriggered($event)"
+                [isToggledProps]="settingsForm.get('isDiscountFilter')?.value || false"
+                [switchId]="'isDiscountFilter'"></app-switch>
+            </div>
+            <div class="fs-5">Discount Filter</div>
+          </div>
+        </div>
+      </div>
     </div>
 
     <hr class="my-8" />

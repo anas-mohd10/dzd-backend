@@ -106,6 +106,7 @@ export class UpdateAppSettingsComponent implements OnInit {
   ];
   logo?: string;
   favicon?: string;
+  defaultBanner?: string;
   primary: string = '';
   modalRef?: BsModalRef;
   discardModalRef?: BsModalRef;
@@ -172,6 +173,7 @@ export class UpdateAppSettingsComponent implements OnInit {
         this.logo = res?.result?.logo
         this.paymentGateways = res?.result?.paymentGateway
         this.favicon = res?.result?.favicon
+        this.defaultBanner = res?.result?.defaultBanner
         this.primary = "#" + res?.result?.colors?.primary.split('FF')[1]
         this.secondary = "#" + res?.result?.colors?.secondary.split('FF')[1]
         this.form.get('primary')?.setValue("#" + res?.result?.colors?.primary.split('FF')[1])
@@ -208,6 +210,7 @@ export class UpdateAppSettingsComponent implements OnInit {
         this.form.get('shippingCost')?.setValue(res?.result?.shippingCost)
         this.form.get('logo')?.setValue(res?.result?.logo)
         this.form.get('favicon')?.setValue(res?.result?.favicon)
+        this.form.get('defaultBanner')?.setValue(res?.result?.defaultBanner)
 
         for (let lang of res?.result?.languages) {
           let isExists = this.languages.some((item: { lang: string, langCode: string }) => item.lang == lang?.lang)
@@ -277,6 +280,7 @@ export class UpdateAppSettingsComponent implements OnInit {
       notifyButton: ['Notify Me', Validators.required],
       logo: ['', Validators.required],
       favicon: ['', Validators.required],
+      defaultBanner: ['', Validators.required],
     })
   }
 
@@ -328,6 +332,10 @@ export class UpdateAppSettingsComponent implements OnInit {
 
   handleStoreFavicon(event: any) {
     this.form.get('favicon')?.setValue(event.path)
+  }
+
+  handleDefaultBanner(event: any) {
+    this.form.get('defaultBanner')?.setValue(event.path)
   }
 
   setPaymentGateways(paymentGateway: string) {
@@ -383,6 +391,7 @@ export class UpdateAppSettingsComponent implements OnInit {
       logo: this.form.get('logo')?.value,
       paymentGateway: this.form.get('paymentGateway')?.value,
       favicon: this.form.get('favicon')?.value,
+      defaultBanner: this.form.get('defaultBanner')?.value,
       isStoreLive: this.form.get('isStoreLive')?.value,
       notes: { packingSlip: this.form.get('packingSlip')?.value },
       buttons: {

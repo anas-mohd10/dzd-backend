@@ -267,14 +267,14 @@ export class AddProductComponent implements OnInit {
   toggleProductCategory(event: any, type: string) {
     if (type == 'add') {
       let categoryDetails = this.defaultCategories.filter(
-        (item: any) => item?._id == event.target.value
+        (item: any) => item?.slug == event.target.value
       );
       this.categories.includes(categoryDetails[0])
         ? this.HotToastService.info('Category already added')
         : this.categories.push(categoryDetails[0]);
     } else {
       this.categories = this.categories.filter(
-        (item: any) => item?._id != event
+        (item: any) => item?.slug != event
       );
     }
     this.productCategory.setValue('');
@@ -282,7 +282,7 @@ export class AddProductComponent implements OnInit {
 
   removeProductCategory(categoryId: string) {
     this.categories = this.categories.filter(
-      (item: any) => item?._id != categoryId
+      (item: any) => item?.slug != categoryId
     );
   }
 
@@ -525,7 +525,6 @@ export class AddProductComponent implements OnInit {
 
     this.parentForm = new FormGroup({
       name: new FormControl('', Validators.required),
-      thumbnail: new FormControl(null, Validators.required),
       isActive: new FormControl(true),
       sku: new FormControl('', Validators.required),
       tax: new FormControl(''),

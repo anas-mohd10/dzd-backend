@@ -23,137 +23,122 @@
         <tabset type="tabs" [justified]="true" type="pills" #staticTabs>
           <tab heading="Basic details">
             <form [formGroup]="parentForm">
-              <div class="row my-6">
-                <div class="col-lg-3 form-group">
-                  <label class="fs-6 mb-3 required">Thumbnail</label>
-                  <div class="ratio ratio-1x1 h-auto w-100 rounded" [ngClass]="{
-                    'border border-danger':
-                    (parentControls.thumbnail.touched || isParentSubmitted) &&
-                    parentControls.thumbnail.errors?.required
-                  }">
-                    <app-assets (mediaClicked)="handleThumbnail($event)" [previewDetails]="previewDetails"></app-assets>
+              <div class="my-6">
+                <div class="row">
+                  <div class="col-lg-6 mb-3 form-group">
+                    <label class="fs-6 mb-3 required">Name</label>
+                    <input type="text" class="form-control fs-6" formControlName="name" [ngClass]="{
+                          'is-invalid':
+                          (parentControls.name.touched || isParentSubmitted) &&
+                          parentControls.name.errors?.required
+                        }" />
                   </div>
-                  <div *ngIf="previewDetails">
-                    <button class="btn mt-2 btn-danger w-100" (click)="removeThumbnail()">Remove</button>
+
+                  <div class="col-lg-6 mb-3 form-group">
+                    <label class="fs-6 mb-3">HSN</label>
+                    <input type="text" class="form-control fs-6" formControlName="hsn" />
                   </div>
-                </div>
-                <div class="col-lg-9">
-                  <div class="row">
-                    <div class="col-lg-6 mb-3 form-group">
-                      <label class="fs-6 mb-3 required">Name</label>
-                      <input type="text" class="form-control fs-6" formControlName="name" [ngClass]="{
-                        'is-invalid':
-                        (parentControls.name.touched || isParentSubmitted) &&
-                        parentControls.name.errors?.required
-                      }" />
-                    </div>
 
-                    <div class="col-lg-6 mb-3 form-group">
-                      <label class="fs-6 mb-3">HSN</label>
-                      <input type="text" class="form-control fs-6" formControlName="hsn" />
-                    </div>
+                  <div class="col-lg-6 mb-3 form-group">
+                    <label class="fs-6 mb-3 required">SKU</label>
+                    <input type="text" class="form-control fs-6" formControlName="sku" [ngClass]="{
+                          'is-invalid':
+                          (parentControls.sku.touched || isParentSubmitted) &&
+                          parentControls.sku.errors?.required
+                        }" />
+                  </div>
 
-                    <div class="col-lg-6 mb-3 form-group">
-                      <label class="fs-6 mb-3 required">SKU</label>
-                      <input type="text" class="form-control fs-6" formControlName="sku" [ngClass]="{
-                        'is-invalid':
-                        (parentControls.sku.touched || isParentSubmitted) &&
-                        parentControls.sku.errors?.required
-                      }" />
-                    </div>
+                  <div class="col-lg-6 mb-3 form-group">
+                    <label class="fs-6 mb-3">Tax</label>
+                    <select formControlName="tax" id="tax" class="form-select">
+                      <option value="" disabled>-- Select an option --</option>
+                      <option *ngFor="let taxClass of taxClassDetails" value="{{taxClass?._id}}">{{taxClass.name}}
+                      </option>
+                    </select>
+                  </div>
 
-                    <div class="col-lg-6 mb-3 form-group">
-                      <label class="fs-6 mb-3">Tax</label>
-                      <select formControlName="tax" id="tax" class="form-select">
-                        <option value="" disabled>-- Select an option --</option>
-                        <option *ngFor="let taxClass of taxClassDetails" value="{{taxClass?._id}}">{{taxClass.name}}
-                        </option>
-                      </select>
-                    </div>
+                  <div class="col-lg-6 mb-3 form-group">
+                    <label class="fs-6 mb-3" for="isActive">Status</label>
+                    <select formControlName="isActive" id="isActive" class="form-select">
+                      <option value="" disabled>-- Select an option --</option>
+                      <option *ngFor="let status of ['true', 'false']" value="{{status}}">
+                        {{status == 'true' ? 'True' : 'False'}}
+                      </option>
+                    </select>
+                  </div>
 
-                    <div class="col-lg-6 mb-3 form-group">
-                      <label class="fs-6 mb-3" for="isActive">Status</label>
-                      <select formControlName="isActive" id="isActive" class="form-select">
+                  <div class="row px-0 mx-0" formGroupName="cod">
+                    <div class="col-lg-6 mb-3 from-group">
+                      <label class="fs-6 mb-3" for="isPresent">COD available</label>
+                      <select formControlName="isPresent" id="isPresent" class="form-select">
                         <option value="" disabled>-- Select an option --</option>
                         <option *ngFor="let status of ['true', 'false']" value="{{status}}">
                           {{status == 'true' ? 'True' : 'False'}}
                         </option>
                       </select>
                     </div>
-
-                    <div class="row px-0 mx-0" formGroupName="cod">
-                      <div class="col-lg-6 mb-3 from-group">
-                        <label class="fs-6 mb-3" for="isPresent">COD available</label>
-                        <select formControlName="isPresent" id="isPresent" class="form-select">
-                          <option value="" disabled>-- Select an option --</option>
-                          <option *ngFor="let status of ['true', 'false']" value="{{status}}">
-                            {{status == 'true' ? 'True' : 'False'}}
-                          </option>
-                        </select>
-                      </div>
-                      <div class="col-lg-6 mb-3 from-group">
-                        <label class="fs-6 mb-3" for="value">Charge</label>
-                        <input type="text" class="form-control fs-6" formControlName="value"
-                          [ngClass]="{'is-invalid': parentForm.get('cod.value')?.errors?.pattern}" />
-                      </div>
+                    <div class="col-lg-6 mb-3 from-group">
+                      <label class="fs-6 mb-3" for="value">Charge</label>
+                      <input type="text" class="form-control fs-6" formControlName="value"
+                        [ngClass]="{'is-invalid': parentForm.get('cod.value')?.errors?.pattern}" />
                     </div>
-
-                    <div class="row px-0 mx-0" formGroupName="return">
-                      <div class="col-lg-6 mb-3 from-group">
-                        <label class="fs-6 mb-3" for="isPresent">Return available</label>
-                        <select formControlName="isPresent" id="isPresent" class="form-select">
-                          <option value="" disabled>-- Select an option --</option>
-                          <option *ngFor="let status of ['true', 'false']" value="{{status}}">
-                            {{status == 'true' ? 'True' : 'False'}}
-                          </option>
-                        </select>
-                      </div>
-                      <div class="col-lg-6 mb-3 from-group">
-                        <label class="fs-6 mb-3" for="value">Days</label>
-                        <input type="text" class="form-control fs-6" formControlName="value"
-                          [ngClass]="{'is-invalid': parentForm.get('return.value')?.errors?.pattern}" />
-                      </div>
-                    </div>
-
-                    <div class="row px-0 mx-0" formGroupName="replace">
-                      <div class="col-lg-6 mb-3 from-group">
-                        <label class="fs-6 mb-3" for="isPresent">Replace option available</label>
-                        <select formControlName="isPresent" id="isPresent" class="form-select">
-                          <option value="" disabled>-- Select an option --</option>
-                          <option *ngFor="let status of ['true', 'false']" value="{{status}}">
-                            {{status == 'true' ? 'True' : 'False'}}
-                          </option>
-                        </select>
-                      </div>
-                      <div class="col-lg-6 mb-3 from-group">
-                        <label class="fs-6 mb-3" for="value">Days</label>
-                        <input type="text" class="form-control fs-6" formControlName="value"
-                          [ngClass]="{'is-invalid': parentForm.get('replace.value')?.errors?.pattern}" />
-                      </div>
-                    </div>
-
-                    <div class="row px-0 mx-0" formGroupName="shipping">
-                      <div class="col-lg-6 mb-3 from-group">
-                        <label class="fs-6 mb-3" for="isPresent">Free shipping available</label>
-                        <select formControlName="isPresent" id="isPresent" class="form-select">
-                          <option value="" disabled>-- Select an option --</option>
-                          <option *ngFor="let status of ['true', 'false']" value="{{status}}">
-                            {{status == 'true' ? 'True' : 'False'}}
-                          </option>
-                        </select>
-                      </div>
-                      <div class="col-lg-6 mb-3 from-group">
-                        <label class="fs-6 mb-3" for="value">Charge</label>
-                        <input type="text" class="form-control fs-6" formControlName="value"
-                          [ngClass]="{'is-invalid': parentForm.get('shipping.value')?.errors?.pattern}" />
-                      </div>
-                    </div>
-
                   </div>
+
+                  <div class="row px-0 mx-0" formGroupName="return">
+                    <div class="col-lg-6 mb-3 from-group">
+                      <label class="fs-6 mb-3" for="isPresent">Return available</label>
+                      <select formControlName="isPresent" id="isPresent" class="form-select">
+                        <option value="" disabled>-- Select an option --</option>
+                        <option *ngFor="let status of ['true', 'false']" value="{{status}}">
+                          {{status == 'true' ? 'True' : 'False'}}
+                        </option>
+                      </select>
+                    </div>
+                    <div class="col-lg-6 mb-3 from-group">
+                      <label class="fs-6 mb-3" for="value">Days</label>
+                      <input type="text" class="form-control fs-6" formControlName="value"
+                        [ngClass]="{'is-invalid': parentForm.get('return.value')?.errors?.pattern}" />
+                    </div>
+                  </div>
+
+                  <div class="row px-0 mx-0" formGroupName="replace">
+                    <div class="col-lg-6 mb-3 from-group">
+                      <label class="fs-6 mb-3" for="isPresent">Replace option available</label>
+                      <select formControlName="isPresent" id="isPresent" class="form-select">
+                        <option value="" disabled>-- Select an option --</option>
+                        <option *ngFor="let status of ['true', 'false']" value="{{status}}">
+                          {{status == 'true' ? 'True' : 'False'}}
+                        </option>
+                      </select>
+                    </div>
+                    <div class="col-lg-6 mb-3 from-group">
+                      <label class="fs-6 mb-3" for="value">Days</label>
+                      <input type="text" class="form-control fs-6" formControlName="value"
+                        [ngClass]="{'is-invalid': parentForm.get('replace.value')?.errors?.pattern}" />
+                    </div>
+                  </div>
+
+                  <div class="row px-0 mx-0" formGroupName="shipping">
+                    <div class="col-lg-6 mb-3 from-group">
+                      <label class="fs-6 mb-3" for="isPresent">Free shipping available</label>
+                      <select formControlName="isPresent" id="isPresent" class="form-select">
+                        <option value="" disabled>-- Select an option --</option>
+                        <option *ngFor="let status of ['true', 'false']" value="{{status}}">
+                          {{status == 'true' ? 'True' : 'False'}}
+                        </option>
+                      </select>
+                    </div>
+                    <div class="col-lg-6 mb-3 from-group">
+                      <label class="fs-6 mb-3" for="value">Charge</label>
+                      <input type="text" class="form-control fs-6" formControlName="value"
+                        [ngClass]="{'is-invalid': parentForm.get('shipping.value')?.errors?.pattern}" />
+                    </div>
+                  </div>
+
                 </div>
               </div>
               <div class="d-flex align-items-center justify-content-center gap-2">
-                <button class="btn border border-danger text-danger bg-white">Cancel</button>
+                <button class="btn border border-danger text-danger bg-white" routerLink="{{ appRoute.product.ALL_PRODUCTS }}">Cancel</button>
                 <button class="btn btn-primary" *ngIf="parentDetails" (click)="toggleTab(1)">Continue</button>
                 <button class="btn btn-primary" *ngIf="!parentDetails" (click)="createParent()">
                   Save and Continue
@@ -165,247 +150,214 @@
           <tab heading="Product Details">
             <form [formGroup]="form">
               <div class="my-6">
-
-                <div class="mb-3 form-group">
-                  <label class="fs-6 mb-3 required">Name</label>
-                  <input type="text" class="form-control fs-6" formControlName="name" (change)="autoGenerateSlug()" />
-                </div>
-
-                <div class="row align-items-end">
-                  <div class="col-lg-10 mb-3 form-group">
-                    <label class="fs-6 mb-3 required">Slug</label>
-                    <input type="text" class="form-control fs-6" formControlName="slug"
-                      [ngClass]="{ 'is-invalid': (formControls.slug.touched || isSubmitted) && formControls.slug.errors?.required }" />
-                  </div>
-                  <div class="col-lg-2 mb-3 form-group">
-                    <button class="w-100 btn btn-secondary" (click)="generateSlug()">Generate slug</button>
-                  </div>
-                </div>
-
                 <div class="row">
-                  <div class="col-lg-8 mb-3 form-group">
-                    <label class="fs-6 mb-3">Overview</label>
-                    <input type="text" class="form-control fs-6" placeholder="Eg. 2 - 3 pieces per 500 gm"
-                      formControlName="overview" />
-                  </div>
-                  <div class="col-lg-4 mb-3 form-group">
-                    <label class="fs-6 mb-3">Origin</label>
-                    <input type="text" class="form-control fs-6" placeholder="Eg. Australia" formControlName="origin" />
-                  </div>
-                </div>
-
-                <div class="mb-3 form-group">
-                  <label class="fs-6 mb-3">Boost Score</label>
-                  <input type="text" class="form-control fs-6" formControlName="boostScore"
-                    [ngClass]="{ 'is-invalid': (formControls.boostScore.touched || isSubmitted) && formControls.boostScore.errors?.pattern }" />
-                </div>
-
-                <div class="my-4">
-                  <div class="row" formGroupName="price">
-                    <div class="col-lg-6 mb-3 form-group">
-                      <label class="fs-6 mb-3 required">Maximum retail price</label>
-                      <input type="text" class="form-control fs-6" formControlName="mrp" placeholder="Eg. 18" />
-                    </div>
-                    <div class="col-lg-6 mb-3 form-group">
-                      <label class="fs-6 mb-3 required">Offer price</label>
-                      <input type="text" class="form-control fs-6" formControlName="offer" placeholder="Eg. 10.95" />
-                    </div>
-                  </div>
-                </div>
-
-                <div class="my-4">
-                  <div class="mb-3 form-group">
-                    <label class="fs-6 mb-3" for="productCategory">Category</label>
-                    <select [formControl]="productCategory" id="productCategory"
-                      (change)="toggleProductCategory($event, 'add')" class="form-select">
-                      <option value="" disabled>-- Select an option --</option>
-                      <option *ngFor="let category of defaultCategories" value="{{category?._id}}">
-                        {{category.name}}
-                      </option>
-                    </select>
-                  </div>
-                  <ng-container *ngIf="categories.length > 0">
-                    <div class="d-flex flex-wrap overflow-hidden align-items-center justify-content-start gap-3">
-                      <ng-container *ngFor="let category of categories">
-                        <div
-                          class="bg-secondary d-flex align-items-center justify-content-center gap-2 cursor-pointer p-2 rounded"
-                          (click)="toggleProductCategory(category?._id, 'remove')">
-                          <div>{{category.name}}</div>
-                          <div>
-                            <svg height="16" width="16" xmlns="http://www.w3.org/2000/svg" fill="none"
-                              viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-                              <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
-                            </svg>
-                          </div>
-                        </div>
-                      </ng-container>
-                    </div>
-                  </ng-container>
-                </div>
-
-                <div class="my-4">
-                  <label for="brand" class="fs-6 mb-3">Brand</label>
-                  <select formControlName="brand" id="brand" class="form-select">
-                    <option value="" disabled>-- Select an option --</option>
-                    <option *ngFor="let brand of brands" value="{{brand?.slug}}">{{brand.name}}</option>
-                  </select>
-                </div>
-
-                <div>
-                  <div class="form-group">
-                    <div class="fs-3 fw-bold">
-                      Attributes <span class="text-primary cursor-pointer fs-5 ms-4 text-decoration-underline"
-                        (click)="open(template)">Add
-                        variants</span>
-                    </div>
-                    <p class="text-muted">Manage your product variants to showcase your product. Create combination of
-                      attributes for your product.</p>
-
-                    <div class="d-flex flex-wrap align-items-center justify-content-start gap-2">
-                      <ng-container *ngFor="let attribute of attributes; let i = index">
-                        <div
-                          class="d-flex cursor-pointer align-items-center bg-secondary p-2 rounded justify-content-start gap-2">
-                          <div class="d-flex align-items-center justify-content-start gap-2">
-                            <div class="fs-5 fw-bold">{{attribute?.title}} : </div>
-                            <div class="fs-5">{{attribute?.value}}</div>
-                          </div>
-                          <div (click)="removeAttribute(i)">
-                            <svg height="18" width="18" data-slot="icon" fill="none" stroke-width="1.5"
-                              stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"
-                              aria-hidden="true">
-                              <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12"></path>
-                            </svg>
-                          </div>
-                        </div>
-                      </ng-container>
-                    </div>
-
-                    <ng-container *ngIf="attributes.length == 0">
-                      <div class="fs-4 text-muted">No variants found</div>
-                    </ng-container>
-
-                  </div>
-                </div>
-
-                <div class="my-4">
-                  <div class="row">
-                    <div class="col-lg-6 mb-3 form-group">
-                      <label class="fs-6 mb-3 required">Stock</label>
-                      <input type="text" class="form-control fs-6" formControlName="stock" />
-                    </div>
-                    <div class="col-lg-6 mb-3 form-group">
-                      <label class="fs-6 mb-3 required">SKU</label>
-                      <input type="text" class="form-control fs-6" formControlName="sku" />
-                    </div>
-                    <div class="col-lg-6 mb-3 form-group">
-                      <label class="fs-6 mb-3 required">Minimum order quantity</label>
-                      <input type="text" class="form-control fs-6" formControlName="moq" />
-                    </div>
-                    <div class="col-lg-6 mb-3 form-group">
-                      <label class="fs-6 mb-3 required">Maximum order quantity</label>
-                      <input type="text" class="form-control fs-6" formControlName="maxOrderQuantity" />
-                    </div>
-                    <div class="col-lg-6 mb-3 form-group">
-                      <label class="fs-6 mb-3">Stock warning</label>
-                      <input type="text" class="form-control fs-6" formControlName="stockWarning" />
-                    </div>
-                  </div>
-                </div>
-
-                <div class="my-4">
-                  <div class="form-group mb-3 col-lg-6">
-                    <label for="weight" class="fs-6 mb-3">Unit</label>
-                    <input type="text" id="weight" class="form-control fs-6" formControlName="unit" />
-                  </div>
-                </div>
-
-                <div class="my-4">
-                  <div class="row" formGroupName="details">
+                  <div class="col-lg-9">
                     <div class="mb-3 form-group">
-                      <label class="fs-6 mb-3">Description</label>
-                      <angular-editor class="form-control fs-6 about-textarea" formControlName="description"
-                        [config]="editorConfig"></angular-editor>
+                      <label class="fs-6 mb-3 required">Name</label>
+                      <input type="text" class="form-control fs-6" formControlName="name"
+                        [ngClass]="{ 'is-invalid': (formControls.name.touched || isSubmitted) && formControls.name.errors?.required }" />
                     </div>
-                    <div class="mb-3 form-group">
-                      <label class="fs-6 mb-3">Long Description</label>
-                      <angular-editor class="form-control fs-6 about-textarea" formControlName="longDescription"
-                        [config]="editorConfig"></angular-editor>
-                    </div>
-                    <div class="form-group">
-                      <label class="fs-6 mb-3">Features</label>
-                      <angular-editor class="form-control fs-6 about-textarea" formControlName="features"
-                        [config]="editorConfig"></angular-editor>
-                    </div>
-                  </div>
-                </div>
-
-                <div class="row">
-                  <div class="col-lg-6 mb-3 form-group">
-                    <label for="searchKeywords" class="fs-6 mb-3">Search keywords</label>
-                    <input id="searchKeywords" class="form-control fs-6"
-                      (keyup.Enter)="toggleSearchKeywords($event, 'add')" [formControl]="searchKeyword" />
-                    <ng-container *ngIf="searchKeywords.length > 0">
-                      <div class="mt-2 d-flex flex-wrap overflow-hidden align-items-center justify-content-start gap-3">
-                        <ng-container *ngFor="let keyword of searchKeywords">
-                          <div
-                            class="bg-secondary d-flex align-items-center justify-content-center gap-2 cursor-pointer p-2 rounded"
-                            (click)="toggleSearchKeywords(keyword, 'remove')">
-                            {{keyword}}
-                            <svg data-slot="icon" height="16" width="16" fill="none" stroke-width="1.5"
-                              stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"
-                              aria-hidden="true">
-                              <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12"></path>
-                            </svg>
-                          </div>
-                        </ng-container>
+                    <div class="mb-3">
+                      <label class="fs-6 mb-3 required" for="slug">Slug</label>
+                      <div class="position-relative" id="slug">
+                        <div class="mb-3 form-group">
+                          <input type="text" class="form-control fs-6" formControlName="slug"
+                            [ngClass]="{ 'is-invalid': (formControls.slug.touched || isSubmitted) && formControls.slug.errors?.required }" />
+                        </div>
+                        <div class="position-absolute top-50 end-0 translate-middle-y mx-4 cursor-pointer"
+                          (click)="generateSlug()">
+                          <svg height="20" width="20" data-slot="icon" fill="none" stroke-width="1.5"
+                            stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"
+                            aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                              d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0 3.181 3.183a8.25 8.25 0 0 0 13.803-3.7M4.031 9.865a8.25 8.25 0 0 1 13.803-3.7l3.181 3.182m0-4.991v4.99">
+                            </path>
+                          </svg>
+                        </div>
                       </div>
-                    </ng-container>
-                  </div>
-
-                  <div class="col-lg-6 mb-3 form-group">
-                    <label for="relatedProducts" class="fs-6 mb-3">Related products</label>
-                    <select id="relatedProducts" [formControl]="relatedProduct" class="form-select"
-                      (change)="onProductsTriggered()">
-                      <option value="" disabled>-- Select an option--</option>
-                      <option *ngFor="let activeRelatedProduct of activeRelatedProducts"
-                        value="{{activeRelatedProduct?._id}}">{{activeRelatedProduct.name}}
-                      </option>
-                    </select>
-                    <ng-container *ngIf="relatedProducts.length > 0">
-                      <div class="mt-2 d-flex flex-wrap align-items-center gap-2 justify-content-start">
-                        <ng-container *ngFor="let product of relatedProducts; let i = index">
-                          <div class="bg-secondary d-flex align-items-center justify-content-center gap-2 p-2 rounded">
-                            {{product.name}}
-                            <div (click)="onProductsTriggered(product)">
-                              <svg data-slot="icon" height="16" width="16" fill="none" stroke-width="1.5"
-                                stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"
-                                aria-hidden="true">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12"></path>
-                              </svg>
+                    </div>
+                    <div class="mb-3 form-group">
+                      <label class="fs-6 mb-3">Overview</label>
+                      <input type="text" class="form-control fs-6" placeholder="Eg. 2 - 3 pieces per 500 gm"
+                        formControlName="overview" />
+                    </div>
+                    <div class="my-3">
+                      <div class="row" formGroupName="price">
+                        <div class="col-lg-6 mb-3 form-group">
+                          <label class="fs-6 mb-3 required">Store Price</label>
+                          <input type="text" class="form-control fs-6" formControlName="mrp" placeholder="Eg. 18" />
+                        </div>
+                        <div class="col-lg-6 mb-3 form-group">
+                          <label class="fs-6 mb-3 required">Offer Price</label>
+                          <input type="text" class="form-control fs-6" formControlName="offer"
+                            placeholder="Eg. 10.95" />
+                        </div>
+                      </div>
+                    </div>
+                    <div class="mb-3">
+                      <div class="mb-3 form-group">
+                        <label class="fs-6 mb-3" for="productCategory">Category</label>
+                        <select [formControl]="productCategory" id="productCategory"
+                          (change)="toggleProductCategory($event, 'add')" class="form-select">
+                          <option value="" disabled>-- Select an option --</option>
+                          <option *ngFor="let category of defaultCategories" value="{{category?.slug}}">
+                            {{category.name}}
+                          </option>
+                        </select>
+                      </div>
+                      <ng-container *ngIf="categories.length > 0">
+                        <div class="d-flex flex-wrap overflow-hidden align-items-center justify-content-start gap-3">
+                          <ng-container *ngFor="let category of categories">
+                            <div
+                              class="bg-secondary cursor-pointer p-2 rounded d-flex align-items-center justify-content-center gap-2"
+                              (click)="toggleProductCategory(category.slug, 'remove')">
+                              <div>
+                                {{category.name}}
+                              </div>
+                              <div>
+                                <svg height="16" width="16" xmlns="http://www.w3.org/2000/svg" fill="none"
+                                  viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                                  <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
+                                </svg>
+                              </div>
                             </div>
+                          </ng-container>
+                        </div>
+                      </ng-container>
+                    </div>
+                    <div class="row mb-3">
+                      <div class="col-lg-6 mb-3 form-group">
+                        <label class="fs-6 mb-3 required">Stock</label>
+                        <input type="text" class="form-control fs-6" formControlName="stock"
+                          [ngClass]="{ 'is-invalid': (formControls.stock.touched || isSubmitted) && (formControls.stock.errors?.required || formControls.stock.errors?.pattern)}" />
+                      </div>
+                      <div class="col-lg-6 mb-3 form-group">
+                        <label class="fs-6 mb-3 required">SKU</label>
+                        <input type="text" class="form-control fs-6" formControlName="sku" />
+                      </div>
+                      <div class="col-lg-6 mb-3 form-group">
+                        <label class="fs-6 mb-3 required">Minimum Order Quantity</label>
+                        <input type="text" class="form-control fs-6" formControlName="moq"
+                          [ngClass]="{ 'is-invalid': (formControls.moq.touched || isSubmitted) && (formControls.moq.errors?.required || formControls.moq.errors?.pattern)}" />
+                      </div>
+                      <div class="col-lg-6 mb-3 form-group">
+                        <label class="fs-6 mb-3 required">Maximum Order Quantity</label>
+                        <input type="text" class="form-control fs-6" formControlName="maxOrderQuantity"
+                          [ngClass]="{ 'is-invalid': (formControls.maxOrderQuantity.touched || isSubmitted) && (formControls.maxOrderQuantity.errors?.required || formControls.maxOrderQuantity.errors?.pattern)}" />
+                      </div>
+                      <div class="col-lg-6 mb-3 form-group">
+                        <label class="fs-6 mb-3">Stock Warning</label>
+                        <input type="text" class="form-control fs-6" formControlName="stockWarning" />
+                      </div>
+                    </div>
+                    <div class="mb-3">
+                      <div class="mb-3 form-group">
+                        <label for="searchKeywords" class="fs-6 mb-3">Search Keywords</label>
+                        <input id="searchKeywords" class="form-control fs-6"
+                          (keyup.enter)="toggleSearchKeywords($event, 'add')" [formControl]="searchKeyword" />
+                        <ng-container *ngIf="searchKeywords && searchKeywords.length > 0">
+                          <div
+                            class="mt-2 d-flex flex-wrap overflow-hidden align-items-center justify-content-start gap-3">
+                            <ng-container *ngFor="let keyword of searchKeywords">
+                              <div
+                                class="bg-secondary d-flex align-items-center justify-content-center gap-2 cursor-pointer p-2 rounded"
+                                (click)="toggleSearchKeywords(keyword, 'remove')">
+                                {{keyword}}
+                                <svg height="16" width="16" data-slot="icon" fill="none" stroke-width="1.5"
+                                  stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"
+                                  aria-hidden="true">
+                                  <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12"></path>
+                                </svg>
+                              </div>
+                            </ng-container>
                           </div>
                         </ng-container>
                       </div>
-                    </ng-container>
+                      <div class="mb-3 form-group">
+                        <label for="relatedProducts" class="fs-6 mb-3">Related Products</label>
+                        <select id="relatedProducts" [formControl]="relatedProduct" class="form-select"
+                          (change)="onProductsTriggered()">
+                          <option value="" disabled>-- Select an option--</option>
+                          <option *ngFor="let activeRelatedProduct of activeRelatedProducts"
+                            value="{{activeRelatedProduct?._id}}">{{activeRelatedProduct.name}}
+                          </option>
+                        </select>
+                        <ng-container *ngIf="relatedProducts.length > 0">
+                          <div class="mt-2 d-flex flex-wrap align-items-center gap-2 justify-content-start">
+                            <ng-container *ngFor="let product of relatedProducts; let i = index">
+                              <div
+                                class="bg-secondary d-flex align-items-center justify-content-center gap-2 p-2 rounded">
+                                {{product.name}}
+                                <div (click)="onProductsTriggered(product)">
+                                  <svg data-slot="icon" height="16" width="16" fill="none" stroke-width="1.5"
+                                    stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"
+                                    aria-hidden="true">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12">
+                                    </path>
+                                  </svg>
+                                </div>
+                              </div>
+                            </ng-container>
+                          </div>
+                        </ng-container>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-lg-3 rightSideBg p-4 rounded">
+                    <div class="mb-3 form-group">
+                      <label class="fs-6 mb-3">Origin</label>
+                      <input type="text" class="form-control fs-6" placeholder="Eg. Australia"
+                        formControlName="origin" />
+                    </div>
+                    <div class="mb-3 form-group">
+                      <label class="fs-6 mb-3">Boost Score</label>
+                      <input type="text" class="form-control fs-6" formControlName="boostScore"
+                        [ngClass]="{ 'is-invalid': (formControls.boostScore.touched || isSubmitted) && formControls.boostScore.errors?.pattern }" />
+                    </div>
+                    <div class="mb-3 form-group">
+                      <label for="weight" class="fs-6 mb-3">Unit</label>
+                      <input type="text" id="weight" class="form-control fs-6" formControlName="unit" />
+                    </div>
+                    <div class="mb-3 form-group">
+                      <label class="fs-6 mb-3" for="status">Active Status</label>
+                      <select formControlName="isActive" id="status" class="form-select">
+                        <option value="" disabled>-- Select an option --</option>
+                        <option *ngFor="let value of [true, false]" value="{{value}}">{{value == true ? 'Yes' : 'No'}}
+                        </option>
+                      </select>
+                    </div>
+                    <div class="mb-3 form-group">
+                      <label class="fs-6 mb-3" for="visibility">Visibility</label>
+                      <select formControlName="isVisible" id="visibility" class="form-select">
+                        <option value="" disabled>-- Select an option --</option>
+                        <option *ngFor="let value of [true, false]" value="{{value}}">{{value == true ? 'Visible' :
+                          'Hidden'}}</option>
+                      </select>
+                    </div>
+                    <div class="mb-3 form-group">
+                      <label for="brand" class="fs-6 mb-3">Brand</label>
+                      <select formControlName="brand" class="form-select">
+                        <option value="" disabled>-- Select an option --</option>
+                        <option *ngFor="let brand of brands" value="{{brand?.slug}}">{{brand?.name}}</option>
+                      </select>
+                    </div>
                   </div>
                 </div>
-
-                <div class="row">
-                  <div class="col-lg-6 mb-3 form-group">
-                    <label class="fs-6 mb-3 required">Status</label>
-                    <select id="isActive" formControlName="isActive" class="form-select">
-                      <option value="" disabled>-- Select an option --</option>
-                      <option value="true">Active</option>
-                      <option value="false">Inactive</option>
-                    </select>
+                <div class="row" formGroupName="details">
+                  <div class="mb-3 form-group">
+                    <label class="fs-6 mb-3">Description</label>
+                    <angular-editor class="form-control fs-6 about-textarea" formControlName="description"
+                      [config]="editorConfig"></angular-editor>
                   </div>
-                  <div class="col-lg-6 mb-3 form-group">
-                    <label class="fs-6 mb-3 required">Visibility</label>
-                    <select id="isVisible" formControlName="isVisible" class="form-select">
-                      <option value="" disabled>-- Select an option --</option>
-                      <option value="true">Visible</option>
-                      <option value="false">Hidden</option>
-                    </select>
+                  <div class="mb-3 form-group">
+                    <label class="fs-6 mb-3">Long Description</label>
+                    <angular-editor class="form-control fs-6 about-textarea" formControlName="longDescription"
+                      [config]="editorConfig"></angular-editor>
+                  </div>
+                  <div class="form-group">
+                    <label class="fs-6 mb-3">Features</label>
+                    <angular-editor class="form-control fs-6 about-textarea" formControlName="features"
+                      [config]="editorConfig"></angular-editor>
                   </div>
                 </div>
               </div>
@@ -414,6 +366,45 @@
                 <button class="btn btn-primary" (click)="toggleTab(2)">Continue</button>
               </div>
             </form>
+          </tab>
+
+          <tab heading="Variants">
+            <div class="my-6">
+              <div class="form-group">
+                <div class="d-flex align-items-center justify-content-end gap-2">
+                  <button class="btn btn-secondary d-flex align-items-center justify-content-center gap-2"
+                    (click)="open(template)">
+                    <svg height="16" width="16" data-slot="icon" fill="none" stroke-width="1.5" stroke="currentColor"
+                      viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"></path>
+                    </svg>
+                    Add Variants
+                  </button>
+                </div>
+                <div class="d-flex flex-wrap align-items-center justify-content-start gap-2 mt-6">
+                  <ng-container *ngFor="let attribute of attributes; let i = index">
+                    <div
+                      class="d-flex cursor-pointer align-items-center bg-secondary p-2 rounded justify-content-start gap-2">
+                      <div class="d-flex align-items-center justify-content-start gap-2">
+                        <div class="fs-5">{{attribute?.title}} : </div>
+                        <div class="fs-5">{{attribute?.value}}</div>
+                      </div>
+                      <div (click)="removeAttribute(i)">
+                        <svg height="18" width="18" data-slot="icon" fill="none" stroke-width="1.5"
+                          stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"
+                          aria-hidden="true">
+                          <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12"></path>
+                        </svg>
+                      </div>
+                    </div>
+                  </ng-container>
+                </div>
+              </div>
+            </div>
+            <div class="d-flex align-items-center justify-content-center gap-2">
+              <button class="btn border border-primary bg-white text-primary" (click)="toggleTab(1)">Back</button>
+              <button class="btn btn-primary" (click)="toggleTab(3)">Continue</button>
+            </div>
           </tab>
 
           <tab heading="Specifications">
@@ -454,8 +445,8 @@
                 </form>
               </div>
               <div class="d-flex align-items-center justify-content-center gap-2">
-                <button class="btn border border-primary bg-white text-primary" (click)="toggleTab(1)">Back</button>
-                <button class="btn btn-primary" (click)="toggleTab(3)">Continue</button>
+                <button class="btn border border-primary bg-white text-primary" (click)="toggleTab(2)">Back</button>
+                <button class="btn btn-primary" (click)="toggleTab(4)">Continue</button>
               </div>
             </form>
           </tab>
@@ -548,8 +539,8 @@
                 </div>
               </div>
               <div class="d-flex align-items-center justify-content-center gap-2">
-                <button class="btn border border-primary bg-white text-primary" (click)="toggleTab(2)">Back</button>
-                <button class="btn btn-primary" (click)="toggleTab(4)">Continue</button>
+                <button class="btn border border-primary bg-white text-primary" (click)="toggleTab(3)">Back</button>
+                <button class="btn btn-primary" (click)="toggleTab(5)">Continue</button>
               </div>
             </form>
           </tab>
@@ -571,7 +562,7 @@
                 </div>
               </div>
               <div class="d-flex align-items-center justify-content-center gap-2">
-                <button class="btn border border-primary bg-white text-primary" (click)="toggleTab(3)">Back</button>
+                <button class="btn border border-primary bg-white text-primary" (click)="toggleTab(4)">Back</button>
                 <button class="btn btn-primary" (click)="saveChanges()">Save changes</button>
               </div>
             </form>

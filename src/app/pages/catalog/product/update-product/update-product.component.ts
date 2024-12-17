@@ -736,24 +736,24 @@ export class UpdateProductComponent implements OnInit {
 
           this.storeFields = res?.result?.storeFrontFields;
           this.tagIcons = res?.result?.tagIcons ? res?.result?.tagIcons : [];
-          this.categories = res?.result?.category?.id;
+          this.categories = res?.result?.categories;
           this.parentDetails = res?.result?.product?.id;
           this.productBannerDetails = res?.result?.productBanner && res?.result?.productBanner;
 
           this.form.patchValue({
             productBanner: res?.result?.productBanner?._id,
             brand: res?.result?.brand?.slug,
-            name: res.result.localizedNames?.[this.settings.primaryLang] || res.result.name,
-            overview: res.result.localizedOverview?.[this.settings.primaryLang] || res.result.overview,
-            origin: res.result.localizedOrigin?.[this.settings.primaryLang] || res.result.origin,
+            name: res.result.localizedNames?.[this.settings.primaryLang] || res.result?.name,
+            overview: res.result.localizedOverview?.[this.settings.primaryLang] || res.result?.overview,
+            origin: res.result.localizedOrigin?.[this.settings.primaryLang] || res.result?.origin,
             details: {
-              description: res.result.localizedDetails?.description?.[this.settings.primaryLang] || res.result.details.description,
-              features: res.result.localizedDetails?.features?.[this.settings.primaryLang] || res.result.details.features,
-              longDescription: res.result.localizedDetails?.longDescription?.[this.settings.primaryLang] || res.result.details.longDescription,
+              description: res.result.localizedDetails?.description?.[this.settings.primaryLang] || res.result?.details?.description,
+              features: res.result.localizedDetails?.features?.[this.settings.primaryLang] || res.result?.details?.features,
+              longDescription: res.result.localizedDetails?.longDescription?.[this.settings.primaryLang] || res.result?.details?.longDescription,
             },
-            metaTitle: res?.result?.localizedMetaTitles?.[this.settings.primaryLang] || res.result.metaTitle,
-            metaDescription: res.result.localizedMetaDescriptions?.[this.settings.primaryLang] || res.result.metaDescription,
-            metaKeywords: res.result.localizedMetaKeywords?.[this.settings.primaryLang] || res.result.metaKeywords,
+            metaTitle: res?.result?.localizedMetaTitles?.[this.settings.primaryLang] || res.result?.metaTitle,
+            metaDescription: res.result.localizedMetaDescriptions?.[this.settings.primaryLang] || res.result?.metaDescription,
+            metaKeywords: res.result.localizedMetaKeywords?.[this.settings.primaryLang] || res.result?.metaKeywords,
           });
 
           this.attributes = res?.result?.attributes;

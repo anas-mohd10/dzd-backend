@@ -10,8 +10,42 @@
   color: #d62f2f;
 }
 
-.logs {
-  height: 400px;
-  max-height: 400px;
-  overflow-y: scroll;
+
+#logContainer {
+  width: 100%;
+  overflow-y: auto;
+  background-color: #232f3e;
+  border: 1px solid #ddd;
+  padding: 10px;
+  font-family: Arial, sans-serif;
+  font-size: 14px;
+  color: #333;
+  box-sizing: border-box;
+  font-family: monaco;
+}
+
+.logMessage {
+  color: #ffffff;
+  font-size: 14px;
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  line-height: 24px;
+  gap: 16px;
+
+  &.error {
+    color: #f83737;
+  }
+
+  strong {
+    color: #879596;
+    background: #293648;
+    width: 60px;
+  }
+
+  .timestamp {
+    color: #879596;
+    background: #293648;
+    width: 200px;
+  }
 }

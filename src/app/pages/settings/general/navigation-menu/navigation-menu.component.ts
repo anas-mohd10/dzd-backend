@@ -16,7 +16,7 @@ import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
 import { AdminUsersService } from 'src/app/includes/services/admin.users.service';
 import { MenuService } from 'src/app/includes/services/menu.service';
 import { HotToastService } from '@ngneat/hot-toast';
-import { moveItemInArray } from '@angular/cdk/drag-drop';
+import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { StaticPageService } from 'src/app/includes/services/static-page.service';
 import { MegamenuService } from 'src/app/includes/services/megamenu.service';
 import { AngularEditorConfig } from '@kolkov/angular-editor';
@@ -179,6 +179,19 @@ export class NavigationMenuComponent implements OnInit {
   megaMenuEdit: boolean = false;
   menuItemIcon: string = '';
   megaMenuItemIndex: any;
+  subMenuBoxIndex: any = null;
+  menuItemsRef: BsModalRef;
+  isAddMenuItem: boolean = false;
+  childNodeForm: FormGroup = new FormGroup({});
+  isAddMenuChildItem: boolean = false;
+  childNodes: Array<any> = [];
+  isChildNodeSubmitted: boolean = false;
+  childNode: any;
+  childNodeDetails: any = {};
+  childNodeIcon: string = '';
+  childNodeIndex: any = null;
+  parentMenuIndex: any = null;
+  showChildNode: any = null
 
   get itemControls() {
     return this.itemForm.controls;
@@ -196,9 +209,8 @@ export class NavigationMenuComponent implements OnInit {
     private MegamenuService: MegamenuService,
     private StaticPageService: StaticPageService,
     private FooterService: FooterService
-  ) {}
+  ) { }
 
-  //Store facility modal starts here
   openStoreFacilityModal(
     template: TemplateRef<any>,
     facilityDetails?: any,
@@ -249,7 +261,7 @@ export class NavigationMenuComponent implements OnInit {
         } else {
         }
       },
-      error: (err: any) => {},
+      error: (err: any) => { },
     });
   }
 
@@ -263,12 +275,10 @@ export class NavigationMenuComponent implements OnInit {
         } else {
         }
       },
-      error: (err: any) => {},
+      error: (err: any) => { },
     });
   }
-  //Store facility modal ends here
 
-  //Mega menu items
   openMegaMenuModal(
     template: TemplateRef<any>,
     type?: string,
@@ -301,6 +311,12 @@ export class NavigationMenuComponent implements OnInit {
     this.subMenuBoxes.splice(index, 1);
   }
 
+  editSubMenuBox(index: number) {
+    this.subMenuBoxForm.patchValue(this.subMenuBoxes[index]);
+    this.subMenuBoxIcon = this.subMenuBoxes[index]?.icon;
+    this.subMenuBoxIndex = index;
+  }
+
   closeMegaMenuModal() {
     this.megaMenuModalRef?.hide();
     this.megaMenuAdvertisement = '';
@@ -309,13 +325,28 @@ export class NavigationMenuComponent implements OnInit {
     this.megaMenuDetails = {};
     this.megaMenuForm.reset();
     this.megaMenuItemForm.reset();
+    this.subMenuBoxForm.reset();
+    this.subMenuBoxIndex = null;
+    this.subMenuBoxIcon = '';
     this.subMenuBoxes = [];
+  }
+
+  addMenuItem() {
+    this.isAddMenuItem = true
+  }
+
+  addMenuChildItem(menuIndex: number) {
+    this.parentMenuIndex = menuIndex
+    this.isAddMenuChildItem = true
   }
 
   handleMegaMenuMedia(type: string, event: any) {
     if (type === 'advertisement') {
       this.megaMenuAdvertisement = event.path;
       this.megaMenuForm.patchValue({ advertisement: event.path });
+    } else if (type == 'icon') {
+      this.megaMenuIcon = event.path;
+      this.megaMenuForm.patchValue({ icon: event.path });
     }
   }
 
@@ -330,6 +361,9 @@ export class NavigationMenuComponent implements OnInit {
     if (type === 'advertisement') {
       this.megaMenuAdvertisement = '';
       this.megaMenuForm.patchValue({ advertisement: '' });
+    } else if (type == 'icon') {
+      this.megaMenuIcon = '';
+      this.megaMenuForm.patchValue({ icon: '' });
     }
   }
 
@@ -347,7 +381,33 @@ export class NavigationMenuComponent implements OnInit {
 
   saveSubMenuBox() {
     this.subMenuBoxIcon = '';
-    this.subMenuBoxes.push(this.subMenuBoxForm.value);
+    if (this.subMenuBoxIndex != null &&
+      (
+        this.subMenuBoxForm.get('icon')?.value ||
+        this.subMenuBoxForm.get('title')?.value ||
+        this.subMenuBoxForm.get('redirection')?.value
+      )
+    ) {
+      this.subMenuBoxes[this.subMenuBoxIndex] = this.subMenuBoxForm.value;
+    } else if (
+      this.subMenuBoxIndex == null &&
+      (
+        this.subMenuBoxForm.get('icon')?.value ||
+        this.subMenuBoxForm.get('title')?.value ||
+        this.subMenuBoxForm.get('redirection')?.value
+      )
+    ) {
+      {
+        this.subMenuBoxes.push(this.subMenuBoxForm.value);
+      }
+      this.subMenuBoxIndex = null;
+      this.subMenuBoxForm.reset();
+    }
+  }
+
+  cancelSubMenuBox() {
+    this.subMenuBoxIcon = '';
+    this.subMenuBoxIndex = null;
     this.subMenuBoxForm.reset();
   }
 
@@ -377,8 +437,6 @@ export class NavigationMenuComponent implements OnInit {
         },
       });
     } else {
-      console.log('subMenus', this.subMenus);
-
       this.megaMenuForm
         .get('subMenuBoxes')
         ?.patchValue({ menuBoxes: this.subMenuBoxes });
@@ -408,6 +466,10 @@ export class NavigationMenuComponent implements OnInit {
     return this.megaMenuItemForm.controls;
   }
 
+  get childNodeFormControls() {
+    return this.childNodeForm.controls
+  }
+
   saveMegaMenuItemDetails() {
     if (!this.megaMenuItemForm.valid) {
       this.isMegaMenuItemDetailsSubmitted = true;
@@ -426,6 +488,28 @@ export class NavigationMenuComponent implements OnInit {
       this.megaMenuItemForm.reset();
       this.isMegaMenuItemDetailsSubmitted = false;
     }
+    this.isAddMenuItem = false
+  }
+
+  saveChildNodeDetails() {
+    if (!this.childNodeForm.valid) {
+      this.isMegaMenuItemDetailsSubmitted = true;
+      return;
+    }
+
+    if (this.childNodeIndex != null) {
+      this.subMenus[this.parentMenuIndex]['childNodes'][this.childNodeIndex] = this.childNodeForm.value;
+      this.Toast.success('Menu item added successfully');
+      this.childNodeForm.reset();
+      this.isMegaMenuItemDetailsSubmitted = false;
+      this.childNodeIndex = null;
+    } else {
+      this.subMenus[this.parentMenuIndex]['childNodes'].push(this.childNodeForm.value);
+      this.Toast.success('Menu item added successfully');
+      this.childNodeForm.reset();
+      this.isMegaMenuItemDetailsSubmitted = false;
+    }
+    this.isAddMenuChildItem = false
   }
 
   removeMegaMenuItem(index: number) {
@@ -435,10 +519,33 @@ export class NavigationMenuComponent implements OnInit {
   getMegaMenuItem(index: number) {
     this.megaMenuItemForm.patchValue(this.subMenus[index]);
     this.megaMenuItemIndex = index;
+    this.isAddMenuItem = true
   }
-  //Mega menu items
 
-  //Rearrange menu items
+  getChildNodeItem(index: number, parentMenuIndex: number) {
+    this.parentMenuIndex = parentMenuIndex
+    this.childNodeForm.patchValue(this.subMenus[this.parentMenuIndex]['childNodes'][index]);
+    this.childNodeIndex = index;
+    this.isAddMenuChildItem = true
+  }
+
+  removeChildNodeItem(index: number, parentMenuIndex: number) {
+    this.parentMenuIndex = parentMenuIndex
+    this.subMenus[this.parentMenuIndex]['childNodes'].splice(index, 1);
+  }
+
+  closeMegaMenuItem() {
+    this.isAddMenuItem = false
+    this.megaMenuItemForm.reset();
+    this.megaMenuItemIndex = null
+  }
+
+  closeChildNodeItem() {
+    this.isAddMenuChildItem = false
+    this.childNodeForm.reset();
+    this.childNodeIndex = null
+  }
+
   drop(event: any) {
     let items = [...this.savedItems];
     moveItemInArray(items, event.previousIndex, event.currentIndex);
@@ -465,7 +572,6 @@ export class NavigationMenuComponent implements OnInit {
       },
     });
   }
-  //Rearrange menu items
 
   getTransformStyle() {
     return `transform: translateX(${this.translateXValue}px);`;
@@ -506,6 +612,11 @@ export class NavigationMenuComponent implements OnInit {
       seoContent: new FormControl(''),
       seoContentDisabledFor: new FormControl([]),
       storeFacilities: new FormControl([]),
+    });
+
+    this.childNodeForm = new FormGroup({
+      title: new FormControl('', Validators.required),
+      redirection: new FormControl('', Validators.required),
     });
 
     this.storeFacilityForm = new FormGroup({
@@ -1025,7 +1136,7 @@ export class NavigationMenuComponent implements OnInit {
           } else {
           }
         },
-        error: (err: any) => {},
+        error: (err: any) => { },
       });
     }
   }
@@ -1068,7 +1179,7 @@ export class NavigationMenuComponent implements OnInit {
           } else {
           }
         },
-        error: (err: any) => {},
+        error: (err: any) => { },
       });
     }
   }
@@ -1123,7 +1234,7 @@ export class NavigationMenuComponent implements OnInit {
           } else {
           }
         },
-        error: (err: any) => {},
+        error: (err: any) => { },
       });
     } else {
       this.MenuService.createCsTitleItems({
@@ -1138,7 +1249,7 @@ export class NavigationMenuComponent implements OnInit {
           } else {
           }
         },
-        error: (err: any) => {},
+        error: (err: any) => { },
       });
     }
   }
@@ -1179,7 +1290,7 @@ export class NavigationMenuComponent implements OnInit {
           } else {
           }
         },
-        error: (err: any) => {},
+        error: (err: any) => { },
       });
     } else {
       this.MenuService.createCsTitle(this.advacnedMenuForm.value).subscribe({
@@ -1191,7 +1302,7 @@ export class NavigationMenuComponent implements OnInit {
           } else {
           }
         },
-        error: (err: any) => {},
+        error: (err: any) => { },
       });
     }
   }
@@ -1210,7 +1321,7 @@ export class NavigationMenuComponent implements OnInit {
           } else {
           }
         },
-        error: (err: any) => {},
+        error: (err: any) => { },
       });
     } else {
       this.MenuService.createCsTitleItems(
@@ -1224,7 +1335,7 @@ export class NavigationMenuComponent implements OnInit {
           } else {
           }
         },
-        error: (err: any) => {},
+        error: (err: any) => { },
       });
     }
   }
@@ -1238,7 +1349,7 @@ export class NavigationMenuComponent implements OnInit {
         } else {
         }
       },
-      error: (err: any) => {},
+      error: (err: any) => { },
     });
   }
 
@@ -1252,7 +1363,7 @@ export class NavigationMenuComponent implements OnInit {
         } else {
         }
       },
-      error: (err: any) => {},
+      error: (err: any) => { },
     });
   }
 
@@ -1265,7 +1376,7 @@ export class NavigationMenuComponent implements OnInit {
         } else {
         }
       },
-      error: (err: any) => {},
+      error: (err: any) => { },
     });
   }
 
@@ -1313,7 +1424,7 @@ export class NavigationMenuComponent implements OnInit {
         } else {
         }
       },
-      error: (err: any) => {},
+      error: (err: any) => { },
     });
   }
 
