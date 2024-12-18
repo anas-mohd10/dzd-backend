@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, TemplateRef } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { appRoutes } from 'src/app/config/routes';
 import { AppSettingsService } from 'src/app/includes/services/app.settings.service';
@@ -8,6 +8,7 @@ import { environment } from 'src/environments/environment';
 import { ActivatedRoute } from '@angular/router';
 import { HotToastService } from '@ngneat/hot-toast';
 import { BrandService } from 'src/app/includes/services/brand.service';
+import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 
 @Component({
   selector: 'app-all-products',
@@ -70,6 +71,20 @@ export class AllProductsComponent implements OnInit {
   brands: Array<any> = []
   base: string = environment.base
   domainUrl: string = ''
+  modalRef?: BsModalRef
+
+  exportType: FormControl = new FormControl('csv')
+  exportCondition: FormControl = new FormControl('basic')
+  availableBasicFields: Array<{ name: string, value: string }> = [
+    { name: 'Name', value: 'name' },
+    { name: 'SKU', value: 'sku' },
+    { name: 'Type', value: 'type' },
+    { name: 'Stock', value: 'stock' },
+    { name: 'Status', value: 'isActive' },
+    { name: 'Visibility', value: 'isVisible' },
+    { name: 'Boost Score', value: 'boostScore' },
+  ]
+  basicFields: Array<string> = ['name', 'sku', 'type', 'stock', 'isActive', 'isVisible', 'boostScore']
 
   constructor(
     private BrandService: BrandService,
@@ -78,8 +93,24 @@ export class AllProductsComponent implements OnInit {
     private CategoryService: CategoryService,
     private AppSettingsService: AppSettingsService,
     private ActivatedRoute: ActivatedRoute,
+    private BsModalService: BsModalService,
     private HotToastService: HotToastService
   ) { }
+
+  open(template: TemplateRef<any>) {
+    this.modalRef = this.BsModalService.show(template, {
+      class: 'modal-dialog-centered modal-sm',
+      ignoreBackdropClick: true,
+    });
+  }
+
+  switchToggled(event: { toggleState: boolean, switchId: string }) {
+    if(event.toggleState) {
+      this.basicFields.push(event.switchId)
+    }else{
+      this.basicFields = this.basicFields.filter((field) => field != event.switchId)
+    }
+  }
 
   ngOnInit(): void {
     this.type = this.ActivatedRoute.snapshot.queryParams.type || ''

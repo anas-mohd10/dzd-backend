@@ -22,6 +22,27 @@
       <button class="btn btn-secondary" routerLink="{{ appRoute.product.ARCHIVED_PRODUCT }}">
         Archived Products
       </button>
+
+      <div class="btn-group" dropdown>
+        <button id="button-basic" dropdownToggle type="button" class="btn btn-secondary dropdown-toggle"
+          aria-controls="dropdown-basic">
+          More Options
+          <span class="caret"></span>
+        </button>
+        <ul id="dropdown-basic" *dropdownMenu class="dropdown-menu w-100" role="menu" aria-labelledby="button-basic">
+          <li role="menuitem">
+            <a class="dropdown-item fs-6" href="#">
+              Import Products
+            </a>
+          </li>
+          <li class="divider dropdown-divider"></li>
+          <li role="menuitem">
+            <a class="dropdown-item fs-6 cursor-pointer" (click)="open(template)">
+              Export Products
+            </a>
+          </li>
+        </ul>
+      </div>
     </div>
   </div>
 
@@ -229,3 +250,50 @@
     </div>
   </div>
 </div>
+
+<ng-template #template>
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">Export Products</h4>
+    <button type="button" class="btn-close close pull-right" aria-label="Close" (click)="modalRef?.hide()">
+      <span aria-hidden="true" class="visually-hidden">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="form-group mb-3">
+      <label for="exportType" class="fs-6 mb-3">Export Type</label>
+      <select [formControl]="exportType" id="exportType" class="form-select">
+        <option value="" disabled>-- Select an option --</option>
+        <option value="csv">CSV</option>
+        <option value="json">JSON</option>
+      </select>
+    </div>
+
+    <div class="form-group mb-3">
+      <label for="exportCondition" class="fs-6 mb-3">Export Condition</label>
+      <select [formControl]="exportCondition" id="exportCondition" class="form-select">
+        <option value="" disabled>-- Select an option --</option>
+        <option value="basic">Basic</option>
+        <option value="all">All</option>
+      </select>
+    </div>
+
+    <ng-container *ngIf="exportCondition?.value == 'basic'">
+      <label for="basicFields" class="fs-6 mb-3">Fields</label>
+      <div id="basicFields">
+        <div class="d-flex mb-4 align-items-center justify-content-start gap-2"
+          *ngFor="let availableBasicField of availableBasicFields; let i = index">
+          <div [ngClass]="{'opacity-50 pe-none': ['sku', 'type'].includes(availableBasicField.value)}">
+            <app-switch [switchId]="availableBasicField.value"
+              [isToggledProps]="basicFields.includes(availableBasicField.value)"
+              (switchToggled)="switchToggled($event)"></app-switch>
+          </div>
+          <div class="fs-5">{{availableBasicField.name}}</div>
+        </div>
+      </div>
+    </ng-container>
+
+    <button class="w-100 btn btn-primary">
+      Export
+    </button>
+  </div>
+</ng-template>
