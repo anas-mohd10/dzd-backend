@@ -37,27 +37,34 @@ export class ReportsListComponent implements OnInit {
   endDate: string = '';
   currentReportType: string = '';
 
+
+  saleReportItems: Array<any> =
+    [
+      {
+        title: 'Sale Over Time Report',
+        description: 'The Sales over time report shows the number of orders and the total sales that you made over time. You can select custom date range and filters as well.',
+        type: 'sales',
+      },
+      {
+        title: 'Order Over Time Report',
+        description: 'The Order over time report shows the number of orders and the total Order that you made over time. You can select custom date range and filters as well.',
+        type: 'order-over-time-report',
+      },
+      {
+        title: 'Detailed Orders report',
+        description: 'Export your order sales report, Each row contains order id and associated details. To see details of product with each order, Please choose the productwise detailed order report.',
+        type: 'detailed-order-over-time-report',
+      },
+      {
+        title: 'Product Wise Detailed Order Report',
+        description: 'This report shows total orders with order id and each product in seperate row with each respect to date.',
+        type: 'product-wise-detailed-order-report',
+      },
+
+    ];
+
+
   reportItems: Array<any> = [
-    {
-      title: 'Sale Over Time Report',
-      description: 'The Sales over time report shows the number of orders and the total sales that you made over time. You can select custom date range and filters as well.',
-      type: 'sales',
-    },
-    {
-      title: 'Order Over Time Report',
-      description: 'The Order over time report shows the number of orders and the total Order that you made over time. You can select custom date range and filters as well.',
-      type: 'order-over-time-report',
-    },
-    {
-      title: 'Detailed Orders report',
-      description: 'Export your order sales report, Each row contains order id and associated details. To see details of product with each order, Please choose the productwise detailed order report.',
-      type: 'orders-time',
-    },
-    {
-      title: 'Product Wise Detailed Order Report',
-      description: 'This report shows total orders with order id and each product in seperate row with each respect to date.',
-      type: 'productwiseorder',
-    },
     {
       title: 'Customer Order Report',
       description: 'Get the list of customers with the orders details',
@@ -84,10 +91,11 @@ export class ReportsListComponent implements OnInit {
       type: 'productwisereport',
     },
     {
-      title: 'Basic Product Report',
-      description: 'Get the basic report of all products',
-      type: 'basic-product',
-    }
+      title: 'Products Report',
+      description: 'Get the list of products with details',
+      type: 'productreport',
+    },
+
   ];
 
   dateRanges: Array<any> = [
@@ -154,17 +162,7 @@ export class ReportsListComponent implements OnInit {
           },
         });
         break;
-      case 'product':
-        this.reportsService.productReport().subscribe({
-          next: (res: any) => {
-            this.onReponse(res);
-            this.changeDetectorRef.markForCheck();
-          },
-          error: (err: any) => {
-            this.toastService.error(err?.error?.message);
-          },
-        });
-        break;
+      
       case 'basic-product':
         this.reportsService.basicProductReport().subscribe({
           next: (res: any) => {
@@ -213,19 +211,19 @@ export class ReportsListComponent implements OnInit {
           },
         });
         break;
-    
-        case 'product-order':
-          this.reportsService.productOrderReport().subscribe({
-          next: (res: any) => {
-            this.onReponse(res);
-            this.changeDetectorRef.markForCheck();
-          },
-          error: (err: any) => {
-            this.toastService.error(err?.error?.message);
-          },
-        });
-        break;
-      
+
+      // case 'product-order':
+      //   this.reportsService.productOrderReport().subscribe({
+      //   next: (res: any) => {
+      //     this.onReponse(res);
+      //     this.changeDetectorRef.markForCheck();
+      //   },
+      //   error: (err: any) => {
+      //     this.toastService.error(err?.error?.message);
+      //   },
+      // });
+      // break;
+
     }
   }
 
@@ -320,6 +318,12 @@ export class ReportsListComponent implements OnInit {
       case 'order-over-time-report':
         this.generateOrdersReport(params);
         break;
+      case 'detailed-order-over-time-report':
+        this.generateDetailedOrderReport(params);
+        break;
+      case 'product-wise-detailed-order-report':
+        this.generateProductWiseDetailedOrderReport(params);
+        break;
       case 'order-report':
         this.generateOrdersReport(params);
         break;
@@ -328,6 +332,9 @@ export class ReportsListComponent implements OnInit {
         break;
       case 'productwisereport':
         this.generateProductSalesReport(params);
+        break;
+      case 'productreport':
+        this.generateProductReport();
         break;
       case 'enquiry-report':
         this.generateEnquiryReport(params);
@@ -406,6 +413,17 @@ export class ReportsListComponent implements OnInit {
     });
   }
 
+  generateProductReport() {
+    this.reportsService.productReport().subscribe({
+      next: (res: any) => {
+        this.handleReportResponse(res);
+      },
+      error: (err: any) => {
+        this.handleError(err);
+      },
+    });
+  }
+
   generateOrderOverTimeReport(params: any) {
     this.reportsService.orderOverTimeReport(
       params.dateRange,
@@ -420,6 +438,38 @@ export class ReportsListComponent implements OnInit {
       },
     });
   }
+
+  generateDetailedOrderReport(params: any) {
+    this.reportsService.detailedOrderReport(
+      params.dateRange,
+      params.startDate,
+      params.endDate
+    ).subscribe({
+      next: (res: any) => {
+        this.handleReportResponse(res);
+      },
+      error: (err: any) => {
+        this.handleError(err);
+      },
+    });
+  }
+
+  generateProductWiseDetailedOrderReport(params: any) {
+    this.reportsService.productOrderReport(
+      params.dateRange,
+      params.startDate,
+      params.endDate
+    ).subscribe({
+      next: (res: any) => {
+        this.handleReportResponse(res);
+      },
+      error: (err: any) => {
+        this.handleError(err);
+      },
+    });
+  }
+  
+
 
 
 
