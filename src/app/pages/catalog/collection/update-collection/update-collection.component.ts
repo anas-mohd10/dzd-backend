@@ -283,17 +283,19 @@ export class UpdateCollectionComponent implements OnInit {
 
   // Utility method to initialize and update product orders
   updateProductOrders() {
-    // Sort products by their current order or by their index if order is not set
-    this.productDetails.sort((a, b) => {
-      const orderA = a.order || this.productDetails.indexOf(a) + 1;
-      const orderB = b.order || this.productDetails.indexOf(b) + 1;
-      return orderA - orderB;
-    });
-
-    // Reassign orders to ensure consecutive numbering
+    // Preserve the current order of products after drag and drop
     this.productDetails.forEach((product, index) => {
       product.order = index + 1;
     });
+
+    // Create a new array of selected products with updated orders
+    this.selectedProducts = this.productDetails.map(product => ({
+      product: product._id,
+      order: product.order
+    }));
+
+    // Update the form with the new product order
+    this.form.get('products')?.setValue(this.selectedProducts);
 
     // Mark that order has changed
     this.hasUnsavedOrderChanges = true;
