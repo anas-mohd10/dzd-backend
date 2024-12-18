@@ -63,6 +63,7 @@ export class SmsSettingsComponent implements OnInit {
     { title: 'Order Packed', value: 'order-packed' },
     { title: 'Order Shipped', value: 'order-shipped' },
     { title: 'Order Failed', value: 'order-failed' },
+    { title: 'Product Status Update', value: 'product-status-update' },
   ];
 
   constructor(
