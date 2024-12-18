@@ -107,6 +107,7 @@ export class UpdateAppSettingsComponent implements OnInit {
   logo?: string;
   favicon?: string;
   defaultBanner?: string;
+  defaultMobileBanner?: string;
   primary: string = '';
   modalRef?: BsModalRef;
   discardModalRef?: BsModalRef;
@@ -174,6 +175,7 @@ export class UpdateAppSettingsComponent implements OnInit {
         this.paymentGateways = res?.result?.paymentGateway
         this.favicon = res?.result?.favicon
         this.defaultBanner = res?.result?.defaultBanner
+        this.defaultMobileBanner = res?.result?.defaultMobileBanner
         this.primary = "#" + res?.result?.colors?.primary.split('FF')[1]
         this.secondary = "#" + res?.result?.colors?.secondary.split('FF')[1]
         this.form.get('primary')?.setValue("#" + res?.result?.colors?.primary.split('FF')[1])
@@ -211,6 +213,7 @@ export class UpdateAppSettingsComponent implements OnInit {
         this.form.get('logo')?.setValue(res?.result?.logo)
         this.form.get('favicon')?.setValue(res?.result?.favicon)
         this.form.get('defaultBanner')?.setValue(res?.result?.defaultBanner)
+        this.form.get('defaultMobileBanner')?.setValue(res?.result?.defaultMobileBanner)
 
         for (let lang of res?.result?.languages) {
           let isExists = this.languages.some((item: { lang: string, langCode: string }) => item.lang == lang?.lang)
@@ -281,6 +284,7 @@ export class UpdateAppSettingsComponent implements OnInit {
       logo: ['', Validators.required],
       favicon: ['', Validators.required],
       defaultBanner: ['', Validators.required],
+      defaultMobileBanner: ['', Validators.required],
     })
   }
 
@@ -338,6 +342,10 @@ export class UpdateAppSettingsComponent implements OnInit {
     this.form.get('defaultBanner')?.setValue(event.path)
   }
 
+  handleDefaultMobileBanner(event: any) {
+    this.form.get('defaultMobileBanner')?.setValue(event.path)
+  }
+
   setPaymentGateways(paymentGateway: string) {
     this.paymentGateways.includes(paymentGateway)
       ? this.paymentGateways = this.paymentGateways.filter((item: string) => item != paymentGateway)
@@ -392,6 +400,7 @@ export class UpdateAppSettingsComponent implements OnInit {
       paymentGateway: this.form.get('paymentGateway')?.value,
       favicon: this.form.get('favicon')?.value,
       defaultBanner: this.form.get('defaultBanner')?.value,
+      defaultMobileBanner: this.form.get('defaultMobileBanner')?.value,
       isStoreLive: this.form.get('isStoreLive')?.value,
       notes: { packingSlip: this.form.get('packingSlip')?.value },
       buttons: {
