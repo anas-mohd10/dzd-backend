@@ -26,6 +26,7 @@ export class AddCollectionComponent implements OnInit {
   isAutoCompleteEnabled: boolean = true;
   productIds: Array<any> = [];
   productDetails: Array<any> = [];
+  orderedProducts: Array<{product: any, order: number}> = [];
   base: string = `${environment.base}`;
   cover: string = '';
   mobileCover : string = '';
@@ -131,26 +132,60 @@ export class AddCollectionComponent implements OnInit {
     if (!this.productIds.includes(product?._id)) {
       this.productDetails.push(product);
       this.productIds.push(product?._id);
+      
+      // Add to ordered products with current length as order
+      this.orderedProducts.push({
+        product: product,
+        order: this.orderedProducts.length
+      });
     } else {
+      // Remove product
       this.productDetails = this.productDetails.filter(
         (item) => item?._id !== product?._id
       );
       this.productIds = this.productIds.filter((item) => item !== product?._id);
+      
+      // Reorder remaining products
+      this.orderedProducts = this.orderedProducts
+        .filter(item => item.product?._id !== product?._id)
+        .map((item, index) => ({
+          product: item.product,
+          order: index
+        }));
     }
 
     this.product.setValue('');
     this.searchProducts = [];
   }
 
+  drop(event: CdkDragDrop<string[]>) {
+    let products = [...this.productDetails];
+    moveItemInArray(products, event.previousIndex, event.currentIndex);
+    this.productDetails = [...products];
+
+    // Recreate ordered products with new indices
+    this.orderedProducts = this.productDetails.map((product, index) => ({
+      product: product,
+      order: index
+    }));
+  }
+
   onSubmit() {
-    this.selectedProducts = [];
     if (this.isAutoCompleteEnabled) {
-      for (let product of this.productDetails)
-        this.selectedProducts.push(product?._id);
-      this.form.get('products')?.setValue(this.selectedProducts);
+      // Prepare products array with order
+      const productsWithOrder = this.orderedProducts.map(item => ({
+        product: item.product?._id,
+        order: item.order
+      }));
+      
+      this.form.get('products')?.setValue(productsWithOrder);
     } else {
-      this.selectedProducts = this.productSku?.value.split(',');
-      this.form.get('products')?.setValue(this.selectedProducts);
+      // Handle SKU-based product entry if needed
+      const skuProducts = this.productSku?.value.split(',').map((sku:string, index:string) => ({
+        product: sku,
+        order: index
+      }));
+      this.form.get('products')?.setValue(skuProducts);
     }
 
     if (!this.form.valid) {
@@ -158,6 +193,7 @@ export class AddCollectionComponent implements OnInit {
       return;
     }
 
+    // Rest of the existing submission logic
     if (this.isAutoCompleteEnabled) {
       this.CollectionService.addCollection({ ...this.form.value }).subscribe({
         next: (res: any) => {
@@ -173,27 +209,19 @@ export class AddCollectionComponent implements OnInit {
         },
       });
     } else {
-      this.CollectionService.addCollectionSku({ ...this.form.value }).subscribe(
-        {
-          next: (res: any) => {
-            if (res.errorCode != 0) {
-              this.HotToastService.error(res?.messaage);
-            } else if (res.errorCode == 0) {
-              this.HotToastService.success(res?.message);
-              this.Router.navigate([this.appRoute.collection.COLLECTION_LIST]);
-            }
-          },
-          error: (err: any) => {
-            this.HotToastService.error(err.error.message);
-          },
-        }
-      );
+      this.CollectionService.addCollectionSku({ ...this.form.value }).subscribe({
+        next: (res: any) => {
+          if (res.errorCode != 0) {
+            this.HotToastService.error(res?.messaage);
+          } else if (res.errorCode == 0) {
+            this.HotToastService.success(res?.message);
+            this.Router.navigate([this.appRoute.collection.COLLECTION_LIST]);
+          }
+        },
+        error: (err: any) => {
+          this.HotToastService.error(err.error.message);
+        },
+      });
     }
-  }
-
-  drop(event: CdkDragDrop<string[]>) {
-    let products = [...this.productDetails];
-    moveItemInArray(products, event.previousIndex, event.currentIndex);
-    this.productDetails = [...products];
   }
 }

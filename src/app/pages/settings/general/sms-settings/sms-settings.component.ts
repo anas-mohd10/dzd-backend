@@ -19,7 +19,7 @@ import { environment } from 'src/environments/environment';
 })
 export class SmsSettingsComponent implements OnInit {
   appRoute = appRoutes;
-  form: FormGroup = new FormGroup({});
+  form: FormGroup = new FormGroup({}); 
   isSmsGatewayEnabled: FormControl = new FormControl(false);
   smsGatewayItems: Array<any> = [
     {

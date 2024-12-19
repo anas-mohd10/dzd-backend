@@ -34,6 +34,9 @@ export class UpdateCollectionComponent implements OnInit {
   mobileCover: string = '';
   icons: Array<string> = [];
   thumbnail: string = '';
+  _id: string = '';
+  hasUnsavedOrderChanges: boolean = false;
+
 
   constructor(
     private CollectionService: CollectionService,
@@ -62,10 +65,13 @@ export class UpdateCollectionComponent implements OnInit {
             this.previews.thumbnailPreview = res?.result?.thumbnail;
           if (res?.result?.cover)
             this.previews.coverPreview = res?.result?.cover;
-          this.productDetails = res?.result?.products;
-          this.productIds = res?.result?.products.map((item: any) => item?._id);
+          this.productDetails = res?.result?.products.map((item: any) => item.product);
+          this.productIds = res?.result?.products.map((item: any) => item.product._id);
           this.ChangeDetectorRef.markForCheck();
+          this._id = res?.result?._id;
+
         }
+        this.updateProductOrders();
       },
     });
 
@@ -81,7 +87,12 @@ export class UpdateCollectionComponent implements OnInit {
       metaTitle: new FormControl(''),
       metaDescription: new FormControl(''),
       metaKeywords: new FormControl(''),
+      isSku: new FormControl(false),
+      _id: new FormControl(''),
     });
+
+    // Initialize product orders
+    this.updateProductOrders();
   }
 
   handleCollectionCover(event: any) {
@@ -187,45 +198,125 @@ export class UpdateCollectionComponent implements OnInit {
   }
 
   onSubmit() {
+    this.form.get('_id')?.setValue(this._id);
     this.selectedProducts = [];
     if (this.isAutoCompleteEnabled) {
-      for (let product of this.productDetails)
-        this.selectedProducts.push(product?._id);
+      this.selectedProducts = this.productDetails.map((product: any, index: number) => ({
+        product: product._id,
+        order: index
+      }));
       this.form.get('products')?.setValue(this.selectedProducts);
     } else {
-      this.selectedProducts = this.productSku?.value.split(',');
-      this.form.get('products')?.setValue(this.selectedProducts);
+      const selectedProducts = this.productSku?.value.split(',').map((sku: string, index: number) => ({
+        product: sku.trim(),
+        order: index
+      }));
+      this.selectedProducts = selectedProducts;
+      this.form.get('products')?.setValue(selectedProducts);
+      this.form.get("isSku")?.setValue(true);
     }
 
     if (!this.form.valid) {
+      console.log(this.form.get('products')?.get('products'));
+      Object.keys(this.form.controls).forEach((key) => {
+        const control = this.form.controls[key];
+        if (control.errors) {
+          console.log(`${key} errors:`, control.errors);
+        }
+      });
+      
       this.isSubmitted = true;
       return;
     }
-
-    this.CollectionService.updateCollection({
-      ...this.form.value,
-      _id: this.collectionDetails?._id,
-      colid: this.collectionDetails.colid,
-      slug: this.collectionSlug,
-      isSku: this.isAutoCompleteEnabled ? false : true,
-    }).subscribe({
+    
+    // Proceed with form submission
+    this.isSubmitted = false;
+    const payload = this.form.value;
+    
+    this.CollectionService.updateCollection(payload).subscribe({
       next: (res: any) => {
-        if (res.errorCode != 0) {
-          this.HotToastService.error(res?.messaage);
-        } else if (res.errorCode == 0) {
-          this.HotToastService.success(res?.message);
+        if (res?.errorCode == 0) {
           this.Router.navigate([this.appRoute.collection.COLLECTION_LIST]);
+          this.HotToastService.success(res.message);
+        } else {
+          this.HotToastService.error(res.message);
         }
       },
       error: (err: any) => {
         this.HotToastService.error(err.error.message);
-      },
+      }
     });
   }
 
+  setProductOrder(product: any, newIndex: number) {
+    // Validate input
+    if (newIndex < 0 || newIndex >= this.productDetails.length) {
+      this.HotToastService.error('Invalid order position');
+      return;
+    }
+
+    // Remove the product from its current position
+    const currentIndex = this.productDetails.findIndex(p => p._id === product._id);
+    if (currentIndex === -1) return;
+
+    // Remove the product from its current position
+    const removedProduct = this.productDetails.splice(currentIndex, 1)[0];
+
+    // Insert the product at the new position
+    this.productDetails.splice(newIndex, 0, removedProduct);
+
+    // Adjust the order of subsequent products
+    this.productDetails.forEach((p, index) => {
+      p.order = index + 1;
+    });
+
+    // Mark that order has changed
+    this.hasUnsavedOrderChanges = true;
+
+    // Trigger change detection
+    this.ChangeDetectorRef.detectChanges();
+  }
+
+  setOrderValue(value: any): number {
+    return Number(value) || 0; // Converts to number and defaults to 0 if invalid
+  }
+
+  // Utility method to initialize and update product orders
+  updateProductOrders() {
+    // Preserve the current order of products after drag and drop
+    this.productDetails.forEach((product, index) => {
+      product.order = index + 1;
+    });
+
+    // Create a new array of selected products with updated orders
+    this.selectedProducts = this.productDetails.map(product => ({
+      product: product._id,
+      order: product.order
+    }));
+
+    // Update the form with the new product order
+    this.form.get('products')?.setValue(this.selectedProducts);
+
+    // Mark that order has changed
+    this.hasUnsavedOrderChanges = true;
+
+    // Trigger change detection
+    this.ChangeDetectorRef.detectChanges();
+  }
+
   drop(event: CdkDragDrop<string[]>) {
+    // Create a copy of the current product details
     let products = [...this.productDetails];
+
+    // Move the item in the array
     moveItemInArray(products, event.previousIndex, event.currentIndex);
-    this.productDetails = [...products];
+
+    // Update the productDetails with the new order
+    this.productDetails = products;
+
+    // Call the utility method to update orders
+    this.updateProductOrders();
+
+    console.log('Previous Index:', event.previousIndex, 'Current Index:', event.currentIndex);
   }
 }
