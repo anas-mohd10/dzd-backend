@@ -215,7 +215,7 @@ export class UploadsListComponent implements OnInit {
           });
           break;
         case 'product':
-          this.ProductService.bulkFileUpload(formdata).subscribe({
+          this.ProductService.importProducts(formdata).subscribe({
             next: (res: any) => {
               if (res?.errorCode == 0) {
                 this.onSuccess(res?.message);
