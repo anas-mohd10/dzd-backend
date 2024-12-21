@@ -19,56 +19,67 @@
   </div>
 
   <div class="card my-4">
-    <div class="card-body">
-      <div class="row fs-4">
-        <div class="col-lg-3 text-muted">Status</div>
-        <div class="col-lg-9">{{ uploadDetails && formatStatus(uploadDetails.status) }}</div>
+    <div class="card-body fs-5">
+      <div class="row">
+        <div class="col-lg-4">
+          <label class="fs-5 mb-1 text-muted fw-normal" for="startTime">Start Time</label>
+          <div id="startTime">
+            {{formatDate(uploadDetails && uploadDetails.startTime)}} 
+            {{formatTime(uploadDetails && uploadDetails.startTime)}}
+          </div>
+        </div>
+        <div class="col-lg-4">
+          <label class="fs-5 mb-1 text-muted fw-normal" for="endTime">End Time</label>
+          <div id="endTime">
+            {{uploadDetails && uploadDetails.endTime && formatDate(uploadDetails && uploadDetails.endTime)}} 
+            {{uploadDetails && uploadDetails.endTime && formatTime(uploadDetails && uploadDetails.endTime)}}</div>
+        </div>
+        <div class="col-lg-4">
+          <label class="fs-5 mb-1 text-muted fw-normal" for="initiator">Initiator</label>
+          <div id="initiator">
+            {{uploadDetails && uploadDetails.createdBy.firstname}} 
+            {{uploadDetails && uploadDetails.createdBy.lastname}}</div>
+        </div>
+      </div>
+      <div class="line-separator my-8"></div>
+      <div>
+        <label class="fs-5 mb-1 text-muted fw-normal" for="status">Status</label>
+        <div id="status" class="{{uploadDetails && uploadDetails.status}}">
+          {{ uploadDetails && formatStatus(uploadDetails.status) }}</div>
+      </div>
+      <div class="line-separator my-8"></div>
+      <div class="row">
+        <div class="col-lg-4">
+          <label class="fs-5 mb-1 text-muted fw-normal" for="totalRecords">Total Records</label>
+          <div id="totalRecords">{{ uploadDetails && uploadDetails.totalRecords }}</div>
+        </div>
+        <div class="col-lg-4">
+          <label class="fs-5 mb-1 text-muted fw-normal" for="processedRecords">Processed Records</label>
+          <div id="processedRecords">{{ uploadDetails && uploadDetails.processedRecords }}</div>
+        </div>
+        <div class="col-lg-4">
+          <label class="fs-5 mb-1 text-muted fw-normal" for="skippedRecords">Skipped Records</label>
+          <div id="skippedRecords">{{ uploadDetails && uploadDetails.skippedRecords }}</div>
+        </div>
       </div>
     </div>
   </div>
 
   <div class="card my-4">
     <div class="card-body">
-      <div class="row fs-4">
-        <div class="col-lg-3 text-muted">Total Records</div>
-        <div class="col-lg-9">{{ uploadDetails && uploadDetails.totalRecords }}</div>
-      </div>
-    </div>
-  </div>
-
-  <div class="card my-4">
-    <div class="card-body">
-      <div class="row fs-4">
-        <div class="col-lg-3 text-muted">Processed Records</div>
-        <div class="col-lg-9">{{ uploadDetails && uploadDetails.processedRecords }}</div>
-      </div>
-    </div>
-  </div>
-
-  <div class="card my-4">
-    <div class="card-body">
-      <div class="row fs-4">
-        <div class="col-lg-3 text-muted">Estimated Time</div>
-        <div class="col-lg-9">{{ uploadDetails && uploadDetails.estimatedTimeRemaining }}</div>
-      </div>
-    </div>
-  </div>
-
-  <div class="card my-4">
-    <div class="card-body">
-      <div class="row fs-4">
-        <div class="col-lg-3 text-muted">Execution Time</div>
-        <div class="col-lg-9">{{ uploadDetails && getMinutes(uploadDetails.executionTime) }} minutes</div>
-      </div>
-    </div>
-  </div>
-
-  <div class="card my-4">
-    <div class="card-body">
-      <div class="row fs-4">
-        <div class="col-lg-3 text-muted">File</div>
-        <div class="col-lg-9">
-          <a href="{{ uploadDetails && uploadDetails.file }}">Download File</a>
+      <div class="row align-items-center fs-4">
+        <div class="col-lg-2 text-muted">File</div>
+        <div class="col-lg-10">
+          <a class="btn btn-secondary d-flex align-items-center justify-content-center gap-2"
+            href="{{ uploadDetails && uploadDetails.file }}">
+            <svg height="18" width="18" data-slot="icon" fill="none" stroke-width="1.5" stroke="currentColor"
+              viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round"
+                d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3">
+              </path>
+            </svg>
+            Download File
+          </a>
         </div>
       </div>
     </div>
@@ -79,11 +90,18 @@
       <div>
         <div class="col-lg-3 fs-4">Logs</div>
         <div id="logContainer" class="mt-4">
-          <div *ngFor="let log of logs; let i = index" class="logMessage row" [ngClass]="{'error': log.level == 'error'}">
-            <strong class="col-lg-1"> {{ i + 1 }} </strong>
-            <div class="col-lg-2"> {{ formatDate(log.timestamp)}} {{formatTime(log.timestamp) }} </div>
-            <div class="col-lg-9"> {{ log.message }}</div>
+          <div *ngFor="let log of logs; let i = index" class="logMessage row"
+            [ngClass]="{'error': log.level == 'error'}">
+            <strong class="col-lg-1"> {{ (i + 1) }} </strong>
+            <div class="col-lg-2" style="font-size: 12px;">
+              {{ formatDate(log.timestamp)}} {{formatTime(log.timestamp)}} </div>
+            <div class="col-lg-9" style="font-size: 13px;"> {{ log.message }}</div>
           </div>
+        </div>
+        <div>
+          <app-pagination [totalResults]="totalResults" [totalPages]="totalPages" [pageIndex]="pageIndex"
+            [pageSize]="pageSize" (pageTrigger)="onPageTriggered($event)">
+          </app-pagination>
         </div>
       </div>
     </div>

@@ -58,8 +58,8 @@ export class CsvService {
     return this.http.get(`${url}`)
   }
 
-  fetchLogs(importId: string, pageIndex: number) {
-    const url = this.commonService.getFullUrl(csvEndpoints.fetchLogs + `/${pageIndex}/${importId}`);
+  fetchLogs(importId: string, pageIndex: number, pageSize: number) {
+    const url = this.commonService.getFullUrl(csvEndpoints.fetchLogs + `/${pageIndex}/${importId}/${pageSize}`);
     return this.http.get(`${url}`)
   }
 }

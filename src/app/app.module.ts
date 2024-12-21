@@ -81,6 +81,7 @@ import { DragDropModule } from '@angular/cdk/drag-drop';
 import { AccordionModule } from 'ngx-bootstrap/accordion';
 import { PageCoversComponent } from './pages/page-covers/page-covers.component';
 import { TooltipModule } from 'ngx-bootstrap/tooltip';
+import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { PaymentSettingsComponent } from './pages/settings/general/payment-settings/payment-settings.component';
 import { CreateProductsComponent } from './pages/catalog/product/create-products/create-products.component';
 import { ShippingRulesComponent } from './pages/settings/general/shipping-rules/shipping-rules.component';
@@ -165,6 +166,7 @@ const DragConfig = {
     provideMessaging(() => getMessaging()),
     BrowserModule,
     BrowserAnimationsModule,
+    BsDropdownModule,
     HttpClientModule,
     ClipboardModule,
     MonacoEditorModule.forRoot(),
@@ -172,14 +174,8 @@ const DragConfig = {
     BsDatepickerModule.forRoot(),
     ModalModule.forRoot(),
     AccordionModule.forRoot(),
-    ToastrModule.forRoot({
-      timeOut: 4000,
-      positionClass: 'toast-bottom-center',
-      preventDuplicates: true
-    }),
-    HotToastModule.forRoot({
-      position: 'bottom-center'
-    }),
+    ToastrModule.forRoot({ timeOut: 4000, positionClass: 'toast-bottom-center', preventDuplicates: true }),
+    HotToastModule.forRoot({ position: 'bottom-center' }),
     TooltipModule.forRoot(),
     AppRoutingModule,
     NgApexchartsModule,
