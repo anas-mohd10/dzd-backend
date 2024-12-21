@@ -158,6 +158,10 @@ export class UpdateProductComponent implements OnInit {
   addOns: AddOns[] = []
   isAddOnForm: boolean = false
   isAddOnEditable: boolean = false;
+  historyRef?: BsModalRef;
+  historyPageIndex: number = 1
+  historyPageSize: number = 40
+  historyLists: Array<any> = []
 
   constructor(
     private ActivatedRoute: ActivatedRoute,
@@ -176,6 +180,48 @@ export class UpdateProductComponent implements OnInit {
       .subscribe(() => {
         this.searchProducts()
       })
+  }
+
+  openHistory(template: TemplateRef<any>) {
+    this.historyRef = this.BsModalService.show(template, {
+      class: 'modal-lg modal-dialog-centered',
+      ignoreBackdropClick: true,
+    });
+
+    this.fetchHistory()
+  }
+
+  onHistoryPageChange(event: { pageIndex: number, pageSize: number }) {
+    this.historyPageIndex = event.pageIndex
+    this.historyPageSize = event.pageSize
+    this.fetchHistory()
+  }
+
+  fetchHistory() {
+    this.ProductService.getProductHistory(
+      this.productDetails._id,
+      this.historyPageIndex,
+      this.historyPageSize
+    ).subscribe({
+      next: (res: any) => {
+        if (res?.errorCode == 0) {
+          this.historyLists = res?.result
+          this.ChangeDetectorRef.markForCheck()
+        } else { }
+      }, error: (err: any) => { }
+    })
+  }
+
+  closeHistory() {
+    this.historyRef?.hide()
+  }
+
+  getFormatDate(date: any) {
+    return new Date(date).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' })
+  }
+
+  getFormatTime(time: string) {
+    return new Date(time).toLocaleTimeString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true })
   }
 
   searchProducts() {

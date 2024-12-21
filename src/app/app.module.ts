@@ -166,7 +166,7 @@ const DragConfig = {
     provideMessaging(() => getMessaging()),
     BrowserModule,
     BrowserAnimationsModule,
-    BsDropdownModule, 
+    BsDropdownModule,
     HttpClientModule,
     ClipboardModule,
     MonacoEditorModule.forRoot(),
@@ -174,14 +174,8 @@ const DragConfig = {
     BsDatepickerModule.forRoot(),
     ModalModule.forRoot(),
     AccordionModule.forRoot(),
-    ToastrModule.forRoot({
-      timeOut: 4000,
-      positionClass: 'toast-bottom-center',
-      preventDuplicates: true
-    }),
-    HotToastModule.forRoot({
-      position: 'bottom-center'
-    }),
+    ToastrModule.forRoot({ timeOut: 4000, positionClass: 'toast-bottom-center', preventDuplicates: true }),
+    HotToastModule.forRoot({ position: 'bottom-center' }),
     TooltipModule.forRoot(),
     AppRoutingModule,
     NgApexchartsModule,

@@ -2,6 +2,10 @@
   color: #22b55d;
 }
 
+.progress{
+  color: #f3bb43;
+}
+
 .awaiting {
   color: #f3bb43;
 }
@@ -10,6 +14,16 @@
   color: #d62f2f;
 }
 
+.line-separator {
+  border: 0;
+  height: 1px;
+  background-image: linear-gradient(to right, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.10), rgba(0, 0, 0, 0));
+}
+
+.btn{
+  width: max-content;
+  font-weight: 400 !important;
+}
 
 #logContainer {
   width: 100%;
@@ -46,6 +60,6 @@
   .timestamp {
     color: #879596;
     background: #293648;
-    width: 200px;
+    width: 240px;
   }
 }

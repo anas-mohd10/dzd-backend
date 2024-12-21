@@ -1,6 +1,6 @@
 <div class="d-flex rounded bg-white align-items-center justify-content-between px-2 py-4">
     <div class="form-group d-flex align-items-center gap-2">
-        Items per page
+        Items Per Page
         <select [formControl]="limit" id="limit" class="py-1 px-2 form-select" (change)="onPageSizeChange()">
             <option value="" disabled>--Select an option --</option>
             <option *ngFor="let limit of limits" [value]="limit">{{limit}}</option>

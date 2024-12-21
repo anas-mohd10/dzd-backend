@@ -8,10 +8,18 @@ interface UploadDetails {
   totalRecords: number;
   status: string;
   processedRecords: number;
+  skippedRecords: number;
   logs: string[];
   executionTime: number;
   file: string;
   title: string;
+  startTime: string;
+  endTime: string;
+  createdBy: {
+    email: string;
+    firstname: string;
+    lastname: string
+  }
 }
 
 @Component({
@@ -25,6 +33,11 @@ export class UploadDetailsComponent implements OnInit {
   uploadDetails: UploadDetails;
   logs: Array<any> = [];
   logDetails: any = {};
+
+  totalResults: number = 0;
+  totalPages: number = 1;
+  pageIndex: number = 1;
+  pageSize: number = 100;
 
   constructor(
     private ActivatedRoute: ActivatedRoute,
@@ -52,15 +65,27 @@ export class UploadDetailsComponent implements OnInit {
   }
 
   formatTime(time: string) {
-    return new Date(time).toLocaleTimeString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true })
+    return new Date(time).toLocaleTimeString('en-US', { hour: 'numeric', minute: 'numeric', second: 'numeric', hour12: true })
+  }
+
+  onPageTriggered(event: {pageIndex: number, pageSize: number}) {
+    this.pageIndex = event.pageIndex;
+    this.pageSize = event.pageSize;
+    this.fetchLogs();
   }
 
   fetchLogs() {
-    this.CsvService.fetchLogs(this.uploadId, 1).subscribe({
+    this.CsvService.fetchLogs(
+      this.uploadId, 
+      this.pageIndex, 
+      this.pageSize
+    ).subscribe({
       next: (res: any) => {
         if (res.errorCode == 0) {
           this.logDetails = res.result;
-          this.logs = res.result.results;          
+          this.logs = res.result.results;
+          this.totalResults = res.result.totalResults;
+          this.totalPages = res.result.totalPages;
           this.ChangeDetectorRef.markForCheck();
         } else {
         }

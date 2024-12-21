@@ -5,7 +5,7 @@ import { AppSettingsService } from 'src/app/includes/services/app.settings.servi
 import { CategoryService } from 'src/app/includes/services/category.service';
 import { ProductService } from 'src/app/includes/services/product.service';
 import { environment } from 'src/environments/environment';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { HotToastService } from '@ngneat/hot-toast';
 import { BrandService } from 'src/app/includes/services/brand.service';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
@@ -71,7 +71,10 @@ export class AllProductsComponent implements OnInit {
   brands: Array<any> = []
   base: string = environment.base
   domainUrl: string = ''
-  modalRef?: BsModalRef
+  exportModalRef?: BsModalRef;
+  importModalRef?: BsModalRef;
+  importFile: any;
+  importDetails: any
 
   exportType: FormControl = new FormControl('csv')
   exportCondition: FormControl = new FormControl('basic')
@@ -83,8 +86,10 @@ export class AllProductsComponent implements OnInit {
     { name: 'Status', value: 'isActive' },
     { name: 'Visibility', value: 'isVisible' },
     { name: 'Boost Score', value: 'boostScore' },
+    { name: 'Original Price', value: 'originalPrice' },
+    { name: 'Store Price', value: 'storePrice' },
   ]
-  basicFields: Array<string> = ['name', 'sku', 'type', 'stock', 'isActive', 'isVisible', 'boostScore']
+  basicFields: Array<string> = ['name', 'sku', 'type', 'stock', 'isActive', 'isVisible', 'boostScore', 'originalPrice', 'storePrice']
 
   constructor(
     private BrandService: BrandService,
@@ -94,20 +99,52 @@ export class AllProductsComponent implements OnInit {
     private AppSettingsService: AppSettingsService,
     private ActivatedRoute: ActivatedRoute,
     private BsModalService: BsModalService,
+    private Router: Router,
     private HotToastService: HotToastService
   ) { }
 
-  open(template: TemplateRef<any>) {
-    this.modalRef = this.BsModalService.show(template, {
+  openExport(template: TemplateRef<any>) {
+    this.exportModalRef = this.BsModalService.show(template, {
       class: 'modal-dialog-centered modal-sm',
       ignoreBackdropClick: true,
     });
   }
 
+  openImport(template: TemplateRef<any>) {
+    this.importModalRef = this.BsModalService.show(template, {
+      class: 'modal-dialog-centered modal-sm',
+      ignoreBackdropClick: true,
+    });
+  }
+
+  fileChange(event: any) {
+    this.importFile = event.target.files[0]
+    this.ChangeDetectorRef.markForCheck()
+  }
+
+  importProducts() {
+    const formData = new FormData();
+    formData.append('file', this.importFile);
+    this.ProductService.importProducts(formData).subscribe({
+      next: (res: any) => {
+        if (res?.errorCode == 0) {
+          this.importDetails = res?.result
+          this.HotToastService.success(res?.message)
+          this.importModalRef?.hide()
+          this.importFile = null
+          this.Router.navigate([ `${appRoutes.bulk.import}/${res?.result?.importId}`])
+          this.ChangeDetectorRef.markForCheck()
+        } else {
+          this.HotToastService.error(res?.message)
+        }
+      }, error: (err: any) => { }
+    }) 
+  }
+
   switchToggled(event: { toggleState: boolean, switchId: string }) {
-    if(event.toggleState) {
+    if (event.toggleState) {
       this.basicFields.push(event.switchId)
-    }else{
+    } else {
       this.basicFields = this.basicFields.filter((field) => field != event.switchId)
     }
   }
@@ -274,5 +311,28 @@ export class AllProductsComponent implements OnInit {
     }
 
     this.getProducts()
+  }
+
+  exportProducts() {
+    this.ProductService.exportProducts({
+      exportType: this.exportType?.value,
+      exportCondition: this.exportCondition?.value,
+      basicFields: this.basicFields
+    }).subscribe({
+      next: (res: any) => {
+        if (res?.errorCode == 0) {
+          this.HotToastService.success(res?.message)
+          this.exportModalRef?.hide()
+        } else {
+          this.HotToastService.error(res?.message)
+        }
+      }, error: (err: any) => {
+        this.HotToastService.error(err?.error?.message)
+      }
+    })
+  }
+
+  downloadSampleFile(){
+    
   }
 }

@@ -16,6 +16,21 @@ export class ProductService {
     return this.http.post(`${url}`, data);
   }
 
+  getProductHistory(productId: string, pageIndex: number = 1, pageSize: number = 20) {
+    const url = this.commonService.getFullUrl(this.productEndpoints.productHistory + `/${pageIndex}/${productId}/${pageSize}`);
+    return this.http.get(`${url}`);
+  }
+
+  exportProducts(query: any) {
+    const url = this.commonService.getFullUrl(this.productEndpoints.exportProducts);
+    return this.http.post(`${url}`, query);
+  }
+
+  importProducts(file: any) {
+    const url = this.commonService.getFullUrl(this.productEndpoints.importProducts);
+    return this.http.post(`${url}`, file);
+  }
+
   manageChildProducts(productId: string, payload: any) {
     const url = this.commonService.getFullUrl(this.productEndpoints.manageChildProducts + `/${productId}`);
     return this.http.post(`${url}`, payload);
@@ -36,7 +51,7 @@ export class ProductService {
     return this.http.get(`${url}`);
   }
 
-  updateStoreField(storeFieldValue: any){
+  updateStoreField(storeFieldValue: any) {
     const url = this.commonService.getFullUrl(this.productEndpoints.updateProductStoreFields);
     return this.http.put(`${url}`, storeFieldValue);
   }
@@ -179,7 +194,7 @@ export class ProductService {
     const url = this.commonService.getFullUrl(this.productEndpoints.getProducts);
     return this.http.post(`${url}`, query);
   }
-  
+
   //update product status
   bulkUpdateProducts(query: any) {
     const url = this.commonService.getFullUrl(this.productEndpoints.bulkUpdateProducts);

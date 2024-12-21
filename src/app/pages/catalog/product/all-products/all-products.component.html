@@ -31,13 +31,13 @@
         </button>
         <ul id="dropdown-basic" *dropdownMenu class="dropdown-menu w-100" role="menu" aria-labelledby="button-basic">
           <li role="menuitem">
-            <a class="dropdown-item fs-6" href="#">
+            <a class="dropdown-item fs-6 cursor-pointer" (click)="openImport(importTemplate)">
               Import Products
             </a>
           </li>
           <li class="divider dropdown-divider"></li>
           <li role="menuitem">
-            <a class="dropdown-item fs-6 cursor-pointer" (click)="open(template)">
+            <a class="dropdown-item fs-6 cursor-pointer" (click)="openExport(exportTemplate)">
               Export Products
             </a>
           </li>
@@ -251,10 +251,10 @@
   </div>
 </div>
 
-<ng-template #template>
+<ng-template #exportTemplate>
   <div class="modal-header">
     <h4 class="modal-title pull-left">Export Products</h4>
-    <button type="button" class="btn-close close pull-right" aria-label="Close" (click)="modalRef?.hide()">
+    <button type="button" class="btn-close close pull-right" aria-label="Close" (click)="exportModalRef?.hide()">
       <span aria-hidden="true" class="visually-hidden">&times;</span>
     </button>
   </div>
@@ -292,8 +292,44 @@
       </div>
     </ng-container>
 
-    <button class="w-100 btn btn-primary">
+    <button class="w-100 btn btn-primary" (click)="exportProducts()">
       Export
     </button>
+  </div>
+</ng-template>
+
+<ng-template #importTemplate>
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">Import Products</h4>
+    <button type="button" class="btn-close close pull-right" aria-label="Close"
+      (click)="importModalRef?.hide(); importFile = null; importDetails = null">
+      <span aria-hidden="true" class="visually-hidden">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div>
+      <div class="mb-3">
+        <button class="btn w-100 btn-secondary d-flex align-items-center justify-content-center gap-2" (click)="downloadSampleFile()">
+          <svg height="18" width="18" data-slot="icon" fill="none" stroke-width="1.5" stroke="currentColor"
+          viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <path stroke-linecap="round" stroke-linejoin="round"
+            d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3">
+          </path>
+        </svg>
+          Sample File
+        </button>
+      </div>
+
+      <label for="importFile" class="fs-6 mb-3">Import File</label>
+
+      <div class="mb-3" id="importFile">
+        <input type="file" class="form-control" (change)="fileChange($event)"
+          accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel">
+      </div>
+
+      <button class="w-100 btn btn-primary" (click)="importProducts()">
+        Import
+      </button>
+    </div>
   </div>
 </ng-template>
