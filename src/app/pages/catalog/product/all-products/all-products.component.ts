@@ -112,7 +112,7 @@ export class AllProductsComponent implements OnInit {
 
   openImport(template: TemplateRef<any>) {
     this.importModalRef = this.BsModalService.show(template, {
-      class: 'modal-dialog-centered modal-sm',
+      class: 'modal-dialog-centered',
       ignoreBackdropClick: true,
     });
   }

@@ -224,6 +224,18 @@
                       </select>
                     </div>
                     <div class="mb-3 form-group">
+                      <label class="fs-6 mb-3" for="isCodAvailable">COD Allowed?</label>
+                      <select formControlName="isCodAvailable" id="isCodAvailable" class="form-select">
+                        <option value="" disabled>-- Select an option --</option>
+                        <option *ngFor="let value of [true, false]" value="{{value}}">{{value == true ? 'Yes' : 'No'}}
+                        </option>
+                      </select>
+                    </div>
+                    <div class="mb-3 form-group">
+                      <label class="fs-6 mb-3" for="codCharges">COD Charges</label>
+                      <input type="text" formControlName="codCharges" id="codCharges" class="form-control fs-6">
+                    </div>
+                    <div class="mb-3 form-group">
                       <label class="fs-6 mb-3" for="visibility">Visibility</label>
                       <select formControlName="isVisible" id="visibility" class="form-select">
                         <option value="" disabled>-- Select an option --</option>

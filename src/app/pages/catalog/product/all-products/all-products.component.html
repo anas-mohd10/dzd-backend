@@ -320,11 +320,18 @@
         </button>
       </div>
 
-      <label for="importFile" class="fs-6 mb-3">Import File</label>
+      <label for="importFile" class="fs-6">Import File</label>
 
-      <div class="mb-3" id="importFile">
-        <input type="file" class="form-control" (change)="fileChange($event)"
-          accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel">
+      <div id="importFile" class="my-3">
+        <div class="position-relative h-100 w-100">
+          <div class="position-absolute bg-white border border-secondary rounded h-100 w-100 top-0 d-flex flex-column align-items-start justify-content-center start-0 pe-none  p-4">
+            <div class="fs-4">Upload Your File Here</div>
+            <div class="text-muted my-1">Supported Formats: <span class="text-primary">.csv, .xlsx</span></div>
+            <div class="text-muted">Maximum File Size: <span class="text-primary">15MB</span></div>
+          </div>
+          <input type="file" class="form-control h-100 w-100" (change)="fileChange($event)"
+            accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel">
+        </div>
       </div>
 
       <button class="w-100 btn btn-primary" (click)="importProducts()">

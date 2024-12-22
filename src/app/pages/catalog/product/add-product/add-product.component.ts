@@ -602,6 +602,8 @@ export class AddProductComponent implements OnInit {
       relatedProducts: new FormControl(''),
       isActive: new FormControl(true),
       isVisible: new FormControl(true),
+      isCodAvailable: new FormControl('true'),
+      codCharges: new FormControl(0),
     });
 
     this.BrandService.getActiveBrands().subscribe({

@@ -22,6 +22,14 @@ $error: #F1416C;
    width: 140px;
 }
 
+#importFile{
+   height: 140px;
+   display: flex;
+   align-items: center;
+   justify-content: center;
+   cursor: pointer
+}
+
 label,
 input[type=button],
 .btn-secondary,
