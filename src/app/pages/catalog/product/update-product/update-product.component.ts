@@ -46,6 +46,7 @@ interface AddOns {
   templateUrl: './update-product.component.html',
   styleUrls: ['./update-product.component.scss'],
 })
+
 export class UpdateProductComponent implements OnInit {
   task = PageTasks.ADD;
   editMode = false;
@@ -661,19 +662,23 @@ export class UpdateProductComponent implements OnInit {
   }
 
   toggleSearchKeywords(event: any, type: string) {
-    if (type == 'add' && event.target.value) {
-      if (this.searchKeywords.includes(event.target.value)) {
-        this.HotToastService.info('Keyword already added');
+    if (event?.key == 'Enter') {
+      event?.preventDefault();
+      const inputValue = (event?.target as HTMLInputElement)?.value;
+      if (type == 'add' && inputValue) {
+        if (this.searchKeywords.includes(inputValue)) {
+          this.HotToastService.info('Keyword already added');
+        } else {
+          this.searchKeywords.push(inputValue);
+          this.searchKeyword?.setValue('');
+        }
+        this.form.get('searchKeywords')?.setValue(this.searchKeywords);
       } else {
-        this.searchKeywords.push(event.target.value);
-        this.searchKeyword?.setValue('');
+        this.searchKeywords = this.searchKeywords.filter(
+          (item: any) => item != event
+        );
+        this.form.get('searchKeywords')?.setValue(this.searchKeywords);
       }
-      this.form.get('searchKeywords')?.setValue(this.searchKeywords);
-    } else {
-      this.searchKeywords = this.searchKeywords.filter(
-        (item: any) => item != event
-      );
-      this.form.get('searchKeywords')?.setValue(this.searchKeywords);
     }
   }
 

@@ -44,7 +44,7 @@
       <div class="line-separator my-8"></div>
       <div>
         <label class="fs-5 mb-1 text-muted fw-normal" for="status">Status</label>
-        <div id="status" class="{{uploadDetails && uploadDetails.status}}">
+        <div id="status" class="bg-secondary py-1 px-3 rounded-pill">
           {{ uploadDetails && formatStatus(uploadDetails.status) }}</div>
       </div>
       <div class="line-separator my-8"></div>
@@ -96,6 +96,11 @@
             <div class="col-lg-2" style="font-size: 12px;">
               {{ formatDate(log.timestamp)}} {{formatTime(log.timestamp)}} </div>
             <div class="col-lg-9" style="font-size: 13px;"> {{ log.message }}</div>
+          </div>
+          <div *ngIf="logs.length == 0">
+            <div class="row">
+              <div class="text-white"> No logs found </div>
+            </div>
           </div>
         </div>
         <div>

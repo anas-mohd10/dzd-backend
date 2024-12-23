@@ -309,13 +309,14 @@
   <div class="modal-body">
     <div>
       <div class="mb-3">
-        <button class="btn w-100 btn-secondary d-flex align-items-center justify-content-center gap-2" (click)="downloadSampleFile()">
+        <button class="btn w-100 btn-secondary d-flex align-items-center justify-content-center gap-2"
+          (click)="downloadSampleFile()">
           <svg height="18" width="18" data-slot="icon" fill="none" stroke-width="1.5" stroke="currentColor"
-          viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-          <path stroke-linecap="round" stroke-linejoin="round"
-            d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3">
-          </path>
-        </svg>
+            viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round"
+              d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3">
+            </path>
+          </svg>
           Sample File
         </button>
       </div>
@@ -324,13 +325,41 @@
 
       <div id="importFile" class="my-3">
         <div class="position-relative h-100 w-100">
-          <div class="position-absolute bg-white border border-secondary rounded h-100 w-100 top-0 d-flex flex-column align-items-start justify-content-center start-0 pe-none  p-4">
-            <div class="fs-4">Upload Your File Here</div>
-            <div class="text-muted my-1">Supported Formats: <span class="text-primary">.csv, .xlsx</span></div>
-            <div class="text-muted">Maximum File Size: <span class="text-primary">15MB</span></div>
+          <div
+            class="position-absolute bg-white border border-secondary rounded h-100 w-100 top-0 d-flex flex-column align-items-start justify-content-center start-0 pe-none  p-4">
+            <div class="fs-4 mb-2 d-flex align-items-center justify-content-center gap-2">
+              <div>
+                <svg height="18" width="18" data-slot="icon" fill="none" stroke-width="1.5" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5m-13.5-9L12 3m0 0 4.5 4.5M12 3v13.5"></path>
+                </svg>
+              </div>
+              Upload Your File Here
+            </div>
+            <div class="text-muted my-1 fs-5">Supported Formats: <span class="text-primary">.csv, .xlsx</span></div>
+            <div class="text-muted fs-5">Maximum File Size: <span class="text-primary">15MB</span></div>
           </div>
-          <input type="file" class="form-control h-100 w-100" (change)="fileChange($event)"
+          <input type="file" [formControl]="fileImport" class="form-control h-100 w-100" (change)="fileChange($event)"
             accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel">
+        </div>
+      </div>
+
+      <div class="my-8" *ngIf="importFile && importFile?.name">
+        <div>
+          <div class="mb-2 fs-5">Uploaded File</div>
+          <div class="d-flex align-items-center justify-content-between gap-2 p-2 border border-secondary rounded">
+            <div>
+              <div class="fs-5">{{importFile?.name}}</div>
+              <div class="fs-5 text-muted">{{fileSize(importFile?.size / 1024 / 1024)}}</div>
+            </div>
+            <div>
+              <a (click)="removeFile()" class="cursor-pointer">
+                <svg height="20" width="20" data-slot="icon" fill="none" stroke-width="1.5" stroke="currentColor"
+                  viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12"></path>
+                </svg>
+              </a>
+            </div>
+          </div>
         </div>
       </div>
 
