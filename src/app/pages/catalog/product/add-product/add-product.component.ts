@@ -465,21 +465,21 @@ export class AddProductComponent implements OnInit {
   toggleSearchKeywords(event: any, type: string) {
     if (event?.key == 'Enter') {
       event?.preventDefault();
-      const inputValue = (event?.target as HTMLInputElement)?.value;
-      if (type == 'add' && inputValue) {
-        if (this.searchKeywords.includes(inputValue)) {
-          this.HotToastService.info('Keyword already added');
-        } else {
-          this.searchKeywords.push(inputValue);
-          this.searchKeyword?.setValue('');
-        }
-        this.form.get('searchKeywords')?.setValue(this.searchKeywords);
+    }
+    const inputValue = (event?.target as HTMLInputElement)?.value;
+    if (type == 'add' && inputValue) {
+      if (this.searchKeywords.includes(inputValue)) {
+        this.HotToastService.info('Keyword already added');
       } else {
-        this.searchKeywords = this.searchKeywords.filter(
-          (item: any) => item != event
-        );
-        this.form.get('searchKeywords')?.setValue(this.searchKeywords);
+        this.searchKeywords.push(inputValue);
+        this.searchKeyword?.setValue('');
       }
+      this.form.get('searchKeywords')?.setValue(this.searchKeywords);
+    } else {
+      this.searchKeywords = this.searchKeywords.filter(
+        (item: any) => item != event
+      );
+      this.form.get('searchKeywords')?.setValue(this.searchKeywords);
     }
   }
 
