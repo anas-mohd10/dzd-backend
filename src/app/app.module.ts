@@ -93,6 +93,7 @@ import { CartSettingsComponent } from './pages/settings/general/cart-settings/ca
 import { OrderSettingsComponent } from './pages/settings/general/order-settings/order-settings.component';
 import { FiltersComponent } from './pages/catalog/filters/filters.component';
 import { SitemapSettingsComponent } from './pages/settings/general/sitemap-settings/sitemap-settings.component';
+import { CompareKeysComponent } from './pages/catalog/compare-keys/compare-keys.component';
 
 const DragConfig = {
   dragStartThreshold: 0,
@@ -160,6 +161,7 @@ const DragConfig = {
     OrderSettingsComponent,
     FiltersComponent,
     SitemapSettingsComponent,
+    CompareKeysComponent,
   ],
   imports: [
     provideFirebaseApp(() => initializeApp(environment.firebaseConfig)),

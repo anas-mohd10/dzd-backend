@@ -45,6 +45,7 @@ import { ProductDesignsComponent } from './store-designs/product-designs/product
 import { OrderSettingsComponent } from './settings/general/order-settings/order-settings.component';
 import { FiltersComponent } from './catalog/filters/filters.component';
 import { SitemapSettingsComponent } from './settings/general/sitemap-settings/sitemap-settings.component';
+import { CompareKeysComponent } from './catalog/compare-keys/compare-keys.component';
 
 export const Routing: Routes = [
   {
@@ -275,6 +276,10 @@ export const Routing: Routes = [
       }, {
         path: 'filters',
         component: FiltersComponent,
+        canActivate: [AuthenticationGuard, PermissionGuard]
+      }, {
+        path: 'compare-keys',
+        component: CompareKeysComponent,
         canActivate: [AuthenticationGuard, PermissionGuard]
       }, {
         path: 'newsletter-subscribers',

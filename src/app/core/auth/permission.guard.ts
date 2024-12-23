@@ -61,6 +61,9 @@ export class PermissionGuard implements CanActivate {
       case 'filters':
         module[0] == 'filters' ? path = 'filters' : null
         break
+      case 'compare-keys':
+        module[0] == 'compare-keys' ? path = 'compare-keys' : null
+        break
       case 'help-center':
         module[0] == 'help-center' ? path = 'help-center' : null
         break

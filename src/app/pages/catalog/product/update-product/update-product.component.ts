@@ -665,7 +665,7 @@ export class UpdateProductComponent implements OnInit {
     if (event?.key == 'Enter') {
       event?.preventDefault();
     }
-    
+
     const inputValue = (event?.target as HTMLInputElement)?.value;
     if (type == 'add' && inputValue) {
       if (this.searchKeywords.includes(inputValue)) {
@@ -904,6 +904,8 @@ export class UpdateProductComponent implements OnInit {
       isVisible: new FormControl('true'),
       isCodAvailable: new FormControl('true'),
       codCharges: new FormControl(0),
+      deliveryDays: new FormControl(0),
+      isCompareEnabled: new FormControl('false'),
     });
 
     this.categoryService.getActiveCategory().subscribe({

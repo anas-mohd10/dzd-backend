@@ -152,7 +152,7 @@
                       <div class="mb-3 form-group">
                         <label for="searchKeywords" class="fs-6 mb-3">Search Keywords</label>
                         <input id="searchKeywords" class="form-control fs-6"
-                          (keyup.enter)="toggleSearchKeywords($event, 'add')"  [formControl]="searchKeyword" />
+                          (keyup.enter)="toggleSearchKeywords($event, 'add')" [formControl]="searchKeyword" />
                         <ng-container *ngIf="searchKeywords && searchKeywords.length > 0">
                           <div
                             class="mt-2 d-flex flex-wrap overflow-hidden align-items-center justify-content-start gap-3">
@@ -202,55 +202,72 @@
                       </div>
                     </div>
                   </div>
-                  <div class="col-lg-3 rightSideBg p-4 rounded">
-                    <div class="mb-3 form-group">
-                      <label class="fs-6 mb-3">Origin</label>
-                      <input type="text" class="form-control fs-6" placeholder="Eg. Australia"
-                        formControlName="origin" />
+                  <div class="col-lg-3">
+                    <div class="rightSideBg p-4 rounded">
+                      <div class="mb-3 form-group">
+                        <label class="fs-6 mb-3">Boost Score</label>
+                        <input type="text" class="form-control fs-6" formControlName="boostScore"
+                          [ngClass]="{ 'is-invalid': (formControls.boostScore.touched || isSubmitted) && formControls.boostScore.errors?.pattern }" />
+                      </div>
+                      <div class="mb-3 form-group">
+                        <label class="fs-6 mb-3" for="status">Active Status</label>
+                        <select formControlName="isActive" id="status" class="form-select">
+                          <option value="" disabled>-- Select an option --</option>
+                          <option *ngFor="let value of [true, false]" value="{{value}}">{{value == true ? 'Yes' : 'No'}}
+                          </option>
+                        </select>
+                      </div>
+                      <div class="mb-3 form-group">
+                        <label class="fs-6 mb-3" for="isCodAvailable">COD Allowed?</label>
+                        <select formControlName="isCodAvailable" id="isCodAvailable" class="form-select">
+                          <option value="" disabled>-- Select an option --</option>
+                          <option *ngFor="let value of [true, false]" value="{{value}}">{{value == true ? 'Yes' : 'No'}}
+                          </option>
+                        </select>
+                      </div>
+                      <div class="mb-3 form-group">
+                        <label class="fs-6 mb-3" for="codCharges">COD Charges</label>
+                        <input type="text" formControlName="codCharges" id="codCharges" class="form-control fs-6">
+                      </div>
+                      <div class="mb-3 form-group">
+                        <label class="fs-6 mb-3" for="visibility">Visibility</label>
+                        <select formControlName="isVisible" id="visibility" class="form-select">
+                          <option value="" disabled>-- Select an option --</option>
+                          <option *ngFor="let value of [true, false]" value="{{value}}">{{value == true ? 'Visible' :
+                            'Hidden'}}</option>
+                        </select>
+                      </div>
                     </div>
-                    <div class="mb-3 form-group">
-                      <label class="fs-6 mb-3">Boost Score</label>
-                      <input type="text" class="form-control fs-6" formControlName="boostScore"
-                        [ngClass]="{ 'is-invalid': (formControls.boostScore.touched || isSubmitted) && formControls.boostScore.errors?.pattern }" />
-                    </div>
-                    <div class="mb-3 form-group">
-                      <label for="weight" class="fs-6 mb-3">Unit</label>
-                      <input type="text" id="weight" class="form-control fs-6" formControlName="unit" />
-                    </div>
-                    <div class="mb-3 form-group">
-                      <label class="fs-6 mb-3" for="status">Active Status</label>
-                      <select formControlName="isActive" id="status" class="form-select">
-                        <option value="" disabled>-- Select an option --</option>
-                        <option *ngFor="let value of [true, false]" value="{{value}}">{{value == true ? 'Yes' : 'No'}}
-                        </option>
-                      </select>
-                    </div>
-                    <div class="mb-3 form-group">
-                      <label class="fs-6 mb-3" for="isCodAvailable">COD Allowed?</label>
-                      <select formControlName="isCodAvailable" id="isCodAvailable" class="form-select">
-                        <option value="" disabled>-- Select an option --</option>
-                        <option *ngFor="let value of [true, false]" value="{{value}}">{{value == true ? 'Yes' : 'No'}}
-                        </option>
-                      </select>
-                    </div>
-                    <div class="mb-3 form-group">
-                      <label class="fs-6 mb-3" for="codCharges">COD Charges</label>
-                      <input type="text" formControlName="codCharges" id="codCharges" class="form-control fs-6">
-                    </div>
-                    <div class="mb-3 form-group">
-                      <label class="fs-6 mb-3" for="visibility">Visibility</label>
-                      <select formControlName="isVisible" id="visibility" class="form-select">
-                        <option value="" disabled>-- Select an option --</option>
-                        <option *ngFor="let value of [true, false]" value="{{value}}">{{value == true ? 'Visible' :
-                          'Hidden'}}</option>
-                      </select>
-                    </div>
-                    <div class="mb-3 form-group">
-                      <label for="brand" class="fs-6 mb-3">Brand</label>
-                      <select formControlName="brand" class="form-select">
-                        <option value="" disabled>-- Select an option --</option>
-                        <option *ngFor="let brand of brands" value="{{brand?.slug}}">{{brand?.name}}</option>
-                      </select>
+                    <div class="rightSideBg p-4 mt-4 rounded">
+                      <div class="fs-5 mb-4">Optional Fields</div>
+                      <div class="mb-3 form-group">
+                        <label for="brand" class="fs-6 mb-3">Brand</label>
+                        <select formControlName="brand" class="form-select">
+                          <option value="" disabled>-- Select an option --</option>
+                          <option *ngFor="let brand of brands" value="{{brand?.slug}}">{{brand?.name}}</option>
+                        </select>
+                      </div>
+                      <div class="mb-3 form-group">
+                        <label class="fs-6 mb-3">Origin</label>
+                        <input type="text" class="form-control fs-6" placeholder="Eg. Australia"
+                          formControlName="origin" />
+                      </div>
+                      <div class="mb-3 form-group">
+                        <label for="weight" class="fs-6 mb-3">Unit</label>
+                        <input type="text" id="weight" class="form-control fs-6" formControlName="unit" />
+                      </div>
+                      <div class="mb-3 form-group">
+                        <label for="deliveryDays" class="fs-6 mb-3">Delivery Days</label>
+                        <input type="text" id="deliveryDays" class="form-control fs-6" formControlName="deliveryDays" />
+                      </div>
+                      <div class="mb-3 form-group" *ngIf="settings && settings.isCompareEnabled == true">
+                        <label for="isCompareEnabled" class="fs-6 mb-3">Compare Enabled?</label>
+                        <select formControlName="isCompareEnabled" id="isCompareEnabled" class="form-select">
+                          <option *ngFor="let value of [true, false]" value="{{value}}">
+                            {{value == true ? 'Yes' : 'No'}}
+                           </option>
+                        </select>
+                      </div>
                     </div>
                   </div>
                 </div>

@@ -323,6 +323,7 @@ export const appRoutes = {
   cartSettings: `${app}/cart-settings`,
   orderSettings: `${app}/order-settings`,
   filters: `${app}/filters`,
+  compareKeys: `${app}/compare-keys`,
   appKeys: `${app}/app-keys`,
   pickupLocations: {
     list: `${app}/pickup-locations`,
