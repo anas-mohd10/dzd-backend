@@ -9,6 +9,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { HotToastService } from '@ngneat/hot-toast';
 import { BrandService } from 'src/app/includes/services/brand.service';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-all-products',
@@ -76,6 +77,7 @@ export class AllProductsComponent implements OnInit {
   importFile: any;
   importDetails: any
 
+  fileImport: FormControl = new FormControl()
   exportType: FormControl = new FormControl('csv')
   exportCondition: FormControl = new FormControl('basic')
   availableBasicFields: Array<{ name: string, value: string }> = [
@@ -89,6 +91,7 @@ export class AllProductsComponent implements OnInit {
     { name: 'Original Price', value: 'originalPrice' },
     { name: 'Store Price', value: 'storePrice' },
   ]
+  isDownloading: boolean = false
   basicFields: Array<string> = ['name', 'sku', 'type', 'stock', 'isActive', 'isVisible', 'boostScore', 'originalPrice', 'storePrice']
 
   constructor(
@@ -99,6 +102,7 @@ export class AllProductsComponent implements OnInit {
     private AppSettingsService: AppSettingsService,
     private ActivatedRoute: ActivatedRoute,
     private BsModalService: BsModalService,
+    private HttpClient: HttpClient,
     private Router: Router,
     private HotToastService: HotToastService
   ) { }
@@ -112,13 +116,36 @@ export class AllProductsComponent implements OnInit {
 
   openImport(template: TemplateRef<any>) {
     this.importModalRef = this.BsModalService.show(template, {
-      class: 'modal-dialog-centered modal-sm',
+      class: 'modal-dialog-centered',
       ignoreBackdropClick: true,
     });
   }
 
   fileChange(event: any) {
     this.importFile = event.target.files[0]
+    this.fileImport.setValue(this.importFile)
+    // Check if the file size is less than 15MB
+    if (this.importFile.size > 15 * 1024 * 1024) {
+      this.HotToastService.error('File size should be less than 15MB')
+      this.importFile = null
+      this.fileImport.setValue(null)
+    }
+    this.ChangeDetectorRef.markForCheck()
+  }
+
+  fileSize(file: any) {
+    // Convert bytes to MB
+    // If the file size is less than 1MB, return the file size in bytes
+    if (file < 1 * 1024 * 1024) {
+      return file.toFixed(2) + ' bytes'
+    } else {
+      return (file / 1024 / 1024).toFixed(2) + ' MB'
+    }
+  }
+
+  removeFile() {
+    this.fileImport.setValue(null)
+    this.importFile = null
     this.ChangeDetectorRef.markForCheck()
   }
 
@@ -132,13 +159,13 @@ export class AllProductsComponent implements OnInit {
           this.HotToastService.success(res?.message)
           this.importModalRef?.hide()
           this.importFile = null
-          this.Router.navigate([ `${appRoutes.bulk.import}/${res?.result?.importId}`])
+          this.Router.navigate([`${appRoutes.bulk.import}/${res?.result?.importId}`])
           this.ChangeDetectorRef.markForCheck()
         } else {
           this.HotToastService.error(res?.message)
         }
       }, error: (err: any) => { }
-    }) 
+    })
   }
 
   switchToggled(event: { toggleState: boolean, switchId: string }) {
@@ -332,7 +359,25 @@ export class AllProductsComponent implements OnInit {
     })
   }
 
-  downloadSampleFile(){
-    
+  downloadSampleFile() {
+    this.isDownloading = true;
+    const filePath: string = `/assets/files/storeDadaSampleProducts.csv`
+    this.HttpClient.get(filePath, { responseType: 'blob' })
+      .subscribe(
+        (response: Blob) => {
+          const url = window.URL.createObjectURL(response);
+          const link = document.createElement('a');
+          link.href = url;
+          const filename = filePath.split('/').pop() || 'download.csv';
+          link.setAttribute('download', filename);
+          document.body.appendChild(link);
+          link.click();
+          document.body.removeChild(link);
+          window.URL.revokeObjectURL(url);
+        },
+        error => {
+          console.error('Download failed:', error);
+        }
+      );
   }
 }

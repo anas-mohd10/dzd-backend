@@ -463,22 +463,23 @@ export class AddProductComponent implements OnInit {
   }
 
   toggleSearchKeywords(event: any, type: string) {
-    if (event instanceof KeyboardEvent && event.key === 'Enter') {
-      event.preventDefault();
-    }
-    if (type == 'add' && event.target.value) {
-      if (this.searchKeywords.includes(event.target.value)) {
-        this.HotToastService.info('Keyword already added');
+    if (event?.key == 'Enter') {
+      event?.preventDefault();
+      const inputValue = (event?.target as HTMLInputElement)?.value;
+      if (type == 'add' && inputValue) {
+        if (this.searchKeywords.includes(inputValue)) {
+          this.HotToastService.info('Keyword already added');
+        } else {
+          this.searchKeywords.push(inputValue);
+          this.searchKeyword?.setValue('');
+        }
+        this.form.get('searchKeywords')?.setValue(this.searchKeywords);
       } else {
-        this.searchKeywords.push(event.target.value);
-        this.searchKeyword?.setValue('');
+        this.searchKeywords = this.searchKeywords.filter(
+          (item: any) => item != event
+        );
         this.form.get('searchKeywords')?.setValue(this.searchKeywords);
       }
-    } else {
-      this.searchKeywords = this.searchKeywords.filter(
-        (item: any) => item != event
-      );
-      this.form.get('searchKeywords')?.setValue(this.searchKeywords);
     }
   }
 
@@ -602,6 +603,8 @@ export class AddProductComponent implements OnInit {
       relatedProducts: new FormControl(''),
       isActive: new FormControl(true),
       isVisible: new FormControl(true),
+      isCodAvailable: new FormControl('true'),
+      codCharges: new FormControl(0),
     });
 
     this.BrandService.getActiveBrands().subscribe({

@@ -19,7 +19,8 @@
       </ul>
     </div>
     <div class="d-flex align-items-start justify-content-end gap-2">
-      <button class="btn btn-secondary d-flex align-items-center justify-content-center gap-2" (click)="openHistory(historyTemplate)">
+      <button class="btn btn-secondary d-flex align-items-center justify-content-center gap-2"
+        (click)="openHistory(historyTemplate)">
         <svg height="18" width="18" data-slot="icon" fill="none" stroke-width="1.5" stroke="currentColor"
           viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
           <path stroke-linecap="round" stroke-linejoin="round" d="M9 15 3 9m0 0 6-6M3 9h12a6 6 0 0 1 0 12h-3"></path>
@@ -41,8 +42,9 @@
   <div class="mt-4">
     <div class="card">
       <div class="card-body">
-        <div class="fs-5 mb-3">Last updated on {{getFormatDate(productDetails?.updatedAt)}} {{getFormatTime(productDetails?.updatedAt)}}</div>
-        <form [formGroup]="form">
+        <div class="fs-5 mb-3">Last updated on {{getFormatDate(productDetails?.updatedAt)}}
+          {{getFormatTime(productDetails?.updatedAt)}}</div>
+        <form [formGroup]="form" (keydown.enter)="$event.preventDefault()">
           <tabset type="tabs" [justified]="true" type="pills" #staticTabs>
             <tab heading="Product Details">
               <div class="my-6">
@@ -150,7 +152,7 @@
                       <div class="mb-3 form-group">
                         <label for="searchKeywords" class="fs-6 mb-3">Search Keywords</label>
                         <input id="searchKeywords" class="form-control fs-6"
-                          (keyup.enter)="toggleSearchKeywords($event, 'add')" [formControl]="searchKeyword" />
+                          (keyup.enter)="toggleSearchKeywords($event, 'add')"  [formControl]="searchKeyword" />
                         <ng-container *ngIf="searchKeywords && searchKeywords.length > 0">
                           <div
                             class="mt-2 d-flex flex-wrap overflow-hidden align-items-center justify-content-start gap-3">
@@ -222,6 +224,18 @@
                         <option *ngFor="let value of [true, false]" value="{{value}}">{{value == true ? 'Yes' : 'No'}}
                         </option>
                       </select>
+                    </div>
+                    <div class="mb-3 form-group">
+                      <label class="fs-6 mb-3" for="isCodAvailable">COD Allowed?</label>
+                      <select formControlName="isCodAvailable" id="isCodAvailable" class="form-select">
+                        <option value="" disabled>-- Select an option --</option>
+                        <option *ngFor="let value of [true, false]" value="{{value}}">{{value == true ? 'Yes' : 'No'}}
+                        </option>
+                      </select>
+                    </div>
+                    <div class="mb-3 form-group">
+                      <label class="fs-6 mb-3" for="codCharges">COD Charges</label>
+                      <input type="text" formControlName="codCharges" id="codCharges" class="form-control fs-6">
                     </div>
                     <div class="mb-3 form-group">
                       <label class="fs-6 mb-3" for="visibility">Visibility</label>
@@ -348,107 +362,105 @@
 
             <tab heading="Product Medias">
               <div class="my-6">
-                <form [formGroup]="form">
-                  <div class="mb-3 form-group">
-                    <label class="fs-6 mb-3" id="video">Video</label>
-                    <input type="text" class="form-control" id="video" formControlName="video" />
-                  </div>
-                  <div class="mb-3 form-group">
-                    <label class="fs-6 mb-3" id="productBanner">Product Banner</label>
-                    <p class="text-muted fs-5">
-                      Priority will be given to dedicated product details if a banner has been uploaded here.
-                      The banner for product details can be added from the banner images section, which will be common
-                      throughout all the PDP design.</p>
-                    <div class="ratio position-relative" style="--bs-aspect-ratio: 25%;">
-                      <app-assets id="productBanner" [previewDetails]="productBannerDetails"
-                        (mediaClicked)="handleProductBanner($event)">
-                      </app-assets>
-                      <div class="position-absolute m-2 top-0 end-0" *ngIf="productBannerDetails">
-                        <button class="btn btn-danger p-2" (click)="removeProductBanner()">Remove banner</button>
-                      </div>
+                <div class="mb-3 form-group">
+                  <label class="fs-6 mb-3" id="video">Video</label>
+                  <input type="text" class="form-control" id="video" formControlName="video" />
+                </div>
+                <div class="mb-3 form-group">
+                  <label class="fs-6 mb-3" id="productBanner">Product Banner</label>
+                  <p class="text-muted fs-5">
+                    Priority will be given to dedicated product details if a banner has been uploaded here.
+                    The banner for product details can be added from the banner images section, which will be common
+                    throughout all the PDP design.</p>
+                  <div class="ratio position-relative" style="--bs-aspect-ratio: 25%;">
+                    <app-assets id="productBanner" [previewDetails]="productBannerDetails"
+                      (mediaClicked)="handleProductBanner($event)">
+                    </app-assets>
+                    <div class="position-absolute m-2 top-0 end-0" *ngIf="productBannerDetails">
+                      <button class="btn btn-danger p-2" (click)="removeProductBanner()">Remove banner</button>
                     </div>
                   </div>
-                  <div class="mb-3">
-                    <label for="images" class="fs-6 mb-3">Product Images</label>
-                    <div class="row" id="images">
-                      <ng-container *ngFor="let image of images">
-                        <div class="col-lg-2">
-                          <div class="ratio border ratio-1x1 h-auto w-100 rounded position-relative">
-                            <div class="close-icon rounded bg-danger text-white" (click)="productMediaClicked(image)">
-                              <svg height="18" width="18" data-slot="icon" fill="none" stroke-width="1.5"
-                                stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"
-                                aria-hidden="true">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12"></path>
-                              </svg>
-                            </div>
-                            <img src="{{base}}{{image.path}}" class="h-100 rounded w-100" alt="Product">
-                          </div>
-                        </div>
-                      </ng-container>
+                </div>
+                <div class="mb-3">
+                  <label for="images" class="fs-6 mb-3">Product Images</label>
+                  <div class="row" id="images">
+                    <ng-container *ngFor="let image of images">
                       <div class="col-lg-2">
-                        <div class="ratio ratio-1x1 h-auto w-100 rounded">
-                          <app-assets (mediaClicked)="productMediaClicked($event)" [image]="'contain'"
-                            [previewEnabled]="false"></app-assets>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="mb-3">
-                    <label for="thumbnail" class="fs-6 mb-3">Product Thumbnail</label>
-                    <div class="row" id="thumbnail">
-                      <div class="col-lg-2">
-                        <div class="ratio ratio-1x1 h-auto w-100 rounded">
-                          <app-assets [image]="'contain'" [previewDetails]="thumbnailPreview"
-                            (mediaClicked)="productThumbnailClicked($event)"></app-assets>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="mb-3">
-                    <label for="images" class="fs-6 mb-3">Product Icons</label>
-                    <div class="row" id="images">
-                      <div class="col-lg-2" *ngFor="let icon of icons">
                         <div class="ratio border ratio-1x1 h-auto w-100 rounded position-relative">
-                          <div class="close-icon rounded bg-danger text-white" (click)="productIconClicked(icon)">
+                          <div class="close-icon rounded bg-danger text-white" (click)="productMediaClicked(image)">
                             <svg height="18" width="18" data-slot="icon" fill="none" stroke-width="1.5"
                               stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"
                               aria-hidden="true">
                               <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12"></path>
                             </svg>
                           </div>
-                          <img src="{{base}}{{icon}}" class="rounded object-fit-cover" class="h-100 w-100 object-cover">
+                          <img src="{{base}}{{image.path}}" class="h-100 rounded w-100" alt="Product">
                         </div>
                       </div>
-                      <div class="col-lg-2">
-                        <div class="ratio ratio-1x1 h-auto w-100 rounded">
-                          <app-assets (mediaClicked)="productIconClicked($event)" [previewEnabled]="false"></app-assets>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="mb-3">
-                    <label for="images" class="fs-6 mb-3">Product Tags</label>
-                    <div class="row" id="images">
-                      <div class="col-lg-2" *ngFor="let icon of tagIcons">
-                        <div class="ratio border ratio-1x1 h-auto w-100 rounded position-relative">
-                          <div class="close-icon rounded bg-danger text-white" (click)="removeTagIcons(icon)">
-                            <svg height="18" width="18" data-slot="icon" fill="none" stroke-width="1.5"
-                              stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"
-                              aria-hidden="true">
-                              <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12"></path>
-                            </svg>
-                          </div>
-                          <img src="{{base}}{{icon}}" class="rounded" class="h-100 w-100 ">
-                        </div>
-                      </div>
-                      <div class="col-lg-2">
-                        <div class="ratio ratio-1x1 h-auto w-100 rounded">
-                          <app-assets (mediaClicked)="handleTagIcons($event)" [previewEnabled]="false"></app-assets>
-                        </div>
+                    </ng-container>
+                    <div class="col-lg-2">
+                      <div class="ratio ratio-1x1 h-auto w-100 rounded">
+                        <app-assets (mediaClicked)="productMediaClicked($event)" [image]="'contain'"
+                          [previewEnabled]="false"></app-assets>
                       </div>
                     </div>
                   </div>
-                </form>
+                </div>
+                <div class="mb-3">
+                  <label for="thumbnail" class="fs-6 mb-3">Product Thumbnail</label>
+                  <div class="row" id="thumbnail">
+                    <div class="col-lg-2">
+                      <div class="ratio ratio-1x1 h-auto w-100 rounded">
+                        <app-assets [image]="'contain'" [previewDetails]="thumbnailPreview"
+                          (mediaClicked)="productThumbnailClicked($event)"></app-assets>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="mb-3">
+                  <label for="images" class="fs-6 mb-3">Product Icons</label>
+                  <div class="row" id="images">
+                    <div class="col-lg-2" *ngFor="let icon of icons">
+                      <div class="ratio border ratio-1x1 h-auto w-100 rounded position-relative">
+                        <div class="close-icon rounded bg-danger text-white" (click)="productIconClicked(icon)">
+                          <svg height="18" width="18" data-slot="icon" fill="none" stroke-width="1.5"
+                            stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"
+                            aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12"></path>
+                          </svg>
+                        </div>
+                        <img src="{{base}}{{icon}}" class="rounded object-fit-cover" class="h-100 w-100 object-cover">
+                      </div>
+                    </div>
+                    <div class="col-lg-2">
+                      <div class="ratio ratio-1x1 h-auto w-100 rounded">
+                        <app-assets (mediaClicked)="productIconClicked($event)" [previewEnabled]="false"></app-assets>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="mb-3">
+                  <label for="images" class="fs-6 mb-3">Product Tags</label>
+                  <div class="row" id="images">
+                    <div class="col-lg-2" *ngFor="let icon of tagIcons">
+                      <div class="ratio border ratio-1x1 h-auto w-100 rounded position-relative">
+                        <div class="close-icon rounded bg-danger text-white" (click)="removeTagIcons(icon)">
+                          <svg height="18" width="18" data-slot="icon" fill="none" stroke-width="1.5"
+                            stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"
+                            aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12"></path>
+                          </svg>
+                        </div>
+                        <img src="{{base}}{{icon}}" class="rounded" class="h-100 w-100 ">
+                      </div>
+                    </div>
+                    <div class="col-lg-2">
+                      <div class="ratio ratio-1x1 h-auto w-100 rounded">
+                        <app-assets (mediaClicked)="handleTagIcons($event)" [previewEnabled]="false"></app-assets>
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
 
               <div class="d-flex align-items-center justify-content-center gap-2">
@@ -485,193 +497,6 @@
                 <button class="btn btn-primary" (click)="saveChanges()">Save changes</button>
               </div>
             </tab>
-
-            <!-- 
-            <tab heading="Add Ons">
-              <div class="my-6">
-                <div class="alert alert-danger fs-5">
-                  This module is currently under development and will be operational soon.
-                </div>
-
-                <div class="d-flex align-items-center justify-content-end">
-                  <button class="btn btn-secondary d-flex align-items-center justify-content-center gap-2"
-                    *ngIf="!isAddOnForm" (click)="isAddOnForm = true">
-                    <svg height="16" width="16" data-slot="icon" fill="none" stroke-width="1.5" stroke="currentColor"
-                      viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                      <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"></path>
-                    </svg>
-                    Add Ons
-                  </button>
-                </div>
-
-                <ng-container *ngIf="addOns && addOns.length > 0">
-                  <div
-                    class="border mt-4 border-secondary rounded p-4 d-flex align-items-center justify-content-between"
-                    *ngFor="let addOn of addOns; let i = index">
-                    <div>
-                      <div class="fs-4">{{addOn.title}}</div>
-                      <div class="text-muted">{{addOn.description}}</div>
-                    </div>
-                    <div class="d-flex align-items-center justify-content-end gap-2">
-                      <button (click)="editAddOn(i)"
-                        class="d-flex align-items-center justify-content-center gap-2 btn btn-secondary">
-                        <svg height="16" width="16" data-slot="icon" fill="none" stroke-width="1.5"
-                          stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"
-                          aria-hidden="true">
-                          <path stroke-linecap="round" stroke-linejoin="round"
-                            d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z">
-                          </path>
-                          <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z">
-                          </path>
-                        </svg>
-                        Edit
-                      </button>
-                      <button (click)="removeAddOn(i)"
-                        class="d-flex align-items-center justify-content-center gap-2 btn btn-danger">
-                        <svg height="16" width="16" data-slot="icon" fill="none" stroke-width="1.5"
-                          stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"
-                          aria-hidden="true">
-                          <path stroke-linecap="round" stroke-linejoin="round"
-                            d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0">
-                          </path>
-                        </svg>
-                        Remove
-                      </button>
-                    </div>
-                  </div>
-                </ng-container>
-
-                <ng-container *ngIf="isAddOnForm">
-                  <div class="mt-4">
-                    <form [formGroup]="addOnForm">
-                      <div class="form-group">
-                        <label for="addOnTitle" class="fs-6 mb-3 required">Title</label>
-                        <input type="text" id="addOnTitle" formControlName="title" class="form-control">
-                      </div>
-                      <div class="form-group my-4">
-                        <label for="addOnDescription" class="fs-6 mb-3">Description</label>
-                        <input type="text" id="addOnDescription" formControlName="description" class="form-control">
-                      </div>
-                      <div class="row">
-                        <div class="col-lg-6">
-                          <div class="form-group">
-                            <label for="addOnType" class="fs-6 mb-3 required">Type</label>
-                            <select formControlName="addOnType" id="addOnType" class="form-select">
-                              <option value="" disabled>-- Select an option --</option>
-                              <option *ngFor="let addOnType of addOnTypes" value="{{addOnType.value}}">
-                                {{addOnType.key}}
-                              </option>
-                            </select>
-                          </div>
-                        </div>
-                        <div class="col-lg-6">
-                          <div class="form-group">
-                            <label for="isRequired" class="fs-6 mb-3">Is Required?</label>
-                            <app-switch [switchId]="''" (switchToggled)="toggleAddOnSwitch($event)"
-                              [isToggledProps]="addOnForm.get('isRequired')?.value"></app-switch>
-                          </div>
-                        </div>
-                      </div>
-                    </form>
-
-                    <ng-container *ngIf="addOnOptions && addOnOptions.length > 0">
-                      <div class="row mt-4 align-items-end" *ngFor="let addOnOption of addOnOptions; let i = index">
-                        <div class="col-lg-4">
-                          <div class="form-group">
-                            <label for="addOnOptionFormTitle" class="fs-6 mb-3 required">Name</label>
-                            <input type="text" id="addOnOptionFormTitle" class="form-control"
-                              value="{{addOnOption.product}}">
-                          </div>
-                        </div>
-                        <div class="col-lg-4">
-                          <div class="form-group">
-                            <label for="addOnOptionFormDescription" class="fs-6 mb-3">Description</label>
-                            <input type="text" id="addOnOptionFormDescription" class="form-control"
-                              value="{{addOnOption.description}}">
-                          </div>
-                        </div>
-                        <div class="col-lg-2">
-                          <div class="form-group">
-                            <label for="addOnOptionFormPrice" class="fs-6 mb-3 required">Price</label>
-                            <input type="number" id="addOnOptionFormPrice" class="form-control"
-                              value="{{addOnOption.price}}">
-                          </div>
-                        </div>
-                        <div class="col-lg-2">
-                          <button (click)="removeAddOnOption(i)"
-                            class="btn btn-danger w-100 d-flex align-items-center justify-content-center gap-2">
-                            <svg height="16" width="16" data-slot="icon" fill="none" stroke-width="1.5"
-                              stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"
-                              aria-hidden="true">
-                              <path stroke-linecap="round" stroke-linejoin="round"
-                                d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0">
-                              </path>
-                            </svg>
-                            Remove Option
-                          </button>
-                        </div>
-                      </div>
-                    </ng-container>
-
-                    <form [formGroup]="addOnOptionForm">
-                      <div class="row mt-4 align-items-end">
-                        <div class="col-lg-4">
-                          <div class="form-group">
-                            <label for="addOnOptionFormTitle" class="fs-6 mb-3 required">Name</label>
-                            <input type="text" id="addOnOptionFormTitle" formControlName="product" class="form-control"
-                              [ngClass]="{
-                              'is-invalid':
-                              (addOnOptionControls.product.touched || isOptionSubmitted) &&
-                              addOnOptionControls.product.errors?.required
-                            }">
-                          </div>
-                        </div>
-                        <div class="col-lg-4">
-                          <div class="form-group">
-                            <label for="addOnOptionFormDescription" class="fs-6 mb-3">Description</label>
-                            <input type="text" id="addOnOptionFormDescription" formControlName="description"
-                              class="form-control">
-                          </div>
-                        </div>
-                        <div class="col-lg-2">
-                          <div class="form-group">
-                            <label for="addOnOptionFormPrice" class="fs-6 mb-3 required">Price</label>
-                            <input type="number" id="addOnOptionFormPrice" formControlName="price" class="form-control"
-                              [ngClass]="{
-                              'is-invalid':
-                              (addOnOptionControls.price.touched || isOptionSubmitted) &&
-                              addOnOptionControls.price.errors?.required
-                            }">
-                          </div>
-                        </div>
-                        <div class="col-lg-2">
-                          <button (click)="addAddOnOption()" type="button"
-                            class="btn btn-secondary w-100 d-flex align-items-center justify-content-center gap-2">
-                            <svg height="16" width="16" data-slot="icon" fill="none" stroke-width="1.5"
-                              stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"
-                              aria-hidden="true">
-                              <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"></path>
-                            </svg>
-                            Add Option
-                          </button>
-                        </div>
-                      </div>
-                    </form>
-
-                    <div class="d-flex align-items-center justify-content-end gap-2 mt-4">
-                      <button class="btn btn-danger" (click)="closeAddOnItems()">Cancel</button>
-                      <button class="btn btn-secondary" (click)="addAddOnItems()">Save Addon</button>
-                    </div>
-                  </div>
-                </ng-container>
-              </div>
-
-              <div class="d-flex align-items-center justify-content-center gap-2">
-                <button class="btn border border-primary bg-white text-primary" (click)="toggleTab(4)">Back</button>
-                <button class="btn btn-primary" (click)="saveChanges()">Save changes</button>
-              </div>
-            </tab> 
-            -->
           </tabset>
         </form>
       </div>

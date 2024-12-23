@@ -22,7 +22,7 @@
 
         <tabset type="tabs" [justified]="true" type="pills" #staticTabs>
           <tab heading="Basic details">
-            <form [formGroup]="parentForm">
+            <form [formGroup]="parentForm" (keydown.enter)="$event.preventDefault()">
               <div class="my-6">
                 <div class="row">
                   <div class="col-lg-6 mb-3 form-group">
@@ -65,23 +65,6 @@
                         {{status == 'true' ? 'True' : 'False'}}
                       </option>
                     </select>
-                  </div>
-
-                  <div class="row px-0 mx-0" formGroupName="cod">
-                    <div class="col-lg-6 mb-3 from-group">
-                      <label class="fs-6 mb-3" for="isPresent">COD available</label>
-                      <select formControlName="isPresent" id="isPresent" class="form-select">
-                        <option value="" disabled>-- Select an option --</option>
-                        <option *ngFor="let status of ['true', 'false']" value="{{status}}">
-                          {{status == 'true' ? 'True' : 'False'}}
-                        </option>
-                      </select>
-                    </div>
-                    <div class="col-lg-6 mb-3 from-group">
-                      <label class="fs-6 mb-3" for="value">Charge</label>
-                      <input type="text" class="form-control fs-6" formControlName="value"
-                        [ngClass]="{'is-invalid': parentForm.get('cod.value')?.errors?.pattern}" />
-                    </div>
                   </div>
 
                   <div class="row px-0 mx-0" formGroupName="return">
@@ -148,7 +131,7 @@
           </tab>
 
           <tab heading="Product Details">
-            <form [formGroup]="form">
+            <form [formGroup]="form" (keydown.enter)="$event.preventDefault()">
               <div class="my-6">
                 <div class="row">
                   <div class="col-lg-9">
@@ -325,6 +308,18 @@
                         <option *ngFor="let value of [true, false]" value="{{value}}">{{value == true ? 'Yes' : 'No'}}
                         </option>
                       </select>
+                    </div>
+                    <div class="mb-3 form-group">
+                      <label class="fs-6 mb-3" for="isCodAvailable">COD Allowed?</label>
+                      <select formControlName="isCodAvailable" id="isCodAvailable" class="form-select">
+                        <option value="" disabled>-- Select an option --</option>
+                        <option *ngFor="let value of [true, false]" value="{{value}}">{{value == true ? 'Yes' : 'No'}}
+                        </option>
+                      </select>
+                    </div>
+                    <div class="mb-3 form-group">
+                      <label class="fs-6 mb-3" for="codCharges">COD Charges</label>
+                      <input type="text" formControlName="codCharges" id="codCharges" class="form-control fs-6">
                     </div>
                     <div class="mb-3 form-group">
                       <label class="fs-6 mb-3" for="visibility">Visibility</label>
