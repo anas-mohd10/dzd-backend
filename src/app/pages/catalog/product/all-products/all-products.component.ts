@@ -361,7 +361,7 @@ export class AllProductsComponent implements OnInit {
 
   downloadSampleFile() {
     this.isDownloading = true;
-    const filePath: string = `/assets/files/storeDadaSampleProducts.csv`
+    const filePath: string = `/admin/assets/files/storeDadaSampleProducts.csv`
     this.HttpClient.get(filePath, { responseType: 'blob' })
       .subscribe(
         (response: Blob) => {
