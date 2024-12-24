@@ -128,7 +128,7 @@ export class UpdateOrdersComponent implements OnInit {
     private ChangeDetectorRef: ChangeDetectorRef,
     private AppSettingsService: AppSettingsService,
     private BsModalService: BsModalService,
-    private Toast: HotToastService
+    private HotToastService: HotToastService
   ) {}
 
   getLocaleDateString(date: string) {
@@ -178,13 +178,13 @@ export class UpdateOrdersComponent implements OnInit {
       next: (res: any) => {
         if (res?.errorCode == 0) {
           this.getOrderDetails();
-          this.Toast.success(res?.message);
+          this.HotToastService.success(res?.message);
         } else {
-          this.Toast.error(res?.message);
+          this.HotToastService.error(res?.message);
         }
       },
       error: (err: any) => {
-        this.Toast.error(err?.error?.message);
+        this.HotToastService.error(err?.error?.message);
       },
     });
   }
@@ -222,13 +222,13 @@ export class UpdateOrdersComponent implements OnInit {
           if (res?.errorCode == 0) {
             this.getOrderDetails();
             this.isNoteDetected = false;
-            this.Toast.success(res?.message);
+            this.HotToastService.success(res?.message);
           } else {
-            this.Toast.error(res?.message);
+            this.HotToastService.error(res?.message);
           }
         },
         error: (err: any) => {
-          this.Toast.error(err?.error?.message);
+          this.HotToastService.error(err?.error?.message);
         },
       });
     }
@@ -326,7 +326,7 @@ export class UpdateOrdersComponent implements OnInit {
         this.ChangeDetectorRef.markForCheck();
       },
       error: (err: any) => {
-        this.Toast.error("Couldn't fetch order status list");
+        this.HotToastService.error("Couldn't fetch order status list");
       },
     });
   }
@@ -342,13 +342,13 @@ export class UpdateOrdersComponent implements OnInit {
         if (res?.errorCode == 0) {
           this.getOrderDetails();
           this.productOrderStatus.setValue('');
-          this.Toast.success(res.message);
+          this.HotToastService.success(res.message);
         } else {
-          this.Toast.error(res.message);
+          this.HotToastService.error(res.message);
         }
       },
       error: (err: any) => {
-        this.Toast.error(err?.error?.message);
+        this.HotToastService.error(err?.error?.message);
       },
     });
   }
@@ -372,13 +372,13 @@ export class UpdateOrdersComponent implements OnInit {
             if (res?.errorCode == 0) {
               this.getOrderDetails();
               this.expectedModalRef?.hide();
-              this.Toast.success(res.message);
+              this.HotToastService.success(res.message);
             } else {
-              this.Toast.error(res.message);
+              this.HotToastService.error(res.message);
             }
           },
           error: (err: any) => {
-            this.Toast.error(err.message);
+            this.HotToastService.error(err.message);
           },
         });
         break;
@@ -392,13 +392,13 @@ export class UpdateOrdersComponent implements OnInit {
             if (res?.errorCode == 0) {
               this.getOrderDetails();
               this.deliveryModalRef?.hide();
-              this.Toast.success(res.message);
+              this.HotToastService.success(res.message);
             } else {
-              this.Toast.error(res.message);
+              this.HotToastService.error(res.message);
             }
           },
           error: (err: any) => {
-            this.Toast.error(err.message);
+            this.HotToastService.error(err.message);
           },
         });
         break;
@@ -414,13 +414,13 @@ export class UpdateOrdersComponent implements OnInit {
       next: (res: any) => {
         if (res?.errorCode == 0) {
           this.getOrderDetails();
-          this.Toast.success(res.message);
+          this.HotToastService.success(res.message);
         } else {
-          this.Toast.error(res.message);
+          this.HotToastService.error(res.message);
         }
       },
       error: (err: any) => {
-        this.Toast.error(err.message);
+        this.HotToastService.error(err.message);
       },
     });
   }
@@ -478,7 +478,7 @@ export class UpdateOrdersComponent implements OnInit {
         this.ChangeDetectorRef.markForCheck();
       },
       error: (err: any) => {
-        this.Toast.error("Couldn't fetch order status list");
+        this.HotToastService.error("Couldn't fetch order status list");
       },
     });
   }
@@ -491,17 +491,17 @@ export class UpdateOrdersComponent implements OnInit {
     }).subscribe({
       next: (res: any) => {
         if (res?.errorCode == 0) {
-          this.Toast.success(res?.message);
+          this.HotToastService.success(res?.message);
           this.bulkProducts = [];
           this.bulkStatus = [];
           this.bulkOrderStatus.setValue('');
           this.getOrderDetails();
         } else {
-          this.Toast.error(res?.message);
+          this.HotToastService.error(res?.message);
         }
       },
       error: (err: any) => {
-        this.Toast.error(err?.error?.message);
+        this.HotToastService.error(err?.error?.message);
       },
     });
   }
@@ -523,9 +523,9 @@ export class UpdateOrdersComponent implements OnInit {
       order: this.orderNumber,
     }).subscribe((res: any) => {
       if (res.errorCode != 0) {
-        this.Toast.error(res?.message);
+        this.HotToastService.error(res?.message);
       } else if (res.errorCode == 0) {
-        this.Toast.success(res?.message);
+        this.HotToastService.success(res?.message);
         this.router.navigate([this.appRoute.orders.ORDERS_LIST]);
       }
     });
@@ -546,15 +546,15 @@ export class UpdateOrdersComponent implements OnInit {
       next: (res: any) => {
         if (res?.errorCode == 0) {
           this.getOrderDetails();
-          this.Toast.success(res?.message);
+          this.HotToastService.success(res?.message);
           this.ChangeDetectorRef.markForCheck();
           this.modalRef?.hide();
         } else {
-          this.Toast.error(res?.message);
+          this.HotToastService.error(res?.message);
         }
       },
       error: (err: any) => {
-        this.Toast.error(err?.message);
+        this.HotToastService.error(err?.message);
       },
     });
   }
@@ -562,5 +562,35 @@ export class UpdateOrdersComponent implements OnInit {
   decline() {
     this.reason.setValue('');
     this.modalRef?.hide();
+  }
+
+  getInvoiceSignedUrl(orderId: string) {    
+    orderId = orderId.split('#')[1]    
+    this.OrdersService.getInvoiceSignedUrl(orderId).subscribe({
+      next: (res: any) => {
+        if (res?.errorCode == 0) {
+          window.open(res?.result?.url, "_blank")
+        } else {
+          this.HotToastService.error(res.message)
+        }
+      }, error: (err: any) => {
+        this.HotToastService.error(err.message)
+      }
+    })
+  }
+
+  getPackingSlipSignedUrl(orderId: string) {    
+    orderId = orderId.split('#')[1]    
+    this.OrdersService.getPackingSlipSignedUrl(orderId).subscribe({
+      next: (res: any) => {
+        if (res?.errorCode == 0) {
+          window.open(res?.result?.url, "_blank")
+        } else {
+          this.HotToastService.error(res.message)
+        }
+      }, error: (err: any) => {
+        this.HotToastService.error(err.message)
+      }
+    })
   }
 }

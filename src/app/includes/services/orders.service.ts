@@ -16,6 +16,26 @@ export class OrdersService {
     return this.http.post(`${url}`, data)
   }
 
+  getInvoiceSignedUrl(orderId: string) {
+    const url = this.commonService.getFullUrl(this.orderEndpoints.getInvoiceSignedUrl + `/${orderId}`);
+    return this.http.get(`${url}`)
+  }
+
+  getPackingSlipSignedUrl(orderId: string) {
+    const url = this.commonService.getFullUrl(this.orderEndpoints.getPackingSlipSignedUrl + `/${orderId}`);
+    return this.http.get(`${url}`)
+  }
+
+  getInvoicesSignedUrl(orderIds: any) {
+    const url = this.commonService.getFullUrl(this.orderEndpoints.getInvoicesSignedUrl + `/${orderIds}`);
+    return this.http.get(`${url}`)
+  }
+
+  getPackingSlipsSignedUrl(orderIds: any) {
+    const url = this.commonService.getFullUrl(this.orderEndpoints.getPackingSlipsSignedUrl + `/${orderIds}`);
+    return this.http.get(`${url}`)
+  }
+
   getOrders(data: any) {
     const url = this.commonService.getFullUrl(this.orderEndpoints.get_order);
     return this.http.post(`${url}`, data)
