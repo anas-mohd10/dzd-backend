@@ -36,14 +36,12 @@ export class UploadsListComponent implements OnInit {
   modalRef?: BsModalRef;
   types: Array<{ title: string; type: string }> = [
     { title: 'Category', type: 'category' },
-    { title: 'Product', type: 'product' },
     { title: 'Brand', type: 'brand' },
     { title: 'User', type: 'user' },
     { title: 'Blogs', type: 'blog' },
     { title: 'Collection', type: 'collection' },
     { title: 'Orders', type: 'order' },
     { title: 'Subscribers', type: 'subscriber' },
-    { title: 'Update Products', type: 'update-product' },
   ];
   fileData: any;
   fileName: string;
