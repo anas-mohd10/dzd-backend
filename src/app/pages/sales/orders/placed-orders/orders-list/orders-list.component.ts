@@ -524,4 +524,49 @@ export class OrdersListComponent implements OnInit {
       }
     })
   }
+
+  getInvoiceSignedUrl(orderId: string) {    
+    orderId = orderId.split('#')[1]    
+    this.OrdersService.getInvoiceSignedUrl(orderId).subscribe({
+      next: (res: any) => {
+        if (res?.errorCode == 0) {
+          window.open(res?.result?.url, "_blank")
+        } else {
+          this.HotToastService.error(res.message)
+        }
+      }, error: (err: any) => {
+        this.HotToastService.error(err.message)
+      }
+    })
+  }
+
+  getInvoicesSignedUrl(){
+    let queryString = this.toggledOrders.map(order => `${order.split('#')}`).join('&')
+    this.OrdersService.getInvoicesSignedUrl(queryString).subscribe({
+      next: (res: any) => {
+        if (res?.errorCode == 0) {
+          window.open(res?.result?.url, "_blank")
+        } else {
+          this.HotToastService.error(res.message)
+        }
+      }, error: (err: any) => {
+        this.HotToastService.error(err.message)
+      }
+    })
+  }
+
+  getPackingSlipsSignedUrl(){
+    let queryString = this.toggledOrders.map(order => `${order.split('#')}`).join('&')
+    this.OrdersService.getPackingSlipsSignedUrl(queryString).subscribe({
+      next: (res: any) => {
+        if (res?.errorCode == 0) {
+          window.open(res?.result?.url, "_blank")
+        } else {
+          this.HotToastService.error(res.message)
+        }
+      }, error: (err: any) => {
+        this.HotToastService.error(err.message)
+      }
+    })
+  }
 }
