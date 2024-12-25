@@ -33,8 +33,12 @@ export class MailerDetailsComponent implements OnInit {
       mailers: [
         { title: 'Order Placed', type: 'order-placed' },
         { title: 'Order Accepted', type: 'order-accepted' },
+        { title: 'Order Packed', type: 'order-packed' },
+        { title: 'Order Shipped', type: 'order-shipped' },
+        { title: 'Order Out for Delivery', type: 'order-out-for-delivery' },
         { title: 'Order Delivered', type: 'order-delivered' },
         { title: 'Order Cancelled', type: 'order-cancelled' },
+        { title: 'Order failed', type: 'order-failed' },
         { title: 'Admin Order Notification', type: 'admin-place-order-notification' }
       ]
     },
