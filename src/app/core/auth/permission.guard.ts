@@ -21,6 +21,10 @@ export class PermissionGuard implements CanActivate {
     let module = paths[1].split('/')
     let path = ''
 
+    if (module[0].includes('mailer-details')) {
+      module[0] = module[0].split('?')[0]
+    }
+
     switch (module[0]) {
       case 'brands':
         module[1] == 'add' ? path = 'add-brand' : module[1] == 'update' ? path = 'update-brand' : path = 'brand'
@@ -120,6 +124,9 @@ export class PermissionGuard implements CanActivate {
         break
       case 'custom-mailers':
         module[0] == 'custom-mailers' ? path = 'custom-mailers' : null
+        break
+      case 'mailer-details':
+        module[0] == 'mailer-details' ? path = 'mailer-details' : null
         break
       case 'mailer-subscriptions':
         module[0] == 'mailer-subscriptions' ? path = 'mailer-subscriptions' : null

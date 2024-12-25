@@ -24,20 +24,20 @@
         <div class="col-lg-4">
           <label class="fs-5 mb-1 text-muted fw-normal" for="startTime">Start Time</label>
           <div id="startTime">
-            {{formatDate(uploadDetails && uploadDetails.startTime)}} 
+            {{formatDate(uploadDetails && uploadDetails.startTime)}}
             {{formatTime(uploadDetails && uploadDetails.startTime)}}
           </div>
         </div>
         <div class="col-lg-4">
           <label class="fs-5 mb-1 text-muted fw-normal" for="endTime">End Time</label>
           <div id="endTime">
-            {{uploadDetails && uploadDetails.endTime && formatDate(uploadDetails && uploadDetails.endTime)}} 
+            {{uploadDetails && uploadDetails.endTime && formatDate(uploadDetails && uploadDetails.endTime)}}
             {{uploadDetails && uploadDetails.endTime && formatTime(uploadDetails && uploadDetails.endTime)}}</div>
         </div>
         <div class="col-lg-4">
           <label class="fs-5 mb-1 text-muted fw-normal" for="initiator">Initiator</label>
           <div id="initiator">
-            {{uploadDetails && uploadDetails.createdBy.firstname}} 
+            {{uploadDetails && uploadDetails.createdBy.firstname}}
             {{uploadDetails && uploadDetails.createdBy.lastname}}</div>
         </div>
       </div>

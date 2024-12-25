@@ -24,55 +24,31 @@
       <div class="row">
         <div class="col-lg-3">
           <ng-container *ngFor="let item of mailerItems">
-            <div
-              class="border border-outline p-4 cursor-pointer rounded mb-3"
-              [ngClass]="{
+            <div class="border border-outline p-4 cursor-pointer rounded mb-3" [ngClass]="{
                 'bg-primary text-white': form.get('type')?.value == item.type
-              }"
-              (click)="toggleMailer(item.type)"
-            >
+              }" (click)="toggleMailer(item.type)">
               {{ item.title }}
             </div>
           </ng-container>
         </div>
         <div class="col-lg-9">
-          <div class="card mb-8">
-            <div class="h3 fw-bold">Email preview</div>
-            <div class="card-body rounded border border-secondary shadow-sm">
-              <div [innerHTML]="bodyContent"></div>
-            </div>
-          </div>
           <form [formGroup]="form">
             <div class="form-group mb-3">
               <label for="subject" class="form-label required">Subject</label>
-              <input
-                type="text"
-                id="subject"
-                placeholder=""
-                formControlName="subject"
-                class="form-control"
-                [ngClass]="{
+              <input type="text" id="subject" placeholder="" formControlName="subject" class="form-control" [ngClass]="{
                   'is-invalid':
                     (formControls.subject.touched || isSubmitted) &&
                     formControls.subject.errors?.required
-                }"
-              />
+                }" />
             </div>
             <div class="form-group mb-3">
               <label for="email" class="form-label required">Email</label>
-              <textarea
-                formControlName="email"
-                id="email"
-                cols="30"
-                rows="10"
-                class="form-control"
+              <textarea formControlName="email" id="email" cols="30" rows="10" class="form-control emailContent"
                 [ngClass]="{
                   'is-invalid':
                     (formControls.email.touched || isSubmitted) &&
                     formControls.email.errors?.required
-                }"
-                (change)="detectEmailChanges()"
-              ></textarea>
+                }" (change)="detectEmailChanges()"></textarea>
             </div>
             <div class="d-flex my-4 justify-content-end align-items-center">
               <button class="btn btn-primary" (click)="manageMailer()">
