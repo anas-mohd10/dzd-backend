@@ -21,6 +21,11 @@ export class ProductHeadService {
     return this.http.post(`${url}`, data);
   }
 
+  deleteProducts(productIds: any) {
+    const url = this.commonService.getFullUrl(this.productHeadEndpoints.deleteProducts);
+    return this.http.delete(`${url}`, { body: productIds });
+  }
+
   productHeadDetails(product: string) {
     const url = this.commonService.getFullUrl(this.productHeadEndpoints.product_head + `/${product}`);
     return this.http.get(`${url}`);

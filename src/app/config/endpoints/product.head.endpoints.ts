@@ -8,5 +8,6 @@ export const productHeadEndpoints = {
    product_head_images: '/products/head-images',
    parentDetails: '/parent-details',
    deleteProductHead: '/delete-producthead',
-   activeParents: '/activeParents'
+   activeParents: '/activeParents',
+   deleteProducts: '/deleteProducts'
 }

@@ -13,9 +13,14 @@
             </li>
          </ul>
       </div>
-      <button class="btn btn-primary" routerLink="{{ appRoute.product.ADD_PRODUCT }}">
-         Add Product
-      </button>
+      <div class="d-flex align-items-center gap-2 justify-content-end">
+         <button class="btn btn-primary" routerLink="{{ appRoute.product.ADD_PRODUCT }}">
+            Add Product
+         </button>
+         <button class="btn btn-danger" (click)="deleteProducts()" *ngIf="checkedProducts.length > 0">
+            Delete Products
+          </button>
+      </div>
    </div>
 
    <div class="card my-4">
@@ -48,6 +53,9 @@
       <table class="table table-bordered">
          <thead>
             <tr>
+               <th>
+                  <div class="checkbox" (click)="onSelectProducts('all', '')" [ngClass]="{ 'checked': checkedProducts.length == products.length }"></div>
+               </th>
                <th>Name</th>
                <th>SKU</th>
                <th>Tax</th>
@@ -58,6 +66,9 @@
          </thead>
          <tbody>
                <tr *ngFor="let product of products; let i = index">
+                  <td>
+                     <div class="checkbox" (click)="onSelectProducts('single', product?._id)" [ngClass]="{ 'checked': checkedProducts.includes(product?._id) }"></div>
+                  </td>
                   <td>
                      <div class="productName">{{product?.name}}</div>
                   </td>

@@ -83,6 +83,7 @@ export class ProductCardComponent implements OnInit {
   ];
 
   parentStatus: FormControl = new FormControl('');
+  checkedProducts: Array<string> = [];
 
   constructor(
     private ProductService: ProductService,
@@ -98,7 +99,7 @@ export class ProductCardComponent implements OnInit {
     private BrandService: BrandService,
     private ElementRef: ElementRef,
     private HotToastService: HotToastService
-  ) {}
+  ) { }
 
   get editFormControls() {
     return this.editForm.controls;
@@ -131,6 +132,44 @@ export class ProductCardComponent implements OnInit {
         if (res?.errorCode == 0) {
           this.HotToastService.success(res?.message);
           this.parentStatus.setValue('');
+          this.getProductHeads();
+        } else {
+          this.HotToastService.error(res?.message);
+        }
+      },
+      error: (err: any) => {
+        this.HotToastService.error(err?.error?.message);
+      },
+    });
+  }
+
+  onSelectProducts(type: string, productId: string) {
+    if (type == 'all') {
+      if (this.checkedProducts.length == this.products.length) {
+        this.checkedProducts = [];
+      } else {
+        this.checkedProducts = this.products.map((product: any) => product._id);
+      }
+    } else {
+      if (this.checkedProducts.includes(productId)) {
+        this.checkedProducts = this.checkedProducts.filter(
+          (product: any) => product != productId
+        );
+      } else {
+        this.checkedProducts.push(productId);
+      }
+    }
+
+    this.ChangeDetectorRef.markForCheck();
+  }
+
+  deleteProducts() {
+    this.ProductHeadService.deleteProducts({ products: this.checkedProducts }).subscribe({
+      next: (res: any) => {
+        if (res?.errorCode == 0) {
+          this.HotToastService.success(res?.message);
+          this.page = 1;
+          this.checkedProducts = [];
           this.getProductHeads();
         } else {
           this.HotToastService.error(res?.message);

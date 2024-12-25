@@ -23,6 +23,10 @@
         Archived Products
       </button>
 
+      <button class="btn btn-danger" (click)="deleteProducts()" *ngIf="checkedProducts.length > 0">
+        Delete Products
+      </button>
+
       <div class="btn-group" dropdown>
         <button id="button-basic" dropdownToggle type="button" class="btn btn-secondary dropdown-toggle"
           aria-controls="dropdown-basic">
@@ -146,6 +150,10 @@
         <table class="table table-bordered">
           <thead>
             <tr>
+              <th>
+                <div class="checkbox" (click)="onSelectProducts('all', '')" [ngClass]="{ 'checked': checkedProducts.length == products.length }">
+                </div>
+              </th>
               <th>&nbsp;</th>
               <th>Name</th>
               <th>SKU</th>
@@ -164,6 +172,10 @@
             <ng-container *ngFor="let product of products; let i = index">
               <tr>
                 <td>
+                  <div class="checkbox" (click)="onSelectProducts('single', product?.sku)" [ngClass]="{'checked': checkedProducts.includes(product?.sku)}">
+                  </div>
+                </td>
+                <td>
                   <img src="{{base}}{{product?.thumbnail}}" alt="Product" height="45" width="45"
                     class="border border-secondary rounded" onerror="this.src = 'assets/images/default.png'">
                 </td>
@@ -180,10 +192,7 @@
                   </div>
                 </td>
                 <td>{{product?.sku}}</td>
-                
-                <td>
-                  {{product?.brand?.name}}
-                </td>
+                <td>{{product?.brand?.name}}</td>
                 <td>
                   <ng-container *ngFor="let category of product?.categories; let i = index">
                     <div>{{category?.name}}</div>
@@ -236,7 +245,7 @@
               </tr>
             </ng-container>
             <tr *ngIf="products.length == 0">
-              <td colspan="11">
+              <td colspan="12">
                 <app-no-results></app-no-results>
               </td>
             </tr>
@@ -330,8 +339,11 @@
             class="position-absolute bg-white border border-secondary rounded h-100 w-100 top-0 d-flex flex-column align-items-start justify-content-center start-0 pe-none  p-4">
             <div class="fs-4 mb-2 d-flex align-items-center justify-content-center gap-2">
               <div>
-                <svg height="18" width="18" data-slot="icon" fill="none" stroke-width="1.5" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5m-13.5-9L12 3m0 0 4.5 4.5M12 3v13.5"></path>
+                <svg height="18" width="18" data-slot="icon" fill="none" stroke-width="1.5" stroke="currentColor"
+                  viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                  <path stroke-linecap="round" stroke-linejoin="round"
+                    d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5m-13.5-9L12 3m0 0 4.5 4.5M12 3v13.5">
+                  </path>
                 </svg>
               </div>
               Upload Your File Here

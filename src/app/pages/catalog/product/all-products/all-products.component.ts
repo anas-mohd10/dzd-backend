@@ -91,6 +91,7 @@ export class AllProductsComponent implements OnInit {
     { name: 'Original Price', value: 'originalPrice' },
     { name: 'Store Price', value: 'storePrice' },
   ]
+  checkedProducts: Array<string> = []
   isDownloading: boolean = false
   basicFields: Array<string> = ['name', 'sku', 'type', 'stock', 'isActive', 'isVisible', 'boostScore', 'originalPrice', 'storePrice']
 
@@ -350,6 +351,43 @@ export class AllProductsComponent implements OnInit {
         if (res?.errorCode == 0) {
           this.HotToastService.success(res?.message)
           this.exportModalRef?.hide()
+        } else {
+          this.HotToastService.error(res?.message)
+        }
+      }, error: (err: any) => {
+        this.HotToastService.error(err?.error?.message)
+      }
+    })
+  }
+
+
+  onSelectProducts(type: string, productId: string,) {
+    if (type == 'all') {
+      if (this.checkedProducts.length == this.products.length) {
+        this.checkedProducts = []
+      } else {
+        this.checkedProducts = this.products.map((product: any) => product.sku)
+      }
+    } else {
+      if (this.checkedProducts.includes(productId)) {
+        this.checkedProducts = this.checkedProducts.filter((product: any) => product != productId)
+      } else {
+        this.checkedProducts.push(productId)
+      }
+    }
+    this.page = 1
+    this.getProducts()
+    this.ChangeDetectorRef.markForCheck()
+  }
+
+  deleteProducts() {
+    this.ProductService.deleteProducts({ products: this.checkedProducts }).subscribe({
+      next: (res: any) => {
+        if (res?.errorCode == 0) {
+          this.checkedProducts = [];
+          this.page = 1
+          this.HotToastService.success(res?.message)
+          this.getProducts()
         } else {
           this.HotToastService.error(res?.message)
         }

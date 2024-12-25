@@ -136,6 +136,11 @@ export class ProductService {
     return this.http.delete(`${url}/${productId}`);
   }
 
+  deleteProducts(productIds: any) {
+    const url = this.commonService.getFullUrl(this.productEndpoints.deleteProducts);
+    return this.http.delete(`${url}`, { body: productIds });
+  }
+
   productThumbnailImages(query: any) {
     const url = this.commonService.getFullUrl(this.productEndpoints.thumbnail_images);
     return this.http.post(`${url}`, query);
