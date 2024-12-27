@@ -45,7 +45,7 @@
   </div>
 
   <div>
-    <table class="table table-head-custom table-vertical-center table-head-bg table-borderless">
+    <table class="table table-bordered">
       <thead>
         <tr>
           <th>Customer</th>
@@ -105,7 +105,7 @@
   <div class="modal-header pb-0">
     <div class="pull-left">
       <div class="fs-3 fw-bold">Carted products</div>
-      <div class="my-3">
+      <div class="my-3 fs-5">
         <div>
           Name : {{ cartDetails?.customer?.id?.name }}
         </div>
@@ -127,25 +127,25 @@
   </div>
   <div class="modal-body">
     <div class="cartProducts">
-      <ng-container *ngFor="let item of cartDetails?.products; let i = index">
-        <div class="productCard mb-1 d-flex align-items-center justify-content-between">
-          <div class="d-flex align-items-center gap-2 justify-content-start">
-            <div class="index">{{ i + 1 }}</div>
-            <div class="productImage">
-              <img height="60" width="60" src="{{base}}{{item?.product?.thumbnail}}" alt="{{item?.product?.name}}" />
-            </div>
-            <div class="productName">{{ item?.product?.name }}</div>
-          </div>
-          <div class="d-flex align-items-center justify-content-end">
-            <div class="quantity alert alert-primary m-0 p-1">
-              x {{ item?.quantity }}
-            </div>
-            <div class="totalPrice ms-2">
-              {{ settings?.currency }} {{ getTotal(item?.quantity, item?.product?.price?.selling) }}
-            </div>
-          </div>
-        </div>
-      </ng-container>
+      <table class="table table-bordered">
+        <thead>
+          <th class="p-2">Product</th>
+          <th class="p-2">Quantity</th>
+          <th class="p-2">Total</th>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of cartDetails?.products">
+            <td>
+              <div class="d-flex align-items-center gap-2">
+                <img src="{{base + item.product?.thumbnail}}" height="60" width="60" alt="{{item.product?.name}}">
+                <div>{{item.product?.name}}</div>
+              </div>
+            </td>
+            <td>{{item.quantity}}</td>
+            <td>{{settings?.currency}} {{getTotal(item.quantity, item.product?.price?.selling)}}</td>
+          </tr>
+        </tbody>
+      </table>
     </div>
     <div class="mt-2 d-flex align-items-center justify-content-between">
       <div>
