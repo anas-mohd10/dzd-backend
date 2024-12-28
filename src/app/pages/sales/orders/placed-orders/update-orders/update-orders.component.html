@@ -437,13 +437,13 @@
                             <div class="w-25">Status:</div>
                             <div class="w-75"
                               [ngClass]="{'pe-none' : order?.paymentMethod == 'ONLINE' && order?.paymentStatus == 'PENDING'}">
-                              <!-- <select class="form-select w-50 p-2" [formControl]="productOrderStatus"
+                              <select class="form-select w-50 p-2" [formControl]="productOrderStatus"
                                 (click)="getStatusList(product.currentStatus.status)"
                                 (change)="updateOrderStatus($event, product?.productId?._id)">
                                 <option value="" disabled>-- Select a option --</option>
-                                <option *ngFor="let status of statusList" value="{{status.value}}">{{status.key}}
-                                </option>
-                              </select> -->
+                                <option value="CANCELLED">Cancelled</option>
+                                <option value="FAILED" >Failed</option>
+                              </select>
                             </div>
                           </div>
                         </div>
