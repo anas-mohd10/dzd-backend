@@ -69,7 +69,7 @@
           <div class="fs-6">Reason for cancellation :</div>
           <div class="fs-5">{{order?.cancel?.reason}}</div>
         </div>
-        <div class="fs-6">
+        <div class="fs-6" *ngIf="order?.cancel?.date">
           Cancelled on
           {{getLocaleDateFormat(order?.cancel?.date)}}
           {{getLocaleTimeFormat(order?.cancel?.date)}}
@@ -173,10 +173,6 @@
                   <td>{{settings?.currency}} {{order?.tax}}</td>
                 </tr>
                 <tr>
-                  <th class="p-2 text-muted fw-bold">Price With Tax</th>
-                  <td>{{settings?.currency}} {{order?.priceAfterTax}}</td>
-                </tr>
-                <tr>
                   <th class="p-2 text-muted fw-bold">Shipping Charge</th>
                   <td>{{settings?.currency}} {{order?.shippingCost}}</td>
                 </tr>
@@ -199,6 +195,10 @@
                 <tr>
                   <th class="p-2 text-muted fw-bold">Amount Pending</th>
                   <td>{{settings?.currency}} {{order?.amountPending}}</td>
+                </tr>
+                <tr>
+                  <th class="p-2 text-muted fw-bold">Cancelled Amount</th>
+                  <td class="text-danger">- {{settings?.currency}} {{order?.cancelledAmount}}</td>
                 </tr>
                 <tr>
                   <th class="p-2 text-muted fw-bold">Total</th>
@@ -294,7 +294,7 @@
               </div>
             </div>
           </div>
-          <div class="card" *ngIf="settings.isPickUp == true">
+          <div class="card" *ngIf="settings && settings.isPickUp == true">
             <div class="card-body">
               <div class="fs-3 fw-bold">Branch Details</div>
               <div class="mt-4">

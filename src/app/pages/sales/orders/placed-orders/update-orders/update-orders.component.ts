@@ -129,7 +129,7 @@ export class UpdateOrdersComponent implements OnInit {
     private AppSettingsService: AppSettingsService,
     private BsModalService: BsModalService,
     private HotToastService: HotToastService
-  ) {}
+  ) { }
 
   getLocaleDateString(date: string) {
     return new Date(date).toLocaleString();
@@ -152,7 +152,7 @@ export class UpdateOrdersComponent implements OnInit {
         } else {
         }
       },
-      error: (err: any) => {},
+      error: (err: any) => { },
     });
   }
 
@@ -166,9 +166,8 @@ export class UpdateOrdersComponent implements OnInit {
       'Friday',
       'Saturday',
     ];
-    return `${days[new Date(date).getDay()]}, ${
-      this.months[new Date(date).getMonth()]
-    } ${new Date(date).getDate()} ${new Date(date).getFullYear()}`;
+    return `${days[new Date(date).getDay()]}, ${this.months[new Date(date).getMonth()]
+      } ${new Date(date).getDate()} ${new Date(date).getFullYear()}`;
   }
 
   acceptOrderPayment() {
@@ -244,12 +243,12 @@ export class UpdateOrdersComponent implements OnInit {
     return `${new Date(date).toLocaleString()}`;
   }
 
-  getLocaleDateFormat(data: any) {
-    return new Date(data).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
+  getLocaleDateFormat(processDate: any) {
+    return new Date(processDate).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric', weekday: 'short' });
   }
 
-  getLocaleTimeFormat(data: any) {
-    return new Date(data).toLocaleTimeString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true });
+  getLocaleTimeFormat(processDate: any) {
+    return new Date(processDate).toLocaleTimeString('en-US', { hour: 'numeric', minute: 'numeric', second: 'numeric', hour12: true });
   }
 
   getOrderDetails() {
@@ -258,14 +257,14 @@ export class UpdateOrdersComponent implements OnInit {
         if (res?.errorCode == 0) {
           this.order = res?.result;
           this.orderNumber = res?.result?.orderNo;
-          this.productCount = this.order.products.length;         
+          this.productCount = this.order.products.length;
           this.form.get('paymentStatus')?.setValue(this.order?.paymentStatus);
           this.orderNote?.setValue(this.order?.orderNote);
           this.form
             .get('orderId')
             ?.setValue(
               this.order?.payment?.reference?.payment ||
-                this.order?.payment?.authorizationId
+              this.order?.payment?.authorizationId
             );
           this.form.get('paymentMessage')?.setValue(this.order?.paymentMessage);
           this.form
@@ -289,11 +288,6 @@ export class UpdateOrdersComponent implements OnInit {
 
           if (this.order.orderStatus == 'CANCELLED') {
             this.isCancelled = true;
-            if (this.order?.cancel?.date) {
-              this.order.cancel.date = new Date(
-                this.order?.cancel?.date
-              ).toLocaleString();
-            }
           }
 
           for (let product of this.order?.products) {
@@ -431,8 +425,8 @@ export class UpdateOrdersComponent implements OnInit {
     });
     productDetails?.dateExpected
       ? this.dateExpected.setValue(
-          new Date(productDetails?.dateExpected).toISOString().split('T')[0]
-        )
+        new Date(productDetails?.dateExpected).toISOString().split('T')[0]
+      )
       : null;
     this.trackingURL.setValue(productDetails?.trackingURL);
     this.trackingNo.setValue(productDetails?.trackingNo);
@@ -461,8 +455,8 @@ export class UpdateOrdersComponent implements OnInit {
     product
       ? null
       : this.bulkProducts.length == this.order?.products.length
-      ? (this.bulkProducts = [])
-      : (this.bulkProducts = [...this.order?.products]);
+        ? (this.bulkProducts = [])
+        : (this.bulkProducts = [...this.order?.products]);
     //Check the last status of the product, if cancelled then don't allow to change the status
 
     this.bulkProducts.length > 0 ? this.toggleBulkStatus() : null;
@@ -515,7 +509,7 @@ export class UpdateOrdersComponent implements OnInit {
     }
   }
 
-  addOrder() {}
+  addOrder() { }
 
   updateOrder() {
     this.OrdersService.updateOrder({
@@ -564,8 +558,8 @@ export class UpdateOrdersComponent implements OnInit {
     this.modalRef?.hide();
   }
 
-  getInvoiceSignedUrl(orderId: string) {    
-    orderId = orderId.split('#')[1]    
+  getInvoiceSignedUrl(orderId: string) {
+    orderId = orderId.split('#')[1]
     this.OrdersService.getInvoiceSignedUrl(orderId).subscribe({
       next: (res: any) => {
         if (res?.errorCode == 0) {
@@ -579,8 +573,8 @@ export class UpdateOrdersComponent implements OnInit {
     })
   }
 
-  getPackingSlipSignedUrl(orderId: string) {    
-    orderId = orderId.split('#')[1]    
+  getPackingSlipSignedUrl(orderId: string) {
+    orderId = orderId.split('#')[1]
     this.OrdersService.getPackingSlipSignedUrl(orderId).subscribe({
       next: (res: any) => {
         if (res?.errorCode == 0) {
