@@ -240,7 +240,18 @@
                   </tr>
                   <tr>
                     <th class="p-2 text-muted fw-bold">Location</th>
-                    <td class="p-2">{{order?.address?.formattedAddress || '-'}}</td>
+                    <!-- <td class="p-2">{{order?.address?.formattedAddress || '-'}}</td> -->
+                    <td class="p-2">
+                      <ng-container *ngIf="order?.address?.coordinates?.latitude && order?.address?.coordinates?.longitude">
+                        <a
+                          href="https://www.google.com/maps/search/?api=1&query={{order?.address?.coordinates?.latitude}},{{order?.address?.coordinates?.longitude}}"
+                          target="_blank"
+                          class="text-gray-600 text-hover-primary"
+                        >
+                          Open Location in Map
+                        </a>
+                      </ng-container>
+                    </td>
                   </tr>
                   <tr>
                     <th class="p-2 text-muted fw-bold">Coordinates</th>
