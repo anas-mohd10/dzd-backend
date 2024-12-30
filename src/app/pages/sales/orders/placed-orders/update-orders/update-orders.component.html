@@ -336,37 +336,70 @@
 
       <div class="col-lg-6 mb-3">
         <div class="d-flex gap-3 flex-column h-100 justify-content-between">
+          <!-- Order Notes Card -->
           <div class="card h-50">
-            <div class="card-body">
-              <div class="fs-3 fw-bold">
-                Order Notes
+            <div class="card-body d-flex flex-column">
+              <div class="fs-3 fw-bold mb-3">Order Notes</div>
+              <!-- Notes Input -->
+              <div class="form-group">
+                <textarea
+                  [formControl]="orderNote"
+                  (click)="isNoteDetected = true"
+                  (keyup.enter)="saveNote()"
+                  rows="3"
+                  class="form-control"
+                  placeholder="Add a new note..."
+                ></textarea>
               </div>
-              <div class="my-2">
-                <div class="form-group">
-                  <textarea [formControl]="orderNote" (click)="isNoteDetected = true" rows="5" class="form-control"
-                    draggable="true"></textarea>
+              <div class="d-flex justify-content-end mt-2">
+                <button
+                  class="btn btn-primary"
+                  (click)="saveNote()"
+                  *ngIf="isNoteDetected"
+                  [disabled]="!orderNote.value"
+                >
+                  Save Note
+                </button>
+              </div>
+              <!-- Display Notes -->
+              <div class="mt-4">
+                <div *ngIf="order?.orderNote?.length > 0" class="notes-list">
+                  <div
+                    *ngFor="let note of order?.orderNote"
+                    class="note-item p-3 mb-3 rounded shadow-sm border"
+                  >
+                    <div class="d-flex justify-content-between align-items-center">
+                      <span class="text-primary fw-bold">{{ note.editedBy }}</span>
+                      <small class="text-muted">{{ getLocaleDateString(note.timeAndDate) }}</small>
+                    </div>
+                    <p class="mt-2 mb-0 text-dark">{{ note.message }}</p>
+                  </div>
                 </div>
-                <div class="my-2 d-flex align-items-center justify-content-end">
-                  <button class="btn btn-primary" (click)="saveNote()" *ngIf="isNoteDetected">Save notes</button>
+                <div *ngIf="!order?.orderNote?.length" class="text-muted text-center">
+                  No notes available.
                 </div>
               </div>
             </div>
           </div>
+      
+          <!-- Shipping Notes Card -->
           <div class="card h-50">
             <div class="card-body">
-              <div class="fs-3 fw-bold">
-                Shipping Notes
-              </div>
-              <div class="my-2">
-                <div class="form-group">
-                  <textarea value="{{order?.shippingNote}}" readonly="true" rows="5" draggable="false"
-                    class="form-control"></textarea>
-                </div>
+              <div class="fs-3 fw-bold mb-3">Shipping Notes</div>
+              <div class="form-group">
+                <textarea
+                  [value]="order?.shippingNote"
+                  readonly="true"
+                  rows="5"
+                  draggable="false"
+                  class="form-control"
+                ></textarea>
               </div>
             </div>
           </div>
         </div>
       </div>
+      
 
       <div [ngClass]="{'cancelledWrapper': isCancelled}">
         <div>

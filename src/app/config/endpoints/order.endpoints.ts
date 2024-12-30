@@ -7,6 +7,7 @@ export const orderEndpoints = {
    get_pending_orders_by_orderNo: '/orders/pending/number',
    get_active_order: '/orders/active',
    update_order: '/update-order',
+   addOrderNote: '/add-order-note',
    get_order_by_orderno: '/orders/number',
    get_order_by_refid: '/orders/refid',
    get_order_count: '/orders/count',

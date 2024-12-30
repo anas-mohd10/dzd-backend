@@ -11,6 +11,11 @@ export class OrdersService {
 
   constructor(private http: HttpClient, private commonService: CommonService) { }
 
+  addOrderNote(orderNo: string, message: string) {
+    const url = this.commonService.getFullUrl(this.orderEndpoints.addOrderNote);
+    return this.http.post(url, { orderNo, message });
+  }
+  
   addOrder(data: any) {
     const url = this.commonService.getFullUrl(this.orderEndpoints.add_order);
     return this.http.post(`${url}`, data)

@@ -213,31 +213,33 @@ export class UpdateOrdersComponent implements OnInit {
 
   saveNote() {
     if (this.orderNote.value) {
-      this.OrdersService.updateOrder({
-        order: this.orderNumber,
-        orderNote: this.orderNote.value,
-      }).subscribe({
+      // Create the complete note object with all required fields
+  
+      this.OrdersService.addOrderNote(this.orderNumber, this.orderNote.value).subscribe({
         next: (res: any) => {
-          if (res?.errorCode == 0) {
-            this.getOrderDetails();
-            this.isNoteDetected = false;
-            this.HotToastService.success(res?.message);
+          if (res?.order) {
+            this.getOrderDetails(); // Refresh order details
+            this.orderNote.setValue(''); // Clear the note input
+            this.isNoteDetected = false; // Reset note detection state
+            this.HotToastService.success('Note added successfully');
           } else {
-            this.HotToastService.error(res?.message);
+            this.HotToastService.error('Failed to add note');
           }
         },
         error: (err: any) => {
-          this.HotToastService.error(err?.error?.message);
+          this.HotToastService.error(err?.error?.error || 'Error adding note');
         },
       });
     }
   }
+  
 
   detechNoteChanges() {
     this.orderNote.value
       ? (this.isNoteDetected = true)
       : (this.isNoteDetected = false);
   }
+  
 
   getLocalDate(date: any) {
     return `${new Date(date).toLocaleString()}`;
@@ -259,7 +261,7 @@ export class UpdateOrdersComponent implements OnInit {
           this.orderNumber = res?.result?.orderNo;
           this.productCount = this.order.products.length;
           this.form.get('paymentStatus')?.setValue(this.order?.paymentStatus);
-          this.orderNote?.setValue(this.order?.orderNote);
+          this.orderNote?.setValue('');
           this.form
             .get('orderId')
             ?.setValue(
@@ -587,4 +589,5 @@ export class UpdateOrdersComponent implements OnInit {
       }
     })
   }
+  
 }
