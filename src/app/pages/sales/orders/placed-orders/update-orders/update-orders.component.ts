@@ -312,6 +312,23 @@ export class UpdateOrdersComponent implements OnInit {
     );
   }
 
+  copyCoordinates() {
+    const latitude = this.order?.address?.coordinates?.latitude;
+    const longitude = this.order?.address?.coordinates?.longitude;
+    if (latitude && longitude) {
+      const mapLink = `https://www.google.com/maps/search/?api=1&query=${latitude},${longitude}`;
+      navigator.clipboard.writeText(mapLink).then(() => {
+        this.HotToastService.success('Map link copied to clipboard');
+      }).catch((error) => {
+        console.error('Failed to copy map link: ', error);
+        this.HotToastService.error('Failed to copy map link: ', error);
+      });
+    } else {
+      this.HotToastService.error('Coordinates not available');
+    }
+  }
+
+  
   getStatusList(status: any) {
     this.OrdersService.getStatusList(
       status,
