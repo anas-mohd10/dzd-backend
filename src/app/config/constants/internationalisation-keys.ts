@@ -401,4 +401,6 @@ export const internationalisationKeys = {
     next: 'next',
     select: 'select',
     qty: 'qty',
+    passwordInstructionMessage: 'passwordInstructionMessage',
+    passwordLengthMessage: 'passwordLengthMessage'
 }
