@@ -16,6 +16,20 @@ label,
   background: #f9f9f9;
 }
 
+.level{
+  height: 12px;
+  width: 12px;
+  border-radius: 50%;
+
+  &.info{
+    background: #11b663;
+  }
+
+  &.error{
+    background: #dd3535;
+  }
+}
+
 .icons {
   display: grid;
   grid-template-columns: repeat(8, 1fr);

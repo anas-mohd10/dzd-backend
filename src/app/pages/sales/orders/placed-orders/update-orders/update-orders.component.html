@@ -241,29 +241,28 @@
                   <tr>
                     <th class="p-2 text-muted fw-bold">Location</th>
                     <td class="p-2">
-                      <ng-container *ngIf="order?.address?.coordinates?.latitude && order?.address?.coordinates?.longitude" >
+                      <ng-container
+                        *ngIf="order?.address?.coordinates?.latitude && order?.address?.coordinates?.longitude">
                         <div class="d-flex justify-content-between">
-                          <a
-                          href="https://www.google.com/maps/search/?api=1&query={{order?.address?.coordinates?.latitude}},{{order?.address?.coordinates?.longitude}}"
-                          target="_blank"
-                          class="text-gray-600 text-hover-primary me-2"
-                          >
-                          Open Location in Map
-                        </a>
-                        <!-- Copy Button -->
-                        <button
-                        class="btn btn-light btn-sm d-inline-flex align-items-center gap-1"
-                        (click)="copyCoordinates()"
-                        >
-                        <svg width="12px" height="12px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                          <path d="M16 4C16.93 4 17.395 4 17.7765 4.10222C18.8117 4.37962 19.6204 5.18827 19.8978 6.22354C20 6.60504 20 7.07003 20 8V17.2C20 18.8802 20 19.7202 19.673 20.362C19.3854 20.9265 18.9265 21.3854 18.362 21.673C17.7202 22 16.8802 22 15.2 22H8.8C7.11984 22 6.27976 22 5.63803 21.673C5.07354 21.3854 4.6146 20.9265 4.32698 20.362C4 19.7202 4 18.8802 4 17.2V8C4 7.07003 4 6.60504 4.10222 6.22354C4.37962 5.18827 5.18827 4.37962 6.22354 4.10222C6.60504 4 7.07003 4 8 4M9.6 6H14.4C14.9601 6 15.2401 6 15.454 5.89101C15.6422 5.79513 15.7951 5.64215 15.891 5.45399C16 5.24008 16 4.96005 16 4.4V3.6C16 3.03995 16 2.75992 15.891 2.54601C15.7951 2.35785 15.6422 2.20487 15.454 2.10899C15.2401 2 14.9601 2 14.4 2H9.6C9.03995 2 8.75992 2 8.54601 2.10899C8.35785 2.20487 8.20487 2.35785 8.10899 2.54601C8 2.75992 8 3.03995 8 3.6V4.4C8 4.96005 8 5.24008 8.10899 5.45399C8.20487 5.64215 8.35785 5.79513 8.54601 5.89101C8.75992 6 9.03995 6 9.6 6Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                        </svg>
-                      </button>
-                    </div>
-                    </ng-container>
+                          <a href="https://www.google.com/maps/search/?api=1&query={{order?.address?.coordinates?.latitude}},{{order?.address?.coordinates?.longitude}}"
+                            target="_blank" class="text-gray-600 text-hover-primary me-2">
+                            Open Location in Map
+                          </a>
+                          <!-- Copy Button -->
+                          <button class="btn btn-light btn-sm d-inline-flex align-items-center gap-1"
+                            (click)="copyCoordinates()">
+                            <svg width="12px" height="12px" viewBox="0 0 24 24" fill="none"
+                              xmlns="http://www.w3.org/2000/svg">
+                              <path
+                                d="M16 4C16.93 4 17.395 4 17.7765 4.10222C18.8117 4.37962 19.6204 5.18827 19.8978 6.22354C20 6.60504 20 7.07003 20 8V17.2C20 18.8802 20 19.7202 19.673 20.362C19.3854 20.9265 18.9265 21.3854 18.362 21.673C17.7202 22 16.8802 22 15.2 22H8.8C7.11984 22 6.27976 22 5.63803 21.673C5.07354 21.3854 4.6146 20.9265 4.32698 20.362C4 19.7202 4 18.8802 4 17.2V8C4 7.07003 4 6.60504 4.10222 6.22354C4.37962 5.18827 5.18827 4.37962 6.22354 4.10222C6.60504 4 7.07003 4 8 4M9.6 6H14.4C14.9601 6 15.2401 6 15.454 5.89101C15.6422 5.79513 15.7951 5.64215 15.891 5.45399C16 5.24008 16 4.96005 16 4.4V3.6C16 3.03995 16 2.75992 15.891 2.54601C15.7951 2.35785 15.6422 2.20487 15.454 2.10899C15.2401 2 14.9601 2 14.4 2H9.6C9.03995 2 8.75992 2 8.54601 2.10899C8.35785 2.20487 8.20487 2.35785 8.10899 2.54601C8 2.75992 8 3.03995 8 3.6V4.4C8 4.96005 8 5.24008 8.10899 5.45399C8.20487 5.64215 8.35785 5.79513 8.54601 5.89101C8.75992 6 9.03995 6 9.6 6Z"
+                                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                            </svg>
+                          </button>
+                        </div>
+                      </ng-container>
                     </td>
                   </tr>
-                  
+
                   <tr>
                     <th class="p-2 text-muted fw-bold">Coordinates</th>
                     <td class="p-2">
@@ -347,70 +346,39 @@
 
       <div class="col-lg-6 mb-3">
         <div class="d-flex gap-3 flex-column h-100 justify-content-between">
-          <!-- Order Notes Card -->
           <div class="card h-50">
             <div class="card-body d-flex flex-column">
-              <div class="fs-3 fw-bold mb-3">Order Notes</div>
-              <!-- Notes Input -->
+              <div class="d-flex justify-content-between align-items-center mb-4">
+                <div class="fs-3 fw-bold mb-3">Order Notes</div>
+                <div>
+                  <button class="btn btn-secondary p-2" (click)="openNotes(notesTemplate)">View Notes</button>
+                </div>
+              </div>
+
               <div class="form-group">
-                <textarea
-                  [formControl]="orderNote"
-                  (click)="isNoteDetected = true"
-                  (keyup.enter)="saveNote()"
-                  rows="3"
-                  class="form-control"
-                  placeholder="Add a new note..."
-                ></textarea>
+                <textarea [formControl]="orderNote" (click)="isNoteDetected = true" (keyup.enter)="saveNote()" rows="5"
+                  class="form-control" placeholder="Add a new note"></textarea>
               </div>
               <div class="d-flex justify-content-end mt-2">
-                <button
-                  class="btn btn-primary"
-                  (click)="saveNote()"
-                  *ngIf="isNoteDetected"
-                  [disabled]="!orderNote.value"
-                >
+                <button class="btn btn-primary" (click)="saveNote()" *ngIf="isNoteDetected"
+                  [disabled]="!orderNote.value">
                   Save Note
                 </button>
               </div>
-              <!-- Display Notes -->
-              <div class="mt-4">
-                <div *ngIf="order?.orderNote?.length > 0" class="notes-list">
-                  <div
-                    *ngFor="let note of order?.orderNote"
-                    class="note-item p-3 mb-3 rounded shadow-sm border"
-                  >
-                    <div class="d-flex justify-content-between align-items-center">
-                      <span class="text-primary fw-bold">{{ note.editedBy }}</span>
-                      <small class="text-muted">{{ getLocaleDateString(note.timeAndDate) }}</small>
-                    </div>
-                    <p class="mt-2 mb-0 text-dark">{{ note.message }}</p>
-                  </div>
-                </div>
-                <div *ngIf="!order?.orderNote?.length" class="text-muted text-center">
-                  No notes available.
-                </div>
-              </div>
             </div>
           </div>
-      
-          <!-- Shipping Notes Card -->
           <div class="card h-50">
             <div class="card-body">
               <div class="fs-3 fw-bold mb-3">Shipping Notes</div>
               <div class="form-group">
-                <textarea
-                  [value]="order?.shippingNote"
-                  readonly="true"
-                  rows="5"
-                  draggable="false"
-                  class="form-control"
-                ></textarea>
+                <textarea [value]="order?.shippingNote" readonly="true" rows="5" draggable="false"
+                  class="form-control"></textarea>
               </div>
             </div>
           </div>
         </div>
       </div>
-      
+
 
       <div [ngClass]="{'cancelledWrapper': isCancelled}">
         <div>
@@ -497,7 +465,7 @@
                                 (change)="updateOrderStatus($event, product?.productId?._id)">
                                 <option value="" disabled>-- Select a option --</option>
                                 <option value="CANCELLED">Cancelled</option>
-                                <option value="FAILED" >Failed</option>
+                                <option value="FAILED">Failed</option>
                               </select>
                             </div>
                           </div>
@@ -616,6 +584,27 @@
       <div class="d-flex align-items-center justify-content-between">
         <button type="button" class="btn btn-default p-2" (click)="confirm()">Yes</button>
         <button type="button" class="btn btn-primary p-2" (click)="decline()">No</button>
+      </div>
+    </div>
+  </ng-template>
+
+  <ng-template #notesTemplate>
+    <div class="modal-header">
+      <h4 class="modal-title pull-left">Notes</h4>
+      <button type="button" class="btn-close close pull-right" aria-label="Close" (click)="noteModalRef?.hide()">
+        <span aria-hidden="true" class="visually-hidden">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <div *ngIf="order?.orderNote?.length > 0" class="notes-list">
+        <div *ngFor="let note of order?.orderNote" class="note-item p-3 mb-3 rounded border">
+          <p class="text-dark mb-4">{{ note.message }}</p>
+          <div class="text-primary fw-bold fs-5">{{ note.editedBy }}</div>
+          <div>{{ getLocaleDateString(note.timeAndDate) }}</div>
+        </div>
+      </div>
+      <div *ngIf="!order?.orderNote?.length" class="text-muted text-center">
+        <app-no-results></app-no-results>
       </div>
     </div>
   </ng-template>

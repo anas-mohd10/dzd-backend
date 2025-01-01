@@ -161,8 +161,10 @@ export class UpdateProductComponent implements OnInit {
   isAddOnEditable: boolean = false;
   historyRef?: BsModalRef;
   historyPageIndex: number = 1
-  historyPageSize: number = 40
+  historyPageSize: number = 5
   historyLists: Array<any> = []
+  totalResults: number = 0
+  totalPages: number = 1
 
   constructor(
     private ActivatedRoute: ActivatedRoute,
@@ -185,7 +187,7 @@ export class UpdateProductComponent implements OnInit {
 
   openHistory(template: TemplateRef<any>) {
     this.historyRef = this.BsModalService.show(template, {
-      class: 'modal-lg modal-dialog-centered',
+      class: 'modal-dialog-centered modal-lg',
       ignoreBackdropClick: true,
     });
 
@@ -206,7 +208,9 @@ export class UpdateProductComponent implements OnInit {
     ).subscribe({
       next: (res: any) => {
         if (res?.errorCode == 0) {
-          this.historyLists = res?.result
+          this.historyLists = res?.result?.results
+          this.totalResults = res?.result?.totalResults
+          this.totalPages = res?.result?.totalPages
           this.ChangeDetectorRef.markForCheck()
         } else { }
       }, error: (err: any) => { }
@@ -1024,5 +1028,12 @@ export class UpdateProductComponent implements OnInit {
 
   removeTagIcons(icon: any) {
     this.tagIcons = this.tagIcons.filter((item: any) => item != icon);
+  }
+
+  logPagination(event: {pageIndex: number, pageSize: number}) {
+    this.historyPageIndex = event.pageIndex
+    this.historyPageSize = event.pageSize
+
+    this.fetchHistory()
   }
 }

@@ -265,7 +265,7 @@
                         <select formControlName="isCompareEnabled" id="isCompareEnabled" class="form-select">
                           <option *ngFor="let value of [true, false]" value="{{value}}">
                             {{value == true ? 'Yes' : 'No'}}
-                           </option>
+                          </option>
                         </select>
                       </div>
                     </div>
@@ -682,13 +682,22 @@
     </button>
   </div>
   <div class="modal-body">
-    <div *ngFor="let historyList of historyLists">
-      <div>{{historyList.message}}</div>
-      <div>{{getFormatDate(historyList.timestamp)}} {{getFormatTime(historyList.timestamp)}}</div>
-    </div>
-
-    <div *ngIf="historyLists.length == 0">
+    <ng-container *ngIf="historyLists && historyLists.length > 0">
+      <div *ngFor="let historyList of historyLists" class="p-3 border border-secondary rounded mb-3" >
+        <div class="fs-5 d-flex align-items-center justify-content-start gap-2">
+          <div class="level" [ngClass]="{'info': historyList.level == 'info', 'error': historyList.level == 'error'}"></div>
+          <div>{{historyList.message}}</div>
+        </div>
+        <div class="text-muted mt-2">{{getFormatDate(historyList.timestamp)}} {{getFormatTime(historyList.timestamp)}}</div>
+      </div>
+    </ng-container>
+    
+    <div *ngIf="historyLists && historyLists.length == 0">
       <app-no-results></app-no-results>
+    </div>
+    <div>
+      <app-pagination [totalResults]="totalResults" [totalPages]="totalPages" [pageIndex]="historyPageIndex"
+        [pageSize]="historyPageSize" (pageTrigger)="logPagination($event)"></app-pagination>
     </div>
   </div>
 </ng-template>

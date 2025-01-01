@@ -119,7 +119,8 @@ export class UpdateOrdersComponent implements OnInit {
   domainUrl: string = '';
   bulkProducts: Array<any> = [];
   bulkStatus: Array<any> = [];
-
+  noteModalRef?: BsModalRef;
+  
   constructor(
     private OrdersService: OrdersService,
     private route: ActivatedRoute,
@@ -168,6 +169,12 @@ export class UpdateOrdersComponent implements OnInit {
     ];
     return `${days[new Date(date).getDay()]}, ${this.months[new Date(date).getMonth()]
       } ${new Date(date).getDate()} ${new Date(date).getFullYear()}`;
+  }
+  
+  openNotes(template: TemplateRef<any>) {
+    this.noteModalRef = this.BsModalService.show(template, {
+      class: 'modal-dialog-centered modal-sm',
+    });
   }
 
   acceptOrderPayment() {
