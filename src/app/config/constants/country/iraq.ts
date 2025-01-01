@@ -1,0 +1,21 @@
+export const iraqStates = [
+    { state: 'Baghdad', cities: [] },
+    { state: 'Basra', cities: [] },
+    { state: 'Nineveh', cities: [] },
+    { state: 'Erbil', cities: [] },
+    { state: 'Sulaymaniyah', cities: [] },
+    { state: 'Diyala', cities: [] },
+    { state: 'Anbar', cities: [] },
+    { state: 'Karbala', cities: [] },
+    { state: 'Wasit', cities: [] },
+    { state: 'Salah ad-Din', cities: [] },
+    { state: 'Najaf', cities: [] },
+    { state: 'Al-Qadisiyyah', cities: [] },
+    { state: 'Maysan', cities: [] },
+    { state: 'Babylon', cities: [] },
+    { state: 'Dhi Qar', cities: [] },
+    { state: 'Kirkuk', cities: [] },
+    { state: 'Al-Muthanna', cities: [] },
+    { state: 'Babylon', cities: [] },
+    { state: 'Wasit', cities: [] }
+];
