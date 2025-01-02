@@ -8,7 +8,11 @@ import { CommonService } from './common.service';
 })
 export class AdminUsersService {
   adminUsersEndpoints = adminUsersEndpoints
-  constructor(private http: HttpClient, private commonService: CommonService) { }
+
+  constructor(
+    private http: HttpClient,
+    private commonService: CommonService
+  ) { }
 
   getAdminUsers() {
     const url = this.commonService.getFullUrl(this.adminUsersEndpoints.get_admin_users);
@@ -16,10 +20,9 @@ export class AdminUsersService {
   }
 
   getAdminUser(slug: any) {
-    const url = this.commonService.getFullUrl(this.adminUsersEndpoints.get_admin_user + "?slug=" + slug);
+    const url = this.commonService.getFullUrl(this.adminUsersEndpoints.get_admin_user + "?adminId=" + slug);
     return this.http.get(`${url}`)
   }
-
 
   getAdminUserByMail(data: any) {
     const url = this.commonService.getFullUrl(this.adminUsersEndpoints.get_admin_count);

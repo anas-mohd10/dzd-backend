@@ -14,7 +14,7 @@
                </ul>
           </div>
           <button class="btn btn-primary" routerLink="{{ appRoute.admin.ADD_ADMIN_USERS }}">
-               Add Admin User
+               Add Admin
           </button>
      </div>
 
@@ -49,27 +49,34 @@
                     <thead>
                          <tr class="text-left fs-6">
                               <th>Email</th>
+                              <th>Mobile</th>
+                              <th>Updated On</th>
                               <th>Status</th>
                               <th>Action</th>
                          </tr>
                     </thead>
                     <tbody class="fs-6">
-                         <ng-container *ngFor="let customer of users; let i =index">
+                         <ng-container *ngFor="let adminUser of users; let i =index">
                               <tr>
-                                   <td>{{customer?.email}}</td>
+                                   <td>{{adminUser?.email}}</td>
+                                   <td>{{adminUser?.countryCode}} {{adminUser?.mobile}}</td>
+                                   <td>
+                                        {{getFormatDate(adminUser?.updatedAt)}}
+                                        {{getFormatTime(adminUser?.updatedAt)}}
+                                   </td>
                                    <td>
                                         <span class="alert p-1"
-                                             [ngClass]="{'alert-danger': customer?.isActive == false, 'alert-success': customer?.isActive == true}">
-                                             {{customer?.isActive == true ? 'Active' : 'Inactive'}}
+                                             [ngClass]="{'alert-danger': adminUser?.isActive == false, 'alert-success': adminUser?.isActive == true}">
+                                             {{adminUser?.isActive == true ? 'Active' : 'Inactive'}}
                                         </span>
                                    </td>
                                    <td>
                                         <div class="d-flex">
                                              <div routerLink="{{appRoute.admin.UPDATE_ADMIN_USERS}}"
-                                                  [queryParams]="{'id': customer?.slug}">
+                                                  [queryParams]="{'adminId': adminUser?._id}">
                                                   <img src="assets/icons/editPen.svg" alt="Icon">
                                              </div>
-                                             <div class="ms-3" (click)="open(template, customer)">
+                                             <div class="ms-3" (click)="open(template, adminUser)">
                                                   <svg height="20px" width="20px" fill="none" stroke="currentColor"
                                                        stroke-width="1.5" viewBox="0 0 24 24"
                                                        xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
@@ -83,7 +90,7 @@
                               </tr>
                          </ng-container>
                          <tr *ngIf="users.length == 0">
-                              <td colspan="4">
+                              <td colspan="5">
                                    <app-no-results></app-no-results>
                               </td>
                          </tr>
@@ -93,8 +100,8 @@
      </div>
 
      <div class="mt-4">
-          <app-pagination [totalResults]="totalResults" [totalPages]="totalPages" [pageIndex]="page"
-          [pageSize]="limit" (pageTrigger)="onPageTriggered($event)"></app-pagination>
+          <app-pagination [totalResults]="totalResults" [totalPages]="totalPages" [pageIndex]="page" [pageSize]="limit"
+               (pageTrigger)="onPageTriggered($event)"></app-pagination>
      </div>
 
 </div>

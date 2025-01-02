@@ -136,6 +136,29 @@ export class UpdateOrdersComponent implements OnInit {
     return new Date(date).toLocaleString();
   }
 
+  formatPaymentGateway(paymentGateway: string) {
+    //Remove - and add space between words if any, Make it sentence case
+    if(paymentGateway){
+      return paymentGateway
+        .replace(/-/g, ' ')
+        .replace(/\w\S*/g, function (txt) {
+          return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+        });
+    }
+  }
+
+  formatPaymentStatus(paymentStatus: string) {
+    if(paymentStatus){
+      return paymentStatus
+        .replace(/_/g, ' ')
+        .replace(/\w\S*/g, function (txt) {
+          return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+        });
+    }
+
+    return ''
+  }
+
   ngOnInit(): void {
     this.base = environment.base;
     this.initForm();
