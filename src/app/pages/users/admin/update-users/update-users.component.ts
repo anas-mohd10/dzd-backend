@@ -220,6 +220,7 @@ export class UpdateUsersComponent implements OnInit {
       lastname: this.form.get('lastname')?.value,
       isActive: this.form.get('isActive')?.value,
       refid: this.adminDetails.refid,
+      _id: this.adminDetails._id,
       slug: this.adminDetails.slug,
       role: this.form.get('role')?.value
     }).subscribe((res: any) => {
