@@ -2,7 +2,7 @@
   <div class="page-header">
     <div>
       <div class="page-title">
-        <h1 class="fw-bold">Add Admin Users</h1>
+        <h1 class="fw-bold">Add Admin</h1>
       </div>
       <ul class="breadcrumb">
         <li class="breadcrumb-item fs-6">
@@ -13,7 +13,7 @@
         </li>
         <li class="breadcrumb-item active fs-6">
           <a routerLink="{{ appRoute.admin.ADD_ADMIN_USERS }}">
-            Add Admin Users
+            Add Admin
           </a>
         </li>
       </ul>
@@ -24,15 +24,6 @@
     <div class="card-body">
       <form [formGroup]="form">
         <div class="row">
-
-          <div class="col-lg-6 mb-3">
-            <div class="form-group">
-              <label class="fs-6 mb-3 required"> Username</label>
-              <input type="text" class="form-control fs-6" formControlName="username"
-                [ngClass]="{
-                    'is-invalid': (formControls.username.touched || isSubmitted) && formControls.username.errors?.required }" />
-            </div>
-          </div>
 
           <div class="col-lg-6 mb-3">
             <div class="form-group">
@@ -124,16 +115,15 @@
             </div>
           </div>
         </div>
-
-        <div class="d-flex align-items-center justify-content-end gap-2">
-          <button routerLink="{{ appRoute.admin.ADMIN_USERS}}" class="btn btn-secondary">
-            Cancel
-          </button>
-          <button type="submit" class="btn btn-primary" (click)="onSubmit()">
-            Save changes
-          </button>
-        </div>
       </form>
     </div>
+  </div>
+  <div class="d-flex align-items-center justify-content-end gap-2">
+    <button routerLink="{{ appRoute.admin.ADMIN_USERS}}" class="btn btn-secondary">
+      Cancel
+    </button>
+    <button type="submit" class="btn btn-primary" (click)="onSubmit()">
+      Save changes
+    </button>
   </div>
 </div>

@@ -146,11 +146,15 @@ export class UpdateOrdersComponent implements OnInit {
   }
 
   formatPaymentStatus(paymentStatus: string) {
-    return paymentStatus
-      .replace(/_/g, ' ')
-      .replace(/\w\S*/g, function (txt) {
-        return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
-      });
+    if(paymentStatus){
+      return paymentStatus
+        .replace(/_/g, ' ')
+        .replace(/\w\S*/g, function (txt) {
+          return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+        });
+    }
+
+    return ''
   }
 
   ngOnInit(): void {
