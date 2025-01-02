@@ -441,6 +441,30 @@ $white: #ffffff;
     width: max-content;
 }
 
+.Purchased {
+    background: #E8FFE2;
+    color: #31A514;
+    width: max-content;
+}
+
+.Started {
+    background: #E8FFE2;
+    color: #31A514;
+    width: max-content;
+}
+
+.Failed {
+    background: #fff8f8;
+    color: #bd0000;
+    width: max-content;
+}
+
+.paymentEvents {
+    th {
+        width: 140px;
+    }
+}
+
 .h-50 {
     height: 50%;
 }
@@ -469,7 +493,7 @@ $white: #ffffff;
     border-radius: 5px;
 }
 
-.notes-list{
+.notes-list {
     max-height: 400px;
     overflow-y: scroll;
     height: max-content;

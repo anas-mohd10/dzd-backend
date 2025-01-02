@@ -2,7 +2,7 @@
   <div class="page-header d-flex flex-row justify-content-between">
     <div>
       <div class="page-title">
-        <h1 class="fw-bold">Update order</h1>
+        <h1 class="fw-bold">Update Order</h1>
       </div>
       <ul class="breadcrumb">
         <li class="breadcrumb-item fs-6">
@@ -12,7 +12,7 @@
           <a routerLink="{{ appRoute.orders.ORDERS_LIST }}">Orders</a>
         </li>
         <li class="breadcrumb-item active fs-6">
-          <a routerLink="{{ appRoute.orders.UPDATE_ORDER_LIST }}" [queryParams]="{'order': slug}">Update order</a>
+          <a routerLink="{{ appRoute.orders.UPDATE_ORDER_LIST }}" [queryParams]="{'order': slug}">Update Order</a>
         </li>
       </ul>
     </div>
@@ -105,13 +105,13 @@
                 <tr>
                   <th class="p-2 text-muted fw-bold">Gateway</th>
                   <td class="p-2">
-                    {{order?.paymentGateway}}
+                    {{formatPaymentGateway(order?.paymentGateway)}}
                   </td>
                 </tr>
                 <tr>
                   <th class="p-2 text-muted fw-bold">Gateway Status</th>
                   <td class="p-2">
-                    {{order?.gatewayStatus}}
+                    <div class="{{formatPaymentStatus(order?.gatewayStatus)}} p-1 rounded">{{formatPaymentStatus(order?.gatewayStatus)}}</div>
                   </td>
                 </tr>
                 <tr>
@@ -540,29 +540,31 @@
               <div class="fs-3 mb-2 fw-bold">Payment Events</div>
               <div class="my-8" *ngFor="let tokenizedItem of order?.tokenizedDetails; let i = index">
 
-                <table class="table table-bordered fs-5">
+                <table class="table table-bordered fs-5 paymentEvents">
                   <tr>
                     <th class="p-2 text-muted fw-bold">Date</th>
                     <td>
-                      {{ getLocaleDateFormat(tokenizedItem.updateDateTime) }}
-                      {{ getLocaleTimeFormat(tokenizedItem.updateDateTime) }}
+                      {{ getLocaleDateFormat(tokenizedItem?.updateDateTime) }}
+                      {{ getLocaleTimeFormat(tokenizedItem?.updateDateTime) }}
                     </td>
                   </tr>
                   <tr>
                     <th class="p-2 text-muted fw-bold">Response</th>
-                    <td>{{tokenizedItem.authResponse.resultMessage}}</td>
+                    <td>{{tokenizedItem.authResponse?.resultMessage || '-'}}</td>
                   </tr>
                   <tr>
                     <th class="p-2 text-muted fw-bold">Reference</th>
-                    <td>{{tokenizedItem.orderReference}}</td>
+                    <td>{{tokenizedItem?.orderReference}}</td>
                   </tr>
                   <tr>
                     <th class="p-2 text-muted fw-bold">Status</th>
-                    <td>{{tokenizedItem.state}}</td>
+                    <td>
+                      <div class="{{formatPaymentStatus(tokenizedItem?.state)}} rounded p-1">{{formatPaymentStatus(tokenizedItem?.state)}}</div>
+                    </td>
                   </tr>
                   <tr>
                     <th class="p-2 text-muted fw-bold">Amount</th>
-                    <td>{{tokenizedItem.amount.currencyCode}} {{tokenizedItem.amount.value / 100}}</td>
+                    <td>{{tokenizedItem?.amount?.currencyCode}} {{tokenizedItem?.amount?.value / 100}}</td>
                   </tr>
                 </table>
               </div>
