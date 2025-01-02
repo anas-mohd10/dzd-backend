@@ -138,11 +138,13 @@ export class UpdateOrdersComponent implements OnInit {
 
   formatPaymentGateway(paymentGateway: string) {
     //Remove - and add space between words if any, Make it sentence case
-    return paymentGateway
-      .replace(/-/g, ' ')
-      .replace(/\w\S*/g, function (txt) {
-        return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
-      });
+    if(paymentGateway){
+      return paymentGateway
+        .replace(/-/g, ' ')
+        .replace(/\w\S*/g, function (txt) {
+          return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+        });
+    }
   }
 
   formatPaymentStatus(paymentStatus: string) {
