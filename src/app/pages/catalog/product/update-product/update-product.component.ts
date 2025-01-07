@@ -524,7 +524,7 @@ export class UpdateProductComponent implements OnInit {
       files: this.images.map((file: any) => file.path),
       relatedProducts: this.relatedProducts ? this.relatedProducts.map((product: any) => product?._id) : [],
       product: {
-        id: this.parentDetails?._id,
+        id: this.productDetails?.parentId,
         refid: this.productDetails?.product?.refid,
       },
       brand: {
@@ -533,7 +533,7 @@ export class UpdateProductComponent implements OnInit {
         thumbnail: this.brandsMap[this.form.get('brand')?.value]?.thumbnail,
         cover: this.brandsMap[this.form.get('brand')?.value]?.cover,
       },
-      parentId: this.parentDetails?._id,
+      parentId: this.productDetails?.parentId,
       tagIcons: this.tagIcons,
       attributes: this.attributes,
       storeFrontFields: this.storeFields,

@@ -167,6 +167,9 @@ export class PermissionGuard implements CanActivate {
       case 'internationalization':
         module[0] == 'internationalization' ? path = 'internationalization' : null
         break
+      case 'toasts':
+        module[0] == 'toasts' ? path = 'toasts' : null
+        break
       case 'sms-settings':
         module[0] == 'sms-settings' ? path = 'sms-settings' : null
         break

@@ -1,6 +1,3 @@
-import { state } from '@angular/animations';
-import { left } from '@popperjs/core';
-
 export const internationalisationKeys = {
     addNewAddress: 'addNewAddress',
     addToCart: 'addToCart',

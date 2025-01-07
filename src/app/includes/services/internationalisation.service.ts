@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { internationalisationEndpoints } from 'src/app/config/endpoints';
 import { HttpClient } from '@angular/common/http';
-import { environment } from 'src/environments/environment.prod';
 import { CommonService } from './common.service';
 
 @Injectable({

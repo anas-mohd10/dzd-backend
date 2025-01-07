@@ -46,6 +46,7 @@ import { OrderSettingsComponent } from './settings/general/order-settings/order-
 import { FiltersComponent } from './catalog/filters/filters.component';
 import { SitemapSettingsComponent } from './settings/general/sitemap-settings/sitemap-settings.component';
 import { CompareKeysComponent } from './catalog/compare-keys/compare-keys.component';
+import { ToastComponent } from './settings/general/toast/toast.component';
 
 export const Routing: Routes = [
   {
@@ -386,6 +387,10 @@ export const Routing: Routes = [
       }, {
         path: 'internationalization',
         component: InternationalisationComponent,
+        canActivate: [AuthenticationGuard, PermissionGuard]
+      }, {
+        path: 'toasts',
+        component: ToastComponent,
         canActivate: [AuthenticationGuard, PermissionGuard]
       }, {
         path: 'replace-requests',

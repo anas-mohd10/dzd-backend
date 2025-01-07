@@ -140,6 +140,19 @@ export class OrdersListComponent implements OnInit {
       })
   }
 
+  //format case
+  formatCase(orderData: string) {
+    if (orderData) {
+      return orderData
+        .replace(/_/g, ' ')
+        .replace(/\w\S*/g, function (txt) {
+          return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+        });
+    }
+
+    return ''
+  }
+
   openTag(template: TemplateRef<any>, order: string) {
     this.tagRef = this.BsModalService.show(template, { class: 'modal-lg modal-dialog-centered', ignoreBackdropClick: true })
     this.tagOrder = order
@@ -525,8 +538,8 @@ export class OrdersListComponent implements OnInit {
     })
   }
 
-  getInvoiceSignedUrl(orderId: string) {    
-    orderId = orderId.split('#')[1]    
+  getInvoiceSignedUrl(orderId: string) {
+    orderId = orderId.split('#')[1]
     this.OrdersService.getInvoiceSignedUrl(orderId).subscribe({
       next: (res: any) => {
         if (res?.errorCode == 0) {
@@ -540,7 +553,7 @@ export class OrdersListComponent implements OnInit {
     })
   }
 
-  getInvoicesSignedUrl(){
+  getInvoicesSignedUrl() {
     let queryString = this.toggledOrders.map(order => `${order.split('#')}`).join('&')
     this.OrdersService.getInvoicesSignedUrl(queryString).subscribe({
       next: (res: any) => {
@@ -555,7 +568,7 @@ export class OrdersListComponent implements OnInit {
     })
   }
 
-  getPackingSlipsSignedUrl(){
+  getPackingSlipsSignedUrl() {
     let queryString = this.toggledOrders.map(order => `${order.split('#')}`).join('&')
     this.OrdersService.getPackingSlipsSignedUrl(queryString).subscribe({
       next: (res: any) => {

@@ -73,6 +73,7 @@ export * from './payment.details.endpoints'
 export * from './mega.menu.endpoints'
 export * from './delivery.method.endpoints'
 export * from './internationalisation.endpoints'
+export * from './toast.endpoints'
 export * from './sms.details.endpoints'
 export * from './footer.endpoints'
 export * from './pickup.endpoints';
