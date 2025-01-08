@@ -518,7 +518,8 @@ export class UpdateProductComponent implements OnInit {
 
     this.ProductService.updateProduct(this.productDetails.slug, {
       ...this.form.value,
-      prodid: this.productDetails?._id,
+      _id: this.productDetails?._id,
+      prodid: this.productDetails?.prodid,
       slug: this.form.get('slug')?.value,
       addOns: this.addOns,
       files: this.images.map((file: any) => file.path),
