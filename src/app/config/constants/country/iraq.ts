@@ -10,10 +10,14 @@ export const iraqStates = [
     { state: 'Wasit', cities: [] },
     { state: 'Salah ad-Din', cities: [] },
     { state: 'Najaf', cities: [] },
-    { state: 'Al-Qadisiyyah', cities: [] },
+    { state: 'Qadisiyah', cities: [] },
     { state: 'Maysan', cities: [] },
     { state: 'Babylon', cities: [] },
     { state: 'Dhi Qar', cities: [] },
     { state: 'Kirkuk', cities: [] },
-    { state: 'Al-Muthanna', cities: [] },
+    { state: 'Muthanna', cities: [] },
+    { state: 'Babil', cities: [] },
+    { state: 'Duhok', cities: [] },
+    { state: 'Salahuddin', cities: [] },
+
 ];
