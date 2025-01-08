@@ -16,6 +16,4 @@ export const iraqStates = [
     { state: 'Dhi Qar', cities: [] },
     { state: 'Kirkuk', cities: [] },
     { state: 'Al-Muthanna', cities: [] },
-    { state: 'Babylon', cities: [] },
-    { state: 'Wasit', cities: [] }
 ];
