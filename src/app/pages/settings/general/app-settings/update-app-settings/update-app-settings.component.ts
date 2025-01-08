@@ -204,6 +204,7 @@ export class UpdateAppSettingsComponent implements OnInit {
         this.form.get('description')?.setValue(res?.result?.description)
         this.form.get('itemsPerPage')?.setValue(res?.result?.itemsPerPage)
         this.form.get('isOutOfStock')?.setValue(res?.result?.isOutOfStock)
+        this.form.get('isTax')?.setValue(res?.result?.isTax)
         this.form.get('isNotifyStock')?.setValue(res?.result?.isNotifyStock)
         this.form.get('packingSlip')?.setValue(res?.result?.notes?.packingSlip)
         this.form.get('cartButton')?.setValue(res?.result?.buttons?.cart)
@@ -275,6 +276,7 @@ export class UpdateAppSettingsComponent implements OnInit {
       languages: [[]],
       packingSlip: [''],
       isOutOfStock: ['false'],
+      isTax: ['false'],
       isStoreLive: ['true'],
       defaultImage: [''],
       isNotifyStock: ['false'],
@@ -380,6 +382,7 @@ export class UpdateAppSettingsComponent implements OnInit {
       defaultSort: this.form.get('defaultSort')?.value,
       itemsPerPage: this.form.get('itemsPerPage')?.value,
       isOutOfStock: this.form.get('isOutOfStock')?.value,
+      isTax: this.form.get('isTax')?.value,
       isNotifyStock: this.form.get('isNotifyStock')?.value,
       refid: this.refid,
       primaryAddress: this.form.get('primaryAddress')?.value,
