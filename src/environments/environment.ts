@@ -3,9 +3,9 @@ export const environment = {
   appVersion: 'v8.0.35',
   USERDATA_KEY: 'authf649fc9a5f55',
   isMockEnabled: true,
-  apiUrl: 'http://localhost:3000/api/v1/w/admin/auth',
-  baseUrl: 'http://localhost:3000/api/v1/w/',
-  appBaserl: 'http://localhost:3000/api/v1/a/',
+  apiUrl: 'https://www.alershadonline.com/api/v1/w/admin/auth',
+  baseUrl: 'https://www.alershadonline.com/api/v1/w/',
+  appBaserl: 'https://www.alershadonline.com/api/v1/a/',
   base: '',
   loginUrl: 'api',
   firebaseConfig: {

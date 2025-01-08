@@ -181,7 +181,8 @@
                 </td>
                 <td>
                   <div class="productName">
-                    <div>{{ product?.localizedNames[settings?.primaryLang] || product?.name }}</div>
+                    <!-- <div>{{ product?.localizedNames[settings?.primaryLang] || product?.name }}</div> -->
+                    <div>{{ product?.localizedNames? product?.localizedNames[settings?.primaryLang] : product?.name }}</div>
                     <div class="d-flex flex-wrap align-items-center justify-content-start gap-2">
                       <div
                         class="p-1 rounded mt-1 border border-secondary d-flex align-items-center justify-content-center gap-2"
