@@ -190,7 +190,7 @@
                 </tr>
                 <tr>
                   <th class="p-2 text-muted fw-bold">Credit</th>
-                  <td>{{settings?.currency}} {{order?.credit?.amount}}</td>
+                  <td class="text-success">{{settings?.currency}} {{order?.credit?.amount}}</td>
                 </tr>
                 <tr>
                   <th class="p-2 text-muted fw-bold">Amount Pending</th>
@@ -223,7 +223,7 @@
                   </tr>
                   <tr>
                     <th class="p-2 text-muted fw-bold">Mobile</th>
-                    <td class="p-2">{{order?.customerId?.mobile || order?.guestId?.mobile}}</td>
+                    <td class="p-2">{{order?.address?.mobile || order?.guestId?.mobile}}</td>
                   </tr>
                   <tr>
                     <th class="p-2 text-muted fw-bold">Email</th>
