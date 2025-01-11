@@ -251,11 +251,21 @@
 
             <div class="col-lg-6">
                <div class="form-group mb-3">
-                  <label class="fs-6 mb-3 required">Apartment</label>
+                  <label class="fs-6 mb-3 required">Apartment / First Lane</label>
                   <input type="text" class="form-control fs-6" formControlName="firstlane" [ngClass]="{
                      'is-invalid':
                      (addressControls.firstlane.touched || isAddressSubmitted) &&
                      addressControls.firstlane.errors?.required
+                   }" />
+               </div>
+            </div>
+            <div class="col-lg-6">
+               <div class="form-group mb-3">
+                  <label class="fs-6 mb-3 required">Second Lane</label>
+                  <input type="text" class="form-control fs-6" formControlName="secondlane" [ngClass]="{
+                     'is-invalid':
+                     (addressControls.secondlane.touched || isAddressSubmitted) &&
+                     addressControls.secondlane.errors?.required
                    }" />
                </div>
             </div>

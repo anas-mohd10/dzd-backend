@@ -72,7 +72,10 @@ export class OfferListComponent implements OnInit {
     })
   }
 
-  deleteOffer(offerId: string) {
+  deleteOffer(offerId: string, status: boolean) {
+    if(status){
+      return this.HotToastService.error('Deactivate offer before deleting it')
+    }
     this.OfferService.updateOffer({ slug: offerId, isDelete: true }).subscribe({
       next: (res: any) => {
         if (res?.errorCode == 0) {

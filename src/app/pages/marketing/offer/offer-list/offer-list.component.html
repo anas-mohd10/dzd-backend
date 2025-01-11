@@ -73,7 +73,7 @@
           <div class="w-37">
             <app-switch (switchToggled)="switchToggled($event)" [switchId]="offer.slug"
               [isToggledProps]="offer.isActive"></app-switch>
-            <div class="cursor-pointer" (click)="deleteOffer(offer.slug)">
+            <div class="cursor-pointer" (click)="deleteOffer(offer.slug, offer.isActive)">
               <svg height="20" width="20" data-slot="icon" fill="none" stroke-width="1.5" stroke="currentColor"
                 viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
                 <path stroke-linecap="round" stroke-linejoin="round"
