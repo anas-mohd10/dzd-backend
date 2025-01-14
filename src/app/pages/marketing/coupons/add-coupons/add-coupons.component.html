@@ -208,6 +208,30 @@
             </div>
           </div>
 
+          <div class="col-lg-6">
+            <div class="form-group mb-3">
+              <label class="fs-6 mb-3">Enable Max Redemption Amount</label>
+              <select class="form-select" formControlName="isMaxRedemptionEnabled"
+                title="Enable/Disable maximum redemption amount">
+                <option value="" disabled>-- Select an option --</option>
+                <option value="true">Yes</option>
+                <option value="false">No</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="col-lg-6" *ngIf="form.get('isMaxRedemptionEnabled')?.value === 'true'">
+            <div class="form-group mb-3">
+              <label class="fs-6 mb-3">Max Redemption Amount</label>
+              <input type="text" class="form-control" formControlName="maxRedemptionValue"
+                placeholder="Enter maximum redemption amount"
+                [ngClass]="{ 'is-invalid': formControls.maxRedemptionValue.errors?.pattern }" />
+              <div class="alert alert-danger mt-1" role="alert" *ngIf="formControls.maxRedemptionValue.errors?.pattern">
+                Only numbers are allowed
+              </div>
+            </div>
+          </div>
+
         </div>
 
         <div class="row">

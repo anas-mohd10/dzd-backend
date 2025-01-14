@@ -1,5 +1,5 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { appRoutes } from 'src/app/config/routes';
 import { CategoryService } from 'src/app/includes/services/category.service';
@@ -92,7 +92,9 @@ export class UpdateCouponsComponent implements OnInit {
       isActive: ['true'],
       isDelete: ['false'],
       isVisibility: ['true'],
-      countPerUser: ['', Validators.pattern("^[0-9]*$")]
+      countPerUser: ['', Validators.pattern("^[0-9]*$")],
+      isMaxRedemptionEnabled: ['false'],
+      maxRedemptionValue: ['', [Validators.pattern("^[0-9]*$")]],
     });
   }
 
@@ -170,6 +172,9 @@ export class UpdateCouponsComponent implements OnInit {
 
       this.ChangeDetectorRef.markForCheck()
       this.isValidValue = true
+
+      this.form.get('isMaxRedemptionEnabled')?.setValue(this.couponDetails.maxRedemptionAmount?.isEnabled ? 'true' : 'false');
+      this.form.get('maxRedemptionValue')?.setValue(this.couponDetails.maxRedemptionAmount?.value || '');
     })
   }
 
@@ -245,10 +250,14 @@ export class UpdateCouponsComponent implements OnInit {
           fontSize: this.form.get('fontSize')?.value,
           fontWeight: this.form.get('fontWeight')?.value,
         }
-      }
+      },
+      maxRedemptionAmount: {
+        isEnabled: this.form.get('isMaxRedemptionEnabled')?.value === 'true',
+        value: this.form.get('maxRedemptionValue')?.value || null
+      },
     }).subscribe({
       next: (res: any) => {
-        if (res.errorCode == 0) {
+        if (res.success) {
           this.HotToastService.success(res?.message);
           this.Router.navigate([this.appRoute.coupons.COUPONS_LIST]);
         } else {
