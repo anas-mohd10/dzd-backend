@@ -71,8 +71,8 @@
         </div>
         <div class="fs-6" *ngIf="order?.cancel?.date">
           Cancelled on
-          {{getLocaleDateFormat(order?.cancel?.date)}}
-          {{getLocaleTimeFormat(order?.cancel?.date)}}
+          {{formatDate(order?.cancel?.date)}}
+          {{formatTime(order?.cancel?.date)}}
         </div>
       </div>
     </div>
@@ -92,8 +92,8 @@
                 <tr>
                   <th class="p-2 text-muted fw-bold">Date</th>
                   <td class="p-2">
-                    {{getLocaleDateFormat(order?.orderDate)}},
-                    {{getLocaleTimeFormat(order?.orderDate)}}
+                    {{formatDate(order?.orderDate)}},
+                    {{formatTime(order?.orderDate)}}
                   </td>
                 </tr>
                 <tr>
@@ -322,7 +322,7 @@
                 <table class="table table-bordered fs-5">
                   <tr>
                     <th class="p-2">Date</th>
-                    <td class="p-2">{{order?.deliveryDate && getLocaleDateFormat(order?.deliveryDate)}}</td>
+                    <td class="p-2">{{order?.deliveryDate && formatDate(order?.deliveryDate)}}</td>
                   </tr>
                   <tr>
                     <th class="p-2">Store</th>
@@ -433,8 +433,8 @@
                             <div class="my-1 w-max">
                               <div class="p-2 rounded productStatusAlert">
                                 {{product?.currentStatus?.status}},
-                                {{getLocaleDateFormat(product?.currentStatus?.date)}}
-                                {{getLocaleTimeFormat(product?.currentStatus?.date)}}
+                                {{formatDate(product?.currentStatus?.date)}}
+                                {{formatTime(product?.currentStatus?.date)}}
                               </div>
                             </div>
                           </div>
@@ -480,9 +480,9 @@
                                     <p>
                                       {{history?.status}}
                                       <br>
-                                      <span>{{getLocaleDateFormat(history?.date)}}</span>
+                                      <span>{{formatDate(history?.date)}}</span>
                                       <br>
-                                      <span>{{getLocaleTimeFormat(history?.date)}}</span>
+                                      <span>{{formatTime(history?.date)}}</span>
                                     </p>
                                   </div>
                                 </ng-template>
@@ -544,8 +544,8 @@
                   <tr>
                     <th class="p-2 text-muted fw-bold">Date</th>
                     <td>
-                      {{ getLocaleDateFormat(tokenizedItem?.updateDateTime) }}
-                      {{ getLocaleTimeFormat(tokenizedItem?.updateDateTime) }}
+                      {{ formatDate(tokenizedItem?.updateDateTime) }}
+                      {{ formatTime(tokenizedItem?.updateDateTime) }}
                     </td>
                   </tr>
                   <tr>

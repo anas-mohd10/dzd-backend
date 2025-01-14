@@ -275,6 +275,24 @@ export class UpdateOrdersComponent implements OnInit {
     return `${new Date(date).toLocaleString()}`;
   }
 
+  formatDate(date: string) {
+  return new Intl.DateTimeFormat('en-US', {
+    year: 'numeric',
+    month: 'short',
+    day: 'numeric',
+    timeZone: 'UTC', // Force UTC timezone
+  }).format(new Date(date));
+}
+
+formatTime(time: string) {
+  return new Intl.DateTimeFormat('en-US', {
+    hour: 'numeric',
+    minute: 'numeric',
+    hour12: true,
+    timeZone: 'UTC', // Force UTC timezone
+  }).format(new Date(time));
+}
+
   getLocaleDateFormat(processDate: any) {
     return new Date(processDate).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric', weekday: 'short' });
   }
