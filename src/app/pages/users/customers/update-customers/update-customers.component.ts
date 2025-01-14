@@ -72,7 +72,7 @@ export class UpdateCustomersComponent implements OnInit {
   transactions: Array<any> = [];
   amount: FormControl = new FormControl('', [
     Validators.required,
-    Validators.pattern(/^[1-9][0-9]*$/),
+    Validators.pattern(/^\d+(\.\d{1,2})?$/)
   ]);
   description: FormControl = new FormControl('');
   isWalletSubmitted: boolean = false;
