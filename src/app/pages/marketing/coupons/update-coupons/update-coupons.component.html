@@ -209,7 +209,7 @@
             </div>
           </div>
 
-          <div class="col-lg-6">
+          <div class="col-lg-6" *ngIf="form.get('type')?.value === 'percent'">
             <div class="form-group mb-3">
               <label class="fs-6 mb-3">Enable Max Redemption Amount</label>
               <select class="form-select" formControlName="isMaxRedemptionEnabled"
@@ -221,7 +221,8 @@
             </div>
           </div>
 
-          <div class="col-lg-6" *ngIf="form.get('isMaxRedemptionEnabled')?.value === 'true'">
+          <div class="col-lg-6"
+            *ngIf="form.get('type')?.value === 'percent' && form.get('isMaxRedemptionEnabled')?.value === 'true'">
             <div class="form-group mb-3">
               <label class="fs-6 mb-3">Max Redemption Amount</label>
               <input type="text" class="form-control" formControlName="maxRedemptionValue"
