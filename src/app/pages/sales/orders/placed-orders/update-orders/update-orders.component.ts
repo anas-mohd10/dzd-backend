@@ -451,7 +451,7 @@ export class UpdateOrdersComponent implements OnInit {
   updateProductPayment(event: any, product: any) {
     this.OrdersService.updateProductPayment({
       order: this.order.orderNo,
-      product: product.productId?._id,
+      product:product?.productDetails?._id || product.productId?._id,
       status: event.target.value,
     }).subscribe({
       next: (res: any) => {
