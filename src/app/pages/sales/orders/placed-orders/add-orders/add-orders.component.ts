@@ -126,7 +126,7 @@ export class AddOrdersComponent implements OnInit {
         } else {
         }
       },
-      error: (error: any) => {},
+      error: (error: any) => { },
     });
 
     this.StoresService.getClickPoints().subscribe((res: any) => {
@@ -145,7 +145,7 @@ export class AddOrdersComponent implements OnInit {
         } else {
         }
       },
-      error: (error: any) => {},
+      error: (error: any) => { },
     });
 
     this.addressForm = new FormGroup({
@@ -498,7 +498,7 @@ export class AddOrdersComponent implements OnInit {
         } else {
         }
       },
-      error: (err: any) => {},
+      error: (err: any) => { },
     });
 
     this.orderForm.get('deliveryDate')?.setValue(date);
@@ -765,6 +765,36 @@ export class AddOrdersComponent implements OnInit {
   }
   //Customer and address management
 
+  getBrowserAndDevice() {
+    const userAgent = navigator.userAgent;
+    const isMobile = /iPhone|iPad|iPod|Android/i.test(userAgent);
+    let browser = 'Others';
+
+    if (
+      userAgent.includes("Chrome") &&
+      !userAgent.includes("Edg") && !userAgent.includes("OPR")
+    ) {
+      browser = "Chrome";
+    }
+    if (userAgent.includes("Safari") && !userAgent.includes("Chrome")) {
+      browser = "Safari";
+    }
+    if (userAgent.includes("Firefox")) {
+      browser = "Firefox";
+    }
+    if (userAgent.includes("Edg")) {
+      browser = "Edge";
+    }
+    if (userAgent.includes("Brave")) {
+      browser = "Brave";
+    }
+    if (userAgent.includes("OPR") || userAgent.includes("Opera")) {
+      browser = "Opera";
+    }
+
+    return { isMobile, browser }
+  }
+
   createOrder() {
     this.orderForm.get('customerId')?.setValue(this.customerDetails?._id);
     this.orderForm.get('products')?.setValue(this.cartItems);
@@ -775,12 +805,14 @@ export class AddOrdersComponent implements OnInit {
       return;
     }
 
-    let payload = {
+    const { isMobile, browser } = this.getBrowserAndDevice();
+
+    this.OrderService.addOrder({
       address: this.address,
       ...this.orderForm.value,
-    };
-
-    this.OrderService.addOrder(payload).subscribe({
+      source: isMobile == true ? 'MOBILE' : 'WEB',
+      sourceType: browser
+    }).subscribe({
       next: (res: any) => {
         if (res?.errorCode == 0) {
           this.Router.navigate([this.appRoute.orders.ORDERS_LIST]);
