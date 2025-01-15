@@ -142,16 +142,26 @@
          <div class="my-4 card">
             <div class="card-body">
                <div class="row">
-                  <div class="col-lg-6">
+                  <div class="col-lg-6 position-relative">
                      <div class="fs-3 fw-bold mb-2">Default Web Banner</div>
                      <div class="h-100 ratio ratio-16x9 w-100">
                         <app-assets (mediaClicked)="handleDefaultBanner($event)" [previewDetails]="defaultBanner"></app-assets>
                      </div>
+                     <div *ngIf="defaultBanner">
+                        <div class="position-absolute bottom-0 end-2 m-4">
+                           <button class="btn btn-danger" (click)="onRemove('defaultBanner')">Remove</button>
+                         </div>
+                     </div>
                   </div>
-                  <div class="col-lg-6">
+                  <div class="col-lg-6 position-relative">
                      <div class="fs-3 fw-bold mb-2">Default Mobile Banner</div>
                      <div class="h-100 ratio ratio-16x9 w-100">
                         <app-assets (mediaClicked)="handleDefaultMobileBanner($event)" [previewDetails]="defaultMobileBanner"></app-assets>
+                     </div>
+                     <div *ngIf="defaultMobileBanner">
+                        <div class="position-absolute bottom-0 end-2 m-4">
+                           <button class="btn btn-danger" (click)="onRemove('defaultMobileBanner')">Remove</button>
+                         </div>
                      </div>
                   </div>
                </div>

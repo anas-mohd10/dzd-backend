@@ -285,8 +285,8 @@ export class UpdateAppSettingsComponent implements OnInit {
       notifyButton: ['Notify Me', Validators.required],
       logo: ['', Validators.required],
       favicon: ['', Validators.required],
-      defaultBanner: ['', Validators.required],
-      defaultMobileBanner: ['', Validators.required],
+      defaultBanner: [''],
+      defaultMobileBanner: [''],
     })
   }
 
@@ -307,6 +307,8 @@ export class UpdateAppSettingsComponent implements OnInit {
         break;
     }
   }
+
+  
 
   declineDiscard() {
     this.discardModalRef?.hide()
@@ -340,12 +342,35 @@ export class UpdateAppSettingsComponent implements OnInit {
     this.form.get('favicon')?.setValue(event.path)
   }
 
+  onRemove(mediaType: string) {
+    switch (mediaType) {
+      case 'logo':
+        this.form.get('logo')?.setValue('');
+        this.logo = '';
+        break;
+      case 'favicon':
+        this.form.get('favicon')?.setValue('');
+        this.favicon = '';
+        break;
+      case 'defaultBanner':
+        this.form.get('defaultBanner')?.setValue('');
+        this.defaultBanner = '';
+        break;
+      case 'defaultMobileBanner':
+        this.form.get('defaultMobileBanner')?.setValue('');
+        this.defaultMobileBanner = '';
+        break;
+    }
+  }
+
   handleDefaultBanner(event: any) {
     this.form.get('defaultBanner')?.setValue(event.path)
+    this.defaultBanner = event.path
   }
 
   handleDefaultMobileBanner(event: any) {
     this.form.get('defaultMobileBanner')?.setValue(event.path)
+    this.defaultMobileBanner = event.path
   }
 
   setPaymentGateways(paymentGateway: string) {
