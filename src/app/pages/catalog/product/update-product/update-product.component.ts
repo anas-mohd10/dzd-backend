@@ -464,11 +464,15 @@ export class UpdateProductComponent implements OnInit {
   productIconClicked(event: any) {
     let isExists: boolean = this.icons.some((item: any) => item.path == event.path);
     if (isExists) {
-      this.icons = this.icons.filter((item: any) => item.path != event.path);
+      const index = this.icons.findIndex((item: any) => item.path == event.path);
+      if (index !== -1) {
+        this.icons.splice(index, 1);
+      }
     } else {
       this.icons.push(event.path);
     }
   }
+
 
   removeProductMedia(image: any) {
     this.images = this.images.filter((item: any) => item?._id != image?._id);
