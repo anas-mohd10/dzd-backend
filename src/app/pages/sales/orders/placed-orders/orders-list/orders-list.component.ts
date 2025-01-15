@@ -411,23 +411,31 @@ export class OrdersListComponent implements OnInit {
     window.open(`${this.packingSlipUrl}${queryString}`, '_blank')
   }
 
-  formatDate(date: string) {
-  return new Intl.DateTimeFormat('en-US', {
-    year: 'numeric',
-    month: 'short',
-    day: 'numeric',
-    timeZone: 'UTC', // Force UTC timezone
-  }).format(new Date(date));
-}
+  formatTime(time: string) {
+    return new Date(time).toLocaleTimeString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true })
+  }
 
-formatTime(time: string) {
-  return new Intl.DateTimeFormat('en-US', {
-    hour: 'numeric',
-    minute: 'numeric',
-    hour12: true,
-    timeZone: 'UTC', // Force UTC timezone
-  }).format(new Date(time));
-}
+  formatDate(date: string) {
+    return new Date(date).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' })
+  }
+
+//   formatDate(date: string) {
+//   return new Intl.DateTimeFormat('en-US', {
+//     year: 'numeric',
+//     month: 'short',
+//     day: 'numeric',
+//     timeZone: 'UTC', // Force UTC timezone
+//   }).format(new Date(date));
+// }
+
+// formatTime(time: string) {
+//   return new Intl.DateTimeFormat('en-US', {
+//     hour: 'numeric',
+//     minute: 'numeric',
+//     hour12: true,
+//     timeZone: 'UTC', // Force UTC timezone
+//   }).format(new Date(time));
+// }
 
   exportOrders() {
     this.OrdersService.exportOrderTabs({
