@@ -461,15 +461,22 @@ export class UpdateProductComponent implements OnInit {
     }
   }
 
-  productIconClicked(event: any) {
-    let isExists: boolean = this.icons.some((item: any) => item == event?.path);
-    if (isExists) {
-      this.icons = this.icons.filter((item: any) => item != event?.path);
+  // productIconClicked(event: any) {
+  //   let isExists: boolean = this.icons.some((item: any) => item == event?.path);
+  //   if (isExists) {
+  //     this.icons = this.icons.filter((item: any) => item != event?.path);
+  //   } else {
+  //     this.icons.push(event?.path);
+  //   }
+  // }
+  productIconClicked(event: string) {
+    const index = this.icons.indexOf(event);
+    if (index !== -1) {
+      this.icons.splice(index, 1);
     } else {
-      this.icons.push(event?.path);
+      this.icons.push(event);
     }
   }
-
   removeProductMedia(image: any) {
     this.images = this.images.filter((item: any) => item?._id != image?._id);
   }
