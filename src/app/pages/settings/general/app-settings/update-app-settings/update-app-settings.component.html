@@ -139,34 +139,53 @@
                </div>
             </div>
          </div>
+
          <div class="my-4 card">
             <div class="card-body">
                <div class="row">
-                  <div class="col-lg-6 position-relative">
+                  <div class="col-lg-6">
                      <div class="fs-3 fw-bold mb-2">Default Web Banner</div>
-                     <div class="h-100 ratio ratio-16x9 w-100">
-                        <app-assets (mediaClicked)="handleDefaultBanner($event)" [previewDetails]="defaultBanner"></app-assets>
-                     </div>
-                     <div *ngIf="defaultBanner">
-                        <div class="position-absolute bottom-0 end-2 m-4">
-                           <button class="btn btn-danger" (click)="onRemove('defaultBanner')">Remove</button>
-                         </div>
+                     <div class="position-relative">
+                        <div class="h-100 ratio ratio-16x9 w-100">
+                           <app-assets (mediaClicked)="handleDefaultBanner($event)"
+                              [previewDetails]="defaultBanner"></app-assets>
+                        </div>
+                        <div class="position-absolute bottom-0 m-2" *ngIf="defaultBanner">
+                           <button class="btn btn-danger p-2 d-flex align-items-center justify-content-center gap-2"
+                              (click)="onRemove('defaultBanner')">
+                              <svg height="18" width="18" data-slot="icon" fill="none" stroke-width="1.5" stroke="currentColor"
+                                 viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                                 <path stroke-linecap="round" stroke-linejoin="round"
+                                    d="M12 9.75 14.25 12m0 0 2.25 2.25M14.25 12l2.25-2.25M14.25 12 12 14.25m-2.58 4.92-6.374-6.375a1.125 1.125 0 0 1 0-1.59L9.42 4.83c.21-.211.497-.33.795-.33H19.5a2.25 2.25 0 0 1 2.25 2.25v10.5a2.25 2.25 0 0 1-2.25 2.25h-9.284c-.298 0-.585-.119-.795-.33Z">
+                                 </path>
+                              </svg>
+                              <div>Remove</div>
+                           </button>
+                        </div>
                      </div>
                   </div>
-                  <div class="col-lg-6 position-relative">
+                  <div class="col-lg-6">
                      <div class="fs-3 fw-bold mb-2">Default Mobile Banner</div>
-                     <div class="h-100 ratio ratio-16x9 w-100">
-                        <app-assets (mediaClicked)="handleDefaultMobileBanner($event)" [previewDetails]="defaultMobileBanner"></app-assets>
-                     </div>
-                     <div *ngIf="defaultMobileBanner">
-                        <div class="position-absolute bottom-0 end-2 m-4">
-                           <button class="btn btn-danger" (click)="onRemove('defaultMobileBanner')">Remove</button>
-                         </div>
+                     <div class="position-relative">
+                        <div class="h-100 ratio ratio-16x9 w-100">
+                           <app-assets (mediaClicked)="handleDefaultMobileBanner($event)"
+                              [previewDetails]="defaultMobileBanner"></app-assets>
+                        </div>
+                        <div class="position-absolute bottom-0 m-2" *ngIf="defaultMobileBanner">
+                           <button class="btn btn-danger p-2 d-flex align-items-center justify-content-center gap-2" (click)="onRemove('defaultMobileBanner')">
+                              <svg height="18" width="18" data-slot="icon" fill="none" stroke-width="1.5" stroke="currentColor"
+                              viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                              <path stroke-linecap="round" stroke-linejoin="round"
+                                 d="M12 9.75 14.25 12m0 0 2.25 2.25M14.25 12l2.25-2.25M14.25 12 12 14.25m-2.58 4.92-6.374-6.375a1.125 1.125 0 0 1 0-1.59L9.42 4.83c.21-.211.497-.33.795-.33H19.5a2.25 2.25 0 0 1 2.25 2.25v10.5a2.25 2.25 0 0 1-2.25 2.25h-9.284c-.298 0-.585-.119-.795-.33Z">
+                              </path>
+                           </svg>
+                           <div>Remove</div>
+                           </button>
+                        </div>
                      </div>
                   </div>
                </div>
             </div>
-            
          </div>
 
          <div class="card my-4">
@@ -300,7 +319,7 @@
                            <option [value]="sort.value">{{sort.label}}</option>
                         </ng-container>
                      </select>
-         </div>
+                  </div>
                </div>
             </div>
          </div>
