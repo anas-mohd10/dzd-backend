@@ -164,12 +164,12 @@
                                             </div>
                                         </td>
                                         <td>
-                                            <div class="fs-5 fw-bold">{{settings?.currency}}
-                                                {{cart?.price?.selling}}</div>
+                                            <div class="fs-5 fw-bold">{{settings?.currency}} {{cart?.price?.selling}}
+                                            </div>
                                             <div *ngIf="cart?.price?.mrp > cart?.price?.selling"
                                                 class="fs-5 text-muted text-decoration-line-through">
-                                                {{settings?.currency}}
-                                                {{cart?.price?.mrp}}</div>
+                                                {{settings?.currency}} {{cart?.price?.mrp}}
+                                            </div>
                                         </td>
                                         <td>
                                             <div class="d-flex align-items-center justify-content-start gap-2">
@@ -183,12 +183,9 @@
                                                                 d="M18 12H6" />
                                                         </svg>
                                                     </div>
-                                                    <input 
-                                                      class="form-control" 
-                                                      value="{{cart?.quantity}}" 
-                                                     (change)="updateQuantityWithInput($event, cart)"
-                                                     style="width: 100px; height: 30px;" 
-                                                     />
+                                                    <input class="form-control" value="{{cart?.quantity}}"
+                                                        (change)="updateQuantityWithInput($event, cart)"
+                                                        style="width: 100px; height: 30px;" />
                                                     <div class="quantityBtn bg-secondary rounded cursor-pointer"
                                                         (click)="updateQuantity('increment', cart)">
                                                         <svg height="16" width="16" xmlns="http://www.w3.org/2000/svg"
