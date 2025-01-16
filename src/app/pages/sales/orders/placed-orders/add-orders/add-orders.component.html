@@ -183,7 +183,12 @@
                                                                 d="M18 12H6" />
                                                         </svg>
                                                     </div>
-                                                    <div class="productQuantity">{{cart?.quantity}}</div>
+                                                    <input 
+                                                      class="form-control" 
+                                                      value="{{cart?.quantity}}" 
+                                                     (change)="updateQuantityWithInput($event, cart)"
+                                                     style="width: 100px; height: 30px;" 
+                                                     />
                                                     <div class="quantityBtn bg-secondary rounded cursor-pointer"
                                                         (click)="updateQuantity('increment', cart)">
                                                         <svg height="16" width="16" xmlns="http://www.w3.org/2000/svg"

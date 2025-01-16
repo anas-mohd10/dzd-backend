@@ -610,7 +610,15 @@ export class AddOrdersComponent implements OnInit {
         break;
     }
   }
-
+updateQuantityWithInput(event: Event, cart: any): void {
+  const target = event.target as HTMLInputElement;
+  if (target) {
+    const newValue = parseInt(target.value,);
+    if (!isNaN(newValue)) {
+      cart.quantity = newValue; 
+     }
+}
+}
   deleteProduct(product: any) {
     this.cartItems = this.cartItems.filter(
       (item: any) => item?._id != product?._id
