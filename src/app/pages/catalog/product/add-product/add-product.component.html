@@ -493,7 +493,7 @@
                   <div class="row" id="images">
                     <div class="col-lg-2" *ngFor="let icon of icons">
                       <div class="ratio border ratio-1x1 h-auto w-100 rounded position-relative">
-                        <div class="close-icon rounded bg-danger text-white" (click)="productIconClicked(icon)">
+                        <div class="close-icon rounded bg-danger text-white" (click)="productIconClicked(icon, 'remove')">
                           <svg height="18" width="18" data-slot="icon" fill="none" stroke-width="1.5"
                             stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"
                             aria-hidden="true">

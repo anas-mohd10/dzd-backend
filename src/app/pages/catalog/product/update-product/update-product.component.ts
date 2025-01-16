@@ -461,10 +461,10 @@ export class UpdateProductComponent implements OnInit {
     }
   }
 
-  productIconClicked(event: any) {
-    let isExists: boolean = this.icons.some((item: any) => item.path == event.path);
+  productIconClicked(event: any, type: string = 'add') {
+    let isExists: boolean = this.icons.some((item: any) => item == (type == 'remove' ? event : event.path));
     if (isExists) {
-      const index = this.icons.findIndex((item: any) => item.path == event.path);
+      const index = this.icons.findIndex((item: any) => item == (type == 'remove' ? event : event.path));
       if (index !== -1) {
         this.icons.splice(index, 1);
       }
@@ -1035,7 +1035,7 @@ export class UpdateProductComponent implements OnInit {
     this.tagIcons = this.tagIcons.filter((item: any) => item != icon);
   }
 
-  logPagination(event: {pageIndex: number, pageSize: number}) {
+  logPagination(event: { pageIndex: number, pageSize: number }) {
     this.historyPageIndex = event.pageIndex
     this.historyPageSize = event.pageSize
 

@@ -247,15 +247,18 @@ export class AddProductComponent implements OnInit {
     }
   }
 
-  productIconClicked(event: any) {
-    let isExists: boolean = this.icons.some((item: any) => item == event.path);
+  productIconClicked(event: any, type: string = 'add') {
+    let isExists: boolean = this.icons.some((item: any) => item == (type == 'remove' ? event : event.path));
     if (isExists) {
-      this.icons = this.icons.filter((item: any) => item != event.path);
+      const index = this.icons.findIndex((item: any) => item == (type == 'remove' ? event : event.path));
+      if (index !== -1) {
+        this.icons.splice(index, 1);
+      }
     } else {
-      this.icons.push(event?.path);
+      this.icons.push(event.path);
     }
   }
-
+  
   removeProductMedia(image: any) {
     this.images = this.images.filter((item: any) => item?._id != image?._id);
   }

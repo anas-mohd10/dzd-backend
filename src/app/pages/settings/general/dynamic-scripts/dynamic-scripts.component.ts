@@ -14,6 +14,7 @@ export class DynamicScriptsComponent implements OnInit {
   scriptDetails: any = {}
   editorOptions = { theme: 'vs-dark', language: 'html' };
   code: string = '<script>\n\tfunction helloWorld() {\n\t\tconsole.log("Hello world!");\n\t}\n</script>';
+  headCode: string = ''
 
   constructor(
     private ChangeDetectorRef: ChangeDetectorRef,
@@ -25,13 +26,17 @@ export class DynamicScriptsComponent implements OnInit {
     this.DynamicScriptsService.getScriptDetails().subscribe((res: any) => {
       if (res?.errorCode == 0) {
         this.code = res?.result?.script
+        this.headCode = res?.result?.head
         this.ChangeDetectorRef.markForCheck()
       }
     })
   }
   
   manageScriptDetails() {
-    this.DynamicScriptsService.manageScript({ script: this.code }).subscribe((res: any) => {
+    this.DynamicScriptsService.manageScript({ 
+      script: this.code,
+      head: this.headCode
+     }).subscribe((res: any) => {
       if (res?.errorCode == 0) {
         this.ngOnInit()
         this.HotToastService.success(res?.message)
