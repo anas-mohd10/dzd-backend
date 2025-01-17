@@ -552,89 +552,108 @@ export class AddOrdersComponent implements OnInit {
   }
 
   addToCart(product: any) {
-    let isExists: boolean = this.cartItems.some((item: any) => item?._id == product?._id);
-
+    const isExists: boolean = this.cartItems.some(
+        (item: any) => item?._id === product?._id
+    );
     if (isExists) {
-      this.ToastrService.error('Product already exists in the cart');
+        this.ToastrService.error('Product already exists in the cart');
     } else {
-      this.products = [];
-      this.keyword.setValue('');
-      this.cartItems.push({ ...product, quantity: product?.moq });
-      this.cartSubtotal = this.cartSubtotal + product?.price?.selling * product?.moq;
-      this.cartTotal = this.cartSubtotal - this.cartDiscount;
-      this.productsModalRef?.hide();
+        this.products = [];
+        this.keyword.setValue('');
+        const initialQuantity = Math.max(1, product?.moq || 1);
+        this.cartItems.push({ ...product, quantity: initialQuantity });
+        this.cartSubtotal += product?.price?.selling * initialQuantity;
+        this.cartTotal = this.cartSubtotal - this.cartDiscount;
+        this.productsModalRef?.hide();
     }
+}
+updateQuantityWithInput(event: Event, product: any): void {
+  const target = event.target as HTMLInputElement;
+  if (!target) return;
+
+  const newValue = parseInt(target.value, 10);
+
+  if (isNaN(newValue)) {
+      target.value = product.quantity.toString();
+      return;
+  }
+  let finalQuantity = Math.max(1, newValue);
+
+  if (finalQuantity > product.maxOrderQuantity) {
+      this.ToastrService.error(`Maximum order quantity is ${product.maxOrderQuantity}`);
+      finalQuantity = product.maxOrderQuantity;
+      target.value = finalQuantity.toString();
   }
 
-  updateQuantity(type: any, product: any) {
-    switch (type) {
-      case 'increment':
-        this.cartItems = this.cartItems.map((item: any) => {
-          if (item?._id == product?._id) {
-            if (product?.maxOrderQuantity < item.quantity + 1) {
-              this.ToastrService.error(`Maximum order quantity has been reached`);
-              return item;
-            } else {
-              this.cartSubtotal = this.cartSubtotal + product?.price?.selling;
-              this.cartTotal = this.cartSubtotal - this.cartDiscount;
-              this.ToastrService.success('Product quantity updated');
-              return { ...item, quantity: item.quantity + 1 };
-            }
-          } else {
-            return item;
-          }
-        });
-        break;
-      case 'decrement':
-        this.cartItems = this.cartItems.map((item: any) => {
-          if (item?._id == product?._id && item.quantity > 1) {
-            if (product?.moq > item.quantity - 1) {
-              this.ToastrService.error(
-                `Minimum required quantity (${product?.moq}) has been reached`
-              );
-              return item;
-            } else {
-              this.cartSubtotal = this.cartSubtotal - product?.price?.selling;
-              this.cartTotal = this.cartSubtotal - this.cartDiscount;
-              this.ToastrService.success('Product quantity updated');
-              return { ...item, quantity: item.quantity - 1 };
-            }
-          } else {
-            return item;
-          }
-        });
-        break;
-    }
-  }
+  const currentQuantity = product.quantity || 1;
+  const quantityDifference = finalQuantity - currentQuantity;
+  const priceDifference = quantityDifference * product.price.selling;
 
-  updateQuantityWithInput(event: Event, cart: any) {
-    console.log(cart)
-    console.log(event)
-    const target = event.target as HTMLInputElement;
-    if (target) {
-      const newValue = parseInt(target.value);
-      if (!isNaN(newValue)) {
-        if (newValue > cart?.maxOrderQuantity) {
-          cart.quantity = cart?.maxOrderQuantity;
-          this.ToastrService.error(`Maximum order quantity has been reached`);
-          return
-        }
-
-        if (newValue < cart?.moq) { 
-          cart.quantity = cart?.moq;
-          this.ToastrService.error(`Minimum required quantity has been reached`);
-          return
-        }
-
-        cart.quantity = newValue;
-        this.ToastrService.success('Product quantity updated');
-        return
+  this.cartItems = this.cartItems.map((item: any) => {
+      if (item._id === product._id) {
+          return { ...item, quantity: finalQuantity };
       }
+      return item;
+  });
+
+  this.cartSubtotal += priceDifference;
+  this.cartTotal = this.cartSubtotal - this.cartDiscount;
+
+  if (quantityDifference !== 0) {
+      this.ToastrService.success('Product quantity updated');
+  }
+}
+
+
+
+
+updateQuantity(type: 'increment' | 'decrement', product: any) {
+  switch (type) {
+    case 'increment': {
+      const newQuantity = product.quantity + 1;
+      
+      if (newQuantity > product.maxOrderQuantity) {
+        this.ToastrService.error(
+          `Maximum order quantity (${product.maxOrderQuantity}) has been reached`
+        );
+        return;
+      }
+
+      this.cartItems = this.cartItems.map((item: any) => {
+        if (item._id === product._id) {
+          this.cartSubtotal += product.price.selling;
+          this.cartTotal = this.cartSubtotal - this.cartDiscount;
+          this.ToastrService.success('Product quantity updated');
+          return { ...item, quantity: newQuantity };
+        }
+        return item;
+      });
+      break;
     }
 
-    this.ChangeDetectorRef.markForCheck();
-  }
+    case 'decrement': {
+      const newQuantity = product.quantity - 1;
+      
+      if (newQuantity < product.moq) {
+        this.ToastrService.error(
+          `Minimum required quantity (${product.moq}) has been reached`
+        );
+        return;
+      }
 
+      this.cartItems = this.cartItems.map((item: any) => {
+        if (item._id === product._id && item.quantity > 1) {
+          this.cartSubtotal -= product.price.selling;
+          this.cartTotal = this.cartSubtotal - this.cartDiscount;
+          this.ToastrService.success('Product quantity updated');
+          return { ...item, quantity: newQuantity };
+        }
+        return item;
+      });
+      break;
+    }
+  }
+}
   deleteProduct(product: any) {
     this.cartItems = this.cartItems.filter(
       (item: any) => item?._id != product?._id
