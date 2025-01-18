@@ -215,6 +215,9 @@ export class PermissionGuard implements CanActivate {
       case 'analytics':
         module[0] == 'analytics' ? path = 'analytics' : null
         break
+      case 'mobile-apps':
+        module[0] == 'mobile-apps' ? path = 'mobile-apps' : null
+        break
       case 'page-covers':
         module[0] == 'page-covers' ? path = 'page-covers' : null
         break

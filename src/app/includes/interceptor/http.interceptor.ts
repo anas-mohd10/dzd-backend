@@ -10,16 +10,17 @@ export class HttpInterceptor implements HttpInterceptor {
   constructor() { }
 
   intercept(
-    request: HttpRequest<unknown>, 
+    request: HttpRequest<unknown>,
     next: HttpHandler
   ): Observable<HttpEvent<unknown>> {
     let bearerToken = ''
     let token = localStorage.getItem(localstorageVariables.access_token)
-    if (token) {
-      bearerToken = token;
-    }
+    if (token) bearerToken = token;
+    let timezone: string = Intl.DateTimeFormat().resolvedOptions().timeZone; //Get the timezone
+
     request = request.clone({
       setHeaders: {
+        Timezone: timezone,
         Authorization: `Bearer ${token}`,
       }
     });

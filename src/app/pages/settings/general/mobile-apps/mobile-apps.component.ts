@@ -1,16 +1,18 @@
 import { ChangeDetectorRef, Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
+import { HotToastService } from '@ngneat/hot-toast';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
-import { ToastrService } from 'ngx-toastr';
 import { appRoutes } from 'src/app/config/routes';
 import { AppSettingsService } from 'src/app/includes/services/app.settings.service';
 import { AppsService } from 'src/app/includes/services/apps.service';
 import { environment } from 'src/environments/environment.prod';
+import { SharedModule } from "../../../shared/shared.module";
+import { SwitchComponent } from "../../../shared/switch/switch.component";
 
 @Component({
   selector: 'app-mobile-apps',
   templateUrl: './mobile-apps.component.html',
-  styleUrls: ['./mobile-apps.component.scss']
+  styleUrls: ['./mobile-apps.component.scss'],
 })
 export class MobileAppsComponent implements OnInit {
   appRoute = appRoutes
@@ -38,13 +40,30 @@ export class MobileAppsComponent implements OnInit {
 
   colors: Array<any> = []
 
+  isDownloadPage: FormControl = new FormControl(true)
+
   constructor(
     private ChangeDetectorRef: ChangeDetectorRef,
-    private ToastrService: ToastrService,
+    private ToastrService: HotToastService,
     private AppSettingsService: AppSettingsService,
     private BsModalService: BsModalService,
     private AppsService: AppsService
   ) { }
+
+  switchToggled(event: { switchId: string, toggleState: boolean }) {
+    this.isDownloadPage.setValue(event.toggleState)
+    this.AppsService.manageApps({ isDownloadPage: this.isDownloadPage.value }).subscribe({
+      next: (res: any) => {
+        if (res?.errorCode == 0) {
+          this.ToastrService.success(res?.message)
+        } else {
+          this.ToastrService.error(res?.message)
+        }
+      }, error: (err: any) => {
+        this.ToastrService.error(err?.message)
+      }
+    })
+  }
 
   ngOnInit(): void {
     this.initForm()
@@ -104,6 +123,7 @@ export class MobileAppsComponent implements OnInit {
             this.appIcon = res?.result?.ios?.appIcon ? this.base + '/' + res?.result?.ios?.appIcon : null
             this.splashIcon = res?.result?.ios?.splashIcon ? this.base + '/' + res?.result?.ios?.splashIcon : null
           }
+          this.isDownloadPage.setValue(res?.result?.isDownloadPage)
           this.ChangeDetectorRef.markForCheck()
         } else {
           this.ToastrService.error(res?.message)
