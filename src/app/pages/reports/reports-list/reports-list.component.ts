@@ -334,7 +334,7 @@ export class ReportsListComponent implements OnInit {
         this.generateProductSalesReport(params);
         break;
       case 'productreport':
-        this.generateProductReport();
+        this.generateProductReport(params);
         break;
       case 'enquiry-report':
         this.generateEnquiryReport(params);
@@ -413,8 +413,12 @@ export class ReportsListComponent implements OnInit {
     });
   }
 
-  generateProductReport() {
-    this.reportsService.productReport().subscribe({
+  generateProductReport(params: any) {
+    this.reportsService.productReport(
+      params.dateRange,
+      params.startDate,
+      params.endDate
+    ).subscribe({
       next: (res: any) => {
         this.handleReportResponse(res);
       },

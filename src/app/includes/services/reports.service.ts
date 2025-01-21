@@ -33,8 +33,8 @@ export class ReportsService {
     return this.http.get(`${url}`);
   }
 
-  productReport() {
-    const url = this.commonService.getFullUrl(reportsEndpoints.productReport );
+  productReport(dateRange: string, startDate?: string, endDate?: string) {
+    const url = this.commonService.getFullUrl(reportsEndpoints.productReport + `?dateRange=${dateRange}&startDate=${startDate}&endDate=${endDate}`);
     return this.http.get(`${url}`);
   }
 
