@@ -151,7 +151,8 @@
           <thead>
             <tr>
               <th>
-                <div class="checkbox" (click)="onSelectProducts('all', '')" [ngClass]="{ 'checked': checkedProducts.length == products.length }">
+                <div class="checkbox" (click)="onSelectProducts('all', '')"
+                  [ngClass]="{ 'checked': checkedProducts.length == products.length }">
                 </div>
               </th>
               <th>&nbsp;</th>
@@ -172,7 +173,8 @@
             <ng-container *ngFor="let product of products; let i = index">
               <tr>
                 <td>
-                  <div class="checkbox" (click)="onSelectProducts('single', product?.sku)" [ngClass]="{'checked': checkedProducts.includes(product?.sku)}">
+                  <div class="checkbox" (click)="onSelectProducts('single', product?.sku)"
+                    [ngClass]="{'checked': checkedProducts.includes(product?.sku)}">
                   </div>
                 </td>
                 <td>
@@ -182,7 +184,8 @@
                 <td>
                   <div class="productName">
                     <!-- <div>{{ product?.localizedNames[settings?.primaryLang] || product?.name }}</div> -->
-                    <div>{{ product?.localizedNames? product?.localizedNames[settings?.primaryLang] : product?.name }}</div>
+                    <div>{{ product?.localizedNames? product?.localizedNames[settings?.primaryLang] : product?.name }}
+                    </div>
                     <div class="d-flex flex-wrap align-items-center justify-content-start gap-2">
                       <div
                         class="p-1 rounded mt-1 border border-secondary d-flex align-items-center justify-content-center gap-2"
