@@ -51,7 +51,8 @@
           Generate Invoice
         </button>
 
-        <button class="btn btn-secondary border border-secondary" (click)="openRetry(retryConfirmation)"
+        <!-- 
+          <button class="btn btn-secondary border border-secondary" (click)="openRetry(retryConfirmation)"
           *ngIf="paymentGateways.includes(order?.paymentGateway) && retryStatusList.includes(order?.orderStatus) && order?.amountPending > 0">
           <svg height="20" width="20" data-slot="icon" fill="none" stroke-width="1.5" stroke="currentColor"
             viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
@@ -60,7 +61,8 @@
             </path>
           </svg>
           Retry payment
-        </button>
+          </button> 
+        -->
       </div>
     </div>
   </div>
