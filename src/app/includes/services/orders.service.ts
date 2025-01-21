@@ -21,6 +21,11 @@ export class OrdersService {
     return this.http.post(`${url}`, data)
   }
 
+  retryPayment(orderId: string) {
+    const url = this.commonService.getFullUrl(this.orderEndpoints.retryPayment);
+    return this.http.put(`${url}/${orderId}`, {})
+  }
+
   getInvoiceSignedUrl(orderId: string) {
     const url = this.commonService.getFullUrl(this.orderEndpoints.getInvoiceSignedUrl + `/${orderId}`);
     return this.http.get(`${url}`)

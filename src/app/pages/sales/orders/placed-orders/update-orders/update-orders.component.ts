@@ -68,18 +68,8 @@ export class UpdateOrdersComponent implements OnInit {
   allProduct: FormControl = new FormControl('');
   statusList: Array<any> = [];
   orderStatus: string = '';
-  orderStatusList: Array<any> = [
-    'PLACED',
-    'DELIVERED',
-    'CANCELLED',
-    'COLLECTED',
-  ];
-  orderStatusCheck: Array<any> = [
-    'Placed',
-    'Delivered',
-    'Cancelled',
-    'Collected',
-  ];
+  orderStatusList: Array<any> = ['PLACED', 'DELIVERED', 'CANCELLED', 'COLLECTED',];
+  orderStatusCheck: Array<any> = ['Placed', 'Delivered', 'Cancelled', 'Collected',];
   isCancelEligible: boolean = false;
   invoiceStatusList: Array<any> = ['PENDING', 'PLACED'];
   isInvoiceAvailable: boolean = false;
@@ -102,12 +92,7 @@ export class UpdateOrdersComponent implements OnInit {
   orderNote: FormControl = new FormControl('');
   reason: FormControl = new FormControl('');
   isNoteDetected: boolean = false;
-  months: Array<string> = [
-    'Jan',
-    'Feb',
-    'Mar',
-    'Apr',
-    'May',
+  months: Array<string> = ['Jan', 'Feb', 'Mar', 'Apr', 'May',
     'Jun',
     'Jul',
     'Aug',
@@ -120,7 +105,11 @@ export class UpdateOrdersComponent implements OnInit {
   bulkProducts: Array<any> = [];
   bulkStatus: Array<any> = [];
   noteModalRef?: BsModalRef;
-  
+  paymentGateways: string[] = ['network-international-tokenized']
+  retryStatusList: string[] = ["PACKED", "SHIPPED", "OUT FOR DELIVERY", "DELIVERED"];
+  retryModelRef?: BsModalRef
+  isRetryClicked: boolean = false
+
   constructor(
     private OrdersService: OrdersService,
     private route: ActivatedRoute,
@@ -132,13 +121,45 @@ export class UpdateOrdersComponent implements OnInit {
     private HotToastService: HotToastService
   ) { }
 
+  openRetry(template: TemplateRef<any>) {
+    this.retryModelRef = this.BsModalService.show(template, {
+      class: 'modal-sm modal-dialog-centered',
+      ignoreBackdropClick: false
+    });
+  }
+
+  confirmRetry() {
+    this.isRetryClicked = true
+    const orderId: string = this.orderNumber.split('#')[1]
+    this.OrdersService.retryPayment(orderId).subscribe({
+      next: (res: any) => {
+        if (res?.errorCode == 0) {
+          this.declineRetry()
+          this.getOrderDetails()
+          this.isRetryClicked = false
+          this.HotToastService.success(res?.message)
+        } else {
+          this.isRetryClicked = false
+          this.HotToastService.error(res?.message)
+        }
+      }, error: (err: any) => {
+        this.isRetryClicked = false
+        this.HotToastService.error(err?.error?.message)
+      }
+    })
+  }
+
+  declineRetry() {
+    this.retryModelRef?.hide()
+  }
+
   getLocaleDateString(date: string) {
     return new Date(date).toLocaleString();
   }
 
   formatPaymentGateway(paymentGateway: string) {
     //Remove - and add space between words if any, Make it sentence case
-    if(paymentGateway){
+    if (paymentGateway) {
       return paymentGateway
         .replace(/-/g, ' ')
         .replace(/\w\S*/g, function (txt) {
@@ -148,7 +169,7 @@ export class UpdateOrdersComponent implements OnInit {
   }
 
   formatPaymentStatus(paymentStatus: string) {
-    if(paymentStatus){
+    if (paymentStatus) {
       return paymentStatus
         .replace(/_/g, ' ')
         .replace(/\w\S*/g, function (txt) {
@@ -193,7 +214,7 @@ export class UpdateOrdersComponent implements OnInit {
     return `${days[new Date(date).getDay()]}, ${this.months[new Date(date).getMonth()]
       } ${new Date(date).getDate()} ${new Date(date).getFullYear()}`;
   }
-  
+
   openNotes(template: TemplateRef<any>) {
     this.noteModalRef = this.BsModalService.show(template, {
       class: 'modal-dialog-centered modal-sm',
@@ -244,7 +265,7 @@ export class UpdateOrdersComponent implements OnInit {
   saveNote() {
     if (this.orderNote.value) {
       // Create the complete note object with all required fields
-  
+
       this.OrdersService.addOrderNote(this.orderNumber, this.orderNote.value).subscribe({
         next: (res: any) => {
           if (res?.order) {
@@ -262,36 +283,36 @@ export class UpdateOrdersComponent implements OnInit {
       });
     }
   }
-  
+
 
   detechNoteChanges() {
     this.orderNote.value
       ? (this.isNoteDetected = true)
       : (this.isNoteDetected = false);
   }
-  
+
 
   getLocalDate(date: any) {
     return `${new Date(date).toLocaleString()}`;
   }
 
   formatDate(date: string) {
-  return new Intl.DateTimeFormat('en-US', {
-    year: 'numeric',
-    month: 'short',
-    day: 'numeric',
-    timeZone: 'UTC', // Force UTC timezone
-  }).format(new Date(date));
-}
+    return new Intl.DateTimeFormat('en-US', {
+      year: 'numeric',
+      month: 'short',
+      day: 'numeric',
+      timeZone: 'UTC', // Force UTC timezone
+    }).format(new Date(date));
+  }
 
-formatTime(time: string) {
-  return new Intl.DateTimeFormat('en-US', {
-    hour: 'numeric',
-    minute: 'numeric',
-    hour12: true,
-    timeZone: 'UTC', // Force UTC timezone
-  }).format(new Date(time));
-}
+  formatTime(time: string) {
+    return new Intl.DateTimeFormat('en-US', {
+      hour: 'numeric',
+      minute: 'numeric',
+      hour12: true,
+      timeZone: 'UTC', // Force UTC timezone
+    }).format(new Date(time));
+  }
 
   getLocaleDateFormat(processDate: any) {
     return new Date(processDate).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric', weekday: 'short' });
@@ -376,7 +397,7 @@ formatTime(time: string) {
     }
   }
 
-  
+
   getStatusList(status: any) {
     this.OrdersService.getStatusList(
       status,
@@ -469,7 +490,7 @@ formatTime(time: string) {
   updateProductPayment(event: any, product: any) {
     this.OrdersService.updateProductPayment({
       order: this.order.orderNo,
-      product:product?.productDetails?._id || product.productId?._id,
+      product: product?.productDetails?._id || product.productId?._id,
       status: event.target.value,
     }).subscribe({
       next: (res: any) => {
@@ -654,5 +675,5 @@ formatTime(time: string) {
       }
     })
   }
-  
+
 }

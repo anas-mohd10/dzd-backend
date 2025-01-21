@@ -32,5 +32,6 @@ export const orderEndpoints = {
    updateBulkProduct: '/bulk-order-update',
    customerOrders: '/customerOrders',
    bulkAcceptOrders: '/bulkAcceptOrders',
-   bulkUpdateOrders: '/bulkUpdateOrders'
+   bulkUpdateOrders: '/bulkUpdateOrders',
+   retryPayment: '/retryPayment'
 };
