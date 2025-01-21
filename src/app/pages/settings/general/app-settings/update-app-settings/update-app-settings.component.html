@@ -100,6 +100,15 @@
                   <input type="text" class="form-control fs-6" formControlName="gstNo" />
                </div>
                <div class="form-group mb-3">
+                  <label class="fs-6 mb-3">Default Country</label>
+                  <select formControlName="country" class="form-select">
+                     <option value="" disabled>-- Select an option --</option>
+                     <option *ngFor="let defaultCountry of defaultCountries" value="{{defaultCountry.iso_alpha2}}">
+                        {{defaultCountry.name}} - {{defaultCountry.iso_alpha2}}
+                     </option>
+                  </select>
+               </div>
+               <div class="form-group mb-3">
                   <label class="fs-6 mb-3 required">Store Address</label>
                   <input type="text" class="form-control fs-6" formControlName="primaryAddress" [ngClass]="{'is-invalid': (formControls.name.touched || isSubmitted) &&
                                     formControls.name.errors?.required}" />
@@ -142,11 +151,13 @@
 
          <div class="my-4 card">
             <div class="card-body">
+               <div class="fs-3 fw-bold mb-2">Website Banners</div>
+               <p class="fs-5 text-muted">Edit the banner images as per your choice which will be displayed on your website product listing</p>
                <div class="row">
-                  <div class="col-lg-6">
-                     <div class="fs-3 fw-bold mb-2">Default Web Banner</div>
-                     <div class="position-relative">
-                        <div class="h-100 ratio ratio-16x9 w-100">
+                  <div>
+                     <div class="fs-5 mb-2">Desktop</div>
+                     <div class="position-relative default-banner">
+                        <div class="h-100 ratio ratio-21x9 w-100">
                            <app-assets (mediaClicked)="handleDefaultBanner($event)"
                               [previewDetails]="defaultBanner"></app-assets>
                         </div>
@@ -164,10 +175,10 @@
                         </div>
                      </div>
                   </div>
-                  <div class="col-lg-6">
-                     <div class="fs-3 fw-bold mb-2">Default Mobile Banner</div>
-                     <div class="position-relative">
-                        <div class="h-100 ratio ratio-16x9 w-100">
+                  <div class="mt-4">
+                     <div class="fs-5 mb-2">Mobile</div>
+                     <div class="position-relative default-banner">
+                        <div class="h-100 ratio ratio-21x9 w-100">
                            <app-assets (mediaClicked)="handleDefaultMobileBanner($event)"
                               [previewDetails]="defaultMobileBanner"></app-assets>
                         </div>
