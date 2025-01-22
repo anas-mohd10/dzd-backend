@@ -574,15 +574,30 @@ updateQuantityWithInput(event: Event, product: any): void {
   const newValue = parseInt(target.value, 10);
 
   if (isNaN(newValue)) {
-      target.value = product.quantity.toString();
-      return;
+    target.value = product.quantity.toString();
+    return;
   }
+
   let finalQuantity = Math.max(1, newValue);
 
-  if (finalQuantity > product.maxOrderQuantity) {
+  // Check both max order quantity and stock limits
+  const maxAllowedQuantity = Math.min(
+    product.maxOrderQuantity,
+    product.stock || 0
+  );
+
+  if (finalQuantity > maxAllowedQuantity) {
+    if (product.stock === 0) {
+      this.ToastrService.error('Product is out of stock');
+      finalQuantity = product.quantity;
+    } else if (product.stock < product.maxOrderQuantity) {
+      this.ToastrService.error(`Only ${product.stock} items available in stock`);
+      finalQuantity = product.stock;
+    } else {
       this.ToastrService.error(`Maximum order quantity is ${product.maxOrderQuantity}`);
       finalQuantity = product.maxOrderQuantity;
-      target.value = finalQuantity.toString();
+    }
+    target.value = finalQuantity.toString();
   }
 
   const currentQuantity = product.quantity || 1;
@@ -590,17 +605,17 @@ updateQuantityWithInput(event: Event, product: any): void {
   const priceDifference = quantityDifference * product.price.selling;
 
   this.cartItems = this.cartItems.map((item: any) => {
-      if (item._id === product._id) {
-          return { ...item, quantity: finalQuantity };
-      }
-      return item;
+    if (item._id === product._id) {
+      return { ...item, quantity: finalQuantity };
+    }
+    return item;
   });
 
   this.cartSubtotal += priceDifference;
   this.cartTotal = this.cartSubtotal - this.cartDiscount;
 
   if (quantityDifference !== 0) {
-      this.ToastrService.success('Product quantity updated');
+    this.ToastrService.success('Product quantity updated');
   }
 }
 
@@ -612,6 +627,17 @@ updateQuantity(type: 'increment' | 'decrement', product: any) {
     case 'increment': {
       const newQuantity = product.quantity + 1;
       
+      // Check both stock and max order quantity
+      if (product.stock === 0) {
+        this.ToastrService.error('Product is out of stock');
+        return;
+      }
+
+      if (newQuantity > product.stock) {
+        this.ToastrService.error(`Only ${product.stock} items available in stock`);
+        return;
+      }
+
       if (newQuantity > product.maxOrderQuantity) {
         this.ToastrService.error(
           `Maximum order quantity (${product.maxOrderQuantity}) has been reached`

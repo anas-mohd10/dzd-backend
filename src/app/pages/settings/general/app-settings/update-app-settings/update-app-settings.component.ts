@@ -9,6 +9,7 @@ import { HotToastService } from '@ngneat/hot-toast';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { validators } from 'src/app/config/constants/mobile-validators';
 import { HttpClient } from '@angular/common/http';
+import { defaultCountries } from 'src/app/config/constants/default-countries';
 
 interface Media {
   title: string;
@@ -62,6 +63,7 @@ export class UpdateAppSettingsComponent implements OnInit {
       { class: 'Sen', name: 'Sen' },
     ]
   };
+  defaultCountries: Array<any> = defaultCountries
   paymentGateways: Array<string> = []
   fontFamily: Array<any> = [
     'Sen',
@@ -191,6 +193,7 @@ export class UpdateAppSettingsComponent implements OnInit {
         this.form.get('email')?.setValue(res?.result?.email)
         this.form.get('gstNo')?.setValue(res?.result?.gstNo)
         this.form.get('countryCode')?.setValue(res?.result?.countryCode)
+        this.form.get('country')?.setValue(res?.result?.country)
         this.form.get('mobile')?.setValue(res?.result?.mobile)
         this.form.get('primaryAddress')?.setValue(res?.result?.primaryAddress)
         this.form.get('paymentGateway')?.setValue(res?.result?.paymentGateway)
@@ -269,6 +272,7 @@ export class UpdateAppSettingsComponent implements OnInit {
       defaultSort: ['', Validators.required], 
       name: ['', Validators.required],
       companyName: [''],
+      country: [''],
       domain: ['', Validators.required],
       description: ['', Validators.required],
       primaryLang: [''],
@@ -414,6 +418,7 @@ export class UpdateAppSettingsComponent implements OnInit {
       gstNo: this.form.get('gstNo')?.value,
       email: this.form.get('email')?.value,
       countryCode: this.form.get('countryCode')?.value,
+      country: this.form.get('country')?.value,
       companyName: this.form.get('companyName')?.value,
       mobile: this.form.get('mobile')?.value,
       primaryLang: this.form.get('primaryLang')?.value,

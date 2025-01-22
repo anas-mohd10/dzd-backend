@@ -21,7 +21,13 @@ export class PermissionGuard implements CanActivate {
     let module = paths[1].split('/')
     let path = ''
 
+    // remove query params from url
     if (module[0].includes('mailer-details')) {
+      module[0] = module[0].split('?')[0]
+    }
+
+    // remove query params from url
+    if (module[0].includes('orders')) {
       module[0] = module[0].split('?')[0]
     }
 
