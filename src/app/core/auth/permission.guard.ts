@@ -31,6 +31,11 @@ export class PermissionGuard implements CanActivate {
       module[0] = module[0].split('?')[0]
     }
 
+    // remove query params from url
+    if (module[0].includes('product')) {
+      module[0] = module[0].split('?')[0]
+    }
+
     switch (module[0]) {
       case 'brands':
         module[1] == 'add' ? path = 'add-brand' : module[1] == 'update' ? path = 'update-brand' : path = 'brand'
