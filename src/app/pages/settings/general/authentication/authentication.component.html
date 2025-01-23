@@ -134,6 +134,29 @@
                 <div class="card-body">
                     <div class="row">
                         <div class="col-lg-4">
+                            <div class="fs-5">reCAPTCHA Enabled</div>
+                        </div>
+                        <div class="col-lg-8">
+                            <app-switch (switchToggled)="toggleAuthOptions($event)" [switchId]="'isRecaptchaEnabled'"
+                                [isToggledProps]="form.get('isRecaptchaEnabled')?.value"></app-switch>
+                        </div>
+                    </div>
+                    <div class="row mt-4" *ngIf="form.get('isRecaptchaEnabled')?.value">
+                        <div class="col-lg-6 form-group">
+                            <label for="recaptchaSiteKey" class="fs-6 mb-1">Site Key</label>
+                            <input type="text" id="recaptchaSiteKey" formControlName="recaptchaSiteKey" class="form-control">
+                        </div>
+                        <div class="col-lg-6 form-group">
+                            <label for="recaptchaSecretKey" class="fs-6 mb-1">Secret Key</label>
+                            <input type="text" id="recaptchaSecretKey" formControlName="recaptchaSecretKey" class="form-control">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card my-4">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-lg-4">
                             <div class="fs-5">OTP for Registration</div>
                         </div>
                         <div class="col-lg-8">

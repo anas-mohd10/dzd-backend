@@ -47,6 +47,7 @@ import { FiltersComponent } from './catalog/filters/filters.component';
 import { SitemapSettingsComponent } from './settings/general/sitemap-settings/sitemap-settings.component';
 import { CompareKeysComponent } from './catalog/compare-keys/compare-keys.component';
 import { ToastComponent } from './settings/general/toast/toast.component';
+import { NavigationSettingsComponent } from './navigation-settings/navigation-settings.component';
 
 export const Routing: Routes = [
   {
@@ -412,6 +413,10 @@ export const Routing: Routes = [
         path: 'shipping-charges',
         component: ShippingChargeComponent,
         canActivate: [AuthenticationGuard, PermissionGuard]
+      }, {
+        path: 'navigation-settings',
+        component: NavigationSettingsComponent,
+        canActivate: [AuthenticationGuard]
       }, {
         path: 'store-popup',
         component: StorePopupComponent,

@@ -1,0 +1,133 @@
+<div>
+    <div class="page-header d-flex align-items-start justify-content-between">
+        <div>
+            <div class="page-title">
+                <h1 class="fw-bold">Nav Settings</h1>
+            </div>
+            <ul class="breadcrumb">
+                <li class="breadcrumb-item fs-6">
+                    <a routerLink="{{ appRoutes.DASHBOARD }}">Dashboard</a>
+                </li>
+                <li class="breadcrumb-item active fs-6">
+                    <a routerLink="">Nav Settings</a>
+                </li>
+            </ul>
+        </div>
+        <div class="d-flex align-items-center justify-content-end gap-2">
+            <button class="btn btn-primary" (click)="saveChanges()">Save Changes</button>
+            <button class="btn btn-secondary" (click)="open(menuModal)">Add Menu</button>
+        </div>
+    </div>
+</div>
+
+<div class="my-4">
+    <!-- Main menu items list -->
+    <div class="menu-items d-flex flex-column gap-4">
+        <div *ngFor="let item of menuDocs; let i = index" class="menu-item">
+            <div class="d-flex align-items-center justify-content-between bg-white p-4 rounded">
+                <span class="fs-5">{{item.title}}</span>
+                <div class="d-flex align-items-center justify-content-end gap-2">
+                    <div (click)="open(menuModal, item.referenceId)" class="addMoreBtn Btn p-2 rounded">
+                        <svg height="18" width="18" data-slot="icon" fill="none" stroke-width="1.5"
+                            stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"
+                            aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"></path>
+                        </svg>
+                    </div>
+                    <div (click)="deleteMenu(i)" class="deleteBtn Btn p-2 rounded">
+                        <svg height="18" width="18" data-slot="icon" fill="none" stroke-width="1.5"
+                            stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"
+                            aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="M12 9.75 14.25 12m0 0 2.25 2.25M14.25 12l2.25-2.25M14.25 12 12 14.25m-2.58 4.92-6.374-6.375a1.125 1.125 0 0 1 0-1.59L9.42 4.83c.21-.211.497-.33.795-.33H19.5a2.25 2.25 0 0 1 2.25 2.25v10.5a2.25 2.25 0 0 1-2.25 2.25h-9.284c-.298 0-.585-.119-.795-.33Z">
+                            </path>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Recursive template for nested menu items -->
+            <ng-container *ngTemplateOutlet="menuItemsTemplate; context: { $implicit: item.menuItems, level: 1 }">
+            </ng-container>
+        </div>
+    </div>
+
+    <!-- Recursive template definition -->
+    <ng-template #menuItemsTemplate let-items let-level="level">
+        <div *ngFor="let subItem of items; let i = index" [style.margin-left.px]="level * 10" class="submenu-item my-2">
+            <div class="d-flex align-items-center justify-content-between bg-white p-4 rounded">
+                <div class="d-flex align-items-center gap-2">
+                    <div *ngIf="subItem.menuItems?.length" (click)="subItem.isExpanded = !subItem.isExpanded"
+                        class="chevron-icon" [class.expanded]="subItem.isExpanded">
+                        <svg height="16" width="16" data-slot="icon" fill="none" stroke-width="1.5"
+                            stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"
+                            aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5"></path>
+                        </svg>
+                    </div>
+                    <span class="fs-5">{{subItem.title}}</span>
+                </div>
+                <div class="d-flex align-items-center justify-content-end gap-2">
+                    <div (click)="open(menuModal, subItem.referenceId)" class="addMoreBtn Btn p-2 rounded">
+                        <svg height="18" width="18" data-slot="icon" fill="none" stroke-width="1.5"
+                            stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"
+                            aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"></path>
+                        </svg>
+                    </div>
+                    <div class="deleteBtn Btn p-2 rounded">
+                        <svg height="18" width="18" data-slot="icon" fill="none" stroke-width="1.5"
+                            stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"
+                            aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="M12 9.75 14.25 12m0 0 2.25 2.25M14.25 12l2.25-2.25M14.25 12 12 14.25m-2.58 4.92-6.374-6.375a1.125 1.125 0 0 1 0-1.59L9.42 4.83c.21-.211.497-.33.795-.33H19.5a2.25 2.25 0 0 1 2.25 2.25v10.5a2.25 2.25 0 0 1-2.25 2.25h-9.284c-.298 0-.585-.119-.795-.33Z">
+                            </path>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+
+            <ng-container *ngIf="subItem.menuItems?.length">
+                <div [class.collapsed]="!subItem.isExpanded" class="submenu-children">
+                    <ng-container
+                        *ngTemplateOutlet="menuItemsTemplate; context: { $implicit: subItem.menuItems, level: level + 1 }">
+                    </ng-container>
+                </div>
+            </ng-container>
+        </div>
+    </ng-template>
+
+</div>
+
+<!-- Modal template -->
+<ng-template #menuModal>
+    <div class="modal-header">
+        <h4 class="fs-2 fw-bold">Menu Details</h4>
+        <button type="button" class="btn-close" (click)="close()"></button>
+    </div>
+    <div class="modal-body">
+        <form [formGroup]="form" (ngSubmit)="onSubmit()">
+            <div class="d-flex flex-column gap-4">
+                <div class="ratio ratio-1x1 relative">
+                    <app-assets (mediaClicked)="handleIcon($event)" [previewDetails]="menuIcon || undefined"></app-assets>
+                    <div class="absolute bottom-0 start-0 m-2" *ngIf="form.get('icon')?.value">
+                        <button class="btn btn-danger p-1" (click)="clearIcon()">Remove</button>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="name" class="fs-6 mb-3">Title</label>
+                    <input type="text" placeholder="Enter title" formControlName="title" class="form-control">
+                </div>
+
+                <div class="form-group">
+                    <label for="name" class="fs-6 mb-3">Redirection</label>
+                    <input type="text" placeholder="Enter redirection" formControlName="redirection"
+                        class="form-control">
+                </div>
+
+                <button class="btn btn-primary" type="submit">Save Changes</button>
+            </div>
+        </form>
+    </div>
+</ng-template>
