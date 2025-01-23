@@ -309,16 +309,19 @@ export class UpdateCustomersComponent implements OnInit {
     });
 
     this.addressForm = new FormGroup({
-      name: new FormControl(''),
+      name: new FormControl('',Validators.required),
       countryCode: new FormControl(''),
-      mobile: new FormControl('', Validators.pattern('^[0-9]{10}$')),
+      mobile: new FormControl('', [
+        Validators.required,
+        Validators.pattern(('^[0-9]{10}$'))
+      ]),
       firstlane: new FormControl('', Validators.required),
       secondlane: new FormControl(''),
       city: new FormControl('', Validators.required),
       area: new FormControl(''),
-      landmark: new FormControl(''),
+      landmark: new FormControl('',Validators.required),
       type: new FormControl('', Validators.required),
-      pincode: new FormControl(''),
+      pincode: new FormControl('',Validators.required),
       state: new FormControl('', Validators.required),
       lat: new FormControl(''),
       lng: new FormControl(''),
@@ -514,6 +517,7 @@ export class UpdateCustomersComponent implements OnInit {
 
   addAddress() {
     if (!this.addressForm.valid) {
+      this.Toast.error('Please fill all required fields before saving the address.');
       this.isAddressSubmitted = true;
       return;
     }

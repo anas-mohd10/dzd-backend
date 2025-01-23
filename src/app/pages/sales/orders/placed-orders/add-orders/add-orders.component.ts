@@ -149,19 +149,23 @@ export class AddOrdersComponent implements OnInit {
     });
 
     this.addressForm = new FormGroup({
-      type: new FormControl('Home'),
+      name: new FormControl('',Validators.required),
+      countryCode: new FormControl(''),
+      mobile: new FormControl('', [
+        Validators.required,
+        Validators.pattern(('^[0-9]{10}$'))
+      ]),
       firstlane: new FormControl('', Validators.required),
       secondlane: new FormControl(''),
-      area: new FormControl(''),
       city: new FormControl('', Validators.required),
-      pincode: new FormControl(''),
-      name: new FormControl(''),
-      countryCode: new FormControl(''),
-      mobile: new FormControl('', Validators.pattern('^[0-9]{10}$')),
+      area: new FormControl(''),
+      landmark: new FormControl('',Validators.required),
+      type: new FormControl('', Validators.required),
+      pincode: new FormControl('',Validators.required),
       state: new FormControl('', Validators.required),
-      landmark: new FormControl(''),
-      latitude: new FormControl(''),
-      longitude: new FormControl(''),
+      lat: new FormControl(''),
+      lng: new FormControl(''),
+      isDefault: new FormControl(false),
     });
 
     this.userForm = new FormGroup({

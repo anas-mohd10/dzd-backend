@@ -220,7 +220,12 @@
             <div class="col-lg-6">
                <div class="form-group mb-3">
                   <label class="fs-6 mb-3">Name</label>
-                  <input type="text" class="form-control fs-6" formControlName="name" />
+                  <input type="text" class="form-control fs-6" formControlName="name" 
+                  [ngClass]="{
+                     'is-invalid':
+                     (addressControls.name.touched || isAddressSubmitted) &&
+                     addressControls.name.errors?.required
+                   }"/>
                </div>
             </div>
 
@@ -240,9 +245,11 @@
             <div class="col-lg-6">
                <div class="form-group mb-3">
                   <label class="fs-6 mb-3">Mobile Number</label>
-                  <input type="text" class="form-control fs-6" [ngClass]="{
-                     'is-invalid': addressControls.mobile.errors?.pattern
-                   }" formControlName="mobile" />
+                  <input type="number" class="form-control fs-6" formControlName="mobile" [ngClass]="{
+                     'is-invalid':
+                     (addressControls.mobile.touched || isAddressSubmitted) &&
+                     addressControls.mobile.errors?.required
+                   }"/>
                   <div class="mt-2 p-2 alert alert-danger" *ngIf="addressControls.mobile.errors?.pattern">
                      Enter a valid mobile number
                   </div>
@@ -284,14 +291,24 @@
             <div class="col-lg-6">
                <div class="form-group mb-3">
                   <label class="fs-6 mb-3">Landmark</label>
-                  <input type="text" class="form-control fs-6" formControlName="landmark"/>
+                  <input type="text" class="form-control fs-6" formControlName="landmark"
+                  [ngClass]="{
+                     'is-invalid':
+                     (addressControls.landmark.touched || isAddressSubmitted) &&
+                     addressControls.landmark.errors?.required
+                   }"/>
                </div>
             </div>
 
             <div class="col-lg-6">
                <div class="form-group mb-3">
                   <label class="fs-6 mb-3">Pincode</label>
-                  <input type="number" class="form-control fs-6" formControlName="pincode" />
+                  <input type="number" class="form-control fs-6" formControlName="pincode"
+                  [ngClass]="{
+                     'is-invalid':
+                     (addressControls.pincode.touched || isAddressSubmitted) &&
+                     addressControls.pincode.errors?.required
+                   }" />
                </div>
             </div>
 
