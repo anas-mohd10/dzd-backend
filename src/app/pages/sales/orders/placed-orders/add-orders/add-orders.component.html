@@ -183,15 +183,12 @@
                                                                 d="M18 12H6" />
                                                         </svg>
                                                     </div>
-                                                    <div *ngFor="let cartItem of cartItems">
-                                                    <input 
-                                                      class="form-control" 
-                                                      type="number" 
-                                                      [value]="cartItem.quantity"
-                                                      (blur)="updateQuantityWithInput($event, cartItem)"
-                                                      [max]="cartItem.maxOrderQuantity"
-                                                     style="width: 100px; height: 30px;" 
-                                                     />
+                                                    <div>
+                                                        <input class="form-control" type="number"
+                                                            [value]="cart.quantity"
+                                                            (blur)="updateQuantityWithInput($event, cart)"
+                                                            [max]="cart.maxOrderQuantity"
+                                                            style="width: 100px; height: 30px;" />
                                                     </div>
                                                     <div class="quantityBtn bg-secondary rounded cursor-pointer"
                                                         (click)="updateQuantity('increment', cart)">
