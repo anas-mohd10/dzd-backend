@@ -51,7 +51,7 @@
           Generate Invoice
         </button>
 
-        <!-- 
+        <!--
           <button class="btn btn-secondary border border-secondary" (click)="openRetry(retryConfirmation)"
           *ngIf="paymentGateways.includes(order?.paymentGateway) && retryStatusList.includes(order?.orderStatus) && order?.amountPending > 0">
           <svg height="20" width="20" data-slot="icon" fill="none" stroke-width="1.5" stroke="currentColor"
@@ -61,7 +61,7 @@
             </path>
           </svg>
           Retry payment
-          </button> 
+          </button>
         -->
       </div>
     </div>
@@ -630,7 +630,8 @@
   <ng-template #retryConfirmation>
     <div class="modal-body text-center">
       <p class="fs-5">Are you sure you want to retry payment?</p>
-      <button type="button" class="btn btn-default p-2" [disabled]="isRetryClicked" (click)="confirmRetry()">Yes</button>
+      <button type="button" class="btn btn-default p-2" [disabled]="isRetryClicked"
+        (click)="confirmRetry()">Yes</button>
       <button type="button" class="btn btn-primary p-2" [disabled]="isRetryClicked" (click)="declineRetry()">No</button>
     </div>
   </ng-template>
@@ -638,7 +639,16 @@
   <ng-template #cancelConfirmation>
     <div class="modal-body text-center">
       <p>Do you want to confirm?</p>
-      <button type="button" class="btn btn-default" (click)="confirmCancel()" >Yes</button>
-      <button type="button" class="btn btn-primary" (click)="declineCancel()" >No</button>
+      <button type="button" class="btn btn-default" (click)="confirmCancel()">Yes</button>
+      <button type="button" class="btn btn-primary" (click)="declineCancel()">No</button>
     </div>
   </ng-template>
+
+  <ng-template #bulkUpdateConfirmation>
+    <div class="modal-body text-center">
+      <p>Are you sure you want to update the status of {{bulkProducts.length}} products to {{bulkStatusToUpdate}}?</p>
+      <button type="button" class="btn btn-primary" (click)="confirmBulkUpdate()">Yes</button>
+      <button type="button" class="btn btn-default" (click)="declineBulkUpdate()">No</button>
+    </div>
+  </ng-template>
+</div>

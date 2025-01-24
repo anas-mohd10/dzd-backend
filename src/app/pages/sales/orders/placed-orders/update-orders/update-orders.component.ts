@@ -112,6 +112,9 @@ export class UpdateOrdersComponent implements OnInit {
   @ViewChild('cancelConfirmation') cancelConfirmation: any
   cancelConfirmationRef?: BsModalRef
   productToBeCancelled: string | null;
+  bulkUpdateConfirmationRef?: BsModalRef;
+  bulkStatusToUpdate: string | null = null;
+  @ViewChild('bulkUpdateConfirmation') bulkUpdateConfirmation: any;
 
   constructor(
     private OrdersService: OrdersService,
@@ -613,9 +616,27 @@ export class UpdateOrdersComponent implements OnInit {
   }
 
   updateBulkProduct(event: any) {
+    this.bulkStatusToUpdate = event?.target?.value;
+    this.openBulkUpdateConfirmation(this.bulkUpdateConfirmation);
+  }
+
+  openBulkUpdateConfirmation(template: TemplateRef<any>) {
+    this.bulkUpdateConfirmationRef = this.BsModalService.show(template, {
+      class: 'modal-sm modal-dialog-centered',
+      ignoreBackdropClick: false
+    });
+  }
+
+  closeBulkUpdateConfirmation() {
+    this.bulkUpdateConfirmationRef?.hide();
+    this.bulkStatusToUpdate = null;
+    this.bulkOrderStatus.setValue('');
+  }
+
+  confirmBulkUpdate() {
     this.OrdersService.updateBulkProduct({
       order: this.order?.orderNo,
-      status: event?.target?.value,
+      status: this.bulkStatusToUpdate,
       products: this.bulkProducts,
     }).subscribe({
       next: (res: any) => {
@@ -625,6 +646,7 @@ export class UpdateOrdersComponent implements OnInit {
           this.bulkStatus = [];
           this.bulkOrderStatus.setValue('');
           this.getOrderDetails();
+          this.closeBulkUpdateConfirmation();
         } else {
           this.HotToastService.error(res?.message);
         }
@@ -633,6 +655,10 @@ export class UpdateOrdersComponent implements OnInit {
         this.HotToastService.error(err?.error?.message);
       },
     });
+  }
+
+  declineBulkUpdate() {
+    this.closeBulkUpdateConfirmation();
   }
 
   onSubmit() {
