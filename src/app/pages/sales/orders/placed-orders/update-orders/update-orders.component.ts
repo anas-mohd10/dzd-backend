@@ -617,7 +617,12 @@ export class UpdateOrdersComponent implements OnInit {
 
   updateBulkProduct(event: any) {
     this.bulkStatusToUpdate = event?.target?.value;
-    this.openBulkUpdateConfirmation(this.bulkUpdateConfirmation);
+    if(this.bulkStatusToUpdate == 'CANCELLED'){
+      this.openBulkUpdateConfirmation(this.bulkUpdateConfirmation);
+      return
+    }
+
+    this.confirmBulkUpdate()
   }
 
   openBulkUpdateConfirmation(template: TemplateRef<any>) {

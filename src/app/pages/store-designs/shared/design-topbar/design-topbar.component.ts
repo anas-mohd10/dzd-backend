@@ -21,6 +21,7 @@ export class DesignTopbarComponent implements OnInit, OnChanges {
   hideTopbarDetails: boolean = false
   showDevices: Array<string> = ['home', 'catalog', 'product-listing']
   hiddenPages: Array<string> = ['app-images', 'catalog', 'contact-us', 'about-us', 'product-designs']
+  isPublishing: boolean = false;
 
   constructor(
     private AppSettingsService: AppSettingsService,
@@ -62,6 +63,7 @@ export class DesignTopbarComponent implements OnInit, OnChanges {
   }
 
   publishWidgets() {
+    this.isPublishing = true;
     switch (this.page) {
       case 'home':
         this.publishHomeWidgets()
@@ -70,6 +72,7 @@ export class DesignTopbarComponent implements OnInit, OnChanges {
         this.productConfigPublish.emit()
         break;
       default:
+        this.isPublishing = false;
         break;
     }
   }
@@ -77,6 +80,7 @@ export class DesignTopbarComponent implements OnInit, OnChanges {
   publishHomeWidgets() {
     this.HomeWidgetsService.publishHomeWidgets().subscribe({
       next: (res: any) => {
+        this.isPublishing = false;
         if (res?.errorCode == 0) {
           this.Toast.success(res?.message)
           this.ChangeDetectorRef.markForCheck()
@@ -84,6 +88,7 @@ export class DesignTopbarComponent implements OnInit, OnChanges {
           this.Toast.error(res?.message)
         }
       }, error: (err: any) => {
+        this.isPublishing = false;
         this.Toast.error(err?.error?.message)
       }
     })
