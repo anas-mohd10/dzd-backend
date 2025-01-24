@@ -88,7 +88,7 @@
       </div>
     </div>
 
-    <div class="row" [ngClass]="{'pe-none opacity-75': isCancelled}">
+    <div class="row">
       <div class="col-lg-6 mb-3">
         <div class="card h-100">
           <div class="card-body">
@@ -370,9 +370,9 @@
                 </div>
               </div>
 
-              <div class="form-group">
+              <div class="form-group" [ngClass]="{'pe-none opacity-75': isCancelled}">
                 <textarea [formControl]="orderNote" (click)="isNoteDetected = true" (keyup.enter)="saveNote()" rows="5"
-                  class="form-control" placeholder="Add a new note"></textarea>
+                  class="form-control"></textarea>
               </div>
               <div class="d-flex justify-content-end mt-2">
                 <button class="btn btn-primary" (click)="saveNote()" *ngIf="isNoteDetected"
@@ -393,7 +393,6 @@
           </div>
         </div>
       </div>
-
 
       <div [ngClass]="{'cancelledWrapper': isCancelled}">
         <div>
@@ -595,7 +594,7 @@
   <ng-template #confirmation>
     <div class="modal-body">
       <div class="fs-5 mb-6">Do you want to cancel this order?</div>
-      <div class="form-group mb-4 mt-4">
+      <div class="form-group mb-4 mt-4" *ngIf="!productToBeCancelled">
         <textarea type="text" cols="30" rows="5" autocomplete="off" [formControl]="reason"
           placeholder="Type reason for cancellation" class="form-control">
         </textarea>
@@ -617,7 +616,7 @@
     <div class="modal-body">
       <div *ngIf="order?.orderNote?.length > 0" class="notes-list">
         <div *ngFor="let note of order?.orderNote" class="note-item p-3 mb-3 rounded border">
-          <p class="text-dark mb-4">{{ note.message }}</p>
+          <p class="text-dark mb-4 fs-5">{{ note.message }}</p>
           <div class="text-primary fw-bold fs-5">{{ note.editedBy }}</div>
           <div>{{ getLocaleDateString(note.timeAndDate) }}</div>
         </div>
@@ -633,5 +632,13 @@
       <p class="fs-5">Are you sure you want to retry payment?</p>
       <button type="button" class="btn btn-default p-2" [disabled]="isRetryClicked" (click)="confirmRetry()">Yes</button>
       <button type="button" class="btn btn-primary p-2" [disabled]="isRetryClicked" (click)="declineRetry()">No</button>
+    </div>
+  </ng-template>
+
+  <ng-template #cancelConfirmation>
+    <div class="modal-body text-center">
+      <p>Do you want to confirm?</p>
+      <button type="button" class="btn btn-default" (click)="confirmCancel()" >Yes</button>
+      <button type="button" class="btn btn-primary" (click)="declineCancel()" >No</button>
     </div>
   </ng-template>

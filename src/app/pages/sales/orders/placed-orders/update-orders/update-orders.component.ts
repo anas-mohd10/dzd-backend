@@ -109,6 +109,9 @@ export class UpdateOrdersComponent implements OnInit {
   retryStatusList: string[] = ["PACKED", "SHIPPED", "OUT FOR DELIVERY", "DELIVERED"];
   retryModelRef?: BsModalRef
   isRetryClicked: boolean = false
+  @ViewChild('cancelConfirmation') cancelConfirmation: any
+  cancelConfirmationRef?: BsModalRef
+  productToBeCancelled: string | null;
 
   constructor(
     private OrdersService: OrdersService,
@@ -217,7 +220,7 @@ export class UpdateOrdersComponent implements OnInit {
 
   openNotes(template: TemplateRef<any>) {
     this.noteModalRef = this.BsModalService.show(template, {
-      class: 'modal-dialog-centered modal-sm',
+      class: 'modal-dialog-centered',
     });
   }
 
@@ -397,7 +400,6 @@ export class UpdateOrdersComponent implements OnInit {
     }
   }
 
-
   getStatusList(status: any) {
     this.OrdersService.getStatusList(
       status,
@@ -413,11 +415,29 @@ export class UpdateOrdersComponent implements OnInit {
     });
   }
 
-  updateOrderStatus(event: any, product: any) {
-    this.productReference = product;
+  openCancelConfirmation(template: TemplateRef<any>){
+    this.cancelConfirmationRef = this.BsModalService.show(template, {
+      class: 'modal-sm modal-dialog-centered',
+      ignoreBackdropClick: false
+    });
+  }
+
+  closeCancelConfirmation(){
+    this.cancelConfirmationRef?.hide()
+    this.productToBeCancelled = null
+  }
+
+  updateOrderStatus(event: any, productItem: any) {
+    if(event.target.value == 'CANCELLED'){
+      this.productToBeCancelled = productItem
+      this.openCancelConfirmation(this.cancelConfirmation)
+      return
+    }
+
+    this.productReference = productItem;
     this.OrdersService.updateOrderStatus({
       order: this.order.orderNo,
-      product: product,
+      product: productItem,
       status: event.target.value,
     }).subscribe({
       next: (res: any) => {
@@ -433,6 +453,33 @@ export class UpdateOrdersComponent implements OnInit {
         this.HotToastService.error(err?.error?.message);
       },
     });
+  }
+
+  confirmCancel(){
+    this.OrdersService.updateOrderStatus({
+      order: this.order.orderNo,
+      product: this.productToBeCancelled,
+      status: 'CANCELLED',
+    }).subscribe({
+      next: (res: any) => {
+        if (res?.errorCode == 0) {
+          this.getOrderDetails();
+          this.productOrderStatus.setValue('');
+          this.productToBeCancelled = null
+          this.closeCancelConfirmation()
+          this.HotToastService.success(res.message);
+        } else {
+          this.HotToastService.error(res.message);
+        }
+      },
+      error: (err: any) => {
+        this.HotToastService.error(err?.error?.message);
+      },
+    });
+  }
+
+  declineCancel(){
+    this.closeCancelConfirmation()
   }
 
   updateOrderDetails(type: any) {
