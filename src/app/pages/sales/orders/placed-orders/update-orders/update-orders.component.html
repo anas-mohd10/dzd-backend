@@ -101,68 +101,81 @@
             <div class="mt-4">
               <table class="table table-bordered fs-5">
                 <tr>
-                  <th class="p-2 text-muted fw-bold">Date</th>
+                  <th class="p-2 text-muted fw-normal">Date</th>
                   <td class="p-2">
                     {{getLocaleDateFormat(order?.orderDate)}},
                     {{getLocaleTimeFormat(order?.orderDate)}}
                   </td>
                 </tr>
                 <tr>
-                  <th class="p-2 text-muted fw-bold">Method</th>
+                  <th class="p-2 text-muted fw-normal">Method</th>
                   <td class="p-2">
                     {{order?.paymentMethod}}
                   </td>
                 </tr>
                 <tr>
-                  <th class="p-2 text-muted fw-bold">Gateway</th>
+                  <th class="p-2 text-muted fw-normal">Gateway</th>
                   <td class="p-2">
                     {{formatPaymentGateway(order?.paymentGateway)}}
                   </td>
                 </tr>
                 <tr>
-                  <th class="p-2 text-muted fw-bold">Gateway Status</th>
+                  <th class="p-2 text-muted fw-normal">Gateway Status</th>
                   <td class="p-2">
                     <div class="{{formatPaymentStatus(order?.gatewayStatus)}} p-1 rounded">
                       {{formatPaymentStatus(order?.gatewayStatus)}}</div>
                   </td>
                 </tr>
                 <tr>
-                  <th class="p-2 text-muted fw-bold">Status</th>
+                  <th class="p-2 text-muted fw-normal">Status</th>
                   <td class="p-2">
                     {{order?.paymentStatus}}
                   </td>
                 </tr>
                 <tr>
-                  <th class="p-2 text-muted fw-bold">Invoice Reference</th>
+                  <th class="p-2 text-muted fw-normal">Invoice Reference</th>
                   <td class="p-2">
                     {{order?.invoiceNo}}
                   </td>
                 </tr>
                 <tr>
-                  <th class="p-2 text-muted fw-bold">Source</th>
+                  <th class="p-2 text-muted fw-normal">Source</th>
                   <td class="p-2">
                     {{order?.source}}
                   </td>
                 </tr>
                 <tr>
-                  <th class="p-2 text-muted fw-bold">Customer Type</th>
+                  <th class="p-2 text-muted fw-normal">Customer Type</th>
                   <td class="p-2">
                     {{order?.customerType}}
                   </td>
                 </tr>
                 <tr>
-                  <th class="p-2 text-muted fw-bold">Order Total</th>
+                  <th class="p-2 text-muted fw-normal">Order Total</th>
                   <td class="p-2">
                     {{settings?.currency}} {{order?.total}}
                   </td>
                 </tr>
                 <tr>
-                  <th class="p-2 text-muted fw-bold">Delivery</th>
+                  <th class="p-2 text-muted fw-normal">Delivery</th>
                   <td class="p-2">
                     {{order?.deliveryType == '1' ? 'Click and collect' : 'Home delivery' }}
                   </td>
                 </tr>
               </table>
+              <div class="mt-4" *ngIf="order?.coupon">
+                <div class="alert alert-success mb-0 d-flex align-items-center justify-content-start gap-2">
+                  <div class="text-success">
+                    <svg height="18" width="18" data-slot="icon" fill="none" stroke-width="1.5" stroke="currentColor"
+                    viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                      d="M9 12.75 11.25 15 15 9.75M21 12c0 1.268-.63 2.39-1.593 3.068a3.745 3.745 0 0 1-1.043 3.296 3.745 3.745 0 0 1-3.296 1.043A3.745 3.745 0 0 1 12 21c-1.268 0-2.39-.63-3.068-1.593a3.746 3.746 0 0 1-3.296-1.043 3.745 3.745 0 0 1-1.043-3.296A3.745 3.745 0 0 1 3 12c0-1.268.63-2.39 1.593-3.068a3.745 3.745 0 0 1 1.043-3.296 3.746 3.746 0 0 1 3.296-1.043A3.746 3.746 0 0 1 12 3c1.268 0 2.39.63 3.068 1.593a3.746 3.746 0 0 1 3.296 1.043 3.746 3.746 0 0 1 1.043 3.296A3.745 3.745 0 0 1 21 12Z">
+                    </path>
+                  </svg>
+                  </div>
+                  <div class="fs-5"><span class="cursor-pointer" routerLink="{{appRoute.coupons.UPDATE_COUPONS_LIST}}" [queryParams]="{'coupon': order?.coupon?.refid}"><b>{{order?.coupon?.code}}</b></span> applied successfully</div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -172,48 +185,52 @@
         <div class="card h-100">
           <div class="card-body">
             <div class="fs-3 fw-bold">
-              Order Amount Details
+              Order Summary
             </div>
             <div class="mt-4">
               <table class="table table-bordered fs-5">
                 <tr>
-                  <th class="p-2 text-muted fw-bold">Price Without Tax</th>
+                  <th class="p-2 text-muted fw-normal">Price Without Tax</th>
                   <td>{{settings?.currency}} {{order?.priceBeforeTax}}</td>
                 </tr>
                 <tr>
-                  <th class="p-2 text-muted fw-bold">Tax</th>
+                  <th class="p-2 text-muted fw-normal">Tax</th>
                   <td>{{settings?.currency}} {{order?.tax}}</td>
                 </tr>
                 <tr>
-                  <th class="p-2 text-muted fw-bold">Shipping Charge</th>
+                  <th class="p-2 text-muted fw-normal">Shipping Charge</th>
                   <td>{{settings?.currency}} {{order?.shippingCost}}</td>
                 </tr>
-                <tr>
-                  <th class="p-2 text-muted fw-bold">COD</th>
+                <tr *ngIf="+order?.codCost > 0">
+                  <th class="p-2 text-muted fw-normal">COD</th>
                   <td>{{settings?.currency}} {{order?.codCost}}</td>
                 </tr>
-                <tr>
-                  <th class="p-2 text-muted fw-bold">Additional Charge</th>
+                <tr *ngIf="+order?.additionalCharge > 0">
+                  <th class="p-2 text-muted fw-normal">Additional Charge</th>
                   <td>{{settings?.currency}} {{order?.additionalCharge}}</td>
                 </tr>
                 <tr>
-                  <th class="p-2 text-muted fw-bold">Discount</th>
-                  <td class="text-success">{{settings?.currency}} {{order?.discount}}</td>
+                  <th class="p-2 text-muted fw-normal">Discount (Includes Coupon)</th>
+                  <td class="text-success">- {{settings?.currency}} {{order?.discount}}</td>
                 </tr>
-                <tr>
-                  <th class="p-2 text-muted fw-bold">Credit</th>
+                <tr *ngIf="+order?.couponDiscount > 0">
+                  <th class="p-2 text-muted fw-normal">Coupon Discount</th>
+                  <td class="text-success">- {{settings?.currency}} {{order?.couponDiscount}}</td>
+                </tr>
+                <tr *ngIf="+order?.credit?.amount > 0">
+                  <th class="p-2 text-muted fw-normal">Credit</th>
                   <td class="text-success">{{settings?.currency}} {{order?.credit?.amount}}</td>
                 </tr>
                 <tr>
-                  <th class="p-2 text-muted fw-bold">Amount Pending</th>
+                  <th class="p-2 text-muted fw-normal">Amount Pending</th>
                   <td>{{settings?.currency}} {{order?.amountPending}}</td>
                 </tr>
                 <tr>
-                  <th class="p-2 text-muted fw-bold">Cancelled Items</th>
+                  <th class="p-2 text-muted fw-normal">Cancelled Items</th>
                   <td class="text-danger">- {{settings?.currency}} {{order?.cancelledAmount}}</td>
                 </tr>
-                <tr>
-                  <th class="p-2 text-muted fw-bold">Total</th>
+                <tr class="fs-4 fw-bold">
+                  <th class="p-2 text-muted fw-normal">Total</th>
                   <td>{{settings?.currency}} {{order?.total}}</td>
                 </tr>
               </table>
@@ -230,22 +247,22 @@
               <div class="mt-4">
                 <table class="table table-bordered fs-5">
                   <tr>
-                    <th class="p-2 text-muted fw-bold">Name</th>
+                    <th class="p-2 text-muted fw-normal">Name</th>
                     <td class="p-2">{{order?.customerDetails?.name || order?.customerId?.name || order?.guestId?.name}}
                     </td>
                   </tr>
                   <tr>
-                    <th class="p-2 text-muted fw-bold">Mobile</th>
+                    <th class="p-2 text-muted fw-normal">Mobile</th>
                     <td class="p-2">{{order?.customerDetails?.mobile || order?.address?.mobile ||
                       order?.guestId?.mobile}}</td>
                   </tr>
                   <tr>
-                    <th class="p-2 text-muted fw-bold">Email</th>
+                    <th class="p-2 text-muted fw-normal">Email</th>
                     <td class="p-2">{{order?.customerDetails?.email || order?.customerId?.email ||
                       order?.guestId?.email}}</td>
                   </tr>
                   <tr>
-                    <th class="p-2 text-muted fw-bold">Address</th>
+                    <th class="p-2 text-muted fw-normal">Address</th>
                     <td class="p-2">
                       {{order?.address?.firstlane}}, {{order?.address?.secondlane}},
                       {{order?.address?.area}}, {{order?.address?.landmark}},
@@ -254,7 +271,7 @@
                     </td>
                   </tr>
                   <tr>
-                    <th class="p-2 text-muted fw-bold">Location</th>
+                    <th class="p-2 text-muted fw-normal">Location</th>
                     <td class="p-2">
                       <ng-container
                         *ngIf="order?.address?.coordinates?.latitude && order?.address?.coordinates?.longitude">
@@ -279,7 +296,7 @@
                   </tr>
 
                   <tr>
-                    <th class="p-2 text-muted fw-bold">Coordinates</th>
+                    <th class="p-2 text-muted fw-normal">Coordinates</th>
                     <td class="p-2">
                       {{order?.address?.coordinates?.latitude || '-'}}
                       {{order?.address?.coordinates?.longitude}}
@@ -295,19 +312,19 @@
               <div class="mt-4">
                 <table class="table table-bordered fs-5">
                   <tr>
-                    <th class="p-2 text-muted fw-bold">Name</th>
+                    <th class="p-2 text-muted fw-normal">Name</th>
                     <td class="p-2">{{order?.address?.name || order?.guestId?.name}}</td>
                   </tr>
                   <tr>
-                    <th class="p-2 text-muted fw-bold">Mobile</th>
+                    <th class="p-2 text-muted fw-normal">Mobile</th>
                     <td class="p-2">{{order?.address?.mobile || order?.guestId?.mobile}}</td>
                   </tr>
                   <tr>
-                    <th class="p-2 text-muted fw-bold">Email</th>
+                    <th class="p-2 text-muted fw-normal">Email</th>
                     <td class="p-2">{{order?.customerId?.email || order?.guestId?.email}}</td>
                   </tr>
                   <tr>
-                    <th class="p-2 text-muted fw-bold">Address</th>
+                    <th class="p-2 text-muted fw-normal">Address</th>
                     <td class="p-2">
                       {{order?.address?.firstlane}}, {{order?.address?.secondlane}},
                       {{order?.address?.area}}, {{order?.address?.landmark}},
@@ -316,11 +333,11 @@
                     </td>
                   </tr>
                   <tr>
-                    <th class="p-2 text-muted fw-bold">Location</th>
+                    <th class="p-2 text-muted fw-normal">Location</th>
                     <td class="p-2">{{order?.address?.formattedAddress || '-'}}</td>
                   </tr>
                   <tr>
-                    <th class="p-2 text-muted fw-bold">Coordinates</th>
+                    <th class="p-2 text-muted fw-normal">Coordinates</th>
                     <td class="p-2">
                       {{order?.address?.coordinates?.latitude || '-'}}
                       {{order?.address?.coordinates?.longitude}}
@@ -557,29 +574,29 @@
 
                 <table class="table table-bordered fs-5 paymentEvents">
                   <tr>
-                    <th class="p-2 text-muted fw-bold">Date</th>
+                    <th class="p-2 text-muted fw-normal">Date</th>
                     <td>
                       {{ getLocaleDateFormat(tokenizedItem?.updateDateTime) }}
                       {{ getLocaleTimeFormat(tokenizedItem?.updateDateTime) }}
                     </td>
                   </tr>
                   <tr>
-                    <th class="p-2 text-muted fw-bold">Response</th>
+                    <th class="p-2 text-muted fw-normal">Response</th>
                     <td>{{tokenizedItem.authResponse?.resultMessage || '-'}}</td>
                   </tr>
                   <tr>
-                    <th class="p-2 text-muted fw-bold">Reference</th>
+                    <th class="p-2 text-muted fw-normal">Reference</th>
                     <td>{{tokenizedItem?.orderReference}}</td>
                   </tr>
                   <tr>
-                    <th class="p-2 text-muted fw-bold">Status</th>
+                    <th class="p-2 text-muted fw-normal">Status</th>
                     <td>
                       <div class="{{formatPaymentStatus(tokenizedItem?.state)}} rounded p-1">
                         {{formatPaymentStatus(tokenizedItem?.state)}}</div>
                     </td>
                   </tr>
                   <tr>
-                    <th class="p-2 text-muted fw-bold">Amount</th>
+                    <th class="p-2 text-muted fw-normal">Amount</th>
                     <td>{{tokenizedItem?.amount?.currencyCode}} {{tokenizedItem?.amount?.value / 100}}</td>
                   </tr>
                 </table>

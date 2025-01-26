@@ -20,6 +20,7 @@ export class AddCouponsComponent implements OnInit {
   editMode = false;
   isSubmitted: boolean;
   appRoute = appRoutes;
+  
 
   categories: any = []; //Array of category ids
   categoriesData: any = []; //Data fetched from database
