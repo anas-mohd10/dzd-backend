@@ -420,14 +420,14 @@ export class UpdateOrdersComponent implements OnInit {
 
   openCancelConfirmation(template: TemplateRef<any>){
     this.cancelConfirmationRef = this.BsModalService.show(template, {
-      class: 'modal-sm modal-dialog-centered',
-      ignoreBackdropClick: false
+      class: 'modal-sm modal-dialog-centered', ignoreBackdropClick: true
     });
   }
 
   closeCancelConfirmation(){
     this.cancelConfirmationRef?.hide()
     this.productToBeCancelled = null
+    this.productOrderStatus.setValue('')
   }
 
   updateOrderStatus(event: any, productItem: any) {
@@ -617,6 +617,7 @@ export class UpdateOrdersComponent implements OnInit {
 
   updateBulkProduct(event: any) {
     this.bulkStatusToUpdate = event?.target?.value;
+
     if(this.bulkStatusToUpdate == 'CANCELLED'){
       this.openBulkUpdateConfirmation(this.bulkUpdateConfirmation);
       return
@@ -628,7 +629,7 @@ export class UpdateOrdersComponent implements OnInit {
   openBulkUpdateConfirmation(template: TemplateRef<any>) {
     this.bulkUpdateConfirmationRef = this.BsModalService.show(template, {
       class: 'modal-sm modal-dialog-centered',
-      ignoreBackdropClick: false
+      ignoreBackdropClick: true
     });
   }
 
@@ -636,6 +637,7 @@ export class UpdateOrdersComponent implements OnInit {
     this.bulkUpdateConfirmationRef?.hide();
     this.bulkStatusToUpdate = null;
     this.bulkOrderStatus.setValue('');
+    this.bulkProducts = []
   }
 
   confirmBulkUpdate() {
