@@ -399,5 +399,8 @@ export const internationalisationKeys = {
     select: 'select',
     qty: 'qty',
     passwordInstructionMessage: 'passwordInstructionMessage',
-    passwordLengthMessage: 'passwordLengthMessage'
+    passwordLengthMessage: 'passwordLengthMessage',
+    viewProducts: 'viewProducts',
+    inCategories: 'inCategories',
+    searchkeyword: 'searchkeyword',
 }
