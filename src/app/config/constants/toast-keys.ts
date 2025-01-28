@@ -21,6 +21,7 @@ export const toastKeys = {
     addAddressFailed: 'addAddressFailed',
     addToCart: 'addToCart',
     removeFromCart: 'removeFromCart',
+    availableInLimitedQuantity: 'availableInLimitedQuantity',
     updateCart: 'updateCart',
     clearCart: 'clearCart',
     addProductToWishlist: 'addProductToWishlist',

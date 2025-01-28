@@ -126,6 +126,8 @@ export const internationalisationKeys = {
     outForDelivery: 'outForDelivery',
     deliveried: 'deliveried',
     cancelled: 'cancelled',
+    updateVersionTitle: 'updateVersionTitle',
+    updateVersionDescription: 'updateVersionDescription',
     failed: 'failed',
     nameisRequired: 'nameisRequired',
     findOutMoreAt: 'Find out more at',
