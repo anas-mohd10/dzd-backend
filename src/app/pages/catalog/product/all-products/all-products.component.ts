@@ -234,6 +234,9 @@ export class AllProductsComponent implements OnInit {
     }
   }
 
+  formatProductType(docType: string){
+    return (docType.charAt(0).toUpperCase() + docType.slice(1)).replace('-', ' ')
+  }
 
   getProducts() {
     let categoryItems = this.categoryItems.map((item: any) => item.name)

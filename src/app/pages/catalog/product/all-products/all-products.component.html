@@ -157,7 +157,7 @@
               </th>
               <th>&nbsp;</th>
               <th>Name</th>
-              <th>SKU</th>
+              <th>SKU & Type</th>
               <th>Brand</th>
               <th>Category</th>
               <th>Price</th>
@@ -183,7 +183,6 @@
                 </td>
                 <td>
                   <div class="productName">
-                    <!-- <div>{{ product?.localizedNames[settings?.primaryLang] || product?.name }}</div> -->
                     <div>{{ product?.localizedNames? product?.localizedNames[settings?.primaryLang] : product?.name }}
                     </div>
                     <div class="d-flex flex-wrap align-items-center justify-content-start gap-2">
@@ -195,7 +194,10 @@
                     </div>
                   </div>
                 </td>
-                <td>{{product?.sku}}</td>
+                <td>
+                  <div>{{product?.sku}}</div>
+                  <div class="p-1 rounded bg-secondary mt-2" style="width: max-content;">{{formatProductType(product?.type)}}</div>
+                </td>
                 <td>{{product?.brand?.name}}</td>
                 <td>
                   <ng-container *ngFor="let category of product?.categories; let i = index">

@@ -1,5 +1,9 @@
-.productName{
+.productName, .productCategory{
    width: 220px;
+}
+
+.productSku{
+   width: 84px;
 }
 
 #importFile{
@@ -28,7 +32,7 @@ input[type=button],
 //Table designs
 .table {
    background: #ffffff;
-   font-size: 15px;
+   font-size: 14px;
 
    tbody{
 
