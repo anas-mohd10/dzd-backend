@@ -6,6 +6,7 @@ import { appRoutes } from 'src/app/config/routes';
 import { CustomersService } from 'src/app/includes/services/customers.service';
 import { validators } from 'src/app/config/constants/mobile-validators';
 import { HotToastService } from '@ngneat/hot-toast';
+
 @Component({
   selector: 'app-add-customers',
   templateUrl: './add-customers.component.html',
