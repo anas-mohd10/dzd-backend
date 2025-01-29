@@ -1,5 +1,5 @@
 import { ChangeDetectorRef, Component, OnInit, TemplateRef } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { PageTasks } from 'src/app/config/constants';
 import { appRoutes } from 'src/app/config/routes';
@@ -63,6 +63,8 @@ export class UpdateAppSettingsComponent implements OnInit {
       { class: 'Sen', name: 'Sen' },
     ]
   };
+  placeHolders: Array<string> = []
+  placeHolder: FormControl = new FormControl('', Validators.required)
   defaultCountries: Array<any> = defaultCountries
   paymentGateways: Array<string> = []
   fontFamily: Array<any> = [
@@ -150,6 +152,22 @@ export class UpdateAppSettingsComponent implements OnInit {
     }
   }
 
+  addPlaceholder(){
+    if(!this.placeHolder.valid){
+      return
+    }
+    this.placeHolders.push(this.placeHolder.value)
+    this.placeHolder.setValue('')
+    this.HotToastService.success('Placeholder added successfully')
+    this.ChangeDetectorRef.markForCheck()
+  }
+
+  removePlaceholder(placeHolder: string){
+    this.placeHolders = this.placeHolders.filter((item:string) => item != placeHolder)
+    this.HotToastService.success('Placeholder removed successfully')
+    this.ChangeDetectorRef.markForCheck()
+  }
+
   languageExists(language: { lang: string, langCode: string }) {
     let isExists = this.languages.some((item: { lang: string, langCode: string }) => item.lang == language.lang)
     return isExists
@@ -218,6 +236,7 @@ export class UpdateAppSettingsComponent implements OnInit {
         this.form.get('favicon')?.setValue(res?.result?.favicon)
         this.form.get('defaultBanner')?.setValue(res?.result?.defaultBanner)
         this.form.get('defaultMobileBanner')?.setValue(res?.result?.defaultMobileBanner)
+        this.placeHolders = res?.result?.placeHolders
 
         for (let lang of res?.result?.languages) {
           let isExists = this.languages.some((item: { lang: string, langCode: string }) => item.lang == lang?.lang)
@@ -401,6 +420,7 @@ export class UpdateAppSettingsComponent implements OnInit {
         label: this.form.get('label')?.value,
         text: this.form.get('text')?.value,
       },
+      placeHolders: this.placeHolders,
       toast: {
         success: this.form.get('toastSuccess')?.value,
         error: this.form.get('toastError')?.value,
