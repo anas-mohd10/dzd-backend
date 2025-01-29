@@ -200,8 +200,8 @@
       <ng-container *ngFor="let order of orders; let i = index">
         <tr>
           <td>
-            <div class="checkbox" (click)="toggleOrders({order: order?.orderNo, status: order?.orderStatus})"
-              [ngClass]="{'checked': toggledOrders.includes(order?.orderNo.split('#')[1])}"></div>
+            <div class="checkbox" (click)="toggleOrders({order: order?._id, status: order?.orderStatus})"
+              [ngClass]="{'checked': toggledOrders.includes(order?._id)}"></div>
           </td>
           <td>{{order?.orderNo}}</td>
           <td>
@@ -294,10 +294,10 @@
             <div class="d-flex align-items-center justify-content-start gap-3">
               <div
                 class="cursor-pointer rounded action-button d-flex align-items-center justify-content-center border border-secondary"
-                routerLink="{{appRoute.orders.UPDATE_ORDER_LIST}}" [queryParams]="{'order': order?.orderNo}">
+                routerLink="{{appRoute.orders.UPDATE_ORDER_LIST}}" [queryParams]="{'order': order?._id}">
                 <img src="assets/icons/eye.svg" alt="View order details">
               </div>
-              <div (click)="getInvoiceSignedUrl(order?.orderNo)"
+              <div (click)="getInvoiceSignedUrl(order?._id)"
                 class="cursor-pointer rounded d-flex align-items-center justify-content-center border border-secondary action-button">
                 <img src="assets/icons/print.svg" alt="Genarete Invoice">
               </div>

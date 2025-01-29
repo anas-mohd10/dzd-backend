@@ -29,7 +29,10 @@ export class AddCustomersComponent implements OnInit {
   ngOnInit(): void {
     this.form = new FormGroup({
       name: new FormControl('', Validators.required),
-      email: new FormControl('', [Validators.required, Validators.pattern("^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$")]),
+      email: new FormControl('', [
+        Validators.required,
+        Validators.pattern("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,4}$")
+      ]),
       countryCode: new FormControl('+971', Validators.required),
       mobile: new FormControl('', [Validators.required, Validators.pattern("^[0-9]{10}$")]),
       isActive: new FormControl('true'),
@@ -104,6 +107,10 @@ export class AddCustomersComponent implements OnInit {
       this.isSubmitted = true
       return;
     }
+
+    let emailId: string = this.form.get('email')?.value;
+    emailId = emailId.toLowerCase()
+    this.form.patchValue({ email: emailId })
 
     if (this.isPhoneExists && this.isPhoneExists == true) {
       this.HotToastService.error('Email address / Phone already exists');

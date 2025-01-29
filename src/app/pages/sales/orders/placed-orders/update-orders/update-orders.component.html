@@ -33,7 +33,7 @@
         </button>
 
         <a class="btn border bg-white text-primary border-primary" *ngIf="isPackingSlipAvailable"
-          (click)="getPackingSlipSignedUrl(orderNumber)">
+          (click)="getPackingSlipSignedUrl(slug)">
           <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24" fill="currentColor">
             <path d="M0 0h24v24H0V0z" fill="none" />
             <path
@@ -42,7 +42,7 @@
           Packing Slip
         </a>
 
-        <button class="btn btn-primary" (click)="getInvoiceSignedUrl(orderNumber)">
+        <button class="btn btn-primary" (click)="getInvoiceSignedUrl(slug)">
           <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24" fill="currentColor">
             <path d="M0 0h24v24H0V0z" fill="none" />
             <path
@@ -212,7 +212,7 @@
                   <td>{{settings?.currency}} {{order?.additionalCharge}}</td>
                 </tr>
                 <tr>
-                  <th class="p-2 text-muted fw-normal">Discount (Includes Coupon)</th>
+                  <th class="p-2 text-muted fw-normal">Savings</th>
                   <td class="text-success">- {{settings?.currency}} {{order?.discount}}</td>
                 </tr>
                 <tr *ngIf="+order?.couponDiscount > 0">
@@ -495,7 +495,6 @@
                             <div class="w-75"
                               [ngClass]="{'pe-none' : order?.paymentMethod == 'ONLINE' && order?.paymentStatus == 'PENDING'}">
                               <select class="form-select w-50 p-2" [formControl]="productOrderStatus"
-                                (click)="getStatusList(product.currentStatus.status)"
                                 (change)="updateOrderStatus($event, product?.productId?._id)">
                                 <option value="" disabled>-- Select a option --</option>
                                 <option value="CANCELLED">Cancelled</option>

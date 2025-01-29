@@ -228,9 +228,7 @@ export class UpdateOrdersComponent implements OnInit {
   }
 
   acceptOrderPayment() {
-    this.OrdersService.orderPaymentAcceptance(
-      this.order?.orderNo.split('#')[1]
-    ).subscribe({
+    this.OrdersService.orderPaymentAcceptance(this.slug).subscribe({
       next: (res: any) => {
         if (res?.errorCode == 0) {
           this.getOrderDetails();
@@ -238,8 +236,7 @@ export class UpdateOrdersComponent implements OnInit {
         } else {
           this.HotToastService.error(res?.message);
         }
-      },
-      error: (err: any) => {
+      }, error: (err: any) => {
         this.HotToastService.error(err?.error?.message);
       },
     });
@@ -272,7 +269,7 @@ export class UpdateOrdersComponent implements OnInit {
     if (this.orderNote.value) {
       // Create the complete note object with all required fields
 
-      this.OrdersService.addOrderNote(this.orderNumber, this.orderNote.value).subscribe({
+      this.OrdersService.addOrderNote(this.slug, this.orderNote.value).subscribe({
         next: (res: any) => {
           if (res?.order) {
             this.getOrderDetails(); // Refresh order details
@@ -404,34 +401,30 @@ export class UpdateOrdersComponent implements OnInit {
   }
 
   getStatusList(status: any) {
-    this.OrdersService.getStatusList(
-      status,
-      this.order?.deliveryType == '0' ? 'normal' : 'collect'
-    ).subscribe({
+    this.OrdersService.getStatusList(status, this.order?.deliveryType == '0' ? 'normal' : 'collect').subscribe({
       next: (res: any) => {
         this.statusList = res?.result;
         this.ChangeDetectorRef.markForCheck();
-      },
-      error: (err: any) => {
+      },   error: (err: any) => {
         this.HotToastService.error("Couldn't fetch order status list");
       },
     });
   }
 
-  openCancelConfirmation(template: TemplateRef<any>){
+  openCancelConfirmation(template: TemplateRef<any>) {
     this.cancelConfirmationRef = this.BsModalService.show(template, {
       class: 'modal-sm modal-dialog-centered', ignoreBackdropClick: true
     });
   }
 
-  closeCancelConfirmation(){
+  closeCancelConfirmation() {
     this.cancelConfirmationRef?.hide()
     this.productToBeCancelled = null
     this.productOrderStatus.setValue('')
   }
 
   updateOrderStatus(event: any, productItem: any) {
-    if(event.target.value == 'CANCELLED'){
+    if (event.target.value == 'CANCELLED') {
       this.productToBeCancelled = productItem
       this.openCancelConfirmation(this.cancelConfirmation)
       return
@@ -439,7 +432,7 @@ export class UpdateOrdersComponent implements OnInit {
 
     this.productReference = productItem;
     this.OrdersService.updateOrderStatus({
-      order: this.order.orderNo,
+      order: this.slug,
       product: productItem,
       status: event.target.value,
     }).subscribe({
@@ -458,9 +451,9 @@ export class UpdateOrdersComponent implements OnInit {
     });
   }
 
-  confirmCancel(){
+  confirmCancel() {
     this.OrdersService.updateOrderStatus({
-      order: this.order.orderNo,
+      order: this.slug,
       product: this.productToBeCancelled,
       status: 'CANCELLED',
     }).subscribe({
@@ -481,7 +474,7 @@ export class UpdateOrdersComponent implements OnInit {
     });
   }
 
-  declineCancel(){
+  declineCancel() {
     this.closeCancelConfirmation()
   }
 
@@ -618,7 +611,7 @@ export class UpdateOrdersComponent implements OnInit {
   updateBulkProduct(event: any) {
     this.bulkStatusToUpdate = event?.target?.value;
 
-    if(this.bulkStatusToUpdate == 'CANCELLED'){
+    if (this.bulkStatusToUpdate == 'CANCELLED') {
       this.openBulkUpdateConfirmation(this.bulkUpdateConfirmation);
       return
     }
@@ -642,7 +635,7 @@ export class UpdateOrdersComponent implements OnInit {
 
   confirmBulkUpdate() {
     this.OrdersService.updateBulkProduct({
-      order: this.order?.orderNo,
+      order: this.order?._id,
       status: this.bulkStatusToUpdate,
       products: this.bulkProducts,
     }).subscribe({
@@ -702,7 +695,7 @@ export class UpdateOrdersComponent implements OnInit {
 
   confirm() {
     this.OrdersService.cancelOrderDetails({
-      order: this.orderNumber,
+      order: this.slug,
       reason: this.reason.value,
     }).subscribe({
       next: (res: any) => {
@@ -727,7 +720,6 @@ export class UpdateOrdersComponent implements OnInit {
   }
 
   getInvoiceSignedUrl(orderId: string) {
-    orderId = orderId.split('#')[1]
     this.OrdersService.getInvoiceSignedUrl(orderId).subscribe({
       next: (res: any) => {
         if (res?.errorCode == 0) {
@@ -742,7 +734,6 @@ export class UpdateOrdersComponent implements OnInit {
   }
 
   getPackingSlipSignedUrl(orderId: string) {
-    orderId = orderId.split('#')[1]
     this.OrdersService.getPackingSlipSignedUrl(orderId).subscribe({
       next: (res: any) => {
         if (res?.errorCode == 0) {

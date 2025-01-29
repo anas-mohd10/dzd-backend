@@ -1,4 +1,4 @@
-import {
+  import {
   ChangeDetectorRef,
   Component,
   ElementRef,
@@ -300,7 +300,7 @@ export class UpdateCustomersComponent implements OnInit {
         '',
         [
           Validators.required,
-          Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$'),
+          Validators.pattern("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,4}$")
         ],
       ],
       countryCode: ['', Validators.required],
@@ -320,7 +320,7 @@ export class UpdateCustomersComponent implements OnInit {
       city: new FormControl('', Validators.required),
       area: new FormControl(''),
       landmark: new FormControl('',Validators.required),
-      type: new FormControl('', Validators.required),
+      type: new FormControl('Home', Validators.required),
       pincode: new FormControl('',Validators.required),
       state: new FormControl('', Validators.required),
       lat: new FormControl(''),
@@ -638,6 +638,12 @@ export class UpdateCustomersComponent implements OnInit {
       this.customerDetails = res?.result;
       this.savedCards = res?.result?.savedCards || [];
       this.referralCode.setValue(res?.result?.referralCode);
+      this.addressForm.patchValue({
+        name: res?.result?.name,
+        countryCode: res?.result?.countryCode,
+        mobile: res?.result?.mobile
+      })
+      this.handleAddressMobilePattern()
       this.referralCode.disable();
       this.form.patchValue(res?.result);
       this.handleMobilePattern();
@@ -657,6 +663,10 @@ export class UpdateCustomersComponent implements OnInit {
       this.isSubmitted = true;
       return;
     }
+
+    let emailId: string = this.form.get('email')?.value;
+    emailId = emailId.toLowerCase()
+    this.form.patchValue({ email: emailId })
 
     this.customerService
       .updateCustomer(this.slug, {
