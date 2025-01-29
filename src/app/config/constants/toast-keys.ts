@@ -32,4 +32,6 @@ export const toastKeys = {
     removeProductFromCompare: 'removeProductFromCompare',
     placeOrder: 'placeOrder',
     notifyMe: 'notifyMe',
+    limitedStock: 'limitedStock',
+    
 }
