@@ -405,4 +405,5 @@ export const internationalisationKeys = {
     viewProducts: 'viewProducts',
     inCategories: 'inCategories',
     searchkeyword: 'searchkeyword',
+    backToLogin: 'backToLogin',
 }
