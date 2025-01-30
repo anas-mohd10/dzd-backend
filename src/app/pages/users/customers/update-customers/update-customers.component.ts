@@ -95,6 +95,8 @@ export class UpdateCustomersComponent implements OnInit {
   cities: ICity[] = [];
   acceptedOrders: Array<string> = ['ACCEPTED'];
   cancelledOrders: Array<string> = ['CANCELLED', 'PENDING', 'FAILED'];
+  previousCountry: string = '';
+  previousState: string = '';
 
   constructor(
     private formBuilder: FormBuilder,
@@ -109,19 +111,53 @@ export class UpdateCustomersComponent implements OnInit {
   ) { }
 
   // Get State list from country code
-  getStateList(funcType?: string, stateValue?: string) {
-    const countryCode = this.countries.filter((country: ICountry) => country.name === this.addressForm.get('country')?.value)
-    this.states = State.getStatesOfCountry(countryCode[0].isoCode);
-    this.ChangeDetectorRef.markForCheck()
+  getStateList() {
+    const selectedCountry = this.addressForm.get('country')?.value;
+    if (this.previousCountry && this.previousCountry !== selectedCountry) {
+      // If the country has changed, reset state and city
+      this.addressForm.patchValue({
+        state: '',
+        city: '',
+      });
+      this.cities = [];
+      this.previousState = ''; // Reset previous state
+    }
+  
+    this.previousCountry = selectedCountry; // Store previous country value
+  
+    const countryCode = this.countries.find((country: ICountry) => country.name === selectedCountry);
+  
+    if (countryCode) {
+      this.states = State.getStatesOfCountry(countryCode.isoCode);
+      this.ChangeDetectorRef.markForCheck();
+    }
   }
-
+  
   // Get City list from state code and country code
   getCityList() {
-    const countryCode = this.countries.filter((country: ICountry) => country.name === this.addressForm.get('country')?.value)
-    const stateCode = this.states.filter((state: IState) => state.name === this.addressForm.get('state')?.value)
-    this.cities = City.getCitiesOfState(countryCode[0].isoCode, stateCode[0].isoCode);
-    this.ChangeDetectorRef.markForCheck()
+    const selectedState = this.addressForm.get('state')?.value;
+  
+    if (this.previousState && this.previousState !== selectedState) {
+      // If the state has changed, reset city
+      this.addressForm.patchValue({
+        city: '',
+      });
+    }
+  
+    this.previousState = selectedState; // Store previous state value
+  
+    const countryCode = this.countries.find((country: ICountry) => country.name === this.addressForm.get('country')?.value);
+    const stateCode = this.states.find((state: IState) => state.name === selectedState);
+  
+    if (countryCode && stateCode) {
+      this.cities = City.getCitiesOfState(countryCode.isoCode, stateCode.isoCode);
+      this.ChangeDetectorRef.markForCheck();
+    }
   }
+  
+
+
+
 
   //Function to open the saved cards modal
   openSavedCards(template: TemplateRef<any>) {
