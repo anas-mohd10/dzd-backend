@@ -234,8 +234,8 @@ export class AllProductsComponent implements OnInit {
     }
   }
 
-  formatProductType(docType: string){
-    return (docType.charAt(0).toUpperCase() + docType.slice(1)).replace('-', ' ')
+  formatProductType(docType: string) {
+    return docType && (docType.charAt(0).toUpperCase() + docType.slice(1)).replace('-', ' ')
   }
 
   getProducts() {
