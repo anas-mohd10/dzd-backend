@@ -1,16 +1,5 @@
-import {
-  Component,
-  OnInit,
-  ChangeDetectorRef,
-  ViewChild,
-  TemplateRef,
-} from '@angular/core';
-import {
-  FormBuilder,
-  FormControl,
-  FormGroup,
-  Validators,
-} from '@angular/forms';
+import { Component, OnInit, ChangeDetectorRef, ViewChild, TemplateRef, } from '@angular/core';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { PageTasks } from 'src/app/config/constants';
 import { appRoutes } from 'src/app/config/routes';
@@ -287,13 +276,11 @@ export class UpdateOrdersComponent implements OnInit {
     }
   }
 
-
   detechNoteChanges() {
     this.orderNote.value
       ? (this.isNoteDetected = true)
       : (this.isNoteDetected = false);
   }
-
 
   getLocalDate(date: any) {
     return `${new Date(date).toLocaleString()}`;
@@ -405,7 +392,7 @@ export class UpdateOrdersComponent implements OnInit {
       next: (res: any) => {
         this.statusList = res?.result;
         this.ChangeDetectorRef.markForCheck();
-      },   error: (err: any) => {
+      }, error: (err: any) => {
         this.HotToastService.error("Couldn't fetch order status list");
       },
     });
@@ -746,5 +733,4 @@ export class UpdateOrdersComponent implements OnInit {
       }
     })
   }
-
 }
