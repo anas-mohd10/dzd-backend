@@ -79,3 +79,4 @@ export * from './footer.endpoints'
 export * from './pickup.endpoints';
 export * from './app-keys.endpoints';
 export * from './platform.endpoints'
+export * from './sms.endpoits'

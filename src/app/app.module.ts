@@ -73,6 +73,7 @@ import { GiftWrapComponent } from './pages/marketing/gift-wrap/gift-wrap.compone
 import { BannerImagesComponent } from './pages/marketing/banner-images/banner-images.component';
 import { CustomMailersComponent } from './pages/settings/general/custom-mailers/custom-mailers.component';
 import { MailerDetailsComponent } from './pages/settings/general/mailer-details/mailer-details.component';
+import { SmsTemplatesComponent } from './pages/settings/general/sms-templates/sms-templates.component';
 import { GuestsComponent } from './pages/users/guests/guests.component';
 import { ShippingChargeComponent } from './pages/settings/general/shipping-charge/shipping-charge.component';
 import { BulkInvoicesComponent } from './pages/bulk-invoices/bulk-invoices.component';
@@ -157,6 +158,7 @@ const DragConfig = {
     ShippingRulesComponent,
     InternationalisationComponent,
     SmsSettingsComponent,
+    SmsTemplatesComponent,
     AuthenticationComponent,
     AppKeysComponent,
     CartSettingsComponent,

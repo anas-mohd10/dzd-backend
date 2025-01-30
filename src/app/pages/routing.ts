@@ -48,6 +48,8 @@ import { SitemapSettingsComponent } from './settings/general/sitemap-settings/si
 import { CompareKeysComponent } from './catalog/compare-keys/compare-keys.component';
 import { ToastComponent } from './settings/general/toast/toast.component';
 import { NavigationSettingsComponent } from './navigation-settings/navigation-settings.component';
+import { SmsTemplateService } from '../includes/services/sms-template.service';
+import { SmsTemplatesComponent } from './settings/general/sms-templates/sms-templates.component';
 
 export const Routing: Routes = [
   {
@@ -537,6 +539,11 @@ export const Routing: Routes = [
         path: 'sms-settings',
         component: SmsSettingsComponent,
         canActivate: [AuthenticationGuard, PermissionGuard]
+      },
+      {
+        path: 'custom-messages',
+        component: SmsTemplatesComponent,
+        canActivate: [AuthenticationGuard]
       }
     ]
   }, {
