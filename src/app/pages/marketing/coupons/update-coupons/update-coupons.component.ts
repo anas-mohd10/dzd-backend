@@ -185,8 +185,6 @@ export class UpdateCouponsComponent implements OnInit {
 
  applyCoupon(type: string) {
   if (!type) return;
-
-  // Only clear arrays when changing the criteria type, not when selecting items
   if (type !== this.form.get('criteriaType')?.value) {
     switch (type) {
       case 'complete':
@@ -217,8 +215,6 @@ export class UpdateCouponsComponent implements OnInit {
         break;
     }
   }
-
-  // Update the form control
   this.form.get('criteriaType')?.setValue(type);
   this.ChangeDetectorRef.markForCheck();
 }
