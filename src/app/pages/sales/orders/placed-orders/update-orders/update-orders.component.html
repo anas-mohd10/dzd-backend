@@ -496,7 +496,7 @@
                             <div class="w-75"
                               [ngClass]="{'pe-none' : order?.paymentMethod == 'ONLINE' && order?.paymentStatus == 'PENDING'}">
                               <select class="form-select w-50 p-2" [formControl]="productOrderStatus"
-                                (change)="updateOrderStatus($event, product?.productId?._id)">
+                                (change)="updateOrderStatus($event, product?.productId)">
                                 <option value="" disabled>-- Select a option --</option>
                                 <option value="CANCELLED">Cancelled</option>
                                 <option value="FAILED">Failed</option>
