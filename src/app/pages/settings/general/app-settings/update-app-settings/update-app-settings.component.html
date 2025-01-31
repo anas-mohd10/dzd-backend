@@ -448,7 +448,7 @@
               <select class="form-select fs-6" formControlName="currency">
                 <option value="" disabled>-- Select an option --</option>
                 <ng-container *ngFor="let currency of currencies">
-                  <option value="{{ currency }}">{{ currency }}</option>
+                  <option value="{{ currency.value }}">{{ currency.label }}</option>
                 </ng-container>
               </select>
             </div>
