@@ -384,13 +384,14 @@ export class AddOrdersComponent implements OnInit {
       pickUpLocation: [null],
       deliveryDate: [''],
       deliveryType: ['0'],
+      shippingCost: [0, Validators.pattern(/^[0-9]+$/)],
       deliverySlot: [null],
       orderNote: [''],
       shippingNote: [''],
     });
   }
 
-  get of() {
+  get formControls() {
     return this.orderForm.controls;
   }
 
@@ -882,6 +883,12 @@ updateQuantity(type: 'increment' | 'decrement', product: any) {
 
     this.OrderService.addOrder({
       address: this.address,
+      customerDetails: {
+        name: this.customerDetails.name,
+        countryCode: this.customerDetails.countryCode,
+        mobile: this.customerDetails.mobile,
+        email: this.customerDetails.email
+      },
       ...this.orderForm.value,
       source: isMobile == true ? 'MOBILE' : 'WEB',
       sourceType: browser

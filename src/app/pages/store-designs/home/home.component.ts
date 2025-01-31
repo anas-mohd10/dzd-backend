@@ -445,6 +445,10 @@ export class HomeComponent implements OnInit {
     this.productsAdThumbnail = event.path;
   }
 
+  isPublished(event: boolean) {
+    if (event) this.isDraft = false
+  }
+
   removeMotionCanvasThumbnail() {
     this.productAd?.setValue(null);
     this.productsAdThumbnail = '';
@@ -1269,11 +1273,19 @@ export class HomeComponent implements OnInit {
   //Duplicate widgets ends here
 
   drop(event: CdkDragDrop<string[]>) {
+    const existingWidgets = [...this.widgetItems]; // create a copy of the array
     moveItemInArray(this.widgetItems, event.previousIndex, event.currentIndex);
-    this.reorderWidgets();
-    this.isDraft = true;
-    this.screenLoad++;
-    this.count++;
+
+    const isArraySuffled = JSON.stringify(this.widgetItems) !== JSON.stringify(existingWidgets);
+    const isWidgetDeleted = this.widgetItems.length < existingWidgets.length;
+    const isWidgetAdded = this.widgetItems.length > existingWidgets.length;
+
+    if (isArraySuffled || isWidgetDeleted || isWidgetAdded) {
+      this.reorderWidgets();
+      this.isDraft = true;
+      this.screenLoad++;
+      this.count++;
+    }
   }
 
   //Title image
@@ -1357,7 +1369,7 @@ export class HomeComponent implements OnInit {
       video: new FormControl(''),
       view: new FormControl('grid'),
       textTwirlTitle: new FormControl(''),
-      isReversed:new FormControl(false),
+      isReversed: new FormControl(false),
       textTwirlDescription: new FormControl(''),
       gridsPerCount: new FormGroup({
         mobile: new FormControl(2, [
@@ -1629,7 +1641,7 @@ export class HomeComponent implements OnInit {
       case 'mobile-hover':
         this.form.get('hovering.mobile')?.setValue(event.toggleState);
         break;
-        case 'reverse-widget':
+      case 'reverse-widget':
         this.form.get('isReversed')?.setValue(event.toggleState);
         break;
     }

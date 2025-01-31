@@ -1,4 +1,5 @@
-w<app-design-topbar [page]="'home'" [isDraft]="isDraft" (device)="deviceToggled($event)"></app-design-topbar>
+<app-design-topbar [page]="'home'" [isDraft]="isDraft" (device)="deviceToggled($event)"
+    (isPublished)="isPublished($event)"></app-design-topbar>
 <app-design-sidebar></app-design-sidebar>
 
 <div>
@@ -379,15 +380,14 @@ w<app-design-topbar [page]="'home'" [isDraft]="isDraft" (device)="deviceToggled(
                                                 <div *ngIf="form.get('view')?.value == 'slider'"
                                                     class="form-group col-lg-6 mb-3">
                                                     <div>
-                                                        
+
                                                         <div
-                                                        class="d-flex gap-4 align-items-center justify-content-start">
-                                                        <label for="isReversed" class="fs-5">Reversed</label>
-                                                        <app-switch id="isReversed"
-                                                            [switchId]="'reverse-widget'"
-                                                            (switchToggled)="switchToggled($event)"
-                                                            [isToggledProps]="form.get('isReversed')?.value"></app-switch>
-                                                    </div>
+                                                            class="d-flex gap-4 align-items-center justify-content-start">
+                                                            <label for="isReversed" class="fs-5">Reversed</label>
+                                                            <app-switch id="isReversed" [switchId]="'reverse-widget'"
+                                                                (switchToggled)="switchToggled($event)"
+                                                                [isToggledProps]="form.get('isReversed')?.value"></app-switch>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
@@ -539,7 +539,7 @@ w<app-design-topbar [page]="'home'" [isDraft]="isDraft" (device)="deviceToggled(
                                         alt="{{image?.url?.title}}">
                                 </div>
 
-                                
+
                             </div>
                         </div>
                         <div *ngIf="widgetImagePreviewIndex >= 0 && widgetImagePreview">
@@ -591,9 +591,10 @@ w<app-design-topbar [page]="'home'" [isDraft]="isDraft" (device)="deviceToggled(
                                                 <input type="text" formControlName="button" class="form-control">
                                             </div>
                                             <div class="form-group mb-3">
-                                            <label for="title" class="form-label">Custom Styles</label>
-                                            <textarea type="text" rows="3" formControlName="customStyles" class="form-control"></textarea>
-                                        </div>
+                                                <label for="title" class="form-label">Custom Styles</label>
+                                                <textarea type="text" rows="3" formControlName="customStyles"
+                                                    class="form-control"></textarea>
+                                            </div>
                                             <div class="form-group mb-3">
                                                 <label for="redirectionType" class="form-label">Call to action</label>
                                                 <select id="redirectionType" formControlName="redirectionType"
@@ -748,7 +749,8 @@ w<app-design-topbar [page]="'home'" [isDraft]="isDraft" (device)="deviceToggled(
                                                 Remove
                                             </button>
                                         </div>
-                                        <div class="col-lg-9 d-flex flex-column align-items-center justify-content-between">
+                                        <div
+                                            class="col-lg-9 d-flex flex-column align-items-center justify-content-between">
                                             <div class="form-group w-100">
                                                 <label for="keyPointTitle" class="fs-6 required mb-1">Title</label>
                                                 <input type="text" class="form-control" id="keyPointTitle"

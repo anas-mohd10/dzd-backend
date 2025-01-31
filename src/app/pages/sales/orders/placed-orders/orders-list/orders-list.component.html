@@ -213,7 +213,7 @@
             <div class="customer-details">{{order?.customerId ? order?.customerId?.name : order?.guestId?.name}}</div>
             <div
               class="rounded border border-secondary customer-type p-1 my-1 d-flex align-items-center justify-content-center">
-              {{order?.customerType}}
+              {{order?.customerType == 'regd' ? 'Customer' : 'Guest'}}
             </div>
           </td>
           <td *ngIf="settings.isPickUp == true">
