@@ -39,7 +39,15 @@ export class UpdateAppSettingsComponent implements OnInit {
   isSubmitted = false;
   refid: any;
   currency: any
-  currencies: Array<any> = ['INR', 'USD', 'EUR', 'AED', 'IQD']
+  // currencies: Array<any> = ['INR', 'USD', 'EUR', 'AED', 'IQD', 'دينار'],
+  currencies: Array<any> = [
+    { label: 'INR', value: 'INR' },
+    { label: 'USD', value: 'USD' },
+    { label: 'EUR', value: 'EUR' },
+    { label: 'AED', value: 'AED' },
+    { label: 'IQD - EN', value: 'IQD' },
+    { label: 'IQD - AR', value: 'دينار' }
+  ]
   editorConfig: AngularEditorConfig = {
     editable: true,
     spellcheck: true,
@@ -226,6 +234,7 @@ export class UpdateAppSettingsComponent implements OnInit {
         this.form.get('itemsPerPage')?.setValue(res?.result?.itemsPerPage)
         this.form.get('isOutOfStock')?.setValue(res?.result?.isOutOfStock)
         this.form.get('isTax')?.setValue(res?.result?.isTax)
+        this.form.get('isIndex')?.setValue(res?.result?.isIndex)
         this.form.get('isNotifyStock')?.setValue(res?.result?.isNotifyStock)
         this.form.get('packingSlip')?.setValue(res?.result?.notes?.packingSlip)
         this.form.get('cartButton')?.setValue(res?.result?.buttons?.cart)
@@ -300,6 +309,7 @@ export class UpdateAppSettingsComponent implements OnInit {
       packingSlip: [''],
       isOutOfStock: ['false'],
       isTax: ['false'],
+      isIndex: ['false'],
       isStoreLive: ['true'],
       defaultImage: [''],
       isNotifyStock: ['false'],
@@ -411,7 +421,7 @@ export class UpdateAppSettingsComponent implements OnInit {
       this.isSubmitted = true
       return
     }
-
+console.log("this.form.get('isIndex')?.value",this.form.get('isIndex')?.value)
     this.AppSettingsService.updateGeneralSettings({
       colors: {
         primary: this.form.get('primary')?.value,
@@ -432,6 +442,7 @@ export class UpdateAppSettingsComponent implements OnInit {
       itemsPerPage: this.form.get('itemsPerPage')?.value,
       isOutOfStock: this.form.get('isOutOfStock')?.value,
       isTax: this.form.get('isTax')?.value,
+      isIndex: this.form.get('isIndex')?.value,
       isNotifyStock: this.form.get('isNotifyStock')?.value,
       refid: this.refid,
       primaryAddress: this.form.get('primaryAddress')?.value,

@@ -141,13 +141,13 @@
                 <tr>
                   <th class="p-2 text-muted fw-normal">Source</th>
                   <td class="p-2">
-                    {{order?.source}}
+                    {{formatWords(order?.source)}}
                   </td>
                 </tr>
                 <tr>
                   <th class="p-2 text-muted fw-normal">Customer Type</th>
                   <td class="p-2">
-                    {{order?.customerType}}
+                    {{order?.customerType == 'regd' ? 'Customer' : 'Guest'}}
                   </td>
                 </tr>
                 <tr>

@@ -14,6 +14,7 @@ export const internationalisationKeys = {
     couponApplied: 'couponApplied',
     couponCode: 'couponCode',
     couponDiscount: 'couponDiscount',
+    couponDiscountText: 'couponDiscountText',
     deliveryAddress: 'deliveryAddress',
     deliveryFee: 'deliveryFee',
     description: 'description',
