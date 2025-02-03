@@ -78,7 +78,7 @@
               <div class="cursor-pointer" [ngClass]="{'text-primary': status?.status == activeStatus}"
                 (click)="getStatus(status)">
                 {{status?.status}}
-                <span class="p-2 rounded" [ngClass]="{'bg-primary text-white': status?.status == activeStatus, 
+                <span class="p-2 rounded" [ngClass]="{'bg-primary text-white': status?.status == activeStatus,
                   'bg-secondary': status?.status != activeStatus}">
                   {{status?.count}}
                 </span>
@@ -284,8 +284,8 @@
             </div>
           </td>
           <td>
-            <div class="rounded d-flex align-items-center justify-content-center p-1" [ngClass]="{'success-orders': successOrders.includes(order?.orderStatus), 
-              'accepted-orders': acceptedOrders.includes(order?.orderStatus), 
+            <div class="rounded d-flex align-items-center justify-content-center p-1" [ngClass]="{'success-orders': successOrders.includes(order?.orderStatus),
+              'accepted-orders': acceptedOrders.includes(order?.orderStatus),
               'cancelled-orders': cancelledOrders.includes(order?.orderStatus)}">
               {{formatOrderStatus(order?.orderStatus)}}
             </div>
@@ -294,7 +294,7 @@
             <div class="d-flex align-items-center justify-content-start gap-3">
               <div
                 class="cursor-pointer rounded action-button d-flex align-items-center justify-content-center border border-secondary"
-                routerLink="{{appRoute.orders.UPDATE_ORDER_LIST}}" [queryParams]="{'order': order?._id}">
+                routerLink="{{appRoute.orders.UPDATE_ORDER_LIST}}" [queryParams]="{'order': order?.orderNo}">
                 <img src="assets/icons/eye.svg" alt="View order details">
               </div>
               <div (click)="getInvoiceSignedUrl(order?._id)"
