@@ -62,7 +62,7 @@
    </div>
 
    <div>
-      <table class="table">
+      <table class="table table-bordered">
          <thead>
             <tr>
                <th>Title</th>
@@ -77,20 +77,14 @@
             <tr *ngFor="let notification of notifications">
                <td>{{notification?.title}}</td>
                <td>
-                  <div class="p-2 rounded {{notification?.channel}}">
-                     {{notification?.channel}}
-                  </div>
+                  {{notification?.channel}}
                </td>
                <td>
-                  <div class="p-2 rounded {{notification?.type}}">
-                     {{notification?.type}}
-                  </div>
+                  {{notification?.type}}
                </td>
                <td>{{formatDate(notification?.createdAt)}}</td>
                <td>
-                  <div class="p-2 rounded {{notification?.status}}">
-                     {{notification?.status}}
-                  </div>
+                  {{notification?.status}}
                </td>
                <td>
                   <div class="cursor-pointer" routerLink="{{appRoute.notification.UPDATE_NOTIFICATION}}"
