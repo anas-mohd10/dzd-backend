@@ -406,4 +406,6 @@ export const internationalisationKeys = {
     inCategories: 'inCategories',
     searchkeyword: 'searchkeyword',
     backToLogin: 'backToLogin',
+    deliveryDate: 'deliveryDate',
+    deliveryTime: 'deliveryTime',
 }
