@@ -204,6 +204,16 @@ export class DashboardComponent implements OnInit {
     })
   }
 
+  queryStringToObject(query: string): { [key: string]: string } {
+    if (!query) return {};
+    const params: { [key: string]: string } = {};
+    const parts = query.split('=');
+    if (parts.length === 2) {
+      params[parts[0]] = parts[1];
+   }
+  return params;
+  }
+  
   open(template: TemplateRef<any>) {
     this.modalRef = this.BsModalService.show(template, { class: 'modal-lg modal-dialog-centered' });
   }
