@@ -77,14 +77,17 @@
             <tr *ngFor="let notification of notifications">
                <td>{{notification?.title}}</td>
                <td>
-                  {{notification?.channel}}
+                  {{formatWord(notification?.channel)}}
                </td>
                <td>
-                  {{notification?.type}}
+                  {{formatWord(notification?.type)}}
                </td>
-               <td>{{formatDate(notification?.createdAt)}}</td>
                <td>
-                  {{notification?.status}}
+                  {{formatDate(notification?.createdAt)}}
+                  {{formatTime(notification?.createdAt)}}
+               </td>
+               <td>
+                  {{formatWord(notification?.status)}}
                </td>
                <td>
                   <div class="cursor-pointer" routerLink="{{appRoute.notification.UPDATE_NOTIFICATION}}"
