@@ -6,5 +6,6 @@ export const productReportEndpoints = {
     customerReport: '/customerReport',
     enquiryReport: '/enquiryReport',
     ordersOverTimeReport: '/order-over-time',
-    productwiseSalesReport: '/productWiseSaleReport'
+    productwiseSalesReport: '/productWiseSaleReport',
+    deliveryReport: '/deliveryReport'
 }
