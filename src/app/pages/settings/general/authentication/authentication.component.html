@@ -142,13 +142,21 @@
                         </div>
                     </div>
                     <div class="row mt-4" *ngIf="form.get('isRecaptchaEnabled')?.value">
-                        <div class="col-lg-6 form-group">
+                        <div class="col-lg-6 form-group mb-3">
                             <label for="recaptchaSiteKey" class="fs-6 mb-1">Site Key</label>
                             <input type="text" id="recaptchaSiteKey" formControlName="recaptchaSiteKey" class="form-control">
                         </div>
-                        <div class="col-lg-6 form-group">
+                        <div class="col-lg-6 form-group mb-3">
                             <label for="recaptchaSecretKey" class="fs-6 mb-1">Secret Key</label>
                             <input type="text" id="recaptchaSecretKey" formControlName="recaptchaSecretKey" class="form-control">
+                        </div>
+                        <div class="col-lg-6 form-group mb-3">
+                            <label for="androidRecaptchaKey" class="fs-6 mb-1">Android Key</label>
+                            <input type="text" id="androidRecaptchaKey" formControlName="androidRecaptchaKey" class="form-control">
+                        </div>
+                        <div class="col-lg-6 form-group mb-3">
+                            <label for="iosRecaptchaKey" class="fs-6 mb-1">iOS Key</label>
+                            <input type="text" id="iosRecaptchaKey" formControlName="iosRecaptchaKey" class="form-control">
                         </div>
                     </div>
                 </div>
