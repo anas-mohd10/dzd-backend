@@ -52,8 +52,20 @@ export class NotificationsListComponent implements OnInit {
     this.getNotifications()
   }
 
-  formatDate(date: string){
-    return new Date(date).toLocaleDateString()
+  formatTime(time: string) {
+    return new Date(time).toLocaleTimeString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true })
+  }
+
+  formatDate(date: string) {
+    return new Date(date).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' })
+  }
+
+  formatWord(word: string) {
+    if (!word){
+      return ''
+    }
+
+    return word.charAt(0).toUpperCase() + word.slice(1)
   }
 
   getNotifications() {

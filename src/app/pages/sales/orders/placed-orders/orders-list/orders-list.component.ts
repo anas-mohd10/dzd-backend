@@ -78,6 +78,10 @@ export class OrdersListComponent implements OnInit {
     value: 'OUT FOR DELIVERY',
     totalOrders: 0
   }, {
+    status: 'Partial Processed',
+    value: 'PARTIAL PROCESSED',
+    totalOrders: 0
+  }, {
     status: 'Delivered',
     value: 'DELIVERED',
     totalOrders: 0
@@ -86,20 +90,16 @@ export class OrdersListComponent implements OnInit {
     value: 'COLLECTED',
     totalOrders: 0
   }, {
-    status: 'Pending',
-    value: 'PENDING',
-    totalOrders: 0
-  }, {
-    status: 'Partial Processed',
-    value: 'PARTIAL PROCESSED',
-    totalOrders: 0
-  }, {
     status: 'Failed',
     value: 'FAILED',
     totalOrders: 0
   }, {
     status: 'Cancelled',
     value: 'CANCELLED',
+    totalOrders: 0
+  }, {
+    status: 'Pending',
+    value: 'PENDING',
     totalOrders: 0
   }]
   lastPage: Boolean = false
@@ -421,23 +421,23 @@ export class OrdersListComponent implements OnInit {
     return new Date(date).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' })
   }
 
-//   formatDate(date: string) {
-//   return new Intl.DateTimeFormat('en-US', {
-//     year: 'numeric',
-//     month: 'short',
-//     day: 'numeric',
-//     timeZone: 'UTC', // Force UTC timezone
-//   }).format(new Date(date));
-// }
+  //   formatDate(date: string) {
+  //   return new Intl.DateTimeFormat('en-US', {
+  //     year: 'numeric',
+  //     month: 'short',
+  //     day: 'numeric',
+  //     timeZone: 'UTC', // Force UTC timezone
+  //   }).format(new Date(date));
+  // }
 
-// formatTime(time: string) {
-//   return new Intl.DateTimeFormat('en-US', {
-//     hour: 'numeric',
-//     minute: 'numeric',
-//     hour12: true,
-//     timeZone: 'UTC', // Force UTC timezone
-//   }).format(new Date(time));
-// }
+  // formatTime(time: string) {
+  //   return new Intl.DateTimeFormat('en-US', {
+  //     hour: 'numeric',
+  //     minute: 'numeric',
+  //     hour12: true,
+  //     timeZone: 'UTC', // Force UTC timezone
+  //   }).format(new Date(time));
+  // }
 
   exportOrders() {
     this.OrdersService.exportOrderTabs({

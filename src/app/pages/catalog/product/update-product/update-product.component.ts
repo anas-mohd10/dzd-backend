@@ -1,10 +1,4 @@
-import {
-  ChangeDetectorRef,
-  Component,
-  OnInit,
-  TemplateRef,
-  ViewChild,
-} from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { PageTasks } from '../../../../config/constants';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -627,8 +621,7 @@ export class UpdateProductComponent implements OnInit {
         } else {
           this.HotToastService.error(res?.message);
         }
-      },
-      error: (err: any) => {
+      }, error: (err: any) => {
         this.HotToastService.error(err.error.message);
       },
     });
@@ -824,7 +817,9 @@ export class UpdateProductComponent implements OnInit {
           this.thumbnailPreview = res?.result?.thumbnail;
           this.ChangeDetectorRef.markForCheck();
         }
-      },
+      }, error: (err: any) => {
+        this.HotToastService.error(err?.message);
+      }
     });
 
     this.parentForm = new FormGroup({
@@ -862,14 +857,8 @@ export class UpdateProductComponent implements OnInit {
           Validators.required,
           Validators.pattern('^\\d+(\\.\\d+)?$'),
         ]),
-        offer: new FormControl(
-          '',
-          Validators.pattern('^-?[0-9]\\d*(\\.\\d+)?$')
-        ),
-        selling: new FormControl(
-          '',
-          Validators.pattern('^-?[0-9]\\d*(\\.\\d+)?$')
-        ),
+        offer: new FormControl('', Validators.pattern('^-?[0-9]\\d*(\\.\\d+)?$')),
+        selling: new FormControl('', Validators.pattern('^-?[0-9]\\d*(\\.\\d+)?$')),
       }),
       slug: new FormControl('', [Validators.required]),
       stock: new FormControl('', [
@@ -897,8 +886,6 @@ export class UpdateProductComponent implements OnInit {
       origin: new FormControl(''),
       overview: new FormControl(''),
       details: new FormGroup({
-        additionalButton: new FormControl(''),
-        buttonRedirectUrl: new FormControl(''),
         description: new FormControl(''),
         features: new FormControl(''),
         longDescription: new FormControl(''),
