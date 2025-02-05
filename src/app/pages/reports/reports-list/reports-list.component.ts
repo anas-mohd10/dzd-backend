@@ -95,6 +95,11 @@ export class ReportsListComponent implements OnInit {
       description: 'Get the list of products with details',
       type: 'productreport',
     },
+    {
+      title: 'Delivery Report',
+      description: 'Get the data of customers with delivery details',
+      type: 'deliveryReport',
+    }
 
   ];
 
@@ -339,6 +344,9 @@ export class ReportsListComponent implements OnInit {
       case 'enquiry-report':
         this.generateEnquiryReport(params);
         break;
+        case 'deliveryReport':
+          this.generateDeliveryReport(params);
+          break;
       case 'abandonedorder-report':
         this.generateAbandonedOrderReport(params);
         break;
@@ -521,8 +529,22 @@ export class ReportsListComponent implements OnInit {
       },
     });
   }
+  generateDeliveryReport(params: any) {
+    this.reportsService.deliveryReport(
+      params.dateRange,
+      params.startDate,
+      params.endDate
+    ).subscribe({
+      next: (res: any) => {
+        this.handleReportResponse(res);
+      },
+      error: (err: any) => {
+        this.handleError(err);
+      },
+    });
+  }
 
-  generateCustomerOrderReport(params: any) {
+ generateCustomerOrderReport(params: any) {
     this.reportsService.customerOrderReport(
       params.dateRange,
       params.startDate,
