@@ -297,7 +297,7 @@ export class UpdateAppSettingsComponent implements OnInit {
       countryCode: ['+971', Validators.required],
       mobile: ['', Validators.required],
       fontFamily: ['', Validators.required],
-      defaultSort: ['', Validators.required], 
+      defaultSort: ['', Validators.required],
       name: ['', Validators.required],
       companyName: [''],
       country: [''],
@@ -320,6 +320,7 @@ export class UpdateAppSettingsComponent implements OnInit {
       favicon: ['', Validators.required],
       defaultBanner: [''],
       defaultMobileBanner: [''],
+      defaultShippingCharge: ['0'],
     })
   }
 
@@ -341,7 +342,7 @@ export class UpdateAppSettingsComponent implements OnInit {
     }
   }
 
-  
+
 
   declineDiscard() {
     this.discardModalRef?.hide()
@@ -465,6 +466,7 @@ console.log("this.form.get('isIndex')?.value",this.form.get('isIndex')?.value)
       favicon: this.form.get('favicon')?.value,
       defaultBanner: this.form.get('defaultBanner')?.value,
       defaultMobileBanner: this.form.get('defaultMobileBanner')?.value,
+      defaultShippingCharge: this.form.get('defaultShippingCharge')?.value,
       isStoreLive: this.form.get('isStoreLive')?.value,
       notes: { packingSlip: this.form.get('packingSlip')?.value },
       buttons: {
