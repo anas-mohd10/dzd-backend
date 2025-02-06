@@ -685,7 +685,6 @@
     <ng-container *ngIf="historyLists && historyLists.length > 0">
       <div *ngFor="let historyList of historyLists" class="p-3 border border-secondary rounded mb-3" >
         <div class="fs-5 d-flex align-items-center justify-content-start gap-2">
-          <div class="level" [ngClass]="{'info': historyList.level == 'info', 'error': historyList.level == 'error'}"></div>
           <div [innerHTML]="historyList.message"></div>
         </div>
         <div class="text-muted mt-2">{{getFormatDate(historyList.timestamp)}} {{getFormatTime(historyList.timestamp)}}</div>
