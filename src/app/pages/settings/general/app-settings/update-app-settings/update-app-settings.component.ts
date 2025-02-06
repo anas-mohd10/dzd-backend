@@ -237,6 +237,7 @@ export class UpdateAppSettingsComponent implements OnInit {
         this.form.get('isIndex')?.setValue(res?.result?.isIndex)
         this.form.get('isNotifyStock')?.setValue(res?.result?.isNotifyStock)
         this.form.get('packingSlip')?.setValue(res?.result?.notes?.packingSlip)
+        this.form.get('defaultShippingCharge')?.setValue(res?.result?.defaultShippingCharge)
         this.form.get('cartButton')?.setValue(res?.result?.buttons?.cart)
         this.form.get('stockButton')?.setValue(res?.result?.buttons?.stock)
         this.form.get('notifyButton')?.setValue(res?.result?.buttons?.notify)
