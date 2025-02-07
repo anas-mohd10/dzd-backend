@@ -28,6 +28,8 @@ export class AppKeysComponent implements OnInit {
     this.getSettings()
     this.form = new FormGroup({
       googleMapKey: new FormControl(""),
+      firebaseConfig: new FormControl(""),
+      firebaseServiceConfig: new FormControl(""),
     })
   }
 
