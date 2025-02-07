@@ -160,20 +160,54 @@ export class UpdateAppSettingsComponent implements OnInit {
     }
   }
 
-  addPlaceholder(){
-    if(!this.placeHolder.valid){
-      return
+  addPlaceholder() {
+    if (this.currentlyEditingPlaceholder) {
+      this.savePlaceholder();
+    } else {
+      const newPlaceholder = this.placeHolder.value.trim();
+      if (newPlaceholder && !this.placeHolders.includes(newPlaceholder)) {
+        this.placeHolders.push(newPlaceholder);
+        this.HotToastService.success('Placeholder added successfully');
+      }
     }
-    this.placeHolders.push(this.placeHolder.value)
-    this.placeHolder.setValue('')
-    this.HotToastService.success('Placeholder added successfully')
-    this.ChangeDetectorRef.markForCheck()
+  
+    this.placeHolder.setValue('');
+    this.currentlyEditingPlaceholder = null;
+    this.ChangeDetectorRef.markForCheck();
   }
+  
 
   removePlaceholder(placeHolder: string){
     this.placeHolders = this.placeHolders.filter((item:string) => item != placeHolder)
     this.HotToastService.success('Placeholder removed successfully')
     this.ChangeDetectorRef.markForCheck()
+  }
+
+  currentlyEditingPlaceholder: string | null = null;
+
+  editPlaceholder(placeHolder: string){
+    if (this.currentlyEditingPlaceholder === placeHolder) {
+      this.currentlyEditingPlaceholder = null;
+      this.placeHolder.setValue('');
+    } else {
+      this.currentlyEditingPlaceholder = placeHolder;
+      this.placeHolder.setValue(placeHolder);
+    }
+    this.ChangeDetectorRef.markForCheck();
+  }
+
+  savePlaceholder() {
+    if (this.currentlyEditingPlaceholder && this.placeHolder.valid) {
+      const index = this.placeHolders.findIndex(p => p === this.currentlyEditingPlaceholder);
+      if (index !== -1) {
+        this.placeHolders[index] = this.placeHolder.value;
+        this.HotToastService.success('Placeholder updated successfully');
+      }
+      
+      this.currentlyEditingPlaceholder = null;
+      this.placeHolder.setValue('');
+      this.ChangeDetectorRef.markForCheck();
+    }
   }
 
   languageExists(language: { lang: string, langCode: string }) {
