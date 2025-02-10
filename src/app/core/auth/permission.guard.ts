@@ -21,7 +21,18 @@ export class PermissionGuard implements CanActivate {
     let module = paths[1].split('/')
     let path = ''
 
+    // remove query params from url
     if (module[0].includes('mailer-details')) {
+      module[0] = module[0].split('?')[0]
+    }
+
+    // remove query params from url
+    if (module[0].includes('orders')) {
+      module[0] = module[0].split('?')[0]
+    }
+
+    // remove query params from url
+    if (module[0].includes('product')) {
       module[0] = module[0].split('?')[0]
     }
 
@@ -167,6 +178,9 @@ export class PermissionGuard implements CanActivate {
       case 'internationalization':
         module[0] == 'internationalization' ? path = 'internationalization' : null
         break
+      case 'toasts':
+        module[0] == 'toasts' ? path = 'toasts' : null
+        break
       case 'sms-settings':
         module[0] == 'sms-settings' ? path = 'sms-settings' : null
         break
@@ -211,6 +225,9 @@ export class PermissionGuard implements CanActivate {
         break
       case 'analytics':
         module[0] == 'analytics' ? path = 'analytics' : null
+        break
+      case 'mobile-apps':
+        module[0] == 'mobile-apps' ? path = 'mobile-apps' : null
         break
       case 'page-covers':
         module[0] == 'page-covers' ? path = 'page-covers' : null

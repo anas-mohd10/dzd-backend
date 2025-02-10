@@ -94,6 +94,8 @@ import { OrderSettingsComponent } from './pages/settings/general/order-settings/
 import { FiltersComponent } from './pages/catalog/filters/filters.component';
 import { SitemapSettingsComponent } from './pages/settings/general/sitemap-settings/sitemap-settings.component';
 import { CompareKeysComponent } from './pages/catalog/compare-keys/compare-keys.component';
+import { ToastComponent } from './pages/settings/general/toast/toast.component';
+import { NavigationSettingsComponent } from './pages/navigation-settings/navigation-settings.component';
 
 const DragConfig = {
   dragStartThreshold: 0,
@@ -162,6 +164,8 @@ const DragConfig = {
     FiltersComponent,
     SitemapSettingsComponent,
     CompareKeysComponent,
+    ToastComponent,
+    NavigationSettingsComponent,
   ],
   imports: [
     provideFirebaseApp(() => initializeApp(environment.firebaseConfig)),

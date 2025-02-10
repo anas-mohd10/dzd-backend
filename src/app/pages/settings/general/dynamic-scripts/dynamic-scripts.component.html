@@ -18,8 +18,18 @@
         </button>
     </div>
 
-    <div class="my-4">
-        <ngx-monaco-editor [options]="editorOptions" style="height: 370px;" [(ngModel)]="code">
-        </ngx-monaco-editor>
+    <div class="my-4 card">
+        <div class="card-body">
+            <div class="fs-4 fw-bold mb-2">Script Tags</div>
+            <ngx-monaco-editor [options]="editorOptions" style="height: 370px;" [(ngModel)]="code">
+            </ngx-monaco-editor>
+        </div>
+    </div>
+    <div class="card">
+        <div class="card-body">
+            <div class="fs-4 fw-bold mb-2">Head Tags</div>
+            <ngx-monaco-editor [options]="editorOptions" style="height: 370px;" [(ngModel)]="headCode">
+            </ngx-monaco-editor>
+        </div>
     </div>
 </div>

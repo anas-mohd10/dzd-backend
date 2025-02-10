@@ -2,7 +2,7 @@
   <div class="page-header">
     <div>
       <div class="page-title">
-        <h1 class="fw-bold">Update Admin Users</h1>
+        <h1 class="fw-bold">Update Admin</h1>
       </div>
       <ul class="breadcrumb">
         <li class="breadcrumb-item fs-6">
@@ -13,173 +13,158 @@
         </li>
         <li class="breadcrumb-item active fs-6">
           <a routerLink="{{ appRoute.admin.UPDATE_ADMIN_USERS }}" [queryParams]="{'id': adminId}">
-            Update Admin Users
+            Update Admin
           </a>
         </li>
       </ul>
     </div>
   </div>
 
-  <div class="card my-4">
-    <div class="card-body">
-      <form [formGroup]="form">
+  <form [formGroup]="form">
+    <div class="card my-4">
+      <div class="card-body">
+        <div class="fs-5 mb-3">Last updated on {{getFormatDate(adminDetails?.updatedAt)}}
+          {{getFormatTime(adminDetails?.updatedAt)}}</div>
 
-        <div>
-          <div>
-            <span class="me-5 editTitle fs-5">Basic details</span>
-            <button class="btn btn-link" (click)="toggleEdit('basic')">
-              {{isBasicEditable ? 'Cancel' : 'Edit details'}}
-            </button>
+        <div class="d-flex mb-3  align-items-end justify-content-between">
+          <div class="fs-4 fw-bold">Basic Details</div>
+          <button class="btn btn-secondary" (click)="toggleEdit('basic')">
+            {{isBasicEditable ? 'Cancel' : 'Edit details'}}
+          </button>
+        </div>
+        <div class="row">
+          <div class="col-6 mb-3">
+            <div class="form-group" [ngClass]="{'disabled-group': !isBasicEditable}">
+              <label class="fs-6 mb-3 required"> First name</label>
+              <input type="text" class="form-control fs-6" formControlName="firstname"
+                [ngClass]="{'is-invalid': (formControls.firstname.touched || isSubmitted) && formControls.firstname.errors?.required }" />
+            </div>
           </div>
-          <div class="row">
-            <div class="usernameWrapper">
-              <div class="col-6 mb-3">
-                <div class="form-group" [ngClass]="{'disabled-group': !isBasicEditable}">
-                  <label class="fs-6 mb-3 required"> Username</label>
-                  <input type="text" class="form-control fs-6" formControlName="username"
-                    [ngClass]="{
-                          'is-invalid': (formControls.username.touched || isSubmitted) && formControls.username.errors?.required }" />
-                </div>
-              </div>
+          <div class="col-6 mb-3">
+            <div class="form-group" [ngClass]="{'disabled-group': !isBasicEditable}">
+              <label class="fs-6 mb-3"> Last name</label>
+              <input type="text" class="form-control fs-6" formControlName="lastname" />
             </div>
-
-            <div class="col-6 mb-3">
-              <div class="form-group" [ngClass]="{'disabled-group': !isBasicEditable}">
-                <label class="fs-6 mb-3 required"> First name</label>
-                <input type="text" class="form-control fs-6" formControlName="firstname" [ngClass]="{
-                        'is-invalid': (formControls.firstname.touched || isSubmitted) && formControls.firstname.errors?.required
-                      }" />
-              </div>
-            </div>
-
-            <div class="col-6 mb-3">
-              <div class="form-group" [ngClass]="{'disabled-group': !isBasicEditable}">
-                <label class="fs-6 mb-3"> Last name</label>
-                <input type="text" class="form-control fs-6" formControlName="lastname" />
-              </div>
-            </div>
-
-            <div class="col-6 mb-3">
-              <div class="form-group" [ngClass]="{'disabled-group': !isBasicEditable}">
-                <label class="fs-6 mb-3 required">Role</label>
-                <select class="form-select fs-6 mb-3" aria-label=".form-select-lg" formControlName="role"
-                  [ngClass]="{
+          </div>
+          <div class="col-6 mb-3">
+            <div class="form-group" [ngClass]="{'disabled-group': !isBasicEditable}">
+              <label class="fs-6 mb-3 required">Role</label>
+              <select class="form-select fs-6 mb-3" aria-label=".form-select-lg" formControlName="role"
+                [ngClass]="{
                       'is-invalid': (formControls.role.touched || isSubmitted) && formControls.role.errors?.required }">
-                  <option value="" disabled>-- Select an option --</option>
-                  <option *ngFor="let role of rolesData" value="{{ role?._id }}">
-                    {{ role?.name }}
-                  </option>
-                </select>
-              </div>
-            </div>
-
-            <div class="col-lg-6 mb-3">
-              <div class="form-group" [ngClass]="{'disabled-group': !isBasicEditable}">
-                <label class="fs-6 mb-3">Status</label>
-                <select class="form-select fs-6 mb-3" formControlName="isActive">
-                  <option value="" disabled>-- Select an option --</option>
-                  <option value="false">Inactive</option>
-                  <option value="true">Active</option>
-                </select>
-              </div>
+                <option value="" disabled>-- Select an option --</option>
+                <option *ngFor="let role of rolesData" value="{{ role?._id }}">
+                  {{ role?.name }}
+                </option>
+              </select>
             </div>
           </div>
-          <div class="d-flex align-items-center justify-content-end" *ngIf="isBasicEditable">
-            <button class="btn btn-primary" (click)="updateAdmin()">Save details</button>
-          </div>
-        </div>
-
-        <div>
-          <div class="col-lg-8">
-            <div>
-              <span class="me-5 editTitle fs-5">Reset password</span>
-              <button class="btn btn-link" (click)="editPassword()">
-                {{isPasswordEditable ? 'Cancel' : 'Edit details'}}
-              </button>
-            </div>
-            <div class="row">
-              <div class="col-lg-6">
-                <div class="form-group" [ngClass]="{'disabled-group': !isPasswordEditable}">
-                  <input type="{{showPassword ? 'text' : 'password'}}" placeholder="Password" class="form-control"
-                    [formControl]="password">
-                </div>
-              </div>
-              <div class="col-lg-3" *ngIf="isPasswordEditable">
-                <input type="button" value="{{!showPassword ? 'Show' : 'Hide'}}" id="showPassword"
-                  (click)="togglePassword()" class="form-control btn btn-secondary">
-              </div>
-              <div class="col-lg-3" *ngIf="isPasswordEditable">
-                <input type="button" class="btn btn-primary" value="Save details" (click)="open(template)" />
-              </div>
+          <div class="col-lg-6 mb-3">
+            <div class="form-group" [ngClass]="{'disabled-group': !isBasicEditable}">
+              <label class="fs-6 mb-3">Status</label>
+              <select class="form-select fs-6 mb-3" formControlName="isActive">
+                <option value="" disabled>-- Select an option --</option>
+                <option value="false">Inactive</option>
+                <option value="true">Active</option>
+              </select>
             </div>
           </div>
         </div>
-
-        <div>
-          <div class="col-lg-8">
-            <div>
-              <span class="me-5 editTitle fs-5">Mobile number</span>
-              <button class="btn btn-link" (click)="toggleEdit('mobile')">
-                {{isMobileEditable ? 'Cancel' : 'Edit details'}}
-              </button>
-            </div>
-            <div class="row">
-              <div class="col-lg-2">
-                <div class="form-group" [ngClass]="{'disabled-group': !isMobileEditable}">
-                  <select class="form-select mb-3" formControlName="countryCode"  (change)="handleMobilePattern()"
-                    [ngClass]="{
-                            'is-invalid':(formControls.countryCode.touched || isSubmitted) && formControls.countryCode.errors?.required}">
-                    <option value="" disabled>-- Select an option --</option>
-                    <option value="+91">+91</option>
-                    <option value="+971">+971</option>
-                  </select>
-                </div>
-              </div>
-              <div class="col-lg-7">
-                <div class="form-group" [ngClass]="{'disabled-group': !isMobileEditable}">
-                  <input type="text" class="form-control fs-6" formControlName="mobile" placeholder="Mobile number"
-                    [ngClass]="{'is-invalid': formControls.mobile.errors?.required }" />
-                </div>
-                <div class="alert alert-danger fs-7 mt-1" role="alert" *ngIf="formControls.mobile.errors?.pattern">
-                  Please, enter valid mobile number
-                </div>
-              </div>
-              <div class="col-lg-3" *ngIf="isMobileEditable">
-                <input type="button" id="mobileButton" name="mobileButton" class="btn btn-primary" value="Save details"
-                  (click)="saveDetails('mobile')" />
-              </div>
-            </div>
-          </div>
+        <div class="d-flex align-items-center justify-content-end" *ngIf="isBasicEditable">
+          <button class="btn btn-primary" (click)="updateAdmin()">Save details</button>
         </div>
-
-        <div>
-          <div class="col-lg-6">
-            <div>
-              <span class="me-5 editTitle fs-5">Email address</span>
-              <button class="btn btn-link" (click)="toggleEdit('email')">
-                {{ isEmailEditable ? 'Cancel' : 'Edit details'}}
-              </button>
-            </div>
-            <div class="row">
-              <div class="col-lg-8">
-                <div class="form-group" [ngClass]="{'disabled-group': !isEmailEditable}">
-                  <input type="text" class="form-control fs-6" formControlName="email" placeholder="Email address"
-                    [ngClass]="{'is-invalid': (formControls.email.touched || isSubmitted) && formControls.email.errors?.required }" />
-                </div>
-                <div class="alert alert-danger fs-7 mt-1" role="alert" *ngIf="formControls.email.errors?.pattern">
-                  Invalid email address
-                </div>
-              </div>
-              <div class="col-lg-4" *ngIf="isEmailEditable">
-                <input type="button" id="mobileButton" name="mobileButton" class="btn btn-primary" value="Save details"
-                  (click)="saveDetails('email')" />
-              </div>
-            </div>
-          </div>
-        </div>
-      </form>
+      </div>
     </div>
-  </div>
+
+    <div class="card">
+      <div class="card-body">
+        <div class="d-flex mb-3 align-items-end justify-content-between">
+          <div class="fs-4 fw-bold">Reset Password</div>
+          <button class="btn btn-secondary" (click)="editPassword()">
+            {{isPasswordEditable ? 'Cancel' : 'Edit details'}}
+          </button>
+        </div>
+        <div class="row">
+          <div class="col-lg-8">
+            <div class="form-group" [ngClass]="{'disabled-group': !isPasswordEditable}">
+              <input type="{{showPassword ? 'text' : 'password'}}" placeholder="Password" class="form-control"
+                [formControl]="password">
+            </div>
+          </div>
+          <div class="col-lg-2" *ngIf="isPasswordEditable">
+            <input type="button" value="{{!showPassword ? 'Show' : 'Hide'}}" id="showPassword"
+              (click)="togglePassword()" class="form-control btn btn-secondary">
+          </div>
+          <div class="col-lg-2" *ngIf="isPasswordEditable">
+            <input type="button" class="btn btn-primary" value="Save details" (click)="open(template)" />
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card my-4">
+      <div class="card-body">
+        <div class="d-flex mb-3 align-items-end justify-content-between">
+          <div class="fs-4 fw-bold">Contact Details</div>
+          <button class="btn btn-secondary" (click)="toggleEdit('mobile')">
+            {{isMobileEditable ? 'Cancel' : 'Edit Details'}}
+          </button>
+        </div>
+        <div class="row">
+          <div class="col-lg-2">
+            <div class="form-group" [ngClass]="{'disabled-group': !isMobileEditable}">
+              <select class="form-select mb-3" formControlName="countryCode" (change)="handleMobilePattern()"
+                [ngClass]="{
+                            'is-invalid':(formControls.countryCode.touched || isSubmitted) && formControls.countryCode.errors?.required}">
+                <option value="" disabled>-- Select an option --</option>
+                <option value="+91">+91</option>
+                <option value="+971">+971</option>
+              </select>
+            </div>
+          </div>
+          <div class="col-lg-7">
+            <div class="form-group" [ngClass]="{'disabled-group': !isMobileEditable}">
+              <input type="text" class="form-control fs-6" formControlName="mobile" placeholder="Mobile number"
+                [ngClass]="{'is-invalid': formControls.mobile.errors?.required }" />
+            </div>
+            <div class="alert alert-danger fs-7 mt-1" role="alert" *ngIf="formControls.mobile.errors?.pattern">
+              Please, enter valid mobile number
+            </div>
+          </div>
+          <div class="col-lg-3" *ngIf="isMobileEditable">
+            <input type="button" id="mobileButton" name="mobileButton" class="btn btn-primary" value="Save details"
+              (click)="saveDetails('mobile')" />
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-body">
+        <div class="d-flex mb-3 align-items-end justify-content-between">
+          <div class="fs-4 fw-bold">Email Details</div>
+          <button class="btn btn-secondary" (click)="toggleEdit('email')">
+            {{ isEmailEditable ? 'Cancel' : 'Edit details'}}
+          </button>
+        </div>
+        <div class="row">
+          <div class="col-lg-8">
+            <div class="form-group" [ngClass]="{'disabled-group': !isEmailEditable}">
+              <input type="text" class="form-control fs-6" formControlName="email" placeholder="Email address"
+                [ngClass]="{'is-invalid': (formControls.email.touched || isSubmitted) && formControls.email.errors?.required }" />
+            </div>
+            <div class="alert alert-danger fs-7 mt-1" role="alert" *ngIf="formControls.email.errors?.pattern">
+              Invalid email address
+            </div>
+          </div>
+          <div class="col-lg-4" *ngIf="isEmailEditable">
+            <input type="button" id="mobileButton" name="mobileButton" class="btn btn-primary" value="Save details"
+              (click)="saveDetails('email')" />
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
 </div>
 
 <ng-template #template>

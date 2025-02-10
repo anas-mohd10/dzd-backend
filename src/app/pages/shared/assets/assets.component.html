@@ -65,13 +65,13 @@
                         <div class="mask fs-5 rounded d-flex align-items-center justify-content-center text-muted">
                             Drag and drop or <span class="mx-2 text-underline text-primary">Browse files</span> here
                         </div>
-                        <input type="file" class="form-control" (change)="onMediaChange($event)">
+                        <input type="file" class="form-control" multiple="multiple" (change)="onMediaChange($event)">
                     </div>
                     <div class="my-4" *ngIf="previews.length > 0">
                         <div class="d-flex align-items-center justify-content-between">
                             <div class="fs-5 text-primary">{{previews.length}} assets are ready to upload</div>
                             <div>
-                                <input type="file" class="form-control" (change)="onMediaChange($event)">
+                                <input type="file" multiple="multiple" class="form-control" (change)="onMediaChange($event)">
                             </div>
                         </div>
                         <div class="previews my-4">

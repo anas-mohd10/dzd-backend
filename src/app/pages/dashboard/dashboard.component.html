@@ -95,7 +95,7 @@
 
       <div class="overviewContainer grid-5">
         <ng-container *ngFor="let info of data?.otherInformations">
-          <div class="overviewCard" routerLink="{{info?.path}}" [queryParams]="{'type': info?.query}">
+          <div class="overviewCard" routerLink="{{info?.path}}" [queryParams]="queryStringToObject(info?.query)">
             <div class="overviewValue">{{ info?.value }}</div>
             <div class="overviewTitle">
               <p>{{ info?.title }}</p>
@@ -163,7 +163,7 @@
                     <ul>
                       <li routerLink="/app/collection">Customers</li>
                       <li routerLink="/app/collection">Collections</li>
-                      <li routerLink="/app/brand">Brands</li>
+                      <li routerLink="/app/brands">Brands</li>
                     </ul>
                   </div>
                 </div>

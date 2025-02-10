@@ -69,9 +69,9 @@
                     <div class="row">
                         <div class="col-lg-10">
                             <label for="searchUsers" class="fs-6 mb-3 required">Customers</label>
-                            <input id="searchUsers" type="search" placeholder="Search customers here"
+                            <input id="searchUsers" autocomplete="off" type="search" placeholder="Search customers here"
                                 class="form-control" [formControl]="customer"
-                                [ngClass]="{ 'is-invalid': (of.customerId.touched || isSubmitted) && of.customerId.errors?.required}">
+                                [ngClass]="{ 'is-invalid': (formControls.customerId.touched || isSubmitted) && formControls.customerId.errors?.required}">
                         </div>
                         <div class="col-lg-2">
                             <label for="addNewUser" class="fs-6 mb-3">New Customer?</label>
@@ -164,12 +164,12 @@
                                             </div>
                                         </td>
                                         <td>
-                                            <div class="fs-5 fw-bold">{{settings?.currency}}
-                                                {{cart?.price?.selling}}</div>
+                                            <div class="fs-5 fw-bold">{{settings?.currency}} {{cart?.price?.selling}}
+                                            </div>
                                             <div *ngIf="cart?.price?.mrp > cart?.price?.selling"
                                                 class="fs-5 text-muted text-decoration-line-through">
-                                                {{settings?.currency}}
-                                                {{cart?.price?.mrp}}</div>
+                                                {{settings?.currency}} {{cart?.price?.mrp}}
+                                            </div>
                                         </td>
                                         <td>
                                             <div class="d-flex align-items-center justify-content-start gap-2">
@@ -183,7 +183,13 @@
                                                                 d="M18 12H6" />
                                                         </svg>
                                                     </div>
-                                                    <div class="productQuantity">{{cart?.quantity}}</div>
+                                                    <div>
+                                                        <input class="form-control" type="number"
+                                                            [value]="cart.quantity"
+                                                            (blur)="updateQuantityWithInput($event, cart)"
+                                                            [max]="cart.maxOrderQuantity"
+                                                            style="width: 100px; height: 30px;" />
+                                                    </div>
                                                     <div class="quantityBtn bg-secondary rounded cursor-pointer"
                                                         (click)="updateQuantity('increment', cart)">
                                                         <svg height="16" width="16" xmlns="http://www.w3.org/2000/svg"
@@ -249,7 +255,7 @@
                         <div class="timeslots">
                             <ng-container *ngFor="let time of timeslots">
                                 <div class="timeslot fs-5" (click)="selectDeliveryTime(time?.refid)"
-                                    [ngClass]="{'active': deliveryTime == time?.refid, 'border border-danger': (of.deliverySlot.touched || isSubmitted) && of.deliverySlot.errors?.required}">
+                                    [ngClass]="{'active': deliveryTime == time?.refid, 'border border-danger': (formControls.deliverySlot.touched || isSubmitted) && formControls.deliverySlot.errors?.required}">
                                     <div> {{time?.from}} - {{time?.to}}</div>
                                 </div>
                             </ng-container>
@@ -260,7 +266,7 @@
                     <div class="col-lg-4 form-group">
                         <label class="fs-6 mb-3 required">Payment Method</label>
                         <select class="form-select mb-3 fs-6" formControlName="paymentMethod"
-                            [ngClass]="{ 'is-invalid': (of.paymentMethod.touched || isSubmitted) && of.paymentMethod.errors?.required}">
+                            [ngClass]="{ 'is-invalid': (formControls.paymentMethod.touched || isSubmitted) && formControls.paymentMethod.errors?.required}">
                             <option value="" disabled>-- Select an option --</option>
                             <option value="COD">Cash On Delivery</option>
                             <option value="ONLINE">Online</option>
@@ -274,7 +280,14 @@
 
                     <div class="col-lg-4 form-group">
                         <label class="fs-6 mb-3">Additional Charge</label>
-                        <input type="text" formControlName="additionalCharge" class="form-control fs-6">
+                        <input type="text" formControlName="additionalCharge" class="form-control fs-6"
+                            [ngClass]="{ 'is-invalid': (formControls.additionalCharge.touched || isSubmitted) && (formControls.additionalCharge.errors?.required || formControls.additionalCharge.errors?.pattern)}">
+                    </div>
+
+                    <div class="col-lg-4 form-group">
+                        <label class="fs-6 mb-3">Shipping Charge</label>
+                        <input type="text" formControlName="shippingCost" class="form-control fs-6"
+                            [ngClass]="{ 'is-invalid': (formControls.shippingCost.touched || isSubmitted) && (formControls.shippingCost.errors?.required || formControls.shippingCost.errors?.pattern)}">
                     </div>
 
                 </div>

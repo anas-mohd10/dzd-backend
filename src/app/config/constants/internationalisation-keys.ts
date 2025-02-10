@@ -1,6 +1,3 @@
-import { state } from '@angular/animations';
-import { left } from '@popperjs/core';
-
 export const internationalisationKeys = {
     addNewAddress: 'addNewAddress',
     addToCart: 'addToCart',
@@ -17,6 +14,7 @@ export const internationalisationKeys = {
     couponApplied: 'couponApplied',
     couponCode: 'couponCode',
     couponDiscount: 'couponDiscount',
+    couponDiscountText: 'couponDiscountText',
     deliveryAddress: 'deliveryAddress',
     deliveryFee: 'deliveryFee',
     description: 'description',
@@ -129,6 +127,8 @@ export const internationalisationKeys = {
     outForDelivery: 'outForDelivery',
     deliveried: 'deliveried',
     cancelled: 'cancelled',
+    updateVersionTitle: 'updateVersionTitle',
+    updateVersionDescription: 'updateVersionDescription',
     failed: 'failed',
     nameisRequired: 'nameisRequired',
     findOutMoreAt: 'Find out more at',
@@ -401,4 +401,12 @@ export const internationalisationKeys = {
     next: 'next',
     select: 'select',
     qty: 'qty',
+    passwordInstructionMessage: 'passwordInstructionMessage',
+    passwordLengthMessage: 'passwordLengthMessage',
+    viewProducts: 'viewProducts',
+    inCategories: 'inCategories',
+    searchkeyword: 'searchkeyword',
+    backToLogin: 'backToLogin',
+    deliveryDate: 'deliveryDate',
+    deliveryTime: 'deliveryTime',
 }

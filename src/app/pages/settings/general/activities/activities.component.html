@@ -48,8 +48,8 @@
                 <ng-container *ngFor="let activity of activities; let i = index">
                     <div class="p-3 mb-3 b-white rounded activity">
                         <div>{{getLocaleDateString(activity?.date)}}, {{getLocaleTimeString(activity?.date)}}</div>
-                        <div class="my-2 fs-5 fw-bold text-dark">{{activity.activity}} by <span
-                                class="fw-normal text-primary">{{activity.admin.email}}</span></div>
+                        <p class="my-1 text-muted">{{activity.admin.email}}</p>
+                        <div class="text-dark" [innerHTML]="activity.activity"></div>
                     </div>
                 </ng-container>
             </div>

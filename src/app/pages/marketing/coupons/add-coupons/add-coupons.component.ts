@@ -20,6 +20,7 @@ export class AddCouponsComponent implements OnInit {
   editMode = false;
   isSubmitted: boolean;
   appRoute = appRoutes;
+  
 
   categories: any = []; //Array of category ids
   categoriesData: any = []; //Data fetched from database
@@ -90,6 +91,8 @@ export class AddCouponsComponent implements OnInit {
       isDelete: new FormControl('false'),
       isVisibility: new FormControl('true'),
       countPerUser: new FormControl('1', [Validators.required, Validators.pattern("^[0-9]*$")]),
+      isMaxRedemptionEnabled: new FormControl('false'),
+      maxRedemptionValue: new FormControl('', [Validators.pattern("^[0-9]*$")]),
     });
 
     this.getProducts()
@@ -174,18 +177,23 @@ export class AddCouponsComponent implements OnInit {
 
   onSubmit() {
     if (!this.form.valid) {
-      this.isSubmitted = true
+      this.isSubmitted = true;
       return;
     }
 
     const payload = this.createPayload()
     if (payload) {
-      this.couponsService.addCoupon(payload).subscribe((res: any) => {
-        if (res.errorCode != 0) {
-          this.HotToastService.error(res?.message);
-        } else if (res.errorCode == 0) {
-          this.HotToastService.success(res?.message);
-          this.router.navigate([this.appRoute.coupons.COUPONS_LIST]);
+      this.couponsService.addCoupon(payload).subscribe({
+        next: (res: any) => {
+          if (res.success) {
+            this.HotToastService.success(res?.message);
+            this.router.navigate([this.appRoute.coupons.COUPONS_LIST]);
+          } else {
+            this.HotToastService.error(res?.message || 'Failed to add coupon');
+          }
+        },
+        error: (err: any) => {
+          this.HotToastService.error(err?.message || 'Failed to add coupon');
         }
       })
     }
@@ -223,7 +231,11 @@ export class AddCouponsComponent implements OnInit {
             fontSize: this.form.get('fontSize')?.value,
             fontWeight: this.form.get('fontWeight')?.value,
           }
-        }
+        },
+        maxRedemptionAmount: {
+          isEnabled: this.form.get('isMaxRedemptionEnabled')?.value === 'true',
+          value: this.form.get('maxRedemptionValue')?.value || null
+        },
       }
 
       return data

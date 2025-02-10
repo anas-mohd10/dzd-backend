@@ -126,7 +126,7 @@ export class AddOrdersComponent implements OnInit {
         } else {
         }
       },
-      error: (error: any) => {},
+      error: (error: any) => { },
     });
 
     this.StoresService.getClickPoints().subscribe((res: any) => {
@@ -145,23 +145,27 @@ export class AddOrdersComponent implements OnInit {
         } else {
         }
       },
-      error: (error: any) => {},
+      error: (error: any) => { },
     });
 
     this.addressForm = new FormGroup({
-      type: new FormControl('Home'),
+      name: new FormControl('',Validators.required),
+      countryCode: new FormControl(''),
+      mobile: new FormControl('', [
+        Validators.required,
+        Validators.pattern(('^[0-9]{10}$'))
+      ]),
       firstlane: new FormControl('', Validators.required),
       secondlane: new FormControl(''),
-      area: new FormControl(''),
       city: new FormControl('', Validators.required),
-      pincode: new FormControl(''),
-      name: new FormControl(''),
-      countryCode: new FormControl(''),
-      mobile: new FormControl('', Validators.pattern('^[0-9]{10}$')),
+      area: new FormControl(''),
+      landmark: new FormControl('',Validators.required),
+      type: new FormControl('', Validators.required),
+      pincode: new FormControl('',Validators.required),
       state: new FormControl('', Validators.required),
-      landmark: new FormControl(''),
-      latitude: new FormControl(''),
-      longitude: new FormControl(''),
+      lat: new FormControl(''),
+      lng: new FormControl(''),
+      isDefault: new FormControl(false),
     });
 
     this.userForm = new FormGroup({
@@ -380,13 +384,14 @@ export class AddOrdersComponent implements OnInit {
       pickUpLocation: [null],
       deliveryDate: [''],
       deliveryType: ['0'],
+      shippingCost: [0, Validators.pattern(/^[0-9]+$/)],
       deliverySlot: [null],
       orderNote: [''],
       shippingNote: [''],
     });
   }
 
-  get of() {
+  get formControls() {
     return this.orderForm.controls;
   }
 
@@ -498,7 +503,7 @@ export class AddOrdersComponent implements OnInit {
         } else {
         }
       },
-      error: (err: any) => {},
+      error: (err: any) => { },
     });
 
     this.orderForm.get('deliveryDate')?.setValue(date);
@@ -552,65 +557,134 @@ export class AddOrdersComponent implements OnInit {
   }
 
   addToCart(product: any) {
-    let isExists: boolean = this.cartItems.some(
-      (item: any) => item?._id == product?._id
+    const isExists: boolean = this.cartItems.some(
+        (item: any) => item?._id === product?._id
     );
     if (isExists) {
-      this.ToastrService.error('Product already exists in the cart');
+        this.ToastrService.error('Product already exists in the cart');
     } else {
-      this.products = [];
-      this.keyword.setValue('');
-      this.cartItems.push({ ...product, quantity: product?.moq });
-      this.cartSubtotal =
-        this.cartSubtotal + product?.price?.selling * product?.moq;
-      this.cartTotal = this.cartSubtotal - this.cartDiscount;
-      this.productsModalRef?.hide();
+        this.products = [];
+        this.keyword.setValue('');
+        const initialQuantity = Math.max(1, product?.moq || 1);
+        this.cartItems.push({ ...product, quantity: initialQuantity });
+        this.cartSubtotal += product?.price?.selling * initialQuantity;
+        this.cartTotal = this.cartSubtotal - this.cartDiscount;
+        this.productsModalRef?.hide();
     }
+}
+updateQuantityWithInput(event: Event, product: any): void {
+  const target = event.target as HTMLInputElement;
+  if (!target) return;
+
+  const newValue = parseInt(target.value, 10);
+
+  if (isNaN(newValue)) {
+    target.value = product.quantity.toString();
+    return;
   }
 
-  updateQuantity(type: any, product: any) {
-    switch (type) {
-      case 'increment':
-        this.cartItems = this.cartItems.map((item: any) => {
-          if (item?._id == product?._id) {
-            if (product?.maxOrderQuantity < item.quantity + 1) {
-              this.ToastrService.error(
-                `Maximum order quantity (${product?.maxOrderQuantity}) has been reached`
-              );
-              return item;
-            } else {
-              this.cartSubtotal = this.cartSubtotal + product?.price?.selling;
-              this.cartTotal = this.cartSubtotal - this.cartDiscount;
-              this.ToastrService.success('Product quantity updated');
-              return { ...item, quantity: item.quantity + 1 };
-            }
-          } else {
-            return item;
-          }
-        });
-        break;
-      case 'decrement':
-        this.cartItems = this.cartItems.map((item: any) => {
-          if (item?._id == product?._id && item.quantity > 1) {
-            if (product?.moq > item.quantity - 1) {
-              this.ToastrService.error(
-                `Minimum required quantity (${product?.moq}) has been reached`
-              );
-              return item;
-            } else {
-              this.cartSubtotal = this.cartSubtotal - product?.price?.selling;
-              this.cartTotal = this.cartSubtotal - this.cartDiscount;
-              this.ToastrService.success('Product quantity updated');
-              return { ...item, quantity: item.quantity - 1 };
-            }
-          } else {
-            return item;
-          }
-        });
-        break;
+  let finalQuantity = Math.max(1, newValue);
+
+  // Check both max order quantity and stock limits
+  const maxAllowedQuantity = Math.min(
+    product.maxOrderQuantity,
+    product.stock || 0
+  );
+
+  if (finalQuantity > maxAllowedQuantity) {
+    if (product.stock === 0) {
+      this.ToastrService.error('Product is out of stock');
+      finalQuantity = product.quantity;
+    } else if (product.stock < product.maxOrderQuantity) {
+      this.ToastrService.error(`Only ${product.stock} items available in stock`);
+      finalQuantity = product.stock;
+    } else {
+      this.ToastrService.error(`Maximum order quantity is ${product.maxOrderQuantity}`);
+      finalQuantity = product.maxOrderQuantity;
     }
+    target.value = finalQuantity.toString();
   }
 
+  const currentQuantity = product.quantity || 1;
+  const quantityDifference = finalQuantity - currentQuantity;
+  const priceDifference = quantityDifference * product.price.selling;
+
+  this.cartItems = this.cartItems.map((item: any) => {
+    if (item._id === product._id) {
+      return { ...item, quantity: finalQuantity };
+    }
+    return item;
+  });
+
+  this.cartSubtotal += priceDifference;
+  this.cartTotal = this.cartSubtotal - this.cartDiscount;
+
+  if (quantityDifference !== 0) {
+    this.ToastrService.success('Product quantity updated');
+  }
+}
+
+
+
+
+updateQuantity(type: 'increment' | 'decrement', product: any) {
+  switch (type) {
+    case 'increment': {
+      const newQuantity = product.quantity + 1;
+      
+      // Check both stock and max order quantity
+      if (product.stock === 0) {
+        this.ToastrService.error('Product is out of stock');
+        return;
+      }
+
+      if (newQuantity > product.stock) {
+        this.ToastrService.error(`Only ${product.stock} items available in stock`);
+        return;
+      }
+
+      if (newQuantity > product.maxOrderQuantity) {
+        this.ToastrService.error(
+          `Maximum order quantity (${product.maxOrderQuantity}) has been reached`
+        );
+        return;
+      }
+
+      this.cartItems = this.cartItems.map((item: any) => {
+        if (item._id === product._id) {
+          this.cartSubtotal += product.price.selling;
+          this.cartTotal = this.cartSubtotal - this.cartDiscount;
+          this.ToastrService.success('Product quantity updated');
+          return { ...item, quantity: newQuantity };
+        }
+        return item;
+      });
+      break;
+    }
+
+    case 'decrement': {
+      const newQuantity = product.quantity - 1;
+      
+      if (newQuantity < product.moq) {
+        this.ToastrService.error(
+          `Minimum required quantity (${product.moq}) has been reached`
+        );
+        return;
+      }
+
+      this.cartItems = this.cartItems.map((item: any) => {
+        if (item._id === product._id && item.quantity > 1) {
+          this.cartSubtotal -= product.price.selling;
+          this.cartTotal = this.cartSubtotal - this.cartDiscount;
+          this.ToastrService.success('Product quantity updated');
+          return { ...item, quantity: newQuantity };
+        }
+        return item;
+      });
+      break;
+    }
+  }
+}
   deleteProduct(product: any) {
     this.cartItems = this.cartItems.filter(
       (item: any) => item?._id != product?._id
@@ -765,6 +839,36 @@ export class AddOrdersComponent implements OnInit {
   }
   //Customer and address management
 
+  getBrowserAndDevice() {
+    const userAgent = navigator.userAgent;
+    const isMobile = /iPhone|iPad|iPod|Android/i.test(userAgent);
+    let browser = 'Others';
+
+    if (
+      userAgent.includes("Chrome") &&
+      !userAgent.includes("Edg") && !userAgent.includes("OPR")
+    ) {
+      browser = "Chrome";
+    }
+    if (userAgent.includes("Safari") && !userAgent.includes("Chrome")) {
+      browser = "Safari";
+    }
+    if (userAgent.includes("Firefox")) {
+      browser = "Firefox";
+    }
+    if (userAgent.includes("Edg")) {
+      browser = "Edge";
+    }
+    if (userAgent.includes("Brave")) {
+      browser = "Brave";
+    }
+    if (userAgent.includes("OPR") || userAgent.includes("Opera")) {
+      browser = "Opera";
+    }
+
+    return { isMobile, browser }
+  }
+
   createOrder() {
     this.orderForm.get('customerId')?.setValue(this.customerDetails?._id);
     this.orderForm.get('products')?.setValue(this.cartItems);
@@ -775,12 +879,20 @@ export class AddOrdersComponent implements OnInit {
       return;
     }
 
-    let payload = {
-      address: this.address,
-      ...this.orderForm.value,
-    };
+    const { isMobile, browser } = this.getBrowserAndDevice();
 
-    this.OrderService.addOrder(payload).subscribe({
+    this.OrderService.addOrder({
+      address: this.address,
+      customerDetails: {
+        name: this.customerDetails.name,
+        countryCode: this.customerDetails.countryCode,
+        mobile: this.customerDetails.mobile,
+        email: this.customerDetails.email
+      },
+      ...this.orderForm.value,
+      source: isMobile == true ? 'MOBILE' : 'WEB',
+      sourceType: browser
+    }).subscribe({
       next: (res: any) => {
         if (res?.errorCode == 0) {
           this.Router.navigate([this.appRoute.orders.ORDERS_LIST]);

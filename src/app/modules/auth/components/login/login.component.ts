@@ -65,6 +65,10 @@ export class LoginComponent implements OnInit, OnDestroy {
       return
     }
 
+    const emailAddress: string = this.form.get('email')?.value.toLowerCase()
+    console.log(emailAddress, "emailAddress")
+    this.form.patchValue({ email: emailAddress })
+
     this.authService.login(this.form.value).subscribe({
       next: (res: any) => {
         if (res.errorCode == 0) {

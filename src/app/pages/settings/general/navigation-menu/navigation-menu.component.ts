@@ -192,6 +192,7 @@ export class NavigationMenuComponent implements OnInit {
   childNodeIndex: any = null;
   parentMenuIndex: any = null;
   showChildNode: any = null
+  subMenuIcon: string = '';
 
   get itemControls() {
     return this.itemForm.controls;
@@ -350,6 +351,26 @@ export class NavigationMenuComponent implements OnInit {
     }
   }
 
+  handleMenuIcon(type: string, event: any) {
+    if (type == 'subMenu') {
+      this.subMenuIcon = event.path;
+      this.megaMenuItemForm.patchValue({ icon: event.path });
+    } else if (type == 'childNode') {
+      this.childNodeIcon = event.path;
+      this.childNodeForm.patchValue({ icon: event.path });
+    }
+  }
+
+  removeMenuIcon(type: string) {
+    if (type == 'subMenu') {
+      this.subMenuIcon = '';
+      this.megaMenuItemForm.patchValue({ icon: '' });
+    } else if (type == 'childNode') {
+      this.childNodeIcon = '';
+      this.childNodeForm.patchValue({ icon: '' });
+    }
+  }
+
   handleMegaMenuMobileMedia(type: string, event: any) {
     if (type === 'advertisementMobile') {
       this.megaMenuAdvertisementMobile = event.path;
@@ -477,13 +498,16 @@ export class NavigationMenuComponent implements OnInit {
     }
 
     if (this.megaMenuItemIndex != null) {
-      this.subMenus[this.megaMenuItemIndex] = this.megaMenuItemForm.value;
+      this.subMenus[this.megaMenuItemIndex] = {
+        ...this.megaMenuItemForm.value,
+        childNodes: this.subMenus[this.megaMenuItemIndex]['childNodes']
+      };
       this.Toast.success('Menu item added successfully');
       this.megaMenuItemForm.reset();
       this.isMegaMenuItemDetailsSubmitted = false;
       this.megaMenuItemIndex = null;
     } else {
-      this.subMenus.push(this.megaMenuItemForm.value);
+      this.subMenus.push({ ...this.megaMenuItemForm.value, childNodes: [] });
       this.Toast.success('Menu item added successfully');
       this.megaMenuItemForm.reset();
       this.isMegaMenuItemDetailsSubmitted = false;
@@ -518,6 +542,7 @@ export class NavigationMenuComponent implements OnInit {
 
   getMegaMenuItem(index: number) {
     this.megaMenuItemForm.patchValue(this.subMenus[index]);
+    this.subMenuIcon = this.subMenus[index]?.icon;
     this.megaMenuItemIndex = index;
     this.isAddMenuItem = true
   }
@@ -525,6 +550,7 @@ export class NavigationMenuComponent implements OnInit {
   getChildNodeItem(index: number, parentMenuIndex: number) {
     this.parentMenuIndex = parentMenuIndex
     this.childNodeForm.patchValue(this.subMenus[this.parentMenuIndex]['childNodes'][index]);
+    this.childNodeIcon = this.subMenus[this.parentMenuIndex]['childNodes'][index]?.icon;
     this.childNodeIndex = index;
     this.isAddMenuChildItem = true
   }
@@ -615,7 +641,8 @@ export class NavigationMenuComponent implements OnInit {
     });
 
     this.childNodeForm = new FormGroup({
-      title: new FormControl('', Validators.required),
+      icon: new FormControl(''),
+      title: new FormControl(''),
       redirection: new FormControl('', Validators.required),
     });
 
@@ -626,7 +653,8 @@ export class NavigationMenuComponent implements OnInit {
     });
 
     this.megaMenuItemForm = new FormGroup({
-      title: new FormControl('', Validators.required),
+      icon: new FormControl(''),
+      title: new FormControl(''),
       redirection: new FormControl('', Validators.required),
     });
 
@@ -1211,6 +1239,13 @@ export class NavigationMenuComponent implements OnInit {
     this.menuItemDetails = {};
     this.advancedMenuItems = [];
     this.isAdvancedMenuItemSubmitted = false;
+    this.childNodeIndex = null
+    this.megaMenuIcon = ''
+    this.subMenuIcon = ''
+    this.childNodeIcon = ''
+    this.megaMenuItemIndex = null
+    this.isAddMenuChildItem = false
+    this.isAddMenuItem = false
   }
 
   saveTitleItemsRef() {

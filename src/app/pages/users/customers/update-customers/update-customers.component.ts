@@ -21,6 +21,7 @@ import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
 import { HotToastService } from '@ngneat/hot-toast';
 import { AppSettingsService } from 'src/app/includes/services/app.settings.service';
 import { OrdersService } from 'src/app/includes/services/orders.service';
+import { Country, ICountry, State, IState, City, ICity } from 'country-state-city'
 
 interface CustomerOrder {
   orderNo: string;
@@ -70,10 +71,7 @@ export class UpdateCustomersComponent implements OnInit {
   deleteModalRef?: BsModalRef;
   walletRef?: BsModalRef;
   transactions: Array<any> = [];
-  amount: FormControl = new FormControl('', [
-    Validators.required,
-    Validators.pattern(/^[1-9][0-9]*$/),
-  ]);
+  amount: FormControl = new FormControl('', [Validators.required, Validators.pattern(/^\d+(\.\d{1,2})?$/)]);
   description: FormControl = new FormControl('');
   isWalletSubmitted: boolean = false;
   settings: any = {};
@@ -81,10 +79,7 @@ export class UpdateCustomersComponent implements OnInit {
   transactionType: FormControl = new FormControl('all');
   loyaltyRef?: BsModalRef;
   historyItems: Array<any> = [];
-  points: FormControl = new FormControl('', [
-    Validators.required,
-    Validators.pattern(/^[0-9]+$/),
-  ]);
+  points: FormControl = new FormControl('', [Validators.required, Validators.pattern(/^[0-9]+$/),]);
   loyaltyDescription: FormControl = new FormControl('');
   isLoyaltySubmitted: boolean = false;
   savedCards: Array<any> = [];
@@ -92,22 +87,16 @@ export class UpdateCustomersComponent implements OnInit {
   page: number = 1;
   limit: number = 20;
   orders: Array<any> = [];
-  customerOrderDetails: CustomerOrderDetails = {
-    totalResults: 0,
-    totalPages: 0,
-    orders: [],
-  };
+  customerOrderDetails: CustomerOrderDetails = { totalResults: 0, totalPages: 0, orders: [], };
   ordersRef?: BsModalRef;
-  successOrders: Array<string> = [
-    'PLACED',
-    'SHIPPED',
-    'PARTIAL PROCESSED',
-    'OUT FOR DELIVERY',
-    'DELIVERED',
-    'PACKED',
-  ];
+  successOrders: Array<string> = ['PLACED', 'SHIPPED', 'PARTIAL PROCESSED', 'OUT FOR DELIVERY', 'DELIVERED', 'PACKED'];
+  countries: ICountry[] = Country.getAllCountries(); // Get all countries
+  states: IState[] = [];
+  cities: ICity[] = [];
   acceptedOrders: Array<string> = ['ACCEPTED'];
   cancelledOrders: Array<string> = ['CANCELLED', 'PENDING', 'FAILED'];
+  previousCountry: string = '';
+  previousState: string = '';
 
   constructor(
     private formBuilder: FormBuilder,
@@ -119,7 +108,56 @@ export class UpdateCustomersComponent implements OnInit {
     private Toast: HotToastService,
     private BsModalService: BsModalService,
     private AppSettingsService: AppSettingsService
-  ) {}
+  ) { }
+
+  // Get State list from country code
+  getStateList() {
+    const selectedCountry = this.addressForm.get('country')?.value;
+    if (this.previousCountry && this.previousCountry !== selectedCountry) {
+      // If the country has changed, reset state and city
+      this.addressForm.patchValue({
+        state: '',
+        city: '',
+      });
+      this.cities = [];
+      this.previousState = ''; // Reset previous state
+    }
+  
+    this.previousCountry = selectedCountry; // Store previous country value
+  
+    const countryCode = this.countries.find((country: ICountry) => country.name === selectedCountry);
+  
+    if (countryCode) {
+      this.states = State.getStatesOfCountry(countryCode.isoCode);
+      this.ChangeDetectorRef.markForCheck();
+    }
+  }
+  
+  // Get City list from state code and country code
+  getCityList() {
+    const selectedState = this.addressForm.get('state')?.value;
+  
+    if (this.previousState && this.previousState !== selectedState) {
+      // If the state has changed, reset city
+      this.addressForm.patchValue({
+        city: '',
+      });
+    }
+  
+    this.previousState = selectedState; // Store previous state value
+  
+    const countryCode = this.countries.find((country: ICountry) => country.name === this.addressForm.get('country')?.value);
+    const stateCode = this.states.find((state: IState) => state.name === selectedState);
+  
+    if (countryCode && stateCode) {
+      this.cities = City.getCitiesOfState(countryCode.isoCode, stateCode.isoCode);
+      this.ChangeDetectorRef.markForCheck();
+    }
+  }
+  
+
+
+
 
   //Function to open the saved cards modal
   openSavedCards(template: TemplateRef<any>) {
@@ -239,7 +277,7 @@ export class UpdateCustomersComponent implements OnInit {
         } else {
         }
       },
-      error: (err: any) => {},
+      error: (err: any) => { },
     });
   }
 
@@ -300,7 +338,7 @@ export class UpdateCustomersComponent implements OnInit {
         '',
         [
           Validators.required,
-          Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$'),
+          Validators.pattern("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,4}$")
         ],
       ],
       countryCode: ['', Validators.required],
@@ -309,16 +347,20 @@ export class UpdateCustomersComponent implements OnInit {
     });
 
     this.addressForm = new FormGroup({
-      name: new FormControl(''),
+      name: new FormControl('', Validators.required),
       countryCode: new FormControl(''),
-      mobile: new FormControl('', Validators.pattern('^[0-9]{10}$')),
+      mobile: new FormControl('', [
+        Validators.required,
+        Validators.pattern(('^[0-9]{10}$'))
+      ]),
       firstlane: new FormControl('', Validators.required),
       secondlane: new FormControl(''),
       city: new FormControl('', Validators.required),
       area: new FormControl(''),
-      landmark: new FormControl(''),
-      type: new FormControl('', Validators.required),
-      pincode: new FormControl(''),
+      country: new FormControl(''),
+      landmark: new FormControl('', Validators.required),
+      type: new FormControl('Home', Validators.required),
+      pincode: new FormControl('', Validators.required),
       state: new FormControl('', Validators.required),
       lat: new FormControl(''),
       lng: new FormControl(''),
@@ -432,14 +474,13 @@ export class UpdateCustomersComponent implements OnInit {
           this.addressDetails = res?.result;
           for (let _key of Object.keys(res?.result)) {
             this.addressForm.get(_key)?.setValue(res?.result[_key]);
-            this.addressForm
-              .get('lat')
-              ?.setValue(res?.result?.coordinates?.lat);
-            this.addressForm
-              .get('lng')
-              ?.setValue(res?.result?.coordinates?.lng);
-            this.ChangeDetectorRef.markForCheck();
+            this.addressForm.get('lat')?.setValue(res?.result?.coordinates?.lat);
+            this.addressForm.get('lng')?.setValue(res?.result?.coordinates?.lng);
           }
+
+          this.getStateList();
+          this.getCityList()
+          this.ChangeDetectorRef.markForCheck();
         }
       });
     }
@@ -514,6 +555,7 @@ export class UpdateCustomersComponent implements OnInit {
 
   addAddress() {
     if (!this.addressForm.valid) {
+      this.Toast.error('Please fill all required fields before saving the address.');
       this.isAddressSubmitted = true;
       return;
     }
@@ -585,8 +627,8 @@ export class UpdateCustomersComponent implements OnInit {
           this.addressForm.get(_key)?.setValue(res?.result[_key]);
           this.addressForm.get('lat')?.setValue(res?.result?.coordinates?.lat);
           this.addressForm.get('lng')?.setValue(res?.result?.coordinates?.lng);
-          this.ChangeDetectorRef.markForCheck();
         }
+        this.ChangeDetectorRef.markForCheck();
       }
     });
   }
@@ -634,6 +676,12 @@ export class UpdateCustomersComponent implements OnInit {
       this.customerDetails = res?.result;
       this.savedCards = res?.result?.savedCards || [];
       this.referralCode.setValue(res?.result?.referralCode);
+      this.addressForm.patchValue({
+        name: res?.result?.name,
+        countryCode: res?.result?.countryCode,
+        mobile: res?.result?.mobile
+      })
+      this.handleAddressMobilePattern()
       this.referralCode.disable();
       this.form.patchValue(res?.result);
       this.handleMobilePattern();
@@ -653,6 +701,10 @@ export class UpdateCustomersComponent implements OnInit {
       this.isSubmitted = true;
       return;
     }
+
+    let emailId: string = this.form.get('email')?.value;
+    emailId = emailId.toLowerCase()
+    this.form.patchValue({ email: emailId })
 
     this.customerService
       .updateCustomer(this.slug, {

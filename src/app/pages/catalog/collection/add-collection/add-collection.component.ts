@@ -173,14 +173,11 @@ export class AddCollectionComponent implements OnInit {
   onSubmit() {
     if (this.isAutoCompleteEnabled) {
       // Prepare products array with order
-      const productIds = this.orderedProducts.map(item => item.product?._id);
+      const productIds = this.orderedProducts.map(item => item.product?.sku);
       this.form.get('products')?.setValue(productIds);
     } else {
       // Handle SKU-based product entry if needed
-      const skuProducts = this.productSku?.value.split(',').map((sku:string, index:string) => ({
-        product: sku,
-        order: index
-      }));
+      const skuProducts = this.productSku?.value.split(',').map((sku:string, index:string) => sku.trim());
       this.form.get('products')?.setValue(skuProducts);
     }
 

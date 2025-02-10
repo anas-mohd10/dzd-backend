@@ -46,6 +46,14 @@ export class UsersComponent implements OnInit {
     this.getAdminUsers()
   }
 
+  getFormatDate(date: any) {
+    return new Date(date).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' })
+  }
+
+  getFormatTime(time: string) {
+    return new Date(time).toLocaleTimeString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true })
+  }
+
   onSearch() {
     setTimeout(() => {
       this.getAdminUsers()

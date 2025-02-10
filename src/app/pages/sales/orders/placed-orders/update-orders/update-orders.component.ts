@@ -1,16 +1,5 @@
-import {
-  Component,
-  OnInit,
-  ChangeDetectorRef,
-  ViewChild,
-  TemplateRef,
-} from '@angular/core';
-import {
-  FormBuilder,
-  FormControl,
-  FormGroup,
-  Validators,
-} from '@angular/forms';
+import { Component, OnInit, ChangeDetectorRef, ViewChild, TemplateRef, } from '@angular/core';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { PageTasks } from 'src/app/config/constants';
 import { appRoutes } from 'src/app/config/routes';
@@ -68,18 +57,8 @@ export class UpdateOrdersComponent implements OnInit {
   allProduct: FormControl = new FormControl('');
   statusList: Array<any> = [];
   orderStatus: string = '';
-  orderStatusList: Array<any> = [
-    'PLACED',
-    'DELIVERED',
-    'CANCELLED',
-    'COLLECTED',
-  ];
-  orderStatusCheck: Array<any> = [
-    'Placed',
-    'Delivered',
-    'Cancelled',
-    'Collected',
-  ];
+  orderStatusList: Array<any> = ['PLACED', 'DELIVERED', 'CANCELLED', 'COLLECTED',];
+  orderStatusCheck: Array<any> = ['Placed', 'Delivered', 'Cancelled', 'Collected',];
   isCancelEligible: boolean = false;
   invoiceStatusList: Array<any> = ['PENDING', 'PLACED'];
   isInvoiceAvailable: boolean = false;
@@ -102,12 +81,7 @@ export class UpdateOrdersComponent implements OnInit {
   orderNote: FormControl = new FormControl('');
   reason: FormControl = new FormControl('');
   isNoteDetected: boolean = false;
-  months: Array<string> = [
-    'Jan',
-    'Feb',
-    'Mar',
-    'Apr',
-    'May',
+  months: Array<string> = ['Jan', 'Feb', 'Mar', 'Apr', 'May',
     'Jun',
     'Jul',
     'Aug',
@@ -119,6 +93,17 @@ export class UpdateOrdersComponent implements OnInit {
   domainUrl: string = '';
   bulkProducts: Array<any> = [];
   bulkStatus: Array<any> = [];
+  noteModalRef?: BsModalRef;
+  paymentGateways: string[] = ['network-international-tokenized']
+  retryStatusList: string[] = ["PACKED", "SHIPPED", "OUT FOR DELIVERY", "DELIVERED"];
+  retryModelRef?: BsModalRef
+  isRetryClicked: boolean = false
+  @ViewChild('cancelConfirmation') cancelConfirmation: any
+  cancelConfirmationRef?: BsModalRef
+  productToBeCancelled: string | null;
+  bulkUpdateConfirmationRef?: BsModalRef;
+  bulkStatusToUpdate: string | null = null;
+  @ViewChild('bulkUpdateConfirmation') bulkUpdateConfirmation: any;
 
   constructor(
     private OrdersService: OrdersService,
@@ -131,8 +116,75 @@ export class UpdateOrdersComponent implements OnInit {
     private HotToastService: HotToastService
   ) { }
 
+  openRetry(template: TemplateRef<any>) {
+    this.retryModelRef = this.BsModalService.show(template, {
+      class: 'modal-sm modal-dialog-centered',
+      ignoreBackdropClick: false
+    });
+  }
+
+  confirmRetry() {
+    this.isRetryClicked = true
+    const orderId: string = this.orderNumber.split('#')[1]
+    this.OrdersService.retryPayment(orderId).subscribe({
+      next: (res: any) => {
+        if (res?.errorCode == 0) {
+          this.declineRetry()
+          this.getOrderDetails()
+          this.isRetryClicked = false
+          this.HotToastService.success(res?.message)
+        } else {
+          this.isRetryClicked = false
+          this.HotToastService.error(res?.message)
+        }
+      }, error: (err: any) => {
+        this.isRetryClicked = false
+        this.HotToastService.error(err?.error?.message)
+      }
+    })
+  }
+
+  declineRetry() {
+    this.retryModelRef?.hide()
+  }
+
   getLocaleDateString(date: string) {
     return new Date(date).toLocaleString();
+  }
+
+  formatPaymentGateway(paymentGateway: string) {
+    //Remove - and add space between words if any, Make it sentence case
+    if (paymentGateway) {
+      return paymentGateway
+        .replace(/-/g, ' ')
+        .replace(/\w\S*/g, function (txt) {
+          return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+        });
+    }
+  }
+
+  formatWords(wordString: string){
+    if (wordString) {
+      return wordString
+        .replace(/_/g, ' ')
+        .replace(/\w\S*/g, function (txt) {
+          return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+        });
+    }
+
+    return ''
+  }
+
+  formatPaymentStatus(paymentStatus: string) {
+    if (paymentStatus) {
+      return paymentStatus
+        .replace(/_/g, ' ')
+        .replace(/\w\S*/g, function (txt) {
+          return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+        });
+    }
+
+    return ''
   }
 
   ngOnInit(): void {
@@ -170,10 +222,14 @@ export class UpdateOrdersComponent implements OnInit {
       } ${new Date(date).getDate()} ${new Date(date).getFullYear()}`;
   }
 
+  openNotes(template: TemplateRef<any>) {
+    this.noteModalRef = this.BsModalService.show(template, {
+      class: 'modal-dialog-centered',
+    });
+  }
+
   acceptOrderPayment() {
-    this.OrdersService.orderPaymentAcceptance(
-      this.order?.orderNo.split('#')[1]
-    ).subscribe({
+    this.OrdersService.orderPaymentAcceptance(this.slug).subscribe({
       next: (res: any) => {
         if (res?.errorCode == 0) {
           this.getOrderDetails();
@@ -181,8 +237,7 @@ export class UpdateOrdersComponent implements OnInit {
         } else {
           this.HotToastService.error(res?.message);
         }
-      },
-      error: (err: any) => {
+      }, error: (err: any) => {
         this.HotToastService.error(err?.error?.message);
       },
     });
@@ -213,21 +268,21 @@ export class UpdateOrdersComponent implements OnInit {
 
   saveNote() {
     if (this.orderNote.value) {
-      this.OrdersService.updateOrder({
-        order: this.orderNumber,
-        orderNote: this.orderNote.value,
-      }).subscribe({
+      // Create the complete note object with all required fields
+
+      this.OrdersService.addOrderNote(this.slug, this.orderNote.value).subscribe({
         next: (res: any) => {
-          if (res?.errorCode == 0) {
-            this.getOrderDetails();
-            this.isNoteDetected = false;
-            this.HotToastService.success(res?.message);
+          if (res?.order) {
+            this.getOrderDetails(); // Refresh order details
+            this.orderNote.setValue(''); // Clear the note input
+            this.isNoteDetected = false; // Reset note detection state
+            this.HotToastService.success('Note added successfully');
           } else {
-            this.HotToastService.error(res?.message);
+            this.HotToastService.error('Failed to add note');
           }
         },
         error: (err: any) => {
-          this.HotToastService.error(err?.error?.message);
+          this.HotToastService.error(err?.error?.error || 'Error adding note');
         },
       });
     }
@@ -241,6 +296,24 @@ export class UpdateOrdersComponent implements OnInit {
 
   getLocalDate(date: any) {
     return `${new Date(date).toLocaleString()}`;
+  }
+
+  formatDate(date: string) {
+    return new Intl.DateTimeFormat('en-US', {
+      year: 'numeric',
+      month: 'short',
+      day: 'numeric',
+      timeZone: 'UTC', // Force UTC timezone
+    }).format(new Date(date));
+  }
+
+  formatTime(time: string) {
+    return new Intl.DateTimeFormat('en-US', {
+      hour: 'numeric',
+      minute: 'numeric',
+      hour12: true,
+      timeZone: 'UTC', // Force UTC timezone
+    }).format(new Date(time));
   }
 
   getLocaleDateFormat(processDate: any) {
@@ -259,7 +332,7 @@ export class UpdateOrdersComponent implements OnInit {
           this.orderNumber = res?.result?.orderNo;
           this.productCount = this.order.products.length;
           this.form.get('paymentStatus')?.setValue(this.order?.paymentStatus);
-          this.orderNote?.setValue(this.order?.orderNote);
+          this.orderNote?.setValue('');
           this.form
             .get('orderId')
             ?.setValue(
@@ -310,26 +383,56 @@ export class UpdateOrdersComponent implements OnInit {
     );
   }
 
+  copyCoordinates() {
+    const latitude = this.order?.address?.coordinates?.latitude;
+    const longitude = this.order?.address?.coordinates?.longitude;
+    if (latitude && longitude) {
+      const mapLink = `https://www.google.com/maps/search/?api=1&query=${latitude},${longitude}`;
+      navigator.clipboard.writeText(mapLink).then(() => {
+        this.HotToastService.success('Map link copied to clipboard');
+      }).catch((error) => {
+        console.error('Failed to copy map link: ', error);
+        this.HotToastService.error('Failed to copy map link: ', error);
+      });
+    } else {
+      this.HotToastService.error('Coordinates not available');
+    }
+  }
+
   getStatusList(status: any) {
-    this.OrdersService.getStatusList(
-      status,
-      this.order?.deliveryType == '0' ? 'normal' : 'collect'
-    ).subscribe({
+    this.OrdersService.getStatusList(status, this.order?.deliveryType == '0' ? 'normal' : 'collect').subscribe({
       next: (res: any) => {
         this.statusList = res?.result;
         this.ChangeDetectorRef.markForCheck();
-      },
-      error: (err: any) => {
+      }, error: (err: any) => {
         this.HotToastService.error("Couldn't fetch order status list");
       },
     });
   }
 
-  updateOrderStatus(event: any, product: any) {
-    this.productReference = product;
+  openCancelConfirmation(template: TemplateRef<any>) {
+    this.cancelConfirmationRef = this.BsModalService.show(template, {
+      class: 'modal-sm modal-dialog-centered', ignoreBackdropClick: true
+    });
+  }
+
+  closeCancelConfirmation() {
+    this.cancelConfirmationRef?.hide()
+    this.productToBeCancelled = null
+    this.productOrderStatus.setValue('')
+  }
+
+  updateOrderStatus(event: any, productItem: any) {
+    if (event.target.value == 'CANCELLED') {
+      this.productToBeCancelled = productItem
+      this.openCancelConfirmation(this.cancelConfirmation)
+      return
+    }
+
+    this.productReference = productItem;
     this.OrdersService.updateOrderStatus({
-      order: this.order.orderNo,
-      product: product,
+      order: this.slug,
+      product: productItem,
       status: event.target.value,
     }).subscribe({
       next: (res: any) => {
@@ -345,6 +448,33 @@ export class UpdateOrdersComponent implements OnInit {
         this.HotToastService.error(err?.error?.message);
       },
     });
+  }
+
+  confirmCancel() {
+    this.OrdersService.updateOrderStatus({
+      order: this.slug,
+      product: this.productToBeCancelled,
+      status: 'CANCELLED',
+    }).subscribe({
+      next: (res: any) => {
+        if (res?.errorCode == 0) {
+          this.getOrderDetails();
+          this.productOrderStatus.setValue('');
+          this.productToBeCancelled = null
+          this.closeCancelConfirmation()
+          this.HotToastService.success(res.message);
+        } else {
+          this.HotToastService.error(res.message);
+        }
+      },
+      error: (err: any) => {
+        this.HotToastService.error(err?.error?.message);
+      },
+    });
+  }
+
+  declineCancel() {
+    this.closeCancelConfirmation()
   }
 
   updateOrderDetails(type: any) {
@@ -402,7 +532,7 @@ export class UpdateOrdersComponent implements OnInit {
   updateProductPayment(event: any, product: any) {
     this.OrdersService.updateProductPayment({
       order: this.order.orderNo,
-      product: product.productId?._id,
+      product: product?.productDetails?._id || product.productId?._id,
       status: event.target.value,
     }).subscribe({
       next: (res: any) => {
@@ -478,9 +608,34 @@ export class UpdateOrdersComponent implements OnInit {
   }
 
   updateBulkProduct(event: any) {
+    this.bulkStatusToUpdate = event?.target?.value;
+
+    if (this.bulkStatusToUpdate == 'CANCELLED') {
+      this.openBulkUpdateConfirmation(this.bulkUpdateConfirmation);
+      return
+    }
+
+    this.confirmBulkUpdate()
+  }
+
+  openBulkUpdateConfirmation(template: TemplateRef<any>) {
+    this.bulkUpdateConfirmationRef = this.BsModalService.show(template, {
+      class: 'modal-sm modal-dialog-centered',
+      ignoreBackdropClick: true
+    });
+  }
+
+  closeBulkUpdateConfirmation() {
+    this.bulkUpdateConfirmationRef?.hide();
+    this.bulkStatusToUpdate = null;
+    this.bulkOrderStatus.setValue('');
+    this.bulkProducts = []
+  }
+
+  confirmBulkUpdate() {
     this.OrdersService.updateBulkProduct({
-      order: this.order?.orderNo,
-      status: event?.target?.value,
+      order: this.order?._id,
+      status: this.bulkStatusToUpdate,
       products: this.bulkProducts,
     }).subscribe({
       next: (res: any) => {
@@ -490,6 +645,7 @@ export class UpdateOrdersComponent implements OnInit {
           this.bulkStatus = [];
           this.bulkOrderStatus.setValue('');
           this.getOrderDetails();
+          this.closeBulkUpdateConfirmation();
         } else {
           this.HotToastService.error(res?.message);
         }
@@ -498,6 +654,10 @@ export class UpdateOrdersComponent implements OnInit {
         this.HotToastService.error(err?.error?.message);
       },
     });
+  }
+
+  declineBulkUpdate() {
+    this.closeBulkUpdateConfirmation();
   }
 
   onSubmit() {
@@ -534,7 +694,7 @@ export class UpdateOrdersComponent implements OnInit {
 
   confirm() {
     this.OrdersService.cancelOrderDetails({
-      order: this.orderNumber,
+      order: this.slug,
       reason: this.reason.value,
     }).subscribe({
       next: (res: any) => {
@@ -559,7 +719,6 @@ export class UpdateOrdersComponent implements OnInit {
   }
 
   getInvoiceSignedUrl(orderId: string) {
-    orderId = orderId.split('#')[1]
     this.OrdersService.getInvoiceSignedUrl(orderId).subscribe({
       next: (res: any) => {
         if (res?.errorCode == 0) {
@@ -574,7 +733,6 @@ export class UpdateOrdersComponent implements OnInit {
   }
 
   getPackingSlipSignedUrl(orderId: string) {
-    orderId = orderId.split('#')[1]
     this.OrdersService.getPackingSlipSignedUrl(orderId).subscribe({
       next: (res: any) => {
         if (res?.errorCode == 0) {

@@ -33,8 +33,8 @@ export class ReportsService {
     return this.http.get(`${url}`);
   }
 
-  productReport() {
-    const url = this.commonService.getFullUrl(reportsEndpoints.productReport );
+  productReport(dateRange: string, startDate?: string, endDate?: string) {
+    const url = this.commonService.getFullUrl(reportsEndpoints.productReport + `?dateRange=${dateRange}&startDate=${startDate}&endDate=${endDate}`);
     return this.http.get(`${url}`);
   }
 
@@ -73,6 +73,10 @@ export class ReportsService {
     const url = this.commonService.getFullUrl(this.productReportEndpoints.enquiryReport + `?dateRange=${dateRange}&startDate=${startDate}&endDate=${endDate}`);
     return this.http.get(`${url}`);
   }
+  deliveryReport(dateRange: string, startDate?: string, endDate?: string){   
+    const url = this.commonService.getFullUrl(this.productReportEndpoints.deliveryReport + `?dateRange=${dateRange}&startDate=${startDate}&endDate=${endDate}`);
+    return this.http.get(`${url}`);
+  }
 
   orderMovementReport() {
     const url = this.commonService.getFullUrl(this.productReportEndpoints.orderMovementReport);
@@ -96,7 +100,6 @@ export class ReportsService {
   }
 
   basicProductReport() {
-    console.log("rescched here--------------")
     const url = this.commonService.getFullUrl(reportsEndpoints.basicProductReport);
     return this.http.get(`${url}`);
   }

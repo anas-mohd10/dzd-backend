@@ -265,7 +265,7 @@
                         <select formControlName="isCompareEnabled" id="isCompareEnabled" class="form-select">
                           <option *ngFor="let value of [true, false]" value="{{value}}">
                             {{value == true ? 'Yes' : 'No'}}
-                           </option>
+                          </option>
                         </select>
                       </div>
                     </div>
@@ -439,7 +439,7 @@
                   <div class="row" id="images">
                     <div class="col-lg-2" *ngFor="let icon of icons">
                       <div class="ratio border ratio-1x1 h-auto w-100 rounded position-relative">
-                        <div class="close-icon rounded bg-danger text-white" (click)="productIconClicked(icon)">
+                        <div class="close-icon rounded bg-danger text-white" (click)="productIconClicked(icon, 'remove')">
                           <svg height="18" width="18" data-slot="icon" fill="none" stroke-width="1.5"
                             stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"
                             aria-hidden="true">
@@ -682,13 +682,21 @@
     </button>
   </div>
   <div class="modal-body">
-    <div *ngFor="let historyList of historyLists">
-      <div>{{historyList.message}}</div>
-      <div>{{getFormatDate(historyList.timestamp)}} {{getFormatTime(historyList.timestamp)}}</div>
-    </div>
-
-    <div *ngIf="historyLists.length == 0">
+    <ng-container *ngIf="historyLists && historyLists.length > 0">
+      <div *ngFor="let historyList of historyLists" class="p-3 border border-secondary rounded mb-3" >
+        <div class="fs-5 d-flex align-items-center justify-content-start gap-2">
+          <div [innerHTML]="historyList.message"></div>
+        </div>
+        <div class="text-muted mt-2">{{getFormatDate(historyList.timestamp)}} {{getFormatTime(historyList.timestamp)}}</div>
+      </div>
+    </ng-container>
+    
+    <div *ngIf="historyLists && historyLists.length == 0">
       <app-no-results></app-no-results>
+    </div>
+    <div>
+      <app-pagination [totalResults]="totalResults" [totalPages]="totalPages" [pageIndex]="historyPageIndex"
+        [pageSize]="historyPageSize" (pageTrigger)="logPagination($event)"></app-pagination>
     </div>
   </div>
 </ng-template>

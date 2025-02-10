@@ -8,6 +8,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { HotToastService } from '@ngneat/hot-toast';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { indiaStates } from 'src/app/config/constants/country/india';
+import { iraqStates } from 'src/app/config/constants/country/iraq';
 import { uaeStates } from 'src/app/config/constants/country/uae';
 import { appRoutes } from 'src/app/config/routes';
 import { DeliveryMethodService } from 'src/app/includes/services/delivery-method.service';
@@ -24,7 +25,7 @@ export class ShippingRulesComponent implements OnInit {
   shippingCharges: Array<any> = [];
   shippingDetails: any;
   modalRef?: BsModalRef;
-  countries: Array<string> = ['India', 'UAE'];
+  countries: Array<string> = ['India', 'UAE', 'Iraq'];
   states: Array<any> = [];
   cities: Array<any> = [];
   holidays: Array<any> = [
@@ -121,6 +122,9 @@ export class ShippingRulesComponent implements OnInit {
         break;
       case 'UAE':
         this.states = uaeStates;
+        break;
+      case 'Iraq':
+        this.states = iraqStates;
         break;
     }
   }

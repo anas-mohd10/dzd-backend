@@ -1,0 +1,41 @@
+label, 
+.btn{
+    font-weight: 400 !important;
+}
+
+.Btn{
+    height: 28px;
+    width: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+.addMoreBtn{
+    background: #EEEEEE;
+}
+
+.deleteBtn{
+    color: #FFFFFF;
+    background: #CC3B3B;
+}
+
+.chevron-icon {
+    cursor: pointer;
+    transition: transform 0.3s ease;
+}
+
+.chevron-icon.expanded {
+    transform: rotate(90deg);
+}
+
+.submenu-children {
+    overflow: hidden;
+    transition: max-height 0.3s ease-out;
+    max-height: 1000px; /* Arbitrary large height */
+}
+
+.submenu-children.collapsed {
+    max-height: 0;
+}

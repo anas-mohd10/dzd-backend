@@ -39,7 +39,7 @@
                      <label class="fs-6 mb-3 required"> Email</label>
                      <input type="email" class="form-control fs-5" formControlName="email"
                         [ngClass]="{
-                              'is-invalid': (formControls.email.touched || isSubmitted) &&  formControls.email.errors?.required }" (change)="emailExists($event.target)" />
+                              'is-invalid': (formControls.email.touched || isSubmitted) &&  formControls.email.errors?.required }"  />
                   </div>
                   <div class="alert p-2 mt-1 fw-normal alert-danger" *ngIf="formControls.email.errors?.pattern">
                      Enter valid email address

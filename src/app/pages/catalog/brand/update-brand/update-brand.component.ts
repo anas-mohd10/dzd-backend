@@ -115,25 +115,31 @@ export class UpdateBrandComponent implements OnInit {
       ...this.form.value
     }).subscribe({
       next: (res: any) => {
-        if (res.errorCode == 0) {
+        if (res?.errorCode == 0) {
           this.HotToastService.success(res?.message);
           this.Router.navigate([this.appRoute.brand.BRAND_LIST]);
         } else {
           this.HotToastService.error(res?.message);
         }
-      }, error: (err: any) => { }
+      }, error: (err: any) => {
+        this.HotToastService.error(err?.error?.message);
+      }
     });
   }
 
   onRestore() {
     this.brandService
       .restoreBrand(this.brandDetails?._id)
-      .subscribe((res: any) => {
-        if (res?.errorCode == 0) {
-          this.HotToastService.success(res?.message);
-          this.Router.navigate([this.appRoute.brand.ARCHIVED_BRAND]);
-        } else {
-          this.HotToastService.error(res?.message);
+      .subscribe({
+        next: (res: any) => {
+          if (res?.errorCode == 0) {
+            this.HotToastService.success(res?.message);
+            this.Router.navigate([this.appRoute.brand.BRAND_LIST]);
+          } else {
+            this.HotToastService.error(res?.message);
+          }
+        }, error: (err: any) => {
+          this.HotToastService.error(err?.error?.message);
         }
       });
   }
@@ -141,12 +147,16 @@ export class UpdateBrandComponent implements OnInit {
   onDelete() {
     this.brandService
       .deleteBrand(this.brandDetails?._id)
-      .subscribe((res: any) => {
-        if (res?.errorCode == 0) {
-          this.HotToastService.success(res?.message);
-          this.Router.navigate([this.appRoute.brand.BRAND_LIST]);
-        } else {
-          this.HotToastService.error(res?.message);
+      .subscribe({
+        next: (res: any) => {
+          if (res?.errorCode == 0) {
+            this.HotToastService.success(res?.message);
+            this.Router.navigate([this.appRoute.brand.BRAND_LIST]);
+          } else {
+            this.HotToastService.error(res?.message);
+          }
+        }, error: (err: any) => {
+          this.HotToastService.error(err?.error?.message);
         }
       });
   }

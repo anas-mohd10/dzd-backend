@@ -1,10 +1,4 @@
-import {
-  ChangeDetectorRef,
-  Component,
-  OnInit,
-  TemplateRef,
-  ViewChild,
-} from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { PageTasks } from '../../../../config/constants';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -161,8 +155,10 @@ export class UpdateProductComponent implements OnInit {
   isAddOnEditable: boolean = false;
   historyRef?: BsModalRef;
   historyPageIndex: number = 1
-  historyPageSize: number = 40
+  historyPageSize: number = 5
   historyLists: Array<any> = []
+  totalResults: number = 0
+  totalPages: number = 1
 
   constructor(
     private ActivatedRoute: ActivatedRoute,
@@ -185,7 +181,7 @@ export class UpdateProductComponent implements OnInit {
 
   openHistory(template: TemplateRef<any>) {
     this.historyRef = this.BsModalService.show(template, {
-      class: 'modal-lg modal-dialog-centered',
+      class: 'modal-dialog-centered modal-lg',
       ignoreBackdropClick: true,
     });
 
@@ -206,7 +202,9 @@ export class UpdateProductComponent implements OnInit {
     ).subscribe({
       next: (res: any) => {
         if (res?.errorCode == 0) {
-          this.historyLists = res?.result
+          this.historyLists = res?.result?.results
+          this.totalResults = res?.result?.totalResults
+          this.totalPages = res?.result?.totalPages
           this.ChangeDetectorRef.markForCheck()
         } else { }
       }, error: (err: any) => { }
@@ -457,14 +455,18 @@ export class UpdateProductComponent implements OnInit {
     }
   }
 
-  productIconClicked(event: any) {
-    let isExists: boolean = this.icons.some((item: any) => item == event?.path);
+  productIconClicked(event: any, type: string = 'add') {
+    let isExists: boolean = this.icons.some((item: any) => item == (type == 'remove' ? event : event.path));
     if (isExists) {
-      this.icons = this.icons.filter((item: any) => item != event?.path);
+      const index = this.icons.findIndex((item: any) => item == (type == 'remove' ? event : event.path));
+      if (index !== -1) {
+        this.icons.splice(index, 1);
+      }
     } else {
-      this.icons.push(event?.path);
+      this.icons.push(event.path);
     }
   }
+
 
   removeProductMedia(image: any) {
     this.images = this.images.filter((item: any) => item?._id != image?._id);
@@ -514,13 +516,14 @@ export class UpdateProductComponent implements OnInit {
 
     this.ProductService.updateProduct(this.productDetails.slug, {
       ...this.form.value,
-      prodid: this.productDetails?._id,
+      _id: this.productDetails?._id,
+      prodid: this.productDetails?.prodid,
       slug: this.form.get('slug')?.value,
       addOns: this.addOns,
       files: this.images.map((file: any) => file.path),
       relatedProducts: this.relatedProducts ? this.relatedProducts.map((product: any) => product?._id) : [],
       product: {
-        id: this.parentDetails?._id,
+        id: this.productDetails?.parentId,
         refid: this.productDetails?.product?.refid,
       },
       brand: {
@@ -529,7 +532,7 @@ export class UpdateProductComponent implements OnInit {
         thumbnail: this.brandsMap[this.form.get('brand')?.value]?.thumbnail,
         cover: this.brandsMap[this.form.get('brand')?.value]?.cover,
       },
-      parentId: this.parentDetails?._id,
+      parentId: this.productDetails?.parentId,
       tagIcons: this.tagIcons,
       attributes: this.attributes,
       storeFrontFields: this.storeFields,
@@ -618,8 +621,7 @@ export class UpdateProductComponent implements OnInit {
         } else {
           this.HotToastService.error(res?.message);
         }
-      },
-      error: (err: any) => {
+      }, error: (err: any) => {
         this.HotToastService.error(err.error.message);
       },
     });
@@ -815,7 +817,9 @@ export class UpdateProductComponent implements OnInit {
           this.thumbnailPreview = res?.result?.thumbnail;
           this.ChangeDetectorRef.markForCheck();
         }
-      },
+      }, error: (err: any) => {
+        this.HotToastService.error(err?.message);
+      }
     });
 
     this.parentForm = new FormGroup({
@@ -853,14 +857,8 @@ export class UpdateProductComponent implements OnInit {
           Validators.required,
           Validators.pattern('^\\d+(\\.\\d+)?$'),
         ]),
-        offer: new FormControl(
-          '',
-          Validators.pattern('^-?[0-9]\\d*(\\.\\d+)?$')
-        ),
-        selling: new FormControl(
-          '',
-          Validators.pattern('^-?[0-9]\\d*(\\.\\d+)?$')
-        ),
+        offer: new FormControl('', Validators.pattern('^-?[0-9]\\d*(\\.\\d+)?$')),
+        selling: new FormControl('', Validators.pattern('^-?[0-9]\\d*(\\.\\d+)?$')),
       }),
       slug: new FormControl('', [Validators.required]),
       stock: new FormControl('', [
@@ -888,8 +886,6 @@ export class UpdateProductComponent implements OnInit {
       origin: new FormControl(''),
       overview: new FormControl(''),
       details: new FormGroup({
-        additionalButton: new FormControl(''),
-        buttonRedirectUrl: new FormControl(''),
         description: new FormControl(''),
         features: new FormControl(''),
         longDescription: new FormControl(''),
@@ -1024,5 +1020,12 @@ export class UpdateProductComponent implements OnInit {
 
   removeTagIcons(icon: any) {
     this.tagIcons = this.tagIcons.filter((item: any) => item != icon);
+  }
+
+  logPagination(event: { pageIndex: number, pageSize: number }) {
+    this.historyPageIndex = event.pageIndex
+    this.historyPageSize = event.pageSize
+
+    this.fetchHistory()
   }
 }

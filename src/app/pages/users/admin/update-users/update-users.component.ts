@@ -66,14 +66,13 @@ export class UpdateUsersComponent implements OnInit {
       firstname: ['', Validators.required],
       lastname: [''],
       email: ['', [Validators.required, Validators.pattern("^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$")]],
-      countryCode: ['+971'],
+      countryCode: ['', Validators.required],
       mobile: ['', [ Validators.pattern("^[0-9]{9}$")]],
-      username: ['', Validators.required],
       role: ['', Validators.required],
       isActive: ['true', Validators.required],
     });
 
-    this.adminId = this.route.snapshot.queryParams.id || ''
+    this.adminId = this.route.snapshot.queryParams.adminId || ''
 
     this.RolesService.getActiveRoles().subscribe({
       next: (res: any) => {
@@ -91,11 +90,20 @@ export class UpdateUsersComponent implements OnInit {
     this.getAdminDetails()
   }
 
+  getFormatDate(date: any) {
+    return new Date(date).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' })
+  }
+
+  getFormatTime(time: string) {
+    return new Date(time).toLocaleTimeString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true })
+  }
+
   getAdminDetails() {
     this.AdminUsersService.getAdminUser(this.adminId).subscribe((res: any) => {
       if (res?.errorCode == 0) {
         this.adminDetails = res?.result
         this.form.patchValue(res?.result)
+        this.handleMobilePattern()
         this.ChangeDetectorRef.markForCheck()
       }
     })
@@ -212,6 +220,7 @@ export class UpdateUsersComponent implements OnInit {
       lastname: this.form.get('lastname')?.value,
       isActive: this.form.get('isActive')?.value,
       refid: this.adminDetails.refid,
+      _id: this.adminDetails._id,
       slug: this.adminDetails.slug,
       role: this.form.get('role')?.value
     }).subscribe((res: any) => {

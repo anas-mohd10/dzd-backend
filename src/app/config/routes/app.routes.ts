@@ -325,6 +325,7 @@ export const appRoutes = {
   filters: `${app}/filters`,
   compareKeys: `${app}/compare-keys`,
   appKeys: `${app}/app-keys`,
+  toasts: `${app}/toasts`,
   pickupLocations: {
     list: `${app}/pickup-locations`,
     create: `${app}/pickup-locations/add`,

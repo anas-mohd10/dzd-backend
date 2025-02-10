@@ -108,12 +108,16 @@ export class CouponsListComponent implements OnInit {
         this.page = res?.result?.page
         this.lastPage = res?.result?.lastPage
         this.totalResults = res?.result?.totalResults
-        for (let coupon of this.coupons) {
-          coupon.fromDate = new Date(coupon.fromDate).toLocaleDateString()
-          coupon.lastDate = new Date(coupon.lastDate).toLocaleDateString()
-        }
         this.ChangeDetectorRef.markForCheck()
       }
     })
+  }
+
+  formatDate(date: string) {
+    return new Date(date).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' })
+  }
+
+  formatTime(time: string) {
+    return new Date(time).toLocaleTimeString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true })
   }
 }

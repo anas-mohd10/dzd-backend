@@ -15,12 +15,17 @@ export class DesignTopbarComponent implements OnInit, OnChanges {
   @Output() device = new EventEmitter();
   @Output() productConfigDraft: EventEmitter<any> = new EventEmitter();
   @Output() productConfigPublish: EventEmitter<any> = new EventEmitter();
+  @Output() isPublished: EventEmitter<any> = new EventEmitter();
 
   deviceType: string = 'desktop';
   domain: string = ''
   hideTopbarDetails: boolean = false
   showDevices: Array<string> = ['home', 'catalog', 'product-listing']
   hiddenPages: Array<string> = ['app-images', 'catalog', 'contact-us', 'about-us', 'product-designs']
+  isPublishing: boolean = false;
+
+  isShowPublish: boolean = false
+  isShowDraft: boolean = false
 
   constructor(
     private AppSettingsService: AppSettingsService,
@@ -62,6 +67,7 @@ export class DesignTopbarComponent implements OnInit, OnChanges {
   }
 
   publishWidgets() {
+    this.isPublishing = true;
     switch (this.page) {
       case 'home':
         this.publishHomeWidgets()
@@ -70,6 +76,7 @@ export class DesignTopbarComponent implements OnInit, OnChanges {
         this.productConfigPublish.emit()
         break;
       default:
+        this.isPublishing = false;
         break;
     }
   }
@@ -77,13 +84,16 @@ export class DesignTopbarComponent implements OnInit, OnChanges {
   publishHomeWidgets() {
     this.HomeWidgetsService.publishHomeWidgets().subscribe({
       next: (res: any) => {
+        this.isPublishing = false;
         if (res?.errorCode == 0) {
           this.Toast.success(res?.message)
+          this.isPublished.emit(true)
           this.ChangeDetectorRef.markForCheck()
         } else {
           this.Toast.error(res?.message)
         }
       }, error: (err: any) => {
+        this.isPublishing = false;
         this.Toast.error(err?.error?.message)
       }
     })

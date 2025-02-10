@@ -1,71 +1,42 @@
-$hover: #e3e3e3;
-$grey: #888888;
-$white: #ffffff;
-$boxShadow: rgba(0, 0, 0, 0.1);
-$inactiveState: #ce1626;
-$activeState: #00BDAB;
-$primaryBackground: #20BDAB40;
-$activeBackground: #00BDAB20;
-$border: #cccccc;
-$background: #e5e5e5;
-$error: #F1416C;
-
-label,
-input[type=button],
-.btn-primary {
-  font-weight: normal !important;
+.btn,
+label {
+  font-weight: 400 !important;
 }
 
-.offer-cards {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 6px;
+.actionBtn{
+  height: 32px;
+  width: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.w-80 {
-  width: 80px;
-  margin: 0 12px 0 0;
-  align-self: stretch;
+//Table designs
+.table {
+  background: #ffffff;
+  font-size: 15px;
 
-  img {
-    object-fit: cover;
+  tbody {
+
+    tr {
+
+      td {
+        vertical-align: middle;
+      }
+    }
+  }
+
+  thead {
+
+    tr {
+
+      th {
+        font-weight: 400 !important;
+      }
+    }
+
+    background: #E4E7F4;
   }
 }
 
-.w-calc {
-  width: calc(100% - 92px);
-  align-self: stretch;
-}
-
-.w-37 {
-  width: 37px;
-  margin-left: 10px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  align-items: end;
-  align-self: stretch;
-}
-
-.w-calc37 {
-  width: calc(100% - 47px);
-  align-self: stretch;
-}
-
-.message {
-  color: #505050;
-}
-
-
-.offerCoupon {
-  position: relative;
-  -webkit-mask-image: url('/assets/images/coupon.png');
-  mask-image: url('/assets/images/coupon.png');
-  -webkit-mask-position: top right;
-  mask-position: top right;
-  -webkit-mask-repeat: no-repeat;
-  mask-repeat: no-repeat;
-  -webkit-mask-size: 424px 125px;
-  mask-size: 424px 125px;
-
-}
+//Table designs

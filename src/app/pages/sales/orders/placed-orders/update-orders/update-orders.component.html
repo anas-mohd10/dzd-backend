@@ -2,7 +2,7 @@
   <div class="page-header d-flex flex-row justify-content-between">
     <div>
       <div class="page-title">
-        <h1 class="fw-bold">Update order</h1>
+        <h1 class="fw-bold">Update Order</h1>
       </div>
       <ul class="breadcrumb">
         <li class="breadcrumb-item fs-6">
@@ -12,13 +12,12 @@
           <a routerLink="{{ appRoute.orders.ORDERS_LIST }}">Orders</a>
         </li>
         <li class="breadcrumb-item active fs-6">
-          <a routerLink="{{ appRoute.orders.UPDATE_ORDER_LIST }}" [queryParams]="{'order': slug}">Update order</a>
+          <a routerLink="{{ appRoute.orders.UPDATE_ORDER_LIST }}" [queryParams]="{'order': slug}">Update Order</a>
         </li>
       </ul>
     </div>
     <div>
-      <div class="d-flex align-items-center justify-content-end gap-3" [ngClass]="{'pe-none opacity-75': isCancelled}">
-
+      <div class="d-flex align-items-center justify-content-end gap-3">
         <div *ngIf="isCancelEligible" class="btn border bg-white text-danger border-danger"
           (click)="open(confirmation)">
           Cancel Order
@@ -34,7 +33,7 @@
         </button>
 
         <a class="btn border bg-white text-primary border-primary" *ngIf="isPackingSlipAvailable"
-          (click)="getPackingSlipSignedUrl(orderNumber)">
+          (click)="getPackingSlipSignedUrl(slug)">
           <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24" fill="currentColor">
             <path d="M0 0h24v24H0V0z" fill="none" />
             <path
@@ -43,7 +42,7 @@
           Packing Slip
         </a>
 
-        <button class="btn btn-primary" (click)="getInvoiceSignedUrl(orderNumber)">
+        <button class="btn btn-primary" (click)="getInvoiceSignedUrl(slug)">
           <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24" fill="currentColor">
             <path d="M0 0h24v24H0V0z" fill="none" />
             <path
@@ -51,12 +50,24 @@
           </svg>
           Generate Invoice
         </button>
+
+        <!--
+          <button class="btn btn-secondary border border-secondary" (click)="openRetry(retryConfirmation)"
+          *ngIf="paymentGateways.includes(order?.paymentGateway) && retryStatusList.includes(order?.orderStatus) && order?.amountPending > 0">
+          <svg height="20" width="20" data-slot="icon" fill="none" stroke-width="1.5" stroke="currentColor"
+            viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round"
+              d="M2.25 8.25h19.5M2.25 9h19.5m-16.5 5.25h6m-6 2.25h3m-3.75 3h15a2.25 2.25 0 0 0 2.25-2.25V6.75A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25v10.5A2.25 2.25 0 0 0 4.5 19.5Z">
+            </path>
+          </svg>
+          Retry payment
+          </button>
+        -->
       </div>
     </div>
   </div>
 
   <div class="position-relative mt-4">
-
     <div class="alert alert-warning fs-6"
       *ngIf="order?.paymentMethod == 'ONLINE' && !isCancelled && order?.paymentStatus == 'PENDING'">
       Please proceed with the payment to facilitate the processing of the order request
@@ -77,7 +88,7 @@
       </div>
     </div>
 
-    <div class="row" [ngClass]="{'pe-none opacity-75': isCancelled}">
+    <div class="row">
       <div class="col-lg-6 mb-3">
         <div class="card h-100">
           <div class="card-body">
@@ -90,67 +101,83 @@
             <div class="mt-4">
               <table class="table table-bordered fs-5">
                 <tr>
-                  <th class="p-2 text-muted fw-bold">Date</th>
+                  <th class="p-2 text-muted fw-normal">Date</th>
                   <td class="p-2">
                     {{getLocaleDateFormat(order?.orderDate)}},
                     {{getLocaleTimeFormat(order?.orderDate)}}
                   </td>
                 </tr>
                 <tr>
-                  <th class="p-2 text-muted fw-bold">Method</th>
+                  <th class="p-2 text-muted fw-normal">Method</th>
                   <td class="p-2">
                     {{order?.paymentMethod}}
                   </td>
                 </tr>
                 <tr>
-                  <th class="p-2 text-muted fw-bold">Gateway</th>
+                  <th class="p-2 text-muted fw-normal">Gateway</th>
                   <td class="p-2">
-                    {{order?.paymentGateway}}
+                    {{formatPaymentGateway(order?.paymentGateway)}}
                   </td>
                 </tr>
                 <tr>
-                  <th class="p-2 text-muted fw-bold">Gateway Status</th>
+                  <th class="p-2 text-muted fw-normal">Gateway Status</th>
                   <td class="p-2">
-                    {{order?.gatewayStatus}}
+                    <div class="{{formatPaymentStatus(order?.gatewayStatus)}} p-1 rounded">
+                      {{formatPaymentStatus(order?.gatewayStatus)}}</div>
                   </td>
                 </tr>
                 <tr>
-                  <th class="p-2 text-muted fw-bold">Status</th>
+                  <th class="p-2 text-muted fw-normal">Status</th>
                   <td class="p-2">
                     {{order?.paymentStatus}}
                   </td>
                 </tr>
                 <tr>
-                  <th class="p-2 text-muted fw-bold">Invoice Reference</th>
+                  <th class="p-2 text-muted fw-normal">Invoice Reference</th>
                   <td class="p-2">
                     {{order?.invoiceNo}}
                   </td>
                 </tr>
                 <tr>
-                  <th class="p-2 text-muted fw-bold">Source</th>
+                  <th class="p-2 text-muted fw-normal">Source</th>
                   <td class="p-2">
-                    {{order?.source}}
+                    {{formatWords(order?.source)}}
                   </td>
                 </tr>
                 <tr>
-                  <th class="p-2 text-muted fw-bold">Customer Type</th>
+                  <th class="p-2 text-muted fw-normal">Customer Type</th>
                   <td class="p-2">
-                    {{order?.customerType}}
+                    {{order?.customerType == 'regd' ? 'Customer' : 'Guest'}}
                   </td>
                 </tr>
                 <tr>
-                  <th class="p-2 text-muted fw-bold">Order Total</th>
+                  <th class="p-2 text-muted fw-normal">Order Total</th>
                   <td class="p-2">
                     {{settings?.currency}} {{order?.total}}
                   </td>
                 </tr>
                 <tr>
-                  <th class="p-2 text-muted fw-bold">Delivery</th>
+                  <th class="p-2 text-muted fw-normal">Delivery</th>
                   <td class="p-2">
                     {{order?.deliveryType == '1' ? 'Click and collect' : 'Home delivery' }}
                   </td>
                 </tr>
               </table>
+              <div class="mt-4" *ngIf="order?.coupon">
+                <div class="alert alert-success mb-0 d-flex align-items-center justify-content-start gap-2">
+                  <div class="text-success">
+                    <svg height="18" width="18" data-slot="icon" fill="none" stroke-width="1.5" stroke="currentColor"
+                      viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                      <path stroke-linecap="round" stroke-linejoin="round"
+                        d="M9 12.75 11.25 15 15 9.75M21 12c0 1.268-.63 2.39-1.593 3.068a3.745 3.745 0 0 1-1.043 3.296 3.745 3.745 0 0 1-3.296 1.043A3.745 3.745 0 0 1 12 21c-1.268 0-2.39-.63-3.068-1.593a3.746 3.746 0 0 1-3.296-1.043 3.745 3.745 0 0 1-1.043-3.296A3.745 3.745 0 0 1 3 12c0-1.268.63-2.39 1.593-3.068a3.745 3.745 0 0 1 1.043-3.296 3.746 3.746 0 0 1 3.296-1.043A3.746 3.746 0 0 1 12 3c1.268 0 2.39.63 3.068 1.593a3.746 3.746 0 0 1 3.296 1.043 3.746 3.746 0 0 1 1.043 3.296A3.745 3.745 0 0 1 21 12Z">
+                      </path>
+                    </svg>
+                  </div>
+                  <div class="fs-5"><span class="cursor-pointer" routerLink="{{appRoute.coupons.UPDATE_COUPONS_LIST}}"
+                      [queryParams]="{'coupon': order?.coupon?.refid}"><b>{{order?.coupon?.code}}</b></span> applied
+                    successfully</div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -160,48 +187,52 @@
         <div class="card h-100">
           <div class="card-body">
             <div class="fs-3 fw-bold">
-              Order Amount Details
+              Order Summary
             </div>
             <div class="mt-4">
               <table class="table table-bordered fs-5">
                 <tr>
-                  <th class="p-2 text-muted fw-bold">Price Without Tax</th>
+                  <th class="p-2 text-muted fw-normal">Price Without Tax</th>
                   <td>{{settings?.currency}} {{order?.priceBeforeTax}}</td>
                 </tr>
                 <tr>
-                  <th class="p-2 text-muted fw-bold">Tax</th>
+                  <th class="p-2 text-muted fw-normal">Tax</th>
                   <td>{{settings?.currency}} {{order?.tax}}</td>
                 </tr>
                 <tr>
-                  <th class="p-2 text-muted fw-bold">Shipping Charge</th>
+                  <th class="p-2 text-muted fw-normal">Shipping Charge</th>
                   <td>{{settings?.currency}} {{order?.shippingCost}}</td>
                 </tr>
-                <tr>
-                  <th class="p-2 text-muted fw-bold">COD</th>
+                <tr *ngIf="+order?.codCost > 0">
+                  <th class="p-2 text-muted fw-normal">COD</th>
                   <td>{{settings?.currency}} {{order?.codCost}}</td>
                 </tr>
-                <tr>
-                  <th class="p-2 text-muted fw-bold">Additional Charge</th>
+                <tr *ngIf="+order?.additionalCharge > 0">
+                  <th class="p-2 text-muted fw-normal">Additional Charge</th>
                   <td>{{settings?.currency}} {{order?.additionalCharge}}</td>
                 </tr>
                 <tr>
-                  <th class="p-2 text-muted fw-bold">Discount</th>
-                  <td class="text-success">{{settings?.currency}} {{order?.discount}}</td>
+                  <th class="p-2 text-muted fw-normal">Savings</th>
+                  <td class="text-success">- {{settings?.currency}} {{order?.discount}}</td>
+                </tr>
+                <tr *ngIf="+order?.couponDiscount > 0">
+                  <th class="p-2 text-muted fw-normal">Coupon Discount</th>
+                  <td class="text-success">- {{settings?.currency}} {{order?.couponDiscount}}</td>
+                </tr>
+                <tr *ngIf="+order?.credit?.amount > 0">
+                  <th class="p-2 text-muted fw-normal">Credit</th>
+                  <td class="text-success">{{settings?.currency}} {{order?.credit?.amount}}</td>
                 </tr>
                 <tr>
-                  <th class="p-2 text-muted fw-bold">Credit</th>
-                  <td>{{settings?.currency}} {{order?.credit?.amount}}</td>
-                </tr>
-                <tr>
-                  <th class="p-2 text-muted fw-bold">Amount Pending</th>
+                  <th class="p-2 text-muted fw-normal">Amount Pending</th>
                   <td>{{settings?.currency}} {{order?.amountPending}}</td>
                 </tr>
                 <tr>
-                  <th class="p-2 text-muted fw-bold">Cancelled Items</th>
+                  <th class="p-2 text-muted fw-normal">Cancelled Items</th>
                   <td class="text-danger">- {{settings?.currency}} {{order?.cancelledAmount}}</td>
                 </tr>
-                <tr>
-                  <th class="p-2 text-muted fw-bold">Total</th>
+                <tr class="fs-4 fw-bold">
+                  <th class="p-2 text-muted fw-normal">Total</th>
                   <td>{{settings?.currency}} {{order?.total}}</td>
                 </tr>
               </table>
@@ -218,37 +249,63 @@
               <div class="mt-4">
                 <table class="table table-bordered fs-5">
                   <tr>
-                    <th class="p-2 text-muted fw-bold">Name</th>
-                    <td class="p-2">{{order?.customerId?.name || order?.guestId?.name}}</td>
-                  </tr>
-                  <tr>
-                    <th class="p-2 text-muted fw-bold">Mobile</th>
-                    <td class="p-2">{{order?.customerId?.mobile || order?.guestId?.mobile}}</td>
-                  </tr>
-                  <tr>
-                    <th class="p-2 text-muted fw-bold">Email</th>
-                    <td class="p-2">{{order?.customerId?.email || order?.guestId?.email}}</td>
-                  </tr>
-                  <tr>
-                    <th class="p-2 text-muted fw-bold">Address</th>
-                    <td class="p-2">
-                      {{order?.address?.firstlane}}, {{order?.address?.secondlane}},
-                      {{order?.address?.area}}, {{order?.address?.landmark}},
-                      {{order?.address?.city}}, {{order?.address?.state}},
-                      {{order?.address?.pincode}}
+                    <th class="p-2 text-muted fw-normal">Name</th>
+                    <td class="p-2">{{order?.customerDetails?.name || order?.customerId?.name || order?.guestId?.name}}
                     </td>
                   </tr>
                   <tr>
-                    <th class="p-2 text-muted fw-bold">Location</th>
-                    <td class="p-2">{{order?.address?.formattedAddress || '-'}}</td>
+                    <th class="p-2 text-muted fw-normal">Mobile</th>
+                    <td class="p-2">{{order?.customerDetails?.mobile || order?.address?.mobile ||
+                      order?.guestId?.mobile}}</td>
                   </tr>
                   <tr>
-                    <th class="p-2 text-muted fw-bold">Coordinates</th>
+                    <th class="p-2 text-muted fw-normal">Email</th>
                     <td class="p-2">
-                      {{order?.address?.coordinates?.latitude || '-'}}
-                      {{order?.address?.coordinates?.longitude}}
-                    </td>
+                      {{order?.customerDetails?.email || order?.customerId?.email || order?.guestId?.email}}</td>
                   </tr>
+                  <ng-container *ngIf="order?.deliveryType == '0'">
+                    <tr>
+                      <th class="p-2 text-muted fw-normal">Address</th>
+                      <td class="p-2">
+                        {{order?.address?.firstlane}}, {{order?.address?.secondlane}},
+                        {{order?.address?.area}}, {{order?.address?.landmark}},
+                        {{order?.address?.city}}, {{order?.address?.state}},
+                        {{order?.address?.pincode}}
+                      </td>
+                    </tr>
+                    <tr>
+                      <th class="p-2 text-muted fw-normal">Location</th>
+                      <td class="p-2">
+                        <ng-container
+                          *ngIf="order?.address?.coordinates?.latitude && order?.address?.coordinates?.longitude">
+                          <div class="d-flex justify-content-between">
+                            <a href="https://www.google.com/maps/search/?api=1&query={{order?.address?.coordinates?.latitude}},{{order?.address?.coordinates?.longitude}}"
+                              target="_blank" class="text-gray-600 text-hover-primary me-2">
+                              Open Location in Map
+                            </a>
+                            <!-- Copy Button -->
+                            <button class="btn btn-light btn-sm d-inline-flex align-items-center gap-1"
+                              (click)="copyCoordinates()">
+                              <svg width="12px" height="12px" viewBox="0 0 24 24" fill="none"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <path
+                                  d="M16 4C16.93 4 17.395 4 17.7765 4.10222C18.8117 4.37962 19.6204 5.18827 19.8978 6.22354C20 6.60504 20 7.07003 20 8V17.2C20 18.8802 20 19.7202 19.673 20.362C19.3854 20.9265 18.9265 21.3854 18.362 21.673C17.7202 22 16.8802 22 15.2 22H8.8C7.11984 22 6.27976 22 5.63803 21.673C5.07354 21.3854 4.6146 20.9265 4.32698 20.362C4 19.7202 4 18.8802 4 17.2V8C4 7.07003 4 6.60504 4.10222 6.22354C4.37962 5.18827 5.18827 4.37962 6.22354 4.10222C6.60504 4 7.07003 4 8 4M9.6 6H14.4C14.9601 6 15.2401 6 15.454 5.89101C15.6422 5.79513 15.7951 5.64215 15.891 5.45399C16 5.24008 16 4.96005 16 4.4V3.6C16 3.03995 16 2.75992 15.891 2.54601C15.7951 2.35785 15.6422 2.20487 15.454 2.10899C15.2401 2 14.9601 2 14.4 2H9.6C9.03995 2 8.75992 2 8.54601 2.10899C8.35785 2.20487 8.20487 2.35785 8.10899 2.54601C8 2.75992 8 3.03995 8 3.6V4.4C8 4.96005 8 5.24008 8.10899 5.45399C8.20487 5.64215 8.35785 5.79513 8.54601 5.89101C8.75992 6 9.03995 6 9.6 6Z"
+                                  stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                  stroke-linejoin="round" />
+                              </svg>
+                            </button>
+                          </div>
+                        </ng-container>
+                      </td>
+                    </tr>
+                    <tr>
+                      <th class="p-2 text-muted fw-normal">Coordinates</th>
+                      <td class="p-2">
+                        {{order?.address?.coordinates?.latitude || '-'}}
+                        {{order?.address?.coordinates?.longitude}}
+                      </td>
+                    </tr>
+                  </ng-container>
                 </table>
               </div>
             </div>
@@ -259,37 +316,39 @@
               <div class="mt-4">
                 <table class="table table-bordered fs-5">
                   <tr>
-                    <th class="p-2 text-muted fw-bold">Name</th>
-                    <td class="p-2">{{order?.customerId?.name || order?.guestId?.name}}</td>
+                    <th class="p-2 text-muted fw-normal">Name</th>
+                    <td class="p-2">{{order?.address?.name || order?.customerDetails?.name || order?.guestId?.name}}</td>
                   </tr>
                   <tr>
-                    <th class="p-2 text-muted fw-bold">Mobile</th>
-                    <td class="p-2">{{order?.customerId?.mobile || order?.guestId?.mobile}}</td>
+                    <th class="p-2 text-muted fw-normal">Mobile</th>
+                    <td class="p-2">{{order?.address?.mobile || order?.customerDetails?.mobile || order?.guestId?.mobile}}</td>
                   </tr>
                   <tr>
-                    <th class="p-2 text-muted fw-bold">Email</th>
-                    <td class="p-2">{{order?.customerId?.email || order?.guestId?.email}}</td>
+                    <th class="p-2 text-muted fw-normal">Email</th>
+                    <td class="p-2">{{order?.customerId?.email || order?.customerDetails?.email || order?.guestId?.email}}</td>
                   </tr>
-                  <tr>
-                    <th class="p-2 text-muted fw-bold">Address</th>
-                    <td class="p-2">
-                      {{order?.address?.firstlane}}, {{order?.address?.secondlane}},
-                      {{order?.address?.area}}, {{order?.address?.landmark}},
-                      {{order?.address?.city}}, {{order?.address?.state}},
-                      {{order?.address?.pincode}}
-                    </td>
-                  </tr>
-                  <tr>
-                    <th class="p-2 text-muted fw-bold">Location</th>
-                    <td class="p-2">{{order?.address?.formattedAddress || '-'}}</td>
-                  </tr>
-                  <tr>
-                    <th class="p-2 text-muted fw-bold">Coordinates</th>
-                    <td class="p-2">
-                      {{order?.address?.coordinates?.latitude || '-'}}
-                      {{order?.address?.coordinates?.longitude}}
-                    </td>
-                  </tr>
+                  <ng-container *ngIf="order?.deliveryType == '0'">
+                    <tr>
+                      <th class="p-2 text-muted fw-normal">Address</th>
+                      <td class="p-2">
+                        {{order?.address?.firstlane}}, {{order?.address?.secondlane}},
+                        {{order?.address?.area}}, {{order?.address?.landmark}},
+                        {{order?.address?.city}}, {{order?.address?.state}},
+                        {{order?.address?.pincode}}
+                      </td>
+                    </tr>
+                    <tr>
+                      <th class="p-2 text-muted fw-normal">Location</th>
+                      <td class="p-2">{{order?.address?.formattedAddress || '-'}}</td>
+                    </tr>
+                    <tr>
+                      <th class="p-2 text-muted fw-normal">Coordinates</th>
+                      <td class="p-2">
+                        {{order?.address?.coordinates?.latitude || '-'}}
+                        {{order?.address?.coordinates?.longitude}}
+                      </td>
+                    </tr>
+                  </ng-container>
                 </table>
               </div>
             </div>
@@ -326,31 +385,32 @@
       <div class="col-lg-6 mb-3">
         <div class="d-flex gap-3 flex-column h-100 justify-content-between">
           <div class="card h-50">
-            <div class="card-body">
-              <div class="fs-3 fw-bold">
-                Order Notes
+            <div class="card-body d-flex flex-column">
+              <div class="d-flex justify-content-between align-items-center mb-4">
+                <div class="fs-3 fw-bold mb-3">Order Notes</div>
+                <div>
+                  <button class="btn btn-secondary p-2" (click)="openNotes(notesTemplate)">View Notes</button>
+                </div>
               </div>
-              <div class="my-2">
-                <div class="form-group">
-                  <textarea [formControl]="orderNote" (click)="isNoteDetected = true" rows="5" class="form-control"
-                    draggable="true"></textarea>
-                </div>
-                <div class="my-2 d-flex align-items-center justify-content-end">
-                  <button class="btn btn-primary" (click)="saveNote()" *ngIf="isNoteDetected">Save notes</button>
-                </div>
+
+              <div class="form-group" [ngClass]="{'pe-none opacity-75': isCancelled}">
+                <textarea [formControl]="orderNote" (click)="isNoteDetected = true" (keyup.enter)="saveNote()" rows="5"
+                  class="form-control"></textarea>
+              </div>
+              <div class="d-flex justify-content-end mt-2">
+                <button class="btn btn-primary" (click)="saveNote()" *ngIf="isNoteDetected"
+                  [disabled]="!orderNote.value">
+                  Save Note
+                </button>
               </div>
             </div>
           </div>
           <div class="card h-50">
             <div class="card-body">
-              <div class="fs-3 fw-bold">
-                Shipping Notes
-              </div>
-              <div class="my-2">
-                <div class="form-group">
-                  <textarea value="{{order?.shippingNote}}" readonly="true" rows="5" draggable="false"
-                    class="form-control"></textarea>
-                </div>
+              <div class="fs-3 fw-bold mb-3">Shipping Notes</div>
+              <div class="form-group">
+                <textarea [value]="order?.shippingNote" readonly="true" rows="5" draggable="false"
+                  class="form-control"></textarea>
               </div>
             </div>
           </div>
@@ -396,11 +456,13 @@
                       <div class="d-flex flex-wrap align-items-start justify-content-between">
                         <div class="w-50 d-flex fs-6 gap-3 align-items-start justify-content-start">
                           <div class="productThumbnail">
-                            <img class="border border-secondary rounded" src="{{base}}{{product?.productId?.thumbnail}}"
-                              alt="{{product?.productId?.name}}" onerror="this.src =  'assets/images/default.png'">
+                            <img class="border border-secondary rounded"
+                              src="{{base}}{{product?.productDetails?.thumbnail}}"
+                              alt="{{product?.productDetails?.name || product?.productId?.name}}"
+                              onerror="this.src =  'assets/images/default.png'">
                           </div>
                           <div>
-                            <div>{{product?.productId?.name}}</div>
+                            <div>{{product?.productDetails?.name || product?.productId?.name}}</div>
                             <div class="d-flex align-items-center justify-content-start gap-2"
                               *ngIf="product?.productId?.attributes?.length > 0">
                               <div *ngFor="let attribute of product?.productId?.attributes">
@@ -419,7 +481,7 @@
                         <div class="w-50">
                           <div class="mb-2 d-flex align-items-center fs-6 justify-content-start">
                             <div class="w-25">SKU:</div>
-                            <div class="fw-bold">{{product?.productId?.sku}}</div>
+                            <div class="fw-bold">{{product?.productDetails?.sku || product?.productId?.sku}}</div>
                           </div>
                           <div class="mb-2 d-flex fs-6 align-items-center justify-content-start">
                             <div class="w-25">Qty:</div>
@@ -438,11 +500,10 @@
                             <div class="w-75"
                               [ngClass]="{'pe-none' : order?.paymentMethod == 'ONLINE' && order?.paymentStatus == 'PENDING'}">
                               <select class="form-select w-50 p-2" [formControl]="productOrderStatus"
-                                (click)="getStatusList(product.currentStatus.status)"
-                                (change)="updateOrderStatus($event, product?.productId?._id)">
+                                (change)="updateOrderStatus($event, product?.productId)">
                                 <option value="" disabled>-- Select a option --</option>
                                 <option value="CANCELLED">Cancelled</option>
-                                <option value="FAILED" >Failed</option>
+                                <option value="FAILED">Failed</option>
                               </select>
                             </div>
                           </div>
@@ -517,29 +578,32 @@
               <div class="fs-3 mb-2 fw-bold">Payment Events</div>
               <div class="my-8" *ngFor="let tokenizedItem of order?.tokenizedDetails; let i = index">
 
-                <table class="table table-bordered fs-5">
+                <table class="table table-bordered fs-5 paymentEvents">
                   <tr>
-                    <th class="p-2 text-muted fw-bold">Date</th>
+                    <th class="p-2 text-muted fw-normal">Date</th>
                     <td>
-                      {{ getLocaleDateFormat(tokenizedItem.updateDateTime) }}
-                      {{ getLocaleTimeFormat(tokenizedItem.updateDateTime) }}
+                      {{ getLocaleDateFormat(tokenizedItem?.updateDateTime) }}
+                      {{ getLocaleTimeFormat(tokenizedItem?.updateDateTime) }}
                     </td>
                   </tr>
                   <tr>
-                    <th class="p-2 text-muted fw-bold">Response</th>
-                    <td>{{tokenizedItem.authResponse.resultMessage}}</td>
+                    <th class="p-2 text-muted fw-normal">Response</th>
+                    <td>{{tokenizedItem.authResponse?.resultMessage || '-'}}</td>
                   </tr>
                   <tr>
-                    <th class="p-2 text-muted fw-bold">Reference</th>
-                    <td>{{tokenizedItem.orderReference}}</td>
+                    <th class="p-2 text-muted fw-normal">Reference</th>
+                    <td>{{tokenizedItem?.orderReference}}</td>
                   </tr>
                   <tr>
-                    <th class="p-2 text-muted fw-bold">Status</th>
-                    <td>{{tokenizedItem.state}}</td>
+                    <th class="p-2 text-muted fw-normal">Status</th>
+                    <td>
+                      <div class="{{formatPaymentStatus(tokenizedItem?.state)}} rounded p-1">
+                        {{formatPaymentStatus(tokenizedItem?.state)}}</div>
+                    </td>
                   </tr>
                   <tr>
-                    <th class="p-2 text-muted fw-bold">Amount</th>
-                    <td>{{tokenizedItem.amount.currencyCode}} {{tokenizedItem.amount.value / 100}}</td>
+                    <th class="p-2 text-muted fw-normal">Amount</th>
+                    <td>{{tokenizedItem?.amount?.currencyCode}} {{tokenizedItem?.amount?.value / 100}}</td>
                   </tr>
                 </table>
               </div>
@@ -553,7 +617,7 @@
   <ng-template #confirmation>
     <div class="modal-body">
       <div class="fs-5 mb-6">Do you want to cancel this order?</div>
-      <div class="form-group mb-4 mt-4">
+      <div class="form-group mb-4 mt-4" *ngIf="!productToBeCancelled">
         <textarea type="text" cols="30" rows="5" autocomplete="off" [formControl]="reason"
           placeholder="Type reason for cancellation" class="form-control">
         </textarea>
@@ -564,3 +628,52 @@
       </div>
     </div>
   </ng-template>
+
+  <ng-template #notesTemplate>
+    <div class="modal-header">
+      <h4 class="modal-title pull-left">Notes</h4>
+      <button type="button" class="btn-close close pull-right" aria-label="Close" (click)="noteModalRef?.hide()">
+        <span aria-hidden="true" class="visually-hidden">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <div *ngIf="order?.orderNote?.length > 0" class="notes-list">
+        <div *ngFor="let note of order?.orderNote" class="note-item p-3 mb-3 rounded border">
+          <p class="text-dark mb-4 fs-5">{{ note.message }}</p>
+          <div class="text-primary fw-bold fs-5">{{ note.editedBy }}</div>
+          <div>{{ getLocaleDateString(note.timeAndDate) }}</div>
+        </div>
+      </div>
+      <div *ngIf="!order?.orderNote?.length" class="text-muted text-center">
+        <app-no-results></app-no-results>
+      </div>
+    </div>
+  </ng-template>
+
+  <ng-template #retryConfirmation>
+    <div class="modal-body text-center">
+      <p class="fs-5">Are you sure you want to retry payment?</p>
+      <button type="button" class="btn btn-default p-2" [disabled]="isRetryClicked"
+        (click)="confirmRetry()">Yes</button>
+      <button type="button" class="btn btn-primary p-2" [disabled]="isRetryClicked" (click)="declineRetry()">No</button>
+    </div>
+  </ng-template>
+
+  <ng-template #cancelConfirmation>
+    <div class="modal-body">
+      <div class="modal-title">Confirmation</div>
+      <p class="fs-6 my-2">Do you want to confirm?</p>
+      <button type="button" class="btn btn-default" (click)="confirmCancel()">Yes</button>
+      <button type="button" class="btn btn-primary" (click)="declineCancel()">No</button>
+    </div>
+  </ng-template>
+
+  <ng-template #bulkUpdateConfirmation>
+    <div class="modal-body">
+      <div class="modal-title">Confirmation</div>
+      <p class="fs-6 my-2">Are you sure you want to cancel {{bulkProducts.length}} products?</p>
+      <button type="button" class="btn btn-default" (click)="confirmBulkUpdate()">Yes</button>
+      <button type="button" class="btn btn-primary" (click)="declineBulkUpdate()">No</button>
+    </div>
+  </ng-template>
+</div>

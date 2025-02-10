@@ -78,6 +78,10 @@ export class OrdersListComponent implements OnInit {
     value: 'OUT FOR DELIVERY',
     totalOrders: 0
   }, {
+    status: 'Partial Processed',
+    value: 'PARTIAL PROCESSED',
+    totalOrders: 0
+  }, {
     status: 'Delivered',
     value: 'DELIVERED',
     totalOrders: 0
@@ -86,20 +90,16 @@ export class OrdersListComponent implements OnInit {
     value: 'COLLECTED',
     totalOrders: 0
   }, {
-    status: 'Pending',
-    value: 'PENDING',
-    totalOrders: 0
-  }, {
-    status: 'Partial Processed',
-    value: 'PARTIAL PROCESSED',
-    totalOrders: 0
-  }, {
     status: 'Failed',
     value: 'FAILED',
     totalOrders: 0
   }, {
     status: 'Cancelled',
     value: 'CANCELLED',
+    totalOrders: 0
+  }, {
+    status: 'Pending',
+    value: 'PENDING',
     totalOrders: 0
   }]
   lastPage: Boolean = false
@@ -138,6 +138,19 @@ export class OrdersListComponent implements OnInit {
       .subscribe((value) => {
         this.updateQueryParams({ keyword: value, page: 1 })
       })
+  }
+
+  //format case
+  formatCase(orderData: string) {
+    if (orderData) {
+      return orderData
+        .replace(/_/g, ' ')
+        .replace(/\w\S*/g, function (txt) {
+          return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+        });
+    }
+
+    return ''
   }
 
   openTag(template: TemplateRef<any>, order: string) {
@@ -339,15 +352,15 @@ export class OrdersListComponent implements OnInit {
       if (this.checkStatusList.includes(order?.status)) {
         this.HotToastService.error('This order is not accepted yet or has been cancelled. Please accept the order to confirm your selection.')
       } else {
-        this.toggledOrders.includes(order.order.split('#')[1]) ?
-          this.toggledOrders = this.toggledOrders.filter(o => o != order.order.split('#')[1]) :
-          this.toggledOrders.push(order.order.split('#')[1])
+        this.toggledOrders.includes(order.order) ?
+          this.toggledOrders = this.toggledOrders.filter(o => o != order.order) :
+          this.toggledOrders.push(order.order)
       }
     } else {
       let isPlacedOrders = 0
       this.toggledOrders.length == this.orders.length ?
         this.toggledOrders = [] :
-        this.toggledOrders = this.orders.map((order: any) => this.checkStatusList.includes(order.orderStatus) ? isPlacedOrders++ : order.orderNo.split('#')[1])
+        this.toggledOrders = this.orders.map((order: any) => this.checkStatusList.includes(order.orderStatus) ? isPlacedOrders++ : order.orderNo)
 
       if (isPlacedOrders > 0) {
         this.HotToastService.error('Please accept orders to confirm your selection')
@@ -358,7 +371,7 @@ export class OrdersListComponent implements OnInit {
   bulkAcceptOrders() {
     let ordersMap: any = {}
     let acceptedOrders: number = 0
-    this.orders.forEach((orderItem: any) => ordersMap[orderItem.orderNo.split('#')[1]] = orderItem);
+    this.orders.forEach((orderItem: any) => ordersMap[orderItem._id] = orderItem);
     let orders = this.toggledOrders.map((order: any) => {
       if (ordersMap[order]['orderStatus'] == 'PLACED') {
         return ordersMap[order]
@@ -367,10 +380,12 @@ export class OrdersListComponent implements OnInit {
       }
     });
 
+    console.log(orders)
+
     if (acceptedOrders > 0) {
       this.HotToastService.error("Orders in the list are already accepted")
     } else {
-      let orderIds = orders.map((orderItem: any) => orderItem.orderNo.split('#')[1])
+      let orderIds = orders.map((orderItem: any) => orderItem._id)
       this.OrdersService.bulkAcceptOrders({ orderIds: orderIds }).subscribe({
         next: (res: any) => {
           if (res.errorCode == 0) {
@@ -398,13 +413,31 @@ export class OrdersListComponent implements OnInit {
     window.open(`${this.packingSlipUrl}${queryString}`, '_blank')
   }
 
+  formatTime(time: string) {
+    return new Date(time).toLocaleTimeString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true })
+  }
+
   formatDate(date: string) {
     return new Date(date).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' })
   }
 
-  formatTime(time: string) {
-    return new Date(time).toLocaleTimeString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true })
-  }
+  //   formatDate(date: string) {
+  //   return new Intl.DateTimeFormat('en-US', {
+  //     year: 'numeric',
+  //     month: 'short',
+  //     day: 'numeric',
+  //     timeZone: 'UTC', // Force UTC timezone
+  //   }).format(new Date(date));
+  // }
+
+  // formatTime(time: string) {
+  //   return new Intl.DateTimeFormat('en-US', {
+  //     hour: 'numeric',
+  //     minute: 'numeric',
+  //     hour12: true,
+  //     timeZone: 'UTC', // Force UTC timezone
+  //   }).format(new Date(time));
+  // }
 
   exportOrders() {
     this.OrdersService.exportOrderTabs({
@@ -525,8 +558,7 @@ export class OrdersListComponent implements OnInit {
     })
   }
 
-  getInvoiceSignedUrl(orderId: string) {    
-    orderId = orderId.split('#')[1]    
+  getInvoiceSignedUrl(orderId: string) {
     this.OrdersService.getInvoiceSignedUrl(orderId).subscribe({
       next: (res: any) => {
         if (res?.errorCode == 0) {
@@ -540,8 +572,8 @@ export class OrdersListComponent implements OnInit {
     })
   }
 
-  getInvoicesSignedUrl(){
-    let queryString = this.toggledOrders.map(order => `${order.split('#')}`).join('&')
+  getInvoicesSignedUrl() {
+    let queryString = this.toggledOrders.join('&')
     this.OrdersService.getInvoicesSignedUrl(queryString).subscribe({
       next: (res: any) => {
         if (res?.errorCode == 0) {
@@ -555,8 +587,8 @@ export class OrdersListComponent implements OnInit {
     })
   }
 
-  getPackingSlipsSignedUrl(){
-    let queryString = this.toggledOrders.map(order => `${order.split('#')}`).join('&')
+  getPackingSlipsSignedUrl() {
+    let queryString = this.toggledOrders.join('&')
     this.OrdersService.getPackingSlipsSignedUrl(queryString).subscribe({
       next: (res: any) => {
         if (res?.errorCode == 0) {

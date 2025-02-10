@@ -234,6 +234,9 @@ export class AllProductsComponent implements OnInit {
     }
   }
 
+  formatProductType(docType: string) {
+    return docType && (docType.charAt(0).toUpperCase() + docType.slice(1)).replace('-', ' ')
+  }
 
   getProducts() {
     let categoryItems = this.categoryItems.map((item: any) => item.name)
@@ -297,7 +300,7 @@ export class AllProductsComponent implements OnInit {
   }
 
   updateProduct(event: { switchId: string, toggleState: boolean }) {
-    this.ProductService.updateProduct(event.switchId, { prodid: event.switchId, isActive: event.toggleState }).subscribe({
+    this.ProductService.updateProduct(event.switchId, { _id: event.switchId, isActive: event.toggleState }).subscribe({
       next: (res: any) => {
         if (res?.errorCode == 0) {
           this.getProducts()

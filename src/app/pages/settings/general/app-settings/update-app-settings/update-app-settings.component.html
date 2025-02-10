@@ -1,359 +1,514 @@
 <div>
-   <div class="page-header d-flex align-items-start justify-content-between">
-      <div>
-         <div class="page-title">
-            <h1 class="fw-bold">Store settings</h1>
-         </div>
-         <ul class="breadcrumb">
-            <li class="breadcrumb-item fs-6">
-               <a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a>
-            </li>
-            <li class="breadcrumb-item active fs-6">
-               <a routerLink="/app/store-settings">Store settings</a>
-            </li>
-         </ul>
+  <div class="page-header d-flex align-items-start justify-content-between">
+    <div>
+      <div class="page-title">
+        <h1 class="fw-bold">Store settings</h1>
       </div>
-      <div class="d-flex align-items-center justify-content-end gap-2">
-         <button type="submit" class="btn btn-secondary" (click)="openDiscardModal(discardTemplate)">
-            Discard Cache
-         </button>
-         <button type="submit" class="btn btn-primary" (click)="onSubmit()">
-            Update changes
-         </button>
+      <ul class="breadcrumb">
+        <li class="breadcrumb-item fs-6">
+          <a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a>
+        </li>
+        <li class="breadcrumb-item active fs-6">
+          <a routerLink="/app/store-settings">Store settings</a>
+        </li>
+      </ul>
+    </div>
+    <div class="d-flex align-items-center justify-content-end gap-2">
+      <button type="submit" class="btn btn-secondary" (click)="openDiscardModal(discardTemplate)">
+        Discard Cache
+      </button>
+      <button type="submit" class="btn btn-primary" (click)="onSubmit()">
+        Update changes
+      </button>
+    </div>
+  </div>
+
+  <div class="my-4">
+    <form [formGroup]="form">
+      <div class="card">
+        <div class="card-body">
+          <div *ngIf="data?.isStoreLive">
+            <div class="d-flex align-items-center justify-content-start gap-2">
+              <div>
+                <div class="storestatus storeon"></div>
+              </div>
+              <div class="fs-4">Your store is live</div>
+            </div>
+          </div>
+          <div *ngIf="!data?.isStoreLive">
+            <div class="d-flex align-items-center justify-content-start gap-2">
+              <div>
+                <div class="storestatus storeoff"></div>
+              </div>
+              <div class="fs-4">Your store is not live</div>
+            </div>
+          </div>
+          <div class="my-2">
+            <div class="fs-6 text-muted">
+              You can publish or unpublish your project here
+            </div>
+            <div class="d-flex mt-2 align-items-center justify-content-start gap-2">
+              <div class="fs-5">Store status</div>
+              <app-switch [switchId]="''" [isToggledProps]="data?.isStoreLive"
+                (switchToggled)="toggleStoreStatus($event, template)"></app-switch>
+            </div>
+          </div>
+        </div>
       </div>
-   </div>
 
-   <div class="my-4">
-      <form [formGroup]="form">
-         <div class="card">
-            <div class="card-body">
-               <div *ngIf="data?.isStoreLive">
-                  <div class="d-flex align-items-center justify-content-start gap-2">
-                     <div>
-                        <div class="storestatus storeon"></div>
-                     </div>
-                     <div class="fs-4">Your store is live</div>
-                  </div>
-               </div>
-               <div *ngIf="!data?.isStoreLive">
-                  <div class="d-flex align-items-center justify-content-start gap-2">
-                     <div>
-                        <div class="storestatus storeoff"></div>
-                     </div>
-                     <div class="fs-4">Your store is not live</div>
-                  </div>
-               </div>
-               <div class="my-2">
-                  <div class="fs-6 text-muted">You can publish or unpublish your project here</div>
-                  <div class="d-flex mt-2  align-items-center justify-content-start gap-2">
-                     <div class="fs-5">Store status</div>
-                     <app-switch [switchId]="''" [isToggledProps]="data?.isStoreLive"
-                        (switchToggled)="toggleStoreStatus($event, template)"></app-switch>
-                  </div>
-               </div>
+      <div class="card my-4">
+        <div class="card-body">
+          <div class="fs-3 fw-bold mb-2">Store Settings</div>
+          <div class="row">
+            <div class="col-lg-6 form-group mb-3">
+              <label class="fs-6 mb-3 required">Brand Name</label>
+              <input type="text" placeholder="Eg. Commerce Castle" class="form-control fs-6" formControlName="name"
+                [ngClass]="{
+                  'is-invalid':
+                    (formControls.name.touched || isSubmitted) &&
+                    formControls.name.errors?.required
+                }" />
             </div>
-         </div>
+            <div class="col-lg-6 form-group mb-3">
+              <label class="fs-6 mb-3 required">Domain</label>
+              <input type="text" placeholder="https://storedada.com" class="form-control fs-6" formControlName="domain"
+                [ngClass]="{
+                  'is-invalid':
+                    (formControls.domain.touched || isSubmitted) &&
+                    formControls.domain.errors?.required
+                }" />
+            </div>
+            <div class="form-group mb-3">
+              <label class="fs-6 mb-3">Company Name</label>
+              <input type="text" class="form-control fs-6" formControlName="companyName" />
+            </div>
+            <div class="col-lg-6 form-group mb-3">
+              <label for="countryCode" class="fs-6 mb-3 required">Country Code</label>
+              <select formControlName="countryCode" (change)="handleMobilePattern()" id="countryCode"
+                class="form-select">
+                <option value="" disabled>-- Select an option --</option>
+                <option value="+91">+91</option>
+                <option value="+971">+971</option>
+                <option value="+964">+964</option>
+              </select>
+            </div>
+            <div class="col-lg-6 form-group mb-3">
+              <label class="fs-6 mb-3 required">Mobile No.</label>
+              <input type="text" class="form-control fs-6" formControlName="mobile" [ngClass]="{
+                  'is-invalid':
+                    (formControls.mobile.touched || isSubmitted) &&
+                    formControls.mobile.errors?.required
+                }" />
+            </div>
+          </div>
+          <div class="form-group mb-3">
+            <label class="fs-6 mb-3 required">Email</label>
+            <input type="text" class="form-control fs-6" formControlName="email" [ngClass]="{
+                'is-invalid':
+                  (formControls.email.touched || isSubmitted) &&
+                  formControls.email.errors?.required
+              }" />
+          </div>
+          <div class="form-group mb-3">
+            <label class="fs-6 mb-3">TRN / GST No</label>
+            <input type="text" class="form-control fs-6" formControlName="gstNo" />
+          </div>
+          <div class="form-group mb-3">
+            <label class="fs-6 mb-3">Default Country</label>
+            <select formControlName="country" class="form-select">
+              <option value="" disabled>-- Select an option --</option>
+              <option *ngFor="let defaultCountry of defaultCountries" value="{{ defaultCountry.iso_alpha2 }}">
+                {{ defaultCountry.name }} - {{ defaultCountry.iso_alpha2 }}
+              </option>
+            </select>
+          </div>
+          <div class="form-group mb-3">
+            <label class="fs-6 mb-3 required">Store Address</label>
+            <input type="text" class="form-control fs-6" formControlName="primaryAddress" [ngClass]="{
+                'is-invalid':
+                  (formControls.name.touched || isSubmitted) &&
+                  formControls.name.errors?.required
+              }" />
+          </div>
+          <div class="form-group mb-3">
+            <label class="fs-6 mb-3 required">Description</label>
+            <textarea type="text" placeholder="Eg. All in one ecommerce store" class="form-control fs-6"
+              formControlName="description" [ngClass]="{
+                'is-invalid':
+                  (formControls.description.touched || isSubmitted) &&
+                  formControls.description.errors?.required
+              }"></textarea>
+          </div>
+        </div>
+      </div>
 
-         <div class="card my-4">
-            <div class="card-body">
-               <div class="fs-3 fw-bold mb-2">Store Settings</div>
-               <div class="row">
-                  <div class="col-lg-6 form-group mb-3">
-                     <label class="fs-6 mb-3 required">Brand Name</label>
-                     <input type="text" placeholder="Eg. Commerce Castle" class="form-control fs-6"
-                        formControlName="name" [ngClass]="{'is-invalid': (formControls.name.touched || isSubmitted) &&
-                                       formControls.name.errors?.required}" />
-                  </div>
-                  <div class="col-lg-6 form-group mb-3">
-                     <label class="fs-6 mb-3 required">Domain</label>
-                     <input type="text" placeholder="https://storedada.com" class="form-control fs-6"
-                        formControlName="domain" [ngClass]="{'is-invalid': (formControls.domain.touched || isSubmitted) &&
-                                       formControls.domain.errors?.required}" />
-                  </div>
-                  <div class="form-group mb-3">
-                     <label class="fs-6 mb-3">Company Name</label>
-                     <input type="text" class="form-control fs-6" formControlName="companyName" />
-                  </div>
-                  <div class="col-lg-6 form-group mb-3">
-                     <label for="countryCode" class="fs-6 mb-3 required">Country Code</label>
-                     <select formControlName="countryCode" (change)="handleMobilePattern()" id="countryCode"
-                        class="form-select">
-                        <option value="" disabled>-- Select an option --</option>
-                        <option value="+91">+91</option>
-                        <option value="+971">+971</option>
-                        <option value="+964">+964</option>
-                     </select>
-                  </div>
-                  <div class="col-lg-6 form-group mb-3">
-                     <label class="fs-6 mb-3 required">Mobile No.</label>
-                     <input type="text" class="form-control fs-6" formControlName="mobile" [ngClass]="{'is-invalid': (formControls.mobile.touched || isSubmitted) &&
-                                       formControls.mobile.errors?.required}" />
-                  </div>
-               </div>
-               <div class="form-group mb-3">
-                  <label class="fs-6 mb-3 required">Email</label>
-                  <input type="text" class="form-control fs-6" formControlName="email" [ngClass]="{'is-invalid': (formControls.email.touched || isSubmitted) &&
-                                       formControls.email.errors?.required}" />
-               </div>
-               <div class="form-group mb-3">
-                  <label class="fs-6 mb-3">TRN / GST No</label>
-                  <input type="text" class="form-control fs-6" formControlName="gstNo" />
-               </div>
-               <div class="form-group mb-3">
-                  <label class="fs-6 mb-3 required">Store Address</label>
-                  <input type="text" class="form-control fs-6" formControlName="primaryAddress" [ngClass]="{'is-invalid': (formControls.name.touched || isSubmitted) &&
-                                    formControls.name.errors?.required}" />
-               </div>
-               <div class="form-group mb-3">
-                  <label class="fs-6 mb-3 required">Description</label>
-                  <textarea type="text" placeholder="Eg. All in one ecommerce store" class="form-control fs-6"
-                     formControlName="description" [ngClass]="{'is-invalid': (formControls.description.touched || isSubmitted) &&
-                                 formControls.description.errors?.required}"></textarea>
-               </div>
+      <div class="card">
+        <div class="card-body">
+          <div class="fs-3 fw-bold mb-2">Media Settings</div>
+          <div class="row">
+            <div class="col-lg-3">
+              <div class="fs-5 mb-2 required">Store logo</div>
+              <div class="h-auto ratio ratio-1x1 w-100">
+                <app-assets (mediaClicked)="handleStoreLogo($event)" [previewDetails]="logo"></app-assets>
+              </div>
             </div>
-         </div>
+            <div class="col-lg-3">
+              <div class="fs-5 mb-2 required">Favicon</div>
+              <div class="h-auto ratio ratio-1x1 w-100">
+                <app-assets (mediaClicked)="handleStoreFavicon($event)" [previewDetails]="favicon"></app-assets>
+              </div>
+            </div>
+            <div class="col-lg-3">
+              <div class="fs-5 mb-2 required">Default Image</div>
+              <div class="h-auto ratio ratio-1x1 w-100">
+                <app-assets (mediaClicked)="handleDefaultImage($event)" [previewDetails]="defaultImage"></app-assets>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
 
-         <div class="card">
-            <div class="card-body">
-               <div class="fs-3 fw-bold mb-2">Media Settings</div>
-               <div class="row">
-                  <div class="col-lg-3">
-                     <div class="fs-5 mb-2 required">Store logo</div>
-                     <div class="h-auto ratio ratio-1x1 w-100">
-                        <app-assets (mediaClicked)="handleStoreLogo($event)" [previewDetails]="logo"></app-assets>
-                     </div>
-                  </div>
-                  <div class="col-lg-3">
-                     <div class="fs-5 mb-2 required">Favicon</div>
-                     <div class="h-auto ratio ratio-1x1 w-100">
-                        <app-assets (mediaClicked)="handleStoreFavicon($event)" [previewDetails]="favicon"></app-assets>
-                     </div>
-                  </div>
-                  <div class="col-lg-3">
-                     <div class="fs-5 mb-2 required">Default Image</div>
-                     <div class="h-auto ratio ratio-1x1 w-100">
-                        <app-assets (mediaClicked)="handleDefaultImage($event)"
-                           [previewDetails]="defaultImage"></app-assets>
-                     </div>
-                  </div>
-               </div>
+      <div class="my-4 card">
+        <div class="card-body">
+          <div class="fs-3 fw-bold mb-2">Website Banners</div>
+          <p class="fs-5 text-muted">
+            Edit the banner images as per your choice which will be displayed on
+            your website product listing
+          </p>
+          <div class="row">
+            <div>
+              <div class="fs-5 mb-2">Desktop</div>
+              <div class="position-relative default-banner">
+                <div class="h-100 ratio ratio-21x9 w-100">
+                  <app-assets (mediaClicked)="handleDefaultBanner($event)"
+                    [previewDetails]="defaultBanner"></app-assets>
+                </div>
+                <div class="position-absolute bottom-0 m-2" *ngIf="defaultBanner">
+                  <button class="btn btn-danger p-2 d-flex align-items-center justify-content-center gap-2"
+                    (click)="onRemove('defaultBanner')">
+                    <svg height="18" width="18" data-slot="icon" fill="none" stroke-width="1.5" stroke="currentColor"
+                      viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                      <path stroke-linecap="round" stroke-linejoin="round"
+                        d="M12 9.75 14.25 12m0 0 2.25 2.25M14.25 12l2.25-2.25M14.25 12 12 14.25m-2.58 4.92-6.374-6.375a1.125 1.125 0 0 1 0-1.59L9.42 4.83c.21-.211.497-.33.795-.33H19.5a2.25 2.25 0 0 1 2.25 2.25v10.5a2.25 2.25 0 0 1-2.25 2.25h-9.284c-.298 0-.585-.119-.795-.33Z">
+                      </path>
+                    </svg>
+                    <div>Remove</div>
+                  </button>
+                </div>
+              </div>
             </div>
-         </div>
-         <div class="my-4 card">
-            <div class="card-body">
-               <div class="row">
-                  <div class="col-lg-6">
-                     <div class="fs-3 fw-bold mb-2">Default Web Banner</div>
-                     <div class="h-100 ratio ratio-16x9 w-100">
-                        <app-assets (mediaClicked)="handleDefaultBanner($event)" [previewDetails]="defaultBanner"></app-assets>
-                     </div>
-                  </div>
-                  <div class="col-lg-6">
-                     <div class="fs-3 fw-bold mb-2">Default Mobile Banner</div>
-                     <div class="h-100 ratio ratio-16x9 w-100">
-                        <app-assets (mediaClicked)="handleDefaultMobileBanner($event)" [previewDetails]="defaultMobileBanner"></app-assets>
-                     </div>
-                  </div>
-               </div>
+            <div class="mt-4">
+              <div class="fs-5 mb-2">Mobile</div>
+              <div class="position-relative default-banner">
+                <div class="h-100 ratio ratio-21x9 w-100">
+                  <app-assets (mediaClicked)="handleDefaultMobileBanner($event)"
+                    [previewDetails]="defaultMobileBanner"></app-assets>
+                </div>
+                <div class="position-absolute bottom-0 m-2" *ngIf="defaultMobileBanner">
+                  <button class="btn btn-danger p-2 d-flex align-items-center justify-content-center gap-2"
+                    (click)="onRemove('defaultMobileBanner')">
+                    <svg height="18" width="18" data-slot="icon" fill="none" stroke-width="1.5" stroke="currentColor"
+                      viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                      <path stroke-linecap="round" stroke-linejoin="round"
+                        d="M12 9.75 14.25 12m0 0 2.25 2.25M14.25 12l2.25-2.25M14.25 12 12 14.25m-2.58 4.92-6.374-6.375a1.125 1.125 0 0 1 0-1.59L9.42 4.83c.21-.211.497-.33.795-.33H19.5a2.25 2.25 0 0 1 2.25 2.25v10.5a2.25 2.25 0 0 1-2.25 2.25h-9.284c-.298 0-.585-.119-.795-.33Z">
+                      </path>
+                    </svg>
+                    <div>Remove</div>
+                  </button>
+                </div>
+              </div>
             </div>
-            
-         </div>
+          </div>
+        </div>
+      </div>
 
-         <div class="card my-4">
-            <div class="card-body">
-               <div class="fs-3 fw-bold mb-2">Color Settings</div>
-               <div class="row">
-                  <div class="col-lg-6">
-                     <div class="form-group mb-4">
-                        <label class="fs-6 mb-3">Primary Color</label>
-                        <input type="color" placeholder="App primary color" class="form-control fs-6"
-                           style="height: 40px;" formControlName="primary" />
-                     </div>
-                  </div>
-                  <div class="col-lg-6">
-                     <div class="form-group mb-4">
-                        <label class="fs-6 mb-3">Secondary Color</label>
-                        <input type="color" placeholder="App secondary color" class="form-control fs-6"
-                           style="height: 40px;" formControlName="secondary" />
-                     </div>
-                  </div>
-               </div>
-               <div class="row">
-                  <div class="col-lg-4">
-                     <div class="form-group mb-4">
-                        <label class="fs-6 mb-3">Label Color</label>
-                        <input type="color" placeholder="App secondary color" class="form-control fs-6"
-                           style="height: 40px;" formControlName="label" />
-                     </div>
-                  </div>
-                  <div class="col-lg-4">
-                     <div class="form-group mb-4">
-                        <label class="fs-6 mb-3">Star Color</label>
-                        <input type="color" placeholder="App secondary color" class="form-control fs-6"
-                           style="height: 40px;" formControlName="star" />
-                     </div>
-                  </div>
-                  <div class="col-lg-4">
-                     <div class="form-group mb-4">
-                        <label class="fs-6 mb-3">Text Color</label>
-                        <input type="color" placeholder="App secondary color" class="form-control fs-6"
-                           style="height: 40px;" formControlName="text" />
-                     </div>
-                  </div>
-               </div>
-               <div class="row">
-                  <div class="col-lg-4">
-                     <div class="form-group mb-4">
-                        <label class="fs-6 mb-3">Toast Success Color</label>
-                        <input type="color" placeholder="App toast success color" class="form-control fs-6"
-                           style="height: 40px;" formControlName="toastSuccess" />
-                     </div>
-                  </div>
-                  <div class="col-lg-4">
-                     <div class="form-group mb-4">
-                        <label class="fs-6 mb-3">Toast Error Color</label>
-                        <input type="color" placeholder="App toast error color" class="form-control fs-6"
-                           style="height: 40px;" formControlName="toastError" />
-                     </div>
-                  </div>
-                  <div class="col-lg-4">
-                     <div class="form-group mb-4">
-                        <label class="fs-6 mb-3">Toast Info Color</label>
-                        <input type="color" placeholder="App toast error color" class="form-control fs-6"
-                           style="height: 40px;" formControlName="toastInfo" />
-                     </div>
-                  </div>
-               </div>
+      <div class="card my-4">
+        <div class="card-body">
+          <div class="fs-3 fw-bold mb-2">Color Settings</div>
+          <div class="row">
+            <div class="col-lg-6">
+              <div class="form-group mb-4">
+                <label class="fs-6 mb-3">Primary Color</label>
+                <input type="color" placeholder="App primary color" class="form-control fs-6" style="height: 40px"
+                  formControlName="primary" />
+              </div>
             </div>
-         </div>
+            <div class="col-lg-6">
+              <div class="form-group mb-4">
+                <label class="fs-6 mb-3">Secondary Color</label>
+                <input type="color" placeholder="App secondary color" class="form-control fs-6" style="height: 40px"
+                  formControlName="secondary" />
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-lg-4">
+              <div class="form-group mb-4">
+                <label class="fs-6 mb-3">Label Color</label>
+                <input type="color" placeholder="App secondary color" class="form-control fs-6" style="height: 40px"
+                  formControlName="label" />
+              </div>
+            </div>
+            <div class="col-lg-4">
+              <div class="form-group mb-4">
+                <label class="fs-6 mb-3">Star Color</label>
+                <input type="color" placeholder="App secondary color" class="form-control fs-6" style="height: 40px"
+                  formControlName="star" />
+              </div>
+            </div>
+            <div class="col-lg-4">
+              <div class="form-group mb-4">
+                <label class="fs-6 mb-3">Text Color</label>
+                <input type="color" placeholder="App secondary color" class="form-control fs-6" style="height: 40px"
+                  formControlName="text" />
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-lg-4">
+              <div class="form-group mb-4">
+                <label class="fs-6 mb-3">Toast Success Color</label>
+                <input type="color" placeholder="App toast success color" class="form-control fs-6" style="height: 40px"
+                  formControlName="toastSuccess" />
+              </div>
+            </div>
+            <div class="col-lg-4">
+              <div class="form-group mb-4">
+                <label class="fs-6 mb-3">Toast Error Color</label>
+                <input type="color" placeholder="App toast error color" class="form-control fs-6" style="height: 40px"
+                  formControlName="toastError" />
+              </div>
+            </div>
+            <div class="col-lg-4">
+              <div class="form-group mb-4">
+                <label class="fs-6 mb-3">Toast Info Color</label>
+                <input type="color" placeholder="App toast error color" class="form-control fs-6" style="height: 40px"
+                  formControlName="toastInfo" />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
 
-         <div class="card">
-            <div class="card-body">
-               <div class="fs-3 fw-bold mb-2">Additional Settings</div>
-               <div class="form-group mb-3">
-                  <label class="fs-6 mb-3 required">Packing Slip</label>
-                  <angular-editor class="form-control fs-6" formControlName="packingSlip"
-                     [config]="editorConfig"></angular-editor>
-               </div>
-               <div class="row">
-                  <div class="col-lg-4 form-group mb-3">
-                     <label class="fs-6 mb-3">Currency</label>
-                     <select class="form-select fs-6" formControlName="currency">
-                        <option value="" disabled>-- Select an option --</option>
-                        <ng-container *ngFor="let currency of currencies">
-                           <option value="{{currency}}">{{currency}}</option>
-                        </ng-container>
-                     </select>
-                  </div>
-                  <div class="col-lg-4 form-group mb-3">
-                     <label class="fs-6 mb-3">Font Family</label>
-                     <select class="form-select fs-6" formControlName="fontFamily">
-                        <option value="" disabled>-- Select an option --</option>
-                        <ng-container *ngFor="let font of fontFamily">
-                           <option value="{{font}}">{{font}}</option>
-                        </ng-container>
-                     </select>
-                  </div>
-                  <div class="col-lg-4 form-group mb-3">
-                     <label class="fs-6 mb-3">Show Out of Stock Products</label>
-                     <select class="form-select mb-3" formControlName="isOutOfStock">
-                        <option value="" disabled>-- Select an option --</option>
-                        <option value="false">No</option>
-                        <option value="true">Yes</option>
-                     </select>
-                  </div>
-                  <div class="col-lg-4 form-group mb-3">
-                     <label class="fs-6 mb-3">Notify Button</label>
-                     <select class="form-select mb-3" formControlName="isNotifyStock">
-                        <option value="" disabled>-- Select an option --</option>
-                        <option value="false">No</option>
-                        <option value="true">Yes</option>
-                     </select>
-                  </div>
-                  <div class="col-lg-4 form-group mb-3">
-                     <label class="fs-6 mb-3 required">Items Per Page</label>
-                     <input type="number" placeholder="14" class="form-control fs-6" formControlName="itemsPerPage" />
-                  </div>
-                  <div class="col-lg-4 form-group mb-3">
-                     <label class="fs-6 mb-3">Default Sort</label>
-                     <select class="form-select fs-6" formControlName="defaultSort">
-                        <option value="" disabled>-- Select an sort --</option>
-                        <ng-container *ngFor="let sort of defaultSort">
-                           <option [value]="sort.value">{{sort.label}}</option>
-                        </ng-container>
-                     </select>
-         </div>
-               </div>
+      <div class="card">
+        <div class="card-body">
+          <div class="fs-3 fw-bold mb-2">Additional Settings</div>
+          <div class="form-group mb-3">
+            <label class="fs-6 mb-3 required">Packing Slip</label>
+            <angular-editor class="form-control fs-6" formControlName="packingSlip"
+              [config]="editorConfig"></angular-editor>
+          </div>
+          <div class="row">
+            <div class="col-lg-4 form-group mb-3">
+              <label class="fs-6 mb-3">Currency</label>
+              <select class="form-select fs-6" formControlName="currency">
+                <option value="" disabled>-- Select an option --</option>
+                <ng-container *ngFor="let currency of currencies">
+                  <option value="{{ currency.value }}">{{ currency.label }}</option>
+                </ng-container>
+              </select>
             </div>
-         </div>
+            <div class="col-lg-4 form-group mb-3">
+              <label class="fs-6 mb-3">Default Shipping Charge</label>
+              <input type="number" placeholder="0" class="form-control fs-6" formControlName="defaultShippingCharge" />
+            </div>
+            <div class="col-lg-4 form-group mb-3">
+              <label class="fs-6 mb-3">Font Family</label>
+              <select class="form-select fs-6" formControlName="fontFamily">
+                <option value="" disabled>-- Select an option --</option>
+                <ng-container *ngFor="let font of fontFamily">
+                  <option value="{{ font }}">{{ font }}</option>
+                </ng-container>
+              </select>
+            </div>
+            <div class="col-lg-4 form-group mb-3">
+              <label class="fs-6 mb-3">Show Out of Stock Products</label>
+              <select class="form-select mb-3" formControlName="isOutOfStock">
+                <option value="" disabled>-- Select an option --</option>
+                <option value="false">No</option>
+                <option value="true">Yes</option>
+              </select>
+            </div>
+            <div class="col-lg-4 form-group mb-3">
+              <label class="fs-6 mb-3">Enable Tax</label>
+              <select class="form-select mb-3" formControlName="isTax">
+                <option value="" disabled>-- Select an option --</option>
+                <option value="false">No</option>
+                <option value="true">Yes</option>
+              </select>
+            </div>
+            <div class="col-lg-4 form-group mb-3">
+              <label class="fs-6 mb-3">Notify Button</label>
+              <select class="form-select mb-3" formControlName="isNotifyStock">
+                <option value="" disabled>-- Select an option --</option>
+                <option value="false">No</option>
+                <option value="true">Yes</option>
+              </select>
+            </div>
+            <div class="col-lg-4 form-group mb-3">
+              <label class="fs-6 mb-3 required">Items Per Page</label>
+              <input type="number" placeholder="14" class="form-control fs-6" formControlName="itemsPerPage" />
+            </div>
+            <div class="col-lg-4 form-group mb-3">
+              <label class="fs-6 mb-3">Default Sort</label>
+              <select class="form-select fs-6" formControlName="defaultSort">
+                <option value="" disabled>-- Select an sort --</option>
+                <ng-container *ngFor="let sort of defaultSort">
+                  <option [value]="sort.value">{{ sort.label }}</option>
+                </ng-container>
+              </select>
+            </div>
+            <div class="col-lg-4 form-group mb-3">
+              <label class="fs-6 mb-3">Allow Search Engines to Index</label>
+              <select class="form-select mb-3" formControlName="isIndex">
+                <option value="" disabled>-- Select an option --</option>
+                <option value="false">No</option>
+                <option value="true">Yes</option>
+              </select>
+            </div>
+          </div>
+        </div>
+      </div>
 
-         <div class="card my-4">
-            <div class="card-body">
-               <div class="fs-3 fw-bold mb-2">Button Settings</div>
-               <p class="text-muted">Edit the button text as per your choice</p>
-               <div class="row mt-2 buttonsWrapper">
-                  <div class="col-lg-4" [ngClass]="{'is-invalid': (formControls.cartButton.touched || isSubmitted) &&
-                        formControls.cartButton.errors?.required}">
-                     <div class="button" [ngStyle]="{'background-color': primary}">
-                        <input type="text" formControlName="cartButton">
-                     </div>
-                  </div>
-                  <div class="col-lg-4" [ngClass]="{'is-invalid': (formControls.stockButton.touched || isSubmitted) &&
-                        formControls.stockButton.errors?.required}">
-                     <div class="button outOfStock" [ngStyle]="{'background-color': primary}">
-                        <input type="text" formControlName="stockButton">
-                     </div>
-                  </div>
-                  <div class="col-lg-4" [ngClass]="{'is-invalid': (formControls.notifyButton.touched || isSubmitted) &&
-                        formControls.notifyButton.errors?.required}">
-                     <div class="button notifyButton" [ngStyle]="{'border-color': primary, 'color': primary}">
-                        <input type="text" formControlName="notifyButton" [ngStyle]="{'color': primary}">
-                     </div>
-                  </div>
-               </div>
+      <div class="card my-4">
+        <div class="card-body">
+          <div class="fs-3 fw-bold mb-2">Button Settings</div>
+          <p class="text-muted">Edit the button text as per your choice</p>
+          <div class="row mt-2 buttonsWrapper">
+            <div class="col-lg-4" [ngClass]="{
+                'is-invalid':
+                  (formControls.cartButton.touched || isSubmitted) &&
+                  formControls.cartButton.errors?.required
+              }">
+              <div class="button" [ngStyle]="{ 'background-color': primary }">
+                <input type="text" formControlName="cartButton" />
+              </div>
             </div>
-         </div>
+            <div class="col-lg-4" [ngClass]="{
+                'is-invalid':
+                  (formControls.stockButton.touched || isSubmitted) &&
+                  formControls.stockButton.errors?.required
+              }">
+              <div class="button outOfStock" [ngStyle]="{ 'background-color': primary }">
+                <input type="text" formControlName="stockButton" />
+              </div>
+            </div>
+            <div class="col-lg-4" [ngClass]="{
+                'is-invalid':
+                  (formControls.notifyButton.touched || isSubmitted) &&
+                  formControls.notifyButton.errors?.required
+              }">
+              <div class="button notifyButton" [ngStyle]="{ 'border-color': primary, color: primary }">
+                <input type="text" formControlName="notifyButton" [ngStyle]="{ color: primary }" />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
 
-         <div class="card">
-            <div class="card-body">
-               <div class="fs-3 fw-bold mb-2">Language Settings</div>
-               <p class="text-muted">Edit the language settings of your store</p>
-               <div class="d-flex mb-3 flex-wrap align-items-center justify-content-start gap-2">
-                  <div class="py-2 px-4 cursor-pointer rounded-pill"
-                     *ngFor="let language of languageItems; let i = index" (click)="toggleLanguages(language)"
-                     [ngClass]="{'bg-primary text-white': languageExists(language), 'bg-secondary': !languageExists(language)}">
-                     <div>{{language?.lang}}</div>
-                  </div>
-               </div>
-               <div class="form-group">
-                  <label for="primaryLang" class="fs-6 mb-3">Primary Language</label>
-                  <select class="form-control" formControlName="primaryLang" id="primaryLang">
-                     <option value="" disabled>-- Select an option --</option>
-                     <ng-container *ngFor="let language of languages">
-                        <option value="{{language?.langCode}}">
-                           {{language?.lang}}
-                        </option>
-                     </ng-container>
-                  </select>
-               </div>
+      <div class="card">
+        <div class="card-body">
+          <div class="fs-3 fw-bold mb-2">Language Settings</div>
+          <p class="text-muted">Edit the language settings of your store</p>
+          <div class="d-flex mb-3 flex-wrap align-items-center justify-content-start gap-2">
+            <div class="py-2 px-4 cursor-pointer rounded-pill" *ngFor="let language of languageItems; let i = index"
+              (click)="toggleLanguages(language)" [ngClass]="{
+                'bg-primary text-white': languageExists(language),
+                'bg-secondary': !languageExists(language)
+              }">
+              <div>{{ language?.lang }}</div>
             </div>
-         </div>
-      </form>
-   </div>
+          </div>
+          <div class="form-group">
+            <label for="primaryLang" class="fs-6 mb-3">Primary Language</label>
+            <select class="form-control" formControlName="primaryLang" id="primaryLang">
+              <option value="" disabled>-- Select an option --</option>
+              <ng-container *ngFor="let language of languages">
+                <option value="{{ language?.langCode }}">
+                  {{ language?.lang }}
+                </option>
+              </ng-container>
+            </select>
+          </div>
+        </div>
+      </div>
+      <div class="card my-4">
+        <div class="card-body">
+          <div class="fs-3 fw-bold mb-2">Placeholder Settings</div>
+          <label for="placeholder" class="text-muted d-block">
+            Edit the placeholder text as per your choice
+          </label>
+          <label for="placeholder" class="text-muted d-block mb-3">You can add multiple placeholders by adding more
+          </label>
+          <div class="row">
+            <div class="col-lg-10">
+              <input type="text" [formControl]="placeHolder" class="form-control"
+                placeholder="Enter placeholder text" />
+            </div>
+            <div class="col-lg-2">
+              <button 
+              class="btn btn-secondary w-100" 
+              (click)="addPlaceholder()" 
+              [disabled]="currentlyEditingPlaceholder !== null">
+              Add Placeholder
+            </button>
+            </div>
+          </div>
+          <div class="mt-3">
+            <div *ngFor="let placeholder of placeHolders; let i = index">
+              <div class="row my-2">
+                <div class="col-lg-8 d-flex align-items-center">
+                  {{ placeholder }}
+                </div>
+                <div class="col-lg-2" *ngIf="currentlyEditingPlaceholder !== placeholder">
+                  <button class="btn btn-secondary w-100" type="button" (click)="editPlaceholder(placeholder)">
+                    Edit
+                  </button>
+                </div>
+                <div class="col-lg-2" *ngIf="currentlyEditingPlaceholder !== placeholder">
+                  <button class="btn btn-danger w-100" type="button" (click)="removePlaceholder(placeholder)">
+                    Remove
+                  </button>
+                </div>
+                <div class="col-lg-2" *ngIf="currentlyEditingPlaceholder === placeholder">
+                  <button class="btn btn-primary w-100" type="button" (click)="savePlaceholder()" [disabled]="placeHolder.invalid">
+                    Save
+                  </button>
+                </div>
+                <div class="col-lg-2" *ngIf="currentlyEditingPlaceholder === placeholder">
+                  <button class="btn btn-secondary w-100" type="button" (click)="editPlaceholder(placeholder)">
+                    Cancel
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
 </div>
 
 <ng-template #discardTemplate>
-   <div class="modal-body text-center">
-      <p>Do you want to discard the cache?</p>
-      <button type="button" class="btn btn-default" (click)="approveDiscard()">Yes</button>
-      <button type="button" class="btn btn-primary" (click)="declineDiscard()">No</button>
-   </div>
+  <div class="modal-body text-center">
+    <p>Do you want to discard the cache?</p>
+    <button type="button" class="btn btn-default" (click)="approveDiscard()">
+      Yes
+    </button>
+    <button type="button" class="btn btn-primary" (click)="declineDiscard()">
+      No
+    </button>
+  </div>
 </ng-template>
 
 <ng-template #template>
-   <div class="modal-body text-center">
-      <p>Do you update the store status?</p>
-      <button type="button" class="btn btn-default" (click)="confirm()">Yes</button>
-      <button type="button" class="btn btn-primary" (click)="decline()">No</button>
-   </div>
+  <div class="modal-body text-center">
+    <p>Do you update the store status?</p>
+    <button type="button" class="btn btn-default" (click)="confirm()">
+      Yes
+    </button>
+    <button type="button" class="btn btn-primary" (click)="decline()">
+      No
+    </button>
+  </div>
 </ng-template>
