@@ -61,10 +61,8 @@ export class UpdateCollectionComponent implements OnInit {
             this.previews.mobileCoverPreview = res?.result?.mobileCover;
             this.form.get('mobileCover')?.setValue(res?.result?.mobileCover);
           }
-          if (res?.result?.thumbnail)
-            this.previews.thumbnailPreview = res?.result?.thumbnail;
-          if (res?.result?.cover)
-            this.previews.coverPreview = res?.result?.cover;
+          if (res?.result?.thumbnail) this.previews.thumbnailPreview = res?.result?.thumbnail;
+          if (res?.result?.cover) this.previews.coverPreview = res?.result?.cover;
           this.productDetails = res?.result?.products.map((item: any) => item.product);
           this.productIds = res?.result?.products.map((item: any) => item.product._id);
           this.ChangeDetectorRef.markForCheck();

@@ -140,9 +140,7 @@ export class AddCollectionComponent implements OnInit {
       });
     } else {
       // Remove product
-      this.productDetails = this.productDetails.filter(
-        (item) => item?._id !== product?._id
-      );
+      this.productDetails = this.productDetails.filter( (item) => item?._id !== product?._id);
       this.productIds = this.productIds.filter((item) => item !== product?._id);
       
       // Reorder remaining products
@@ -173,7 +171,7 @@ export class AddCollectionComponent implements OnInit {
   onSubmit() {
     if (this.isAutoCompleteEnabled) {
       // Prepare products array with order
-      const productIds = this.orderedProducts.map(item => item.product?.sku);
+      const productIds = this.orderedProducts.map(item => item.product?._id);
       this.form.get('products')?.setValue(productIds);
     } else {
       // Handle SKU-based product entry if needed

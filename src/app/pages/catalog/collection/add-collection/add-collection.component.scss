@@ -1,10 +1,15 @@
-label,
-.btn {
-  font-weight: 400 !important;
-}
-
 .cover {
   height: 340px;
+}
+
+label,
+.btn-secondary,
+.btn-primary {
+   font-weight: normal !important;
+}
+
+.default-banner{
+   height: 240px;
 }
 
 .searchProductsContainer {
