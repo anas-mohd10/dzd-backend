@@ -24,9 +24,9 @@
         <form [formGroup]="form" (keydown.Enter)="$event.preventDefault()">
 
           <div class="row">
-            <div class="col-lg-6">
+            <div>
               <label class="fs-6 mb-3">Cover</label>
-              <div class="ratio ratio-21x9 position-relative">
+              <div class="default-banner position-relative">
                 <app-assets [previewDetails]="cover" (mediaClicked)="handleCollectionCover($event)"></app-assets>
                 <div *ngIf="cover">
                   <div class="position-absolute bottom-0 end-0 m-4">
@@ -35,9 +35,9 @@
                 </div>
               </div>
             </div>
-            <div class="col-lg-6">
+            <div class="my-3">
               <label class="fs-6 mb-3">Mobile Cover</label>
-              <div class="ratio ratio-21x9 position-relative">
+              <div class="default-banner position-relative">
                 <app-assets [previewDetails]="mobileCover" (mediaClicked)="handleCollectionMobileCover($event)"></app-assets>
                 <div *ngIf="mobileCover">
                   <div class="position-absolute bottom-0 end-0 m-4">
@@ -153,7 +153,7 @@
                           <ng-container *ngFor="let product of searchProducts; let i = index;">
                             <tr>
                               <td>
-                                <img class="rounded border border-secondary" src="{{base}}{{product?.thumbnail}}"
+                                <img class="rounded border border-secondary" onerror="this.src='assets/images/default.png'" src="{{base}}{{product?.thumbnail}}"
                                   alt="{{product?.name}}">
                               </td>
                               <td>
@@ -213,17 +213,17 @@
               </div>
             </div>
 
-            <div class="d-flex align-items-center justify-content-end gap-2">
-              <a routerLink="{{ appRoute.collection.COLLECTION_LIST}}" class=" btn btn-secondary">
-                Cancel
-              </a>
-              <button type="submit" (click)="onSubmit()" class="btn btn-primary">
-                Save changes
-              </button>
-            </div>
           </div>
         </form>
       </div>
+    </div>
+    <div class="d-flex align-items-center justify-content-end gap-2 my-4">
+      <a routerLink="{{ appRoute.collection.COLLECTION_LIST}}" class=" btn btn-secondary">
+        Cancel
+      </a>
+      <button type="submit" (click)="onSubmit()" class="btn btn-primary">
+        Save changes
+      </button>
     </div>
   </div>
 </div>
