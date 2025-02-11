@@ -69,11 +69,14 @@ export class AddProductComponent implements OnInit {
   settings: any = {};
   parentForm: FormGroup;
   taxClassDetails: Array<any> = [];
+
   brand: FormControl = new FormControl('', Validators.required);
   brands: Array<any> = [];
+  selectedBrand: any = null;
+  brandsMap: any = {};
+
   productCategories: Array<any> = [];
   images: Array<any> = [];
-  defaultCategories: Array<any> = [];
   form: FormGroup;
   parentDetails: any;
   parentSlug: string;
@@ -83,7 +86,11 @@ export class AddProductComponent implements OnInit {
   searchKeywords: Array<any> = [];
   searchKeyword: FormControl = new FormControl('');
   relatedProducts: Array<any> = [];
+
   categories: Array<any> = [];
+  selectedCategories: Array<string> = [];
+  defaultCategories: Array<any> = [];
+  
   productCategory: FormControl = new FormControl('');
   productAttributes: Array<any> = [];
   isCategoryMultiple: boolean = true;
@@ -105,7 +112,6 @@ export class AddProductComponent implements OnInit {
   isParentSubmitted: boolean = false;
   activeRelatedProducts: Array<any> = [];
   relatedProduct: FormControl = new FormControl('');
-  brandsMap: any = {};
   storeFields: Array<StoreField> = [];
   storeFieldForm: FormGroup = new FormGroup({});
   isStoreSubmitted: boolean = false;
@@ -142,6 +148,20 @@ export class AddProductComponent implements OnInit {
   get storeFieldControls() {
     return this.storeFieldForm.controls;
   }
+
+  onBrandChange(event: any) {
+  if (event) {
+    this.selectedBrand = event;
+    this.form.patchValue({
+      brand: event.slug
+    });
+  } else {
+    this.selectedBrand = null;
+    this.form.patchValue({
+      brand: null
+    });
+  }
+}
 
   onProductsTriggered(productId?: any) {
     let productDetails: any = null;
@@ -267,22 +287,47 @@ export class AddProductComponent implements OnInit {
     this.form.get('thumbnail')?.setValue(event.path);
   }
 
-  toggleProductCategory(event: any, type: string) {
-    if (type == 'add') {
-      let categoryDetails = this.defaultCategories.filter(
-        (item: any) => item?.slug == event.target.value
-      );
-      this.categories.includes(categoryDetails[0])
-        ? this.HotToastService.info('Category already added')
-        : this.categories.push(categoryDetails[0]);
+toggleProductCategory(event: any, type: string) {
+  if (type === 'add') {
+    if (Array.isArray(event)) {
+      this.categories = event;
     } else {
-      this.categories = this.categories.filter(
-        (item: any) => item?.slug != event
-      );
+      const isExists = this.categories.some(item => item.slug === event.slug);
+      if (isExists) {
+        this.HotToastService.info('Category already added');
+      } else {
+        this.categories.push(event);
+      }
     }
-    this.productCategory.setValue('');
+  } else {
+    this.categories = this.categories.filter(item => item.slug !== event);
   }
+  
+  this.selectedCategories = this.categories.map(cat => cat.slug);
+  
+  // Update form value if needed
+  if (this.form) {
+    this.form.patchValue({
+      category: {
+        id: this.categories.map(cat => cat._id),
+        refid: this.categories.map(cat => cat.catid)
+      }
+    });
+  }
+}
 
+ getDefaultCategories() {
+  this.CategoryService.getActiveCategory().subscribe({  // Note the capital C in CategoryService
+    next: (res: any) => {
+      if (res?.errorCode == 0) {
+        this.defaultCategories = res?.result;
+        this.ChangeDetectorRef.markForCheck();
+      }
+    },
+    error: (err: any) => { }
+  });
+}
+  
   removeProductCategory(categoryId: string) {
     this.categories = this.categories.filter(
       (item: any) => item?.slug != categoryId
@@ -402,20 +447,25 @@ export class AddProductComponent implements OnInit {
       localizedNames: {
         [this.settings.primaryLang]: this.form.get('name')?.value,
       },
-      brand: {
-        name: this.brandsMap[this.form.get('brand')?.value]?.name,
-        slug: this.brandsMap[this.form.get('brand')?.value]?.slug,
-        thumbnail: this.brandsMap[this.form.get('brand')?.value]?.thumbnail,
-        cover: this.brandsMap[this.form.get('brand')?.value]?.cover,
-      },
+      brand: this.selectedBrand ? {
+      name: this.selectedBrand.name,
+      slug: this.selectedBrand.slug,
+      thumbnail: this.selectedBrand.thumbnail,
+      cover: this.selectedBrand.cover,
+    } : null,
       parentId: this.parentDetails?._id,
       productIcons: this.icons,
       storeFrontFields: this.storeFields,
-      categories: this.categories.map((category: any) => category),
+      categories: this.categories.map((category: any) => ({
+      name: category.name,
+      slug: category.slug,
+      thumbnail: category.thumbnail,
+      cover: category.cover,
+      })),
       category: {
-        id: this.categories.map((category: any) => category?._id),
-        refid: this.categories.map((category: any) => category?.catid),
-      },
+      id: this.categories.map((category: any) => category?._id),
+      refid: this.categories.map((category: any) => category?.catid),
+    },
     };
 
     this.ProductService.addProduct(payload).subscribe({
@@ -591,6 +641,7 @@ export class AddProductComponent implements OnInit {
         Validators.pattern('^-?[0-9]\\d*(\\.\\d+)?$'),
       ]),
       brand: new FormControl(''),
+      category: new FormControl(''),
       details: new FormGroup({
         additionalButton: new FormControl(''),
         buttonRedirectUrl: new FormControl(''),
@@ -611,16 +662,18 @@ export class AddProductComponent implements OnInit {
     });
 
     this.BrandService.getActiveBrands().subscribe({
-      next: (res: any) => {
-        if (res?.errorCode == 0) {
-          this.brands = res?.result;
-          this.brands.forEach((brand: any) => {
-            this.brandsMap[brand.slug] = brand
-          })
-          this.ChangeDetectorRef.markForCheck();
-        }
-      },
+    next: (res: any) => {
+      if (res.errorCode == 0) {
+        this.brands = res.result;        
+        // Remove productDetails reference since this is an add component
+        this.ChangeDetectorRef.markForCheck();
+      }
+    }, 
+    error: (err: any) => { }
     });
+    
+      this.getDefaultCategories();
+
 
     this.ProductService.getActiveProduct().subscribe({
       next: (res: any) => {

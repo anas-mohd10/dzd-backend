@@ -93,17 +93,14 @@
                       </div>
                     </div>
                     <div class="mb-3">
-                      <div class="mb-3 form-group">
-                        <label class="fs-6 mb-3" for="productCategory">Category</label>
-                        <select [formControl]="productCategory" id="productCategory"
-                          (change)="toggleProductCategory($event, 'add')" class="form-select">
-                          <option value="" disabled>-- Select an option --</option>
-                          <option *ngFor="let category of defaultCategories" value="{{category?.slug}}">
-                            {{category.name}}
-                          </option>
-                        </select>
-                      </div>
-                      <ng-container *ngIf="categories.length > 0">
+                <div class="mb-3 form-group">
+                  <label class="fs-6 mb-3" for="productCategory">Category</label>
+                  <ng-select class="fs-6" [items]="defaultCategories" bindLabel="name" [multiple]="true" [(ngModel)]="categories"
+                    [ngModelOptions]="{standalone: true}" placeholder="Select categories"
+                    (change)="toggleProductCategory($event, 'add')" id="productCategory">
+                  </ng-select>
+                </div>
+                      <!-- <ng-container *ngIf="categories.length > 0">
                         <div class="d-flex flex-wrap overflow-hidden align-items-center justify-content-start gap-3">
                           <ng-container *ngFor="let category of categories">
                             <div
@@ -121,7 +118,7 @@
                             </div>
                           </ng-container>
                         </div>
-                      </ng-container>
+                      </ng-container> -->
                     </div>
                     <div class="row mb-3">
                       <div class="col-lg-6 mb-3 form-group">
@@ -240,13 +237,15 @@
                     </div>
                     <div class="rightSideBg p-4 mt-4 rounded">
                       <div class="fs-5 mb-4">Optional Fields</div>
-                      <div class="mb-3 form-group">
-                        <label for="brand" class="fs-6 mb-3">Brand</label>
-                        <select formControlName="brand" class="form-select">
-                          <option value="" disabled>-- Select an option --</option>
-                          <option *ngFor="let brand of brands" value="{{brand?.slug}}">{{brand?.name}}</option>
-                        </select>
-                      </div>
+            <div class="mb-3 form-group">
+              <label for="brand" class="fs-6 mb-3">Brand</label>
+              <ng-select class="fs-6" [items]="brands" bindLabel="name" [clearable]="true" [(ngModel)]="selectedBrand"
+                [ngModelOptions]="{standalone: true}" placeholder="Select brand" (change)="onBrandChange($event)" id="brand">
+                <ng-template ng-option-tmp let-item="item">
+                  {{item.name}}
+                </ng-template>
+              </ng-select>
+            </div>
                       <div class="mb-3 form-group">
                         <label class="fs-6 mb-3">Origin</label>
                         <input type="text" class="form-control fs-6" placeholder="Eg. Australia"
