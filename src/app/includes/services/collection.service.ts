@@ -56,6 +56,11 @@ export class CollectionService {
     return this.http.put(`${url}`, data);
   }
 
+  deleteCollection(collectionId: string) {
+    const url = this.commonService.getFullUrl(this.collectionEndpoints.deleteCollection + `/${collectionId}`);
+    return this.http.delete(`${url}`);
+  }
+
   archiveCollection(data: any, page: any) {
     const url = this.commonService.getFullUrl(this.collectionEndpoints.archive_collection + "?page=" + page);
     return this.http.post(`${url}`, data);

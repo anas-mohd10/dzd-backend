@@ -7,6 +7,7 @@ import { ProductService } from 'src/app/includes/services/product.service';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { HotToastService } from '@ngneat/hot-toast';
 import { environment } from 'src/environments/environment';
+import { AppSettingsService } from 'src/app/includes/services/app.settings.service';
 
 @Component({
   selector: 'app-update-collection',
@@ -35,21 +36,40 @@ export class UpdateCollectionComponent implements OnInit {
   icons: Array<string> = [];
   thumbnail: string = '';
   _id: string = '';
+  settings: any;
   hasUnsavedOrderChanges: boolean = false;
 
 
   constructor(
     private CollectionService: CollectionService,
     private ProductService: ProductService,
+    private AppSettingsService: AppSettingsService,
     private Router: Router,
     private HotToastService: HotToastService,
     private ActivatedRoute: ActivatedRoute,
     private ChangeDetectorRef: ChangeDetectorRef
-  ) {}
+  ) { }
+
+  formatDate(date: string) {
+    return new Date(date).toLocaleString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+  }
+
+  formatTime(date: string) {
+    return new Date(date).toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true });
+  }
+
 
   ngOnInit(): void {
-    this.collectionSlug =
-      this.ActivatedRoute.snapshot.queryParams.collection || '';
+    this.collectionSlug = this.ActivatedRoute.snapshot.queryParams.collection || '';
+
+    this.AppSettingsService.getGeneralSettingsbyId('1').subscribe({
+      next: (res: any) => {
+        if (res?.errorCode == 0) {
+          this.settings = res?.result;
+          this.ChangeDetectorRef.markForCheck()
+        }
+      }
+    })
 
     this.CollectionService.getCollectionBySlug(this.collectionSlug).subscribe({
       next: (res: any) => {
@@ -57,7 +77,7 @@ export class UpdateCollectionComponent implements OnInit {
           this.form.patchValue(res?.result);
           this.collectionDetails = res?.result;
           this.icons = res?.result?.icons;
-          if(res?.result?.mobileCover) {
+          if (res?.result?.mobileCover) {
             this.previews.mobileCoverPreview = res?.result?.mobileCover;
             this.form.get('mobileCover')?.setValue(res?.result?.mobileCover);
           }
@@ -67,7 +87,6 @@ export class UpdateCollectionComponent implements OnInit {
           this.productIds = res?.result?.products.map((item: any) => item.product._id);
           this.ChangeDetectorRef.markForCheck();
           this._id = res?.result?._id;
-
         }
         this.updateProductOrders();
       },
@@ -125,10 +144,7 @@ export class UpdateCollectionComponent implements OnInit {
   }
 
   onDelete() {
-    this.CollectionService.updateCollection({
-      isDelete: true,
-      _id: this.collectionDetails?._id,
-    }).subscribe({
+    this.CollectionService.deleteCollection(this.collectionDetails?._id).subscribe({
       next: (res: any) => {
         if (res?.errorCode == 0) {
           this.Router.navigate([this.appRoute.collection.COLLECTION_LIST]);
@@ -182,12 +198,10 @@ export class UpdateCollectionComponent implements OnInit {
 
   addProductSku(product: any) {
     if (!this.productIds.includes(product?._id)) {
-      this.productDetails.push(product);
+      this.productDetails.push({ ...product, order: this.productDetails.length + 1 });
       this.productIds.push(product?._id);
     } else {
-      this.productDetails = this.productDetails.filter(
-        (item) => item?._id !== product?._id
-      );
+      this.productDetails = this.productDetails.filter((item) => item?._id !== product?._id);
       this.productIds = this.productIds.filter((item) => item !== product?._id);
     }
 
@@ -198,16 +212,10 @@ export class UpdateCollectionComponent implements OnInit {
   onSubmit() {
     this.form.get('_id')?.setValue(this._id);
     this.selectedProducts = [];
-    if (this.isAutoCompleteEnabled) {
-      this.selectedProducts = this.productDetails.map((product: any, index: number) => ({
-        product: product._id,
-        order: index
-      }));
-      this.form.get('products')?.setValue(this.selectedProducts);
-    } else {
+    if (!this.isAutoCompleteEnabled) {
       const selectedProducts = this.productSku?.value.split(',').map((sku: string, index: number) => ({
         product: sku.trim(),
-        order: index
+        order: index + 1
       }));
       this.selectedProducts = selectedProducts;
       this.form.get('products')?.setValue(selectedProducts);
@@ -215,23 +223,12 @@ export class UpdateCollectionComponent implements OnInit {
     }
 
     if (!this.form.valid) {
-      console.log(this.form.get('products')?.get('products'));
-      Object.keys(this.form.controls).forEach((key) => {
-        const control = this.form.controls[key];
-        if (control.errors) {
-          console.log(`${key} errors:`, control.errors);
-        }
-      });
-      
+      this.HotToastService.error('Please fill all the required fields');
       this.isSubmitted = true;
       return;
     }
-    
-    // Proceed with form submission
-    this.isSubmitted = false;
-    const payload = this.form.value;
-    
-    this.CollectionService.updateCollection(payload).subscribe({
+
+    this.CollectionService.updateCollection({...this.form.value}).subscribe({
       next: (res: any) => {
         if (res?.errorCode == 0) {
           this.Router.navigate([this.appRoute.collection.COLLECTION_LIST]);
@@ -239,82 +236,41 @@ export class UpdateCollectionComponent implements OnInit {
         } else {
           this.HotToastService.error(res.message);
         }
-      },
-      error: (err: any) => {
+      }, error: (err: any) => {
         this.HotToastService.error(err.error.message);
       }
     });
   }
 
   setProductOrder(product: any, newIndex: number) {
-    // Validate input
     if (newIndex < 0 || newIndex >= this.productDetails.length) {
       this.HotToastService.error('Invalid order position');
       return;
     }
 
-    // Remove the product from its current position
     const currentIndex = this.productDetails.findIndex(p => p._id === product._id);
     if (currentIndex === -1) return;
-
-    // Remove the product from its current position
     const removedProduct = this.productDetails.splice(currentIndex, 1)[0];
-
-    // Insert the product at the new position
     this.productDetails.splice(newIndex, 0, removedProduct);
-
-    // Adjust the order of subsequent products
-    this.productDetails.forEach((p, index) => {
-      p.order = index + 1;
-    });
-
-    // Mark that order has changed
-    this.hasUnsavedOrderChanges = true;
-
-    // Trigger change detection
-    this.ChangeDetectorRef.detectChanges();
+    this.updateProductOrders();
   }
 
   setOrderValue(value: any): number {
     return Number(value) || 0; // Converts to number and defaults to 0 if invalid
   }
 
-  // Utility method to initialize and update product orders
   updateProductOrders() {
-    // Preserve the current order of products after drag and drop
-    this.productDetails.forEach((product, index) => {
-      product.order = index + 1;
-    });
-
-    // Create a new array of selected products with updated orders
-    this.selectedProducts = this.productDetails.map(product => ({
-      product: product._id,
-      order: product.order
-    }));
-
-    // Update the form with the new product order
-    this.form.get('products')?.setValue(this.selectedProducts);
-
-    // Mark that order has changed
+    this.productDetails.forEach((product, index) => {  product.order = index + 1; });
+    this.selectedProducts = this.productDetails.map(product => ({ product: product._id, order: product.order }));
     this.hasUnsavedOrderChanges = true;
-
-    // Trigger change detection
+    this.form.get('products')?.setValue(this.selectedProducts);
     this.ChangeDetectorRef.detectChanges();
   }
 
   drop(event: CdkDragDrop<string[]>) {
-    // Create a copy of the current product details
     let products = [...this.productDetails];
-
-    // Move the item in the array
     moveItemInArray(products, event.previousIndex, event.currentIndex);
-
-    // Update the productDetails with the new order
     this.productDetails = products;
-
-    // Call the utility method to update orders
     this.updateProductOrders();
-
-    console.log('Previous Index:', event.previousIndex, 'Current Index:', event.currentIndex);
   }
 }
