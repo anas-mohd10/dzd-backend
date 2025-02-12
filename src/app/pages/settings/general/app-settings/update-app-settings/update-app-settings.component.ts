@@ -39,6 +39,11 @@ export class UpdateAppSettingsComponent implements OnInit {
   isSubmitted = false;
   refid: any;
   currency: any
+  offerCriteria: boolean 
+  priceOptions = [
+    { value: true, label: 'Cut Price' },
+    { value: false, label: 'Offer Price' }
+  ];
   // currencies: Array<any> = ['INR', 'USD', 'EUR', 'AED', 'IQD', 'دينار'],
   currencies: Array<any> = [
     { label: 'INR', value: 'INR' },
@@ -238,6 +243,8 @@ export class UpdateAppSettingsComponent implements OnInit {
         this.favicon = res?.result?.favicon
         this.defaultBanner = res?.result?.defaultBanner
         this.defaultMobileBanner = res?.result?.defaultMobileBanner
+        this.offerCriteria = res?.result?.offerCriteria
+        this.form.get('offerCriteria')?.setValue(res?.result?.offerCriteria);
         this.primary = "#" + res?.result?.colors?.primary.split('FF')[1]
         this.secondary = "#" + res?.result?.colors?.secondary.split('FF')[1]
         this.form.get('primary')?.setValue("#" + res?.result?.colors?.primary.split('FF')[1])
@@ -291,6 +298,7 @@ export class UpdateAppSettingsComponent implements OnInit {
         this.ChangeDetectorRef.markForCheck()
         this.storeStatus = res?.result?.isStoreLive
       }
+      
     })
   }
 
@@ -316,6 +324,7 @@ export class UpdateAppSettingsComponent implements OnInit {
 
   initform() {
     this.form = this.formBuilder.group({
+      offerCriteria: [false],
       primary: ['', Validators.required],
       secondary: ['', Validators.required],
       star: ['', Validators.required],
@@ -502,6 +511,7 @@ console.log("this.form.get('isIndex')?.value",this.form.get('isIndex')?.value)
       defaultBanner: this.form.get('defaultBanner')?.value,
       defaultMobileBanner: this.form.get('defaultMobileBanner')?.value,
       defaultShippingCharge: this.form.get('defaultShippingCharge')?.value,
+      offerCriteria: this.form.get('offerCriteria')?.value,
       isStoreLive: this.form.get('isStoreLive')?.value,
       notes: { packingSlip: this.form.get('packingSlip')?.value },
       buttons: {
