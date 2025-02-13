@@ -597,20 +597,26 @@
             </select>
           </div>
         </div>
-        <div class="col-lg-8">
-          <div class="mb-3 form-group">
-            <label for="attributeTitle" class="fs-6 mb-3 required">Option Name</label>
-            <input type="text" id="attributeTitle" class="form-control fs-6"
-              [ngClass]="{ 'is-invalid': (attributeControls.title.touched || isAttributeSubmitted) && attributeControls.title.errors?.required }"
-              placeholder="Size" formControlName="title">
-          </div>
-          <div class="mb-3 form-group">
-            <label for="attributeValue" class="fs-6 mb-3 required">Option Values</label>
-            <input type="text" id="attributeValue" class="form-control fs-6" placeholder="Value"
-              [ngClass]="{ 'is-invalid': (attributeControls.value.touched || isAttributeSubmitted) && attributeControls.value.errors?.required }"
-              formControlName="value">
-          </div>
+      <div class="col-lg-8">
+        <div class="mb-3 form-group">
+          <label for="attributeTitle" class="fs-6 mb-3 required">Option Name</label>
+          <input type="text" id="attributeTitle" class="form-control fs-6"
+            [ngClass]="{ 'is-invalid': (attributeControls.title.touched || isAttributeSubmitted) && attributeControls.title.errors?.required }"
+            placeholder="Size" formControlName="title">
         </div>
+        <div class="mb-3 form-group" *ngIf="attributeForm.get('type')?.value == 'text'">
+          <label for="attributeValue" class="fs-6 mb-3 required">Option Values</label>
+          <input type="text" id="attributeValue" class="form-control fs-6"
+            [ngClass]="{ 'is-invalid': (attributeControls.value.touched || isAttributeSubmitted) && attributeControls.value.errors?.required }"
+            placeholder="8.5 kg" formControlName="value">
+        </div>
+        <div class="mb-3 form-group" *ngIf="attributeForm.get('type')?.value == 'color'">
+          <label for="attributeValue" class="fs-6 mb-3 required">Option Values</label>
+          <input type="color" id="attributeValue" class="form-control fs-6" style="height: 44px;"
+            [ngClass]="{ 'is-invalid': (attributeControls.value.touched || isAttributeSubmitted) && attributeControls.value.errors?.required }"
+            placeholder="8.5 kg" formControlName="value">
+        </div>
+      </div>
       </div>
     </form>
     <div class="d-flex align-items-center justify-content-end gap-2">
