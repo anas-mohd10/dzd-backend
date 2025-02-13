@@ -33,5 +33,5 @@ export const toastKeys = {
     placeOrder: 'placeOrder',
     notifyMe: 'notifyMe',
     limitedStock: 'limitedStock',
-    
+    forgottenPasswordToast : 'forgottenPasswordToast'
 }
