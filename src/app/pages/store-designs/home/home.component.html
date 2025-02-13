@@ -642,14 +642,14 @@
                                                         {{page.title}}
                                                     </option>
                                                 </select>
-                                                <select *ngIf="widgetForm.get('redirectionType')?.value == 'category'"
+
+                                                <ng-select
+                                                    *ngIf="widgetForm.get('redirectionType')?.value == 'category'"
+                                                    [items]="categories" bindLabel="name" bindValue="slug"
                                                     [formControl]="redirectionQuery" id="redirectionSearch"
-                                                    class="form-select">
-                                                    <option value="" disabled>-- Select an option --</option>
-                                                    <option *ngFor="let category of categories"
-                                                        value="{{category.slug}}">
-                                                        {{category.name}}</option>
-                                                </select>
+                                                    placeholder="Select category" (change)="onRedirectionSelected()">
+                                                </ng-select>
+
                                                 <select *ngIf="widgetForm.get('redirectionType')?.value == 'catalog'"
                                                     [formControl]="redirectionQuery" id="redirectionSearch"
                                                     class="form-select">
@@ -659,36 +659,33 @@
                                                         {{catalogPage.title}}
                                                     </option>
                                                 </select>
-                                                <select *ngIf="widgetForm.get('redirectionType')?.value == 'brand'"
+
+                                                <ng-select *ngIf="widgetForm.get('redirectionType')?.value == 'brand'"
+                                                    [items]="brands" bindLabel="name" bindValue="slug"
                                                     [formControl]="redirectionQuery" id="redirectionSearch"
-                                                    class="form-select">
-                                                    <option value="" disabled>-- Select an option --</option>
-                                                    <option *ngFor="let brand of brands" value="{{brand.slug}}">
-                                                        {{brand.name}}
-                                                    </option>
-                                                </select>
-                                                <select *ngIf="widgetForm.get('redirectionType')?.value == 'collection'"
+                                                    placeholder="Select brand" (change)="onRedirectionSelected()">
+                                                </ng-select>
+
+                                                <ng-select
+                                                    *ngIf="widgetForm.get('redirectionType')?.value == 'products'"
+                                                    [items]="products" bindLabel="name" bindValue="slug"
                                                     [formControl]="redirectionQuery" id="redirectionSearch"
-                                                    class="form-select">
-                                                    <option value="" disabled>-- Select an option --</option>
-                                                    <option *ngFor="let collection of collections"
-                                                        value="{{collection.slug}}">
-                                                        {{collection.name}}
-                                                    </option>
-                                                </select>
+                                                    placeholder="Select product" (change)="onRedirectionSelected()">
+                                                </ng-select>
+
+                                                <ng-select
+                                                    *ngIf="widgetForm.get('redirectionType')?.value == 'collection'"
+                                                    [items]="collections" bindLabel="name" bindValue="slug"
+                                                    [formControl]="redirectionQuery" id="redirectionSearch"
+                                                    placeholder="Select collection" (change)="onRedirectionSelected()">
+                                                </ng-select>
+                                       
                                                 <select *ngIf="widgetForm.get('redirectionType')?.value == 'blogs'"
                                                     [formControl]="redirectionQuery" id="redirectionSearch"
                                                     class="form-select">
                                                     <option value="" disabled>-- Select an option --</option>
                                                     <option *ngFor="let blog of blogs" value="{{blog.slug}}">
                                                         {{blog.title}}</option>
-                                                </select>
-                                                <select *ngIf="widgetForm.get('redirectionType')?.value == 'products'"
-                                                    [formControl]="redirectionQuery" id="redirectionSearch"
-                                                    class="form-select">
-                                                    <option value="" disabled>-- Select an option --</option>
-                                                    <option *ngFor="let product of products" value="{{product.slug}}">
-                                                        {{product.name}}</option>
                                                 </select>
                                             </div>
                                         </div>
@@ -1068,6 +1065,7 @@
                                     </ng-container>
                                 </div>
                             </ng-container>
+
                             <div class="form-group">
                                 <label for="tileProducts" class="form-label">Products</label>
                                 <input type="text" class="form-control" placeholder="Search products"
@@ -1104,43 +1102,26 @@
                             </ng-container>
                         </div>
 
-                        <div *ngIf="selectedProductType == 'collections'">
-                            <div class="form-group">
-                                <label for="collections" class="form-label">Collections</label>
-                                <select [formControl]="widgetCollection" id="collections" class="form-select">
-                                    <option value="" disabled>-- Select an option --</option>
-                                    <option *ngFor="let collection of collections; let i = index"
-                                        value="{{collection?._id}}">
-                                        {{collection.name}}
-                                    </option>
-                                </select>
-                            </div>
+                        <div class="form-group" *ngIf="selectedProductType == 'collections'">
+                            <label class="form-label">Collections</label>
+                            <ng-select [items]="collections" bindLabel="name" bindValue="_id" [formControl]="widgetCollection"
+                                placeholder="Select collection">
+                            </ng-select>
                         </div>
 
-                        <div *ngIf="selectedProductType == 'brands'">
-                            <div class="form-group">
-                                <label for="brands" class="form-label">Brands</label>
-                                <select [formControl]="widgetBrand" id="brands" class="form-select">
-                                    <option value="" disabled>-- Select an option --</option>
-                                    <option *ngFor="let brand of brands; let i = index" value="{{brand?._id}}">
-                                        {{brand.name}}
-                                    </option>
-                                </select>
-                            </div>
+                        <div class="form-group" *ngIf="selectedProductType == 'brands'">
+                            <label class="form-label">Brands</label>
+                            <ng-select [items]="brands" bindLabel="name" bindValue="_id" [formControl]="widgetBrand" placeholder="Select brand">
+                            </ng-select>
                         </div>
 
-                        <div *ngIf="selectedProductType == 'categories'">
-                            <div class="form-group">
-                                <label for="categories" class="form-label">Categories</label>
-                                <select [formControl]="widgetCategory" id="categories" class="form-select">
-                                    <option value="" disabled>-- Select an option --</option>
-                                    <option *ngFor="let category of categories; let i = index"
-                                        value="{{category?._id}}">
-                                        {{category.name}}
-                                    </option>
-                                </select>
-                            </div>
+                        <div class="form-group" *ngIf="selectedProductType == 'categories'">
+                            <label class="form-label">Categories</label>
+                            <ng-select [items]="categories" bindLabel="name" bindValue="_id" [formControl]="widgetCategory"
+                                placeholder="Select category">
+                            </ng-select>
                         </div>
+                        
                     </div>
                 </div>
             </div>

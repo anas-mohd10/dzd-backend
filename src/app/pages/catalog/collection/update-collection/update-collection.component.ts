@@ -205,6 +205,7 @@ export class UpdateCollectionComponent implements OnInit {
       this.productIds = this.productIds.filter((item) => item !== product?._id);
     }
 
+    this.updateProductOrders();
     this.product.setValue('');
     this.searchProducts = [];
   }

@@ -41,8 +41,8 @@ export class UpdateAppSettingsComponent implements OnInit {
   currency: any
   offerCriteria: boolean 
   priceOptions = [
-    { value: true, label: 'Cut Price' },
-    { value: false, label: 'Offer Price' }
+    { value: true, label: 'MRP / Cut Price' },
+    { value: false, label: 'Additional Discount' }
   ];
   // currencies: Array<any> = ['INR', 'USD', 'EUR', 'AED', 'IQD', 'دينار'],
   currencies: Array<any> = [
