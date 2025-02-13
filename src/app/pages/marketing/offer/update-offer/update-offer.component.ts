@@ -114,6 +114,7 @@ export class UpdateOfferComponent implements OnInit {
       endDate: ['', Validators.required],
       type: ['percentage'],
       offerType: ['complete'],
+      priority: [''],
       value: ['', [Validators.required, Validators.pattern('^[0-9]+$')]],
       isActive: ['true'],
       isDelete: ['false'],

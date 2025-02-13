@@ -108,6 +108,7 @@ export class AddOfferComponent implements OnInit {
       endDate: ['', Validators.required],
       type: ['percentage'],
       offerType: ['complete'],
+      priority: [''],
       value: ['', [Validators.required, Validators.pattern("^[0-9]+$")]],
       isActive: ['true'],
     });
@@ -185,6 +186,7 @@ export class AddOfferComponent implements OnInit {
 
   addBrand() {
     if (!this.offerForm.valid) {
+      this.HotToastService.error('Please fill in all fields');
       this.isSubmitted = true
       return;
     }

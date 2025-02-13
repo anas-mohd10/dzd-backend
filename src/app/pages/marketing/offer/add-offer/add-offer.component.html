@@ -22,9 +22,8 @@
 
   <div class="card mt-4">
     <div class="card-body">
-      <form (ngSubmit)="onSubmit()" [formGroup]="offerForm">
+      <form [formGroup]="offerForm">
         <div class="row">
-
           <div class="col-lg-6">
             <div class="form-group mb-3">
               <label class="fs-6 mb-3 required">Title</label>
@@ -36,14 +35,12 @@
                   }" />
             </div>
           </div>
-
-          <div class="col-lg-6">
+          <div>
             <div class="form-group mb-3">
               <label class="fs-6 mb-3">Description</label>
               <input type="text" class="form-control fs-6" formControlName="description" />
             </div>
           </div>
-
           <div class="col-lg-6">
             <div class="form-group mb-3">
               <label class="fs-6 mb-3">Type</label>
@@ -55,7 +52,6 @@
               </select>
             </div>
           </div>
-
           <div class="col-lg-6">
             <div class="form-group mb-3">
               <label class="fs-6 mb-3 required">Value</label>
@@ -71,7 +67,6 @@
               </div>
             </div>
           </div>
-
           <div class="col-lg-6">
             <div class="form-group mb-3">
               <label class="fs-6 mb-3">Start Date</label>
@@ -82,7 +77,6 @@
                     }" />
             </div>
           </div>
-
           <div class="col-lg-6">
             <div class="form-group mb-3">
               <label class="fs-6 mb-3">End Date</label>
@@ -90,7 +84,6 @@
                 [ngClass]="{ 'is-invalid': (formControls.endDate.touched || isSubmitted) && formControls.endDate.errors?.required }" />
             </div>
           </div>
-
           <div>
             <div class="form-group mb-3">
               <label class="fs-6 mb-3">Offer type</label>
@@ -105,7 +98,6 @@
               </select>
             </div>
           </div>
-
           <div *ngIf="offerForm.get('offerType')?.value == 'products'">
             <div class="form-group mb-3">
               <label class="fs-6 mb-3">Products</label>
@@ -115,7 +107,6 @@
               </ng-select>
             </div>
           </div>
-
           <div *ngIf="offerForm.get('offerType')?.value == 'categories'">
             <div class="form-group mb-3">
               <label class="fs-6 mb-3">Categories</label>
@@ -125,7 +116,6 @@
               </ng-select>
             </div>
           </div>
-
           <div *ngIf="offerForm.get('offerType')?.value == 'collections'">
             <div class="form-group mb-3">
               <label class="fs-6 mb-3">Collections</label>
@@ -135,7 +125,6 @@
               </ng-select>
             </div>
           </div>
-
           <div *ngIf="offerForm.get('offerType')?.value == 'parents'">
             <div class="form-group mb-3">
               <label class="fs-6 mb-3">Config Products</label>
@@ -145,7 +134,6 @@
               </ng-select>
             </div>
           </div>
-
           <div *ngIf="offerForm.get('offerType')?.value == 'brands'">
             <div class="form-group mb-3">
               <label class="fs-6 mb-3">Brands</label>
@@ -155,7 +143,12 @@
               </ng-select>
             </div>
           </div>
-
+          <div class="col-lg-6">
+            <div class="form-group mb-3">
+              <label class="fs-6 mb-3">Priority</label>
+              <input type="number" class="form-control fs-6" formControlName="priority" />
+            </div>
+          </div>
           <div class="col-lg-6">
             <div class="form-group mb-3">
               <label class="fs-6 mb-3">Active Offer?</label>
@@ -166,17 +159,16 @@
               </select>
             </div>
           </div>
-
-          <div class="d-flex align-items-center justify-content-end gap-2">
-            <a routerLink="{{ appRoute.offer.OFFER_LIST}}" class="btn btn-secondary fs-6">
-              Cancel
-            </a>
-            <button type="submit" class="btn btn-primary fs-6" S>
-              Save changes
-            </button>
-          </div>
         </div>
       </form>
     </div>
+  </div>
+  <div class="d-flex align-items-center justify-content-end gap-2 mt-4">
+    <a routerLink="{{ appRoute.offer.OFFER_LIST}}" class="btn btn-secondary fs-6">
+      Cancel
+    </a>
+    <button type="btn" (click)="onSubmit()" class="btn btn-primary fs-6" S>
+      Save changes
+    </button>
   </div>
 </div>
