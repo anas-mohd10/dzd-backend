@@ -196,29 +196,29 @@
                 <input type="text" formControlName="description" id="description" placeholder="Catalog page description"
                     class="form-control">
             </div>
-            <div class="my-2">
-                <div class="d-flex align-items-center justify-content-between mb-3">
-                    <p class="m-0"> Would you like to obtain a copy of any other catalog page? </p>
-                    <div class="form-group">
-                        <label for="isCopy" class="d-none form-label">&nbsp;</label>
-                        <select formControlName="isCopy" id="isCopy" class="form-select">
-                            <option value="" disabled>-- Select an option --</option>
-                            <option *ngFor="let item of [true, false]" value="{{item}}">
-                                {{item == true ? 'Yes' : 'No'}}
-                            </option>
-                        </select>
-                    </div>
-                </div>
-                <div class="form-group" *ngIf="catalogForm.get('isCopy')?.value == 'true'">
-                    <label for="catalogPage" class="form-label">Select catalog</label>
-                    <select [formControl]="catalogPage" id="catalogPage" class="form-select">
+        <div class="my-2">
+            <div class="d-flex align-items-center justify-content-between mb-3">
+                <p class="m-0">Would you like to obtain a copy of any other catalog page?</p>
+                <div class="form-group">
+                    <label for="isCopy" class="d-none form-label">&nbsp;</label>
+                    <select formControlName="isCopy" id="isCopy" class="form-select">
                         <option value="" disabled>-- Select an option --</option>
-                        <option *ngFor="let catalogPage of catalogPages" value="{{catalogPage?.slug}}">
-                            {{catalogPage?.title}}
+                        <option *ngFor="let item of [true, false]" [value]="item">
+                            {{item == true ? 'Yes' : 'No'}}
                         </option>
                     </select>
                 </div>
             </div>
+            <div class="form-group" *ngIf="catalogForm.get('isCopy')?.value === 'true'">
+                <label for="catalogPage" class="form-label">Select catalog</label>
+                <select formControlName="catalogReference" id="catalogPage" class="form-select">
+                    <option value="" disabled>-- Select an option --</option>
+                    <option *ngFor="let catalog of catalogPages" [value]="catalog._id">
+                        {{catalog?.title}}
+                    </option>
+                </select>
+            </div>
+        </div>
             <div class="d-flex align-items-center justify-content-end">
                 <button class="btn btn-secondary me-1" (click)="closeCreate()">Cancel</button>
                 <button class="btn btn-primary ms-1" (click)="createCatalog()">Continue</button>
