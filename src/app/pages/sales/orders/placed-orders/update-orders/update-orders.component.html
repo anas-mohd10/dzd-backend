@@ -267,10 +267,14 @@
                     <tr>
                       <th class="p-2 text-muted fw-normal">Address</th>
                       <td class="p-2">
-                        {{order?.address?.firstlane}}, {{order?.address?.secondlane}},
-                        {{order?.address?.area}}, {{order?.address?.landmark}},
-                        {{order?.address?.city}}, {{order?.address?.state}},
-                        {{order?.address?.pincode}}
+                        {{order?.address?.firstlane}}
+                        <ng-container *ngIf="order?.address?.secondlane">, {{order?.address?.secondlane}}</ng-container>
+                        <ng-container *ngIf="order?.address?.area">, {{order?.address?.area}}</ng-container>
+                        <ng-container *ngIf="order?.address?.landmark">, {{order?.address?.landmark}}</ng-container>
+                        <ng-container *ngIf="order?.address?.city">, {{order?.address?.city}}</ng-container>
+                        <ng-container *ngIf="order?.address?.state">, {{order?.address?.state}}</ng-container>
+                        <ng-container *ngIf="order?.address?.pincode">, {{order?.address?.pincode}}</ng-container>
+                        <ng-container *ngIf="order?.address?.mobile">, {{order?.address?.mobile}}</ng-container>
                       </td>
                     </tr>
                     <tr>
@@ -321,7 +325,7 @@
                   </tr>
                   <tr>
                     <th class="p-2 text-muted fw-normal">Mobile</th>
-                    <td class="p-2">{{order?.address?.mobile || order?.customerDetails?.mobile || order?.guestId?.mobile}}</td>
+                    <td class="p-2">{{ order?.customerDetails?.mobile || order?.address?.mobile || order?.guestId?.mobile}}</td>
                   </tr>
                   <tr>
                     <th class="p-2 text-muted fw-normal">Email</th>
@@ -331,10 +335,14 @@
                     <tr>
                       <th class="p-2 text-muted fw-normal">Address</th>
                       <td class="p-2">
-                        {{order?.address?.firstlane}}, {{order?.address?.secondlane}},
-                        {{order?.address?.area}}, {{order?.address?.landmark}},
-                        {{order?.address?.city}}, {{order?.address?.state}},
-                        {{order?.address?.pincode}}
+                        {{order?.address?.firstlane}}
+                        <ng-container *ngIf="order?.address?.secondlane">, {{order?.address?.secondlane}}</ng-container>
+                        <ng-container *ngIf="order?.address?.area">, {{order?.address?.area}}</ng-container>
+                        <ng-container *ngIf="order?.address?.landmark">, {{order?.address?.landmark}}</ng-container>
+                        <ng-container *ngIf="order?.address?.city">, {{order?.address?.city}}</ng-container>
+                        <ng-container *ngIf="order?.address?.state">, {{order?.address?.state}}</ng-container>
+                        <ng-container *ngIf="order?.address?.pincode">, {{order?.address?.pincode}}</ng-container>
+                        <ng-container *ngIf="order?.address?.mobile">, {{order?.address?.mobile}}</ng-container>
                       </td>
                     </tr>
                     <tr>

@@ -30,6 +30,7 @@ export class AppKeysComponent implements OnInit {
       googleMapKey: new FormControl(""),
       firebaseConfig: new FormControl(""),
       firebaseServiceConfig: new FormControl(""),
+      vapidKey: new FormControl(""),
     })
   }
 

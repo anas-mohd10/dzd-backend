@@ -180,15 +180,12 @@
                     <div class="mb-3">
                       <div class="mb-3 form-group">
                         <label class="fs-6 mb-3" for="productCategory">Category</label>
-                        <select [formControl]="productCategory" id="productCategory"
-                          (change)="toggleProductCategory($event, 'add')" class="form-select">
-                          <option value="" disabled>-- Select an option --</option>
-                          <option *ngFor="let category of defaultCategories" value="{{category?.slug}}">
-                            {{category.name}}
-                          </option>
-                        </select>
+                        <ng-select class="fs-6" [items]="defaultCategories" bindLabel="name" [multiple]="true" [(ngModel)]="categories"
+                          [ngModelOptions]="{standalone: true}" placeholder="Select categories"
+                          (change)="toggleProductCategory($event, 'add')" id="productCategory">
+                        </ng-select>
                       </div>
-                      <ng-container *ngIf="categories.length > 0">
+                      <!-- <ng-container *ngIf="categories.length > 0">
                         <div class="d-flex flex-wrap overflow-hidden align-items-center justify-content-start gap-3">
                           <ng-container *ngFor="let category of categories">
                             <div
@@ -206,7 +203,7 @@
                             </div>
                           </ng-container>
                         </div>
-                      </ng-container>
+                      </ng-container> -->
                     </div>
                     <div class="row mb-3">
                       <div class="col-lg-6 mb-3 form-group">
@@ -331,10 +328,12 @@
                     </div>
                     <div class="mb-3 form-group">
                       <label for="brand" class="fs-6 mb-3">Brand</label>
-                      <select formControlName="brand" class="form-select">
-                        <option value="" disabled>-- Select an option --</option>
-                        <option *ngFor="let brand of brands" value="{{brand?.slug}}">{{brand?.name}}</option>
-                      </select>
+                      <ng-select class="fs-6" [items]="brands" bindLabel="name" [clearable]="true" [(ngModel)]="selectedBrand"
+                        [ngModelOptions]="{standalone: true}" placeholder="Select brand" (change)="onBrandChange($event)" id="brand">
+                        <ng-template ng-option-tmp let-item="item">
+                          {{item.name}}
+                        </ng-template>
+                      </ng-select>
                     </div>
                   </div>
                 </div>
@@ -582,26 +581,32 @@
           <div class="form-group">
             <label for="attributeType" class="fs-6 mb-3">Option Type</label>
             <select formControlName="type" id="attributeType" class="form-select">
-              <option value="" disabled>-- Select an option --</option>
+              <option value="" disabled>-- Select an option -----</option>
               <option *ngFor="let attributeType of attributeTypes" value="{{attributeType.value}}">
                 {{attributeType.title}}</option>
             </select>
           </div>
         </div>
-        <div class="col-lg-8">
-          <div class="mb-3 form-group">
-            <label for="attributeTitle" class="fs-6 mb-3 required">Option Name</label>
-            <input type="text" id="attributeTitle" class="form-control fs-6"
-              [ngClass]="{ 'is-invalid': (attributeControls.title.touched || isAttributeSubmitted) && attributeControls.title.errors?.required }"
-              placeholder="Size" formControlName="title">
-          </div>
-          <div class="mb-3 form-group">
-            <label for="attributeValue" class="fs-6 mb-3 required">Option Values</label>
-            <input type="text" id="attributeValue" class="form-control fs-6"
-              [ngClass]="{ 'is-invalid': (attributeControls.value.touched || isAttributeSubmitted) && attributeControls.value.errors?.required }"
-              placeholder="8.5 kg" formControlName="value">
-          </div>
+      <div class="col-lg-8">
+        <div class="mb-3 form-group">
+          <label for="attributeTitle" class="fs-6 mb-3 required">Option Name</label>
+          <input type="text" id="attributeTitle" class="form-control fs-6"
+            [ngClass]="{ 'is-invalid': (attributeControls.title.touched || isAttributeSubmitted) && attributeControls.title.errors?.required }"
+            placeholder="Size" formControlName="title">
         </div>
+        <div class="mb-3 form-group" *ngIf="attributeForm.get('type')?.value == 'text'">
+          <label for="attributeValue" class="fs-6 mb-3 required">Option Values</label>
+          <input type="text" id="attributeValue" class="form-control fs-6"
+            [ngClass]="{ 'is-invalid': (attributeControls.value.touched || isAttributeSubmitted) && attributeControls.value.errors?.required }"
+            placeholder="8.5 kg" formControlName="value">
+        </div>
+        <div class="mb-3 form-group" *ngIf="attributeForm.get('type')?.value == 'color'">
+          <label for="attributeValue" class="fs-6 mb-3 required">Option Values</label>
+          <input type="color" id="attributeValue" class="form-control fs-6" style="height: 44px;"
+            [ngClass]="{ 'is-invalid': (attributeControls.value.touched || isAttributeSubmitted) && attributeControls.value.errors?.required }"
+            placeholder="8.5 kg" formControlName="value">
+        </div>
+      </div>
       </div>
     </form>
     <div class="d-flex align-items-center justify-content-end gap-2">

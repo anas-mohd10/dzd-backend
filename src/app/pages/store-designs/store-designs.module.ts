@@ -19,6 +19,7 @@ import { AboutComponent } from './about/about.component';
 import { ProductDesignsComponent } from './product-designs/product-designs.component';
 import { TabsModule } from 'ngx-bootstrap/tabs';
 import { ProductListingComponent } from './product-listing/product-listing.component';
+import { NgSelectModule } from '@ng-select/ng-select';
 
 @NgModule({
   declarations: [
@@ -43,7 +44,8 @@ import { ProductListingComponent } from './product-listing/product-listing.compo
     TooltipModule,
     DesignSharedModule,
     DragDropModule,
-    StoreDesignsRoutingModule
+    StoreDesignsRoutingModule,
+    NgSelectModule,
   ]
 })
 export class StoreDesignsModule { }

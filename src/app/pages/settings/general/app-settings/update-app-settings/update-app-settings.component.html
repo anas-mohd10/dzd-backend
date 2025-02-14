@@ -372,6 +372,18 @@
 
       <div class="card my-4">
         <div class="card-body">
+          <label class="fs-5 mb-3">How do you want to display the offer percentage?</label>
+          <select class="form-select mb-3" formControlName="offerCriteria">
+            <option value="" disabled>-- Select an option --</option>
+            <option *ngFor="let option of priceOptions" [value]="option.value">
+              {{option.label}}
+            </option>
+          </select>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-body">
           <div class="fs-3 fw-bold mb-2">Button Settings</div>
           <p class="text-muted">Edit the button text as per your choice</p>
           <div class="row mt-2 buttonsWrapper">
@@ -406,7 +418,7 @@
         </div>
       </div>
 
-      <div class="card">
+      <div class="card my-4">
         <div class="card-body">
           <div class="fs-3 fw-bold mb-2">Language Settings</div>
           <p class="text-muted">Edit the language settings of your store</p>
@@ -432,7 +444,8 @@
           </div>
         </div>
       </div>
-      <div class="card my-4">
+
+      <div class="card">
         <div class="card-body">
           <div class="fs-3 fw-bold mb-2">Placeholder Settings</div>
           <label for="placeholder" class="text-muted d-block">
