@@ -1,29 +1,31 @@
 <div>
-
-  <div class="page-header">
-    <div class="page-title">
-      <h1 class="fw-bold">Update offers</h1>
-    </div>
-    <div class="row align-items-center">
-      <div class="d-flex align-items-start justify-content-between">
-        <ul class="breadcrumb">
-          <li class="breadcrumb-item fs-6">
-            <a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a>
-          </li>
-          <li class="breadcrumb-item fs-6">
-            <a routerLink="{{ appRoute.offer.OFFER_LIST }}">Offers</a>
-          </li>
-          <li class="breadcrumb-item active fs-6">
-            <a routerLink="{{ appRoute.offer.UPDATE_OFFER }}" [queryParams]="{'offer' : this.offerId}">Update offers</a>
-          </li>
-        </ul>
+  <div class="page-header d-flex align-items-center justify-content-between">
+    <div>
+      <div class="page-title">
+        <h1 class="fw-bold">Update offers</h1>
       </div>
+      <ul class="breadcrumb">
+        <li class="breadcrumb-item fs-6">
+          <a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a>
+        </li>
+        <li class="breadcrumb-item fs-6">
+          <a routerLink="{{ appRoute.offer.OFFER_LIST }}">Offers</a>
+        </li>
+        <li class="breadcrumb-item active fs-6">
+          <a routerLink="{{ appRoute.offer.UPDATE_OFFER }}" [queryParams]="{'offer' : this.offerId}">Update offers</a>
+        </li>
+      </ul>
+    </div>
+    <div class="d-flex align-items-center gap-2">
+      <button type="button" class="btn btn-secondary fs-6" (click)="openProducts(productsTemplate)">View
+        Products</button>
+      <button type="button" (click)="open(template)" class="btn btn-danger fs-6">Delete Offer</button>
     </div>
   </div>
 
   <div class="card mt-4">
     <div class="card-body">
-      <form (ngSubmit)="onSubmit()" [formGroup]="form">
+      <form [formGroup]="form">
         <div class="row">
           <div class="col-lg-6">
             <div class="form-group mb-3">
@@ -146,24 +148,8 @@
           </div>
           <div class="col-lg-6">
             <div class="form-group mb-3">
-              <label class="fs-6 mb-3">Priority</label>
-              <input type="number" class="form-control fs-6" formControlName="priority" />
-            </div>
-          </div>
-          <div class="col-lg-6">
-            <div class="form-group mb-3">
               <label class="fs-6 mb-3">Active Offer?</label>
               <select class="form-select mb-3 fs-6" formControlName="isActive">
-                <option value="" disabled> -- Select an option --</option>
-                <option value="true">Yes</option>
-                <option value="false">No</option>
-              </select>
-            </div>
-          </div>
-          <div class="col-lg-6">
-            <div class="form-group mb-3">
-              <label class="fs-6 mb-3">Delete Offer?</label>
-              <select class="form-select mb-3 fs-6" formControlName="isDelete">
                 <option value="" disabled> -- Select an option --</option>
                 <option value="true">Yes</option>
                 <option value="false">No</option>
@@ -178,8 +164,77 @@
     <a routerLink="{{ appRoute.offer.OFFER_LIST}}" class=" btn btn-secondary fs-6">
       Cancel
     </a>
-    <button type="submit" class="btn btn-primary fs-6">
+    <button type="btn" (click)="onSubmit()" class="btn btn-primary fs-6">
       Save changes
     </button>
   </div>
 </div>
+
+<ng-template #productsTemplate>
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">Products</h4>
+    <button type="button" class="btn-close close pull-right" aria-label="Close" (click)="productsModalRef?.hide()">
+      <span aria-hidden="true" class="visually-hidden">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <table class="table table-bordered">
+      <thead>
+        <tr>
+          <th class="p-2">Name</th>
+          <th class="p-2">Stock</th>
+          <th class="p-2">Boost Score</th>
+          <th class="p-2">Original Price</th>
+          <th class="p-2">Offer Price</th>
+          <th class="p-2">Selling Price</th>
+          <th class="p-2">Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let product of productDocs">
+          <td>
+            <div class="d-flex align-items-center gap-2">
+              <img src="{{base}}{{product.thumbnail}}" onerror="this.src='assets/images/default.png'" alt="{{product.name}}" class="border border-secondary rounded" height="40" width="40">
+              <div>
+                <div>{{product.name}}</div>
+                <div class="text-muted mt-1">{{product.sku}}</div>
+              </div>
+            </div>
+          </td>
+          <td>{{product.stock}}</td>
+          <td>{{product.boostScore}}</td>
+          <td>{{product.price.mrp}}</td>
+          <td>{{product.price.offer}}</td>
+          <td>{{product.price.selling}}</td>
+          <td>
+            <div class="cursor-pointer"
+              (click)="navigateToProduct(product.slug)">
+              <svg height="16" width="16" data-slot="icon" fill="none" stroke-width="1.5" stroke="currentColor" viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round"
+                  d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L6.832 19.82a4.5 4.5 0 0 1-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 0 1 1.13-1.897L16.863 4.487Zm0 0L19.5 7.125">
+                </path>
+              </svg>
+            </div>
+          </td>
+        </tr>
+        <tr *ngIf="productDocs.length == 0">
+          <td colspan="7" class="text-center">
+            <app-no-results></app-no-results>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <app-pagination [totalPages]="totalPages" [totalResults]="totalResults" [pageIndex]="pageIndex"
+      [pageSize]="pageSize" (pageTrigger)="onPageTriggered($event)"></app-pagination>
+  </div>
+</ng-template>
+
+
+<ng-template #template>
+  <div class="modal-body text-center">
+    <p>Do you want to confirm?</p>
+    <button type="button" class="btn btn-default" (click)="confirm()">Yes</button>
+    <button type="button" class="btn btn-primary" (click)="decline()">No</button>
+  </div>
+</ng-template>

@@ -1,16 +1,16 @@
 import { ProductService } from 'src/app/includes/services/product.service';
-import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef, TemplateRef } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { PageTasks } from 'src/app/config/constants';
 import { appRoutes } from 'src/app/config/routes';
 import { OfferService } from 'src/app/includes/services/offer.service';
-import { environment } from 'src/environments/environment.prod';
+import { environment } from 'src/environments/environment';
 import { CollectionService } from 'src/app/includes/services/collection.service';
 import { CategoryService } from 'src/app/includes/services/category.service';
 import { BrandService } from 'src/app/includes/services/brand.service';
 import { HotToastService } from '@ngneat/hot-toast';
 import { ProductHeadService } from 'src/app/includes/services/product.head.service';
+import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 @Component({
   selector: 'app-update-offer',
   templateUrl: './update-offer.component.html',
@@ -19,14 +19,7 @@ import { ProductHeadService } from 'src/app/includes/services/product.head.servi
 export class UpdateOfferComponent implements OnInit {
   form: FormGroup;
   appRoute = appRoutes;
-  editMode = false;
-  task = PageTasks.UPDATE;
-  filedata: File;
   isSubmitted: boolean;
-  croppedImage: string | null | undefined;
-  loadImage: boolean;
-  filename: string;
-  imageChangedEvent: any;
   minDate: string = new Date().toISOString().split('T')[0];
   fromDate: string;
   toDate: string;
@@ -46,6 +39,13 @@ export class UpdateOfferComponent implements OnInit {
   base: string = environment.base;
   offerId: string = '';
   offerDetails: any = {};
+  modalRef?: BsModalRef;
+  pageIndex: number = 1;
+  pageSize: number = 10;
+  totalPages: number = 0;
+  totalResults: number = 0;
+  productDocs: Array<any> = [];
+  productsModalRef?: BsModalRef
 
   constructor(
     private ProductHeadService: ProductHeadService,
@@ -54,12 +54,62 @@ export class UpdateOfferComponent implements OnInit {
     private router: Router,
     private HotToastService: HotToastService,
     private offerService: OfferService,
-    private cdr: ChangeDetectorRef,
-    private productService: ProductService,
+    private ChangeDetectorRef: ChangeDetectorRef,
+    private ProductService: ProductService,
     private CategoryService: CategoryService,
     private CollectionService: CollectionService,
-    private BrandService: BrandService
-  ) {}
+    private BrandService: BrandService,
+    private BsModalService: BsModalService
+  ) { }
+
+  open(template: TemplateRef<any>) {
+    this.modalRef = this.BsModalService.show(template, { class: 'modal-sm modal-dialog-centered', ignoreBackdropClick: true });
+  }
+
+  confirm() {
+    this.onDelete();
+  }
+
+  decline() {
+    this.modalRef?.hide();
+  }
+
+  openProducts(template: TemplateRef<any>){
+    this.productsModalRef = this.BsModalService.show(template, { class: 'modal-xl modal-dialog-centered', ignoreBackdropClick: true });
+    this.getProducts()
+  }
+
+  navigateToProduct(productId: string) {
+    this.router.navigate([this.appRoute.product.UPDATE_PRODUCT], { queryParams: { product: productId } });
+    this.productsModalRef?.hide();
+  }
+
+  getProducts() {
+    this.ProductService.getProductOffers(
+      this.offerDetails._id,
+      this.pageIndex,
+      this.pageSize
+    ).subscribe({
+      next: (res: any) => {
+        if (res?.errorCode == 0) {
+          this.productDocs = res?.result?.products
+          this.totalPages = res?.result?.totalPages
+          this.totalResults = res?.result?.totalResults
+          this.ChangeDetectorRef.markForCheck()
+        } else {
+          this.HotToastService.error(res?.message)
+        }
+      }, error: (err: any) => {
+        this.HotToastService.error(err?.message)
+      }
+    })
+  }
+
+  onPageTriggered(event: { pageIndex: number, pageSize: number }) {
+    this.pageIndex = event.pageIndex
+    this.pageSize = event.pageSize
+    this.getProducts()
+  }
 
   ngOnInit(): void {
     const getDate = new Date().getDate();
@@ -74,35 +124,35 @@ export class UpdateOfferComponent implements OnInit {
     this.initForm();
     this.getOffer();
 
-    this.productService.getActiveProduct().subscribe((res: any) => {
+    this.ProductService.getActiveProduct().subscribe((res: any) => {
       this.productsdata = res?.result;
-      this.cdr.markForCheck();
+      this.ChangeDetectorRef.markForCheck();
     });
 
     this.CategoryService.getActiveCategory().subscribe((res: any) => {
       this.categoriesdata = res?.result;
-      this.cdr.markForCheck();
+      this.ChangeDetectorRef.markForCheck();
     });
 
     this.CollectionService.getActiveCollection().subscribe((res: any) => {
       this.collectionsdata = res?.result;
-      this.cdr.markForCheck();
+      this.ChangeDetectorRef.markForCheck();
     });
 
     this.BrandService.getActiveBrands().subscribe((res: any) => {
       this.brandsdata = res?.result;
-      this.cdr.markForCheck();
+      this.ChangeDetectorRef.markForCheck();
     });
 
     this.ProductHeadService.activeParents().subscribe({
       next: (res: any) => {
         if (res?.errorCode == 0) {
           this.parentsData = res?.result;
-          this.cdr.markForCheck();
+          this.ChangeDetectorRef.markForCheck();
         } else {
         }
       },
-      error: (err: any) => {},
+      error: (err: any) => { },
     });
   }
 
@@ -114,7 +164,6 @@ export class UpdateOfferComponent implements OnInit {
       endDate: ['', Validators.required],
       type: ['percentage'],
       offerType: ['complete'],
-      priority: [''],
       value: ['', [Validators.required, Validators.pattern('^[0-9]+$')]],
       isActive: ['true'],
       isDelete: ['false'],
@@ -136,6 +185,22 @@ export class UpdateOfferComponent implements OnInit {
         ? (this.isValidValue = false)
         : (this.isValidValue = true)
       : (this.isValidValue = true);
+  }
+
+  onDelete() {
+    this.offerService.updateOffer({ isDelete: true, slug: this.offerId }).subscribe({
+      next: (res: any) => {
+        if (res.errorCode == 0) {
+          this.HotToastService.success(res?.message);
+          this.decline();
+          this.router.navigate([this.appRoute.offer.OFFER_LIST]);
+        } else {
+          this.HotToastService.error(res?.message);
+        }
+      }, error: (err: any) => {
+        this.HotToastService.error(err?.message);
+      }
+    })
   }
 
   getTypes(type: any) {
@@ -227,7 +292,7 @@ export class UpdateOfferComponent implements OnInit {
             ? (this.isValidValue = false)
             : (this.isValidValue = true)
           : (this.isValidValue = true);
-        this.cdr.markForCheck();
+        this.ChangeDetectorRef.markForCheck();
       }
     });
   }

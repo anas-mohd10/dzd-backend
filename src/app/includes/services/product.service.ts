@@ -16,6 +16,11 @@ export class ProductService {
     return this.http.post(`${url}`, data);
   }
 
+  getProductOffers(offerId: string, page: number = 1, limit: number = 10) {
+    const url = this.commonService.getFullUrl(this.productEndpoints.getProductOffers + `/${offerId}?page=${page}&limit=${limit}`);
+    return this.http.get(`${url}`);
+  }
+
   getProductHistory(productId: string, pageIndex: number = 1, pageSize: number = 20) {
     const url = this.commonService.getFullUrl(this.productEndpoints.productHistory + `/${pageIndex}/${productId}/${pageSize}`);
     return this.http.get(`${url}`);
