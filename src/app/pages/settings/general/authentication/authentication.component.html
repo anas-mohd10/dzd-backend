@@ -1,179 +1,188 @@
 <div>
 
-    <div class="page-header d-flex align-items-start justify-content-between">
-        <div>
-            <div class="page-title">
-                <h1 class="fw-bold">Auth Settings</h1>
-            </div>
-            <ul class="breadcrumb">
-                <li class="breadcrumb-item fs-6">
-                    <a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a>
-                </li>
-                <li class="breadcrumb-item active fs-6">
-                    <a routerLink="{{ appRoute.authSettings }}">Auth Settings</a>
-                </li>
-            </ul>
-        </div>
-        <button class="btn btn-primary" (click)="onSubmit()">Save changes</button>
+  <div class="page-header d-flex align-items-start justify-content-between">
+    <div>
+      <div class="page-title">
+        <h1 class="fw-bold">Auth Settings</h1>
+      </div>
+      <ul class="breadcrumb">
+        <li class="breadcrumb-item fs-6">
+          <a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a>
+        </li>
+        <li class="breadcrumb-item active fs-6">
+          <a routerLink="{{ appRoute.authSettings }}">Auth Settings</a>
+        </li>
+      </ul>
     </div>
+    <button class="btn btn-primary" (click)="onSubmit()">Save changes</button>
+  </div>
 
-    <div class="my-4">
-        <form [formGroup]="form">
-            <div class="card">
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col-lg-4">
-                            <div class="fs-5">OTP Login</div>
-                        </div>
-                        <div class="col-lg-8">
-                            <app-switch (switchToggled)="toggleAuthOptions($event)" [switchId]="'isOtpLogin'"
-                                [isToggledProps]="form.get('isOtpLogin')?.value"></app-switch>
-                        </div>
-                    </div>
-                </div>
+  <div class="my-4">
+    <form [formGroup]="form">
+      <div class="card">
+        <div class="card-body">
+          <div class="row">
+            <div class="col-lg-4">
+              <div class="fs-5">OTP Login</div>
             </div>
-            <div class="card my-4">
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col-lg-4">
-                            <div class="fs-5">Password Login</div>
-                        </div>
-                        <div class="col-lg-8">
-                            <app-switch (switchToggled)="toggleAuthOptions($event)" [switchId]="'isPasswordLogin'"
-                                [isToggledProps]="form.get('isPasswordLogin')?.value"></app-switch>
-                        </div>
-                    </div>
-                </div>
+            <div class="col-lg-8">
+              <app-switch (switchToggled)="toggleAuthOptions($event)" [switchId]="'isOtpLogin'"
+                [isToggledProps]="form.get('isOtpLogin')?.value"></app-switch>
             </div>
-            <div class="card my-4">
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col-lg-4">
-                            <div class="fs-5">Guest Checkout</div>
-                        </div>
-                        <div class="col-lg-8">
-                            <app-switch (switchToggled)="toggleAuthOptions($event)" [switchId]="'isGuestCheckout'"
-                                [isToggledProps]="form.get('isGuestCheckout')?.value"></app-switch>
-                        </div>
-                    </div>
-                </div>
+          </div>
+        </div>
+      </div>
+      <div class="card my-4">
+        <div class="card-body">
+          <div class="row">
+            <div class="col-lg-4">
+              <div class="fs-5">Password Login</div>
             </div>
-            <div class="card">
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col-lg-4">
-                            <div class="fs-5">Facebook Login</div>
-                        </div>
-                        <div class="col-lg-8">
-                            <app-switch (switchToggled)="toggleAuthOptions($event)" [switchId]="'isFacebookLogin'"
-                                [isToggledProps]="form.get('isFacebookLogin')?.value"></app-switch>
-                        </div>
-                    </div>
-                    <div *ngIf="form.get('isFacebookLogin')?.value">
-                        <div class="row mt-4" formGroupName="facebookLogin">
-                            <div class="col-lg-4 form-group">
-                                <label for="facebookText" class="fs-6 mb-1">Button Text</label>
-                                <input type="text" formControlName="text" class="form-control">
-                            </div>
-                            <div class="col-lg-4 form-group">
-                                <label for="gClientId" class="fs-6 mb-1">Client ID</label>
-                                <input type="text" id="gClientId" formControlName="clientId" class="form-control">
-                            </div>
-                            <div class="col-lg-4 form-group">
-                                <label for="gClientSecret" class="fs-6 mb-1">Client Secret</label>
-                                <input type="text" id="gClientSecret" formControlName="clientSecret"
-                                    class="form-control">
-                            </div>
-                        </div>
-                    </div>
-                </div>
+            <div class="col-lg-8">
+              <app-switch (switchToggled)="toggleAuthOptions($event)" [switchId]="'isPasswordLogin'"
+                [isToggledProps]="form.get('isPasswordLogin')?.value"></app-switch>
             </div>
-            <div class="card my-4">
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col-lg-4">
-                            <div class="fs-5">Google Login</div>
-                        </div>
-                        <div class="col-lg-8">
-                            <app-switch (switchToggled)="toggleAuthOptions($event)" [switchId]="'isGoogleLogin'"
-                                [isToggledProps]="form.get('isGoogleLogin')?.value"></app-switch>
-                        </div>
-                    </div>
-                    <div *ngIf="form.get('isGoogleLogin')?.value">
-                        <div class="row mt-4" formGroupName="googleLogin">
-                            <div class="col-lg-4 form-group">
-                                <label for="facebookText" class="fs-6 mb-1">Button Text</label>
-                                <input type="text" formControlName="text" class="form-control">
-                            </div>
-                            <div class="col-lg-4 form-group">
-                                <label for="gClientId" class="fs-6 mb-1">Client ID</label>
-                                <input type="text" id="gClientId" formControlName="clientId" class="form-control">
-                            </div>
-                            <div class="col-lg-4 form-group">
-                                <label for="gClientSecret" class="fs-6 mb-1">Client Secret</label>
-                                <input type="text" id="gClientSecret" formControlName="clientSecret" class="form-control">
-                            </div>
-                        </div>
-                    </div>
-                </div>
+          </div>
+        </div>
+      </div>
+      <div class="card my-4">
+        <div class="card-body">
+          <div class="row">
+            <div class="col-lg-4">
+              <div class="fs-5">Guest Checkout</div>
             </div>
-            <div class="card">
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col-lg-4">
-                            <div class="fs-5">OTP for Guest Checkout</div>
-                        </div>
-                        <div class="col-lg-8">
-                            <app-switch (switchToggled)="toggleAuthOptions($event)" [switchId]="'isOtpForGuestCheckout'"
-                                [isToggledProps]="form.get('isOtpForGuestCheckout')?.value"></app-switch>
-                        </div>
-                    </div>
-                </div>
+            <div class="col-lg-8">
+              <app-switch (switchToggled)="toggleAuthOptions($event)" [switchId]="'isGuestCheckout'"
+                [isToggledProps]="form.get('isGuestCheckout')?.value"></app-switch>
             </div>
-            <div class="card my-4">
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col-lg-4">
-                            <div class="fs-5">reCAPTCHA Enabled</div>
-                        </div>
-                        <div class="col-lg-8">
-                            <app-switch (switchToggled)="toggleAuthOptions($event)" [switchId]="'isRecaptchaEnabled'"
-                                [isToggledProps]="form.get('isRecaptchaEnabled')?.value"></app-switch>
-                        </div>
-                    </div>
-                    <div class="row mt-4" *ngIf="form.get('isRecaptchaEnabled')?.value">
-                        <div class="col-lg-6 form-group mb-3">
-                            <label for="recaptchaSiteKey" class="fs-6 mb-1">Site Key</label>
-                            <input type="text" id="recaptchaSiteKey" formControlName="recaptchaSiteKey" class="form-control">
-                        </div>
-                        <div class="col-lg-6 form-group mb-3">
-                            <label for="recaptchaSecretKey" class="fs-6 mb-1">Secret Key</label>
-                            <input type="text" id="recaptchaSecretKey" formControlName="recaptchaSecretKey" class="form-control">
-                        </div>
-                        <div class="col-lg-6 form-group mb-3">
-                            <label for="androidRecaptchaKey" class="fs-6 mb-1">Android Key</label>
-                            <input type="text" id="androidRecaptchaKey" formControlName="androidRecaptchaKey" class="form-control">
-                        </div>
-                        <div class="col-lg-6 form-group mb-3">
-                            <label for="iosRecaptchaKey" class="fs-6 mb-1">iOS Key</label>
-                            <input type="text" id="iosRecaptchaKey" formControlName="iosRecaptchaKey" class="form-control">
-                        </div>
-                    </div>
-                </div>
+          </div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-body">
+          <div class="row">
+            <div class="col-lg-4">
+              <div class="fs-5">Facebook Login</div>
             </div>
-            <div class="card my-4">
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col-lg-4">
-                            <div class="fs-5">OTP for Registration</div>
-                        </div>
-                        <div class="col-lg-8">
-                            <app-switch (switchToggled)="toggleAuthOptions($event)" [switchId]="'isOtpForRegistration'"
-                                [isToggledProps]="form.get('isOtpForRegistration')?.value"></app-switch>
-                        </div>
-                    </div>
-                </div>
+            <div class="col-lg-8">
+              <app-switch (switchToggled)="toggleAuthOptions($event)" [switchId]="'isFacebookLogin'"
+                [isToggledProps]="form.get('isFacebookLogin')?.value"></app-switch>
             </div>
-        </form>
-    </div>
+          </div>
+          <div *ngIf="form.get('isFacebookLogin')?.value">
+            <div class="row mt-4" formGroupName="facebookLogin">
+              <div class="col-lg-4 form-group">
+                <label for="facebookText" class="fs-6 mb-1">Button Text</label>
+                <input type="text" formControlName="text" class="form-control">
+              </div>
+              <div class="col-lg-4 form-group">
+                <label for="gClientId" class="fs-6 mb-1">Client ID</label>
+                <input type="text" id="gClientId" formControlName="clientId" class="form-control">
+              </div>
+              <div class="col-lg-4 form-group">
+                <label for="gClientSecret" class="fs-6 mb-1">Client Secret</label>
+                <input type="text" id="gClientSecret" formControlName="clientSecret" class="form-control">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="card my-4">
+        <div class="card-body">
+          <div class="row">
+            <div class="col-lg-4">
+              <div class="fs-5">Google Login</div>
+            </div>
+            <div class="col-lg-8">
+              <app-switch (switchToggled)="toggleAuthOptions($event)" [switchId]="'isGoogleLogin'"
+                [isToggledProps]="form.get('isGoogleLogin')?.value"></app-switch>
+            </div>
+          </div>
+          <div *ngIf="form.get('isGoogleLogin')?.value">
+            <div class="row mt-4" formGroupName="googleLogin">
+              <div class="col-lg-4 form-group">
+                <label for="facebookText" class="fs-6 mb-1">Button Text</label>
+                <input type="text" formControlName="text" class="form-control">
+              </div>
+              <div class="col-lg-4 form-group">
+                <label for="gClientId" class="fs-6 mb-1">Client ID</label>
+                <input type="text" id="gClientId" formControlName="clientId" class="form-control">
+              </div>
+              <div class="col-lg-4 form-group">
+                <label for="gClientSecret" class="fs-6 mb-1">Client Secret</label>
+                <input type="text" id="gClientSecret" formControlName="clientSecret" class="form-control">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-body">
+          <div class="row">
+            <div class="col-lg-4">
+              <div class="fs-5">OTP for Guest Checkout</div>
+            </div>
+            <div class="col-lg-8">
+              <app-switch (switchToggled)="toggleAuthOptions($event)" [switchId]="'isOtpForGuestCheckout'"
+                [isToggledProps]="form.get('isOtpForGuestCheckout')?.value"></app-switch>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="card my-4">
+        <div class="card-body">
+          <div class="row">
+            <div class="col-lg-4">
+              <div class="fs-5">reCAPTCHA Enabled</div>
+            </div>
+            <div class="col-lg-8">
+              <app-switch (switchToggled)="toggleAuthOptions($event)" [switchId]="'isRecaptchaEnabled'"
+                [isToggledProps]="form.get('isRecaptchaEnabled')?.value"></app-switch>
+            </div>
+          </div>
+          <div class="row mt-4" *ngIf="form.get('isRecaptchaEnabled')?.value">
+            <div class="col-lg-6 form-group mb-3">
+              <label for="recaptchaSiteKey" class="fs-6 mb-1">Site Key</label>
+              <input type="text" id="recaptchaSiteKey" formControlName="recaptchaSiteKey" class="form-control">
+            </div>
+            <div class="col-lg-6 form-group mb-3">
+              <label for="recaptchaSecretKey" class="fs-6 mb-1">Secret Key</label>
+              <input type="text" id="recaptchaSecretKey" formControlName="recaptchaSecretKey" class="form-control">
+            </div>
+            <div class="col-lg-6 form-group mb-3">
+              <label for="androidRecaptchaKey" class="fs-6 mb-1">Android Key</label>
+              <input type="text" id="androidRecaptchaKey" formControlName="androidRecaptchaKey" class="form-control">
+            </div>
+            <div class="col-lg-6 form-group mb-3">
+              <label for="iosRecaptchaKey" class="fs-6 mb-1">iOS Key</label>
+              <input type="text" id="iosRecaptchaKey" formControlName="iosRecaptchaKey" class="form-control">
+            </div>
+            <div class="col-lg-6 form-group mb-3">
+              <label for="recaptchaEnterpriseKey" class="fs-6 mb-1">Enterprise Key</label>
+              <input type="text" id="recaptchaEnterpriseKey" formControlName="recaptchaEnterpriseKey"
+                class="form-control">
+            </div>
+            <div class="col-lg-6 form-group mb-3">
+              <label for="recaptchaEnterpriseProjectId" class="fs-6 mb-1">Enterprise Project ID</label>
+              <input type="text" id="recaptchaEnterpriseProjectId" formControlName="recaptchaEnterpriseProjectId"
+                class="form-control">
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="card my-4">
+        <div class="card-body">
+          <div class="row">
+            <div class="col-lg-4">
+              <div class="fs-5">OTP for Registration</div>
+            </div>
+            <div class="col-lg-8">
+              <app-switch (switchToggled)="toggleAuthOptions($event)" [switchId]="'isOtpForRegistration'"
+                [isToggledProps]="form.get('isOtpForRegistration')?.value"></app-switch>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
 </div>

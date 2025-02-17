@@ -50,19 +50,6 @@
           </svg>
           Generate Invoice
         </button>
-
-        <!--
-          <button class="btn btn-secondary border border-secondary" (click)="openRetry(retryConfirmation)"
-          *ngIf="paymentGateways.includes(order?.paymentGateway) && retryStatusList.includes(order?.orderStatus) && order?.amountPending > 0">
-          <svg height="20" width="20" data-slot="icon" fill="none" stroke-width="1.5" stroke="currentColor"
-            viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-            <path stroke-linecap="round" stroke-linejoin="round"
-              d="M2.25 8.25h19.5M2.25 9h19.5m-16.5 5.25h6m-6 2.25h3m-3.75 3h15a2.25 2.25 0 0 0 2.25-2.25V6.75A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25v10.5A2.25 2.25 0 0 0 4.5 19.5Z">
-            </path>
-          </svg>
-          Retry payment
-          </button>
-        -->
       </div>
     </div>
   </div>
@@ -321,15 +308,18 @@
                 <table class="table table-bordered fs-5">
                   <tr>
                     <th class="p-2 text-muted fw-normal">Name</th>
-                    <td class="p-2">{{order?.address?.name || order?.customerDetails?.name || order?.guestId?.name}}</td>
+                    <td class="p-2">{{order?.address?.name || order?.customerDetails?.name || order?.guestId?.name}}
+                    </td>
                   </tr>
                   <tr>
                     <th class="p-2 text-muted fw-normal">Mobile</th>
-                    <td class="p-2">{{ order?.customerDetails?.mobile || order?.address?.mobile || order?.guestId?.mobile}}</td>
+                    <td class="p-2">{{ order?.customerDetails?.mobile || order?.address?.mobile ||
+                      order?.guestId?.mobile}}</td>
                   </tr>
                   <tr>
                     <th class="p-2 text-muted fw-normal">Email</th>
-                    <td class="p-2">{{order?.customerId?.email || order?.customerDetails?.email || order?.guestId?.email}}</td>
+                    <td class="p-2">{{order?.customerId?.email || order?.customerDetails?.email ||
+                      order?.guestId?.email}}</td>
                   </tr>
                   <ng-container *ngIf="order?.deliveryType == '0'">
                     <tr>
@@ -436,16 +426,19 @@
                 <div class="row mb-4">
                   <div class="col-lg-1 d-flex align-items-center">
                     <div class="checkbox"
-                      [ngClass]="{'checked': bulkProducts.length == order?.products?.length, 'pe-none' : order?.paymentMethod == 'ONLINE' && order?.paymentStatus == 'PENDING'}"
+                      [ngClass]="{
+                      'checked': bulkProducts.length == order?.products?.length, 
+                      'pe-none' : (order?.paymentMethod == 'ONLINE' && order?.paymentStatus == 'PENDING') || ( isStatusUpdating == true && order?.paymentGateway == 'network-international-tokenized' )}"
                       (click)="toggleBulkProduct()"></div>
                   </div>
                   <div class="col-lg-7"> </div>
                   <div class="col-lg-4">
                     <div class="d-flex align-items-center justify-content-end gap-2">
                       <label for="bulkStatus" class="fs-6">Status :</label>
-                      <select id="bulkStatus" [formControl]="bulkOrderStatus"
-                        [ngClass]="{'pe-none' : order?.paymentMethod == 'ONLINE' && order?.paymentStatus == 'PENDING' || bulkProducts.length == 0}"
-                        class="form-select w-50 fs-6" (change)="updateBulkProduct($event)">
+                      <select id="bulkStatus" [formControl]="bulkOrderStatus" [ngClass]="{'pe-none' : 
+                        ( order?.paymentMethod == 'ONLINE' && order?.paymentStatus == 'PENDING' || bulkProducts.length == 0 ) || 
+                          ( isStatusUpdating == true && order?.paymentGateway == 'network-international-tokenized' )
+                          }" class="form-select w-50 fs-6" (change)="updateBulkProduct($event)">
                         <option value="" disabled>-- Select a status --</option>
                         <option *ngFor="let status of bulkStatus" value={{status.value}}>{{status.key}}</option>
                       </select>
@@ -457,7 +450,9 @@
                     [ngClass]="{'pe-none opacity-50': product?.currentStatus?.status == 'Cancelled', 'border-bottom': i < order?.products?.length - 1}">
                     <div class="col-lg-1">
                       <div class="checkbox"
-                        [ngClass]="{'checked': bulkProducts.includes(product), 'pe-none' : order?.paymentMethod == 'ONLINE' && order?.paymentStatus == 'PENDING'}"
+                        [ngClass]="{
+                          'checked': bulkProducts.includes(product), 
+                          'pe-none' : (order?.paymentMethod == 'ONLINE' && order?.paymentStatus == 'PENDING') || ( isStatusUpdating == true && order?.paymentGateway == 'network-international-tokenized' )}"
                         (click)="toggleBulkProduct(product)"> </div>
                     </div>
                     <div class="col-lg-11">
@@ -505,8 +500,10 @@
                           </div>
                           <div class="mb-2 d-flex fs-6 align-items-center justify-content-start">
                             <div class="w-25">Status:</div>
-                            <div class="w-75"
-                              [ngClass]="{'pe-none' : order?.paymentMethod == 'ONLINE' && order?.paymentStatus == 'PENDING'}">
+                            <div class="w-75" [ngClass]="{'pe-none' : 
+                              ( order?.paymentMethod == 'ONLINE' && order?.paymentStatus == 'PENDING' ) || 
+                              ( isStatusUpdating == true && order?.paymentGateway == 'network-international-tokenized' ) || 
+                              ( product?.currentStatus?.status == 'Delivered' ) }">
                               <select class="form-select w-50 p-2" [formControl]="productOrderStatus"
                                 (change)="updateOrderStatus($event, product?.productId)">
                                 <option value="" disabled>-- Select a option --</option>

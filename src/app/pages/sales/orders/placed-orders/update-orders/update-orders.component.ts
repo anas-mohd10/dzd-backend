@@ -104,6 +104,7 @@ export class UpdateOrdersComponent implements OnInit {
   bulkUpdateConfirmationRef?: BsModalRef;
   bulkStatusToUpdate: string | null = null;
   @ViewChild('bulkUpdateConfirmation') bulkUpdateConfirmation: any;
+  isStatusUpdating: boolean = false
 
   constructor(
     private OrdersService: OrdersService,
@@ -609,6 +610,7 @@ export class UpdateOrdersComponent implements OnInit {
 
   updateBulkProduct(event: any) {
     this.bulkStatusToUpdate = event?.target?.value;
+    this.isStatusUpdating = true;
 
     if (this.bulkStatusToUpdate == 'CANCELLED') {
       this.openBulkUpdateConfirmation(this.bulkUpdateConfirmation);
@@ -630,6 +632,7 @@ export class UpdateOrdersComponent implements OnInit {
     this.bulkStatusToUpdate = null;
     this.bulkOrderStatus.setValue('');
     this.bulkProducts = []
+    this.isStatusUpdating = false
   }
 
   confirmBulkUpdate() {
@@ -643,6 +646,7 @@ export class UpdateOrdersComponent implements OnInit {
           this.HotToastService.success(res?.message);
           this.bulkProducts = [];
           this.bulkStatus = [];
+          this.isStatusUpdating = false
           this.bulkOrderStatus.setValue('');
           this.getOrderDetails();
           this.closeBulkUpdateConfirmation();

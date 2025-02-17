@@ -32,7 +32,9 @@ export class AuthenticationComponent implements OnInit {
       isGuestCheckout: new FormControl(false),
       isOtpForRegistration: new FormControl(false),
       androidRecaptchaKey: new FormControl(''),
-      iosRecaptchaKey: new FormControl(''), 
+      iosRecaptchaKey: new FormControl(''),
+      recaptchaEnterpriseKey: new FormControl(''),
+      recaptchaEnterpriseProjectId: new FormControl(''),
       facebookLogin: new FormGroup({
         text: new FormControl('Login with Facebook'),
         clientId: new FormControl(''),
