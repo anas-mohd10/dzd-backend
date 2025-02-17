@@ -469,6 +469,10 @@ export const Routing: Routes = [
         path: 'cart-settings',
         component: CartSettingsComponent,
         canActivate: [AuthenticationGuard, PermissionGuard]
+      },{
+        path: 'locations',
+        loadChildren: () => import('./settings/general/locations/locations.module').then((m) => m.LocationsModule),
+        canActivate: [AuthenticationGuard, PermissionGuard]
       }, {
         path: 'more-offers',
         loadChildren: () => import('./marketing/more-offers/more-offers.module').then((m) => m.MoreOffersModule),

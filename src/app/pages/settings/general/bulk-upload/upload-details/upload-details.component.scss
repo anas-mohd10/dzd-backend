@@ -20,7 +20,7 @@
   border: 1px solid #ddd;
   padding: 10px;
   font-family: Arial, sans-serif;
-  font-size: 14px;
+  font-size: 12px;
   color: #333;
   box-sizing: border-box;
   font-family: monaco;
@@ -28,12 +28,11 @@
 
 .logMessage {
   color: #ffffff;
-  font-size: 14px;
+  font-size: 12px;
   display: flex;
   align-items: flex-start;
   justify-content: flex-start;
-  line-height: 24px;
-  gap: 16px;
+  line-height: 30px;
 
   &.error {
     color: #f83737;
