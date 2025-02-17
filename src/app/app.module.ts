@@ -97,6 +97,7 @@ import { CompareKeysComponent } from './pages/catalog/compare-keys/compare-keys.
 import { ToastComponent } from './pages/settings/general/toast/toast.component';
 import { NavigationSettingsComponent } from './pages/navigation-settings/navigation-settings.component';
 import { ExtrasModule } from "./shared/partials/layout/extras/extras.module";
+import { MenuNavigationComponent } from './pages/settings/general/menu-navigation/menu-navigation.component';
 
 const DragConfig = {
   dragStartThreshold: 0,
@@ -167,6 +168,7 @@ const DragConfig = {
     CompareKeysComponent,
     ToastComponent,
     NavigationSettingsComponent,
+    MenuNavigationComponent,
   ],
   imports: [
     provideFirebaseApp(() => initializeApp(environment.firebaseConfig)),

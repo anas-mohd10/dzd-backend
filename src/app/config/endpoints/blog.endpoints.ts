@@ -4,4 +4,5 @@ export const blogEndpoints = {
     deleteBlog: '/delete-blog',
     createBlog: '/create-blog',
     importBlogs: '/import-blogs',
+    activeBlogs: '/active-blogs',
 }
