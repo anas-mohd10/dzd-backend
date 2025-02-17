@@ -8,6 +8,8 @@
     "strictPropertyInitialization": false,
     "noImplicitReturns": false,
     "noFallthroughCasesInSwitch": true,
+    "resolveJsonModule": true,
+    "esModuleInterop": true,
     "sourceMap": true,
     "declaration": false,
     "downlevelIteration": true,

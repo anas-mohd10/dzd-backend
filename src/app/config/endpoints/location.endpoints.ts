@@ -1,0 +1,18 @@
+export const locationEndpoints = {
+    countries: '/countries',
+    states: '/states',
+    cities: '/cities',
+    country: '/country',
+    state: '/state',
+    city: '/city',
+    addCountry: '/add-country',
+    addState: '/add-state',
+    addCity: '/add-city',
+    updateCountry: '/update-country',
+    updateState: '/update-state',
+    updateCity: '/update-city',
+    deleteCountry: '/delete-country',
+    deleteState: '/delete-state',
+    deleteCity: '/delete-city',
+    bulkImportLocations: '/bulk-importlocations',
+}
