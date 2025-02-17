@@ -1260,7 +1260,7 @@ export class CatalogComponent implements OnInit {
 
   addCatalogWidget(widget: WidgetProps) {
     this.CatalogService.addCatalogWidget({
-      index: this.widgetItems.length,
+      index: this.widgetItems?.length || 0,
       widgetName: widget.title,
       widgetType: widget.type,
       catalogId: this.catalogPageDetails?._id,
