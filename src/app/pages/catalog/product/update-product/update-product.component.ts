@@ -757,23 +757,47 @@ getDefaultCategories() {
     this.form.patchValue({ slug });
   }
 
+  // ngOnInit(): void {
+  //   this.base = environment.base;
+
+  //   this.BrandService.getActiveBrands().subscribe({
+  //   next: (res: any) => {
+  //     if (res.errorCode == 0) {
+  //       this.brands = res.result;        
+  //       if (this.productDetails?.brand) {
+  //         this.selectedBrand = this.brands.find(brand => brand.slug === this.productDetails.brand.slug);
+  //       }
+        
+  //       this.ChangeDetectorRef.markForCheck();
+  //     }
+  //   }, 
+  //   error: (err: any) => { }
+  // });
+
+
   ngOnInit(): void {
     this.base = environment.base;
-
+  
     this.BrandService.getActiveBrands().subscribe({
-    next: (res: any) => {
-      if (res.errorCode == 0) {
-        this.brands = res.result;        
-        if (this.productDetails?.brand) {
-          this.selectedBrand = this.brands.find(brand => brand.slug === this.productDetails.brand.slug);
+      next: (res: any) => {
+        if (res.errorCode === 0 && Array.isArray(res.result) && res.result.length > 0) {
+          this.brands = res.result.filter((brand: any) => brand && brand.slug);
+  
+          if (this.productDetails?.brand) {
+            this.selectedBrand = this.brands.find(
+              (brand) => brand.slug === this.productDetails.brand.slug
+            );
+          }
+  
+          this.ChangeDetectorRef.markForCheck();
+        } else {
+          this.brands = [];
         }
-        
-        this.ChangeDetectorRef.markForCheck();
+      },
+      error: (err: any) => {
+        console.error('Error fetching brands:', err);
       }
-    }, 
-    error: (err: any) => { }
-  });
-
+    });
 
     this.AppSettingsService.getGeneralSettingsbyId('1').subscribe({
       next: (res: any) => {
@@ -783,8 +807,7 @@ getDefaultCategories() {
           this.ChangeDetectorRef.markForCheck();
         } else { }
       }, error: (err: any) => { }
-    }
-    );
+    });
 
     this.addOnOptionForm = new FormGroup({
       product: new FormControl('', Validators.required),
@@ -825,9 +848,10 @@ getDefaultCategories() {
       next: (res: any) => {
         if (res?.errorCode == 0) {
           this.form.patchValue(res?.result);
-          if (!this.form.get('searchKeywords')?.value) {
-            this.form.get('searchKeywords')?.setValue([])
-          }
+          // Check if searchKeywords exist and are not empty
+          this.searchKeywords = (res?.result?.searchKeywords || []).filter(Boolean);
+          this.form.get('searchKeywords')?.setValue(this.searchKeywords);
+          
           this.productDetails = res?.result;
           this.images = res?.result?.files ? res?.result?.files : [];
           // Remove null and undefined values from array of images
@@ -838,17 +862,19 @@ getDefaultCategories() {
               };
             }
           }).filter(Boolean);
-  if (res.result?.brand) {
-        this.selectedBrand = this.brands.find(brand => brand.slug === res.result.brand.slug);
-        this.form.patchValue({
-          brand: res.result.brand.slug
-        });
-      }
+
+          if (res.result?.brand) {
+            this.selectedBrand = this.brands.find(brand => brand.slug === res.result.brand.slug);
+            this.form.patchValue({
+              brand: res.result.brand.slug
+            });
+          }
+          
           this.storeFields = res?.result?.storeFrontFields;
           this.tagIcons = res?.result?.tagIcons ? res?.result?.tagIcons : [];
           this.categories = res?.result?.categories;
-         this.categories = res?.result?.categories || [];
-        this.selectedCategories = this.categories.map(cat => cat.slug);
+          this.categories = res?.result?.categories || [];
+          this.selectedCategories = this.categories.map(cat => cat.slug);
           this.parentDetails = res?.result?.product?.id;
           this.productBannerDetails = res?.result?.productBanner && res?.result?.productBanner;
 
@@ -870,7 +896,6 @@ getDefaultCategories() {
 
           this.attributes = res?.result?.attributes;
           this.relatedProducts = res?.result?.relatedProducts;
-          this.searchKeywords = res?.result?.searchKeywords || [];
           this.icons = res?.result?.productIcons || [];
           this.thumbnailPreview = res?.result?.thumbnail;
           this.ChangeDetectorRef.markForCheck();
