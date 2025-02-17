@@ -20,7 +20,12 @@ export class AllProductsComponent implements OnInit {
   appRoute = appRoutes
   products: Array<any> = []
   filters: any = [];
-  categories: any;
+  categories: any[] = [];
+  brands: any[] = [];
+  selectedCategories: string[] = [];
+  selectedBrands: string[] = [];
+  categoryItems: Array<any> = [];
+  brandItems: Array<any> = [];
   loaded: boolean = false
   settings: any = {}
   page: number = 1;
@@ -35,7 +40,6 @@ export class AllProductsComponent implements OnInit {
   boostScore: FormControl = new FormControl('')
   visibility: FormControl = new FormControl('')
   category: FormControl = new FormControl('')
-  categoryItems: Array<any> = []
   isTableView: boolean = true;
   activeAccordion: string = 'category';
   isFilters: boolean = false;
@@ -69,7 +73,6 @@ export class AllProductsComponent implements OnInit {
     { key: 'Visible products', value: '0', label: 'visibility' },
     { key: 'Invisible products', value: '1', label: 'visibility' }
   ]
-  brands: Array<any> = []
   base: string = environment.base
   domainUrl: string = ''
   exportModalRef?: BsModalRef;
@@ -239,9 +242,12 @@ export class AllProductsComponent implements OnInit {
   }
 
   getProducts() {
-    let categoryItems = this.categoryItems.map((item: any) => item.name)
+    // Get selected category names for compatibility with existing code
+    const categoryItems = this.categoryItems.map((item: any) => item.name);
+    let brandItems = this.brandItems.map((item: any) => item.name); // Get brand names
+
     const payload = {
-      brand: this.productBrand?.value,
+      brand: brandItems,
       name: this.name?.value,
       isActive: this.isActive?.value,
       isFeatured: this.isFeatured?.value,
@@ -252,31 +258,61 @@ export class AllProductsComponent implements OnInit {
       categories: categoryItems,
       page: this.page,
       limit: this.limit
-    }
+    };
 
     this.ProductService.searchProducts(payload).subscribe((res: any) => {
       if (res?.errorCode == 0) {
-        this.products = res?.result?.data
-        this.totalResults = res?.result?.totalResults
-        this.totalPages = res?.result?.totalPages
-        this.page = res?.result?.page
-        this.loaded = true
+        this.products = res?.result?.data;
+        this.totalResults = res?.result?.totalResults;
+        this.totalPages = res?.result?.totalPages;
+        this.page = res?.result?.page;
+        this.loaded = true;
         this.ChangeDetectorRef.markForCheck();
       }
-    })
+    });
   }
+
 
   onCategoryTriggered() {
-    let categoryDetails = this.categories.filter((category: any) => category.name == this.productCategory.value)
-    !this.categoryItems.includes(categoryDetails[0]) ? this.categoryItems.push(categoryDetails[0]) : this.categoryItems = this.categoryItems.filter(item => item.name !== this.productCategory.value)
-    this.getProducts()
-    this.productCategory.setValue('')
+    if (this.selectedCategories && this.selectedCategories.length > 0) {
+      // Map selected IDs to full category objects
+      this.categoryItems = this.categories.filter(cat =>
+        this.selectedCategories.includes(cat._id)
+      );
+    } else {
+      this.categoryItems = [];
+    }
+    this.getProducts();
   }
 
-  onCategoryRemoved(category: any) {
-    this.categoryItems = this.categoryItems.filter(item => item.catid != category.catid)
-    this.getProducts()
+  onBrandTriggered() {
+    if (this.selectedBrands && this.selectedBrands.length > 0) {
+      // Map selected IDs to full brand objects
+      this.brandItems = this.brands.filter(brand =>
+        this.selectedBrands.includes(brand._id)
+      );
+    } else {
+      this.brandItems = [];
+    }
+    this.getProducts();
   }
+
+  // Add brand removal method
+  onBrandRemoved(brand: any) {
+    this.selectedBrands = this.selectedBrands.filter(id => id !== brand._id);
+    this.brandItems = this.brandItems.filter(item => item._id !== brand._id);
+    this.getProducts();
+  }
+  // Update category removal
+  onCategoryRemoved(category: any) {
+    this.selectedCategories = this.selectedCategories.filter(id => id !== category._id);
+    this.categoryItems = this.categoryItems.filter(item => item._id !== category._id);
+    this.getProducts();
+  }
+
+
+
+
 
   onPageTriggered(event: { pageIndex: number, pageSize: number }) {
     this.page = event.pageIndex
@@ -293,6 +329,10 @@ export class AllProductsComponent implements OnInit {
     this.name?.setValue('')
     this.visibility?.setValue('')
     this.productBrand?.setValue('')
+    this.selectedCategories = [];
+    this.selectedBrands = [];
+    this.categoryItems = [];
+    this.brandItems = [];
     this.page = 1
     this.limit = 20
     this.categoryItems = []
