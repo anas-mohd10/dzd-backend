@@ -116,7 +116,7 @@ export class OrdersListComponent implements OnInit {
   weekDays: Array<string> = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
   checkStatusList: Array<any> = ['PENDING', 'FAILED', 'CANCELLED']
 
-  successOrders: Array<string> = ['PLACED', 'SHIPPED', 'PARTIAL PROCESSED', 'OUT FOR DELIVERY', 'DELIVERED', 'PACKED']
+  successOrders: Array<string> = ['PLACED', 'COLLECTED', 'SHIPPED', 'PARTIAL PROCESSED', 'OUT FOR DELIVERY', 'DELIVERED', 'PACKED']
   acceptedOrders: Array<string> = ['ACCEPTED']
   cancelledOrders: Array<string> = ['CANCELLED', 'PENDING', 'FAILED']
 
