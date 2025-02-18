@@ -967,21 +967,31 @@ export class CatalogComponent implements OnInit {
   }
 
   createCatalog() {
-    this.CatalogService.createCatalog(this.catalogForm.value).subscribe({
-      next: (res: any) => {
-        if (res?.errorCode == 0) {
-          this.closeCreate();
-          this.Toast.success(res?.message);
-          this.ChangeDetectorRef.markForCheck();
-          this.getCatalogs();
-        } else {
-          this.Toast.error(res?.message);
-        }
-      },
-      error: (err: any) => {
-        this.Toast.error(err?.error?.message);
-      },
-    });
+    if (this.catalogForm.valid) {
+      const formValue = this.catalogForm.value;
+
+      // Ensure catalogReference is properly set when isCopy is true
+      if (formValue.isCopy === 'true' && !formValue.catalogReference) {
+        this.Toast.error('Please select a catalog to copy');
+        return;
+      }
+
+      this.CatalogService.createCatalog(formValue).subscribe({
+        next: (res: any) => {
+          if (res?.errorCode == 0) {
+            this.closeCreate();
+            this.Toast.success(res?.message);
+            this.ChangeDetectorRef.markForCheck();
+            this.getCatalogs();
+          } else {
+            this.Toast.error(res?.message);
+          }
+        },
+        error: (err: any) => {
+          this.Toast.error(err?.error?.message);
+        },
+      });
+    }
   }
   //Catalog create ends here
 
@@ -1260,7 +1270,7 @@ export class CatalogComponent implements OnInit {
 
   addCatalogWidget(widget: WidgetProps) {
     this.CatalogService.addCatalogWidget({
-      index: this.widgetItems.length,
+      index: this.widgetItems?.length || 0,
       widgetName: widget.title,
       widgetType: widget.type,
       catalogId: this.catalogPageDetails?._id,
@@ -1814,6 +1824,13 @@ export class CatalogComponent implements OnInit {
       seoTitle: new FormControl(''),
       seoDescription: new FormControl(''),
       seoKeywords: new FormControl(''),
+    });
+
+    this.catalogForm.get('isCopy')?.valueChanges.subscribe((value) => {
+      if (value === 'false' || value === false) {
+        this.catalogForm.patchValue({ catalogReference: '' });
+        this.catalogPage.setValue('');
+      }
     });
 
     this.form = new FormGroup({
