@@ -140,8 +140,19 @@
                 [isToggledProps]="form.get('isRecaptchaEnabled')?.value"></app-switch>
             </div>
           </div>
+
           <div class="row mt-4" *ngIf="form.get('isRecaptchaEnabled')?.value">
+            <div class="fs-6 mt-5 fw-bold">service account details</div>
             <div class="col-lg-6 form-group mb-3">
+              <label for="recaptchaEmail" class="fs-6 mb-1">Email</label>
+              <input type="text" id="recaptchaEmail" formControlName="recaptchaEmail" class="form-control">
+            </div>
+            <div class="col-lg-6 form-group mb-3">
+              <label for="recaptchaPrivateKey" class="fs-6 mb-1">Private Key</label>
+              <input type="text" id="recaptchaPrivateKey" formControlName="recaptchaPrivateKey" class="form-control">
+            </div>
+            <div class="fs-6 mt-5 fw-bold">api details</div>
+            <div class="col-lg-6 form-group mb-3 mt-3 ">
               <label for="recaptchaSiteKey" class="fs-6 mb-1">Site Key</label>
               <input type="text" id="recaptchaSiteKey" formControlName="recaptchaSiteKey" class="form-control">
             </div>
@@ -158,14 +169,8 @@
               <input type="text" id="iosRecaptchaKey" formControlName="iosRecaptchaKey" class="form-control">
             </div>
             <div class="col-lg-6 form-group mb-3">
-              <label for="recaptchaEnterpriseKey" class="fs-6 mb-1">Enterprise Key</label>
-              <input type="text" id="recaptchaEnterpriseKey" formControlName="recaptchaEnterpriseKey"
-                class="form-control">
-            </div>
-            <div class="col-lg-6 form-group mb-3">
-              <label for="recaptchaEnterpriseProjectId" class="fs-6 mb-1">Enterprise Project ID</label>
-              <input type="text" id="recaptchaEnterpriseProjectId" formControlName="recaptchaEnterpriseProjectId"
-                class="form-control">
+              <label for="recaptchaProjectId" class="fs-6 mb-1">Project ID</label>
+              <input type="text" id="recaptchaProjectId" formControlName="recaptchaProjectId" class="form-control">
             </div>
           </div>
         </div>
