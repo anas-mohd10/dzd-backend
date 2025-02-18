@@ -984,6 +984,8 @@ getDefaultCategories() {
       isCodAvailable: new FormControl('true'),
       codCharges: new FormControl(0),
       deliveryDays: new FormControl(0),
+      ean: new FormControl(''),
+      mpn: new FormControl(''),
       isCompareEnabled: new FormControl('false'),
     });
 
