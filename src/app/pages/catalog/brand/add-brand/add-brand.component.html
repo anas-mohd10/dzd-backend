@@ -29,7 +29,7 @@
           <div class="row">
             <div>
               <label for="cover" class="fs-6 mb-3">Cover</label>
-              <div id="cover" class="ratio ratio-21x9 default-banner position-relative">
+              <div id="cover" class="default-banner position-relative">
                 <app-assets [previewDetails]="cover" (mediaClicked)="onCoverTriggered($event)"></app-assets>
                 <div *ngIf="cover">
                   <div class="position-absolute bottom-0 end-0 m-4">
@@ -40,7 +40,7 @@
             </div>
             <div class="my-3">
               <label for="mobileCover" class="fs-6 mb-3">Mobile Cover</label>
-              <div id="mobileCover" class="ratio ratio-21x9 default-banner position-relative">
+              <div id="mobileCover" class="default-banner position-relative">
                 <app-assets [previewDetails]="mobileCover" (mediaClicked)="onMobileCoverTriggered($event)"></app-assets>
                 <div *ngIf="mobileCover">
                   <div class="position-absolute bottom-0 end-0 m-4">
