@@ -15,7 +15,7 @@
         </div>
 
         <div class="d-flex align-items-center justify-content-end gap-2">
-            <button class="btn btn-secondary" (click)="openBulkImport(bulkImportTemplate)">Bulk Import</button>
+            <button class="btn btn-secondary" (click)="openBulkImport(bulkImportTemplate)">Import Locations</button>
             <button class="btn btn-primary" (click)="open(template)">Add Country</button>
         </div>
     </div>
@@ -98,7 +98,7 @@
 
 <ng-template #bulkImportTemplate>
     <div class="modal-header">
-        <h4 class="modal-title pull-left">Bulk Import</h4>
+        <h4 class="modal-title pull-left">Import Locations</h4>
     </div>
     <div class="modal-body">
         <div>
@@ -116,13 +116,11 @@
                 <input [formControl]="importFile" type="file" class="form-control" (change)="changeImportFile($event)"
                     accept=".csv">
             </div>
-            <div *ngIf="importFile.value" class="text-muted mt-4 d-flex align-items-center justify-content-between">
+            <div *ngIf="importFile.value" class="text-muted my-4 d-flex align-items-center justify-content-between">
                 <div class="fs-5">{{importFile.value?.name}}</div>
-                <div>
-                    <button class="btn btn-danger" (click)="removeImportFile()">
-                        Remove
-                    </button>
-                </div>
+                <button class="btn btn-danger p-2" (click)="removeImportFile()">
+                    Remove
+                </button>
             </div>
         </div>
         <div class="d-flex align-items-center justify-content-end gap-2">

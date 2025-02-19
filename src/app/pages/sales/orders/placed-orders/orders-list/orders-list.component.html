@@ -218,7 +218,7 @@
           </td>
           <td *ngIf="settings.isPickUp == true">
             <div *ngIf="order?.pickUpLocation">
-              {{order?.pickUpLocation?.name + ", " + order?.pickUpLocation?.city}}
+              <div class="cursor-pointer" tooltip="{{order?.pickUpLocation?.address}}">{{order?.pickUpLocation?.name + ", " + order?.pickUpLocation?.city}}</div>
             </div>
             <div *ngIf="order?.clickPoint">
               {{order?.clickPoint?.address?.city}}

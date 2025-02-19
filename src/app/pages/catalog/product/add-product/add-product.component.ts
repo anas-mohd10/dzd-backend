@@ -659,6 +659,8 @@ toggleProductCategory(event: any, type: string) {
       isVisible: new FormControl(true),
       isCodAvailable: new FormControl('true'),
       codCharges: new FormControl(0),
+      ean: new FormControl(''),
+      mpn: new FormControl(''),
     });
 
     this.BrandService.getActiveBrands().subscribe({
