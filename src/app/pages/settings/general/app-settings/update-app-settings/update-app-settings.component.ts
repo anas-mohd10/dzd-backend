@@ -39,7 +39,7 @@ export class UpdateAppSettingsComponent implements OnInit {
   isSubmitted = false;
   refid: any;
   currency: any
-  offerCriteria: boolean 
+  offerCriteria: boolean
   priceOptions = [
     { value: true, label: 'MRP / Cut Price' },
     { value: false, label: 'Additional Discount' }
@@ -175,22 +175,22 @@ export class UpdateAppSettingsComponent implements OnInit {
         this.HotToastService.success('Placeholder added successfully');
       }
     }
-  
+
     this.placeHolder.setValue('');
     this.currentlyEditingPlaceholder = null;
     this.ChangeDetectorRef.markForCheck();
   }
-  
 
-  removePlaceholder(placeHolder: string){
-    this.placeHolders = this.placeHolders.filter((item:string) => item != placeHolder)
+
+  removePlaceholder(placeHolder: string) {
+    this.placeHolders = this.placeHolders.filter((item: string) => item != placeHolder)
     this.HotToastService.success('Placeholder removed successfully')
     this.ChangeDetectorRef.markForCheck()
   }
 
   currentlyEditingPlaceholder: string | null = null;
 
-  editPlaceholder(placeHolder: string){
+  editPlaceholder(placeHolder: string) {
     if (this.currentlyEditingPlaceholder === placeHolder) {
       this.currentlyEditingPlaceholder = null;
       this.placeHolder.setValue('');
@@ -208,7 +208,7 @@ export class UpdateAppSettingsComponent implements OnInit {
         this.placeHolders[index] = this.placeHolder.value;
         this.HotToastService.success('Placeholder updated successfully');
       }
-      
+
       this.currentlyEditingPlaceholder = null;
       this.placeHolder.setValue('');
       this.ChangeDetectorRef.markForCheck();
@@ -288,6 +288,13 @@ export class UpdateAppSettingsComponent implements OnInit {
         this.form.get('favicon')?.setValue(res?.result?.favicon)
         this.form.get('defaultBanner')?.setValue(res?.result?.defaultBanner)
         this.form.get('defaultMobileBanner')?.setValue(res?.result?.defaultMobileBanner)
+
+        this.form.get('commaSeparation')?.setValue(
+          res?.result?.commaSeparation ?? true  // Use nullish coalescing for default
+        );
+        this.form.get('decimalValues')?.setValue(
+          Number(res?.result?.decimalValues)  
+        );
         this.placeHolders = res?.result?.placeHolders
 
         for (let lang of res?.result?.languages) {
@@ -298,12 +305,12 @@ export class UpdateAppSettingsComponent implements OnInit {
           let isExists = this.languages.some((item: { lang: string, langCode: string, regionCodes: string[] }) => item.lang == language?.lang)
           !isExists && this.languages.push({ lang: language?.lang, langCode: language?.langCode, regionCodes: language?.regionCodes })
         }
-        
+
         this.form.get('primaryLang')?.setValue(res?.result?.primaryLang)
         this.ChangeDetectorRef.markForCheck()
         this.storeStatus = res?.result?.isStoreLive
       }
-      
+
     })
   }
 
@@ -363,6 +370,8 @@ export class UpdateAppSettingsComponent implements OnInit {
       isStoreLive: ['true'],
       defaultImage: [''],
       isNotifyStock: ['false'],
+      commaSeparation: [true],  
+      decimalValues: [  ], 
       cartButton: ['Add to Cart', Validators.required],
       stockButton: ['Out of Stock', Validators.required],
       notifyButton: ['Notify Me', Validators.required],
@@ -521,6 +530,8 @@ export class UpdateAppSettingsComponent implements OnInit {
       offerCriteria: this.form.get('offerCriteria')?.value,
       isStoreLive: this.form.get('isStoreLive')?.value,
       notes: { packingSlip: this.form.get('packingSlip')?.value },
+      commaSeparation: Boolean(this.form.get('commaSeparation')?.value),
+      decimalValues: Number(this.form.get('decimalValues')?.value),
       buttons: {
         cart: this.form.get('cartButton')?.value,
         stock: this.form.get('stockButton')?.value,
