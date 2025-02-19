@@ -280,6 +280,7 @@ export class UpdateAppSettingsComponent implements OnInit {
         this.form.get('isNotifyStock')?.setValue(res?.result?.isNotifyStock)
         this.form.get('packingSlip')?.setValue(res?.result?.notes?.packingSlip)
         this.form.get('defaultShippingCharge')?.setValue(res?.result?.defaultShippingCharge)
+        this.form.get('defaultMinimumCartAmount')?.setValue(res?.result?.defaultMinimumCartAmount)
         this.form.get('cartButton')?.setValue(res?.result?.buttons?.cart)
         this.form.get('stockButton')?.setValue(res?.result?.buttons?.stock)
         this.form.get('notifyButton')?.setValue(res?.result?.buttons?.notify)
@@ -380,6 +381,7 @@ export class UpdateAppSettingsComponent implements OnInit {
       defaultBanner: [''],
       defaultMobileBanner: [''],
       defaultShippingCharge: ['0'],
+      defaultMinimumCartAmount: ['0'],
     })
   }
 
@@ -527,6 +529,7 @@ export class UpdateAppSettingsComponent implements OnInit {
       defaultBanner: this.form.get('defaultBanner')?.value,
       defaultMobileBanner: this.form.get('defaultMobileBanner')?.value,
       defaultShippingCharge: this.form.get('defaultShippingCharge')?.value,
+      defaultMinimumCartAmount: this.form.get('defaultMinimumCartAmount')?.value,
       offerCriteria: this.form.get('offerCriteria')?.value,
       isStoreLive: this.form.get('isStoreLive')?.value,
       notes: { packingSlip: this.form.get('packingSlip')?.value },
