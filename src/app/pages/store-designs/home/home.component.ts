@@ -1517,13 +1517,22 @@ export class HomeComponent implements OnInit {
     this.form.get('isTimeBoundWidget')?.setValue(event.toggleState);
   }
 
+  customSearchFn = (term: string, item: any) => {
+    term = term.toLowerCase();
+    // Search in both name and SKU
+    return item.searchText.includes(term);
+  }
+
   getProducts() {
     this.ProductService.getActiveProduct().subscribe({
       next: (res: any) => {
         if (res?.errorCode == 0) {
+          // Modify the products array to include a searchText and displayText property
           this.products = res?.result.map((product: any) => ({
             ...product,
-            slug: product.slug || product._id // Fallback to ID if slug doesn't exist
+            slug: product.slug || product._id, // Fallback to ID if slug doesn't exist
+            searchText: `${product.name} ${product.sku}`.toLowerCase(), // Combined search text
+            displayText: `${product.name} (${product.sku})` // Combined display text
           }));
 
           // If there's a selected product, update the form
