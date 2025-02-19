@@ -374,9 +374,42 @@
                 <option value="true">Yes</option>
               </select>
             </div>
+             <div class="col-lg-4 form-group mb-3">
+              <label class="fs-6 mb-3">Enable delivary locations</label>
+              <select class="form-select mb-3" formControlName="isDeliveryLocationEnabled">
+                <option value="" disabled>-- Select an option --</option>
+                <option value="false">No</option>
+                <option value="true">Yes</option>
+              </select>
+            </div>
           </div>
         </div>
       </div>
+
+<div class="card my-4">
+  <div class="card-body">
+    <div class="fs-3 fw-bold mb-2">Price Formatter</div>
+    <div class="row">
+      <div class="col-lg-4 col-md-6 form-group mb-3">
+        <label class="fs-6 mb-3">Comma Separation</label>
+        <select class="form-select mb-3" formControlName="commaSeparation">
+          <option [ngValue]="false">No</option>
+          <option [ngValue]="true">Yes</option>
+        </select>
+      </div>
+      <div class="col-lg-4 col-md-6 form-group mb-3">
+        <label class="fs-6 mb-3">Decimal Values</label>
+        <select class="form-select mb-3" formControlName="decimalValues">
+          <option [ngValue]="0">0</option>
+          <option [ngValue]="1">1</option>
+          <option [ngValue]="2">2</option>
+          <option [ngValue]="3">3</option>
+        </select>
+      </div>
+    </div>
+  </div>
+</div>
+
 
       <div class="card my-4">
         <div class="card-body">
