@@ -6,6 +6,7 @@ import { UpdateOfferComponent } from './update-offer.component';
 import { ReactiveFormsModule,FormsModule } from '@angular/forms';
 import { DataTablesModule } from 'angular-datatables';
 import { ImageCropperModule } from 'ngx-image-cropper';
+import { SharedModule } from 'src/app/pages/shared/shared.module';
 
 @NgModule({
   declarations: [UpdateOfferComponent],
@@ -16,6 +17,7 @@ import { ImageCropperModule } from 'ngx-image-cropper';
     ImageCropperModule,
     NgSelectModule,
     FormsModule,
+    SharedModule,
     RouterModule.forChild([
       {
         path: ':offerId',
