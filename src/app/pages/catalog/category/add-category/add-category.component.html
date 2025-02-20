@@ -34,11 +34,11 @@
                 </div>
               </div>
             </div>
-            <div  class="my-3">
+            <div class="my-3">
               <label for="mobileCover" class="fs-6 mb-3">Mobile Cover</label>
               <div id="mobileCover" class="default-banner position-relative">
                 <app-assets [previewDetails]="mobileCover" (mediaClicked)="onMobileCoverTriggered($event)"></app-assets>
-                 <div *ngIf="mobileCover">
+                <div *ngIf="mobileCover">
                   <div class="position-absolute bottom-0 end-0 m-4">
                     <button class="btn btn-danger" (click)="onRemove('mobileCover')">Remove</button>
                   </div>
@@ -61,8 +61,26 @@
                 <div class="row">
                   <div class="form-group mb-3">
                     <label class="fs-6 mb-3 required">Name</label>
-                    <input type="text" placeholder="Category name" class="form-control fs-6" formControlName="name"
+                    <input type="text" class="form-control fs-6" formControlName="name" (change)="generateSlug()"
                       [ngClass]="{'is-invalid': (formControls.name.touched || isSubmitted) && formControls.name.errors?.required}" />
+                  </div>
+
+                  <div class="form-group mb-3" *ngIf="form.get('name')?.value">
+                    <label class="fs-6 mb-3">Slug</label>
+                    <div class="position-relative">
+                      <input type="text" class="form-control fs-6" formControlName="slug" />
+                      <div class="position-absolute top-50 end-0 translate-middle-y mx-2">
+                        <div class="cursor-pointer" (click)="generateSlug()">
+                          <svg height="20" width="20" data-slot="icon" fill="none" stroke-width="1.5"
+                            stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"
+                            aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                              d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0 3.181 3.183a8.25 8.25 0 0 0 13.803-3.7M4.031 9.865a8.25 8.25 0 0 1 13.803-3.7l3.181 3.182m0-4.991v4.99">
+                            </path>
+                          </svg>
+                        </div>
+                      </div>
+                    </div>
                   </div>
 
                   <div class="form-group mb-3">
@@ -89,20 +107,21 @@
 
                   <div class="col-lg-6 mb-3 form-group">
                     <label class="fs-6 mb-3">Is Root</label>
-                    <select class="form-select" formControlName="isRoot">
+                    <select class="form-select" formControlName="isRoot" (change)="onHierarchyChange()">
                       <option value="" disabled>-- Select an option --</option>
-                      <option value="false">No</option>
-                      <option value="true">Yes</option>
+                      <option value=false>No</option>
+                      <option value=true>Yes</option>
                     </select>
                   </div>
 
                   <div class="col-lg-6 form-group mb-3" *ngIf="form.get('isRoot')?.value == 'false'">
                     <label class="fs-6 mb-3 required">Parent Category</label>
-                    <select class="form-select" formControlName="parent"
-                      [ngClass]="{'is-invalid':(formControls.parent.touched || isSubmitted) && formControls.parent.errors?.required}"
-                      (change)="getParentDetails($event.target)">
+                    <select class="form-select" formControlName="hierarchy"
+                      [ngClass]="{'is-invalid':(formControls.hierarchy.touched || isSubmitted) && formControls.hierarchy.errors?.required}"
+                      (change)="getParentDocs()">
                       <option value="" disabled>-- Select parent category --</option>
-                      <option *ngFor="let category of categories" value="{{ category }}">{{ category }}</option>
+                      <option *ngFor="let category of categories" value="{{ category.name }}">{{ category.name }}
+                      </option>
                     </select>
                   </div>
 
@@ -116,38 +135,38 @@
                   </div>
 
                   <div class="col-lg-6 form-group mb-3">
-                    <label class="fs-6 mb-3">Featured Category?</label>
-                    <select class="form-select fs-6" formControlName="isFeatured">
+                    <label class="fs-6 mb-3">Menu Category?</label>
+                    <select class="form-select fs-6" formControlName="isMenu">
                       <option value="" disabled>-- Select an option --</option>
                       <option value="false">No</option>
                       <option value="true">Yes</option>
                     </select>
                   </div>
 
-                  <div class="col-lg-6 mb-3 form-group">
-                    <label class="fs-6 mb-3">Archive Category?</label>
-                    <select class="form-select fs-6" formControlName="isArchive">
+                  <div class="col-lg-6 form-group mb-3">
+                    <label class="fs-6 mb-3">Filter Category?</label>
+                    <select class="form-select fs-6" formControlName="isFilter">
                       <option value="" disabled>-- Select an option --</option>
-                      <option value="false" selected>No</option>
+                      <option value="false">No</option>
                       <option value="true">Yes</option>
                     </select>
                   </div>
-                  
+
                 </div>
               </div>
             </div>
           </div>
 
-          <div class="d-flex align-items-center gap-2 justify-content-end">
-            <button class="btn btn-secondary" routerLink="{{ appRoute.category.CATEGORY_LIST}}">
-              Back
-            </button>
-            <button class="btn btn-primary" (click)="onSubmit()">
-              Save changes
-            </button>
-          </div>
         </form>
       </div>
+    </div>
+    <div class="d-flex align-items-center gap-2 justify-content-end mt-4">
+      <button class="btn btn-secondary" routerLink="{{ appRoute.category.CATEGORY_LIST}}">
+        Back
+      </button>
+      <button class="btn btn-primary" (click)="onSubmit()">
+        Save changes
+      </button>
     </div>
   </div>
 </div>
