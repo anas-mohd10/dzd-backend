@@ -136,7 +136,7 @@
                       [ngClass]="{'is-invalid':(formControls.hierarchy.touched || isSubmitted) && formControls.hierarchy.errors?.required}"
                       (change)="getParentDocs()">
                       <option value="" disabled>-- Select parent category --</option>
-                      <option *ngFor="let category of categories" value="{{ category.name }}">{{ category.name }}
+                      <option *ngFor="let category of categories" value="{{ category?.name }}">{{ category?.name  }}
                       </option>
                     </select>
                   </div>
