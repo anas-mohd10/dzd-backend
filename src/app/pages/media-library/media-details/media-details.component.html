@@ -1,88 +1,92 @@
 <div class="profilePageContainer">
-    <div class="page-header">
-        <div class="page-title">
-            <h1 class="fw-bold">Media details</h1>
-        </div>
-        <div class="row">
-            <div class="col d-flex align-items-start justify-content-between">
-                <ul class="breadcrumb">
-                    <li class="breadcrumb-item fs-6">
-                        <a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a>
-                    </li>
-                    <li class="breadcrumb-item fs-6">
-                        <a routerLink="{{ appRoute.mediaLibrary }}">Medias</a>
-                    </li>
-                    <li class="breadcrumb-item active fs-6">
-                        <a routerLink="{{ appRoute.mediaLibrary + '/' + mediaQuery }}">Media details</a>
-                    </li>
-                </ul>
-            </div>
-        </div>
-        <div class="card my-4">
-            <div class="card-body">
-                <div class="row">
-                    <div class="col-lg-7">
-                        <div class="media">
-                            <img src="{{mediaDetails.path}}" alt="{{mediaDetails.altTitle}}"
-                                onerror="this.src = 'assets/media/Media_Preview.png'">
-                        </div>
-                    </div>
-                    <div class="col-lg-5">
-                        <div class="media-details fs-6">
-                            <div class="item">
-                                <div class="key">Uploaded on</div>
-                                <div class="value">{{mediaDetails?.createdAt}}</div>
-                            </div>
-                            <div class="item">
-                                <div class="key">Uploaded by</div>
-                                <div class="value">
-                                    <a routerLink="{{appRoute.admin.UPDATE_ADMIN_USERS}}"
-                                        [queryParams]="{'admin': mediaDetails?.uploadedBy?.slug}">
-                                        {{mediaDetails?.uploadedBy?.firstname}}
-                                    </a>
-                                </div>
-                            </div>
-                            <div class="item">
-                                <div class="key">Uploaded to</div>
-                                <div class="value">{{mediaDetails?.uploadedDescription}}</div>
-                            </div>
-                            <div class="item">
-                                <div class="key">File name:</div>
-                                <div class="value">{{mediaDetails?.title}}</div>
-                            </div>
-                            <div class="item">
-                                <div class="key">File type:</div>
-                                <div class="value">{{mediaDetails?.type}}</div>
-                            </div>
-                            <div class="item">
-                                <div class="key">File size:</div>
-                                <div class="value">{{mediaDetails?.size}} MB</div>
-                            </div>
-                        </div>
-                        <div class="my-4 media-form py-6">
-                            <div class="form-group mb-3">
-                                <label for="url" class="form-label">File URL</label>
-                                <input type="text" placeholder="File URL" [formControl]="mediaUrl" class="form-control">
-                                <button class="btn mt-3 btn-dark" (click)="copyToClipboard()">Copy URL</button>
-                            </div>
-                            <div class="form-group mb-3">
-                                <label for="url" class="form-label">Title</label>
-                                <input type="text" placeholder="File title" [formControl]="title" class="form-control"
-                                    (change)="saveDetails()"
-                                    [ngClass]="{'is-invalid': (title.errors?.['required']  || isSubmitted) && title.touched || title.errors?.['pattern']}">
-                            </div>
-                            <div class="form-group">
-                                <label for="url" class="form-label">Alternative Title</label>
-                                <textarea type="text" placeholder="Alternative title" [formControl]="altTitle"
-                                    class="form-control" (change)="saveDetails()"></textarea>
-                            </div>
-                        </div>
-                        <div class="mt-6 d-flex align-items-center justify-content-between">
-                            <button class="btn btn-secondary me-1" (click)="downloadImage(mediaDownload)">Download file</button>
-                            <button class="btn btn-danger ms-1" (click)="deleteMedia()">Delete file</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+  <div class="page-header">
+    <div class="page-title">
+      <h1 class="fw-bold">Media details</h1>
     </div>
+    <div class="row">
+      <div class="col d-flex align-items-start justify-content-between">
+        <ul class="breadcrumb">
+          <li class="breadcrumb-item fs-6">
+            <a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a>
+          </li>
+          <li class="breadcrumb-item fs-6">
+            <a routerLink="{{ appRoute.mediaLibrary }}">Medias</a>
+          </li>
+          <li class="breadcrumb-item active fs-6">
+            <a routerLink="{{ appRoute.mediaLibrary + '/' + mediaQuery }}">Media details</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <div class="card my-4">
+      <div class="card-body">
+        <div class="row">
+          <div class="col-lg-6">
+            <div class="media">
+              <img src="{{mediaDetails.path}}" alt="{{mediaDetails.altTitle}}"
+                onerror="this.src = 'assets/media/Media_Preview.png'">
+            </div>
+          </div>
+          <div class="col-lg-6">
+            <div class="media-details fs-6">
+              <div class="item d-flex align-items-center justify-content-between">
+                <div class="key">Date</div>
+                <div class="value">{{mediaDetails?.createdAt}}</div>
+              </div>
+              <div class="my-4 item d-flex align-items-center justify-content-between">
+                <div class="key">User</div>
+                <div class="value">
+                  <a routerLink="{{appRoute.admin.UPDATE_ADMIN_USERS}}"
+                    [queryParams]="{'admin': mediaDetails?.uploadedBy?.slug}">
+                    {{mediaDetails?.uploadedBy?.firstname}}
+                  </a>
+                </div>
+              </div>
+              <div class="item d-flex align-items-center justify-content-between">
+                <div class="key">Description</div>
+                <div class="value">{{mediaDetails?.uploadedDescription}}</div>
+              </div>
+              <div class="my-4 item d-flex align-items-center justify-content-between">
+                <div class="key">Name</div>
+                <div class="value">{{mediaDetails?.title}}</div>
+              </div>
+              <div class="my-4 item d-flex align-items-center justify-content-between">
+                <div class="key">originalName</div>
+                <div class="value">{{mediaDetails?.originalName}}</div>
+              </div>
+              <div class="item d-flex align-items-center justify-content-between">
+                <div class="key">Type</div>
+                <div class="value">{{mediaDetails?.type}}</div>
+              </div>
+              <div class="my-4 item d-flex align-items-center justify-content-between">
+                <div class="key">Size</div>
+                <div class="value">{{mediaDetails?.size}} MB</div>
+              </div>
+            </div>
+            <div class="my-4 media-form py-6">
+              <div class="form-group mb-3">
+                <label for="url" class="form-label">File URL</label>
+                <input type="text" placeholder="File URL" [formControl]="mediaUrl" class="form-control">
+                <button class="btn mt-3 btn-dark btn-sm" (click)="copyToClipboard()">Copy URL</button>
+              </div>
+              <div class="form-group mb-3">
+                <label for="url" class="form-label">Title</label>
+                <input type="text" placeholder="File title" [formControl]="title" class="form-control"
+                  (change)="saveDetails()"
+                  [ngClass]="{'is-invalid': (title.errors?.['required']  || isSubmitted) && title.touched || title.errors?.['pattern']}">
+              </div>
+              <div class="form-group">
+                <label for="url" class="form-label">Alternative Title</label>
+                <textarea type="text" placeholder="Alternative title" [formControl]="altTitle" class="form-control"
+                  (change)="saveDetails()"></textarea>
+              </div>
+            </div>
+            <div class="mt-6 d-flex align-items-center justify-content-between">
+              <button class="btn btn-secondary me-1" (click)="downloadImage(mediaDownload)">Download file</button>
+              <button class="btn btn-danger ms-1" (click)="deleteMedia()">Delete file</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>

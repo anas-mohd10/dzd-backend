@@ -84,6 +84,7 @@ export class UpdateProductComponent implements OnInit {
   brand: FormControl = new FormControl('', Validators.required);
 
   brands: Array<any> = [];
+  selectedBrand: any = null;
   brandsMap: any = {}
 
   productCategories: Array<any> = [];
@@ -99,6 +100,7 @@ export class UpdateProductComponent implements OnInit {
   searchKeyword: FormControl = new FormControl('');
   relatedProducts: Array<any> = [];
   categories: Array<any> = [];
+  selectedCategories: Array<string> = [];
   productCategory: FormControl = new FormControl('');
   productAttributes: Array<any> = [];
   isCategoryMultiple: boolean = true;
@@ -339,6 +341,20 @@ export class UpdateProductComponent implements OnInit {
     this.addOnForm.get('isRequired')?.setValue(event.toggleState)
   }
 
+onBrandChange(event: any) {
+  if (event) {
+    this.selectedBrand = event;
+    this.form.patchValue({
+      brand: event.slug
+    });
+  } else {
+    this.selectedBrand = null;
+    this.form.patchValue({
+      brand: null
+    });
+  }
+}
+
   onBrandTriggered(event: any) {
     this.parentForm.get('brand')?.setValue(event?._id);
   }
@@ -427,19 +443,18 @@ export class UpdateProductComponent implements OnInit {
     }
   }
 
-  getDefaultCategories() {
-    this.categoryService.getCategories({}, '').subscribe({
-      next: (res: any) => {
-        if (res?.errorCode == 0) {
-          this.defaultCategories = res?.result;
-          this.ChangeDetectorRef.markForCheck();
-        } else {
-        }
-      },
-      error: (err: any) => { },
-    });
+getDefaultCategories() {
+  this.categoryService.getCategories({}, '').subscribe({
+    next: (res: any) => {
+      if (res?.errorCode == 0) {
+        this.defaultCategories = res?.result;
+        this.ChangeDetectorRef.markForCheck();
+      }
+    },
+    error: (err: any) => { }
+  });
   }
-
+  
   handleThumbnail(event: any) {
     this.parentForm.get('thumbnail')?.setValue(event.path);
   }
@@ -476,24 +491,57 @@ export class UpdateProductComponent implements OnInit {
     this.form.get('thumbnail')?.setValue(event.path);
   }
 
-  toggleProductCategory(categoryEvent: any, type: string) {
-    if (type == 'add') {
-      this.defaultCategories.forEach((defaultCategory: any) => {
-        if (defaultCategory.slug == categoryEvent.target.value) {
-          let isExists: boolean = this.categories.some((item: any) => item?.slug == defaultCategory.slug);
-          if (isExists) {
-            this.HotToastService.info('Category already added')
-          } else {
-            this.categories.push(defaultCategory);
-          }
-        }
-      })
+  toggleProductCategory(event: any, type: string) {
+  if (type === 'add') {
+    // Handle single or multiple selections from ng-select
+    if (Array.isArray(event)) {
+      // Multiple categories selected
+      this.categories = event;
     } else {
-      this.categories = this.categories.filter((item: any) => item.slug != categoryEvent);
+      // Single category selected
+      const isExists = this.categories.some(item => item.slug === event.slug);
+      if (isExists) {
+        this.HotToastService.info('Category already added');
+      } else {
+        this.categories.push(event);
+      }
     }
-
-    this.productCategory.setValue('');
+  } else {
+    // Remove category
+    this.categories = this.categories.filter(item => item.slug !== event);
   }
+  
+  // Update selectedCategories
+  this.selectedCategories = this.categories.map(cat => cat.slug);
+  
+  // Update form value if needed
+  if (this.form) {
+    this.form.patchValue({
+      category: {
+        id: this.categories.map(cat => cat._id),
+        refid: this.categories.map(cat => cat.catid)
+      }
+    });
+  }
+}
+  // toggleProductCategory(categoryEvent: any, type: string) {
+  //   if (type == 'add') {
+  //     this.defaultCategories.forEach((defaultCategory: any) => {
+  //       if (defaultCategory.slug == categoryEvent.target.value) {
+  //         let isExists: boolean = this.categories.some((item: any) => item?.slug == defaultCategory.slug);
+  //         if (isExists) {
+  //           this.HotToastService.info('Category already added')
+  //         } else {
+  //           this.categories.push(defaultCategory);
+  //         }
+  //       }
+  //     })
+  //   } else {
+  //     this.categories = this.categories.filter((item: any) => item.slug != categoryEvent);
+  //   }
+
+  //   this.productCategory.setValue('');
+  // }
 
   toggleAddOnItems() { }
 
@@ -526,12 +574,12 @@ export class UpdateProductComponent implements OnInit {
         id: this.productDetails?.parentId,
         refid: this.productDetails?.product?.refid,
       },
-      brand: {
-        name: this.brandsMap[this.form.get('brand')?.value]?.name,
-        slug: this.brandsMap[this.form.get('brand')?.value]?.slug,
-        thumbnail: this.brandsMap[this.form.get('brand')?.value]?.thumbnail,
-        cover: this.brandsMap[this.form.get('brand')?.value]?.cover,
-      },
+    brand: this.selectedBrand ? {
+      name: this.selectedBrand.name,
+      slug: this.selectedBrand.slug,
+      thumbnail: this.selectedBrand.thumbnail,
+      cover: this.selectedBrand.cover,
+    } : null,
       parentId: this.productDetails?.parentId,
       tagIcons: this.tagIcons,
       attributes: this.attributes,
@@ -576,16 +624,16 @@ export class UpdateProductComponent implements OnInit {
         ...this.productDetails.localizedMetaKeywords,
         [this.settings.primaryLang]: this.form.get('metaKeywords')?.value,
       },
-      category: {
-        id: this.categories.map((category: any) => category?._id),
-        refid: this.categories.map((category: any) => category?.catid),
-      },
-      categories: this.categories.map((category: any) => ({
-        name: category.name,
-        slug: category.slug,
-        thumbnail: category.thumbnail,
-        cover: category.cover,
-      })),
+  category: {
+      id: this.categories.map((category: any) => category?._id),
+      refid: this.categories.map((category: any) => category?.catid),
+    },
+    categories: this.categories.map((category: any) => ({
+      name: category.name,
+      slug: category.slug,
+      thumbnail: category.thumbnail,
+      cover: category.cover,
+    })),
       productTags: this.tagsForm.value,
     }).subscribe({
       next: (res: any) => {
@@ -709,20 +757,47 @@ export class UpdateProductComponent implements OnInit {
     this.form.patchValue({ slug });
   }
 
+  // ngOnInit(): void {
+  //   this.base = environment.base;
+
+  //   this.BrandService.getActiveBrands().subscribe({
+  //   next: (res: any) => {
+  //     if (res.errorCode == 0) {
+  //       this.brands = res.result;        
+  //       if (this.productDetails?.brand) {
+  //         this.selectedBrand = this.brands.find(brand => brand.slug === this.productDetails.brand.slug);
+  //       }
+        
+  //       this.ChangeDetectorRef.markForCheck();
+  //     }
+  //   }, 
+  //   error: (err: any) => { }
+  // });
+
+
   ngOnInit(): void {
     this.base = environment.base;
-
+  
     this.BrandService.getActiveBrands().subscribe({
       next: (res: any) => {
-        if (res.errorCode == 0) {
-          this.brands = res.result
-          this.brands.forEach((brand: any) => {
-            this.brandsMap[brand.slug] = brand
-          })
-          this.ChangeDetectorRef.markForCheck()
-        } else { }
-      }, error: (err: any) => { }
-    })
+        if (res.errorCode === 0 && Array.isArray(res.result) && res.result.length > 0) {
+          this.brands = res.result.filter((brand: any) => brand && brand.slug);
+  
+          if (this.productDetails?.brand) {
+            this.selectedBrand = this.brands.find(
+              (brand) => brand.slug === this.productDetails.brand.slug
+            );
+          }
+  
+          this.ChangeDetectorRef.markForCheck();
+        } else {
+          this.brands = [];
+        }
+      },
+      error: (err: any) => {
+        console.error('Error fetching brands:', err);
+      }
+    });
 
     this.AppSettingsService.getGeneralSettingsbyId('1').subscribe({
       next: (res: any) => {
@@ -732,8 +807,7 @@ export class UpdateProductComponent implements OnInit {
           this.ChangeDetectorRef.markForCheck();
         } else { }
       }, error: (err: any) => { }
-    }
-    );
+    });
 
     this.addOnOptionForm = new FormGroup({
       product: new FormControl('', Validators.required),
@@ -774,9 +848,10 @@ export class UpdateProductComponent implements OnInit {
       next: (res: any) => {
         if (res?.errorCode == 0) {
           this.form.patchValue(res?.result);
-          if (!this.form.get('searchKeywords')?.value) {
-            this.form.get('searchKeywords')?.setValue([])
-          }
+          // Check if searchKeywords exist and are not empty
+          this.searchKeywords = (res?.result?.searchKeywords || []).filter(Boolean);
+          this.form.get('searchKeywords')?.setValue(this.searchKeywords);
+          
           this.productDetails = res?.result;
           this.images = res?.result?.files ? res?.result?.files : [];
           // Remove null and undefined values from array of images
@@ -788,9 +863,18 @@ export class UpdateProductComponent implements OnInit {
             }
           }).filter(Boolean);
 
+          if (res.result?.brand) {
+            this.selectedBrand = this.brands.find(brand => brand.slug === res.result.brand.slug);
+            this.form.patchValue({
+              brand: res.result.brand.slug
+            });
+          }
+          
           this.storeFields = res?.result?.storeFrontFields;
           this.tagIcons = res?.result?.tagIcons ? res?.result?.tagIcons : [];
           this.categories = res?.result?.categories;
+          this.categories = res?.result?.categories || [];
+          this.selectedCategories = this.categories.map(cat => cat.slug);
           this.parentDetails = res?.result?.product?.id;
           this.productBannerDetails = res?.result?.productBanner && res?.result?.productBanner;
 
@@ -812,7 +896,6 @@ export class UpdateProductComponent implements OnInit {
 
           this.attributes = res?.result?.attributes;
           this.relatedProducts = res?.result?.relatedProducts;
-          this.searchKeywords = res?.result?.searchKeywords || [];
           this.icons = res?.result?.productIcons || [];
           this.thumbnailPreview = res?.result?.thumbnail;
           this.ChangeDetectorRef.markForCheck();
@@ -901,6 +984,8 @@ export class UpdateProductComponent implements OnInit {
       isCodAvailable: new FormControl('true'),
       codCharges: new FormControl(0),
       deliveryDays: new FormControl(0),
+      ean: new FormControl(''),
+      mpn: new FormControl(''),
       isCompareEnabled: new FormControl('false'),
     });
 

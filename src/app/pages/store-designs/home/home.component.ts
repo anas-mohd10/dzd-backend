@@ -27,6 +27,7 @@ interface WidgetProps {
   selector: 'app-home',
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss'],
+
 })
 export class HomeComponent implements OnInit {
   widgets: Array<WidgetProps> = [
@@ -334,7 +335,7 @@ export class HomeComponent implements OnInit {
   redirections: Array<any> = [];
   productForm: FormGroup;
   productKeyword: FormControl = new FormControl('', Validators.required);
-  products: Array<any> = [];
+  products: any = [];
   widgetProducts: Array<any> = [];
   historyRef?: BsModalRef;
   collectionCoverDetails: string = '';
@@ -360,11 +361,12 @@ export class HomeComponent implements OnInit {
   widgetBrand: FormControl = new FormControl('');
   widgetCategory: FormControl = new FormControl('');
   widgetBlog: FormControl = new FormControl('');
-  redirectionQuery: FormControl = new FormControl('');
+  // redirectionQuery: FormControl = new FormControl('');
+  redirectionQuery = new FormControl(null);
   redirectionDetails: any;
   spotlightSliders: Array<any> = [];
   settings: any = {};
-  collections: Array<any> = [];
+  collections: any = [];
   categories: Array<any> = [];
   brands: Array<any> = [];
   testimonialKeyword: FormControl = new FormControl('', Validators.required);
@@ -681,9 +683,9 @@ export class HomeComponent implements OnInit {
           ?.setValue('/brands/' + this.redirectionQuery.value);
         break;
       case 'products':
-        this.widgetForm
-          .get('redirection')
-          ?.setValue('/p/' + this.redirectionQuery.value);
+        if (this.redirectionQuery.value) {
+          this.widgetForm.get('redirection')?.setValue('/p/' + this.redirectionQuery.value);
+        }
         break;
       case 'collection':
         this.widgetForm
@@ -1515,14 +1517,35 @@ export class HomeComponent implements OnInit {
     this.form.get('isTimeBoundWidget')?.setValue(event.toggleState);
   }
 
+  customSearchFn = (term: string, item: any) => {
+    term = term.toLowerCase();
+    // Search in both name and SKU
+    return item.searchText.includes(term);
+  }
+
   getProducts() {
     this.ProductService.getActiveProduct().subscribe({
       next: (res: any) => {
         if (res?.errorCode == 0) {
-          this.products = res?.result;
+          // Modify the products array to include a searchText and displayText property
+          this.products = res?.result.map((product: any) => ({
+            ...product,
+            slug: product.slug || product._id, // Fallback to ID if slug doesn't exist
+            searchText: `${product.name} ${product.sku}`.toLowerCase(), // Combined search text
+            displayText: `${product.name} (${product.sku})` // Combined display text
+          }));
+
+          // If there's a selected product, update the form
+          if (this.widgetDetails?.redirection) {
+            const productSlug = this.widgetDetails.redirection.split('/p/')[1];
+            if (productSlug) {
+              this.redirectionQuery.setValue(productSlug);
+            }
+          }
+
           this.ChangeDetectorRef.markForCheck();
         }
-      },
+      }
     });
   }
 

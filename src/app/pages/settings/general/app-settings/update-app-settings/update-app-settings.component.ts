@@ -39,6 +39,11 @@ export class UpdateAppSettingsComponent implements OnInit {
   isSubmitted = false;
   refid: any;
   currency: any
+  offerCriteria: boolean
+  priceOptions = [
+    { value: true, label: 'MRP / Cut Price' },
+    { value: false, label: 'Additional Discount' }
+  ];
   // currencies: Array<any> = ['INR', 'USD', 'EUR', 'AED', 'IQD', 'دينار'],
   currencies: Array<any> = [
     { label: 'INR', value: 'INR' },
@@ -127,11 +132,11 @@ export class UpdateAppSettingsComponent implements OnInit {
   storeStatus: boolean = true;
   defaultImage: string = '';
   languageItems: Array<any> = [
-    { lang: 'English', langCode: 'en' },
-    { lang: 'Arabic', langCode: 'ar' }
+    { lang: 'English', langCode: 'en', regionCodes: ['US'] },
+    { lang: 'Arabic', langCode: 'ar', regionCodes: ['AE', 'IQ'] }
   ];
   languages: Array<{
-    lang: string, langCode: string
+    lang: string, langCode: string, regionCodes: string[]
   }> = [];
 
   constructor(
@@ -145,13 +150,13 @@ export class UpdateAppSettingsComponent implements OnInit {
     private HttpClient: HttpClient
   ) { }
 
-  toggleLanguages(language: { lang: string, langCode: string }) {
-    let isExists = this.languages.some((item: { lang: string, langCode: string }) => item.lang == language.lang)
+  toggleLanguages(language: { lang: string, langCode: string, regionCodes: string[] }) {
+    let isExists = this.languages.some((item: { lang: string, langCode: string, regionCodes: string[] }) => item.lang == language.lang)
     if (isExists) {
       if (this.form.get('primaryLang')?.value == language.langCode) {
         this.HotToastService.error('Primary language cannot be removed')
       } else {
-        this.languages = this.languages.filter((item: { lang: string, langCode: string }) => item.lang != language.lang)
+        this.languages = this.languages.filter((item: { lang: string, langCode: string, regionCodes: string[] }) => item.lang != language.lang)
         this.HotToastService.info('Language removed successfully')
       }
     } else {
@@ -170,22 +175,22 @@ export class UpdateAppSettingsComponent implements OnInit {
         this.HotToastService.success('Placeholder added successfully');
       }
     }
-  
+
     this.placeHolder.setValue('');
     this.currentlyEditingPlaceholder = null;
     this.ChangeDetectorRef.markForCheck();
   }
-  
 
-  removePlaceholder(placeHolder: string){
-    this.placeHolders = this.placeHolders.filter((item:string) => item != placeHolder)
+
+  removePlaceholder(placeHolder: string) {
+    this.placeHolders = this.placeHolders.filter((item: string) => item != placeHolder)
     this.HotToastService.success('Placeholder removed successfully')
     this.ChangeDetectorRef.markForCheck()
   }
 
   currentlyEditingPlaceholder: string | null = null;
 
-  editPlaceholder(placeHolder: string){
+  editPlaceholder(placeHolder: string) {
     if (this.currentlyEditingPlaceholder === placeHolder) {
       this.currentlyEditingPlaceholder = null;
       this.placeHolder.setValue('');
@@ -203,15 +208,15 @@ export class UpdateAppSettingsComponent implements OnInit {
         this.placeHolders[index] = this.placeHolder.value;
         this.HotToastService.success('Placeholder updated successfully');
       }
-      
+
       this.currentlyEditingPlaceholder = null;
       this.placeHolder.setValue('');
       this.ChangeDetectorRef.markForCheck();
     }
   }
 
-  languageExists(language: { lang: string, langCode: string }) {
-    let isExists = this.languages.some((item: { lang: string, langCode: string }) => item.lang == language.lang)
+  languageExists(language: { lang: string, langCode: string, regionCodes: string[] }) {
+    let isExists = this.languages.some((item: { lang: string, langCode: string, regionCodes: string[] }) => item.lang == language.lang)
     return isExists
   }
 
@@ -238,6 +243,8 @@ export class UpdateAppSettingsComponent implements OnInit {
         this.favicon = res?.result?.favicon
         this.defaultBanner = res?.result?.defaultBanner
         this.defaultMobileBanner = res?.result?.defaultMobileBanner
+        this.offerCriteria = res?.result?.offerCriteria
+        this.form.get('offerCriteria')?.setValue(res?.result?.offerCriteria);
         this.primary = "#" + res?.result?.colors?.primary.split('FF')[1]
         this.secondary = "#" + res?.result?.colors?.secondary.split('FF')[1]
         this.form.get('primary')?.setValue("#" + res?.result?.colors?.primary.split('FF')[1])
@@ -269,9 +276,11 @@ export class UpdateAppSettingsComponent implements OnInit {
         this.form.get('isOutOfStock')?.setValue(res?.result?.isOutOfStock)
         this.form.get('isTax')?.setValue(res?.result?.isTax)
         this.form.get('isIndex')?.setValue(res?.result?.isIndex)
+        this.form.get('isDeliveryLocationEnabled')?.setValue(res?.result?.isDeliveryLocationEnabled)
         this.form.get('isNotifyStock')?.setValue(res?.result?.isNotifyStock)
         this.form.get('packingSlip')?.setValue(res?.result?.notes?.packingSlip)
         this.form.get('defaultShippingCharge')?.setValue(res?.result?.defaultShippingCharge)
+        this.form.get('defaultMinimumCartAmount')?.setValue(res?.result?.defaultMinimumCartAmount)
         this.form.get('cartButton')?.setValue(res?.result?.buttons?.cart)
         this.form.get('stockButton')?.setValue(res?.result?.buttons?.stock)
         this.form.get('notifyButton')?.setValue(res?.result?.buttons?.notify)
@@ -280,17 +289,29 @@ export class UpdateAppSettingsComponent implements OnInit {
         this.form.get('favicon')?.setValue(res?.result?.favicon)
         this.form.get('defaultBanner')?.setValue(res?.result?.defaultBanner)
         this.form.get('defaultMobileBanner')?.setValue(res?.result?.defaultMobileBanner)
+
+        this.form.get('commaSeparation')?.setValue(
+          res?.result?.commaSeparation ?? true  // Use nullish coalescing for default
+        );
+        this.form.get('decimalValues')?.setValue(
+          Number(res?.result?.decimalValues)  
+        );
         this.placeHolders = res?.result?.placeHolders
 
         for (let lang of res?.result?.languages) {
-          let isExists = this.languages.some((item: { lang: string, langCode: string }) => item.lang == lang?.lang)
-          !isExists && this.languages.push({ lang: lang?.lang, langCode: lang?.langCode })
+          let isExists = this.languages.some((item: { lang: string, langCode: string, regionCodes: string[] }) => item.lang == lang?.lang)
+          !isExists && this.languages.push({ lang: lang?.lang, langCode: lang?.langCode, regionCodes: lang?.regionCodes })
+        }
+        for (let language of this.languageItems) {
+          let isExists = this.languages.some((item: { lang: string, langCode: string, regionCodes: string[] }) => item.lang == language?.lang)
+          !isExists && this.languages.push({ lang: language?.lang, langCode: language?.langCode, regionCodes: language?.regionCodes })
         }
 
         this.form.get('primaryLang')?.setValue(res?.result?.primaryLang)
         this.ChangeDetectorRef.markForCheck()
         this.storeStatus = res?.result?.isStoreLive
       }
+
     })
   }
 
@@ -316,6 +337,7 @@ export class UpdateAppSettingsComponent implements OnInit {
 
   initform() {
     this.form = this.formBuilder.group({
+      offerCriteria: [false],
       primary: ['', Validators.required],
       secondary: ['', Validators.required],
       star: ['', Validators.required],
@@ -345,9 +367,12 @@ export class UpdateAppSettingsComponent implements OnInit {
       isOutOfStock: ['false'],
       isTax: ['false'],
       isIndex: ['false'],
+      isDeliveryLocationEnabled: ['false'],
       isStoreLive: ['true'],
       defaultImage: [''],
       isNotifyStock: ['false'],
+      commaSeparation: [true],  
+      decimalValues: [  ], 
       cartButton: ['Add to Cart', Validators.required],
       stockButton: ['Out of Stock', Validators.required],
       notifyButton: ['Notify Me', Validators.required],
@@ -356,6 +381,7 @@ export class UpdateAppSettingsComponent implements OnInit {
       defaultBanner: [''],
       defaultMobileBanner: [''],
       defaultShippingCharge: ['0'],
+      defaultMinimumCartAmount: ['0'],
     })
   }
 
@@ -449,6 +475,7 @@ export class UpdateAppSettingsComponent implements OnInit {
   }
 
   onSubmit() {
+    console.log("this.form", this.form.get('languages'))
     this.form.get('paymentGateway')?.setValue(this.paymentGateways)
     this.form.get('languages')?.setValue(this.languages)
 
@@ -457,7 +484,6 @@ export class UpdateAppSettingsComponent implements OnInit {
       this.isSubmitted = true
       return
     }
-console.log("this.form.get('isIndex')?.value",this.form.get('isIndex')?.value)
     this.AppSettingsService.updateGeneralSettings({
       colors: {
         primary: this.form.get('primary')?.value,
@@ -479,6 +505,7 @@ console.log("this.form.get('isIndex')?.value",this.form.get('isIndex')?.value)
       isOutOfStock: this.form.get('isOutOfStock')?.value,
       isTax: this.form.get('isTax')?.value,
       isIndex: this.form.get('isIndex')?.value,
+      isDeliveryLocationEnabled: this.form.get('isDeliveryLocationEnabled')?.value,
       isNotifyStock: this.form.get('isNotifyStock')?.value,
       refid: this.refid,
       primaryAddress: this.form.get('primaryAddress')?.value,
@@ -502,8 +529,12 @@ console.log("this.form.get('isIndex')?.value",this.form.get('isIndex')?.value)
       defaultBanner: this.form.get('defaultBanner')?.value,
       defaultMobileBanner: this.form.get('defaultMobileBanner')?.value,
       defaultShippingCharge: this.form.get('defaultShippingCharge')?.value,
+      defaultMinimumCartAmount: this.form.get('defaultMinimumCartAmount')?.value,
+      offerCriteria: this.form.get('offerCriteria')?.value,
       isStoreLive: this.form.get('isStoreLive')?.value,
       notes: { packingSlip: this.form.get('packingSlip')?.value },
+      commaSeparation: Boolean(this.form.get('commaSeparation')?.value),
+      decimalValues: Number(this.form.get('decimalValues')?.value),
       buttons: {
         cart: this.form.get('cartButton')?.value,
         stock: this.form.get('stockButton')?.value,
