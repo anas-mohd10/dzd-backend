@@ -4,5 +4,6 @@ export const menuNavigationEndpoints = {
     getMenuNavigation: '/menu-navigation',
     updateMenuNavigation: '/update-menunavigation',
     deleteMenuNavigation: '/delete-menunavigation',
-    reorderMenuNavigations: '/reorder-menunavigation'
+    reorderMenuNavigations: '/reorder-menunavigation',
+    copyMenuNavigations: '/copy-menunavigations'
 }

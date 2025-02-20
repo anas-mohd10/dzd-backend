@@ -11,6 +11,7 @@ import { StaticPageService } from 'src/app/includes/services/static-page.service
 import { BlogService } from 'src/app/includes/services/blog.service';
 import { CollectionService } from 'src/app/includes/services/collection.service';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
+import { environment } from 'src/environments/environment';
 
 interface MenuNavigation {
   _id: string
@@ -21,6 +22,9 @@ interface MenuNavigation {
   icon: string
   redirection: string
   createdAt: string
+  menuItems: MenuNavigation[]
+  isExpanded?: boolean
+  displayIndex?: string
 }
 
 @Component({
@@ -62,6 +66,7 @@ export class MenuNavigationComponent implements OnInit {
   collections: Array<{ name: string, slug: string }> = []
   selectedCollection: string = ''
   isEditMode: boolean = false
+  base: string = environment.base
 
   constructor(
     private BsModalService: BsModalService,
@@ -87,7 +92,7 @@ export class MenuNavigationComponent implements OnInit {
       this.form.patchValue({ parentId: menuNavigationId })
     }
 
-    this.modalRef = this.BsModalService.show(template, { class: 'modal-dialog-centered', ignoreBackdropClick: true })
+    this.modalRef = this.BsModalService.show(template, { class: 'modal-sm modal-dialog-centered', ignoreBackdropClick: true })
   }
 
   close() {
@@ -112,7 +117,19 @@ export class MenuNavigationComponent implements OnInit {
   }
 
   confirmCopy() {
-    this.copyModalRef?.hide()
+    this.MenuNavigationService.copyMenuNavigations().subscribe({
+      next: (res: any) => {
+        if (res.errorCode == 0) {
+          this.fetchMenuDocs()
+          this.copyModalRef?.hide()
+          this.HotToastService.success(res?.message)
+        } else {
+          this.HotToastService.error(res?.message)
+        }
+      }, error: (err: any) => {
+        this.HotToastService.error(err?.message)
+      }
+    })
   }
 
   closeCopy() {
@@ -158,10 +175,20 @@ export class MenuNavigationComponent implements OnInit {
     this.form.patchValue({
       title: '',
       redirection: '',
+      icon: ''
     });
   }
 
+  handleMenuIcon(icon: { path: string }) {
+    this.form.patchValue({ icon: icon.path })
+  }
+
+  onRemoveIcon() {
+    this.form.patchValue({ icon: '' })
+  }
+
   onDeviceTypeChange() {
+    this.form.patchValue({ device: this.deviceType.value })
     this.fetchMenuDocs()
   }
 
@@ -182,14 +209,7 @@ export class MenuNavigationComponent implements OnInit {
     this.MenuNavigationService.getMenuNavigation(this.activeMenuId).subscribe({
       next: (res: any) => {
         if (res.errorCode == 0) {
-          this.form.patchValue({
-            device: res.result.device,
-            menuType: res.result.menuType,
-            title: res.result.title,
-            icon: res.result.icon,
-            redirection: res.result.redirection,
-            index: res.result.index,
-          })
+          this.form.patchValue({ ...res.result })
 
           this.onMenuTypeChange('update')
           this.onFetchMenuType()
@@ -429,5 +449,9 @@ export class MenuNavigationComponent implements OnInit {
         this.HotToastService.error(err?.message)
       }
     })
+  }
+
+  toggleAccordion(menuItem: MenuNavigation) {
+    menuItem.isExpanded = !menuItem.isExpanded;
   }
 }

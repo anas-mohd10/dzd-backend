@@ -42,4 +42,9 @@ export class MenuNavigationService {
     const url = this.CommonService.getFullUrl(menuNavigationEndpoints.reorderMenuNavigations);
     return this.HttpClient.post(url, data);
   }
+
+  copyMenuNavigations() {
+    const url = this.CommonService.getFullUrl(menuNavigationEndpoints.copyMenuNavigations);
+    return this.HttpClient.put(url, {});
+  }
 }
