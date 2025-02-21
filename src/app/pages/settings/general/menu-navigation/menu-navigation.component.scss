@@ -1,0 +1,32 @@
+.btn,
+label {
+    font-weight: 400 !important;
+}
+
+.menuType{
+    width: max-content;
+}
+
+.actionButtons{
+    height: 30px;
+    width: 30px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+.cdk-drag-placeholder {
+    opacity: 0.3;
+}
+
+.cdk-drop-list-dragging {
+    .cdk-drag {
+        transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+    }    
+}
+
+.cdk-drag-preview {
+    box-shadow: 0 5px 35px 8px rgba(0, 0, 0, 0.08);
+}

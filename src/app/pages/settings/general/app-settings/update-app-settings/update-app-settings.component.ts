@@ -277,6 +277,7 @@ export class UpdateAppSettingsComponent implements OnInit {
         this.form.get('isTax')?.setValue(res?.result?.isTax)
         this.form.get('isShippingTaxable')?.setValue(res?.result?.isShippingTaxable)
         this.form.get('isIndex')?.setValue(res?.result?.isIndex)
+        this.form.get('isDefaultChargesEnabled')?.setValue(res?.result?.isDefaultChargesEnabled)
         this.form.get('isDeliveryLocationEnabled')?.setValue(res?.result?.isDeliveryLocationEnabled)
         this.form.get('isNotifyStock')?.setValue(res?.result?.isNotifyStock)
         this.form.get('packingSlip')?.setValue(res?.result?.notes?.packingSlip)
@@ -369,6 +370,7 @@ export class UpdateAppSettingsComponent implements OnInit {
       isTax: ['false'],
       isShippingTaxable: ['false'], // Add this new control
       isIndex: ['false'],
+      isDefaultChargesEnabled: ['false'],
       isDeliveryLocationEnabled: ['false'],
       isStoreLive: ['true'],
       defaultImage: [''],
@@ -507,6 +509,7 @@ export class UpdateAppSettingsComponent implements OnInit {
       isOutOfStock: this.form.get('isOutOfStock')?.value,
       isTax: this.form.get('isTax')?.value,
       isIndex: this.form.get('isIndex')?.value,
+      isDefaultChargesEnabled: this.form.get('isDefaultChargesEnabled')?.value,
       isDeliveryLocationEnabled: this.form.get('isDeliveryLocationEnabled')?.value,
       isNotifyStock: this.form.get('isNotifyStock')?.value,
       refid: this.refid,
