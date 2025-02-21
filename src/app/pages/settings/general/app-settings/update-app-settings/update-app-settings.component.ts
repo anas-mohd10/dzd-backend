@@ -275,6 +275,7 @@ export class UpdateAppSettingsComponent implements OnInit {
         this.form.get('itemsPerPage')?.setValue(res?.result?.itemsPerPage)
         this.form.get('isOutOfStock')?.setValue(res?.result?.isOutOfStock)
         this.form.get('isTax')?.setValue(res?.result?.isTax)
+        this.form.get('isShippingTaxable')?.setValue(res?.result?.isShippingTaxable)
         this.form.get('isIndex')?.setValue(res?.result?.isIndex)
         this.form.get('isDefaultChargesEnabled')?.setValue(res?.result?.isDefaultChargesEnabled)
         this.form.get('isDeliveryLocationEnabled')?.setValue(res?.result?.isDeliveryLocationEnabled)
@@ -297,7 +298,7 @@ export class UpdateAppSettingsComponent implements OnInit {
           res?.result?.commaSeparation ?? true  // Use nullish coalescing for default
         );
         this.form.get('decimalValues')?.setValue(
-          Number(res?.result?.decimalValues)  
+          Number(res?.result?.decimalValues)
         );
         this.placeHolders = res?.result?.placeHolders
 
@@ -369,14 +370,15 @@ export class UpdateAppSettingsComponent implements OnInit {
       packingSlip: [''],
       isOutOfStock: ['false'],
       isTax: ['false'],
+      isShippingTaxable: ['false'], // Add this new control
       isIndex: ['false'],
       isDefaultChargesEnabled: ['false'],
       isDeliveryLocationEnabled: ['false'],
       isStoreLive: ['true'],
       defaultImage: [''],
       isNotifyStock: ['false'],
-      commaSeparation: [true],  
-      decimalValues: [  ], 
+      commaSeparation: [true],
+      decimalValues: [  ],
       cartButton: ['Add to Cart', Validators.required],
       stockButton: ['Out of Stock', Validators.required],
       notifyButton: ['Notify Me', Validators.required],
@@ -521,6 +523,7 @@ export class UpdateAppSettingsComponent implements OnInit {
       country: this.form.get('country')?.value,
       companyName: this.form.get('companyName')?.value,
       mobile: this.form.get('mobile')?.value,
+      isShippingTaxable: this.form.get('isShippingTaxable')?.value,
       primaryLang: this.form.get('primaryLang')?.value,
       isMultiLang: this.form.get('isMultiLang')?.value,
       languages: this.form.get('languages')?.value,
