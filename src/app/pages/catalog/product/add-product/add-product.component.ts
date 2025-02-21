@@ -77,6 +77,7 @@ export class AddProductComponent implements OnInit {
 
   productCategories: Array<any> = [];
   images: Array<any> = [];
+  attributeImages: Array<any> = [];
   form: FormGroup;
   parentDetails: any;
   parentSlug: string;
@@ -808,5 +809,22 @@ toggleProductCategory(event: any, type: string) {
 
   removeTagIcons(icon: any) {
     this.tagIcons = this.tagIcons.filter((item: any) => item != icon);
+  }
+
+  handleAttributeImage(event: any) {
+    console.log('Image event:', event);
+    if (event && event.path) {
+      this.attributeForm.patchValue({
+        value: event.path
+      });
+      this.ChangeDetectorRef.markForCheck();
+    }
+  }
+
+  removeAttributeImage() {
+    this.attributeForm.patchValue({
+      value: null
+    });
+    this.ChangeDetectorRef.markForCheck();
   }
 }
