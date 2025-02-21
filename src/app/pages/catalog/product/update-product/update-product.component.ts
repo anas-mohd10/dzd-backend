@@ -127,6 +127,7 @@ export class UpdateProductComponent implements OnInit {
   modalRef?: BsModalRef;
   attributeForm: FormGroup = new FormGroup({});
   isAttributeSubmitted: boolean = false;
+  attributeImages: Array<any> = [];
   attributeTypes: Array<any> = [
     { title: 'Text', value: 'text' },
     { title: 'Color', value: 'color' },
@@ -1112,5 +1113,22 @@ getDefaultCategories() {
     this.historyPageSize = event.pageSize
 
     this.fetchHistory()
+  }
+
+  handleAttributeImage(event: any) {
+    console.log('Image event:', event);
+    if (event && event.path) {
+      this.attributeForm.patchValue({
+        value: event.path
+      });
+      this.ChangeDetectorRef.markForCheck();
+    }
+  }
+
+  removeAttributeImage() {
+    this.attributeForm.patchValue({
+      value: null
+    });
+    this.ChangeDetectorRef.markForCheck();
   }
 }
