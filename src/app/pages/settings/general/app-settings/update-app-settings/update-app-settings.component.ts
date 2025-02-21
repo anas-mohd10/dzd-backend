@@ -292,6 +292,8 @@ export class UpdateAppSettingsComponent implements OnInit {
         this.form.get('defaultBanner')?.setValue(res?.result?.defaultBanner)
         this.form.get('defaultMobileBanner')?.setValue(res?.result?.defaultMobileBanner)
 
+        this.form.get('deliverSlotBufferTime')?.setValue(res?.result?.deliverSlotBufferTime || 60);
+
         this.form.get('commaSeparation')?.setValue(
           res?.result?.commaSeparation ?? true  // Use nullish coalescing for default
         );
@@ -386,6 +388,7 @@ export class UpdateAppSettingsComponent implements OnInit {
       defaultMobileBanner: [''],
       defaultShippingCharge: ['0'],
       defaultMinimumCartAmount: ['0'],
+      deliverSlotBufferTime: [60],
     })
   }
 
@@ -539,6 +542,7 @@ export class UpdateAppSettingsComponent implements OnInit {
       offerCriteria: this.form.get('offerCriteria')?.value,
       isStoreLive: this.form.get('isStoreLive')?.value,
       notes: { packingSlip: this.form.get('packingSlip')?.value },
+      deliverSlotBufferTime: this.form.get('deliverSlotBufferTime')?.value || 60,
       commaSeparation: Boolean(this.form.get('commaSeparation')?.value),
       decimalValues: Number(this.form.get('decimalValues')?.value),
       buttons: {
