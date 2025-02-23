@@ -82,16 +82,10 @@ export class AddNotificationsComponent implements OnInit {
       this.isSubmitted = true;
       return;
     }
-
     this.NotificationsService.addNotification({
       ...this.form.value,
-      scheduled: {
-        date: this.form.get('scheduledDate')?.value,
-        time: this.form.get('scheduledTime')?.value,
-      },
-
-      // scheduled: this.form.get('scheduledDate')?.value && this.form.get('scheduledTime')?.value ? 
-      //   new Date(`${this.form.get('scheduledDate')?.value}T${this.form.get('scheduledTime')?.value}`).toISOString() : null,
+      scheduled: this.form.get('scheduledDate')?.value && this.form.get('scheduledTime')?.value ? 
+        new Date(`${this.form.get('scheduledDate')?.value}T${this.form.get('scheduledTime')?.value}`).toISOString() : null,
       customers: this.customers,
     }).subscribe({
       next: (res: any) => {
