@@ -27,6 +27,7 @@ import { PickupService } from 'src/app/includes/services/pickup.service';
 import { ProductService } from 'src/app/includes/services/product.service';
 import { StoresService } from 'src/app/includes/services/stores.service';
 import { environment } from 'src/environments/environment';
+import { LocationService } from 'src/app/includes/services/location.service';
 
 @Component({
   selector: 'app-add-orders',
@@ -90,6 +91,11 @@ export class AddOrdersComponent implements OnInit {
   pickupLocations: Array<any> = [];
   addCustomerRef?: BsModalRef;
   userForm: FormGroup = new FormGroup({});
+  countries: Array<any> = [];
+  states: Array<any> = [];
+  cities: Array<any> = [];
+  
+  
 
   constructor(
     private OrderService: OrdersService,
@@ -104,7 +110,8 @@ export class AddOrdersComponent implements OnInit {
     private StoresService: StoresService,
     private AppSettingsService: AppSettingsService,
     private BsModalService: BsModalService,
-    private DeliverySlotsService: DeliverySlotsService
+    private DeliverySlotsService: DeliverySlotsService,
+    private LocationService: LocationService
   ) {
     this.customer.valueChanges.pipe(debounceTime(500)).subscribe(() => {
       this.getCustomers();
@@ -135,6 +142,7 @@ export class AddOrdersComponent implements OnInit {
         this.ChangeDetectorRef.markForCheck();
       }
     });
+    this.loadLocationData();
 
     this.AppSettingsService.getGeneralSettingsbyId('1').subscribe({
       next: (response: any) => {
@@ -157,12 +165,14 @@ export class AddOrdersComponent implements OnInit {
       ]),
       firstlane: new FormControl('', Validators.required),
       secondlane: new FormControl(''),
+      country: new FormControl('', Validators.required),
+      state: new FormControl('', Validators.required),
       city: new FormControl('', Validators.required),
+
       area: new FormControl(''),
       landmark: new FormControl('',Validators.required),
       type: new FormControl('', Validators.required),
       pincode: new FormControl('',Validators.required),
-      state: new FormControl('', Validators.required),
       lat: new FormControl(''),
       lng: new FormControl(''),
       isDefault: new FormControl(false),
@@ -716,7 +726,7 @@ updateQuantity(type: 'increment' | 'decrement', product: any) {
         },
       });
   }
-
+  
   getAddress(template: TemplateRef<any>, customer: any) {
     this.customerDetails = customer;
     this.address = null;
@@ -770,12 +780,18 @@ updateQuantity(type: 'increment' | 'decrement', product: any) {
       this.isAddressSubmitted = true;
       return;
     }
-
+    const country = this.countries.find(c => c._id === this.addressForm.get('country')?.value) || '';
+    const state = this.states.find(s => s._id === this.addressForm.get('state')?.value)|| '';
+    const city = this.cities.find(c => c._id === this.addressForm.get('city')?.value)|| '';
+    
     switch (this.addressMode) {
       case 'add':
         this.customerService
           .addAddress({
             ...this.addressForm.value,
+            country: country?.name,
+            state: state?.name,
+            city: city?.name,
             customer: this.customerDetails?._id,
           })
           .subscribe({
@@ -904,6 +920,72 @@ updateQuantity(type: 'increment' | 'decrement', product: any) {
       error: (err: any) => {
         this.ToastrService.error(err.message);
       },
+    });
+  }
+
+  loadLocationData() {
+    // Load countries
+    this.LocationService.getCountries({
+      pageIndex: 1,
+      pageSize: 100
+    }).subscribe({
+      next: (response: any) => {
+        if (response?.result?.countries) {
+          console.log('Countries:', response.result.countries);
+          this.countries = response.result.countries;
+          // After getting countries, load states for the first country
+          if (this.countries.length > 0) {
+            console.log("this.countries[0].id", this.countries[0]._id)
+          }
+        }
+      },
+      error: (err) => console.error('Error loading countries:', err)
+    });
+  }
+
+ loadStates() {
+    // Clear existing states and cities when country changes
+    this.states = [];
+    this.cities = [];
+    
+    // Reset state and city form controls
+    this.addressForm.patchValue({
+        state: '',
+        city: ''
+    });
+
+    this.LocationService.getStates({
+      pageIndex: 1,
+      pageSize: 100,
+      countryId: this.addressForm.get('country')?.value,
+    }).subscribe({
+      next: (response: any) => {
+        if (response?.result?.states) {
+          this.states = response.result.states;
+          this.ChangeDetectorRef.markForCheck();
+        }
+      },
+      error: (err) => console.error('Error loading states:', err)
+    });
+}
+
+  loadCities() {
+    this.LocationService.getCities({
+      pageIndex: 1,
+      pageSize: 100,
+      countryId: this.addressForm.get('country')?.value,
+      stateId: this.addressForm.get('state')?.value
+    }).subscribe({
+      next: (response: any) => {
+        console.log("states", this.addressForm.get('state')?.value);
+        console.log("country", this.addressForm.get('country')?.value);
+        
+        if (response?.result?.cities) {
+          this.cities = response.result.cities;
+          this.ChangeDetectorRef.markForCheck();
+        }
+      },
+      error: (err) => console.error('Error loading cities:', err)
     });
   }
 }
