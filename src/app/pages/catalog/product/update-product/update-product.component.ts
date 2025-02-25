@@ -219,7 +219,7 @@ export class UpdateProductComponent implements OnInit {
   }
 
   getFormatDate(date: any) {
-    return new Date(date).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' })
+    return new Date(date).toLocaleDateString('en-US', { year: '2-digit', month: 'short', day: 'numeric' })
   }
 
   getFormatTime(time: string) {
