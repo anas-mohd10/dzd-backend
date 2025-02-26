@@ -553,8 +553,8 @@ toggleProductCategory(event: any, type: string) {
     });
 
     this.storeFieldForm = new FormGroup({
-      title: new FormControl('  ', Validators.required),
-      description: new FormControl('  ', Validators.required),
+      title: new FormControl('', Validators.required),
+      description: new FormControl('', Validators.required),
     });
 
     this.tagsForm = new FormGroup({
