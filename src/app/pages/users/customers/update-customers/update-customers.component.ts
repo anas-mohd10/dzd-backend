@@ -360,7 +360,7 @@ export class UpdateCustomersComponent implements OnInit {
       country: new FormControl(''),
       landmark: new FormControl('', Validators.required),
       type: new FormControl('Home', Validators.required),
-      pincode: new FormControl('', Validators.required),
+      pincode: new FormControl(''),
       state: new FormControl('', Validators.required),
       lat: new FormControl(''),
       lng: new FormControl(''),
