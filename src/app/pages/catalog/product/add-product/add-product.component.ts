@@ -34,8 +34,10 @@ interface StoreField {
 })
 export class AddProductComponent implements OnInit {
   task = PageTasks.ADD;
+  isSaving: boolean = false;
   editMode = false;
   appRoute = appRoutes;
+  isCreatingParent = false;
   isSubmitted = false;
   searchKeyowrds: any = [];
   tumbnail: any;
@@ -426,14 +428,27 @@ toggleProductCategory(event: any, type: string) {
   toggleAddOnItems() { }
 
   saveChanges() {
+    // First set flag to disable the button
+    this.isSaving = true;
+    
+    // Force change detection immediately
+    if (this.ChangeDetectorRef) {
+      this.ChangeDetectorRef.detectChanges(); // Use detectChanges instead of markForCheck
+    }
+    
     let files = this.images.map((item: any) => item.path) || [];
     this.form.get('files')?.setValue(files);
-
+  
     if (!this.form.valid) {
       this.isSubmitted = true;
+      this.isSaving = false; // Re-enable button if form is invalid
+      
+      if (this.ChangeDetectorRef) {
+        this.ChangeDetectorRef.detectChanges();
+      }
       return;
     }
-
+  
     let payload = {
       ...this.form.value,
       icons: this.icons.map((icon: any) => icon.path),
@@ -448,39 +463,51 @@ toggleProductCategory(event: any, type: string) {
         [this.settings.primaryLang]: this.form.get('name')?.value,
       },
       brand: this.selectedBrand ? {
-      name: this.selectedBrand.name,
-      slug: this.selectedBrand.slug,
-      thumbnail: this.selectedBrand.thumbnail,
-      cover: this.selectedBrand.cover,
-    } : null,
+        name: this.selectedBrand.name,
+        slug: this.selectedBrand.slug,
+        thumbnail: this.selectedBrand.thumbnail,
+        cover: this.selectedBrand.cover,
+      } : null,
       parentId: this.parentDetails?._id,
       productIcons: this.icons,
       storeFrontFields: this.storeFields,
       categories: this.categories.map((category: any) => ({
-      name: category.name,
-      slug: category.slug,
-      thumbnail: category.thumbnail,
-      cover: category.cover,
+        name: category.name,
+        slug: category.slug,
+        thumbnail: category.thumbnail,
+        cover: category.cover,
       })),
       category: {
-      id: this.categories.map((category: any) => category?._id),
-      refid: this.categories.map((category: any) => category?.catid),
-    },
+        id: this.categories.map((category: any) => category?._id),
+        refid: this.categories.map((category: any) => category?.catid),
+      },
     };
-
-    this.ProductService.addProduct(payload).subscribe({
-      next: (res: any) => {
-        if (res?.errorCode == 0) {
-          this.Router.navigate(['/app/product']);
-          this.HotToastService.success(res?.message);
-        } else {
-          this.HotToastService.error(res?.message);
-        }
-      },
-      error: (err: any) => {
-        this.HotToastService.error(err.error.message);
-      },
-    });
+  
+    // Use a timeout to ensure the UI has time to update before starting API call
+    setTimeout(() => {
+      this.ProductService.addProduct(payload).subscribe({
+        next: (res: any) => {
+          if (res?.errorCode == 0) {
+            this.Router.navigate(['/app/product']);
+            this.HotToastService.success(res?.message);
+            // We don't need to reset isSaving here since we're navigating away
+          } else {
+            this.isSaving = false; // Re-enable button on error response
+            if (this.ChangeDetectorRef) {
+              this.ChangeDetectorRef.detectChanges();
+            }
+            this.HotToastService.error(res?.message);
+          }
+        },
+        error: (err: any) => {
+          this.isSaving = false; // Re-enable button on error
+          if (this.ChangeDetectorRef) {
+            this.ChangeDetectorRef.detectChanges();
+          }
+          this.HotToastService.error(err.error.message);
+        },
+      });
+    }, 0);
   }
 
   toggleTab(index: number) {
@@ -490,13 +517,22 @@ toggleProductCategory(event: any, type: string) {
   }
 
   createParent() {
+    // Set flag to disable the button
+    this.isSaving = true;
+    this.ChangeDetectorRef.markForCheck();
+  
     if (!this.parentForm.valid) {
       this.isParentSubmitted = true;
+      this.isSaving = false; // Re-enable button if form is invalid
+      this.ChangeDetectorRef.markForCheck();
       return;
     }
-
+  
     this.ProductHeadService.addProductHead(this.parentForm.value).subscribe({
       next: (res: any) => {
+        this.isSaving = false; // Re-enable button
+        this.ChangeDetectorRef.markForCheck();
+        
         if (res?.errorCode == 0) {
           this.HotToastService.success(res.message);
           this.getParentDetails(res?.result?.slug);
@@ -510,10 +546,13 @@ toggleProductCategory(event: any, type: string) {
         }
       },
       error: (err: any) => {
+        this.isSaving = false; // Re-enable button on error
+        this.ChangeDetectorRef.markForCheck();
         this.HotToastService.error(err.error.message);
       },
     });
   }
+
 
   toggleSearchKeywords(event: any, type: string) {
     if (event?.key == 'Enter') {

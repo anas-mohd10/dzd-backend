@@ -123,9 +123,16 @@
               <div class="d-flex align-items-center justify-content-center gap-2">
                 <button class="btn border border-danger text-danger bg-white" routerLink="{{ appRoute.product.ALL_PRODUCTS }}">Cancel</button>
                 <button class="btn btn-primary" *ngIf="parentDetails" (click)="toggleTab(1)">Continue</button>
-                <button class="btn btn-primary" *ngIf="!parentDetails" (click)="createParent()">
-                  Save and Continue
-                </button>
+                <button 
+                class="btn btn-primary" 
+                *ngIf="!parentDetails" 
+                [disabled]="isSaving" 
+                (click)="createParent()">
+                <span *ngIf="isSaving">
+                  <i class="spinner-border spinner-border-sm me-1"></i>
+                </span>
+                {{ isSaving ? 'Saving...' : 'Save and Continue' }}
+              </button>
               </div>
             </form>
           </tab>
@@ -548,7 +555,15 @@
               </div>
               <div class="d-flex align-items-center justify-content-center gap-2">
                 <button class="btn border border-primary bg-white text-primary" (click)="toggleTab(4)">Back</button>
-                <button class="btn btn-primary" (click)="saveChanges()">Save changes</button>
+                <button 
+                class="btn btn-primary" 
+                [disabled]="isSaving" 
+                (click)="saveChanges()">
+                <span *ngIf="isSaving">
+                  <i class="spinner-border spinner-border-sm me-1"></i>
+                </span>
+                {{ isSaving ? 'Saving...' : 'Save changes' }}
+              </button>
               </div>
             </form>
           </tab>

@@ -43,6 +43,7 @@ interface AddOns {
 
 export class UpdateProductComponent implements OnInit {
   task = PageTasks.ADD;
+  isSaving: boolean = false;
   editMode = false;
   appRoute = appRoutes;
   isSubmitted: boolean = false;
@@ -546,6 +547,10 @@ getDefaultCategories() {
   toggleAddOnItems() { }
 
   saveChanges() {
+    // Set flag to disable the button
+    this.isSaving = true;
+    this.ChangeDetectorRef.markForCheck();
+
     if (
       this.productDetails?.price?.offer == this.form.get('price')?.value?.offer
     ) {
@@ -559,6 +564,8 @@ getDefaultCategories() {
 
     if (!this.form.valid) {
       this.isSubmitted = true;
+      this.isSaving = false; // Re-enable button if form is invalid
+      this.ChangeDetectorRef.markForCheck();
       return;
     }
 
@@ -574,12 +581,12 @@ getDefaultCategories() {
         id: this.productDetails?.parentId,
         refid: this.productDetails?.product?.refid,
       },
-    brand: this.selectedBrand ? {
-      name: this.selectedBrand.name,
-      slug: this.selectedBrand.slug,
-      thumbnail: this.selectedBrand.thumbnail,
-      cover: this.selectedBrand.cover,
-    } : null,
+      brand: this.selectedBrand ? {
+        name: this.selectedBrand.name,
+        slug: this.selectedBrand.slug,
+        thumbnail: this.selectedBrand.thumbnail,
+        cover: this.selectedBrand.cover,
+      } : null,
       parentId: this.productDetails?.parentId,
       tagIcons: this.tagIcons,
       attributes: this.attributes,
@@ -624,16 +631,16 @@ getDefaultCategories() {
         ...this.productDetails.localizedMetaKeywords,
         [this.settings.primaryLang]: this.form.get('metaKeywords')?.value,
       },
-  category: {
-      id: this.categories.map((category: any) => category?._id),
-      refid: this.categories.map((category: any) => category?.catid),
-    },
-    categories: this.categories.map((category: any) => ({
-      name: category.name,
-      slug: category.slug,
-      thumbnail: category.thumbnail,
-      cover: category.cover,
-    })),
+      category: {
+        id: this.categories.map((category: any) => category?._id),
+        refid: this.categories.map((category: any) => category?.catid),
+      },
+      categories: this.categories.map((category: any) => ({
+        name: category.name,
+        slug: category.slug,
+        thumbnail: category.thumbnail,
+        cover: category.cover,
+      })),
       productTags: this.tagsForm.value,
     }).subscribe({
       next: (res: any) => {
@@ -641,7 +648,12 @@ getDefaultCategories() {
           this.Router.navigate(['/app/product']);
           this.siblingsRef?.hide();
           this.HotToastService.success(res?.message);
+          // No need to reset isSaving since we're navigating away
         } else if (res.errorCode == 2) {
+          // Re-enable the button in this case
+          this.isSaving = false;
+          this.ChangeDetectorRef.markForCheck();
+          
           this.siblingsRef = this.BsModalService.show(
             this.siblingsTemplateModal,
             {
@@ -667,12 +679,24 @@ getDefaultCategories() {
             },
           });
         } else {
+          // Re-enable the button on error
+          this.isSaving = false;
+          this.ChangeDetectorRef.markForCheck();
           this.HotToastService.error(res?.message);
         }
-      }, error: (err: any) => {
+      }, 
+      error: (err: any) => {
+        // Re-enable the button on error
+        this.isSaving = false;
+        this.ChangeDetectorRef.markForCheck();
         this.HotToastService.error(err.error.message);
       },
     });
+  }
+
+  skipUpdate() {
+    this.isSkipUpdate.setValue(true);
+    this.saveChanges();
   }
 
   onTriggerSiblings(
@@ -700,10 +724,10 @@ getDefaultCategories() {
     });
   }
 
-  skipUpdate() {
-    this.isSkipUpdate.setValue(true);
-    this.saveChanges();
-  }
+  // skipUpdate() {
+  //   this.isSkipUpdate.setValue(true);
+  //   this.saveChanges();
+  // }
 
   toggleTab(index: number) {
     if (this.staticTabs?.tabs[index]) {
