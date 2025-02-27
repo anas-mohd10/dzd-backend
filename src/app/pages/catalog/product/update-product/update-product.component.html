@@ -107,6 +107,15 @@
                         </ng-select>
                       </div>
                     </div>
+                    <div class="mb-3" *ngIf="categories.length > 0">
+                      <div class="mb-3 form-group">
+                        <label class="fs-6 mb-3 required">Primary Category</label>
+                        <ng-select
+                          [ngClass]="{'is-invalid': primaryCategory.touched && primaryCategory.errors?.required}"
+                          class="fs-6" [formControl]="primaryCategory" placeholder="Select primary category"
+                          [items]="categories" bindLabel="name" [multiple]="false"></ng-select>
+                      </div>
+                    </div>
                     <div class="row mb-3">
                       <div class="col-lg-6 mb-3 form-group">
                         <label class="fs-6 mb-3 required">Stock</label>
