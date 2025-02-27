@@ -141,7 +141,7 @@
                 </div>
                 <div class="my-5">
                     <div class="mb-2 fw-bold text-muted fs-5">Description</div>
-                    <div class="fs-6"[innerHtml]="focusedWidget.description"></div>
+                    <div class="fs-6" [innerHtml]="focusedWidget.description"></div>
                 </div>
             </div>
         </div>
@@ -488,6 +488,18 @@
                                                 </div>
 
                                                 <div class="form-group col-lg-6 mb-3"
+                                                    *ngIf="widgetProductTypes.includes(widgetDetails?.widgetType)">
+                                                    <label for="sortOptions" class="fs-5 mb-3">Sort Options</label>
+                                                    <select id="sortOptions" class="form-select"
+                                                        formControlName="sortOptions">
+                                                        <option value="" disabled>-- Select an option --</option>
+                                                        <option *ngFor="let sortOption of sortOptions"
+                                                            value="{{sortOption.value}}">
+                                                            {{sortOption.key}}</option>
+                                                    </select>
+                                                </div>
+
+                                                <div class="form-group col-lg-6 mb-3"
                                                     *ngIf="['slider'].includes(form.get('view')?.value) || ['products', 'aurora-slider', 'motion-canvas']?.includes(widgetDetails?.widgetType)">
                                                     <label for="isAutoScroll" class="fs-5 mb-3">Auto Scroll
                                                         Enabled</label>
@@ -676,7 +688,7 @@
                                                     placeholder="Search by product name or SKU"
                                                     [searchFn]="customSearchFn" (change)="onRedirectionSelected()">
                                                 </ng-select>
-                                                
+
                                                 <ng-select
                                                     *ngIf="widgetForm.get('redirectionType')?.value == 'collection'"
                                                     [items]="collections" bindLabel="name" bindValue="slug"
