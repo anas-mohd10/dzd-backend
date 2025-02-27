@@ -121,18 +121,15 @@
                 </div>
               </div>
               <div class="d-flex align-items-center justify-content-center gap-2">
-                <button class="btn border border-danger text-danger bg-white" routerLink="{{ appRoute.product.ALL_PRODUCTS }}">Cancel</button>
+                <button class="btn border border-danger text-danger bg-white"
+                  routerLink="{{ appRoute.product.ALL_PRODUCTS }}">Cancel</button>
                 <button class="btn btn-primary" *ngIf="parentDetails" (click)="toggleTab(1)">Continue</button>
-                <button 
-                class="btn btn-primary" 
-                *ngIf="!parentDetails" 
-                [disabled]="isSaving" 
-                (click)="createParent()">
-                <span *ngIf="isSaving">
-                  <i class="spinner-border spinner-border-sm me-1"></i>
-                </span>
-                {{ isSaving ? 'Saving...' : 'Save and Continue' }}
-              </button>
+                <button class="btn btn-primary" *ngIf="!parentDetails" [disabled]="isSaving" (click)="createParent()">
+                  <span *ngIf="isSaving">
+                    <i class="spinner-border spinner-border-sm me-1"></i>
+                  </span>
+                  {{ isSaving ? 'Saving...' : 'Save and Continue' }}
+                </button>
               </div>
             </form>
           </tab>
@@ -186,11 +183,20 @@
                     </div>
                     <div class="mb-3">
                       <div class="mb-3 form-group">
-                        <label class="fs-6 mb-3" for="productCategory">Category</label>
-                        <ng-select class="fs-6" [items]="defaultCategories" bindLabel="name" [multiple]="true" [(ngModel)]="categories"
-                          [ngModelOptions]="{standalone: true}" placeholder="Select categories"
+                        <label class="fs-6 mb-3 required" for="productCategory">Category</label>
+                        <ng-select class="fs-6" [items]="defaultCategories" bindLabel="name" [multiple]="true"
+                          [(ngModel)]="categories" [ngModelOptions]="{standalone: true}" placeholder="Select categories"
                           (change)="toggleProductCategory($event, 'add')" id="productCategory">
                         </ng-select>
+                      </div>
+                    </div>
+                    <div class="mb-3" *ngIf="categories.length > 0">
+                      <div class="mb-3 form-group">
+                        <label class="fs-6 mb-3 required">Primary Category</label>
+                        <ng-select
+                          [ngClass]="{'is-invalid': primaryCategory.touched && primaryCategory.errors?.required}"
+                          class="fs-6" [formControl]="primaryCategory" placeholder="Select primary category"
+                          [items]="categories" bindLabel="name" [multiple]="false"></ng-select>
                       </div>
                     </div>
                     <div class="row mb-3">
@@ -230,13 +236,13 @@
                               <div
                                 class="bg-secondary d-flex align-items-center justify-content-center gap-2 cursor-pointer p-2 rounded"
                                 (click)="toggleSearchKeywords(keyword, 'remove')">
-                                  {{keyword}}
-                                  <svg height="16" width="16" data-slot="icon" fill="none" stroke-width="1.5"
-                                    stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"
-                                    aria-hidden="true">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12"></path>
-                                  </svg>
-                                </div>
+                                {{keyword}}
+                                <svg height="16" width="16" data-slot="icon" fill="none" stroke-width="1.5"
+                                  stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"
+                                  aria-hidden="true">
+                                  <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12"></path>
+                                </svg>
+                              </div>
                             </ng-container>
                           </div>
                         </ng-container>
@@ -326,8 +332,9 @@
                     </div>
                     <div class="mb-3 form-group">
                       <label for="brand" class="fs-6 mb-3">Brand</label>
-                      <ng-select class="fs-6" [items]="brands" bindLabel="name" [clearable]="true" [(ngModel)]="selectedBrand"
-                        [ngModelOptions]="{standalone: true}" placeholder="Select brand" (change)="onBrandChange($event)" id="brand">
+                      <ng-select class="fs-6" [items]="brands" bindLabel="name" [clearable]="true"
+                        [(ngModel)]="selectedBrand" [ngModelOptions]="{standalone: true}" placeholder="Select brand"
+                        (change)="onBrandChange($event)" id="brand">
                         <ng-template ng-option-tmp let-item="item">
                           {{item.name}}
                         </ng-template>
@@ -375,20 +382,17 @@
                 </div>
                 <div class="d-flex flex-wrap align-items-center justify-content-start gap-2 mt-6">
                   <ng-container *ngFor="let attribute of attributes; let i = index">
-                    <div class="d-flex cursor-pointer align-items-center bg-secondary p-2 rounded justify-content-start gap-2">
+                    <div
+                      class="d-flex cursor-pointer align-items-center bg-secondary p-2 rounded justify-content-start gap-2">
                       <div class="d-flex align-items-center justify-content-start gap-2">
                         <div class="fs-5">{{attribute?.title}} : </div>
                         <ng-container [ngSwitch]="attribute?.type">
-                          <div *ngSwitchCase="'color'" 
-                               [style.background-color]="attribute?.value"
-                               class="rounded-circle" 
-                               style="width: 30px; height: 30px; border: 1px solid #ddd;">
+                          <div *ngSwitchCase="'color'" [style.background-color]="attribute?.value"
+                            class="rounded-circle" style="width: 30px; height: 30px; border: 1px solid #ddd;">
                           </div>
                           <div *ngSwitchCase="'image'" class="rounded" style="width: 30px; height: 30px;">
-                            <img [src]="base + attribute?.value" 
-                                 class="img-fluid rounded object-fit-cover"
-                                 style="width: 100%; height: 100%;" 
-                                 alt="Variant Image">
+                            <img [src]="base + attribute?.value" class="img-fluid rounded object-fit-cover"
+                              style="width: 100%; height: 100%;" alt="Variant Image">
                           </div>
                           <div *ngSwitchDefault class="fs-5">{{attribute?.value}}</div>
                         </ng-container>
@@ -502,7 +506,8 @@
                   <div class="row" id="images">
                     <div class="col-lg-2" *ngFor="let icon of icons">
                       <div class="ratio border ratio-1x1 h-auto w-100 rounded position-relative">
-                        <div class="close-icon rounded bg-danger text-white" (click)="productIconClicked(icon, 'remove')">
+                        <div class="close-icon rounded bg-danger text-white"
+                          (click)="productIconClicked(icon, 'remove')">
                           <svg height="18" width="18" data-slot="icon" fill="none" stroke-width="1.5"
                             stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"
                             aria-hidden="true">
@@ -567,15 +572,12 @@
               </div>
               <div class="d-flex align-items-center justify-content-center gap-2">
                 <button class="btn border border-primary bg-white text-primary" (click)="toggleTab(4)">Back</button>
-                <button 
-                class="btn btn-primary" 
-                [disabled]="isSaving" 
-                (click)="saveChanges()">
-                <span *ngIf="isSaving">
-                  <i class="spinner-border spinner-border-sm me-1"></i>
-                </span>
-                {{ isSaving ? 'Saving...' : 'Save changes' }}
-              </button>
+                <button class="btn btn-primary" [disabled]="isSaving" (click)="saveChanges()">
+                  <span *ngIf="isSaving">
+                    <i class="spinner-border spinner-border-sm me-1"></i>
+                  </span>
+                  {{ isSaving ? 'Saving...' : 'Save changes' }}
+                </button>
               </div>
             </form>
           </tab>
@@ -605,55 +607,49 @@
             </select>
           </div>
         </div>
-      <div class="col-lg-8">
-        <div class="mb-3 form-group">
-          <label for="attributeTitle" class="fs-6 mb-3 required">Option Name</label>
-          <input type="text" id="attributeTitle" class="form-control fs-6"
-            [ngClass]="{ 'is-invalid': (attributeControls.title.touched || isAttributeSubmitted) && attributeControls.title.errors?.required }"
-            placeholder="Size" formControlName="title">
-        </div>
-        <div class="mb-3 form-group" *ngIf="attributeForm.get('type')?.value == 'text'">
-          <label for="attributeValue" class="fs-6 mb-3 required">Option Values</label>
-          <input type="text" id="attributeValue" class="form-control fs-6"
-            [ngClass]="{ 'is-invalid': (attributeControls.value.touched || isAttributeSubmitted) && attributeControls.value.errors?.required }"
-            placeholder="8.5 kg" formControlName="value">
-        </div>
-        <div class="mb-3 form-group" *ngIf="attributeForm.get('type')?.value == 'color'">
-          <label for="attributeValue" class="fs-6 mb-3 required">Option Values</label>
-          <input type="color" id="attributeValue" class="form-control fs-6" style="height: 44px;"
-            [ngClass]="{ 'is-invalid': (attributeControls.value.touched || isAttributeSubmitted) && attributeControls.value.errors?.required }"
-            placeholder="8.5 kg" formControlName="value">
-        </div>
-          <!-- align the images to the right and reduce the size of the image -->
+        <div class="col-lg-8">
+          <div class="mb-3 form-group">
+            <label for="attributeTitle" class="fs-6 mb-3 required">Option Name</label>
+            <input type="text" id="attributeTitle" class="form-control fs-6"
+              [ngClass]="{ 'is-invalid': (attributeControls.title.touched || isAttributeSubmitted) && attributeControls.title.errors?.required }"
+              placeholder="Size" formControlName="title">
+          </div>
+          <div class="mb-3 form-group" *ngIf="attributeForm.get('type')?.value == 'text'">
+            <label for="attributeValue" class="fs-6 mb-3 required">Option Values</label>
+            <input type="text" id="attributeValue" class="form-control fs-6"
+              [ngClass]="{ 'is-invalid': (attributeControls.value.touched || isAttributeSubmitted) && attributeControls.value.errors?.required }"
+              placeholder="8.5 kg" formControlName="value">
+          </div>
+          <div class="mb-3 form-group" *ngIf="attributeForm.get('type')?.value == 'color'">
+            <label for="attributeValue" class="fs-6 mb-3 required">Option Values</label>
+            <input type="color" id="attributeValue" class="form-control fs-6" style="height: 44px;"
+              [ngClass]="{ 'is-invalid': (attributeControls.value.touched || isAttributeSubmitted) && attributeControls.value.errors?.required }"
+              placeholder="8.5 kg" formControlName="value">
+          </div>
           <div class="mb-3" *ngIf="attributeForm.get('type')?.value == 'image'">
             <label for="attributeValue" class="fs-6 mb-3 required">Option Values</label>
             <div class="row">
               <div class="col-lg-12 d-flex justify-content-end">
                 <div class="ratio ratio-1x1 h-auto w-25 rounded">
-                  <app-assets 
-                    (mediaClicked)="handleAttributeImage($event)" 
-                    [image]="'cover'" 
-                    [previewEnabled]="false">
+                  <app-assets (mediaClicked)="handleAttributeImage($event)" [image]="'cover'" [previewEnabled]="false">
                   </app-assets>
                 </div>
               </div>
               <div class="col-lg-12 mt-3 d-flex justify-content-end" *ngIf="attributeForm.get('value')?.value">
                 <div class="ratio border ratio-1x1 h-auto w-25 rounded position-relative">
                   <div class="close-icon rounded bg-danger text-white" (click)="removeAttributeImage()">
-                    <svg height="18" width="18" data-slot="icon" fill="none" stroke-width="1.5"
-                      stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"
-                      aria-hidden="true">
+                    <svg height="18" width="18" data-slot="icon" fill="none" stroke-width="1.5" stroke="currentColor"
+                      viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
                       <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12"></path>
                     </svg>
                   </div>
-                  <img [src]="base + attributeForm.get('value')?.value" 
-                       class="h-100 w-100 rounded object-fit-cover" 
-                       alt="Attribute Image">
+                  <img [src]="base + attributeForm.get('value')?.value" class="h-100 w-100 rounded object-fit-cover"
+                    alt="Attribute Image">
                 </div>
               </div>
             </div>
           </div>
-      </div>
+        </div>
       </div>
     </form>
     <div class="d-flex align-items-center justify-content-end gap-2">
