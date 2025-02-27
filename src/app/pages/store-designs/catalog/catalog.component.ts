@@ -443,6 +443,13 @@ export class CatalogComponent implements OnInit {
     'full-banner',
   ];
   widgetImages: Array<any> = [];
+  sortOptions: Array<any> = [
+    { key: 'Popularity', value: 'popularity' },
+    { key: 'Newest', value: 'newest' },
+    { key: 'Oldest', value: 'oldest' },
+    { key: 'Price: Low to High', value: 'ascending' },
+    { key: 'Price: High to Low', value: 'descending' },
+  ];
   widgetBlogs: any;
   settings: any;
   collections: Array<any> = [];
@@ -1871,6 +1878,7 @@ export class CatalogComponent implements OnInit {
           Validators.pattern('^[0-9]*$'),
         ]),
       }),
+      sortOptions: new FormControl('popularity'),
       pagination: new FormGroup({
         desktop: new FormControl(true),
         mobile: new FormControl(true),
