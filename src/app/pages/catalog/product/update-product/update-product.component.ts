@@ -906,6 +906,7 @@ export class UpdateProductComponent implements OnInit {
             }
           }).filter(Boolean);
 
+          // Set the primary category
           this.primaryCategory.setValue(res?.result?.primaryCategory);
 
           if (res.result?.brand) {
