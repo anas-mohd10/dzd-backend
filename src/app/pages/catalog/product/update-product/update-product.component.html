@@ -107,6 +107,15 @@
                         </ng-select>
                       </div>
                     </div>
+                    <div class="mb-3" *ngIf="categories.length > 0">
+                      <div class="mb-3 form-group">
+                        <label class="fs-6 mb-3 required">Primary Category</label>
+                        <ng-select
+                          [ngClass]="{'is-invalid': primaryCategory.touched && primaryCategory.errors?.required}"
+                          class="fs-6" [formControl]="primaryCategory" placeholder="Select primary category"
+                          [items]="categories" bindLabel="name" [multiple]="false"></ng-select>
+                      </div>
+                    </div>
                     <div class="row mb-3">
                       <div class="col-lg-6 mb-3 form-group">
                         <label class="fs-6 mb-3 required">Stock</label>
@@ -290,8 +299,16 @@
                 </div>
               </div>
               <div class="d-flex align-items-center justify-content-center gap-2">
-                <button class="btn btn-secondary" (click)="saveChanges()">Save and Close</button>
-                <button class="btn btn-primary" (click)="toggleTab(1)">Continue</button>
+                <button 
+                class="btn btn-secondary" 
+                [disabled]="isSaving" 
+                (click)="saveChanges()">
+                <span *ngIf="isSaving">
+                  <i class="spinner-border spinner-border-sm me-1"></i>
+                </span>
+                {{ isSaving ? 'Saving...' : 'Save and Close' }}
+              </button> 
+              <button class="btn btn-primary" (click)="toggleTab(1)">Continue</button>
               </div>
             </tab>
 
@@ -524,7 +541,16 @@
 
               <div class="d-flex align-items-center justify-content-center gap-2">
                 <button class="btn border border-primary bg-white text-primary" (click)="toggleTab(3)">Back</button>
-                <button class="btn btn-primary" (click)="saveChanges()">Save changes</button>
+                <!-- <button class="btn btn-primary" (click)="saveChanges()">Save changes</button> -->
+                <button 
+                class="btn btn-primary" 
+                [disabled]="isSaving" 
+                (click)="saveChanges()">
+                <span *ngIf="isSaving">
+                  <i class="spinner-border spinner-border-sm me-1"></i>
+                </span>
+                {{ isSaving ? 'Saving...' : 'Save and Close' }}
+              </button> 
               </div>
             </tab>
           </tabset>

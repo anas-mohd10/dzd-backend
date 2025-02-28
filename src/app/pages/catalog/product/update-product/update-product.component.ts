@@ -48,6 +48,7 @@ interface AddOns {
 })
 export class UpdateProductComponent implements OnInit {
   task = PageTasks.ADD;
+  isSaving: boolean = false;
   editMode = false;
   appRoute = appRoutes;
   isSubmitted: boolean = false;
@@ -106,6 +107,7 @@ export class UpdateProductComponent implements OnInit {
   relatedProducts: Array<any> = [];
   categories: Array<any> = [];
   selectedCategories: Array<string> = [];
+  primaryCategory: FormControl = new FormControl('', Validators.required);
   productCategory: FormControl = new FormControl('');
   productAttributes: Array<any> = [];
   isCategoryMultiple: boolean = true;
@@ -376,6 +378,19 @@ export class UpdateProductComponent implements OnInit {
       });
     }
   }
+  onBrandChange(event: any) {
+    if (event) {
+      this.selectedBrand = event;
+      this.form.patchValue({
+        brand: event.slug,
+      });
+    } else {
+      this.selectedBrand = null;
+      this.form.patchValue({
+        brand: null,
+      });
+    }
+  }
 
   onBrandTriggered(event: any) {
     this.parentForm.get('brand')?.setValue(event?._id);
@@ -573,6 +588,8 @@ export class UpdateProductComponent implements OnInit {
   toggleAddOnItems() {}
 
   saveChanges() {
+    this.ChangeDetectorRef.markForCheck();
+
     if (
       this.productDetails?.price?.offer == this.form.get('price')?.value?.offer
     ) {
@@ -584,10 +601,25 @@ export class UpdateProductComponent implements OnInit {
       });
     }
 
-    if (!this.form.valid) {
-      this.isSubmitted = true;
+    if (this.categories && this.categories.length == 0) {
+      this.HotToastService.error('Please add at least one category');
       return;
     }
+
+    if (!this.primaryCategory.value) {
+      this.HotToastService.error('Please select primary category');
+      return;
+    }
+
+    if (!this.form.valid) {
+      this.isSubmitted = true;
+      this.isSaving = false; // Re-enable button if form is invalid
+      this.ChangeDetectorRef.markForCheck();
+      return;
+    }
+
+    // Set flag to disable the button
+    this.isSaving = true;
 
     this.ProductService.updateProduct(this.productDetails.slug, {
       ...this.form.value,
@@ -674,7 +706,12 @@ export class UpdateProductComponent implements OnInit {
           this.Router.navigate(['/app/product']);
           this.siblingsRef?.hide();
           this.HotToastService.success(res?.message);
+          // No need to reset isSaving since we're navigating away
         } else if (res.errorCode == 2) {
+          // Re-enable the button in this case
+          this.isSaving = false;
+          this.ChangeDetectorRef.markForCheck();
+
           this.siblingsRef = this.BsModalService.show(
             this.siblingsTemplateModal,
             {
@@ -700,6 +737,9 @@ export class UpdateProductComponent implements OnInit {
             },
           });
         } else {
+          // Re-enable the button on error
+          this.isSaving = false;
+          this.ChangeDetectorRef.markForCheck();
           this.HotToastService.error(res?.message);
         }
       },
@@ -707,6 +747,11 @@ export class UpdateProductComponent implements OnInit {
         this.HotToastService.error(err.error.message);
       },
     });
+  }
+
+  skipUpdate() {
+    this.isSkipUpdate.setValue(true);
+    this.saveChanges();
   }
 
   onTriggerSiblings(
@@ -734,10 +779,10 @@ export class UpdateProductComponent implements OnInit {
     });
   }
 
-  skipUpdate() {
-    this.isSkipUpdate.setValue(true);
-    this.saveChanges();
-  }
+  // skipUpdate() {
+  //   this.isSkipUpdate.setValue(true);
+  //   this.saveChanges();
+  // }
 
   toggleTab(index: number) {
     if (this.staticTabs?.tabs[index]) {

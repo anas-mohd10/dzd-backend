@@ -308,6 +308,13 @@ export class HomeComponent implements OnInit {
     { key: 'Open CMS page', value: 'cms-pages' },
     { key: 'Search filters', value: 'search-filters' },
   ];
+  sortOptions: Array<any> = [
+    { key: 'Popularity', value: 'popularity' },
+    { key: 'Newest', value: 'newest' },
+    { key: 'Oldest', value: 'oldest' },
+    { key: 'Price: Low to High', value: 'ascending' },
+    { key: 'Price: High to Low', value: 'descending' },
+  ];
   screenLoad: number = 0;
   hyperlinkheroForm: FormGroup;
   keyPointForm: FormGroup = new FormGroup({});
@@ -1419,6 +1426,7 @@ export class HomeComponent implements OnInit {
 
       sliderButtonPosition: new FormControl('relative'),
       paginationPosition: new FormControl('relative'),
+      sortOptions: new FormControl('popularity'),
       hovering: new FormGroup({
         desktop: new FormControl(false),
         mobile: new FormControl(false),

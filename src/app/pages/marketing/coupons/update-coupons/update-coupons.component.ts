@@ -89,6 +89,7 @@ export class UpdateCouponsComponent implements OnInit {
       countPerUser: ['', Validators.pattern("^[0-9]*$")],
       isMaxRedemptionEnabled: ['false'],
       maxRedemptionValue: ['', [Validators.pattern("^[0-9]*$")]],
+      platformType: ['both'], 
     });
   }
 
@@ -141,6 +142,7 @@ export class UpdateCouponsComponent implements OnInit {
       this.form.get("isVisibility")?.setValue(this.couponDetails.isVisibility)
       this.form.get("countPerUser")?.setValue(this.couponDetails.countPerUser)
       this.form.get('criteriaType')?.setValue(this.couponDetails.couponType)
+      this.form.get('platformType')?.setValue(this.couponDetails.platformType || 'both');
 
       const today = new Date().toISOString()
       if (today > this.couponDetails?.fromDate) {
@@ -281,6 +283,7 @@ export class UpdateCouponsComponent implements OnInit {
       isEnabled: this.form.get('isMaxRedemptionEnabled')?.value === 'true',
       value: this.form.get('maxRedemptionValue')?.value || null
     },
+    platformType: this.form.get('platformType')?.value, 
   };
 
   // Submit the payload

@@ -93,6 +93,7 @@ export class AddCouponsComponent implements OnInit {
       countPerUser: new FormControl('1', [Validators.required, Validators.pattern("^[0-9]*$")]),
       isMaxRedemptionEnabled: new FormControl('false'),
       maxRedemptionValue: new FormControl('', [Validators.pattern("^[0-9]*$")]),
+      platformType: new FormControl('both', Validators.required),
     });
 
     this.getProducts()
@@ -236,6 +237,7 @@ export class AddCouponsComponent implements OnInit {
           isEnabled: this.form.get('isMaxRedemptionEnabled')?.value === 'true',
           value: this.form.get('maxRedemptionValue')?.value || null
         },
+        platformType: this.form.get('platformType')?.value,
       }
 
       return data
