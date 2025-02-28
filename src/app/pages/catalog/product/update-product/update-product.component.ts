@@ -378,19 +378,6 @@ export class UpdateProductComponent implements OnInit {
       });
     }
   }
-  onBrandChange(event: any) {
-    if (event) {
-      this.selectedBrand = event;
-      this.form.patchValue({
-        brand: event.slug,
-      });
-    } else {
-      this.selectedBrand = null;
-      this.form.patchValue({
-        brand: null,
-      });
-    }
-  }
 
   onBrandTriggered(event: any) {
     this.parentForm.get('brand')?.setValue(event?._id);
