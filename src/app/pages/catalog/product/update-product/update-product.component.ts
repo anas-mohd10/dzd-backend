@@ -43,6 +43,7 @@ interface AddOns {
 
 export class UpdateProductComponent implements OnInit {
   task = PageTasks.ADD;
+  isSaving: boolean = false;
   editMode = false;
   appRoute = appRoutes;
   isSubmitted: boolean = false;
@@ -101,6 +102,7 @@ export class UpdateProductComponent implements OnInit {
   relatedProducts: Array<any> = [];
   categories: Array<any> = [];
   selectedCategories: Array<string> = [];
+  primaryCategory: FormControl = new FormControl('', Validators.required);
   productCategory: FormControl = new FormControl('');
   productAttributes: Array<any> = [];
   isCategoryMultiple: boolean = true;
@@ -127,6 +129,7 @@ export class UpdateProductComponent implements OnInit {
   modalRef?: BsModalRef;
   attributeForm: FormGroup = new FormGroup({});
   isAttributeSubmitted: boolean = false;
+  attributeImages: Array<any> = [];
   attributeTypes: Array<any> = [
     { title: 'Text', value: 'text' },
     { title: 'Color', value: 'color' },
@@ -218,7 +221,7 @@ export class UpdateProductComponent implements OnInit {
   }
 
   getFormatDate(date: any) {
-    return new Date(date).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' })
+    return new Date(date).toLocaleDateString('en-US', { year: '2-digit', month: 'short', day: 'numeric' })
   }
 
   getFormatTime(time: string) {
@@ -341,19 +344,19 @@ export class UpdateProductComponent implements OnInit {
     this.addOnForm.get('isRequired')?.setValue(event.toggleState)
   }
 
-onBrandChange(event: any) {
-  if (event) {
-    this.selectedBrand = event;
-    this.form.patchValue({
-      brand: event.slug
-    });
-  } else {
-    this.selectedBrand = null;
-    this.form.patchValue({
-      brand: null
-    });
+  onBrandChange(event: any) {
+    if (event) {
+      this.selectedBrand = event;
+      this.form.patchValue({
+        brand: event.slug
+      });
+    } else {
+      this.selectedBrand = null;
+      this.form.patchValue({
+        brand: null
+      });
+    }
   }
-}
 
   onBrandTriggered(event: any) {
     this.parentForm.get('brand')?.setValue(event?._id);
@@ -443,18 +446,18 @@ onBrandChange(event: any) {
     }
   }
 
-getDefaultCategories() {
-  this.categoryService.getCategories({}, '').subscribe({
-    next: (res: any) => {
-      if (res?.errorCode == 0) {
-        this.defaultCategories = res?.result;
-        this.ChangeDetectorRef.markForCheck();
-      }
-    },
-    error: (err: any) => { }
-  });
+  getDefaultCategories() {
+    this.categoryService.getCategories({}, '').subscribe({
+      next: (res: any) => {
+        if (res?.errorCode == 0) {
+          this.defaultCategories = res?.result;
+          this.ChangeDetectorRef.markForCheck();
+        }
+      },
+      error: (err: any) => { }
+    });
   }
-  
+
   handleThumbnail(event: any) {
     this.parentForm.get('thumbnail')?.setValue(event.path);
   }
@@ -492,38 +495,38 @@ getDefaultCategories() {
   }
 
   toggleProductCategory(event: any, type: string) {
-  if (type === 'add') {
-    // Handle single or multiple selections from ng-select
-    if (Array.isArray(event)) {
-      // Multiple categories selected
-      this.categories = event;
-    } else {
-      // Single category selected
-      const isExists = this.categories.some(item => item.slug === event.slug);
-      if (isExists) {
-        this.HotToastService.info('Category already added');
+    if (type === 'add') {
+      // Handle single or multiple selections from ng-select
+      if (Array.isArray(event)) {
+        // Multiple categories selected
+        this.categories = event;
       } else {
-        this.categories.push(event);
+        // Single category selected
+        const isExists = this.categories.some(item => item.slug === event.slug);
+        if (isExists) {
+          this.HotToastService.info('Category already added');
+        } else {
+          this.categories.push(event);
+        }
       }
+    } else {
+      // Remove category
+      this.categories = this.categories.filter(item => item.slug !== event);
     }
-  } else {
-    // Remove category
-    this.categories = this.categories.filter(item => item.slug !== event);
+
+    // Update selectedCategories
+    this.selectedCategories = this.categories.map(cat => cat.slug);
+
+    // Update form value if needed
+    if (this.form) {
+      this.form.patchValue({
+        category: {
+          id: this.categories.map(cat => cat._id),
+          refid: this.categories.map(cat => cat.catid)
+        }
+      });
+    }
   }
-  
-  // Update selectedCategories
-  this.selectedCategories = this.categories.map(cat => cat.slug);
-  
-  // Update form value if needed
-  if (this.form) {
-    this.form.patchValue({
-      category: {
-        id: this.categories.map(cat => cat._id),
-        refid: this.categories.map(cat => cat.catid)
-      }
-    });
-  }
-}
   // toggleProductCategory(categoryEvent: any, type: string) {
   //   if (type == 'add') {
   //     this.defaultCategories.forEach((defaultCategory: any) => {
@@ -546,6 +549,8 @@ getDefaultCategories() {
   toggleAddOnItems() { }
 
   saveChanges() {
+    this.ChangeDetectorRef.markForCheck();
+
     if (
       this.productDetails?.price?.offer == this.form.get('price')?.value?.offer
     ) {
@@ -557,10 +562,25 @@ getDefaultCategories() {
       });
     }
 
-    if (!this.form.valid) {
-      this.isSubmitted = true;
+    if (this.categories && this.categories.length == 0) {
+      this.HotToastService.error('Please add at least one category');
       return;
     }
+
+    if (!this.primaryCategory.value) {
+      this.HotToastService.error('Please select primary category');
+      return;
+    }
+
+    if (!this.form.valid) {
+      this.isSubmitted = true;
+      this.isSaving = false; // Re-enable button if form is invalid
+      this.ChangeDetectorRef.markForCheck();
+      return;
+    }
+
+    // Set flag to disable the button
+    this.isSaving = true;
 
     this.ProductService.updateProduct(this.productDetails.slug, {
       ...this.form.value,
@@ -574,12 +594,18 @@ getDefaultCategories() {
         id: this.productDetails?.parentId,
         refid: this.productDetails?.product?.refid,
       },
-    brand: this.selectedBrand ? {
-      name: this.selectedBrand.name,
-      slug: this.selectedBrand.slug,
-      thumbnail: this.selectedBrand.thumbnail,
-      cover: this.selectedBrand.cover,
-    } : null,
+      brand: this.selectedBrand ? {
+        name: this.selectedBrand.name,
+        slug: this.selectedBrand.slug,
+        thumbnail: this.selectedBrand.thumbnail,
+        cover: this.selectedBrand.cover,
+      } : null,
+      primaryCategory: this.primaryCategory.value ? {
+        name: this.primaryCategory.value.name,
+        slug: this.primaryCategory.value.slug,
+        thumbnail: this.primaryCategory.value.thumbnail,
+        cover: this.primaryCategory.value.cover,
+      } : null,
       parentId: this.productDetails?.parentId,
       tagIcons: this.tagIcons,
       attributes: this.attributes,
@@ -624,16 +650,16 @@ getDefaultCategories() {
         ...this.productDetails.localizedMetaKeywords,
         [this.settings.primaryLang]: this.form.get('metaKeywords')?.value,
       },
-  category: {
-      id: this.categories.map((category: any) => category?._id),
-      refid: this.categories.map((category: any) => category?.catid),
-    },
-    categories: this.categories.map((category: any) => ({
-      name: category.name,
-      slug: category.slug,
-      thumbnail: category.thumbnail,
-      cover: category.cover,
-    })),
+      category: {
+        id: this.categories.map((category: any) => category?._id),
+        refid: this.categories.map((category: any) => category?.catid),
+      },
+      categories: this.categories.map((category: any) => ({
+        name: category.name,
+        slug: category.slug,
+        thumbnail: category.thumbnail,
+        cover: category.cover,
+      })),
       productTags: this.tagsForm.value,
     }).subscribe({
       next: (res: any) => {
@@ -641,7 +667,12 @@ getDefaultCategories() {
           this.Router.navigate(['/app/product']);
           this.siblingsRef?.hide();
           this.HotToastService.success(res?.message);
+          // No need to reset isSaving since we're navigating away
         } else if (res.errorCode == 2) {
+          // Re-enable the button in this case
+          this.isSaving = false;
+          this.ChangeDetectorRef.markForCheck();
+
           this.siblingsRef = this.BsModalService.show(
             this.siblingsTemplateModal,
             {
@@ -667,12 +698,24 @@ getDefaultCategories() {
             },
           });
         } else {
+          // Re-enable the button on error
+          this.isSaving = false;
+          this.ChangeDetectorRef.markForCheck();
           this.HotToastService.error(res?.message);
         }
-      }, error: (err: any) => {
+      },
+      error: (err: any) => {
+        // Re-enable the button on error
+        this.isSaving = false;
+        this.ChangeDetectorRef.markForCheck();
         this.HotToastService.error(err.error.message);
       },
     });
+  }
+
+  skipUpdate() {
+    this.isSkipUpdate.setValue(true);
+    this.saveChanges();
   }
 
   onTriggerSiblings(
@@ -700,10 +743,10 @@ getDefaultCategories() {
     });
   }
 
-  skipUpdate() {
-    this.isSkipUpdate.setValue(true);
-    this.saveChanges();
-  }
+  // skipUpdate() {
+  //   this.isSkipUpdate.setValue(true);
+  //   this.saveChanges();
+  // }
 
   toggleTab(index: number) {
     if (this.staticTabs?.tabs[index]) {
@@ -767,7 +810,7 @@ getDefaultCategories() {
   //       if (this.productDetails?.brand) {
   //         this.selectedBrand = this.brands.find(brand => brand.slug === this.productDetails.brand.slug);
   //       }
-        
+
   //       this.ChangeDetectorRef.markForCheck();
   //     }
   //   }, 
@@ -777,18 +820,18 @@ getDefaultCategories() {
 
   ngOnInit(): void {
     this.base = environment.base;
-  
+
     this.BrandService.getActiveBrands().subscribe({
       next: (res: any) => {
         if (res.errorCode === 0 && Array.isArray(res.result) && res.result.length > 0) {
           this.brands = res.result.filter((brand: any) => brand && brand.slug);
-  
+
           if (this.productDetails?.brand) {
             this.selectedBrand = this.brands.find(
               (brand) => brand.slug === this.productDetails.brand.slug
             );
           }
-  
+
           this.ChangeDetectorRef.markForCheck();
         } else {
           this.brands = [];
@@ -837,8 +880,8 @@ getDefaultCategories() {
     });
 
     this.storeFieldForm = new FormGroup({
-      title: new FormControl('  ', Validators.required),
-      description: new FormControl('  ', Validators.required),
+      title: new FormControl('', Validators.required),
+      description: new FormControl('', Validators.required),
       isFilter: new FormControl(false)
     });
 
@@ -851,7 +894,7 @@ getDefaultCategories() {
           // Check if searchKeywords exist and are not empty
           this.searchKeywords = (res?.result?.searchKeywords || []).filter(Boolean);
           this.form.get('searchKeywords')?.setValue(this.searchKeywords);
-          
+
           this.productDetails = res?.result;
           this.images = res?.result?.files ? res?.result?.files : [];
           // Remove null and undefined values from array of images
@@ -863,13 +906,15 @@ getDefaultCategories() {
             }
           }).filter(Boolean);
 
+          this.primaryCategory.setValue(res?.result?.primaryCategory);
+
           if (res.result?.brand) {
             this.selectedBrand = this.brands.find(brand => brand.slug === res.result.brand.slug);
             this.form.patchValue({
               brand: res.result.brand.slug
             });
           }
-          
+
           this.storeFields = res?.result?.storeFrontFields;
           this.tagIcons = res?.result?.tagIcons ? res?.result?.tagIcons : [];
           this.categories = res?.result?.categories;
@@ -1112,5 +1157,22 @@ getDefaultCategories() {
     this.historyPageSize = event.pageSize
 
     this.fetchHistory()
+  }
+
+  handleAttributeImage(event: any) {
+    console.log('Image event:', event);
+    if (event && event.path) {
+      this.attributeForm.patchValue({
+        value: event.path
+      });
+      this.ChangeDetectorRef.markForCheck();
+    }
+  }
+
+  removeAttributeImage() {
+    this.attributeForm.patchValue({
+      value: null
+    });
+    this.ChangeDetectorRef.markForCheck();
   }
 }

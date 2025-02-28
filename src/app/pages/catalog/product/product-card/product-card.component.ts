@@ -99,7 +99,7 @@ export class ProductCardComponent implements OnInit {
     private BrandService: BrandService,
     private ElementRef: ElementRef,
     private HotToastService: HotToastService
-  ) { }
+  ) {}
 
   get editFormControls() {
     return this.editForm.controls;
@@ -164,7 +164,9 @@ export class ProductCardComponent implements OnInit {
   }
 
   deleteProducts() {
-    this.ProductHeadService.deleteProducts({ products: this.checkedProducts }).subscribe({
+    this.ProductHeadService.deleteProducts({
+      products: this.checkedProducts,
+    }).subscribe({
       next: (res: any) => {
         if (res?.errorCode == 0) {
           this.HotToastService.success(res?.message);
@@ -311,14 +313,25 @@ export class ProductCardComponent implements OnInit {
   }
 
   formatDate(date: string) {
-    return new Date(date).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' })
+    return new Date(date).toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'short',
+      day: 'numeric',
+    });
   }
 
   formatTime(time: string) {
-    return new Date(time).toLocaleTimeString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true })
+    return new Date(time).toLocaleTimeString('en-US', {
+      hour: 'numeric',
+      minute: 'numeric',
+      hour12: true,
+    });
   }
 
-  getProductHeads() {
+  getProductHeads(mode?: string) {
+    if (mode == 'search') {
+      this.page = 1;
+    }
     this.ProductHeadService.searchProductHead({
       limit: this.limit,
       page: this.page,

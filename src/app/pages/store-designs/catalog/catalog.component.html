@@ -196,29 +196,29 @@
                 <input type="text" formControlName="description" id="description" placeholder="Catalog page description"
                     class="form-control">
             </div>
-        <div class="my-2">
-            <div class="d-flex align-items-center justify-content-between mb-3">
-                <p class="m-0">Would you like to obtain a copy of any other catalog page?</p>
-                <div class="form-group">
-                    <label for="isCopy" class="d-none form-label">&nbsp;</label>
-                    <select formControlName="isCopy" id="isCopy" class="form-select">
+            <div class="my-2">
+                <div class="d-flex align-items-center justify-content-between mb-3">
+                    <p class="m-0">Would you like to obtain a copy of any other catalog page?</p>
+                    <div class="form-group">
+                        <label for="isCopy" class="d-none form-label">&nbsp;</label>
+                        <select formControlName="isCopy" id="isCopy" class="form-select">
+                            <option value="" disabled>-- Select an option --</option>
+                            <option *ngFor="let item of [true, false]" [value]="item">
+                                {{item == true ? 'Yes' : 'No'}}
+                            </option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group" *ngIf="catalogForm.get('isCopy')?.value === 'true'">
+                    <label for="catalogPage" class="form-label">Select catalog</label>
+                    <select formControlName="catalogReference" id="catalogPage" class="form-select">
                         <option value="" disabled>-- Select an option --</option>
-                        <option *ngFor="let item of [true, false]" [value]="item">
-                            {{item == true ? 'Yes' : 'No'}}
+                        <option *ngFor="let catalog of catalogPages" [value]="catalog._id">
+                            {{catalog?.title}}
                         </option>
                     </select>
                 </div>
             </div>
-            <div class="form-group" *ngIf="catalogForm.get('isCopy')?.value === 'true'">
-                <label for="catalogPage" class="form-label">Select catalog</label>
-                <select formControlName="catalogReference" id="catalogPage" class="form-select">
-                    <option value="" disabled>-- Select an option --</option>
-                    <option *ngFor="let catalog of catalogPages" [value]="catalog._id">
-                        {{catalog?.title}}
-                    </option>
-                </select>
-            </div>
-        </div>
             <div class="d-flex align-items-center justify-content-end">
                 <button class="btn btn-secondary me-1" (click)="closeCreate()">Cancel</button>
                 <button class="btn btn-primary ms-1" (click)="createCatalog()">Continue</button>
@@ -345,7 +345,7 @@
                 </div>
                 <div class="my-5">
                     <div class="mb-2 fw-bold text-muted fs-5">Description</div>
-                    <div class="fs-6">{{focusedWidget.description}}</div>
+                    <div class="fs-6" [innerHtml]="focusedWidget.description"></div>
                 </div>
             </div>
         </div>
@@ -676,6 +676,18 @@
                                                 </div>
 
                                                 <div class="form-group col-lg-6 mb-3"
+                                                    *ngIf="widgetProductTypes.includes(widgetDetails?.widgetType)">
+                                                    <label for="sortOptions" class="fs-5 mb-3">Sort Options</label>
+                                                    <select id="sortOptions" class="form-select"
+                                                        formControlName="sortOptions">
+                                                        <option value="" disabled>-- Select an option --</option>
+                                                        <option *ngFor="let sortOption of sortOptions"
+                                                            value="{{sortOption.value}}">
+                                                            {{sortOption.key}}</option>
+                                                    </select>
+                                                </div>
+
+                                                <div class="form-group col-lg-6 mb-3"
                                                     *ngIf="['slider'].includes(form.get('view')?.value) || ['products', 'aurora-slider', 'motion-canvas']?.includes(widgetDetails?.widgetType)">
                                                     <label for="isAutoScroll" class="fs-5 mb-3">Auto Scroll
                                                         Enabled</label>
@@ -779,7 +791,8 @@
                                             </div>
                                             <div class="form-group mb-3">
                                                 <label for="title" class="form-label">Custom Styles</label>
-                                                <textarea type="text" rows="3" formControlName="customStyles" class="form-control"></textarea>
+                                                <textarea type="text" rows="3" formControlName="customStyles"
+                                                    class="form-control"></textarea>
                                             </div>
                                             <div class="form-group mb-3">
                                                 <label for="redirectionType" class="form-label">Call to action</label>
@@ -795,6 +808,9 @@
                                         <div class="row" *ngIf="widgetForm.get('redirectionType')?.value">
                                             <div class="form-group mb-3">
                                                 <label for="redirectionSearch" class="form-label">Redirection</label>
+                                                <input *ngIf="widgetForm.get('redirectionType')?.value == 'web-links'"
+                                                    type="text" id="redirectionSearch" placeholder="Enter web URL"
+                                                    class="form-control" [formControl]="redirectionQuery">
                                                 <input
                                                     *ngIf="widgetForm.get('redirectionType')?.value == 'search-filters'"
                                                     type="text" id="redirectionSearch" placeholder="Search redirections"
@@ -886,7 +902,7 @@
                     </div>
 
                     <div *ngIf="widgetDetails?.widgetType == 'blogs'">
-                        
+
                     </div>
 
                     <div *ngIf="widgetDetails?.widgetType == 'insight-hub'">
