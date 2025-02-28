@@ -928,15 +928,16 @@ export class UpdateProductComponent implements OnInit {
           this.productDetails = res?.result;
           this.images = res?.result?.files ? res?.result?.files : [];
           // Remove null and undefined values from array of images
-          this.images = this.images
-            .map((item) => {
-              if (item !== null) {
-                return {
-                  path: item,
-                };
-              }
-            })
-            .filter(Boolean);
+          this.images = this.images.map((item) => {
+            if (item !== null) {
+              return {
+                path: item,
+              };
+            }
+          }).filter(Boolean);
+
+          // Set the primary category
+          this.primaryCategory.setValue(res?.result?.primaryCategory);
 
           if (res.result?.brand) {
             this.selectedBrand = this.brands.find(
