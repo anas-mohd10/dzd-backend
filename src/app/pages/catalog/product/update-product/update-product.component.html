@@ -177,7 +177,7 @@
                             value="{{activeRelatedProduct?._id}}">{{activeRelatedProduct.name}}
                           </option>
                         </select>
-                        <ng-container *ngIf="relatedProducts.length > 0">
+                        <ng-container *ngIf="relatedProducts && relatedProducts.length > 0">
                           <div class="mt-2 d-flex flex-wrap align-items-center gap-2 justify-content-start">
                             <ng-container *ngFor="let product of relatedProducts; let i = index">
                               <div
