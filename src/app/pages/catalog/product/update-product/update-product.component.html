@@ -427,31 +427,36 @@
                     </div>
                   </div>
                 </div>
-                <div class="mb-3">
-                  <label for="images" class="fs-6 mb-3">Product Images</label>
-                  <div class="row" id="images">
-                    <ng-container *ngFor="let image of images">
-                      <div class="col-lg-2">
-                        <div class="ratio border ratio-1x1 h-auto w-100 rounded position-relative">
-                          <div class="close-icon rounded bg-danger text-white" (click)="productMediaClicked(image)">
-                            <svg height="18" width="18" data-slot="icon" fill="none" stroke-width="1.5"
-                              stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"
-                              aria-hidden="true">
-                              <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12"></path>
-                            </svg>
-                          </div>
-                          <img src="{{base}}{{image.path}}" class="h-100 rounded w-100" alt="Product">
-                        </div>
-                      </div>
-                    </ng-container>
-                    <div class="col-lg-2">
-                      <div class="ratio ratio-1x1 h-auto w-100 rounded">
-                        <app-assets (mediaClicked)="productMediaClicked($event)" [image]="'contain'"
-                          [previewEnabled]="false"></app-assets>
-                      </div>
-                    </div>
-                  </div>
-                </div>
+              <div class="mb-3">
+  <label for="images" class="fs-6 mb-3">Product Images</label>
+  <div class="row" id="images">
+    <ng-container *ngFor="let image of images">
+      <div class="col-lg-2">
+        <div class="ratio border ratio-1x1 h-auto w-100 rounded position-relative">
+          <div class="close-icon rounded bg-danger text-white" (click)="productMediaClicked(image)">
+            <svg height="18" width="18" data-slot="icon" fill="none" stroke-width="1.5"
+              stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"
+              aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12"></path>
+            </svg>
+          </div>
+          <img src="{{base}}{{image.path}}" class="h-100 rounded w-100" alt="Product">
+        </div>
+      </div>
+    </ng-container>
+    <div class="col-lg-2">
+      <div class="ratio ratio-1x1 h-auto w-100 rounded">
+        <app-assets 
+          (mediaClicked)="productMediaClicked($event)" 
+          [image]="'contain'"
+          [selectedItems]="images"
+          [multiSelect]="true"
+          [previewEnabled]="false">
+        </app-assets>
+      </div>
+    </div>
+  </div>
+</div>
                 <div class="mb-3">
                   <label for="thumbnail" class="fs-6 mb-3">Product Thumbnail</label>
                   <div class="row" id="thumbnail">
@@ -464,50 +469,56 @@
                   </div>
                 </div>
                 <div class="mb-3">
-                  <label for="images" class="fs-6 mb-3">Product Icons</label>
-                  <div class="row" id="images">
-                    <div class="col-lg-2" *ngFor="let icon of icons">
-                      <div class="ratio border ratio-1x1 h-auto w-100 rounded position-relative">
-                        <div class="close-icon rounded bg-danger text-white"
-                          (click)="productIconClicked(icon, 'remove')">
-                          <svg height="18" width="18" data-slot="icon" fill="none" stroke-width="1.5"
-                            stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"
-                            aria-hidden="true">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12"></path>
-                          </svg>
-                        </div>
-                        <img src="{{base}}{{icon}}" class="rounded object-fit-cover" class="h-100 w-100 object-cover">
-                      </div>
-                    </div>
-                    <div class="col-lg-2">
-                      <div class="ratio ratio-1x1 h-auto w-100 rounded">
-                        <app-assets (mediaClicked)="productIconClicked($event)" [previewEnabled]="false"></app-assets>
-                      </div>
-                    </div>
-                  </div>
-                </div>
+  <label for="icons" class="fs-6 mb-3">Product Icons</label>
+  <div class="row" id="icons">
+    <div class="col-lg-2" *ngFor="let icon of icons">
+      <div class="ratio border ratio-1x1 h-auto w-100 rounded position-relative">
+        <div class="close-icon rounded bg-danger text-white"
+          (click)="productIconClicked(icon, 'remove')">
+          <svg height="18" width="18" data-slot="icon" fill="none" stroke-width="1.5"
+            stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"
+            aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12"></path>
+          </svg>
+        </div>
+        <img src="{{base}}{{icon}}" class="rounded object-fit-cover" class="h-100 w-100 object-cover">
+      </div>
+    </div>
+    <div class="col-lg-2">
+      <div class="ratio ratio-1x1 h-auto w-100 rounded">
+        <app-assets 
+          (mediaClicked)="productIconClicked($event)" 
+          [previewEnabled]="false">
+        </app-assets>
+      </div>
+    </div>
+  </div>
+</div>
                 <div class="mb-3">
-                  <label for="images" class="fs-6 mb-3">Product Tags</label>
-                  <div class="row" id="images">
-                    <div class="col-lg-2" *ngFor="let icon of tagIcons">
-                      <div class="ratio border ratio-1x1 h-auto w-100 rounded position-relative">
-                        <div class="close-icon rounded bg-danger text-white" (click)="removeTagIcons(icon)">
-                          <svg height="18" width="18" data-slot="icon" fill="none" stroke-width="1.5"
-                            stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"
-                            aria-hidden="true">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12"></path>
-                          </svg>
-                        </div>
-                        <img src="{{base}}{{icon}}" class="rounded" class="h-100 w-100 ">
-                      </div>
-                    </div>
-                    <div class="col-lg-2">
-                      <div class="ratio ratio-1x1 h-auto w-100 rounded">
-                        <app-assets (mediaClicked)="handleTagIcons($event)" [previewEnabled]="false"></app-assets>
-                      </div>
-                    </div>
-                  </div>
-                </div>
+  <label for="tags" class="fs-6 mb-3">Product Tags</label>
+  <div class="row" id="tags">
+    <div class="col-lg-2" *ngFor="let icon of tagIcons">
+      <div class="ratio border ratio-1x1 h-auto w-100 rounded position-relative">
+        <div class="close-icon rounded bg-danger text-white" (click)="removeTagIcons(icon)">
+          <svg height="18" width="18" data-slot="icon" fill="none" stroke-width="1.5"
+            stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"
+            aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12"></path>
+          </svg>
+        </div>
+        <img src="{{base}}{{icon}}" class="rounded" class="h-100 w-100">
+      </div>
+    </div>
+    <div class="col-lg-2">
+      <div class="ratio ratio-1x1 h-auto w-100 rounded">
+        <app-assets 
+          (mediaClicked)="handleTagIcons($event)" 
+          [previewEnabled]="false">
+        </app-assets>
+      </div>
+    </div>
+  </div>
+</div>
               </div>
 
               <div class="d-flex align-items-center justify-content-center gap-2">

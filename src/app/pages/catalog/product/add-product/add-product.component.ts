@@ -261,13 +261,30 @@ export class AddProductComponent implements OnInit {
   }
 
   productMediaClicked(event: any) {
+    // Check if the item already exists in our images array
     let isExists: boolean = this.images.some(
       (item: any) => item?._id == event?._id
     );
+    
     if (isExists) {
+      // If it exists, remove it
       this.images = this.images.filter((item: any) => item?._id != event?._id);
+      this.HotToastService.info('Image removed from product');
     } else {
+      // If it doesn't exist, add it
       this.images.push(event);
+      this.HotToastService.success('Image added to product');
+    }
+    
+    // Update form control with the current images
+    if (this.form && this.form.get('files')) {
+      let files = this.images.map((item: any) => item.path) || [];
+      this.form.get('files')?.setValue(files);
+    }
+    
+    // Force change detection
+    if (this.ChangeDetectorRef) {
+      this.ChangeDetectorRef.markForCheck();
     }
   }
 
