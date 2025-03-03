@@ -49,8 +49,7 @@
     </div>
   </div>
 
-  <div class="cursor-pointer symbol" [ngClass]="toolbarUserAvatarHeightClass" data-kt-menu-trigger="click"
-    data-kt-menu-attach="parent" data-kt-menu-placement="bottom-end" data-kt-menu-flip="bottom">
+  <div class="cursor-pointer symbol" [ngClass]="toolbarUserAvatarHeightClass" (click)="navigateToAccount()">
     <img src="./assets/media/avatars/DummyAvatar.svg" alt="avatar" />
   </div>
   <app-user-inner></app-user-inner>
