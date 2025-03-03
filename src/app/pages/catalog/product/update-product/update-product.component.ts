@@ -1182,16 +1182,6 @@ productIconClicked(event: any, type: string = 'add') {
 
     // Get the form values
     const formValue = this.storeFieldForm.value;
-    // Modify the title (first letter to uppercase)
-    if (formValue.title) {
-      formValue.title =
-        formValue.title.charAt(0).toUpperCase() + formValue.title.slice(1);
-    }
-
-    // Modify the value (to lowercase)
-    if (formValue.description) {
-      formValue.description = formValue.description.toLowerCase();
-    }
 
     // Save the modified form value
     this.storeFields.push(formValue);
