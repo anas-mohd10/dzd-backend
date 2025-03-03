@@ -18,6 +18,7 @@ export class UpdateCouponsComponent implements OnInit {
   form: FormGroup;
   editMode = false;
   isSubmitted: boolean;
+  isLoading: boolean = true;
   appRoute = appRoutes;
 
   categories: any = []; //Array of category ids
@@ -59,11 +60,18 @@ export class UpdateCouponsComponent implements OnInit {
   ngOnInit(): void {
     this.initForm();
     this.slug = this.ActivatedRoute.snapshot.queryParams.coupon || ''
-    this.getProducts()
-    this.getCategories()
-    this.getCollections()
-    this.getCouponBySlug()
-    this.getBrands()
+    this.isLoading = true;
+    const requests = [
+      this.getProducts(),
+      this.getCategories(),
+      this.getCollections(), 
+      this.getBrands(),
+      this.getCouponBySlug()
+    ];
+    Promise.all(requests).finally(() => {
+      this.isLoading = false;
+      this.ChangeDetectorRef.markForCheck();
+    });
   }
 
   initForm() {
@@ -98,10 +106,16 @@ export class UpdateCouponsComponent implements OnInit {
   }
 
   getProducts() {
-    this.ProductService.getActiveProduct().subscribe((res: any) => {
-      this.productsData = res?.result
-      this.ChangeDetectorRef.markForCheck()
-    })
+    return new Promise<void>((resolve) => {
+      this.ProductService.getActiveProduct().subscribe({
+        next: (res: any) => {
+          this.productsData = res?.result;
+          this.ChangeDetectorRef.markForCheck();
+          resolve();
+        },
+        error: () => resolve()
+      });
+    });
   }
 
   getCollections() {
