@@ -1010,6 +1010,8 @@ export class HomeComponent implements OnInit {
       url: event,
     };
     this.widgetImagePreview = this.widgetImages[this.widgetImagePreviewIndex];
+    this.widgetImagePreviewIndex = null;
+    this.widgetImagePreview = null;
     this.ChangeDetectorRef.markForCheck();
   }
 
@@ -1029,6 +1031,8 @@ export class HomeComponent implements OnInit {
   deleteWidgetImage(index: number, event: Event): void {
     event.stopPropagation();
     this.widgetImages.splice(index, 1);
+    this.widgetImagePreviewIndex = null;
+    this.widgetImagePreview = null;
   }
 
   getWidgetImagePreview(index: number) {
