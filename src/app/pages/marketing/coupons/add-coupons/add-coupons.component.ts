@@ -109,6 +109,13 @@ export class AddCouponsComponent implements OnInit {
     return this.form.controls;
   }
 
+  //Common response
+  onSelect(event: any) {
+    if(this.form.get('criteriaType')?.value == 'products'){
+      this.products.push(event)
+    }
+  }
+
   getProducts() {
     this.productService.getActiveProduct().subscribe((res: any) => {
       this.productsData = res?.result
