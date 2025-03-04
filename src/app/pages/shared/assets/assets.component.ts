@@ -36,6 +36,30 @@ export class AssetsComponent implements OnInit, OnChanges {
   @Input('aspectRatio') aspectRatio: string;
   @Input('previewEnabled') previewEnabled?: boolean;
   @Input('image') image?: any;
+  @Input('multiSelect') multiSelect: boolean = false; 
+  @Input('selectedItems') set selectedItems(items: Array<any>) {
+    // Clear current selections
+    this.selectedMedias.clear();
+    this.selectedPaths.clear();
+    
+    // Add all items from input to selected set
+    if (items && items.length > 0) {
+      items.forEach(item => {
+        if (item && item._id) {
+          this.selectedMedias.add(item._id);
+        }
+        if (item && item.path) {
+          this.selectedPaths.add(item.path);
+        }
+      });
+    }
+    
+    // Trigger change detection
+    if (this.ChangeDetectorRef) {
+      this.ChangeDetectorRef.markForCheck();
+    }
+  }
+  
   base: string = environment.base
   preview: any;
   files: Array<any> = []
@@ -43,6 +67,10 @@ export class AssetsComponent implements OnInit, OnChanges {
   keyword: FormControl = new FormControl('')
   @Output('mediaClicked') onMediaClicked = new EventEmitter<any>();
   @ViewChild('staticTabs', { static: false }) staticTabs?: TabsetComponent;
+  
+  // Add properties to track selected media items
+  selectedMedias: Set<string> = new Set<string>();
+  selectedPaths: Set<string> = new Set<string>();
 
   selectTab(tabId: number) {
     if (this.staticTabs?.tabs[tabId]) {
@@ -88,6 +116,11 @@ export class AssetsComponent implements OnInit, OnChanges {
   }
 
   open(template: TemplateRef<any>) {
+    // If we're not using the selectedItems input, reset selections when opening
+    if (!this.multiSelect) {
+      this.selectedMedias.clear();
+      this.selectedPaths.clear();
+    }
     this.modalRef = this.BsModalService.show(template, { class: 'modal-xl modal-dialog-centered', ignoreBackdropClick: true })
   }
 
@@ -171,19 +204,58 @@ export class AssetsComponent implements OnInit, OnChanges {
     })
   }
 
+  // Check if a media item is selected by ID or path
+  isMediaSelected(media: Media): boolean {
+    return this.selectedMedias.has(media._id) || this.selectedPaths.has(media.path);
+  }
+
   onMediaClickedHandler(media: Media) {
-    this.onMediaClicked.emit(media)
-    switch (this.previewEnabled) {
-      case true:
-        this.preview = media
-        break
-      case false:
-        this.preview = null
-        break
-      default:
-        this.preview = media
-        break
+    if (this.multiSelect) {
+      // Toggle selection status of the media
+      if (this.isMediaSelected(media)) {
+        this.selectedMedias.delete(media._id);
+        this.selectedPaths.delete(media.path);
+      } else {
+        this.selectedMedias.add(media._id);
+        this.selectedPaths.add(media.path);
+      }
+      
+      this.onMediaClicked.emit(media);
+      
+      switch (this.previewEnabled) {
+        case true:
+          this.preview = media;
+          break;
+        case false:
+          this.preview = null;
+          break;
+        default:
+          this.preview = media;
+          break;
+      }
+    } else {
+      // For single select, clear previous selection and set new one
+      this.selectedMedias.clear();
+      this.selectedPaths.clear();
+      this.selectedMedias.add(media._id);
+      this.selectedPaths.add(media.path);
+      
+      this.onMediaClicked.emit(media);
+      
+      switch (this.previewEnabled) {
+        case true:
+          this.preview = media;
+          break;
+        case false:
+          this.preview = null;
+          break;
+        default:
+          this.preview = media;
+          break;
+      }
+      this.close();
     }
-    this.close()
+    
+    this.ChangeDetectorRef.markForCheck();
   }
 }

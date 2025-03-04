@@ -19,6 +19,7 @@ import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 export class UpdateOfferComponent implements OnInit {
   form: FormGroup;
   appRoute = appRoutes;
+  isLoading: boolean = true;
   isSubmitted: boolean;
   minDate: string = new Date().toISOString().split('T')[0];
   fromDate: string;
@@ -122,37 +123,124 @@ export class UpdateOfferComponent implements OnInit {
     this.base = environment.base;
     this.offerId = this.route.snapshot.params.offerId || '';
     this.initForm();
-    this.getOffer();
-
-    this.ProductService.getActiveProduct().subscribe((res: any) => {
-      this.productsdata = res?.result;
-      this.ChangeDetectorRef.markForCheck();
+    
+    // Set loading true at start
+    this.isLoading = true;
+    
+    // Create a counter to track all API requests
+    let completedRequests = 0;
+    const totalRequests = 6; // Offer, Products, Categories, Collections, Brands, Parents
+    
+    const checkAllLoaded = () => {
+      completedRequests++;
+      if (completedRequests === totalRequests) {
+        this.isLoading = false;
+        this.ChangeDetectorRef.markForCheck();
+      }
+    };
+    
+    // 1. Offer details
+    this.offerService.getOfferDetails(this.offerId).subscribe({
+      next: (res: any) => {
+        if (res.errorCode == 0) {
+          this.offerDetails = res?.result;
+          this.form.get('title')?.setValue(this.offerDetails.title);
+          this.form.get('description')?.setValue(this.offerDetails.description);
+          this.form.get('isActive')?.setValue(this.offerDetails.isActive);
+          this.form.get('type')?.setValue(this.offerDetails.type);
+          this.form.get('value')?.setValue(this.offerDetails.value);
+          this.form.get('offerType')?.setValue(this.offerDetails.offerType);
+          this.form.get('isFeatured')?.setValue(this.offerDetails.isFeatured);
+          this.form
+            .get('startDate')
+            ?.setValue(
+              new Date(this.offerDetails.startDate).toISOString().split('T')[0]
+            );
+          this.form
+            .get('endDate')
+            ?.setValue(
+              new Date(this.offerDetails.endDate).toISOString().split('T')[0]
+            );
+          this.products = this.offerDetails.products
+            ? this.offerDetails.products
+            : [];
+          this.categories = this.offerDetails.categories
+            ? this.offerDetails.categories
+            : [];
+          this.collections = this.offerDetails.collections
+            ? this.offerDetails.collections
+            : [];
+          this.brands = this.offerDetails.brands ? this.offerDetails.brands : [];
+          this.parents = this.offerDetails.parents
+            ? this.offerDetails.parents
+            : [];
+          this.setOfferTypeIfNotEmpty(this.products, 'products');
+          this.setOfferTypeIfNotEmpty(this.categories, 'categories');
+          this.setOfferTypeIfNotEmpty(this.collections, 'collections');
+          this.setOfferTypeIfNotEmpty(this.brands, 'brands');
+          this.setOfferTypeIfNotEmpty(this.parents, 'parents');
+          this.offerDetails.type == 'percentage'
+            ? this.offerDetails.value > 100
+              ? (this.isValidValue = false)
+              : (this.isValidValue = true)
+            : (this.isValidValue = true);
+          this.ChangeDetectorRef.markForCheck();
+        }
+        checkAllLoaded();
+      },
+      error: () => checkAllLoaded()
     });
 
-    this.CategoryService.getActiveCategory().subscribe((res: any) => {
-      this.categoriesdata = res?.result;
-      this.ChangeDetectorRef.markForCheck();
+    // 2. Products
+    this.ProductService.getActiveProduct().subscribe({
+      next: (res: any) => {
+        this.productsdata = res?.result;
+        this.ChangeDetectorRef.markForCheck();
+        checkAllLoaded();
+      },
+      error: () => checkAllLoaded()
     });
 
-    this.CollectionService.getActiveCollection().subscribe((res: any) => {
-      this.collectionsdata = res?.result;
-      this.ChangeDetectorRef.markForCheck();
+    // 3. Categories
+    this.CategoryService.getActiveCategory().subscribe({
+      next: (res: any) => {
+        this.categoriesdata = res?.result;
+        this.ChangeDetectorRef.markForCheck();
+        checkAllLoaded();
+      },
+      error: () => checkAllLoaded()
     });
 
-    this.BrandService.getActiveBrands().subscribe((res: any) => {
-      this.brandsdata = res?.result;
-      this.ChangeDetectorRef.markForCheck();
+    // 4. Collections
+    this.CollectionService.getActiveCollection().subscribe({
+      next: (res: any) => {
+        this.collectionsdata = res?.result;
+        this.ChangeDetectorRef.markForCheck();
+        checkAllLoaded();
+      },
+      error: () => checkAllLoaded()
     });
 
+    // 5. Brands
+    this.BrandService.getActiveBrands().subscribe({
+      next: (res: any) => {
+        this.brandsdata = res?.result;
+        this.ChangeDetectorRef.markForCheck();
+        checkAllLoaded();
+      },
+      error: () => checkAllLoaded()
+    });
+
+    // 6. Parents
     this.ProductHeadService.activeParents().subscribe({
       next: (res: any) => {
         if (res?.errorCode == 0) {
           this.parentsData = res?.result;
           this.ChangeDetectorRef.markForCheck();
-        } else {
         }
+        checkAllLoaded();
       },
-      error: (err: any) => { },
+      error: () => checkAllLoaded()
     });
   }
 
@@ -246,55 +334,6 @@ export class UpdateOfferComponent implements OnInit {
     if (array.length > 0) {
       this.form.get('offerType')?.setValue(type);
     }
-  }
-
-  getOffer() {
-    this.offerService.getOfferDetails(this.offerId).subscribe((res: any) => {
-      if (res.errorCode == 0) {
-        this.offerDetails = res?.result;
-        this.form.get('title')?.setValue(this.offerDetails.title);
-        this.form.get('description')?.setValue(this.offerDetails.description);
-        this.form.get('isActive')?.setValue(this.offerDetails.isActive);
-        this.form.get('type')?.setValue(this.offerDetails.type);
-        this.form.get('value')?.setValue(this.offerDetails.value);
-        this.form.get('offerType')?.setValue(this.offerDetails.offerType);
-        this.form.get('isFeatured')?.setValue(this.offerDetails.isFeatured);
-        this.form
-          .get('startDate')
-          ?.setValue(
-            new Date(this.offerDetails.startDate).toISOString().split('T')[0]
-          );
-        this.form
-          .get('endDate')
-          ?.setValue(
-            new Date(this.offerDetails.endDate).toISOString().split('T')[0]
-          );
-        this.products = this.offerDetails.products
-          ? this.offerDetails.products
-          : [];
-        this.categories = this.offerDetails.categories
-          ? this.offerDetails.categories
-          : [];
-        this.collections = this.offerDetails.collections
-          ? this.offerDetails.collections
-          : [];
-        this.brands = this.offerDetails.brands ? this.offerDetails.brands : [];
-        this.parents = this.offerDetails.parents
-          ? this.offerDetails.parents
-          : [];
-        this.setOfferTypeIfNotEmpty(this.products, 'products');
-        this.setOfferTypeIfNotEmpty(this.categories, 'categories');
-        this.setOfferTypeIfNotEmpty(this.collections, 'collections');
-        this.setOfferTypeIfNotEmpty(this.brands, 'brands');
-        this.setOfferTypeIfNotEmpty(this.parents, 'parents');
-        this.offerDetails.type == 'percentage'
-          ? this.offerDetails.value > 100
-            ? (this.isValidValue = false)
-            : (this.isValidValue = true)
-          : (this.isValidValue = true);
-        this.ChangeDetectorRef.markForCheck();
-      }
-    });
   }
 
   onSubmit() {

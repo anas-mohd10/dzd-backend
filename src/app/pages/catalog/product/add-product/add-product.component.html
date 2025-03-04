@@ -459,7 +459,7 @@
             </form>
           </tab>
 
-          <tab heading="Product Medias">
+        <tab heading="Product Medias">
             <form [formGroup]="form">
               <div class="my-6">
                 <div class="mb-3 form-group">
@@ -485,8 +485,8 @@
                     </ng-container>
                     <div class="col-lg-2">
                       <div class="ratio ratio-1x1 h-auto w-100 rounded">
-                        <app-assets (mediaClicked)="productMediaClicked($event)" [image]="'cover'"
-                          [previewEnabled]="false"></app-assets>
+                        <app-assets (mediaClicked)="productMediaClicked($event)" [image]="'cover'" [multiSelect]="true"
+                          [previewEnabled]="false" [selectedItems]="images"></app-assets>
                       </div>
                     </div>
                   </div>

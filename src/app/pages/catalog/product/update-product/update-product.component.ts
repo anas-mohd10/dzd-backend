@@ -1,4 +1,10 @@
-import { ChangeDetectorRef, Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
+import {
+  ChangeDetectorRef,
+  Component,
+  OnInit,
+  TemplateRef,
+  ViewChild,
+} from '@angular/core';
 import { PageTasks } from '../../../../config/constants';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -18,7 +24,7 @@ import { BrandService } from 'src/app/includes/services/brand.service';
 interface StoreField {
   title: string;
   description: string;
-  isFilter: boolean
+  isFilter: boolean;
 }
 
 interface AddOnOption {
@@ -32,7 +38,7 @@ interface AddOns {
   description: string;
   isRequired: boolean;
   addOnType: string;
-  options: AddOnOption[]
+  options: AddOnOption[];
 }
 
 @Component({
@@ -40,7 +46,6 @@ interface AddOns {
   templateUrl: './update-product.component.html',
   styleUrls: ['./update-product.component.scss'],
 })
-
 export class UpdateProductComponent implements OnInit {
   task = PageTasks.ADD;
   isSaving: boolean = false;
@@ -74,7 +79,7 @@ export class UpdateProductComponent implements OnInit {
       { class: 'comic-sans-ms', name: 'Comic Sans MS' },
       { class: 'manrope', name: 'Sen' },
       { class: 'Sen', name: 'Sen' },
-      { class: 'noto-naskh-arabic', name: "Noto Naskh Arabic" },
+      { class: 'noto-naskh-arabic', name: 'Noto Naskh Arabic' },
       { class: 'be-vietnam-pro', name: 'Be Vietnam Pro' },
     ],
   };
@@ -86,7 +91,7 @@ export class UpdateProductComponent implements OnInit {
 
   brands: Array<any> = [];
   selectedBrand: any = null;
-  brandsMap: any = {}
+  brandsMap: any = {};
 
   productCategories: Array<any> = [];
   images: Array<any> = [];
@@ -142,28 +147,28 @@ export class UpdateProductComponent implements OnInit {
   siblingsRef?: BsModalRef;
   @ViewChild('siblingsTemplate') siblingsTemplateModal: TemplateRef<any>;
   isSkipUpdate: FormControl = new FormControl(false);
-  addOnsRef?: BsModalRef
-  addOnsKeyword: FormControl = new FormControl('', Validators.required)
-  addOnSearchResults: Array<any> = []
-  addOnProducts: Array<any> = []
-  addOnForm: FormGroup = new FormGroup({})
-  addOnOptionForm: FormGroup = new FormGroup({})
-  addOnTypes: Array<{ key: string, value: string }> = [
+  addOnsRef?: BsModalRef;
+  addOnsKeyword: FormControl = new FormControl('', Validators.required);
+  addOnSearchResults: Array<any> = [];
+  addOnProducts: Array<any> = [];
+  addOnForm: FormGroup = new FormGroup({});
+  addOnOptionForm: FormGroup = new FormGroup({});
+  addOnTypes: Array<{ key: string; value: string }> = [
     { key: 'Select', value: 'select' },
     { key: 'Radio', value: 'radio' },
     { key: 'Checkbox', value: 'checkbox' },
-  ]
-  isOptionSubmitted: boolean = false
-  addOnOptions: AddOnOption[] = []
-  addOns: AddOns[] = []
-  isAddOnForm: boolean = false
+  ];
+  isOptionSubmitted: boolean = false;
+  addOnOptions: AddOnOption[] = [];
+  addOns: AddOns[] = [];
+  isAddOnForm: boolean = false;
   isAddOnEditable: boolean = false;
   historyRef?: BsModalRef;
-  historyPageIndex: number = 1
-  historyPageSize: number = 5
-  historyLists: Array<any> = []
-  totalResults: number = 0
-  totalPages: number = 1
+  historyPageIndex: number = 1;
+  historyPageSize: number = 5;
+  historyLists: Array<any> = [];
+  totalResults: number = 0;
+  totalPages: number = 1;
 
   constructor(
     private ActivatedRoute: ActivatedRoute,
@@ -177,11 +182,9 @@ export class UpdateProductComponent implements OnInit {
     private BsModalService: BsModalService,
     private BrandService: BrandService
   ) {
-    this.addOnsKeyword.valueChanges
-      .pipe(debounceTime(500))
-      .subscribe(() => {
-        this.searchProducts()
-      })
+    this.addOnsKeyword.valueChanges.pipe(debounceTime(500)).subscribe(() => {
+      this.searchProducts();
+    });
   }
 
   openHistory(template: TemplateRef<any>) {
@@ -190,13 +193,13 @@ export class UpdateProductComponent implements OnInit {
       ignoreBackdropClick: true,
     });
 
-    this.fetchHistory()
+    this.fetchHistory();
   }
 
-  onHistoryPageChange(event: { pageIndex: number, pageSize: number }) {
-    this.historyPageIndex = event.pageIndex
-    this.historyPageSize = event.pageSize
-    this.fetchHistory()
+  onHistoryPageChange(event: { pageIndex: number; pageSize: number }) {
+    this.historyPageIndex = event.pageIndex;
+    this.historyPageSize = event.pageSize;
+    this.fetchHistory();
   }
 
   fetchHistory() {
@@ -207,153 +210,171 @@ export class UpdateProductComponent implements OnInit {
     ).subscribe({
       next: (res: any) => {
         if (res?.errorCode == 0) {
-          this.historyLists = res?.result?.results
-          this.totalResults = res?.result?.totalResults
-          this.totalPages = res?.result?.totalPages
-          this.ChangeDetectorRef.markForCheck()
-        } else { }
-      }, error: (err: any) => { }
-    })
+          this.historyLists = res?.result?.results;
+          this.totalResults = res?.result?.totalResults;
+          this.totalPages = res?.result?.totalPages;
+          this.ChangeDetectorRef.markForCheck();
+        } else {
+        }
+      },
+      error: (err: any) => { },
+    });
   }
 
   closeHistory() {
-    this.historyRef?.hide()
+    this.historyRef?.hide();
   }
 
   getFormatDate(date: any) {
-    return new Date(date).toLocaleDateString('en-US', { year: '2-digit', month: 'short', day: 'numeric' })
+    return new Date(date).toLocaleDateString('en-US', {
+      year: '2-digit',
+      month: 'short',
+      day: 'numeric',
+    });
   }
 
   getFormatTime(time: string) {
-    return new Date(time).toLocaleTimeString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true })
+    return new Date(time).toLocaleTimeString('en-US', {
+      hour: 'numeric',
+      minute: 'numeric',
+      hour12: true,
+    });
   }
 
   searchProducts() {
     if (!this.addOnsKeyword.value) {
-      this.addOnSearchResults = []
+      this.addOnSearchResults = [];
     }
 
     if (!this.addOnsKeyword.valid) {
-      return
+      return;
     }
 
     this.ProductService.searchProducts({
       name: this.addOnsKeyword.value,
       page: 1,
-      limit: 40
+      limit: 40,
     }).subscribe({
       next: (res: any) => {
         if (res?.errorCode == 0) {
-          this.addOnSearchResults = res?.result?.data
-          this.ChangeDetectorRef.markForCheck()
-        } else { }
-      }, error: (err: any) => { }
-    })
+          this.addOnSearchResults = res?.result?.data;
+          this.ChangeDetectorRef.markForCheck();
+        } else {
+        }
+      },
+      error: (err: any) => { },
+    });
   }
 
   openAddOns(template: TemplateRef<any>) {
-    this.addOnsRef = this.BsModalService.show(template, { class: 'modal-lg modal-dialog-centered' })
+    this.addOnsRef = this.BsModalService.show(template, {
+      class: 'modal-lg modal-dialog-centered',
+    });
   }
 
   closeAddOns() {
-    this.addOnsRef?.hide()
+    this.addOnsRef?.hide();
   }
 
   get addOnOptionControls() {
-    return this.addOnOptionForm.controls
+    return this.addOnOptionForm.controls;
   }
 
   addAddOnOption() {
     if (!this.addOnOptionForm.valid) {
-      this.isOptionSubmitted = true
-      return
+      this.isOptionSubmitted = true;
+      return;
     }
 
-    this.addOnOptions.push(this.addOnOptionForm.value)
-    this.isOptionSubmitted = false
-    this.HotToastService.success('Option added successfully')
-    this.addOnOptionForm.reset()
-    this.addOnOptionForm.patchValue({ product: "", description: "", price: "" })
+    this.addOnOptions.push(this.addOnOptionForm.value);
+    this.isOptionSubmitted = false;
+    this.HotToastService.success('Option added successfully');
+    this.addOnOptionForm.reset();
+    this.addOnOptionForm.patchValue({
+      product: '',
+      description: '',
+      price: '',
+    });
   }
 
   removeAddOnOption(index: number) {
-    this.HotToastService.error('Option removed successfully')
-    this.addOnOptions.splice(index, 1)
+    this.HotToastService.error('Option removed successfully');
+    this.addOnOptions.splice(index, 1);
   }
 
   removeAddOn(index: number) {
-    this.HotToastService.error('AddOn removed successfully')
-    this.addOns.splice(index, 1)
+    this.HotToastService.error('AddOn removed successfully');
+    this.addOns.splice(index, 1);
   }
 
   editAddOn(index: number) {
-    this.addOnForm.patchValue(this.addOns[index])
-    this.addOnOptions = this.addOns[index].options
-    this.isAddOnForm = true
-    this.isAddOnEditable = true
+    this.addOnForm.patchValue(this.addOns[index]);
+    this.addOnOptions = this.addOns[index].options;
+    this.isAddOnForm = true;
+    this.isAddOnEditable = true;
   }
 
   closeAddOnItems() {
-    this.addOnForm.reset()
+    this.addOnForm.reset();
     this.addOnForm.patchValue({
-      title: "",
-      description: "",
+      title: '',
+      description: '',
       isRequired: false,
-      addOnType: "select"
-    })
-    this.isAddOnForm = false
-    this.addOnOptions = []
-    this.addOnOptionForm.reset()
+      addOnType: 'select',
+    });
+    this.isAddOnForm = false;
+    this.addOnOptions = [];
+    this.addOnOptionForm.reset();
     this.addOnOptionForm.patchValue({
-      product: "",
-      description: "",
-      price: ""
-    })
+      product: '',
+      description: '',
+      price: '',
+    });
   }
 
   addAddOnItems() {
     if (!this.addOnForm.valid) {
-      return
+      return;
     }
 
     const addOn: AddOns = {
       ...this.addOnForm.value,
-      options: this.addOnOptions
-    }
+      options: this.addOnOptions,
+    };
 
-    this.addOns.push(addOn)
-    this.HotToastService.success('AddOn added successfully')
-    this.addOnForm.reset()
+    this.addOns.push(addOn);
+    this.HotToastService.success('AddOn added successfully');
+    this.addOnForm.reset();
     this.addOnForm.patchValue({
-      title: "",
-      description: "",
+      title: '',
+      description: '',
       isRequired: false,
-      addOnType: "select"
-    })
-    this.isAddOnForm = false
-    this.addOnOptions = []
-    this.addOnOptionForm.reset()
+      addOnType: 'select',
+    });
+    this.isAddOnForm = false;
+    this.addOnOptions = [];
+    this.addOnOptionForm.reset();
     this.addOnOptionForm.patchValue({
-      product: "",
-      description: "",
-      price: ""
-    })
+      product: '',
+      description: '',
+      price: '',
+    });
   }
 
-  toggleAddOnSwitch(event: { switchId: string, toggleState: boolean }) {
-    this.addOnForm.get('isRequired')?.setValue(event.toggleState)
+  toggleAddOnSwitch(event: { switchId: string; toggleState: boolean }) {
+    this.addOnForm.get('isRequired')?.setValue(event.toggleState);
   }
 
   onBrandChange(event: any) {
     if (event) {
       this.selectedBrand = event;
       this.form.patchValue({
-        brand: event.slug
+        brand: event.slug,
       });
     } else {
       this.selectedBrand = null;
       this.form.patchValue({
-        brand: null
+        brand: null,
       });
     }
   }
@@ -454,7 +475,7 @@ export class UpdateProductComponent implements OnInit {
           this.ChangeDetectorRef.markForCheck();
         }
       },
-      error: (err: any) => { }
+      error: (err: any) => { },
     });
   }
 
@@ -462,28 +483,63 @@ export class UpdateProductComponent implements OnInit {
     this.parentForm.get('thumbnail')?.setValue(event.path);
   }
 
-  productMediaClicked(event: any) {
-    let isExists: boolean = this.images.some(
-      (item: any) => item.path == event.path
+productMediaClicked(event: any) {
+  // For update product view, we need to check for both _id and path
+  const eventPath = event.path;
+  const eventId = event._id;
+  
+  // Check if the item already exists in our images array
+  let isExists: boolean = this.images.some(
+    (item: any) => (item._id && item._id === eventId) || (item.path && item.path === eventPath)
+  );
+  
+  if (isExists) {
+    // If it exists, remove it
+    this.images = this.images.filter(
+      (item: any) => !((item._id && item._id === eventId) || (item.path && item.path === eventPath))
     );
-    if (isExists) {
-      this.images = this.images.filter((item: any) => item.path != event.path);
-    } else {
-      this.images.push(event);
-    }
+    this.HotToastService.info('Image removed from product');
+  } else {
+    // If it doesn't exist, add it
+    this.images.push(event);
+    this.HotToastService.success('Image added to product');
   }
+  
+  // Update form control with the current images
+  if (this.form && this.form.get('files')) {
+    let files = this.images.map((item: any) => item.path) || [];
+    this.form.get('files')?.setValue(files);
+  }
+  
+  // Force change detection
+  if (this.ChangeDetectorRef) {
+    this.ChangeDetectorRef.markForCheck();
+  }
+}
 
-  productIconClicked(event: any, type: string = 'add') {
-    let isExists: boolean = this.icons.some((item: any) => item == (type == 'remove' ? event : event.path));
-    if (isExists) {
-      const index = this.icons.findIndex((item: any) => item == (type == 'remove' ? event : event.path));
-      if (index !== -1) {
-        this.icons.splice(index, 1);
-      }
-    } else {
-      this.icons.push(event.path);
+productIconClicked(event: any, type: string = 'add') {
+  const iconPath = type === 'remove' ? event : event.path;
+  
+  let isExists: boolean = this.icons.some(item => item === iconPath);
+  
+  if (isExists) {
+    // Remove the icon
+    const index = this.icons.findIndex(item => item === iconPath);
+    if (index !== -1) {
+      this.icons.splice(index, 1);
+      this.HotToastService.info('Icon removed from product');
     }
+  } else {
+    // Add the icon
+    this.icons.push(event.path);
+    this.HotToastService.success('Icon added to product');
   }
+  
+  // Force change detection
+  if (this.ChangeDetectorRef) {
+    this.ChangeDetectorRef.markForCheck();
+  }
+}
 
 
   removeProductMedia(image: any) {
@@ -502,7 +558,9 @@ export class UpdateProductComponent implements OnInit {
         this.categories = event;
       } else {
         // Single category selected
-        const isExists = this.categories.some(item => item.slug === event.slug);
+        const isExists = this.categories.some(
+          (item) => item.slug === event.slug
+        );
         if (isExists) {
           this.HotToastService.info('Category already added');
         } else {
@@ -511,19 +569,19 @@ export class UpdateProductComponent implements OnInit {
       }
     } else {
       // Remove category
-      this.categories = this.categories.filter(item => item.slug !== event);
+      this.categories = this.categories.filter((item) => item.slug !== event);
     }
 
     // Update selectedCategories
-    this.selectedCategories = this.categories.map(cat => cat.slug);
+    this.selectedCategories = this.categories.map((cat) => cat.slug);
 
     // Update form value if needed
     if (this.form) {
       this.form.patchValue({
         category: {
-          id: this.categories.map(cat => cat._id),
-          refid: this.categories.map(cat => cat.catid)
-        }
+          id: this.categories.map((cat) => cat._id),
+          refid: this.categories.map((cat) => cat.catid),
+        },
       });
     }
   }
@@ -589,23 +647,21 @@ export class UpdateProductComponent implements OnInit {
       slug: this.form.get('slug')?.value,
       addOns: this.addOns,
       files: this.images.map((file: any) => file.path),
-      relatedProducts: this.relatedProducts ? this.relatedProducts.map((product: any) => product?._id) : [],
+      relatedProducts: this.relatedProducts
+        ? this.relatedProducts.map((product: any) => product?._id)
+        : [],
       product: {
         id: this.productDetails?.parentId,
         refid: this.productDetails?.product?.refid,
       },
-      brand: this.selectedBrand ? {
-        name: this.selectedBrand.name,
-        slug: this.selectedBrand.slug,
-        thumbnail: this.selectedBrand.thumbnail,
-        cover: this.selectedBrand.cover,
-      } : null,
-      primaryCategory: this.primaryCategory.value ? {
-        name: this.primaryCategory.value.name,
-        slug: this.primaryCategory.value.slug,
-        thumbnail: this.primaryCategory.value.thumbnail,
-        cover: this.primaryCategory.value.cover,
-      } : null,
+      brand: this.selectedBrand
+        ? {
+          name: this.selectedBrand.name,
+          slug: this.selectedBrand.slug,
+          thumbnail: this.selectedBrand.thumbnail,
+          cover: this.selectedBrand.cover,
+        }
+        : null,
       parentId: this.productDetails?.parentId,
       tagIcons: this.tagIcons,
       attributes: this.attributes,
@@ -627,7 +683,8 @@ export class UpdateProductComponent implements OnInit {
       localizedDetails: {
         description: {
           ...this.productDetails.localizedDetails?.description,
-          [this.settings.primaryLang]: this.form.get('details.description')?.value,
+          [this.settings.primaryLang]: this.form.get('details.description')
+            ?.value,
         },
         features: {
           ...this.productDetails.localizedDetails?.features,
@@ -635,8 +692,9 @@ export class UpdateProductComponent implements OnInit {
         },
         longDescription: {
           ...this.productDetails.localizedDetails?.longDescription,
-          [this.settings.primaryLang]: this.form.get('details.longDescription')?.value,
-        }
+          [this.settings.primaryLang]: this.form.get('details.longDescription')
+            ?.value,
+        },
       },
       localizedMetaTitles: {
         ...this.productDetails.localizedMetaTitles,
@@ -705,9 +763,6 @@ export class UpdateProductComponent implements OnInit {
         }
       },
       error: (err: any) => {
-        // Re-enable the button on error
-        this.isSaving = false;
-        this.ChangeDetectorRef.markForCheck();
         this.HotToastService.error(err.error.message);
       },
     });
@@ -778,12 +833,12 @@ export class UpdateProductComponent implements OnInit {
 
   handleProductBanner(event: any) {
     this.form.get('productBanner')?.setValue(event.path);
-    this.productBannerDetails = event.path
+    this.productBannerDetails = event.path;
   }
 
   removeProductBanner() {
     this.form.get('productBanner')?.setValue(null);
-    this.productBannerDetails = ''
+    this.productBannerDetails = '';
   }
 
   get formControls() {
@@ -806,24 +861,27 @@ export class UpdateProductComponent implements OnInit {
   //   this.BrandService.getActiveBrands().subscribe({
   //   next: (res: any) => {
   //     if (res.errorCode == 0) {
-  //       this.brands = res.result;        
+  //       this.brands = res.result;
   //       if (this.productDetails?.brand) {
   //         this.selectedBrand = this.brands.find(brand => brand.slug === this.productDetails.brand.slug);
   //       }
 
   //       this.ChangeDetectorRef.markForCheck();
   //     }
-  //   }, 
+  //   },
   //   error: (err: any) => { }
   // });
-
 
   ngOnInit(): void {
     this.base = environment.base;
 
     this.BrandService.getActiveBrands().subscribe({
       next: (res: any) => {
-        if (res.errorCode === 0 && Array.isArray(res.result) && res.result.length > 0) {
+        if (
+          res.errorCode === 0 &&
+          Array.isArray(res.result) &&
+          res.result.length > 0
+        ) {
           this.brands = res.result.filter((brand: any) => brand && brand.slug);
 
           if (this.productDetails?.brand) {
@@ -839,7 +897,7 @@ export class UpdateProductComponent implements OnInit {
       },
       error: (err: any) => {
         console.error('Error fetching brands:', err);
-      }
+      },
     });
 
     this.AppSettingsService.getGeneralSettingsbyId('1').subscribe({
@@ -848,15 +906,17 @@ export class UpdateProductComponent implements OnInit {
           this.settings = res?.result;
           this.languages = res?.result?.languages;
           this.ChangeDetectorRef.markForCheck();
-        } else { }
-      }, error: (err: any) => { }
+        } else {
+        }
+      },
+      error: (err: any) => { },
     });
 
     this.addOnOptionForm = new FormGroup({
       product: new FormControl('', Validators.required),
       price: new FormControl('', Validators.required),
       description: new FormControl(''),
-    })
+    });
 
     this.addOnForm = new FormGroup({
       title: new FormControl('', Validators.required),
@@ -864,7 +924,7 @@ export class UpdateProductComponent implements OnInit {
       isRequired: new FormControl(false),
       addOnType: new FormControl('select'),
       options: new FormControl([]),
-    })
+    });
 
     this.attributeForm = new FormGroup({
       type: new FormControl('text'),
@@ -882,7 +942,7 @@ export class UpdateProductComponent implements OnInit {
     this.storeFieldForm = new FormGroup({
       title: new FormControl('', Validators.required),
       description: new FormControl('', Validators.required),
-      isFilter: new FormControl(false)
+      isFilter: new FormControl(false),
     });
 
     this.productSlug = this.ActivatedRoute.snapshot.queryParams.product || '';
@@ -892,51 +952,91 @@ export class UpdateProductComponent implements OnInit {
         if (res?.errorCode == 0) {
           this.form.patchValue(res?.result);
           // Check if searchKeywords exist and are not empty
-          this.searchKeywords = (res?.result?.searchKeywords || []).filter(Boolean);
+          this.searchKeywords = (res?.result?.searchKeywords || []).filter(
+            Boolean
+          );
           this.form.get('searchKeywords')?.setValue(this.searchKeywords);
 
           this.productDetails = res?.result;
-          this.images = res?.result?.files ? res?.result?.files : [];
-          // Remove null and undefined values from array of images
-          this.images = this.images.map((item) => {
-            if (item !== null) {
-              return {
-                path: item,
-              };
-            }
-          }).filter(Boolean);
+         this.form.patchValue(res?.result);
+  
+  if (res?.result?.files && Array.isArray(res?.result?.files)) {
+  this.images = res?.result?.files
+    .filter((item: any) => item !== null && item !== undefined)
+    .map((item: any) => {
+      // If the item is already an object with a path property, use it
+      if (typeof item === 'object' && item !== null && item.path) {
+        return item;
+      }
+      // Otherwise, create a new object with a path property
+      return {
+        path: typeof item === 'string' ? item : '',
+        _id: typeof item === 'object' && item !== null && item._id ? item._id : null
+      };
+    });
+} else {
+  this.images = [];
+}
 
-          this.primaryCategory.setValue(res?.result?.primaryCategory);
+          // Set the primary category
+          if (res?.result?.primaryCategory) {
+            this.primaryCategory.setValue(res?.result?.primaryCategory);
+          } else {
+            if (res?.result?.categories && res?.result?.categories.length > 0) {
+              const primaryCategoryDoc: any = res?.result?.categories[0];
+              this.primaryCategory.setValue(primaryCategoryDoc);
+            }
+          }
 
           if (res.result?.brand) {
-            this.selectedBrand = this.brands.find(brand => brand.slug === res.result.brand.slug);
-            this.form.patchValue({
-              brand: res.result.brand.slug
-            });
+            this.selectedBrand = this.brands.find((brand) => brand.slug === res.result.brand.slug);
+            this.form.patchValue({ brand: res.result.brand.slug });
           }
 
           this.storeFields = res?.result?.storeFrontFields;
           this.tagIcons = res?.result?.tagIcons ? res?.result?.tagIcons : [];
           this.categories = res?.result?.categories;
           this.categories = res?.result?.categories || [];
-          this.selectedCategories = this.categories.map(cat => cat.slug);
+          this.selectedCategories = this.categories.map((cat) => cat.slug);
           this.parentDetails = res?.result?.product?.id;
           this.productBannerDetails = res?.result?.productBanner && res?.result?.productBanner;
 
           this.form.patchValue({
             productBanner: res?.result?.productBanner?._id,
             brand: res?.result?.brand?.slug,
-            name: res.result.localizedNames?.[this.settings.primaryLang] || res.result?.name,
-            overview: res.result.localizedOverview?.[this.settings.primaryLang] || res.result?.overview,
-            origin: res.result.localizedOrigin?.[this.settings.primaryLang] || res.result?.origin,
+            name:
+              res.result.localizedNames?.[this.settings.primaryLang] ||
+              res.result?.name,
+            overview:
+              res.result.localizedOverview?.[this.settings.primaryLang] ||
+              res.result?.overview,
+            origin:
+              res.result.localizedOrigin?.[this.settings.primaryLang] ||
+              res.result?.origin,
             details: {
-              description: res.result.localizedDetails?.description?.[this.settings.primaryLang] || res.result?.details?.description,
-              features: res.result.localizedDetails?.features?.[this.settings.primaryLang] || res.result?.details?.features,
-              longDescription: res.result.localizedDetails?.longDescription?.[this.settings.primaryLang] || res.result?.details?.longDescription,
+              description:
+                res.result.localizedDetails?.description?.[
+                this.settings.primaryLang
+                ] || res.result?.details?.description,
+              features:
+                res.result.localizedDetails?.features?.[
+                this.settings.primaryLang
+                ] || res.result?.details?.features,
+              longDescription:
+                res.result.localizedDetails?.longDescription?.[
+                this.settings.primaryLang
+                ] || res.result?.details?.longDescription,
             },
-            metaTitle: res?.result?.localizedMetaTitles?.[this.settings.primaryLang] || res.result?.metaTitle,
-            metaDescription: res.result.localizedMetaDescriptions?.[this.settings.primaryLang] || res.result?.metaDescription,
-            metaKeywords: res.result.localizedMetaKeywords?.[this.settings.primaryLang] || res.result?.metaKeywords,
+            metaTitle:
+              res?.result?.localizedMetaTitles?.[this.settings.primaryLang] ||
+              res.result?.metaTitle,
+            metaDescription:
+              res.result.localizedMetaDescriptions?.[
+              this.settings.primaryLang
+              ] || res.result?.metaDescription,
+            metaKeywords:
+              res.result.localizedMetaKeywords?.[this.settings.primaryLang] ||
+              res.result?.metaKeywords,
           });
 
           this.attributes = res?.result?.attributes;
@@ -945,9 +1045,10 @@ export class UpdateProductComponent implements OnInit {
           this.thumbnailPreview = res?.result?.thumbnail;
           this.ChangeDetectorRef.markForCheck();
         }
-      }, error: (err: any) => {
+      },
+      error: (err: any) => {
         this.HotToastService.error(err?.message);
-      }
+      },
     });
 
     this.parentForm = new FormGroup({
@@ -985,8 +1086,14 @@ export class UpdateProductComponent implements OnInit {
           Validators.required,
           Validators.pattern('^\\d+(\\.\\d+)?$'),
         ]),
-        offer: new FormControl('', Validators.pattern('^-?[0-9]\\d*(\\.\\d+)?$')),
-        selling: new FormControl('', Validators.pattern('^-?[0-9]\\d*(\\.\\d+)?$')),
+        offer: new FormControl(
+          '',
+          Validators.pattern('^-?[0-9]\\d*(\\.\\d+)?$')
+        ),
+        selling: new FormControl(
+          '',
+          Validators.pattern('^-?[0-9]\\d*(\\.\\d+)?$')
+        ),
       }),
       slug: new FormControl('', [Validators.required]),
       stock: new FormControl('', [
@@ -1073,7 +1180,11 @@ export class UpdateProductComponent implements OnInit {
       return;
     }
 
-    this.storeFields.push(this.storeFieldForm.value);
+    // Get the form values
+    const formValue = this.storeFieldForm.value;
+
+    // Save the modified form value
+    this.storeFields.push(formValue);
     this.storeFieldForm.reset();
     this.isStoreSubmitted = false;
   }
@@ -1140,30 +1251,45 @@ export class UpdateProductComponent implements OnInit {
     });
   }
 
-  handleTagIcons(event: any) {
-    if (this.tagIcons.includes(event)) {
-      this.tagIcons = this.tagIcons.filter((item: any) => item != event.path);
-    } else {
-      this.tagIcons.push(event.path);
-    }
+ handleTagIcons(event: any) {
+  const tagPath = event.path;
+  
+  if (this.tagIcons.includes(tagPath)) {
+    this.tagIcons = this.tagIcons.filter(item => item !== tagPath);
+    this.HotToastService.info('Tag removed from product');
+  } else {
+    this.tagIcons.push(tagPath);
+    this.HotToastService.success('Tag added to product');
   }
-
-  removeTagIcons(icon: any) {
-    this.tagIcons = this.tagIcons.filter((item: any) => item != icon);
+  
+  // Force change detection
+  if (this.ChangeDetectorRef) {
+    this.ChangeDetectorRef.markForCheck();
   }
+}
 
-  logPagination(event: { pageIndex: number, pageSize: number }) {
-    this.historyPageIndex = event.pageIndex
-    this.historyPageSize = event.pageSize
+removeTagIcons(icon: any) {
+  this.tagIcons = this.tagIcons.filter(item => item !== icon);
+  this.HotToastService.info('Tag removed from product');
+  
+  // Force change detection
+  if (this.ChangeDetectorRef) {
+    this.ChangeDetectorRef.markForCheck();
+  }
+}
 
-    this.fetchHistory()
+  logPagination(event: { pageIndex: number; pageSize: number }) {
+    this.historyPageIndex = event.pageIndex;
+    this.historyPageSize = event.pageSize;
+
+    this.fetchHistory();
   }
 
   handleAttributeImage(event: any) {
     console.log('Image event:', event);
     if (event && event.path) {
       this.attributeForm.patchValue({
-        value: event.path
+        value: event.path,
       });
       this.ChangeDetectorRef.markForCheck();
     }
@@ -1171,7 +1297,7 @@ export class UpdateProductComponent implements OnInit {
 
   removeAttributeImage() {
     this.attributeForm.patchValue({
-      value: null
+      value: null,
     });
     this.ChangeDetectorRef.markForCheck();
   }
