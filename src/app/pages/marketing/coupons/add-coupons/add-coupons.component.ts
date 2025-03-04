@@ -132,22 +132,22 @@ export class AddCouponsComponent implements OnInit {
 
   applyCoupon(type: string) {
     switch (type) {
-      case 'product':
+      case 'products':
         this.categories = []
         this.collections = []
         this.brands = []
         break
-      case 'collection':
+      case 'collections':
         this.categories = []
         this.products = []
         this.brands = []
         break
-      case 'category':
+      case 'categories':
         this.products = []
         this.collections = []
         this.brands = []
         break
-      case 'brand':
+      case 'brands':
         this.products = []
         this.collections = []
         this.categories = []
