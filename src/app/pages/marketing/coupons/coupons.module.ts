@@ -7,7 +7,6 @@ import { AddCouponsComponent } from './add-coupons/add-coupons.component';
 import { UpdateCouponsComponent } from './update-coupons/update-coupons.component';
 import { DataTablesModule } from 'angular-datatables';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { ToastrModule } from 'ngx-toastr';
 import { ImageCropperModule } from 'ngx-image-cropper';
 import { TabsModule } from 'ngx-bootstrap/tabs';
 import { NgSelectModule } from '@ng-select/ng-select';
@@ -29,12 +28,6 @@ import { SharedModule } from '../../shared/shared.module';
     SharedModule,
     ReactiveFormsModule,
     TabsModule,
-    ToastrModule.forRoot({
-      positionClass: 'toast-bottom-right',
-      progressAnimation: 'decreasing',
-      preventDuplicates: true,
-      progressBar: true,
-    }),
   ]
 })
 export class CouponsModule { }

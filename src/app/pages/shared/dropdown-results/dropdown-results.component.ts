@@ -13,6 +13,7 @@ import { environment } from 'src/environments/environment';
 export class DropdownResultsComponent implements OnInit, OnChanges {
   @Input("type") type: string = "products";
   @Output("onSelect") onSelect: EventEmitter<any> = new EventEmitter();
+  @Input("dropdownInputs") dropdownInputs: any[] = [];
   keyword: FormControl = new FormControl("", Validators.required);
   dropdownResults: Array<any> = [];
   isSubmitted: boolean = false;
@@ -31,19 +32,32 @@ export class DropdownResultsComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-
   }
 
   ngOnInit(): void {
   }
 
-  onSelectItem(item: any) {
+  isItemExists(item: any) {
+    return this.dropdownInputs.some((input: any) => input._id === item._id)
+  }
+
+  onSelectItem(item: any, isExists: boolean) {
     switch (this.type) {
       case "products":
       case "brands":
       case "collections":
       case "categories":
-        this.onSelect.emit(item);
+        if (isExists) {
+          this.HotToastService.info("Item removed successfully")
+          this.dropdownInputs = this.dropdownInputs.filter((input: any) => input._id !== item._id);
+        } else {
+          this.HotToastService.success("Item added successfully")
+          this.dropdownInputs.push(item);
+        }
+        this.ChangeDetectorRef.markForCheck()
+        this.onSelect.emit({ dropdownInputs: this.dropdownInputs });
+        this.keyword.setValue("")
+        this.dropdownResults = []
         break;
       default:
         this.HotToastService.error("Invalid type selected. Please try again.")

@@ -16,42 +16,32 @@ import { ProductService } from 'src/app/includes/services/product.service';
   styleUrls: ['./add-coupons.component.scss']
 })
 export class AddCouponsComponent implements OnInit {
-  form: FormGroup;
+  form: FormGroup = new FormGroup({});
   editMode = false;
   isSubmitted: boolean;
+  isLoading: boolean = false;
   appRoute = appRoutes;
-  
-
   categories: any = []; //Array of category ids
-  categoriesData: any = []; //Data fetched from database
-  category: any = []; //Array of categorty name and id
   products: any = []; //Array of product ids
-  productsData: any = []; //Data fetched from database
-  product: any = []; //Array of product name and id
   collections: any = []; //Array of collection ids
-  collectionsData: any = []; //Data fetched from database
   brands: any = []; //Array of collection ids
-  brandsData: any = []; //Data fetched from database
-  collection: any = []; //Array of collection name and id
-
-  error_message: string;
+  slug: string = '';
   fromDate: string;
   toDate: string
   isValidValue: boolean = true
-  settings: any = {}
   startDate: string = new Date().toISOString().split('T')[0];
+  couponDetails: any;
+  isOngoing: boolean = false;
+  settings: any = {}
   isLimited: boolean = true
+  dropdownInputs: Array<any> = []
 
   constructor(
-    private productService: ProductService,
-    private categoryService: CategoryService,
-    private collectionService: CollectionService,
     private couponsService: CouponsService,
     private router: Router,
     private HotToastService: HotToastService,
     private AppSettingsService: AppSettingsService,
     private ChangeDetectorRef: ChangeDetectorRef,
-    private BrandService: BrandService
   ) { }
 
   ngOnInit(): void {
@@ -96,11 +86,6 @@ export class AddCouponsComponent implements OnInit {
       platformType: new FormControl('both', Validators.required),
     });
 
-    this.getProducts()
-    this.getCategories()
-    this.getCollections()
-    this.getBrands()
-
     this.form.get('fromDate')?.setValue(this.fromDate)
     this.form.get('lastDate')?.setValue(this.toDate)
   }
@@ -109,61 +94,40 @@ export class AddCouponsComponent implements OnInit {
     return this.form.controls;
   }
 
-  //Common response
-  onSelect(item: any) {
-    console.log("item", item)
-    if(this.form.get('criteriaType')?.value == 'products'){
-      if(this.products.includes(item)){
-        this.products = this.products.filter((i: any) => i?._id !== item?._id)
-      }else{
-        this.products.push(item)
-      }
-    }
-    if(this.form.get('criteriaType')?.value == 'collections'){
-      if(this.collections.includes(item)){
-        this.collections = this.collections.filter((i: any) => i?._id !== item?._id)
-      }else{
-        this.collections.push(item)
-      }
-    }
-    if(this.form.get('criteriaType')?.value == 'categories'){
-      if(this.categories.includes(item)){
-        this.categories = this.categories.filter((i: any) => i?._id !== item?._id)
-      }else{
-        this.categories.push(item)
-      }
-    }
-    if(this.form.get('criteriaType')?.value == 'brands'){
-      if(this.brands.includes(item)){
-        this.brands = this.brands.filter((i: any) => i?._id !== item?._id)
-      }else{
-        this.brands.push(item)
-      }
+  onSelect(event: { dropdownInputs: any[] }) {
+    this.assignDropdownInputs(event.dropdownInputs)
+    this.ChangeDetectorRef.markForCheck()
+  }
+
+  assignDropdownInputs(dropdownInputs: any[]) {
+    switch (this.form.get('criteriaType')?.value) {
+      case 'products':
+        this.products = dropdownInputs
+        break;
+      case 'collections':
+        this.collections = dropdownInputs
+        break;
+      case 'categories':
+        this.categories = dropdownInputs
+        break;
+      case 'brands':
+        this.brands = dropdownInputs
+        break;
     }
   }
 
-  getProducts() {
-    this.productService.getActiveProduct().subscribe((res: any) => {
-      this.productsData = res?.result
-    })
-  }
+  onRemoveSelected(item: any) {
+    const isExists = this.dropdownInputs.some((input: any) => input._id === item._id)
+    if (isExists) {
+      this.HotToastService.info("Item removed successfully")
+      this.dropdownInputs = this.dropdownInputs.filter((input: any) => input._id !== item._id);
+    } else {
+      this.HotToastService.success("Item added successfully")
+      this.dropdownInputs.push(item);
+    }
 
-  getCollections() {
-    this.collectionService.getActiveCollection().subscribe((res: any) => {
-      this.collectionsData = res?.result
-    })
-  }
-
-  getCategories() {
-    this.categoryService.getActiveCategory().subscribe((res: any) => {
-      this.categoriesData = res?.result
-    })
-  }
-
-  getBrands() {
-    this.BrandService.getActiveBrands().subscribe((res: any) => {
-      this.brandsData = res?.result
-    })
+    this.assignDropdownInputs(this.dropdownInputs)
+    this.ChangeDetectorRef.markForCheck()
   }
 
   applyCoupon(type: string) {
@@ -189,6 +153,9 @@ export class AddCouponsComponent implements OnInit {
         this.categories = []
         break
     }
+    this.dropdownInputs = []
+    this.form.get('criteriaType')?.setValue(type);
+    this.ChangeDetectorRef.markForCheck();
   }
 
   validateValue(_val: any) {
