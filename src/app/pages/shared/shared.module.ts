@@ -12,6 +12,7 @@ import { SwitchComponent } from './switch/switch.component';
 import { StartRatingComponent } from './start-rating/start-rating.component';
 import { NoResultsComponent } from './no-results/no-results.component';
 import { RedirectionResultsComponent } from './redirection-results/redirection-results.component';
+import { DropdownResultsComponent } from './dropdown-results/dropdown-results.component';
 
 @NgModule({
   declarations: [
@@ -24,7 +25,8 @@ import { RedirectionResultsComponent } from './redirection-results/redirection-r
     SwitchComponent,
     StartRatingComponent,
     NoResultsComponent,
-    RedirectionResultsComponent
+    RedirectionResultsComponent,
+    DropdownResultsComponent
   ],
   imports: [
     CommonModule,
@@ -42,6 +44,7 @@ import { RedirectionResultsComponent } from './redirection-results/redirection-r
     SwitchComponent,
     StartRatingComponent,
     NoResultsComponent,
+    DropdownResultsComponent,
     RedirectionResultsComponent
   ]
 })

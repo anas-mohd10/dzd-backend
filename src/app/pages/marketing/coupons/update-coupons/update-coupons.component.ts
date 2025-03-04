@@ -2,11 +2,7 @@ import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { appRoutes } from 'src/app/config/routes';
-import { CategoryService } from 'src/app/includes/services/category.service';
-import { CollectionService } from 'src/app/includes/services/collection.service';
 import { CouponsService } from 'src/app/includes/services/coupons.service';
-import { ProductService } from 'src/app/includes/services/product.service';
-import { BrandService } from 'src/app/includes/services/brand.service';
 import { HotToastService } from '@ngneat/hot-toast';
 
 @Component({
@@ -18,60 +14,70 @@ export class UpdateCouponsComponent implements OnInit {
   form: FormGroup;
   editMode = false;
   isSubmitted: boolean;
-  isLoading: boolean = true;
+  isLoading: boolean = false;
   appRoute = appRoutes;
-
   categories: any = []; //Array of category ids
-  categoriesData: any = []; //Data fetched from database
-  category: any = []; //Array of categorty name and id
   products: any = []; //Array of product ids
-  productsData: any = []; //Data fetched from database
-  product: any = []; //Array of product name and id
   collections: any = []; //Array of collection ids
-  collectionsData: any = []; //Data fetched from database
   brands: any = []; //Array of collection ids
-  brandsData: any = []; //Data fetched from database
-  collection: any = []; //Array of collection name and id
-
   slug: string = '';
-  error_message: string;
   fromDate: string;
   toDate: string
   isValidValue: boolean = true
-  settings: any = {}
   startDate: string = new Date().toISOString().split('T')[0];
-  isLimited: boolean = true;
   couponDetails: any;
   isOngoing: boolean = false;
+  dropdownInputs: Array<any> = []
 
   constructor(
-    private ProductService: ProductService,
-    private CategoryService: CategoryService,
-    private CollectionService: CollectionService,
     private CouponsService: CouponsService,
     private formBuilder: FormBuilder,
     private ActivatedRoute: ActivatedRoute,
     private Router: Router,
     private HotToastService: HotToastService,
     private ChangeDetectorRef: ChangeDetectorRef,
-    private BrandService: BrandService
   ) { }
 
   ngOnInit(): void {
     this.initForm();
     this.slug = this.ActivatedRoute.snapshot.queryParams.coupon || ''
-    this.isLoading = true;
-    const requests = [
-      this.getProducts(),
-      this.getCategories(),
-      this.getCollections(), 
-      this.getBrands(),
-      this.getCouponBySlug()
-    ];
-    Promise.all(requests).finally(() => {
-      this.isLoading = false;
-      this.ChangeDetectorRef.markForCheck();
-    });
+    this.getCouponBySlug()
+  }
+
+  onSelect(event: { dropdownInputs: any[] }) {
+    this.assignDropdownInputs(event.dropdownInputs)
+    this.ChangeDetectorRef.markForCheck()
+  }
+
+  assignDropdownInputs(dropdownInputs: any[]) {
+    switch (this.form.get('criteriaType')?.value) {
+      case 'products':
+        this.products = dropdownInputs
+        break;
+      case 'collections':
+        this.collections = dropdownInputs
+        break;
+      case 'categories':
+        this.categories = dropdownInputs
+        break;
+      case 'brands':
+        this.brands = dropdownInputs
+        break;
+    }
+  }
+
+  onRemoveSelected(item: any) {
+    const isExists = this.dropdownInputs.some((input: any) => input._id === item._id)
+    if (isExists) {
+      this.HotToastService.info("Item removed successfully")
+      this.dropdownInputs = this.dropdownInputs.filter((input: any) => input._id !== item._id);
+    } else {
+      this.HotToastService.success("Item added successfully")
+      this.dropdownInputs.push(item);
+    }
+
+    this.assignDropdownInputs(this.dropdownInputs)
+    this.ChangeDetectorRef.markForCheck()
   }
 
   initForm() {
@@ -97,45 +103,12 @@ export class UpdateCouponsComponent implements OnInit {
       countPerUser: ['', Validators.pattern("^[0-9]*$")],
       isMaxRedemptionEnabled: ['false'],
       maxRedemptionValue: ['', [Validators.pattern("^[0-9]*$")]],
-      platformType: ['both'], 
+      platformType: ['both'],
     });
   }
 
   get formControls() {
     return this.form.controls;
-  }
-
-  getProducts() {
-    return new Promise<void>((resolve) => {
-      this.ProductService.getActiveProduct().subscribe({
-        next: (res: any) => {
-          this.productsData = res?.result;
-          this.ChangeDetectorRef.markForCheck();
-          resolve();
-        },
-        error: () => resolve()
-      });
-    });
-  }
-
-  getCollections() {
-    this.CollectionService.getActiveCollection().subscribe((res: any) => {
-      this.collectionsData = res?.result
-      this.ChangeDetectorRef.markForCheck()
-    })
-  }
-
-  getCategories() {
-    this.CategoryService.getActiveCategory().subscribe((res: any) => {
-      this.categoriesData = res?.result
-      this.ChangeDetectorRef.markForCheck()
-    })
-  }
-
-  getBrands() {
-    this.BrandService.getActiveBrands().subscribe((res: any) => {
-      this.brandsData = res?.result
-    })
   }
 
   getCouponBySlug() {
@@ -147,11 +120,11 @@ export class UpdateCouponsComponent implements OnInit {
       this.form.get("value")?.setValue(this.couponDetails.value)
       this.form.get("fromDate")?.setValue(this.couponDetails.fromDate.split('T')[0])
       this.form.get("lastDate")?.setValue(this.couponDetails.lastDate.split('T')[0])
+      this.form.get("couponType")?.setValue(this.couponDetails?.details?.type)
+      this.form.get("couponValue")?.setValue(this.couponDetails?.details?.value)
       this.form.get("maxDiscount")?.setValue(this.couponDetails.maxDiscount)
       this.form.get("minPurchase")?.setValue(this.couponDetails.minPurchase)
       this.form.get("minimumType")?.setValue(this.couponDetails.minimumType)
-      this.form.get("couponType")?.setValue(this.couponDetails?.details?.type)
-      this.form.get("couponValue")?.setValue(this.couponDetails?.details?.value)
       this.form.get("isActive")?.setValue(this.couponDetails.isActive)
       this.form.get("isVisibility")?.setValue(this.couponDetails.isVisibility)
       this.form.get("countPerUser")?.setValue(this.couponDetails.countPerUser)
@@ -164,12 +137,6 @@ export class UpdateCouponsComponent implements OnInit {
         this.form.get('fromDate')?.disable()
       }
 
-      this.form.get('background')?.setValue(this.couponDetails.style.background);
-      this.form.get('border')?.setValue(this.couponDetails.style.border);
-      this.form.get('radius')?.setValue(this.couponDetails.style.radius);
-      this.form.get('color')?.setValue(this.couponDetails.style.text.color);
-      this.form.get('fontSize')?.setValue(this.couponDetails.style.text.fontSize);
-      this.form.get('fontWeight')?.setValue(this.couponDetails.style.text.fontWeight);
       this.collections = this.couponDetails.collections
       this.products = this.couponDetails.products
       this.categories = this.couponDetails.categories
@@ -180,6 +147,15 @@ export class UpdateCouponsComponent implements OnInit {
       this.setCouponTypeIfNotEmpty(this.collections, 'collections');
       this.setCouponTypeIfNotEmpty(this.brands, 'brands');
 
+      const typeKeys: { [key: string]: any[] } = {
+        "products": this.products,
+        "collections": this.collections,
+        "categories": this.categories,
+        "brands": this.brands
+      }
+
+      this.dropdownInputs = typeKeys[this.form.get('criteriaType')?.value]
+      
       this.ChangeDetectorRef.markForCheck()
       this.isValidValue = true
 
@@ -199,41 +175,42 @@ export class UpdateCouponsComponent implements OnInit {
     }
   }
 
- applyCoupon(type: string) {
-  if (!type) return;
-  if (type !== this.form.get('criteriaType')?.value) {
-    switch (type) {
-      case 'complete':
-        this.products = [];
-        this.collections = [];
-        this.categories = [];
-        this.brands = [];
-        break;
-      case 'products':
-        this.collections = [];
-        this.categories = [];
-        this.brands = [];
-        break;
-      case 'collections':
-        this.products = [];
-        this.categories = [];
-        this.brands = [];
-        break;
-      case 'categories':
-        this.products = [];
-        this.collections = [];
-        this.brands = [];
-        break;
-      case 'brands':
-        this.products = [];
-        this.collections = [];
-        this.categories = [];
-        break;
+  applyCoupon(type: string) {
+    if (!type) return;
+    if (type !== this.form.get('criteriaType')?.value) {
+      switch (type) {
+        case 'complete':
+          this.products = [];
+          this.collections = [];
+          this.categories = [];
+          this.brands = [];
+          break;
+        case 'products':
+          this.collections = [];
+          this.categories = [];
+          this.brands = [];
+          break;
+        case 'collections':
+          this.products = [];
+          this.categories = [];
+          this.brands = [];
+          break;
+        case 'categories':
+          this.products = [];
+          this.collections = [];
+          this.brands = [];
+          break;
+        case 'brands':
+          this.products = [];
+          this.collections = [];
+          this.categories = [];
+          break;
+      }
     }
+    this.dropdownInputs = []
+    this.form.get('criteriaType')?.setValue(type);
+    this.ChangeDetectorRef.markForCheck();
   }
-  this.form.get('criteriaType')?.setValue(type);
-  this.ChangeDetectorRef.markForCheck();
-}
 
   setCouponTypeIfNotEmpty(array: any[], type: string = 'complete') {
     if (array.length > 0) {
@@ -241,134 +218,77 @@ export class UpdateCouponsComponent implements OnInit {
     }
   }
 
-
   onSubmit() {
-  if (!this.form.valid) {
-    this.isSubmitted = true;
-    return;
-  }
-
-  // Get the current criteria type
-  const criteriaType = this.form.get('criteriaType')?.value;
-
-  // Ensure arrays are cleared based on criteria type before submission
-  if (criteriaType === 'complete') {
-    this.products = [];
-    this.collections = [];
-    this.categories = [];
-    this.brands = [];
-  }
-
-  // Create the payload
-  const payload = {
-    title: this.form.get('title')?.value,
-    code: this.form.get('code')?.value,
-    fromDate: this.form.get('fromDate')?.value,
-    lastDate: this.form.get('lastDate')?.value,
-    minPurchase: this.form.get('minPurchase')?.value,
-    minimumType: this.form.get('minimumType')?.value,
-    value: this.form.get('value')?.value,
-    type: this.form.get('type')?.value,
-    categories: criteriaType === 'categories' ? this.categories : [],
-    products: criteriaType === 'products' ? this.products : [],
-    collections: criteriaType === 'collections' ? this.collections : [],
-    brands: criteriaType === 'brands' ? this.brands : [],
-    countPerUser: this.form.get('countPerUser')?.value,
-    details: {
-      type: this.form.get('couponType')?.value,
-      value: this.form.get('couponValue')?.value,
-    },
-    refid: this.slug,
-    couponType: criteriaType === 'complete' ? 'complete' : 'partial',
-    isVisibility: this.form.get('isVisibility')?.value,
-    isActive: this.form.get('isActive')?.value,
-    couponid: this.slug,
-    style: {
-      background: this.form.get('background')?.value,
-      border: this.form.get('border')?.value,
-      radius: this.form.get('radius')?.value,
-      text: {
-        color: this.form.get('color')?.value,
-        fontSize: this.form.get('fontSize')?.value,
-        fontWeight: this.form.get('fontWeight')?.value,
-      }
-    },
-    maxRedemptionAmount: {
-      isEnabled: this.form.get('isMaxRedemptionEnabled')?.value === 'true',
-      value: this.form.get('maxRedemptionValue')?.value || null
-    },
-    platformType: this.form.get('platformType')?.value, 
-  };
-
-  // Submit the payload
-  this.CouponsService.updateCoupon(payload).subscribe({
-    next: (res: any) => {
-      if (res.success) {
-        this.HotToastService.success(res?.message);
-        this.Router.navigate([this.appRoute.coupons.COUPONS_LIST]);
-      } else {
-        this.HotToastService.error(res?.message);
-      }
-    },
-    error: (err: any) => {
-      this.HotToastService.error(err?.message);
+    if (!this.form.valid) {
+      this.isSubmitted = true;
+      return;
     }
-  });
-}
-  // onSubmit() {
-  //   if (!this.form.valid) {
-  //     this.isSubmitted = true;
-  //     return;
-  //   }
 
-  //   this.CouponsService.updateCoupon({
-  //     title: this.form.get('title')?.value,
-  //     code: this.form.get('code')?.value,
-  //     fromDate: this.form.get('fromDate')?.value,
-  //     lastDate: this.form.get('lastDate')?.value,
-  //     minPurchase: this.form.get('minPurchase')?.value,
-  //     minimumType: this.form.get('minimumType')?.value,
-  //     value: this.form.get('value')?.value,
-  //     type: this.form.get('type')?.value,
-  //     categories: this.categories ? this.categories : [],
-  //     products: this.products ? this.products : [],
-  //     collections: this.collections ? this.collections : [],
-  //     brands: this.brands ? this.brands : [],
-  //     countPerUser: this.form.get('countPerUser')?.value,
-  //     details: {
-  //       type: this.form.get('couponType')?.value,
-  //       value: this.form.get('couponValue')?.value,
-  //     },
-  //     refid: this.slug,
-  //     couponType: this.form.get('criteriaType')?.value == 'complete' ? 'complete' : 'partial',
-  //     isVisibility: this.form.get('isVisibility')?.value,
-  //     isActive: this.form.get('isActive')?.value,
-  //     couponid: this.slug,
-  //     style: {
-  //       background: this.form.get('background')?.value,
-  //       border: this.form.get('border')?.value,
-  //       radius: this.form.get('radius')?.value,
-  //       text: {
-  //         color: this.form.get('color')?.value,
-  //         fontSize: this.form.get('fontSize')?.value,
-  //         fontWeight: this.form.get('fontWeight')?.value,
-  //       }
-  //     },
-  //     maxRedemptionAmount: {
-  //       isEnabled: this.form.get('isMaxRedemptionEnabled')?.value === 'true',
-  //       value: this.form.get('maxRedemptionValue')?.value || null
-  //     },
-  //   }).subscribe({
-  //     next: (res: any) => {
-  //       if (res.success) {
-  //         this.HotToastService.success(res?.message);
-  //         this.Router.navigate([this.appRoute.coupons.COUPONS_LIST]);
-  //       } else {
-  //         this.HotToastService.error(res?.message);
-  //       }
-  //     }, error: (err: any) => {
-  //       this.HotToastService.error(err?.message);
-  //     }
-  //   })
-  // }
+    // Get the current criteria type
+    const criteriaType = this.form.get('criteriaType')?.value;
+
+    // Ensure arrays are cleared based on criteria type before submission
+    if (criteriaType === 'complete') {
+      this.products = [];
+      this.collections = [];
+      this.categories = [];
+      this.brands = [];
+    }
+
+    // Create the payload
+    const payload = {
+      title: this.form.get('title')?.value,
+      code: this.form.get('code')?.value,
+      fromDate: this.form.get('fromDate')?.value,
+      lastDate: this.form.get('lastDate')?.value,
+      minPurchase: this.form.get('minPurchase')?.value,
+      minimumType: this.form.get('minimumType')?.value,
+      value: this.form.get('value')?.value,
+      type: this.form.get('type')?.value,
+      categories: criteriaType === 'categories' ? this.categories?.map((category: any) => category?._id) : [],
+      products: criteriaType === 'products' ? this.products?.map((product: any) => product?._id) : [],
+      collections: criteriaType === 'collections' ? this.collections?.map((colection: any) => colection?._id) : [],
+      brands: criteriaType === 'brands' ? this.brands?.map((brand: any) => brand?._id) : [],
+      countPerUser: this.form.get('countPerUser')?.value,
+      details: {
+        type: this.form.get('couponType')?.value,
+        value: this.form.get('couponValue')?.value,
+      },
+      refid: this.slug,
+      couponType: criteriaType === 'complete' ? 'complete' : 'partial',
+      isVisibility: this.form.get('isVisibility')?.value,
+      isActive: this.form.get('isActive')?.value,
+      couponid: this.slug,
+      style: {
+        background: this.form.get('background')?.value,
+        border: this.form.get('border')?.value,
+        radius: this.form.get('radius')?.value,
+        text: {
+          color: this.form.get('color')?.value,
+          fontSize: this.form.get('fontSize')?.value,
+          fontWeight: this.form.get('fontWeight')?.value,
+        }
+      },
+      maxRedemptionAmount: {
+        isEnabled: this.form.get('isMaxRedemptionEnabled')?.value === 'true',
+        value: this.form.get('maxRedemptionValue')?.value || null
+      },
+      platformType: this.form.get('platformType')?.value,
+    };
+
+    // Submit the payload
+    this.CouponsService.updateCoupon(payload).subscribe({
+      next: (res: any) => {
+        if (res.success) {
+          this.HotToastService.success(res?.message);
+          this.Router.navigate([this.appRoute.coupons.COUPONS_LIST]);
+        } else {
+          this.HotToastService.error(res?.message);
+        }
+      },
+      error: (err: any) => {
+        this.HotToastService.error(err?.message);
+      }
+    });
+  }
 }
