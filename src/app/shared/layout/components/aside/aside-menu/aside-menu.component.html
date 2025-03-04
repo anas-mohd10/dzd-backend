@@ -1030,26 +1030,3 @@
     </div>
   </div>
 </div>
-
-<div class="px-5 mt-5">
-  <button class="btn btn-danger d-flex align-items-center gap-2 w-100 px-4 py-3" (click)="logout()">
-    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-      stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-      <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
-      <polyline points="16 17 21 12 16 7"></polyline>
-      <line x1="21" y1="12" x2="9" y2="12"></line>
-    </svg>
-    <span>Logout</span>
-  </button>
-</div>
-
-
-<ng-template #logoutModal>
-  <div class="modal-body text-center">
-    <p class="mb-4">Are you sure you want to logout?</p>
-    <div class="d-flex justify-content-center gap-3">
-      <button type="button" class="btn btn-primary logout-btn" (click)="confirmLogout()">Continue</button>
-      <button type="button" class="btn btn-secondary logout-btn" (click)="declineLogout()">No</button>
-    </div>
-  </div>
-</ng-template>

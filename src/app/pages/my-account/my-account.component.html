@@ -22,10 +22,9 @@
                 <i class="bi bi-person-circle"></i>
             </div>
             <div class="accountDetails">
-                <div class="accountName">{{adminDetails?.firstname}} {{adminDetails?.lastname}}</div>
-                <div class="accountEmail">{{adminDetails?.email}}</div>
-                <div class="accountMobile">{{adminDetails?.countryCode}} {{adminDetails?.mobile}}</div>
-                <div class="accountCreated">Account created on {{adminDetails?.createdAt}}</div>
+                <div class="fs-3">{{adminDetails?.email}}</div>
+                <div class="fs-5 my-2">{{adminDetails?.countryCode}} {{adminDetails?.mobile}}</div>
+                <div class="fs-6">Account created on {{formatDate(adminDetails?.createdAt)}} at {{formatTime(adminDetails?.createdAt)}}</div>
             </div>
         </div>
 
