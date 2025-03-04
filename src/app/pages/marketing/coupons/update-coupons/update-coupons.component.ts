@@ -74,6 +74,39 @@ export class UpdateCouponsComponent implements OnInit {
     });
   }
 
+  onSelect(item: any) {
+    console.log("item", item)
+    if(this.form.get('criteriaType')?.value == 'products'){
+     
+      if(this.products.includes(item)){
+        this.products = this.products.filter((i: any) => i?._id !== item?._id)
+      }else{
+        this.products.push(item)
+      }
+    }
+    if(this.form.get('criteriaType')?.value == 'collections'){
+      if(this.collections.includes(item)){
+        this.collections = this.collections.filter((i: any) => i?._id !== item?._id)
+      }else{
+        this.collections.push(item)
+      }
+    }
+    if(this.form.get('criteriaType')?.value == 'categories'){
+      if(this.categories.includes(item)){
+        this.categories = this.categories.filter((i: any) => i?._id !== item?._id)
+      }else{
+        this.categories.push(item)
+      }
+    }
+    if(this.form.get('criteriaType')?.value == 'brands'){
+      if(this.brands.includes(item)){
+        this.brands = this.brands.filter((i: any) => i?._id !== item?._id)
+      }else{
+        this.brands.push(item)
+      }
+    }
+  }
+
   initForm() {
     this.form = this.formBuilder.group({
       title: ['', Validators.required],
@@ -269,10 +302,10 @@ export class UpdateCouponsComponent implements OnInit {
     minimumType: this.form.get('minimumType')?.value,
     value: this.form.get('value')?.value,
     type: this.form.get('type')?.value,
-    categories: criteriaType === 'categories' ? this.categories : [],
-    products: criteriaType === 'products' ? this.products : [],
-    collections: criteriaType === 'collections' ? this.collections : [],
-    brands: criteriaType === 'brands' ? this.brands : [],
+    categories: criteriaType === 'categories' ? this.categories?.map((category:any) => category?._id) : [],
+    products: criteriaType === 'products' ? this.products?.map((product:any) => product?._id) : [],
+    collections: criteriaType === 'collections' ? this.collections?.map((colection:any) => colection?._id) : [],
+    brands: criteriaType === 'brands' ? this.brands?.map((brand:any) => brand?._id) : [],
     countPerUser: this.form.get('countPerUser')?.value,
     details: {
       type: this.form.get('couponType')?.value,
@@ -315,60 +348,4 @@ export class UpdateCouponsComponent implements OnInit {
     }
   });
 }
-  // onSubmit() {
-  //   if (!this.form.valid) {
-  //     this.isSubmitted = true;
-  //     return;
-  //   }
-
-  //   this.CouponsService.updateCoupon({
-  //     title: this.form.get('title')?.value,
-  //     code: this.form.get('code')?.value,
-  //     fromDate: this.form.get('fromDate')?.value,
-  //     lastDate: this.form.get('lastDate')?.value,
-  //     minPurchase: this.form.get('minPurchase')?.value,
-  //     minimumType: this.form.get('minimumType')?.value,
-  //     value: this.form.get('value')?.value,
-  //     type: this.form.get('type')?.value,
-  //     categories: this.categories ? this.categories : [],
-  //     products: this.products ? this.products : [],
-  //     collections: this.collections ? this.collections : [],
-  //     brands: this.brands ? this.brands : [],
-  //     countPerUser: this.form.get('countPerUser')?.value,
-  //     details: {
-  //       type: this.form.get('couponType')?.value,
-  //       value: this.form.get('couponValue')?.value,
-  //     },
-  //     refid: this.slug,
-  //     couponType: this.form.get('criteriaType')?.value == 'complete' ? 'complete' : 'partial',
-  //     isVisibility: this.form.get('isVisibility')?.value,
-  //     isActive: this.form.get('isActive')?.value,
-  //     couponid: this.slug,
-  //     style: {
-  //       background: this.form.get('background')?.value,
-  //       border: this.form.get('border')?.value,
-  //       radius: this.form.get('radius')?.value,
-  //       text: {
-  //         color: this.form.get('color')?.value,
-  //         fontSize: this.form.get('fontSize')?.value,
-  //         fontWeight: this.form.get('fontWeight')?.value,
-  //       }
-  //     },
-  //     maxRedemptionAmount: {
-  //       isEnabled: this.form.get('isMaxRedemptionEnabled')?.value === 'true',
-  //       value: this.form.get('maxRedemptionValue')?.value || null
-  //     },
-  //   }).subscribe({
-  //     next: (res: any) => {
-  //       if (res.success) {
-  //         this.HotToastService.success(res?.message);
-  //         this.Router.navigate([this.appRoute.coupons.COUPONS_LIST]);
-  //       } else {
-  //         this.HotToastService.error(res?.message);
-  //       }
-  //     }, error: (err: any) => {
-  //       this.HotToastService.error(err?.message);
-  //     }
-  //   })
-  // }
 }

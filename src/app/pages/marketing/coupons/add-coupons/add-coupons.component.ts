@@ -110,9 +110,35 @@ export class AddCouponsComponent implements OnInit {
   }
 
   //Common response
-  onSelect(event: any) {
+  onSelect(item: any) {
+    console.log("item", item)
     if(this.form.get('criteriaType')?.value == 'products'){
-      this.products.push(event)
+      if(this.products.includes(item)){
+        this.products = this.products.filter((i: any) => i?._id !== item?._id)
+      }else{
+        this.products.push(item)
+      }
+    }
+    if(this.form.get('criteriaType')?.value == 'collections'){
+      if(this.collections.includes(item)){
+        this.collections = this.collections.filter((i: any) => i?._id !== item?._id)
+      }else{
+        this.collections.push(item)
+      }
+    }
+    if(this.form.get('criteriaType')?.value == 'categories'){
+      if(this.categories.includes(item)){
+        this.categories = this.categories.filter((i: any) => i?._id !== item?._id)
+      }else{
+        this.categories.push(item)
+      }
+    }
+    if(this.form.get('criteriaType')?.value == 'brands'){
+      if(this.brands.includes(item)){
+        this.brands = this.brands.filter((i: any) => i?._id !== item?._id)
+      }else{
+        this.brands.push(item)
+      }
     }
   }
 
@@ -218,10 +244,10 @@ export class AddCouponsComponent implements OnInit {
         minimumType: this.form.get('minimumType')?.value,
         value: this.form.get('value')?.value,
         type: this.form.get('type')?.value,
-        categories: this.categories ? this.categories : [],
-        products: this.products ? this.products : [],
-        collections: this.collections ? this.collections : [],
-        brands: this.brands ? this.brands : [],
+        categories: this.categories ? this.categories?.map((category:any) => category?._id) : [],
+        products: this.products ? this.products?.map((product:any) => product?._id) : [],
+        collections: this.collections ? this.collections?.map((collection:any) => collection?._id) : [],
+        brands: this.brands ? this.brands?.map((brand:any) => brand?._id) : [],
         details: {
           type: this.form.get('couponType')?.value,
           value: this.form.get('couponValue')?.value,

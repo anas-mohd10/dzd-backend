@@ -43,7 +43,7 @@ export class DropdownResultsComponent implements OnInit, OnChanges {
       case "brands":
       case "collections":
       case "categories":
-        this.onSelect.emit(item._id);
+        this.onSelect.emit(item);
         break;
       default:
         this.HotToastService.error("Invalid type selected. Please try again.")
