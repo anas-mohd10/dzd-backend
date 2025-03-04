@@ -35,7 +35,7 @@ export class AsideMenuComponent implements OnInit {
   // Update the logout click handler to show modal
   logout() {
     this.modalRef = this.modalService.show(this.logoutModal, {
-      class: 'modal-dialog-centered'
+      class: 'modal-sm modal-dialog-centered'
     });
   }
 
