@@ -1,4 +1,5 @@
 import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
+import { Router } from '@angular/router'; // Add this import
 import { appRoutes } from 'src/app/config/routes';
 import { NotificationsService } from 'src/app/includes/services/notifications.service';
 import { LayoutService } from '../../core/layout.service';
@@ -31,7 +32,8 @@ export class TopbarComponent implements OnInit {
     private layout: LayoutService,
     private NotificationsService: NotificationsService,
     private ChangeDetectorRef: ChangeDetectorRef,
-    private AppSettingsService: AppSettingsService
+    private AppSettingsService: AppSettingsService,
+    private router: Router // Add Router to constructor
   ) {
     document.addEventListener('click', this.offClickHandler.bind(this));
   }
@@ -62,6 +64,10 @@ export class TopbarComponent implements OnInit {
         this.ChangeDetectorRef.markForCheck()
       }
     })
+  }
+
+  navigateToAccount(): void {
+    this.router.navigate(['/app/my-account']);
   }
 
   toggleNotifications() {
