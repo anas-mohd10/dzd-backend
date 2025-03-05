@@ -20,6 +20,8 @@ import { HotToastService } from '@ngneat/hot-toast';
 import { debounceTime } from 'rxjs/operators';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { BrandService } from 'src/app/includes/services/brand.service';
+import { moveItemInArray } from '@angular/cdk/drag-drop';
+import { CdkDragDrop} from '@angular/cdk/drag-drop';
 
 interface StoreField {
   title: string;
@@ -221,6 +223,11 @@ export class UpdateProductComponent implements OnInit {
     });
   }
 
+  dropProductImages (event: any) {
+    let items = [...this.images];
+    moveItemInArray(items, event.previousIndex, event.currentIndex);
+    this.images = [...items];
+  }
   closeHistory() {
     this.historyRef?.hide();
   }
