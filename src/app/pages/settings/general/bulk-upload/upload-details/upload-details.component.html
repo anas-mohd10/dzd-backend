@@ -93,7 +93,7 @@
           <div *ngFor="let log of logs; let i = index" class="logMessage row"
             [ngClass]="{'error': log.level == 'error'}">
             <strong class="col-lg-1"> {{ (i + 1) }} </strong>
-            <div class="col-lg-2" style="font-size: 12px;">
+            <div class="col-lg-2" style="font-size: 11px;">
               {{ formatDate(log.timestamp)}} {{formatTime(log.timestamp)}} </div>
             <div class="col-lg-9" style="font-size: 13px;"> {{ log.message }}</div>
           </div>

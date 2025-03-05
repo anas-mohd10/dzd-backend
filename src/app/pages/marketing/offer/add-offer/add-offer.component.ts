@@ -185,6 +185,7 @@ export class AddOfferComponent implements OnInit {
 
   addBrand() {
     if (!this.offerForm.valid) {
+      this.HotToastService.error('Please fill in all fields');
       this.isSubmitted = true
       return;
     }

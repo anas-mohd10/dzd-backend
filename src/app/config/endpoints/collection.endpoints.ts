@@ -7,6 +7,7 @@ export const collectionEndpoints = {
     get_collection_by_slug: '/collection',
     update_collection: '/update-collection',
     get_collection_count: '/collections/count',
+    deleteCollection: '/delete-collection',
     //Filter APIs
     search_collection: '/search-collections',
     archive_collection: '/collections/archive',

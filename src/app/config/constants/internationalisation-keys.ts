@@ -214,7 +214,6 @@ export const internationalisationKeys = {
     fullNameRequired: 'fullNameRequired',
     other: 'other',
     office: 'office',
-    home: 'home',
     currentLocation: 'currentLocation',
     confirmLocation: 'confirmLocation',
     previousSlide: 'previousSlide',
@@ -409,4 +408,6 @@ export const internationalisationKeys = {
     backToLogin: 'backToLogin',
     deliveryDate: 'deliveryDate',
     deliveryTime: 'deliveryTime',
+    homeDashboard: 'homeDashboard',
+    homeAddress: 'homeAddress'
 }

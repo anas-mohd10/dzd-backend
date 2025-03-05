@@ -114,10 +114,8 @@ export class UpdateNotificationsComponent implements OnInit {
 
     this.NotificationsService.updateNotification({
       ...this.form.value,
-      scheduled: {
-        date: this.form.get('scheduledDate')?.value,
-        time: this.form.get('scheduledTime')?.value,
-      },
+      scheduled: this.form.get('scheduledDate')?.value && this.form.get('scheduledTime')?.value ? 
+        new Date(`${this.form.get('scheduledDate')?.value}T${this.form.get('scheduledTime')?.value}`).toISOString() : null,
       _id: this.notificationId,
       customers: this.customers,
     }).subscribe({

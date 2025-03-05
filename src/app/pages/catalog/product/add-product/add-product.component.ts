@@ -21,6 +21,8 @@ import { HotToastService } from '@ngneat/hot-toast';
 import { TabsetComponent } from 'ngx-bootstrap/tabs';
 import { BrandService } from 'src/app/includes/services/brand.service';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
+import { moveItemInArray } from '@angular/cdk/drag-drop';
+import { CdkDragDrop} from '@angular/cdk/drag-drop';
 
 interface StoreField {
   title: string;
@@ -34,8 +36,10 @@ interface StoreField {
 })
 export class AddProductComponent implements OnInit {
   task = PageTasks.ADD;
+  isSaving: boolean = false;
   editMode = false;
   appRoute = appRoutes;
+  isCreatingParent = false;
   isSubmitted = false;
   searchKeyowrds: any = [];
   tumbnail: any;
@@ -69,11 +73,15 @@ export class AddProductComponent implements OnInit {
   settings: any = {};
   parentForm: FormGroup;
   taxClassDetails: Array<any> = [];
+
   brand: FormControl = new FormControl('', Validators.required);
   brands: Array<any> = [];
+  selectedBrand: any = null;
+  brandsMap: any = {};
+
   productCategories: Array<any> = [];
   images: Array<any> = [];
-  defaultCategories: Array<any> = [];
+  attributeImages: Array<any> = [];
   form: FormGroup;
   parentDetails: any;
   parentSlug: string;
@@ -83,7 +91,12 @@ export class AddProductComponent implements OnInit {
   searchKeywords: Array<any> = [];
   searchKeyword: FormControl = new FormControl('');
   relatedProducts: Array<any> = [];
+
   categories: Array<any> = [];
+  selectedCategories: Array<string> = [];
+  defaultCategories: Array<any> = [];
+  primaryCategory: FormControl = new FormControl('', Validators.required);
+
   productCategory: FormControl = new FormControl('');
   productAttributes: Array<any> = [];
   isCategoryMultiple: boolean = true;
@@ -105,7 +118,6 @@ export class AddProductComponent implements OnInit {
   isParentSubmitted: boolean = false;
   activeRelatedProducts: Array<any> = [];
   relatedProduct: FormControl = new FormControl('');
-  brandsMap: any = {};
   storeFields: Array<StoreField> = [];
   storeFieldForm: FormGroup = new FormGroup({});
   isStoreSubmitted: boolean = false;
@@ -141,6 +153,20 @@ export class AddProductComponent implements OnInit {
 
   get storeFieldControls() {
     return this.storeFieldForm.controls;
+  }
+
+  onBrandChange(event: any) {
+    if (event) {
+      this.selectedBrand = event;
+      this.form.patchValue({
+        brand: event.slug
+      });
+    } else {
+      this.selectedBrand = null;
+      this.form.patchValue({
+        brand: null
+      });
+    }
   }
 
   onProductsTriggered(productId?: any) {
@@ -237,16 +263,38 @@ export class AddProductComponent implements OnInit {
   }
 
   productMediaClicked(event: any) {
+    
+    // Check if the item already exists in our images array
     let isExists: boolean = this.images.some(
       (item: any) => item?._id == event?._id
     );
+    
     if (isExists) {
+      // If it exists, remove it
       this.images = this.images.filter((item: any) => item?._id != event?._id);
+      this.HotToastService.info('Image removed from product');
     } else {
+      // If it doesn't exist, add it
       this.images.push(event);
+      this.HotToastService.success('Image added to product');
+    }
+    
+    // Update form control with the current images
+    if (this.form && this.form.get('files')) {
+      let files = this.images.map((item: any) => item.path) || [];
+      this.form.get('files')?.setValue(files);
+    }
+    
+    // Force change detection
+    if (this.ChangeDetectorRef) {
+      this.ChangeDetectorRef.markForCheck();
     }
   }
-
+  dropProductImages (event: any) {
+    let items = [...this.images];
+    moveItemInArray(items, event.previousIndex, event.currentIndex);
+    this.images = [...items];
+  }
   productIconClicked(event: any, type: string = 'add') {
     let isExists: boolean = this.icons.some((item: any) => item == (type == 'remove' ? event : event.path));
     if (isExists) {
@@ -258,7 +306,7 @@ export class AddProductComponent implements OnInit {
       this.icons.push(event.path);
     }
   }
-  
+
   removeProductMedia(image: any) {
     this.images = this.images.filter((item: any) => item?._id != image?._id);
   }
@@ -268,19 +316,44 @@ export class AddProductComponent implements OnInit {
   }
 
   toggleProductCategory(event: any, type: string) {
-    if (type == 'add') {
-      let categoryDetails = this.defaultCategories.filter(
-        (item: any) => item?.slug == event.target.value
-      );
-      this.categories.includes(categoryDetails[0])
-        ? this.HotToastService.info('Category already added')
-        : this.categories.push(categoryDetails[0]);
+    if (type === 'add') {
+      if (Array.isArray(event)) {
+        this.categories = event;
+      } else {
+        const isExists = this.categories.some(item => item.slug === event.slug);
+        if (isExists) {
+          this.HotToastService.info('Category already added');
+        } else {
+          this.categories.push(event);
+        }
+      }
     } else {
-      this.categories = this.categories.filter(
-        (item: any) => item?.slug != event
-      );
+      this.categories = this.categories.filter(item => item.slug !== event);
     }
-    this.productCategory.setValue('');
+
+    this.selectedCategories = this.categories.map(cat => cat.slug);
+
+    // Update form value if needed
+    if (this.form) {
+      this.form.patchValue({
+        category: {
+          id: this.categories.map(cat => cat._id),
+          refid: this.categories.map(cat => cat.catid)
+        }
+      });
+    }
+  }
+
+  getDefaultCategories() {
+    this.CategoryService.getActiveCategory().subscribe({  // Note the capital C in CategoryService
+      next: (res: any) => {
+        if (res?.errorCode == 0) {
+          this.defaultCategories = res?.result;
+          this.ChangeDetectorRef.markForCheck();
+        }
+      },
+      error: (err: any) => { }
+    });
   }
 
   removeProductCategory(categoryId: string) {
@@ -381,13 +454,36 @@ export class AddProductComponent implements OnInit {
   toggleAddOnItems() { }
 
   saveChanges() {
+    // Force change detection immediately
+    if (this.ChangeDetectorRef) {
+      this.ChangeDetectorRef.detectChanges(); // Use detectChanges instead of markForCheck
+    }
+
     let files = this.images.map((item: any) => item.path) || [];
     this.form.get('files')?.setValue(files);
 
-    if (!this.form.valid) {
-      this.isSubmitted = true;
+    if (this.categories && this.categories.length == 0) {
+      this.HotToastService.error('Please add at least one category');
       return;
     }
+
+    if (!this.primaryCategory.value) {
+      this.HotToastService.error('Please select primary category');
+      return;
+    }
+
+    if (!this.form.valid) {
+      this.isSubmitted = true;
+      this.isSaving = false; // Re-enable button if form is invalid
+
+      if (this.ChangeDetectorRef) {
+        this.ChangeDetectorRef.detectChanges();
+      }
+      return;
+    }
+
+    // First set flag to disable the button
+    this.isSaving = true;
 
     let payload = {
       ...this.form.value,
@@ -402,35 +498,58 @@ export class AddProductComponent implements OnInit {
       localizedNames: {
         [this.settings.primaryLang]: this.form.get('name')?.value,
       },
-      brand: {
-        name: this.brandsMap[this.form.get('brand')?.value]?.name,
-        slug: this.brandsMap[this.form.get('brand')?.value]?.slug,
-        thumbnail: this.brandsMap[this.form.get('brand')?.value]?.thumbnail,
-        cover: this.brandsMap[this.form.get('brand')?.value]?.cover,
-      },
+      brand: this.selectedBrand ? {
+        name: this.selectedBrand.name,
+        slug: this.selectedBrand.slug,
+        thumbnail: this.selectedBrand.thumbnail,
+        cover: this.selectedBrand.cover,
+      } : null,
+      primaryCategory: this.primaryCategory.value ? {
+        name: this.primaryCategory.value.name,
+        slug: this.primaryCategory.value.slug,
+        thumbnail: this.primaryCategory.value.thumbnail,
+        cover: this.primaryCategory.value.cover,
+      } : null,
       parentId: this.parentDetails?._id,
       productIcons: this.icons,
       storeFrontFields: this.storeFields,
-      categories: this.categories.map((category: any) => category),
+      categories: this.categories.map((category: any) => ({
+        name: category.name,
+        slug: category.slug,
+        thumbnail: category.thumbnail,
+        cover: category.cover,
+      })),
       category: {
         id: this.categories.map((category: any) => category?._id),
         refid: this.categories.map((category: any) => category?.catid),
       },
     };
 
-    this.ProductService.addProduct(payload).subscribe({
-      next: (res: any) => {
-        if (res?.errorCode == 0) {
-          this.Router.navigate(['/app/product']);
-          this.HotToastService.success(res?.message);
-        } else {
-          this.HotToastService.error(res?.message);
-        }
-      },
-      error: (err: any) => {
-        this.HotToastService.error(err.error.message);
-      },
-    });
+    // Use a timeout to ensure the UI has time to update before starting API call
+    setTimeout(() => {
+      this.ProductService.addProduct(payload).subscribe({
+        next: (res: any) => {
+          if (res?.errorCode == 0) {
+            this.Router.navigate(['/app/product']);
+            this.HotToastService.success(res?.message);
+            // We don't need to reset isSaving here since we're navigating away
+          } else {
+            this.isSaving = false; // Re-enable button on error response
+            if (this.ChangeDetectorRef) {
+              this.ChangeDetectorRef.detectChanges();
+            }
+            this.HotToastService.error(res?.message);
+          }
+        },
+        error: (err: any) => {
+          this.isSaving = false; // Re-enable button on error
+          if (this.ChangeDetectorRef) {
+            this.ChangeDetectorRef.detectChanges();
+          }
+          this.HotToastService.error(err.error.message);
+        },
+      });
+    }, 0);
   }
 
   toggleTab(index: number) {
@@ -440,13 +559,22 @@ export class AddProductComponent implements OnInit {
   }
 
   createParent() {
+    // Set flag to disable the button
+    this.isSaving = true;
+    this.ChangeDetectorRef.markForCheck();
+
     if (!this.parentForm.valid) {
       this.isParentSubmitted = true;
+      this.isSaving = false; // Re-enable button if form is invalid
+      this.ChangeDetectorRef.markForCheck();
       return;
     }
 
     this.ProductHeadService.addProductHead(this.parentForm.value).subscribe({
       next: (res: any) => {
+        this.isSaving = false; // Re-enable button
+        this.ChangeDetectorRef.markForCheck();
+
         if (res?.errorCode == 0) {
           this.HotToastService.success(res.message);
           this.getParentDetails(res?.result?.slug);
@@ -460,10 +588,13 @@ export class AddProductComponent implements OnInit {
         }
       },
       error: (err: any) => {
+        this.isSaving = false; // Re-enable button on error
+        this.ChangeDetectorRef.markForCheck();
         this.HotToastService.error(err.error.message);
       },
     });
   }
+
 
   toggleSearchKeywords(event: any, type: string) {
     if (event?.key == 'Enter') {
@@ -502,8 +633,8 @@ export class AddProductComponent implements OnInit {
     });
 
     this.storeFieldForm = new FormGroup({
-      title: new FormControl('  ', Validators.required),
-      description: new FormControl('  ', Validators.required),
+      title: new FormControl('', Validators.required),
+      description: new FormControl('', Validators.required),
     });
 
     this.tagsForm = new FormGroup({
@@ -591,6 +722,7 @@ export class AddProductComponent implements OnInit {
         Validators.pattern('^-?[0-9]\\d*(\\.\\d+)?$'),
       ]),
       brand: new FormControl(''),
+      category: new FormControl(''),
       details: new FormGroup({
         additionalButton: new FormControl(''),
         buttonRedirectUrl: new FormControl(''),
@@ -608,19 +740,23 @@ export class AddProductComponent implements OnInit {
       isVisible: new FormControl(true),
       isCodAvailable: new FormControl('true'),
       codCharges: new FormControl(0),
+      ean: new FormControl(''),
+      mpn: new FormControl(''),
     });
 
     this.BrandService.getActiveBrands().subscribe({
       next: (res: any) => {
-        if (res?.errorCode == 0) {
-          this.brands = res?.result;
-          this.brands.forEach((brand: any) => {
-            this.brandsMap[brand.slug] = brand
-          })
+        if (res.errorCode == 0) {
+          this.brands = res.result;
+          // Remove productDetails reference since this is an add component
           this.ChangeDetectorRef.markForCheck();
         }
       },
+      error: (err: any) => { }
     });
+
+    this.getDefaultCategories();
+
 
     this.ProductService.getActiveProduct().subscribe({
       next: (res: any) => {
@@ -753,5 +889,22 @@ export class AddProductComponent implements OnInit {
 
   removeTagIcons(icon: any) {
     this.tagIcons = this.tagIcons.filter((item: any) => item != icon);
+  }
+
+  handleAttributeImage(event: any) {
+    console.log('Image event:', event);
+    if (event && event.path) {
+      this.attributeForm.patchValue({
+        value: event.path
+      });
+      this.ChangeDetectorRef.markForCheck();
+    }
+  }
+
+  removeAttributeImage() {
+    this.attributeForm.patchValue({
+      value: null
+    });
+    this.ChangeDetectorRef.markForCheck();
   }
 }

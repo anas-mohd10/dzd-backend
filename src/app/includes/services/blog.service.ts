@@ -23,6 +23,8 @@ export class BlogService {
     return this.http.post(`${url}`, data);
   }
 
+
+
   importBlogs(formData: any) {
     const url = this.commonService.getFullUrl(blogEndpoints.importBlogs);
     return this.http.post(`${url}`, formData);
@@ -41,5 +43,10 @@ export class BlogService {
   deleteBlog(blog: string) {
     const url = this.commonService.getFullUrl(blogEndpoints.deleteBlog + `/${blog}`);
     return this.http.delete(`${url}`);
+  }
+
+  activeBlogs() {
+    const url = this.commonService.getFullUrl(blogEndpoints.activeBlogs);
+    return this.http.get(`${url}`);
   }
 }

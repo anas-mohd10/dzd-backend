@@ -12,12 +12,26 @@
             object-fit: contain;
         }
 
-        .asset-checkbox {
-            height: 2rem;
-            width: 2rem;
-            top: 0.8rem;
-            left: 0.8rem;
-        }
+           .asset-checkbox {
+                background-color: #ffffff;
+               height: 2rem;
+               width: 2rem;
+               top: 0.8rem;
+               left: 0.8rem;
+               display: flex;
+               align-items: center;
+               justify-content: center;
+               cursor: pointer;
+               transition: all 0.2s ease;
+               /* Optional: adds smooth transition */
+    
+               &.selected-asset {
+                   background-color: #28a745 !important;
+                   /* Force green background */
+                   border-color: #28a745 !important;
+                   color: white;
+               }
+           }
 
         .asset-details {
             overflow: hidden;

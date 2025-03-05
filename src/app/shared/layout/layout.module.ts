@@ -22,6 +22,8 @@ import { DrawersModule, DropdownMenusModule, ModalsModule, EngagesModule } from 
 import { EngagesComponent } from "../partials/layout/engages/engages.component";
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
+import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
+
 const routes: Routes = [
   { path: '', component: LayoutComponent, children: Routing },
 ];
@@ -50,6 +52,7 @@ const routes: Routes = [
     DrawersModule,
     EngagesModule,
     DropdownMenusModule,
+    BsDropdownModule,
     NgbTooltipModule,
     RouterModule,
     FormsModule,

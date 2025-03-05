@@ -52,21 +52,21 @@ export class CatalogComponent implements OnInit {
       type: 'magestic-mosaic',
       icon: 'assets/widgets/rush-lake.png',
       description:
-        'The following widget can be used to show images within a particular category.The widget contains images.',
+        'The following widget can be used to show images within a particular category.The widget contains images. <strong>Magestic Mosaic - 800(w) x 244(h) - 1(Largest one) 390(w) x 244(h) - 4(Smaller ones)</strong>',
     },
     {
       title: 'Glamour Glaze',
       type: 'glamour-glaze',
       icon: 'assets/widgets/volta-lake.png',
       description:
-        'The widget can be used to showcase new brands or existing brands.The widget contains two section with image and description section on either side and vice-versa.The description box has a black border, with heading, subheading and button.',
+        'The widget can be used to showcase new brands or existing brands.The widget contains two section with image and description section on either side and vice-versa.The description box has a black border, with heading, subheading and button. <strong>Glamour Glaze - 800(w) x 697(h) - 1(Bigger one),390(w) x 220(h) - 3(Smaller ones) </strong>',
     },
     {
       title: 'Dazzle Design',
       type: 'dazzle-design',
       icon: 'assets/widgets/1x4.png',
       description:
-        'The following widget can be used to show collection of categories.The following widget is a collection of card where it has one main card and other 4 cards.The cards contain an image and decrotaive text which is center aligned with the image.',
+        'The following widget can be used to show collection of categories.The following widget is a collection of card where it has one main card and other 4 cards.The cards contain an image and decrotaive text which is center aligned with the image. <strong> Dazzle Design - 595(w) x 595(h) - 1(bigger one) , 287(w) x 287(h) - 4 (smaller ones) </strong>',
     },
     {
       title: 'Celestial Canvas',
@@ -146,7 +146,7 @@ export class CatalogComponent implements OnInit {
       type: 'twin-towers',
       icon: 'assets/widgets/twin-towers.png',
       description:
-        'The following widget can be used to show images within a particular category.The widget contains images.',
+        'The following widget can be used to show images within a particular category.The widget contains images.  <strong>Twin Towers - 595(w) x 320(h) - 2 </strong>',
     },
     {
       title: 'Slider Spotlight',
@@ -256,13 +256,13 @@ export class CatalogComponent implements OnInit {
       type: 'noble-nodes',
       icon: 'assets/widgets/noble-nodes.png',
       description:
-        'The following widget can be used to show images within a particular category.The widget contains images.',
+        'The following widget can be used to show images within a particular category.The widget contains images. <strong>Noble Nodes - 595(w) x 320(h) - 2(equal ones),390(w) x 320(h) - 1(smaller one), 800(w) x 320(h) - 1(bigger one) </strong>',
     }, {
       title: 'Prime Plates',
       type: 'prime-plates',
       icon: 'assets/widgets/prime-plates.png',
       description:
-        'The following widget can be used to show images within a particular category.The widget contains images.',
+        'The following widget can be used to show images within a particular category.The widget contains images. <strong> Prime Plates - 390(w) x 320(h) - 1(smaller one),800(w) x 320(h) - 1(bigger one) </strong>',
     }, {
       title: 'Elite Elements',
       type: 'elite-elements',
@@ -291,7 +291,7 @@ export class CatalogComponent implements OnInit {
       type: 'trending-teasers',
       icon: 'assets/widgets/trending-teasers.png',
       description:
-        'The following widget can be used to show images within a particular category. The widget contains images.',
+        'The following widget can be used to show images within a particular category. The widget contains images. <strong>Trending Teasers - 1210(w) x 320(h) - 1(bigger one),595(w) x 320(h) - 2(smaller ones) </strong>',
     }, {
       title: 'Smart Tiles',
       type: 'smart-tiles',
@@ -443,6 +443,13 @@ export class CatalogComponent implements OnInit {
     'full-banner',
   ];
   widgetImages: Array<any> = [];
+  sortOptions: Array<any> = [
+    { key: 'Popularity', value: 'popularity' },
+    { key: 'Newest', value: 'newest' },
+    { key: 'Oldest', value: 'oldest' },
+    { key: 'Price: Low to High', value: 'ascending' },
+    { key: 'Price: High to Low', value: 'descending' },
+  ];
   widgetBlogs: any;
   settings: any;
   collections: Array<any> = [];
@@ -967,21 +974,31 @@ export class CatalogComponent implements OnInit {
   }
 
   createCatalog() {
-    this.CatalogService.createCatalog(this.catalogForm.value).subscribe({
-      next: (res: any) => {
-        if (res?.errorCode == 0) {
-          this.closeCreate();
-          this.Toast.success(res?.message);
-          this.ChangeDetectorRef.markForCheck();
-          this.getCatalogs();
-        } else {
-          this.Toast.error(res?.message);
-        }
-      },
-      error: (err: any) => {
-        this.Toast.error(err?.error?.message);
-      },
-    });
+    if (this.catalogForm.valid) {
+      const formValue = this.catalogForm.value;
+
+      // Ensure catalogReference is properly set when isCopy is true
+      if (formValue.isCopy === 'true' && !formValue.catalogReference) {
+        this.Toast.error('Please select a catalog to copy');
+        return;
+      }
+
+      this.CatalogService.createCatalog(formValue).subscribe({
+        next: (res: any) => {
+          if (res?.errorCode == 0) {
+            this.closeCreate();
+            this.Toast.success(res?.message);
+            this.ChangeDetectorRef.markForCheck();
+            this.getCatalogs();
+          } else {
+            this.Toast.error(res?.message);
+          }
+        },
+        error: (err: any) => {
+          this.Toast.error(err?.error?.message);
+        },
+      });
+    }
   }
   //Catalog create ends here
 
@@ -1260,7 +1277,7 @@ export class CatalogComponent implements OnInit {
 
   addCatalogWidget(widget: WidgetProps) {
     this.CatalogService.addCatalogWidget({
-      index: this.widgetItems.length,
+      index: this.widgetItems?.length || 0,
       widgetName: widget.title,
       widgetType: widget.type,
       catalogId: this.catalogPageDetails?._id,
@@ -1816,6 +1833,13 @@ export class CatalogComponent implements OnInit {
       seoKeywords: new FormControl(''),
     });
 
+    this.catalogForm.get('isCopy')?.valueChanges.subscribe((value) => {
+      if (value === 'false' || value === false) {
+        this.catalogForm.patchValue({ catalogReference: '' });
+        this.catalogPage.setValue('');
+      }
+    });
+
     this.form = new FormGroup({
       visibility: new FormControl('all'),
       title: new FormControl(''),
@@ -1854,6 +1878,7 @@ export class CatalogComponent implements OnInit {
           Validators.pattern('^[0-9]*$'),
         ]),
       }),
+      sortOptions: new FormControl('popularity'),
       pagination: new FormGroup({
         desktop: new FormControl(true),
         mobile: new FormControl(true),

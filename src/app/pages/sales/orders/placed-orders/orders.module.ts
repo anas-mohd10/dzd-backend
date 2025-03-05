@@ -11,6 +11,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { SwiperModule } from 'swiper/angular';
 import { SharedModule } from 'src/app/pages/shared/shared.module';
+import { TooltipModule } from 'ngx-bootstrap/tooltip';
 
 @NgModule({
   declarations: [
@@ -24,6 +25,7 @@ import { SharedModule } from 'src/app/pages/shared/shared.module';
     FormsModule,
     ReactiveFormsModule,
     DataTablesModule,
+    TooltipModule,
     SharedModule,
     NgSelectModule,
     ToastrModule.forRoot({

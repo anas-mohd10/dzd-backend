@@ -305,11 +305,9 @@
             <div class="col-lg-6">
                <div class="form-group mb-3">
                   <label class="fs-6 mb-3">Pincode</label>
-                  <input type="number" class="form-control fs-6" formControlName="pincode" [ngClass]="{
-                     'is-invalid':
-                     (addressControls.pincode.touched || isAddressSubmitted) &&
-                     addressControls.pincode.errors?.required
-                   }" />
+                  <input type="number" 
+                         class="form-control fs-6" 
+                         formControlName="pincode" />
                </div>
             </div>
 
