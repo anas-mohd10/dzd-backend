@@ -314,6 +314,9 @@ export class AddProductComponent implements OnInit {
   productThumbnailClicked(event: any) {
     this.form.get('thumbnail')?.setValue(event.path);
   }
+  productVideoThumbnailClicked(event: any) {
+    this.form.get('videoThumbnail')?.setValue(event.path);
+  }
 
   toggleProductCategory(event: any, type: string) {
     if (type === 'add') {
@@ -713,6 +716,7 @@ export class AddProductComponent implements OnInit {
         Validators.pattern('^-?[0-9]\\d*(\\.\\d+)?$'),
       ]),
       thumbnail: new FormControl('', Validators.required),
+      videoThumbnail:new FormControl(null),
       files: new FormControl('', Validators.required),
       video: new FormControl(''),
       unit: new FormControl(''),
