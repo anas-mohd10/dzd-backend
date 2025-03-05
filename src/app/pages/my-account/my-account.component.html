@@ -34,9 +34,6 @@
                     type="button" role="tab" aria-controls="nav-home" aria-selected="true">Overview</button>
                 <button class="nav-link" id="nav-home-tab" data-bs-toggle="tab" data-bs-target="#edit-details"
                     type="button" role="tab" aria-controls="nav-home" aria-selected="true">Settings</button>
-                <!-- <button class="nav-link" id="nav-profile-tab" data-bs-toggle="tab" data-bs-target="#product-details"
-                    type="button" role="tab" aria-controls="nav-profile" aria-selected="false">My Activity
-                </button> -->
             </div>
         </nav>
     </div>
@@ -50,42 +47,36 @@
                     </div>
                     <div class="profileDetailsContainer">
                         <div class="profileDetailsTitles">
-                            <div class="profileText">
-                                Username
-                            </div>
-                            <div class="profileText">
+                            <div class="fs-6 my-2">
                                 First Name
                             </div>
-                            <div class="profileText">
+                            <div class="fs-6 my-2">
                                 Last Name
                             </div>
-                            <div class="profileText">
+                            <div class="fs-6 my-2">
                                 Email Address
                             </div>
-                            <div class="profileText">
+                            <div class="fs-6 my-2">
                                 Country Code
                             </div>
-                            <div class="profileText">
+                            <div class="fs-6 my-2">
                                 Mobile Number
                             </div>
                         </div>
                         <div class="profileDetailsValue">
-                            <div class="profileText">
-                                {{adminDetails?.username ? adminDetails?.username : '-'}}
-                            </div>
-                            <div class="profileText">
+                            <div class="fs-6 my-2">
                                 {{adminDetails?.firstname ? adminDetails?.firstname : '-'}}
                             </div>
-                            <div class="profileText">
+                            <div class="fs-6 my-2">
                                 {{adminDetails?.lastname ? adminDetails?.lastname : '-'}}
                             </div>
-                            <div class="profileText">
+                            <div class="fs-6 my-2">
                                 {{adminDetails?.email ? adminDetails?.email : '-'}}
                             </div>
-                            <div class="profileText">
+                            <div class="fs-6 my-2">
                                 {{adminDetails?.countryCode ? adminDetails?.countryCode : '-'}}
                             </div>
-                            <div class="profileText">
+                            <div class="fs-6 my-2">
                                 {{adminDetails?.mobile ? adminDetails?.mobile : '-'}}
                             </div>
                         </div>
