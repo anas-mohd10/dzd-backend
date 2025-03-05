@@ -21,6 +21,8 @@ import { HotToastService } from '@ngneat/hot-toast';
 import { TabsetComponent } from 'ngx-bootstrap/tabs';
 import { BrandService } from 'src/app/includes/services/brand.service';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
+import { moveItemInArray } from '@angular/cdk/drag-drop';
+import { CdkDragDrop} from '@angular/cdk/drag-drop';
 
 interface StoreField {
   title: string;
@@ -261,6 +263,7 @@ export class AddProductComponent implements OnInit {
   }
 
   productMediaClicked(event: any) {
+    
     // Check if the item already exists in our images array
     let isExists: boolean = this.images.some(
       (item: any) => item?._id == event?._id
@@ -287,7 +290,11 @@ export class AddProductComponent implements OnInit {
       this.ChangeDetectorRef.markForCheck();
     }
   }
-
+  dropProductImages (event: any) {
+    let items = [...this.images];
+    moveItemInArray(items, event.previousIndex, event.currentIndex);
+    this.images = [...items];
+  }
   productIconClicked(event: any, type: string = 'add') {
     let isExists: boolean = this.icons.some((item: any) => item == (type == 'remove' ? event : event.path));
     if (isExists) {
