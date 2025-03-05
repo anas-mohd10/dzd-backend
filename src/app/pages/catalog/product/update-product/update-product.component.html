@@ -464,6 +464,17 @@
                   </div>
                 </div>
                 <div class="mb-3">
+                  <label for="thumbnail" class="fs-6 mb-3">Product Video Thumbnail</label>
+                  <div class="row" id="thumbnail">
+                    <div class="col-lg-2">
+                      <div class="ratio ratio-1x1 h-auto w-100 rounded">
+                        <app-assets [image]="'contain'" [previewDetails]="thumbnailPreview"
+                          (mediaClicked)="productVideoThumbnailClicked($event)"></app-assets>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="mb-3">
   <label for="icons" class="fs-6 mb-3">Product Icons</label>
   <div class="row" id="icons">
     <div class="col-lg-2" *ngFor="let icon of icons">

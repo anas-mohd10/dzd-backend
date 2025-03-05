@@ -556,6 +556,10 @@ productIconClicked(event: any, type: string = 'add') {
   productThumbnailClicked(event: any) {
     this.form.get('thumbnail')?.setValue(event.path);
   }
+  
+  productVideoThumbnailClicked(event: any) {
+    this.form.get('videoThumbnail')?.setValue(event.path);
+  }
 
   toggleProductCategory(event: any, type: string) {
     if (type === 'add') {
@@ -1064,6 +1068,7 @@ productIconClicked(event: any, type: string = 'add') {
       category: new FormControl(null), // Default category
       parentCategories: new FormControl('', Validators.required), //Main category
       thumbnail: new FormControl(null),
+      videoThumbnail:new FormControl(null),
       isActive: new FormControl('true'),
       sku: new FormControl('', Validators.required),
       tax: new FormControl(''),
@@ -1117,6 +1122,7 @@ productIconClicked(event: any, type: string = 'add') {
         Validators.pattern('^\\d+(\\.\\d+)?$'),
       ]),
       thumbnail: new FormControl(''),
+      videoThumbnail: new FormControl(''),
       files: new FormControl(''),
       video: new FormControl(''),
       unit: new FormControl(''),

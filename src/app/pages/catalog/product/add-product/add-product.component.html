@@ -503,6 +503,16 @@
                   </div>
                 </div>
                 <div class="mb-3">
+                  <label for="thumbnail" class="fs-6 mb-3 required">Product Video thumbnail</label>
+                  <div class="row" id="thumbnail">
+                    <div class="col-lg-2">
+                      <div class="ratio ratio-1x1 h-auto w-100 rounded">
+                        <app-assets [image]="'cover'" (mediaClicked)="productVideoThumbnailClicked($event)"></app-assets>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="mb-3">
                   <label for="images" class="fs-6 mb-3">Product Icons</label>
                   <div class="row" id="images">
                     <div class="col-lg-2" *ngFor="let icon of icons">
