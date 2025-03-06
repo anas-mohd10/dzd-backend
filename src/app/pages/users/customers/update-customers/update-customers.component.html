@@ -625,17 +625,18 @@
    <div class="modal-body">
       <ng-container *ngFor="let loginActivity of loginActivities">
          <div
-            class="p-4 bg-white rounded border border-secondary my-2 d-flex align-items-start justify-content-between">
-            <div>
-               <div class="d-flex align-items-start justify-content-start gap-4 mb-2">
+            class="p-4 bg-white rounded border border-secondary my-2 gap-4 d-flex align-items-start justify-content-between">
+            <div class="w-50">
+               <div class="d-flex align-items-start justify-content-start gap-2 mb-2">
                   <div class="fs-5">Login</div>
-                  <svg width="18" height="18" data-slot="icon" fill="none" stroke-width="1.5" stroke="currentColor"
+                  <svg width="20" height="20" data-slot="icon" fill="none" stroke-width="1.5" stroke="currentColor"
                      viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
                      <path stroke-linecap="round" stroke-linejoin="round"
                         d="M8.25 9V5.25A2.25 2.25 0 0 1 10.5 3h6a2.25 2.25 0 0 1 2.25 2.25v13.5A2.25 2.25 0 0 1 16.5 21h-6a2.25 2.25 0 0 1-2.25-2.25V15M12 9l3 3m0 0-3 3m3-3H2.25">
                      </path>
                   </svg>
                </div>
+               <hr>
                <div *ngIf="loginActivity.loginIp" class="fs-6">{{formatDate(loginActivity.loginTime)}}</div>
                <div *ngIf="loginActivity.loginIp" class="fs-5 p-1 rounded bg-secondary my-2"
                   style="width: max-content;">
@@ -643,16 +644,17 @@
                </div>
                <div *ngIf="loginActivity.loginIp" class="fs-6">{{loginActivity.loginTimezone}}</div>
             </div>
-            <div>
-               <div class="d-flex align-items-start justify-content-start gap-4 mb-2">
+            <div class="w-50">
+               <div class="d-flex align-items-start justify-content-start gap-2 mb-2">
                   <div class="fs-5">Logout</div>
-                  <svg width="18" height="18" data-slot="icon" fill="none" stroke-width="1.5" stroke="currentColor" viewBox="0 0 24 24"
+                  <svg width="20" height="20" data-slot="icon" fill="none" stroke-width="1.5" stroke="currentColor" viewBox="0 0 24 24"
                      xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
                      <path stroke-linecap="round" stroke-linejoin="round"
                         d="M15.75 9V5.25A2.25 2.25 0 0 0 13.5 3h-6a2.25 2.25 0 0 0-2.25 2.25v13.5A2.25 2.25 0 0 0 7.5 21h6a2.25 2.25 0 0 0 2.25-2.25V15M12 9l-3 3m0 0 3 3m-3-3h12.75">
                      </path>
                   </svg>
                </div>
+               <hr>
                <div *ngIf="loginActivity.logoutIp" class="fs-6">{{formatDate(loginActivity.logoutTime)}}</div>
                <div *ngIf="loginActivity.logoutIp" class="fs-5 p-1 rounded bg-secondary my-2"
                   style="width: max-content;">
