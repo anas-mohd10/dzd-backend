@@ -79,6 +79,12 @@ input[type=button],
    font-weight: normal !important;
 }
 
+.login-activities {
+   height: max-content;
+   max-height: 500px;
+   overflow-y: scroll;
+}
+
 .addressWrapper {
    
    .addressCards {
@@ -111,7 +117,7 @@ input[type=button],
 
 .transactions {
    overflow-y: scroll;
-   max-height: 200px;
+   max-height: 500px;
    height: max-content;
 }
 
