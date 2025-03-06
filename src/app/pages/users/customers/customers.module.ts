@@ -7,12 +7,12 @@ import { AddCustomersComponent } from './add-customers/add-customers.component';
 import { UpdateCustomersComponent } from './update-customers/update-customers.component';
 import { DataTablesModule } from 'angular-datatables';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { ToastrModule } from 'ngx-toastr';
 import { WidgetsModule } from 'src/app/shared/partials';
 import { AlertModule } from 'ngx-bootstrap/alert';
 import { ReferralHistoryComponent } from './referral-history/referral-history.component';
 import { SharedModule } from '../../shared/shared.module';
 import { NewsletterSubscribersComponent } from './newsletter-subscribers/newsletter-subscribers.component'
+import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 
 @NgModule({
   declarations: [
@@ -24,6 +24,7 @@ import { NewsletterSubscribersComponent } from './newsletter-subscribers/newslet
   ],
   imports: [
     CommonModule,
+    BsDropdownModule,
     CustomersRoutingModule,
     DataTablesModule,
     FormsModule,

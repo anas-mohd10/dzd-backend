@@ -34,9 +34,20 @@ interface CustomerOrder {
 }
 
 interface CustomerOrderDetails {
-  totalResults: number;
-  totalPages: number;
+  totalResults: number | 0;
+  totalPages: number | 1;
   orders: Array<CustomerOrder>;
+}
+
+interface LoginActivity {
+  userAgent: string;
+  loginId: string;
+  loginIp: string;
+  logoutIp: string;
+  loginTimezone: string;
+  logoutTimezone: string;
+  loginTime: string;
+  logoutTime: string;
 }
 
 @Component({
@@ -97,6 +108,8 @@ export class UpdateCustomersComponent implements OnInit {
   cancelledOrders: Array<string> = ['CANCELLED', 'PENDING', 'FAILED'];
   previousCountry: string = '';
   previousState: string = '';
+  loginRef?: BsModalRef;
+  loginActivities: Array<LoginActivity> = [];
 
   constructor(
     private formBuilder: FormBuilder,
@@ -254,6 +267,13 @@ export class UpdateCustomersComponent implements OnInit {
         );
         break;
     }
+  }
+
+  openLoginActivities(template: TemplateRef<any>) {
+    this.loginRef = this.BsModalService.show(template, {
+      class: 'modal-dialog-centered',
+      ignoreBackdropClick: true,
+    });
   }
 
   openCustomerOrders(template: TemplateRef<any>) {
@@ -681,11 +701,23 @@ export class UpdateCustomersComponent implements OnInit {
         countryCode: res?.result?.countryCode,
         mobile: res?.result?.mobile
       })
+      this.loginActivities = res?.result?.loginActivities || [];
       this.handleAddressMobilePattern()
       this.referralCode.disable();
       this.form.patchValue(res?.result);
       this.handleMobilePattern();
       this.ChangeDetectorRef.markForCheck();
+    });
+  }
+
+  formatDate(date: string) {
+    return new Date(date).toLocaleString('en-US', {
+      year: 'numeric',
+      month: 'short',
+      day: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit',
+      second: '2-digit',
     });
   }
 
