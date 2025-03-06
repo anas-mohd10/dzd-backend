@@ -1,6 +1,8 @@
-import { ChangeDetectorRef, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, ElementRef, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { ToastrService } from 'ngx-toastr';
+import { Router } from '@angular/router';
+import { HotToastService } from '@ngneat/hot-toast';
+import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { appRoutes } from 'src/app/config/routes';
 import { AdminUsersService } from 'src/app/includes/services/admin.users.service';
 @Component({
@@ -19,15 +21,17 @@ export class MyAccountComponent implements OnInit {
   @ViewChild('email') email: ElementRef;
   isPasswordSubmitted: boolean = false
   passwordForm: FormGroup
-
+  modalRef?: BsModalRef
 
   constructor(
     private AdminUsersService: AdminUsersService,
     private ChangeDetectorRef: ChangeDetectorRef,
-    private ToastrService: ToastrService
+    private HotToastService: HotToastService,
+    private BsModalService: BsModalService,
+    private router: Router
   ) { }
 
-  get passwordControls() {
+  get controls() {
     return this.passwordForm.controls
   }
 
@@ -44,6 +48,7 @@ export class MyAccountComponent implements OnInit {
       firstname: new FormControl('', Validators.required),
       lastname: new FormControl(''),
       countryCode: new FormControl(''),
+      email: new FormControl(''),
       mobile: new FormControl('')
     })
 
@@ -53,15 +58,18 @@ export class MyAccountComponent implements OnInit {
       confirmPassword: new FormControl('', [Validators.required, Validators.minLength(8)])
     })
 
-    this.AdminUsersService.getAdminDetails({}).subscribe((res: any) => {
-      if (res?.errorCode == 0) {
-        this.adminDetails = res?.result
-        this.adminDetails.createdAt = new Date(this.adminDetails.createdAt).toString()
-        this.ChangeDetectorRef.markForCheck()
-
-        for (let key of Object.keys(this.adminDetails)) {
-          this.form.get(key)?.setValue(this.adminDetails[key])
+    this.AdminUsersService.getAdminDetails({}).subscribe({
+      next: (res: any) => {
+        if (res?.errorCode == 0) {
+          this.adminDetails = res?.result
+          this.form.patchValue(this.adminDetails)
+          this.ChangeDetectorRef.markForCheck()
+        } else {
+          this.HotToastService.error(res?.errorMessage)
         }
+      },
+      error: (err: any) => {
+        this.HotToastService.error(err?.error?.errorMessage)
       }
     })
   }
@@ -104,25 +112,56 @@ export class MyAccountComponent implements OnInit {
 
     this.AdminUsersService.resetPassword(this.passwordForm.value).subscribe((res: any) => {
       if (res?.errorCode == 0) {
-        this.ToastrService.success(res?.message)
+        this.HotToastService.success(res?.message)
       } else {
-        this.ToastrService.error(res?.errorMessage)
+        this.HotToastService.error(res?.errorMessage)
       }
     })
   }
 
+  resetForm() {
+    this.form.reset()
+    this.form.patchValue(this.adminDetails)
+  }
+
+  // Update the logout click handler to show modal
+  logout(template: TemplateRef<any>) {
+    this.modalRef = this.BsModalService.show(template, {
+      class: 'modal-sm modal-dialog-centered'
+    });
+  }
+
+  // Confirm logout
+  confirmLogout() {
+    localStorage.removeItem('access-token');
+    localStorage.removeItem('UserData');
+    localStorage.removeItem('is_logged_in');
+    this.modalRef?.hide();
+    this.router.navigate(['/auth/login']);
+  }
+
+  // Decline logout
+  declineLogout() {
+    this.modalRef?.hide();
+  }
+
+
   editDetails() {
     if (!this.form.valid) {
-      this.isValid = false
+      this.HotToastService.error('Please fill all the required fields')
       return
     }
 
-    this.AdminUsersService.updateAdminUser(this.form.value).subscribe((res: any) => {
-      if (res?.errorCode == 0) {
-        this.ngOnInit()
-        this.isValid = true
-        this.isTouched = false
-        this.ToastrService.success('Details updated successfully')
+    this.AdminUsersService.updateAdminUser(this.form.value).subscribe({
+      next: (res: any) => {
+        if (res?.errorCode == 0) {
+          this.ngOnInit()
+          this.HotToastService.success(res?.message)
+        } else {
+          this.HotToastService.error(res?.message)
+        }
+      }, error: (err: any) => {
+        this.HotToastService.error(err?.error?.errorMessage)
       }
     })
   }

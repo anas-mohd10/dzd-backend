@@ -10,48 +10,43 @@
         </a>
       </div>
     </div>
-    <div class="tab-content">
-      <div class="table-responsive">
-        <table class="table">
-          <thead>
-            <tr>
-              <th>Order</th>
-              <th>Date</th>
-              <th>Customer</th>
-              <th>Total</th>
-              <th>Source</th>
-              <th>Method</th>
-              <th>Status</th>
-              <th>Action</th>
-            </tr>
-          </thead>
-          <tbody class="fs-6">
-            <ng-container *ngFor="let order of orders; let  i = index">
-              <tr>
-                <td>{{order?.orderNo}}</td>
-                <td>{{order?.orderDate}}</td>
-                <td>{{order?.customerId?.name}}</td>
-                <td>{{order?.total}}</td>
-                <td>{{order?.source}}</td>
-                <td>{{order?.paymentMethod}}</td>
-                <td>
-                  <span class="paid fs-6"
-                    [ngClass]="{'unpaid': (order?.paymentStatus == 'UNPAID' || order?.paymentStatus == 'PENDING')}">
-                    {{order?.paymentStatus == 'PAID' ? 'Paid' : 'Pending'}}
-                  </span>
-                </td>
-                <td routerLink="{{appRoutes.orders.UPDATE_ORDER_LIST}}" [queryParams]="{'order': order?.orderNo}"> <img
-                    src="assets/icons/Edit2.svg" alt="Icon"></td>
-              </tr>
-            </ng-container>
-            <tr *ngIf="orders.length == 0">
-              <td colspan="8">
-                <app-no-results></app-no-results>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
-  </div>
+    <table class="table table-bordered">
+      <thead>
+        <tr>
+          <th>Order</th>
+          <th>Date</th>
+          <th>Customer</th>
+          <th>Total</th>
+          <th>Source</th>
+          <th>Method</th>
+          <th>Status</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody class="fs-6">
+        <ng-container *ngFor="let order of orders; let  i = index">
+          <tr>
+            <td>{{order?.orderNo}}</td>
+            <td>{{order?.orderDate}}</td>
+            <td>{{order?.customerId?.name}}</td>
+            <td>{{order?.total}}</td>
+            <td>{{order?.source}}</td>
+            <td>{{order?.paymentMethod}}</td>
+            <td>
+              <span class="paid fs-6"
+                [ngClass]="{'unpaid': (order?.paymentStatus == 'UNPAID' || order?.paymentStatus == 'PENDING')}">
+                {{order?.paymentStatus == 'PAID' ? 'Paid' : 'Pending'}}
+              </span>
+            </td>
+            <td routerLink="{{appRoutes.orders.UPDATE_ORDER_LIST}}" [queryParams]="{'order': order?.orderNo}"> <img
+                src="assets/icons/Edit2.svg" alt="Icon"></td>
+          </tr>
+        </ng-container>
+        <tr *ngIf="orders.length == 0">
+          <td colspan="8">
+            <app-no-results></app-no-results>
+          </td>
+        </tr>
+      </tbody>
+    </table>
 </div>
