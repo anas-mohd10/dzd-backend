@@ -72,7 +72,6 @@ export class UpdateOfferComponent implements OnInit {
   onRemoveSelected(item: any) {
     const offerType = this.form.get('offerType')?.value;
     
-    // Determine the current list based on offerType
     let currentList: any[];
     switch (offerType) {
       case 'products':
@@ -122,10 +121,9 @@ export class UpdateOfferComponent implements OnInit {
         break;
     }
   
-    this.dropdownInputs = currentList;
+    this.dropdownInputs = [...currentList];
     this.ChangeDetectorRef.markForCheck();
   }
-
 
   onPageTriggered(event: { pageIndex: number, pageSize: number }) {
     this.pageIndex = event.pageIndex
@@ -283,30 +281,64 @@ export class UpdateOfferComponent implements OnInit {
   }
 
   onSelect(event: { dropdownInputs: any[] }) {
-    this.assignDropdownInputs(event.dropdownInputs)
-    this.ChangeDetectorRef.markForCheck()
-  }
-
-  assignDropdownInputs(dropdownInputs: any[]) {
-    console.log("inside switch", dropdownInputs)
-    console.log("inside switch", this.form.get('offerType')?.value)
+    // Get the current array based on offer type
+    let currentArray: any[] = [];
     switch (this.form.get('offerType')?.value) {
       case 'products':
-        this.products = dropdownInputs
+        currentArray = [...this.products];
         break;
       case 'collections':
-        this.collections = dropdownInputs
+        currentArray = [...this.collections];
         break;
       case 'categories':
-        this.categories = dropdownInputs
+        currentArray = [...this.categories];
         break;
       case 'parents':
-        this.parents = dropdownInputs
+        currentArray = [...this.parents];
         break;
       case 'brands':
-        this.brands = dropdownInputs
+        currentArray = [...this.brands];
         break;
     }
+    
+    // Merge the dropdown inputs with the current array
+    this.assignDropdownInputs(event.dropdownInputs, currentArray);
+    this.ChangeDetectorRef.markForCheck();
+  }
+
+  assignDropdownInputs(dropdownInputs: any[], currentArray: any[] = []) {
+    // Create a merged array with unique items (no duplicates)
+    const mergedArray = [...currentArray];
+    
+    // Add new items that aren't already in the array
+    for (const item of dropdownInputs) {
+      const exists = mergedArray.some(existing => existing._id === item._id);
+      if (!exists) {
+        mergedArray.push(item);
+      }
+    }
+    
+    // Assign the merged array to the appropriate collection
+    switch (this.form.get('offerType')?.value) {
+      case 'products':
+        this.products = mergedArray;
+        break;
+      case 'collections':
+        this.collections = mergedArray;
+        break;
+      case 'categories':
+        this.categories = mergedArray;
+        break;
+      case 'parents':
+        this.parents = mergedArray;
+        break;
+      case 'brands':
+        this.brands = mergedArray;
+        break;
+    }
+    
+    // Update the dropdown inputs for the dropdown component
+    this.dropdownInputs = mergedArray;
   }
 
   setOfferTypeIfNotEmpty(array: any[], type: string = 'complete') {
