@@ -6,7 +6,7 @@ import { AddOfferComponent } from './add-offer.component';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { DataTablesModule } from 'angular-datatables';
 import { ImageCropperModule } from 'ngx-image-cropper';
-
+import { SharedModule } from 'src/app/pages/shared/shared.module';
 
 @NgModule({
   declarations: [AddOfferComponent],
@@ -17,6 +17,7 @@ import { ImageCropperModule } from 'ngx-image-cropper';
     ImageCropperModule,
     FormsModule,
     NgSelectModule,
+    SharedModule,
     RouterModule.forChild([
       {
         path: '',

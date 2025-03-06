@@ -128,6 +128,7 @@ export class UpdateProductComponent implements OnInit {
   productDetails: any; // Store product details
   addOnItems: Array<any> = [];
   thumbnailPreview: string = '';
+  videoThumbnailPreview: string = '';
   activeRelatedProducts: Array<any> = [];
   relatedProduct: FormControl = new FormControl('');
   storeFields: Array<StoreField> = [];
@@ -1055,6 +1056,7 @@ productIconClicked(event: any, type: string = 'add') {
           this.icons = res?.result?.productIcons || [];
           this.thumbnailPreview = res?.result?.thumbnail;
           this.ChangeDetectorRef.markForCheck();
+          this.videoThumbnailPreview = res?.result?.videoThumbnail;
         }
       },
       error: (err: any) => {
