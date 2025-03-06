@@ -5,11 +5,7 @@ import { Router } from '@angular/router';
 import { PageTasks } from 'src/app/config/constants';
 import { appRoutes } from 'src/app/config/routes';
 import { OfferService } from 'src/app/includes/services/offer.service';
-import { CollectionService } from 'src/app/includes/services/collection.service';
-import { CategoryService } from 'src/app/includes/services/category.service';
-import { BrandService } from 'src/app/includes/services/brand.service';
 import { HotToastService } from '@ngneat/hot-toast';
-import { ProductHeadService } from 'src/app/includes/services/product.head.service';
 
 @Component({
   selector: 'app-add-offer',
@@ -17,7 +13,7 @@ import { ProductHeadService } from 'src/app/includes/services/product.head.servi
   styleUrls: ['./add-offer.component.scss'],
 })
 export class AddOfferComponent implements OnInit {
-  offerForm: FormGroup;
+  form: FormGroup;
   appRoute = appRoutes;
   editMode = false;
   task = PageTasks.ADD;
@@ -31,30 +27,21 @@ export class AddOfferComponent implements OnInit {
   fromDate: string;
   toDate: string;
   validDate: boolean = true;
-  productsdata: Array<any> = [];
   products: Array<any> = []
-  categoriesdata: Array<any> = []
   categories: Array<any> = []
-  collectionsdata: Array<any> = []
   collections: Array<any> = []
-  parentsData: Array<any> = []
   parents: Array<any> = []
-  brandsdata: Array<any> = []
   brands: Array<any> = []
   isValidValue: boolean = true;
   isProceedable: boolean = true
+  dropdownInputs: Array<any> = []
 
   constructor(
     private FormBuilder: FormBuilder,
     private Router: Router,
     private HotToastService: HotToastService,
     private offerService: OfferService,
-    private productService: ProductService,
-    private ChangeDetectorRef: ChangeDetectorRef,
-    private CategoryService: CategoryService,
-    private CollectionService: CollectionService,
-    private ProductHeadService: ProductHeadService,
-    private BrandService: BrandService
+    private ChangeDetectorRef: ChangeDetectorRef
   ) { }
 
   ngOnInit(): void {
@@ -65,43 +52,10 @@ export class AddOfferComponent implements OnInit {
 
     this.initForm();
     this.managePage();
-
-    this.productService.getActiveProduct().subscribe((res: any) => {
-      this.productsdata = res?.result
-      this.ChangeDetectorRef.markForCheck()
-    })
-
-    this.CategoryService.getActiveCategory().subscribe((res: any) => {
-      this.categoriesdata = res?.result
-      this.ChangeDetectorRef.markForCheck()
-    })
-
-    this.CollectionService.getActiveCollection().subscribe((res: any) => {
-      this.collectionsdata = res?.result
-      this.ChangeDetectorRef.markForCheck()
-    })
-
-    this.BrandService.getActiveBrands().subscribe((res: any) => {
-      this.brandsdata = res?.result
-      this.ChangeDetectorRef.markForCheck()
-    })
-
-    this.ProductHeadService.activeParents().subscribe({
-      next: (res: any) => {
-        if (res?.errorCode == 0) {
-          this.parentsData = res?.result
-          this.ChangeDetectorRef.markForCheck()
-        } else {
-
-        }
-      }, error: (err: any) => {
-
-      }
-    })
   }
 
   initForm() {
-    this.offerForm = this.FormBuilder.group({
+    this.form = this.FormBuilder.group({
       title: ['', Validators.required],
       description: [''],
       startDate: ['', Validators.required],
@@ -112,12 +66,12 @@ export class AddOfferComponent implements OnInit {
       isActive: ['true'],
     });
 
-    this.offerForm.get('startDate')?.setValue(this.fromDate)
-    this.offerForm.get('endDate')?.setValue(this.toDate)
+    this.form.get('startDate')?.setValue(this.fromDate)
+    this.form.get('endDate')?.setValue(this.toDate)
   }
 
   get formControls() {
-    return this.offerForm.controls;
+    return this.form.controls;
   }
 
   managePage() {
@@ -134,43 +88,90 @@ export class AddOfferComponent implements OnInit {
   }
 
   validateValue() {
-    let type = this.offerForm.get('type')?.value
-    let value = this.offerForm.get('value')?.value
+    let type = this.form.get('type')?.value
+    let value = this.form.get('value')?.value
     type == 'percentage' ? value > 100 ? this.isValidValue = false : this.isValidValue = true : this.isValidValue = true
   }
 
-  getTypes(type: any) {
-    switch (type) {
+  getTypes(type: string) {
+    if (!type) return;
+    if (type !== this.form.get('offerType')?.value) {
+      switch (type) {
+        case 'complete':
+          this.products = [];
+          this.collections = [];
+          this.categories = [];
+          this.brands = [];
+          break;
+        case 'products':
+          this.collections = [];
+          this.categories = [];
+          this.brands = [];
+          break;
+        case 'collections':
+          this.products = [];
+          this.categories = [];
+          this.brands = [];
+          break;
+        case 'categories':
+          this.products = [];
+          this.collections = [];
+          this.brands = [];
+          break;
+        case 'parents':
+          this.products = [];
+          this.categories = [];
+          this.collections = [];
+          this.brands = [];
+          break;
+        case 'brands':
+          this.products = [];
+          this.collections = [];
+          this.categories = [];
+          break;
+      }
+    }
+    this.dropdownInputs = []
+    this.form.get('offerType')?.setValue(type);
+    this.ChangeDetectorRef.markForCheck();
+  }
+
+  onSelect(event: { dropdownInputs: any[] }) {
+    this.assignDropdownInputs(event.dropdownInputs)
+    this.ChangeDetectorRef.markForCheck()
+  }
+
+  onRemoveSelected(item: any) {
+    const isExists = this.dropdownInputs.some((input: any) => input._id === item._id)
+    if (isExists) {
+      this.HotToastService.info("Item removed successfully")
+      this.dropdownInputs = this.dropdownInputs.filter((input: any) => input._id !== item._id);
+    } else {
+      this.HotToastService.success("Item added successfully")
+      this.dropdownInputs.push(item);
+    }
+
+    this.assignDropdownInputs(this.dropdownInputs)
+    this.ChangeDetectorRef.markForCheck()
+  }
+
+  assignDropdownInputs(dropdownInputs: any[]) {
+    switch (this.form.get('offerType')?.value) {
       case 'products':
-        this.categories = []
-        this.collections = []
-        this.brands = []
-        this.parents = []
-        break
-      case 'categories':
-        this.products = []
-        this.collections = []
-        this.brands = []
-        this.parents = []
-        break
+        this.products = dropdownInputs
+        break;
       case 'collections':
-        this.products = []
-        this.categories = []
-        this.brands = []
-        this.parents = []
-        break
-      case 'brands':
-        this.products = []
-        this.categories = []
-        this.collections = []
-        this.parents = []
-        break
+        this.collections = dropdownInputs
+        break;
+      case 'categories':
+        this.categories = dropdownInputs
+        break;
       case 'parents':
-        this.products = []
-        this.categories = []
-        this.collections = []
-        this.brands = []
-        break
+        this.parents = dropdownInputs
+        break;
+      case 'brands':
+        this.brands = dropdownInputs
+        break;
     }
   }
 
@@ -184,20 +185,20 @@ export class AddOfferComponent implements OnInit {
   }
 
   addBrand() {
-    if (!this.offerForm.valid) {
+    if (!this.form.valid) {
       this.HotToastService.error('Please fill in all fields');
       this.isSubmitted = true
       return;
     }
 
     this.offerService.addOffer({
-      ...this.offerForm.value,
-      offerType: this.offerForm.get('offerType')?.value == 'complete' ? 'complete' : 'partial',
-      categories: this.categories.length > 0 ? this.categories : null,
-      products: this.products.length > 0 ? this.products : null,
-      parents: this.parents.length > 0 ? this.parents : null,
-      collections: this.collections.length > 0 ? this.collections : null,
-      brands: this.brands.length > 0 ? this.brands : null,
+      ...this.form.value,
+      offerType: this.form.get('offerType')?.value == 'complete' ? 'complete' : 'partial',
+      categories: this.categories.length > 0 ? this.categories?.map((item: any) => item?._id) : null,
+      products: this.products.length > 0 ? this.products?.map((item: any) => item?._id) : null,
+      parents: this.parents.length > 0 ? this.parents?.map((item) => item?._id) : null,
+      collections: this.collections.length > 0 ? this.collections?.map((item: any) => item?._id) : null,
+      brands: this.brands.length > 0 ? this.brands?.map((item: any) => item?._id) : null,
     }).subscribe((res: any) => {
       if (res.errorCode != 0) {
         this.HotToastService.error(res?.message);
