@@ -1,9 +1,4 @@
-<div *ngIf="isLoading" class="d-flex justify-content-center align-items-center" style="min-height: 600px;">
-  <div class="spinner-border text-primary" role="status">
-    <span class="visually-hidden">Loading...</span>
-  </div>
-</div>
-<div *ngIf="!isLoading">
+<div>
   <div class="page-header d-flex align-items-center justify-content-between">
     <div>
       <div class="page-title">
@@ -95,7 +90,9 @@
           <div>
             <div class="form-group mb-3">
               <label class="fs-6 mb-3">Offer type</label>
-              <select class="form-select fs-6" formControlName="offerType">
+              <select class="form-select fs-6" formControlName="offerType"
+              (change)="getTypes(form.get('offerType')?.value)"
+              >
                 <option value="" disabled>-- Select an option --</option>s
                 <option value="products">Products</option>
                 <option value="parents">Config Products</option>
@@ -106,51 +103,59 @@
               </select>
             </div>
           </div>
+          
+          <div *ngIf="['categories', 'brands', 'collections', 'products', 'parents'].includes(form.get('offerType')?.value)">
+            <div class="form-group mb-3">
+              <div class="d-flex flex-wrap gap-2">
+                <div
+                  *ngFor="let item of form.get('offerType')?.value == 'products' ? products : form.get('offerType')?.value == 'collections' ? collections : form.get('offerType')?.value == 'categories' ? categories : form.get('offerType')?.value == 'brands' ? brands : parents"
+                  class="bg-secondary p-2 rounded-3 d-flex justify-content-between">
+                  <div class="fs-6">
+                    {{ item.name }}
+                    <span *ngIf="form.get('offerType')?.value == 'products'">{{item.sku}}</span>
+                  </div>
+                  <span class="ms-2 cursor-pointer" (click)="onRemoveSelected(item)">
+                    <svg height="16" width="16" data-slot="icon" fill="none" stroke-width="1.5" stroke="currentColor"
+                      viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12"></path>
+                    </svg>
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+         
           <div *ngIf="form.get('offerType')?.value == 'products'">
             <div class="form-group mb-3">
               <label class="fs-6 mb-3">Products</label>
-              <ng-select [items]="productsdata" bindLabel="name" bindValue="_id" [(ngModel)]="products"
-                placeholder="Select products applicable to this coupon" [multiple]=true
-                [ngModelOptions]="{standalone: true}" (change)="getTypes('products')">
-              </ng-select>
+              <app-dropdown-results [dropdownInputs]="dropdownInputs" [type]="'products'" (onSelect)="onSelect($event)"></app-dropdown-results>
             </div>
           </div>
           <div *ngIf="form.get('offerType')?.value == 'categories'">
             <div class="form-group mb-3">
               <label class="fs-6 mb-3">Categories</label>
-              <ng-select [items]="categoriesdata" bindLabel="name" bindValue="_id" [(ngModel)]="categories"
-                placeholder="Select categories applicable to this offer" [multiple]=true
-                [ngModelOptions]="{standalone: true}" (change)="getTypes('categories')">
-              </ng-select>
+              <app-dropdown-results [dropdownInputs]="dropdownInputs" [type]="'categories'" (onSelect)="onSelect($event)"></app-dropdown-results>
             </div>
           </div>
           <div *ngIf="form.get('offerType')?.value == 'collections'">
             <div class="form-group mb-3">
               <label class="fs-6 mb-3">Collections</label>
-              <ng-select [items]="collectionsdata" bindLabel="name" bindValue="_id" [(ngModel)]="collections"
-                placeholder="Select collections applicable to this offer" [multiple]=true
-                [ngModelOptions]="{standalone: true}" (change)="getTypes('collections')">
-              </ng-select>
-            </div>
-          </div>
-          <div *ngIf="form.get('offerType')?.value == 'parents'">
-            <div class="form-group mb-3">
-              <label class="fs-6 mb-3">Config Products</label>
-              <ng-select [items]="parentsData" bindLabel="name" bindValue="_id" [(ngModel)]="parents"
-                placeholder="Select config products applicable to this offer" [multiple]=true
-                [ngModelOptions]="{standalone: true}" (change)="getTypes('parents')">
-              </ng-select>
+              <app-dropdown-results [dropdownInputs]="dropdownInputs" [type]="'collections'" (onSelect)="onSelect($event)"></app-dropdown-results>
             </div>
           </div>
           <div *ngIf="form.get('offerType')?.value == 'brands'">
             <div class="form-group mb-3">
               <label class="fs-6 mb-3">Brands</label>
-              <ng-select [items]="brandsdata" bindLabel="name" bindValue="_id" [(ngModel)]="brands"
-                placeholder="Select brands applicable to this offer" [multiple]=true
-                [ngModelOptions]="{standalone: true}" (change)="getTypes('brands')">
-              </ng-select>
+              <app-dropdown-results [dropdownInputs]="dropdownInputs" [type]="'brands'" (onSelect)="onSelect($event)"></app-dropdown-results>
             </div>
           </div>
+          <div *ngIf="form.get('offerType')?.value == 'parents'">
+            <div class="form-group mb-3">
+              <label class="fs-6 mb-3">Parent Products</label>
+              <app-dropdown-results [dropdownInputs]="dropdownInputs" [type]="'parents'" (onSelect)="onSelect($event)"></app-dropdown-results>
+            </div>
+          </div>
+         
           <div class="col-lg-6">
             <div class="form-group mb-3">
               <label class="fs-6 mb-3">Active Offer?</label>

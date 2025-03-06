@@ -1,15 +1,10 @@
-import { ProductService } from 'src/app/includes/services/product.service';
 import { Component, OnInit, ChangeDetectorRef, TemplateRef } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { appRoutes } from 'src/app/config/routes';
 import { OfferService } from 'src/app/includes/services/offer.service';
 import { environment } from 'src/environments/environment';
-import { CollectionService } from 'src/app/includes/services/collection.service';
-import { CategoryService } from 'src/app/includes/services/category.service';
-import { BrandService } from 'src/app/includes/services/brand.service';
 import { HotToastService } from '@ngneat/hot-toast';
-import { ProductHeadService } from 'src/app/includes/services/product.head.service';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 @Component({
   selector: 'app-update-offer',
@@ -25,15 +20,10 @@ export class UpdateOfferComponent implements OnInit {
   fromDate: string;
   toDate: string;
   validDate: boolean = true;
-  productsdata: Array<any> = [];
   products: Array<any> = [];
-  categoriesdata: Array<any> = [];
   categories: Array<any> = [];
-  collectionsdata: Array<any> = [];
   collections: Array<any> = [];
-  parentsData: Array<any> = [];
   parents: Array<any> = [];
-  brandsdata: Array<any> = [];
   brands: Array<any> = [];
   isValidValue: boolean = true;
   isProceedable: boolean = true;
@@ -47,19 +37,14 @@ export class UpdateOfferComponent implements OnInit {
   totalResults: number = 0;
   productDocs: Array<any> = [];
   productsModalRef?: BsModalRef
-
+  dropdownInputs: any = []
   constructor(
-    private ProductHeadService: ProductHeadService,
     private formBuilder: FormBuilder,
     private route: ActivatedRoute,
     private router: Router,
     private HotToastService: HotToastService,
     private offerService: OfferService,
     private ChangeDetectorRef: ChangeDetectorRef,
-    private ProductService: ProductService,
-    private CategoryService: CategoryService,
-    private CollectionService: CollectionService,
-    private BrandService: BrandService,
     private BsModalService: BsModalService
   ) { }
 
@@ -77,7 +62,6 @@ export class UpdateOfferComponent implements OnInit {
 
   openProducts(template: TemplateRef<any>){
     this.productsModalRef = this.BsModalService.show(template, { class: 'modal-xl modal-dialog-centered', ignoreBackdropClick: true });
-    this.getProducts()
   }
 
   navigateToProduct(productId: string) {
@@ -85,31 +69,67 @@ export class UpdateOfferComponent implements OnInit {
     this.productsModalRef?.hide();
   }
 
-  getProducts() {
-    this.ProductService.getProductOffers(
-      this.offerDetails._id,
-      this.pageIndex,
-      this.pageSize
-    ).subscribe({
-      next: (res: any) => {
-        if (res?.errorCode == 0) {
-          this.productDocs = res?.result?.products
-          this.totalPages = res?.result?.totalPages
-          this.totalResults = res?.result?.totalResults
-          this.ChangeDetectorRef.markForCheck()
-        } else {
-          this.HotToastService.error(res?.message)
-        }
-      }, error: (err: any) => {
-        this.HotToastService.error(err?.message)
-      }
-    })
+  onRemoveSelected(item: any) {
+    const offerType = this.form.get('offerType')?.value;
+    
+    // Determine the current list based on offerType
+    let currentList: any[];
+    switch (offerType) {
+      case 'products':
+        currentList = this.products;
+        break;
+      case 'collections':
+        currentList = this.collections;
+        break;
+      case 'categories':
+        currentList = this.categories;
+        break;
+      case 'brands':
+        currentList = this.brands;
+        break;
+      case 'parents':
+        currentList = this.parents;
+        break;
+      default:
+        return;
+    }
+  
+    const itemIndex = currentList.findIndex(i => i._id === item._id);
+    
+    if (itemIndex !== -1) {
+      currentList.splice(itemIndex, 1);
+      this.HotToastService.info("Item removed successfully");
+    } else {
+      currentList.push(item);
+      this.HotToastService.success("Item added successfully");
+    }
+  
+    switch (offerType) {
+      case 'products':
+        this.products = [...currentList];
+        break;
+      case 'collections':
+        this.collections = [...currentList];
+        break;
+      case 'categories':
+        this.categories = [...currentList];
+        break;
+      case 'brands':
+        this.brands = [...currentList];
+        break;
+      case 'parents':
+        this.parents = [...currentList];
+        break;
+    }
+  
+    this.dropdownInputs = currentList;
+    this.ChangeDetectorRef.markForCheck();
   }
+
 
   onPageTriggered(event: { pageIndex: number, pageSize: number }) {
     this.pageIndex = event.pageIndex
     this.pageSize = event.pageSize
-    this.getProducts()
   }
 
   ngOnInit(): void {
@@ -123,44 +143,22 @@ export class UpdateOfferComponent implements OnInit {
     this.base = environment.base;
     this.offerId = this.route.snapshot.params.offerId || '';
     this.initForm();
-    
-    // Set loading true at start
-    this.isLoading = true;
-    
-    // Create a counter to track all API requests
-    let completedRequests = 0;
-    const totalRequests = 6; // Offer, Products, Categories, Collections, Brands, Parents
-    
-    const checkAllLoaded = () => {
-      completedRequests++;
-      if (completedRequests === totalRequests) {
-        this.isLoading = false;
-        this.ChangeDetectorRef.markForCheck();
-      }
-    };
-    
     // 1. Offer details
     this.offerService.getOfferDetails(this.offerId).subscribe({
       next: (res: any) => {
         if (res.errorCode == 0) {
           this.offerDetails = res?.result;
-          this.form.get('title')?.setValue(this.offerDetails.title);
-          this.form.get('description')?.setValue(this.offerDetails.description);
-          this.form.get('isActive')?.setValue(this.offerDetails.isActive);
-          this.form.get('type')?.setValue(this.offerDetails.type);
-          this.form.get('value')?.setValue(this.offerDetails.value);
-          this.form.get('offerType')?.setValue(this.offerDetails.offerType);
-          this.form.get('isFeatured')?.setValue(this.offerDetails.isFeatured);
-          this.form
-            .get('startDate')
-            ?.setValue(
-              new Date(this.offerDetails.startDate).toISOString().split('T')[0]
-            );
-          this.form
-            .get('endDate')
-            ?.setValue(
-              new Date(this.offerDetails.endDate).toISOString().split('T')[0]
-            );
+          this.form.patchValue({
+            title: this.offerDetails.title,
+            description: this.offerDetails.description,
+            isActive: this.offerDetails.isActive,
+            type: this.offerDetails.type,
+            value: this.offerDetails.value,
+            offerType: this.offerDetails.offerType,
+            isFeatured: this.offerDetails.isFeatured,
+            startDate: new Date(this.offerDetails.startDate).toISOString().split('T')[0],
+            endDate: new Date(this.offerDetails.endDate).toISOString().split('T')[0],
+          })
           this.products = this.offerDetails.products
             ? this.offerDetails.products
             : [];
@@ -186,61 +184,7 @@ export class UpdateOfferComponent implements OnInit {
             : (this.isValidValue = true);
           this.ChangeDetectorRef.markForCheck();
         }
-        checkAllLoaded();
       },
-      error: () => checkAllLoaded()
-    });
-
-    // 2. Products
-    this.ProductService.getActiveProduct().subscribe({
-      next: (res: any) => {
-        this.productsdata = res?.result;
-        this.ChangeDetectorRef.markForCheck();
-        checkAllLoaded();
-      },
-      error: () => checkAllLoaded()
-    });
-
-    // 3. Categories
-    this.CategoryService.getActiveCategory().subscribe({
-      next: (res: any) => {
-        this.categoriesdata = res?.result;
-        this.ChangeDetectorRef.markForCheck();
-        checkAllLoaded();
-      },
-      error: () => checkAllLoaded()
-    });
-
-    // 4. Collections
-    this.CollectionService.getActiveCollection().subscribe({
-      next: (res: any) => {
-        this.collectionsdata = res?.result;
-        this.ChangeDetectorRef.markForCheck();
-        checkAllLoaded();
-      },
-      error: () => checkAllLoaded()
-    });
-
-    // 5. Brands
-    this.BrandService.getActiveBrands().subscribe({
-      next: (res: any) => {
-        this.brandsdata = res?.result;
-        this.ChangeDetectorRef.markForCheck();
-        checkAllLoaded();
-      },
-      error: () => checkAllLoaded()
-    });
-
-    // 6. Parents
-    this.ProductHeadService.activeParents().subscribe({
-      next: (res: any) => {
-        if (res?.errorCode == 0) {
-          this.parentsData = res?.result;
-          this.ChangeDetectorRef.markForCheck();
-        }
-        checkAllLoaded();
-      },
-      error: () => checkAllLoaded()
     });
   }
 
@@ -291,43 +235,78 @@ export class UpdateOfferComponent implements OnInit {
     })
   }
 
-  getTypes(type: any) {
-    switch (type) {
-      case 'products':
-        this.categories = [];
-        this.collections = [];
-        this.brands = [];
-        this.parents = [];
-        break;
-      case 'categories':
-        this.products = [];
-        this.collections = [];
-        this.brands = [];
-        this.parents = [];
-        break;
-      case 'collections':
-        this.products = [];
-        this.categories = [];
-        this.brands = [];
-        this.parents = [];
-        break;
-      case 'brands':
-        this.products = [];
-        this.categories = [];
-        this.collections = [];
-        this.parents = [];
-        break;
-      case 'parents':
-        this.products = [];
-        this.categories = [];
-        this.collections = [];
-        this.brands = [];
-        break;
+  getTypes(type: string) {
+    if (!type) return;
+    if (type !== this.form.get('offerType')?.value) {
+      switch (type) {
+        case 'complete':
+          this.products = [];
+          this.collections = [];
+          this.categories = [];
+          this.brands = [];
+          break;
+        case 'products':
+          this.collections = [];
+          this.categories = [];
+          this.brands = [];
+          break;
+        case 'collections':
+          this.products = [];
+          this.categories = [];
+          this.brands = [];
+          break;
+        case 'categories':
+          this.products = [];
+          this.collections = [];
+          this.brands = [];
+          break;
+        case 'parents':
+          this.products = [];
+          this.categories = [];
+          this.collections = [];
+          this.brands = [];
+          break;
+        case 'brands':
+          this.products = [];
+          this.collections = [];
+          this.categories = [];
+          break;
+      }
     }
+    this.dropdownInputs = []
+    this.form.get('offerType')?.setValue(type);
+    this.ChangeDetectorRef.markForCheck();
   }
 
   compareFn(item: any, selected: any) {
     return item?._id === selected;
+  }
+
+  onSelect(event: { dropdownInputs: any[] }) {
+    this.assignDropdownInputs(event.dropdownInputs)
+    this.ChangeDetectorRef.markForCheck()
+  }
+
+  assignDropdownInputs(dropdownInputs: any[]) {
+    console.log("inside switch", dropdownInputs)
+    console.log("inside switch", this.form.get('offerType')?.value)
+    switch (this.form.get('offerType')?.value) {
+      case 'products':
+        this.products = dropdownInputs
+        break;
+      case 'collections':
+        this.collections = dropdownInputs
+        break;
+      case 'categories':
+        this.categories = dropdownInputs
+        break;
+      case 'parents':
+        this.parents = dropdownInputs
+        break;
+      case 'brands':
+        this.brands = dropdownInputs
+        break;
+    }
   }
 
   setOfferTypeIfNotEmpty(array: any[], type: string = 'complete') {
@@ -357,11 +336,11 @@ export class UpdateOfferComponent implements OnInit {
           this.form.get('offerType')?.value == 'complete'
             ? 'complete'
             : 'partial',
-        categories: this.categories.length > 0 ? this.categories : null,
-        products: this.products.length > 0 ? this.products : null,
-        collections: this.collections.length > 0 ? this.collections : null,
-        brands: this.brands.length > 0 ? this.brands : null,
-        parents: this.parents.length > 0 ? this.parents : null,
+        categories: this.categories.length > 0 ? this.categories?.map((item: any) => item._id) : null,
+        products: this.products.length > 0 ? this.products?.map((item: any) => item._id) : null,
+        collections: this.collections.length > 0 ? this.collections?.map((item: any) => item._id) : null,
+        brands: this.brands.length > 0 ? this.brands?.map((item: any) => item._id) : null,
+        parents: this.parents.length > 0 ? this.parents?.map((item: any) => item._id) : null,
         slug: this.offerId,
       })
       .subscribe((res: any) => {
