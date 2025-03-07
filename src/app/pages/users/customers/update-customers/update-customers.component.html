@@ -717,8 +717,6 @@
                   {{customerDetails?.registrationActivity?.ipAddress == "::1" ? "127.0.0.1" :
                   customerDetails?.registrationActivity?.ipAddress}}
                </li>
-               <li *ngIf="customerDetails?.registrationActivity?.timezone" class="fs-6">
-                  {{customerDetails?.registrationActivity?.timezone}}</li>
             </ul>
          </div>
          <ng-container *ngFor="let loginActivity of loginActivities">
@@ -741,7 +739,6 @@
                         style="width: max-content;">
                         {{loginActivity.loginIp == "::1" ? "127.0.0.1" : loginActivity.loginIp}}
                      </li>
-                     <li *ngIf="loginActivity.loginIp" class="fs-6">{{loginActivity.loginTimezone}}</li>
                   </ul>
                </div>
                <div class="w-50">
@@ -761,7 +758,6 @@
                         style="width: max-content;">
                         {{loginActivity.logoutIp == "::1" ? "127.0.0.1" : loginActivity.logoutIp}}
                      </li>
-                     <li *ngIf="loginActivity.logoutIp" class="fs-6">{{loginActivity.logoutTimezone}}</li>
                   </ul>
                </div>
             </div>
