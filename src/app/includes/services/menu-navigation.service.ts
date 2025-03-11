@@ -43,6 +43,11 @@ export class MenuNavigationService {
     return this.HttpClient.post(url, data);
   }
 
+  reorderNestedMenuItems(menuItems: {_id: string, index: number}[]) {
+    const url = this.CommonService.getFullUrl(menuNavigationEndpoints.reorderMenuNavigations);
+    return this.HttpClient.post(url, { menuItems });
+  }
+
   copyMenuNavigations() {
     const url = this.CommonService.getFullUrl(menuNavigationEndpoints.copyMenuNavigations);
     return this.HttpClient.put(url, {});

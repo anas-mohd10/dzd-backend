@@ -205,6 +205,9 @@ export class MenuNavigationComponent implements OnInit {
     })
   }
 
+
+  
+
   getMenuDoc() {
     this.MenuNavigationService.getMenuNavigation(this.activeMenuId).subscribe({
       next: (res: any) => {
@@ -449,7 +452,44 @@ export class MenuNavigationComponent implements OnInit {
         this.HotToastService.error(err?.message)
       }
     })
+
+
+    
   }
+
+
+  dropNested(event: CdkDragDrop<any[]>, items: MenuNavigation[]) {
+    if (event.previousContainer === event.container) {
+        moveItemInArray(items, event.previousIndex, event.currentIndex);
+        this.reorderNestedMenuItems(items);
+    }
+    this.ChangeDetectorRef.markForCheck();
+}
+
+reorderNestedMenuItems(items: MenuNavigation[]) {
+    const updatedItems = items.map((item, index) => {
+        return {
+            _id: item._id,
+            index: index + 1
+        };
+    });
+
+    this.MenuNavigationService.reorderNestedMenuItems(updatedItems).subscribe({
+        next: (res: any) => {
+            if (res.errorCode == 0) {
+                this.fetchMenuDocs(); // Refresh the data
+                this.HotToastService.success(res?.message);
+            } else {
+                this.HotToastService.error(res?.message);
+            }
+        }, 
+        error: (err: any) => {
+            this.HotToastService.error(err?.message);
+        }
+    });
+}
+
+
 
   toggleAccordion(menuItem: MenuNavigation) {
     menuItem.isExpanded = !menuItem.isExpanded;
