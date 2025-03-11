@@ -693,4 +693,13 @@
       <button type="button" class="btn btn-primary" (click)="declineBulkUpdate()">No</button>
     </div>
   </ng-template>
+
+  <ng-template #failedPayment>
+    <div class="modal-body">
+      <div class="modal-title">Payment Failed</div>
+      <p class="fs-6 my-2">Do you want to convert the payment to COD?</p>
+      <button type="button" class="btn btn-default" (click)="orderForceUpdate()" [disabled]="isForceProcessing">Yes</button>
+      <button type="button" class="btn btn-primary" (click)="declineForceUpdate()" [disabled]="isForceProcessing">No</button>
+    </div>
+  </ng-template>
 </div>
