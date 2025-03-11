@@ -218,7 +218,8 @@
           </td>
           <td *ngIf="settings.isPickUp == true">
             <div *ngIf="order?.pickUpLocation">
-              <div class="cursor-pointer" tooltip="{{order?.pickUpLocation?.address}}">{{order?.pickUpLocation?.name + ", " + order?.pickUpLocation?.city}}</div>
+              <div class="cursor-pointer" tooltip="{{order?.pickUpLocation?.address}}">{{order?.pickUpLocation?.name +
+                ", " + order?.pickUpLocation?.city}}</div>
             </div>
             <div *ngIf="order?.clickPoint">
               {{order?.clickPoint?.address?.city}}
@@ -294,7 +295,7 @@
             <div class="d-flex align-items-center justify-content-start gap-3">
               <div
                 class="cursor-pointer rounded action-button d-flex align-items-center justify-content-center border border-secondary"
-                routerLink="{{appRoute.orders.UPDATE_ORDER_LIST}}" [queryParams]="{'order': order?.orderNo}">
+                routerLink="{{appRoute.orders.UPDATE_ORDER_LIST}}" [queryParams]="{'order': order?._id}">
                 <img src="assets/icons/eye.svg" alt="View order details">
               </div>
               <div (click)="getInvoiceSignedUrl(order?._id)"
