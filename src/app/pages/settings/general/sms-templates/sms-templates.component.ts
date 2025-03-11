@@ -48,6 +48,11 @@ export class SmsTemplatesComponent implements OnInit {
           defaultMessage: 'Your order #{{orderNo}} has been confirmed. Total amount: {{amount}}.'
         },
         {
+          title: 'Order Placed',
+          type: 'order-placed',
+          defaultMessage: 'Your order #{{orderNo}} has been placed. Total amount: {{amount}}.'
+        },
+        {
           title: 'Order Accepted',
           type: 'order-accepted',
           defaultMessage: 'Your order #{{orderNo}} has been accepted. Estimated delivery time: {{estimatedTime}}.'
@@ -124,6 +129,7 @@ export class SmsTemplatesComponent implements OnInit {
     'order-confirmation': ['{{orderNo}}', '{{amount}}'],
     'order-accepted': ['{{orderNo}}', '{{estimatedTime}}'],
     'order-packed': ['{{orderNo}}'],
+    'order-placed': ['{{orderNo}}, {{amount}}'],
     'order-shipped': ['{{orderNo}}', '{{trackingId}}'],
     'order-out-for-delivery': ['{{orderNo}}', '{{estimatedTime}}'],
     'order-delivered': ['{{orderNo}}'],
@@ -132,6 +138,7 @@ export class SmsTemplatesComponent implements OnInit {
     'cart': ['{{productName}}', '{{amount}}'],
     'product-status-update': ['{{productName}}', '{{status}}']
   };
+
 
   ngOnInit(): void {
     this.templateType = this.activatedRoute.snapshot.queryParams.type || 'authentication';
