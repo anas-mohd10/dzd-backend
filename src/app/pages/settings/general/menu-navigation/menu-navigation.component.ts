@@ -474,7 +474,7 @@ reorderNestedMenuItems(items: MenuNavigation[]) {
         };
     });
 
-    this.MenuNavigationService.reorderNestedMenuItems(updatedItems).subscribe({
+    this.MenuNavigationService.reorderMenuNavigations({menuNavigations: updatedItems}).subscribe({
         next: (res: any) => {
             if (res.errorCode == 0) {
                 this.fetchMenuDocs(); // Refresh the data
