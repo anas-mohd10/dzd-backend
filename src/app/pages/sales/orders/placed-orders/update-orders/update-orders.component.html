@@ -57,7 +57,16 @@
   <div class="position-relative mt-4">
     <div class="alert alert-warning fs-6"
       *ngIf="order?.paymentMethod == 'ONLINE' && !isCancelled && order?.paymentStatus == 'PENDING'">
-      Please proceed with the payment to facilitate the processing of the order request
+      Please proceed with the payment to facilitat e the processing of the order request
+    </div>
+
+    <div class="alert alert-danger fs-6"
+      *ngIf="order?.paymentMethod == 'ONLINE' && order?.payment?.isProcessing == true">
+      <div class="fs-3">Payment is being processed.</div>
+      <div class="fs-6">
+        New payment won't be processed until the previous payment is completed. 
+        You can proceed with updating the order status but payment will be processed in the background.
+      </div>
     </div>
 
     <div *ngIf="isCancelled">
@@ -698,8 +707,10 @@
     <div class="modal-body">
       <div class="modal-title">Payment Failed</div>
       <p class="fs-6 my-2">Do you want to convert the payment to COD?</p>
-      <button type="button" class="btn btn-default" (click)="orderForceUpdate()" [disabled]="isForceProcessing">Yes</button>
-      <button type="button" class="btn btn-primary" (click)="declineForceUpdate()" [disabled]="isForceProcessing">No</button>
+      <button type="button" class="btn btn-default" (click)="orderForceUpdate()"
+        [disabled]="isForceProcessing">Yes</button>
+      <button type="button" class="btn btn-primary" (click)="declineForceUpdate()"
+        [disabled]="isForceProcessing">No</button>
     </div>
   </ng-template>
 </div>

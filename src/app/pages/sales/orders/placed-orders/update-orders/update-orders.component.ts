@@ -686,7 +686,6 @@ export class UpdateOrdersComponent implements OnInit {
           this.getOrderDetails();
           this.closeBulkUpdateConfirmation();
         } else if (res?.errorCode == 400) {
-          this.HotToastService.error(res?.message);
           this.failedPaymenRef = this.BsModalService.show(this.failedPayment, { class: 'modal-sm modal-dialog-centered', ignoreBackdropClick: true });
         } else {
           this.HotToastService.error(res?.message);
