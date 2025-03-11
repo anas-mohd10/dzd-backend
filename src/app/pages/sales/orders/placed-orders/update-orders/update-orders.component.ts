@@ -637,7 +637,7 @@ export class UpdateOrdersComponent implements OnInit {
 
   confirmBulkUpdate() {
     this.OrdersService.updateBulkProduct({
-      order: this.order?._id,
+      order: this.order?.orderNo,
       status: this.bulkStatusToUpdate,
       products: this.bulkProducts,
     }).subscribe({
