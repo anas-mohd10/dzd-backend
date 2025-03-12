@@ -23,8 +23,33 @@
         <div class="row">
           <div class="col-lg-6">
             <div class="media">
-              <img src="{{mediaDetails.path}}" alt="{{mediaDetails.altTitle}}"
-                onerror="this.src = 'assets/media/Media_Preview.png'">
+              <!-- <img src="{{mediaDetails.path}}" alt="{{mediaDetails.altTitle}}"
+                onerror="this.src = 'assets/media/Media_Preview.png'"> -->
+
+
+                <img
+                *ngIf="isImageFile(mediaDetails.path)"
+                src="{{ mediaDetails.path }}"
+                alt="{{ mediaDetails.altTitle }}"
+                onerror="this.src = 'assets/media/Media_Preview.png'"
+              />
+
+              <!-- Display video previews for video files -->
+              <video *ngIf="isVideoFile(mediaDetails.path)" controls>
+                <source
+                  src="{{ mediaDetails.path }}"
+                  type="video/{{ getFileExtension(mediaDetails.path) }}"
+                />
+                Your browser does not support the video tag.
+              </video>
+
+              <!-- Display default icon for other file types -->
+              <div
+                *ngIf="!isImageFile(mediaDetails.path) && !isVideoFile(mediaDetails.path)"
+                class="default-file-icon"
+              >
+                <img src="assets/media/Media_Preview.png" alt="Default file" />
+              </div>
             </div>
           </div>
           <div class="col-lg-6">

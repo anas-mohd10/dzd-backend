@@ -138,4 +138,35 @@ export class MediaDetailsComponent implements OnInit {
       }
     })
   }
+
+  isImageFile(path: string): boolean {
+    if (!path) return false;
+    
+    const imageExtensions = ['jpg', 'jpeg', 'png', 'gif', 'webp', 'bmp', 'svg'];
+    const extension = this.getFileExtension(path).toLowerCase();
+    
+    return imageExtensions.includes(extension);
+  }
+
+  // Check if the file is a video
+  isVideoFile(path: string): boolean {
+    if (!path) return false;
+    
+    const videoExtensions = ['mp4', 'webm', 'ogg', 'mov', 'avi', 'wmv', 'flv', 'mkv'];
+    const extension = this.getFileExtension(path).toLowerCase();
+    
+    return videoExtensions.includes(extension);
+  }
+
+  // Get file extension from path
+  getFileExtension(path: string): string {
+    if (!path) return '';
+    
+    const lastDotIndex = path.lastIndexOf('.');
+    if (lastDotIndex === -1) return '';
+    
+    return path.substring(lastDotIndex + 1);
+  }
+
+
 }

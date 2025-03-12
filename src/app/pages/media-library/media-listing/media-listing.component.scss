@@ -58,7 +58,7 @@
             border: 1px solid rgb(149, 157, 165);
             display: grid;
             place-items: center;
-
+            z-index: 10;
             .checked {
                 background: #20BDAB;
                 height: 1rem;
@@ -104,6 +104,12 @@
         position: relative;
 
         img {
+            height: 140px;
+            width: 100%;
+            object-fit: contain;
+        }
+
+        video {
             height: 140px;
             width: 100%;
             object-fit: contain;
