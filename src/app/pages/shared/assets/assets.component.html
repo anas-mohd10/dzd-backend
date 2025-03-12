@@ -14,33 +14,39 @@
   /> -->
 
   <!-- Image Preview -->
-<img
-*ngIf="preview && (preview.type === 'image' || isImageFile(preview?.path))"
-[src]="preview?.path ? base + preview.path : 'assets/media/Media_Preview.png'"
-[alt]="preview?.title || 'Image preview'"
-class="bg-white top-0 start-0 position-absolute border border-secondary w-100 h-100 rounded"
-[ngClass]="{
-  'object-fit-cover': image == 'cover',
-  'object-fit-contain': !image
-}"
-(error)="setDefaultImage($event)"
-/>
+  <img
+    *ngIf="preview && (preview.type === 'image' || isImageFile(preview?.path))"
+    [src]="
+      preview?.path ? base + preview.path : 'assets/media/Media_Preview.png'
+    "
+    [alt]="preview?.title || 'Image preview'"
+    class="bg-white top-0 start-0 position-absolute border border-secondary w-100 h-100 rounded"
+    [ngClass]="{
+      'object-fit-cover': image == 'cover',
+      'object-fit-contain': !image
+    }"
+    (error)="setDefaultImage($event)"
+  />
 
-<!-- Video Preview -->
-<video
-*ngIf="preview && (preview.type === 'video' || isVideoFile(preview?.path))"
-[src]="preview?.path ? base + preview.path : ''"
-class="bg-white top-0 start-0 position-absolute border border-secondary w-100 h-100 rounded"
-[ngClass]="{
-  'object-fit-cover': image == 'cover',
-  'object-fit-contain': !image
-}"
-preload="metadata"
-(error)="setDefaultVideoPreview($event)"
->
-</video>
+  <!-- Video Preview -->
+  <video
+    *ngIf="preview && (preview.type === 'video' || isVideoFile(preview?.path))"
+    [src]="preview?.path ? base + preview.path : ''"
+    class="bg-white top-0 start-0 position-absolute border border-secondary w-100 h-100 rounded"
+    [ngClass]="{
+      'object-fit-cover': image == 'cover',
+      'object-fit-contain': !image
+    }"
+    preload="metadata"
+    (error)="setDefaultVideoPreview($event)"
+  >
+    <!-- <source src="{{ preview.url }}" type="video/mp4" /> -->
+    <source
+      src="{{ base }}{{ preview.url }}"
+      type="video/{{ getFileExtension(preview.path) }}"
+    />
+  </video>
 
- 
   <div
     *ngIf="!preview"
     class="mask bg-white border fs-5 top-0 start-0 border-secondary border-1 rounded h-100 w-100 position-absolute text-muted d-flex flex-column align-items-center justify-content-center"
@@ -95,7 +101,7 @@ preload="metadata"
             (ngModelChange)="searchAssets()"
             placeholder="Search items"
             class="form-control"
-            accept="image/*,video/*,.gif" 
+            accept="image/*,video/*,.gif"
           />
         </div>
 
@@ -138,28 +144,28 @@ preload="metadata"
                 /> -->
 
                 <img
-                *ngIf="isImageFile(media.path)"
-                src="{{ base }}{{ media.path }}"
-                alt="{{ media.altTitle }}"
-                onerror="this.src = 'assets/images/default.png'"
-              />
-
-              <!-- Display video previews for video files -->
-              <video *ngIf="isVideoFile(media.path)" controls>
-                <source
+                  *ngIf="isImageFile(media.path)"
                   src="{{ base }}{{ media.path }}"
-                  type="video/{{ getFileExtension(media.path) }}"
+                  alt="{{ media.altTitle }}"
+                  onerror="this.src = 'assets/images/default.png'"
                 />
-                Your browser does not support the video tag.
-              </video>
 
-              <!-- Display default icon for other file types -->
-              <div
-                *ngIf="!isImageFile(media.path) && !isVideoFile(media.path)"
-                class="default-file-icon"
-              >
-                <img src="assets/images/default.png" alt="Default file" />
-              </div>
+                <!-- Display video previews for video files -->
+                <video *ngIf="isVideoFile(media.path)" controls>
+                  <source
+                    src="{{ base }}{{ media.path }}"
+                    type="video/{{ getFileExtension(media.path) }}"
+                  />
+                  Your browser does not support the video tag.
+                </video>
+
+                <!-- Display default icon for other file types -->
+                <div
+                  *ngIf="!isImageFile(media.path) && !isVideoFile(media.path)"
+                  class="default-file-icon"
+                >
+                  <img src="assets/images/default.png" alt="Default file" />
+                </div>
 
                 <div class="p-2 asset-details border-top border-secondary">
                   {{ media?.title }}
@@ -198,7 +204,7 @@ preload="metadata"
               type="file"
               class="form-control"
               multiple="multiple"
-              accept="image/*,video/*,.gif" 
+              accept="image/*,video/*,.gif"
               (change)="onMediaChange($event)"
             />
           </div>
@@ -212,7 +218,7 @@ preload="metadata"
                   type="file"
                   multiple="multiple"
                   class="form-control"
-                  accept="image/*,video/*,.gif" 
+                  accept="image/*,video/*,.gif"
                   (change)="onMediaChange($event)"
                 />
               </div>

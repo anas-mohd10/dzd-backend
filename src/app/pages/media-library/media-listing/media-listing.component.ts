@@ -150,7 +150,6 @@ export class MediaListingComponent implements OnInit {
 
   addMedias() {
     let formdata = new FormData();
-    console.log('Files to upload:', this.files); // Log all files being uploaded
     
     for (let file of this.files) {
       console.log(`Adding file: ${file.name}, type: ${file.type}, size: ${file.size} bytes`);
