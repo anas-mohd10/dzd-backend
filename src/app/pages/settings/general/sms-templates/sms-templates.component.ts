@@ -89,23 +89,23 @@ export class SmsTemplatesComponent implements OnInit {
         }
       ]
     },
-    // {
-    //   title: 'Cart & Promotions',
-    //   type: 'cart-promo',
-    //   description: 'SMS templates for cart and promotional messages',
-    //   templates: [
-    //     {
-    //       title: 'Abandoned Cart',
-    //       type: 'cart',
-    //       defaultMessage: 'Still thinking about {{productName}}? Complete your purchase now for {{amount}}!'
-    //     },
-    //     {
-    //       title: 'Product Status',
-    //       type: 'product-status-update',
-    //       defaultMessage: 'Status update for {{productName}}: {{status}}'
-    //     }
-    //   ]
-    // }
+    {
+      title: 'Cart & Promotions',
+      type: 'cart-promo',
+      description: 'SMS templates for cart and promotional messages',
+      templates: [
+        // {
+        //   title: 'Abandoned Cart',
+        //   type: 'cart',
+        //   defaultMessage: 'Still thinking about {{productName}}? Complete your purchase now for {{amount}}!'
+        // },
+        {
+          title: 'Product Status',
+          type: 'product-status-update',
+          defaultMessage: 'Status update for {{productName}}: {{status}}'
+        }
+      ]
+    }
   ];
   templateItems: Array<any> = [];
   form: FormGroup;
