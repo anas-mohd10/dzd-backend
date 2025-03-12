@@ -29,7 +29,7 @@
 
                 <img
                 *ngIf="isImageFile(mediaDetails.path)"
-                src="{{ base }}{{ mediaDetails.path }}"
+                src="{{ mediaDetails.path }}"
                 alt="{{ mediaDetails.altTitle }}"
                 onerror="this.src = 'assets/media/Media_Preview.png'"
               />
@@ -37,7 +37,7 @@
               <!-- Display video previews for video files -->
               <video *ngIf="isVideoFile(mediaDetails.path)" controls>
                 <source
-                  src="{{ base }}{{ mediaDetails.path }}"
+                  src="{{ mediaDetails.path }}"
                   type="video/{{ getFileExtension(mediaDetails.path) }}"
                 />
                 Your browser does not support the video tag.

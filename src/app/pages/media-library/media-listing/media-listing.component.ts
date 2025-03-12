@@ -73,29 +73,19 @@ export class MediaListingComponent implements OnInit {
       next: (res: any) => {
         if (res?.errorCode == 0) {
           this.medias = res?.result?.data
-          for (let media of this.medias) {
-            media.createdAt = new Date(media.createdAt).toDateString() + ' ' + new Date(media.createdAt).toLocaleTimeString();
-            
-            // Determine media type if not set by the API
-            if (!media.type) {
-              const path = media.path.toLowerCase();
-              if (path.endsWith('.mp4') || path.endsWith('.webm') || path.endsWith('.mov') || path.endsWith('.avi')) {
-                media.type = 'video';
-              } else if (path.endsWith('.gif')) {
-                media.type = 'image'; // GIFs can be handled as images in terms of display
-              } else {
-                media.type = 'image';
-              }
-            }
-          }
+          for (let media of this.medias) media.createdAt = new Date(media.createdAt).toDateString() + ' ' + new Date(media.createdAt).toLocaleTimeString()
           this.lastPage = res?.result?.lastPage
           this.totalPages = res?.result?.totalPages
           this.totalResults = res?.result?.totalResults
         } else {
           this.Toast.error(res.message)
         }
-      },
-      // Rest of the code remains the same
+      }, error: (err: any) => {
+        this.Toast.error(err.error.message)
+        this.medias = []
+      }, complete: () => {
+        this.ChangeDetectorRef.markForCheck()
+      }
     })
   }
 
