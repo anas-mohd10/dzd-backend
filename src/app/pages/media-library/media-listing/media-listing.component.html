@@ -63,8 +63,23 @@
                             </div>
                         </div>
                         <a routerLink="{{appRoute.mediaLibrary + '/' + media.slug}}">
-                            <img src="{{base}}{{media.path}}" alt={{media.altTitle}}
-                                onerror="this.src = 'assets/images/default.png'">
+                            <!-- <img src="{{base}}{{media.path}}" alt={{media.altTitle}}
+                                onerror="this.src = 'assets/images/default.png'"> -->
+
+                                <!-- Display image previews for image files -->
+                <img *ngIf="isImageFile(media.path)" src="{{base}}{{media.path}}" alt={{media.altTitle}}
+                onerror="this.src = 'assets/images/default.png'">
+            
+            <!-- Display video previews for video files -->
+            <video *ngIf="isVideoFile(media.path)" controls>
+                <source src="{{base}}{{media.path}}" type="video/{{getFileExtension(media.path)}}">
+                Your browser does not support the video tag.
+            </video>
+            
+            <!-- Display default icon for other file types -->
+            <div *ngIf="!isImageFile(media.path) && !isVideoFile(media.path)" class="default-file-icon">
+                <img src="assets/images/default.png" alt="Default file">
+            </div>
                             <div class="p-3 details">
                                 <div class="asset-details">{{media.title}}</div>
                                 <div class="text-muted">{{media.createdAt}}</div>
@@ -98,7 +113,10 @@
                         <div class="mask fs-5 rounded d-flex align-items-center justify-content-center text-muted">
                             Drag and drop or <span class="mx-2 text-underline text-primary">Browse files</span> here
                         </div>
-                        <input type="file" class="form-control" (change)="onMediaChange($event)" multiple="multiple">
+                        <input type="file" class="form-control" 
+  (change)="onMediaChange($event)" 
+  multiple="multiple"
+  accept="image/*,video/*,.gif">
                     </div>
                     <div class="my-4" *ngIf="previews.length > 0">
                         <div class="d-flex align-items-center justify-content-between">
@@ -120,7 +138,12 @@
                                             </path>
                                         </svg>
                                     </div>
-                                    <img src={{preview.url}} alt={{preview.title}}>
+                                    <!-- <img src={{preview.url}} alt={{preview.title}}> -->
+                                    <img *ngIf="!preview.type || preview.type === 'image'" src={{preview.url}} alt={{preview.title}}>
+                                    <video *ngIf="preview.type === 'video'" controls style="width: 100%; height: auto;">
+                                      <source src={{preview.url}} type="video/mp4">
+                                      Your browser does not support the video tag.
+                                    </video>
                                     <div class="media-details mt-2 p-2">
                                         <div>{{preview.title}}</div>
                                     </div>
