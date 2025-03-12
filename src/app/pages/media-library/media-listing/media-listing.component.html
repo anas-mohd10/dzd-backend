@@ -104,7 +104,7 @@
               />
 
               <!-- Display video previews for video files -->
-              <video *ngIf="isVideoFile(media.path)" controls>
+              <video *ngIf="isVideoFile(media.path)" controls  class="video">
                 <source
                   src="{{ base }}{{ media.path }}"
                   type="video/{{ getFileExtension(media.path) }}"
@@ -226,6 +226,7 @@
                     alt="{{ preview.title }}"
                   />
                   <video
+                  class="video"
                     *ngIf="preview.type === 'video'"
                     controls
                     style="width: 100%; height: auto"
