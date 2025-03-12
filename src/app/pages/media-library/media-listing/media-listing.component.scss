@@ -103,7 +103,13 @@
         overflow: hidden;
         position: relative;
 
-        img,video {
+        img {
+            height: 140px;
+            width: 100%;
+            object-fit: contain;
+        }
+
+        video {
             height: 140px;
             width: 100%;
             object-fit: contain;
