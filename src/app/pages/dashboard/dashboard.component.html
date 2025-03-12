@@ -105,68 +105,6 @@
       </div>
     </div>
 
-    <!-- <div class="info_third">
-      <div class="overviewContainerSales grid-3">
-        <div class="quick_sales_section row">
-          <div class="sales_content col-lg-7">
-            <div class="page-title">
-              <div class="fs-4 fw-bold info_head">Sales</div>
-            </div>
-            <div class="sale_cards">
-              <div class="overviewCard">
-                <div class="overviewValue">{{orders?.today}}</div>
-                <div class="overviewTitle">
-                  <p>Today's orders</p>
-                </div>
-                <div class="lastDay_orders mb-4">
-                  <div class="order_lose">
-                    <span [ngClass]="{'up': orderUp}"> {{orderDifference}} </span>
-                    <img src="assets/icons/salesDown.svg" *ngIf="!orderUp" alt="Icon" />
-                    <img src="assets/icons/salesUp.svg" *ngIf="orderUp" alt="Icon" />
-                  </div>
-                  <h6>Yesterday’s orders</h6>
-                  <a routerLink="/app/orders"> View orders </a>
-                </div>
-              </div>
-              <div class="overviewCard">
-                <div class="overviewValue">{{sales?.today}}</div>
-                <div class="overviewTitle">
-                  <p>Today's sales</p>
-                </div>
-                <div class="lastDay_orders mb-4">
-                  <div class="order_lose">
-                    <span [ngClass]="{'up': saleUp}"> {{saleDifference}} </span>
-                    <img src="assets/icons/salesDown.svg" *ngIf="!saleUp" alt="Icon" />
-                    <img src="assets/icons/salesUp.svg" *ngIf="saleUp" alt="Icon" />
-                  </div>
-                  <h6>Yesterday’s sales</h6>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div class="quick_access_content col-lg-5">
-            <div class="page-title">
-              <div class="fs-4 fw-bold info_head">Quick access</div>
-            </div>
-            <div class="d-flex flex-wrap bg-white rounded mt-5 h-100">
-              <div *ngFor="let link of quickLinks" class="w-50 p-4">
-                <div class="d-flex align-items-center justify-content-between" routerLink="{{link?.redirection}}">
-                  <div class="fs-6">{{link?.title}}</div>
-                  <div>
-                    <svg height="18" width="18" data-slot="icon" fill="none" stroke-width="1.5" stroke="currentColor"
-                      viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                      <path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5"></path>
-                    </svg>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div> -->
-
     <div class="row mb-10">
       <div class="col-lg-7 col-md-12 col-sm-12">
         <div class="fs-3 fw-bold">Sales</div>
@@ -236,7 +174,7 @@
             <a class="icon-link text-dark w-100 d-flex align-items-center cursor-pointer justify-content-between"
               routerLink="{{link?.redirection}}">
               <div class="fs-6">{{link?.title}}</div>
-              <div>
+              <div class="text-muted">
                 <svg height="18" width="18" data-slot="icon" fill="none" stroke-width="1.5" stroke="currentColor"
                   viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
                   <path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5"></path>
@@ -301,7 +239,7 @@
           <div class="d-flex align-items-center justify-content-between w-75">
             <div>
               <div class="fs-5">{{product?.name}}</div>
-              <div class="fs-6 my-1"><span class="text-muted">Current price:</span> {{product?.price}}</div>
+              <div class="fs-6 my-1"><span class="text-muted">Current Price:</span> {{product?.price}}</div>
               <div class="fs-6 text-muted">Sold <span class="text-primary">{{product?.count}}</span> times </div>
             </div>
             <div>
