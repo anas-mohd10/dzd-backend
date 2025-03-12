@@ -43,7 +43,7 @@ export class MediaDetailsComponent implements OnInit {
   ngOnInit(): void {
     this.mediaQuery = this.ActivatedRoute.snapshot.params.media || ''
     this.getMediaDetails()
-    this.mediaDownload = environment.base + mediaEndpoints.downloadMedia + `/${this.mediaQuery}`
+    this.mediaDownload = environment.base + `/${this.mediaQuery}`
   }
 
   getMediaDetails() {
@@ -71,19 +71,24 @@ export class MediaDetailsComponent implements OnInit {
     })
   }
 
-  downloadImage(url: string){
-    this.HttpClient.get(url, {responseType: 'blob'}).subscribe({
+  downloadImage(url: string) {
+    this.HttpClient.get(`${environment.apiUrl}/medias-file/${this.mediaQuery}`).subscribe({
       next: (res: any) => {
-        const a = document.createElement('a');
-        const objectUrl = URL.createObjectURL(res);
-        a.href = objectUrl;
-        a.download = this.mediaDetails.title;
-        a.click();
-        URL.revokeObjectURL(objectUrl);
-      }, error: (err: any) => {
-        this.Toast.error(err?.error?.message)
+        if (res?.errorCode === 0 && res?.result?.url) {
+          const link = document.createElement('a');
+          link.href = res.result.url;
+          link.download = this.mediaDetails.originalName || this.mediaDetails.title;
+          document.body.appendChild(link);
+          link.click();
+          document.body.removeChild(link);
+        } else {
+          this.Toast.error('Failed to get download URL');
+        }
+      },
+      error: (err: any) => {
+        this.Toast.error(err?.error?.message || 'Failed to download file');
       }
-    })
+    });
   }
 
   saveDetails() {
