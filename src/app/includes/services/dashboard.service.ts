@@ -50,9 +50,9 @@ export class DashboardService {
     return this.http.post(`${url}`, data)
   }
 
-  getTopSellingProducts(data: any) {
-    const url = this.commonService.getFullUrl(this.dashboardEndpoints.top_selling_products);
-    return this.http.post(`${url}`, data)
+  getTopSellingProducts() {
+    const url = this.commonService.getFullUrl(this.dashboardEndpoints.topSellingProducts);
+    return this.http.get(`${url}`)
   }
 
   getNewOrders(data: any) {
