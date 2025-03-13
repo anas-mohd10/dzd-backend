@@ -25,7 +25,7 @@
       'object-fit-cover': image == 'cover',
       'object-fit-contain': !image
     }"
-    (error)="setDefaultImage($event)"
+    
   />
 
   <!-- Video Preview -->
@@ -38,8 +38,10 @@
       'object-fit-contain': !image
     }"
     preload="metadata"
-    (error)="setDefaultVideoPreview($event)"
+   
   >
+  <!-- (error)="setDefaultImage($event)"
+  (error)="setDefaultVideoPreview($event)" -->
     <!-- <source src="{{ preview.url }}" type="video/mp4" /> -->
     <source
       src="{{ base }}{{ preview.url }}"
