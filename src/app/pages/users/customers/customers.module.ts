@@ -13,6 +13,7 @@ import { ReferralHistoryComponent } from './referral-history/referral-history.co
 import { SharedModule } from '../../shared/shared.module';
 import { NewsletterSubscribersComponent } from './newsletter-subscribers/newsletter-subscribers.component'
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
+import { TooltipModule } from 'ngx-bootstrap/tooltip';
 
 @NgModule({
   declarations: [
@@ -27,6 +28,7 @@ import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
     BsDropdownModule,
     CustomersRoutingModule,
     DataTablesModule,
+    TooltipModule,
     FormsModule,
     ReactiveFormsModule,
     SharedModule,

@@ -4,22 +4,49 @@ label,
     font-weight: 400 !important;
 }
 
-.Admin{
+.table-responsive {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.text-truncate {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+td {
+  vertical-align: middle;
+}
+
+// Optional: if you want to ensure the table doesn't get too wide
+table {
+  max-width: 100%;
+}
+
+.email-cell {
+    max-width: 30%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.Admin {
     background: #000000;
     color: #ffffff;
 }
 
-.Email{
+.Email {
     background: #E4E7F4;
     color: #000000;
 }
 
-.Facebook{
+.Facebook {
     background: #2370c9;
     color: #ffffff;
 }
 
-.Google{
+.Google {
     background: #e94c4c;
     color: #ffffff;
 }
@@ -51,4 +78,5 @@ label,
         background: #E4E7F4;
     }
 }
+
 //Table designs
