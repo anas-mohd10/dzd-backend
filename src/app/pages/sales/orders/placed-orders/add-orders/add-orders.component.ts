@@ -1,15 +1,7 @@
-import {
-  ChangeDetectorRef,
-  Component,
-  OnInit,
-  TemplateRef,
-  ViewChild,
-} from '@angular/core';
-import {
-  FormBuilder,
+import { ChangeDetectorRef, Component, OnInit, TemplateRef, ViewChild} from '@angular/core';
+import {  FormBuilder,
   FormControl,
-  FormGroup,
-  Validators,
+  FormGroup,  Validators,
 } from '@angular/forms';
 import { Router } from '@angular/router';
 import { HotToastService } from '@ngneat/hot-toast';
@@ -28,6 +20,22 @@ import { ProductService } from 'src/app/includes/services/product.service';
 import { StoresService } from 'src/app/includes/services/stores.service';
 import { environment } from 'src/environments/environment';
 import { LocationService } from 'src/app/includes/services/location.service';
+
+interface Coupon {
+  _id: string,
+  title: string,
+  code: string,
+  fromDate: string,
+  lastDate: string,
+  type: string,
+  value: string,
+}
+
+interface ProductDoc {
+  _id: string,
+  quantity: number,
+  price: { selling: number }
+}
 
 @Component({
   selector: 'app-add-orders',
@@ -73,7 +81,7 @@ export class AddOrdersComponent implements OnInit {
   keyword: FormControl = new FormControl('');
   products: Array<any> = [];
   base: string = environment.base;
-  cartItems: any = [];
+  cartItems: Array<any> = [];
   addressMode: string = 'add';
   cartSubtotal: number = 0;
   cartTotal: number = 0;
@@ -94,8 +102,9 @@ export class AddOrdersComponent implements OnInit {
   countries: Array<any> = [];
   states: Array<any> = [];
   cities: Array<any> = [];
-  
-  
+
+  applicableCoupons: Array<Coupon> = [];
+  couponsModalRef?: BsModalRef;
 
   constructor(
     private OrderService: OrdersService,
@@ -105,7 +114,7 @@ export class AddOrdersComponent implements OnInit {
     private formBuilder: FormBuilder,
     private PickupService: PickupService,
     private productService: ProductService,
-    private couponsService: CouponsService,
+    private CouponsService: CouponsService,
     private ChangeDetectorRef: ChangeDetectorRef,
     private StoresService: StoresService,
     private AppSettingsService: AppSettingsService,
@@ -123,7 +132,6 @@ export class AddOrdersComponent implements OnInit {
     this.initForm();
     this.getActiveCustomers();
     this.getActiveProducts();
-    this.getActiveCoupons();
 
     this.PickupService.list().subscribe({
       next: (response: any) => {
@@ -157,7 +165,7 @@ export class AddOrdersComponent implements OnInit {
     });
 
     this.addressForm = new FormGroup({
-      name: new FormControl('',Validators.required),
+      name: new FormControl('', Validators.required),
       countryCode: new FormControl(''),
       mobile: new FormControl('', [
         Validators.required,
@@ -170,9 +178,9 @@ export class AddOrdersComponent implements OnInit {
       city: new FormControl('', Validators.required),
 
       area: new FormControl(''),
-      landmark: new FormControl('',Validators.required),
+      landmark: new FormControl('', Validators.required),
       type: new FormControl('', Validators.required),
-      pincode: new FormControl('',Validators.required),
+      pincode: new FormControl('', Validators.required),
       lat: new FormControl(''),
       lng: new FormControl(''),
       isDefault: new FormControl(false),
@@ -393,7 +401,7 @@ export class AddOrdersComponent implements OnInit {
       additionalCharge: [0, Validators.pattern(/^[0-9]+$/)],
       products: [[], Validators.required],
       clickPoint: [null],
-      pickUpLocation: [null],
+      pickUpLocation: [""],
       deliveryDate: [''],
       deliveryType: ['0'],
       shippingCost: [0, Validators.pattern(/^[0-9]+$/)],
@@ -427,13 +435,6 @@ export class AddOrdersComponent implements OnInit {
     });
   }
 
-  getActiveCoupons() {
-    this.couponsService.getActiveCoupons().subscribe((res: any) => {
-      this.activeCoupons = res?.result;
-      this.ChangeDetectorRef.markForCheck();
-    });
-  }
-
   checkPaymentmethod(event: any) {
     const method = this.orderForm.get('paymentMethod')?.value;
     if (method == 'ONLINE') {
@@ -441,16 +442,6 @@ export class AddOrdersComponent implements OnInit {
     } else {
       this.showTransactionId = false;
     }
-  }
-
-  getCoupons(data: any) {
-    this.couponsService
-      .getProductCoupons({ products: data })
-      .subscribe((res: any) => {
-        if (res?.errorCode == 0) {
-          this.activeCoupons = res?.result;
-        }
-      });
   }
 
   selectDeliveryType(type: any) {
@@ -570,139 +561,139 @@ export class AddOrdersComponent implements OnInit {
 
   addToCart(product: any) {
     const isExists: boolean = this.cartItems.some(
-        (item: any) => item?._id === product?._id
+      (item: any) => item?._id === product?._id
     );
     if (isExists) {
-        this.ToastrService.error('Product already exists in the cart');
+      this.ToastrService.error('Product already exists in the cart');
     } else {
-        this.products = [];
-        this.keyword.setValue('');
-        const initialQuantity = Math.max(1, product?.moq || 1);
-        this.cartItems.push({ ...product, quantity: initialQuantity });
-        this.cartSubtotal += product?.price?.selling * initialQuantity;
-        this.cartTotal = this.cartSubtotal - this.cartDiscount;
-        this.productsModalRef?.hide();
+      this.products = [];
+      this.keyword.setValue('');
+      const initialQuantity = Math.max(1, product?.moq || 1);
+      this.cartItems.push({ ...product, quantity: initialQuantity });
+      this.cartSubtotal += product?.price?.selling * initialQuantity;
+      this.cartTotal = this.cartSubtotal - this.cartDiscount;
+      this.productsModalRef?.hide();
+
+      // Get applicable coupons
+      this.getApplicableCoupons();
     }
-}
-updateQuantityWithInput(event: Event, product: any): void {
-  const target = event.target as HTMLInputElement;
-  if (!target) return;
-
-  const newValue = parseInt(target.value, 10);
-
-  if (isNaN(newValue)) {
-    target.value = product.quantity.toString();
-    return;
   }
+  updateQuantityWithInput(event: Event, product: any): void {
+    const target = event.target as HTMLInputElement;
+    if (!target) return;
 
-  let finalQuantity = Math.max(1, newValue);
+    const newValue = parseInt(target.value, 10);
 
-  // Check both max order quantity and stock limits
-  const maxAllowedQuantity = Math.min(
-    product.maxOrderQuantity,
-    product.stock || 0
-  );
-
-  if (finalQuantity > maxAllowedQuantity) {
-    if (product.stock === 0) {
-      this.ToastrService.error('Product is out of stock');
-      finalQuantity = product.quantity;
-    } else if (product.stock < product.maxOrderQuantity) {
-      this.ToastrService.error(`Only ${product.stock} items available in stock`);
-      finalQuantity = product.stock;
-    } else {
-      this.ToastrService.error(`Maximum order quantity is ${product.maxOrderQuantity}`);
-      finalQuantity = product.maxOrderQuantity;
+    if (isNaN(newValue)) {
+      target.value = product.quantity.toString();
+      return;
     }
-    target.value = finalQuantity.toString();
-  }
 
-  const currentQuantity = product.quantity || 1;
-  const quantityDifference = finalQuantity - currentQuantity;
-  const priceDifference = quantityDifference * product.price.selling;
+    let finalQuantity = Math.max(1, newValue);
 
-  this.cartItems = this.cartItems.map((item: any) => {
-    if (item._id === product._id) {
-      return { ...item, quantity: finalQuantity };
-    }
-    return item;
-  });
+    // Check both max order quantity and stock limits
+    const maxAllowedQuantity = Math.min(
+      product.maxOrderQuantity,
+      product.stock || 0
+    );
 
-  this.cartSubtotal += priceDifference;
-  this.cartTotal = this.cartSubtotal - this.cartDiscount;
-
-  if (quantityDifference !== 0) {
-    this.ToastrService.success('Product quantity updated');
-  }
-}
-
-
-
-
-updateQuantity(type: 'increment' | 'decrement', product: any) {
-  switch (type) {
-    case 'increment': {
-      const newQuantity = product.quantity + 1;
-      
-      // Check both stock and max order quantity
+    if (finalQuantity > maxAllowedQuantity) {
       if (product.stock === 0) {
         this.ToastrService.error('Product is out of stock');
-        return;
-      }
-
-      if (newQuantity > product.stock) {
+        finalQuantity = product.quantity;
+      } else if (product.stock < product.maxOrderQuantity) {
         this.ToastrService.error(`Only ${product.stock} items available in stock`);
-        return;
+        finalQuantity = product.stock;
+      } else {
+        this.ToastrService.error(`Maximum order quantity is ${product.maxOrderQuantity}`);
+        finalQuantity = product.maxOrderQuantity;
       }
-
-      if (newQuantity > product.maxOrderQuantity) {
-        this.ToastrService.error(
-          `Maximum order quantity (${product.maxOrderQuantity}) has been reached`
-        );
-        return;
-      }
-
-      this.cartItems = this.cartItems.map((item: any) => {
-        if (item._id === product._id) {
-          this.cartSubtotal += product.price.selling;
-          this.cartTotal = this.cartSubtotal - this.cartDiscount;
-          this.ToastrService.success('Product quantity updated');
-          return { ...item, quantity: newQuantity };
-        }
-        return item;
-      });
-      break;
+      target.value = finalQuantity.toString();
     }
 
-    case 'decrement': {
-      const newQuantity = product.quantity - 1;
-      
-      if (newQuantity < product.moq) {
-        this.ToastrService.error(
-          `Minimum required quantity (${product.moq}) has been reached`
-        );
-        return;
-      }
+    const currentQuantity = product.quantity || 1;
+    const quantityDifference = finalQuantity - currentQuantity;
+    const priceDifference = quantityDifference * product.price.selling;
 
-      this.cartItems = this.cartItems.map((item: any) => {
-        if (item._id === product._id && item.quantity > 1) {
-          this.cartSubtotal -= product.price.selling;
-          this.cartTotal = this.cartSubtotal - this.cartDiscount;
-          this.ToastrService.success('Product quantity updated');
-          return { ...item, quantity: newQuantity };
-        }
-        return item;
-      });
-      break;
+    this.cartItems = this.cartItems.map((item: any) => {
+      if (item._id === product._id) {
+        return { ...item, quantity: finalQuantity };
+      }
+      return item;
+    });
+
+    this.cartSubtotal += priceDifference;
+    this.cartTotal = this.cartSubtotal - this.cartDiscount;
+
+    if (quantityDifference !== 0) {
+      this.ToastrService.success('Product quantity updated');
     }
   }
-}
+
+
+
+
+  updateQuantity(type: 'increment' | 'decrement', product: any) {
+    switch (type) {
+      case 'increment': {
+        const newQuantity = product.quantity + 1;
+
+        // Check both stock and max order quantity
+        if (product.stock === 0) {
+          this.ToastrService.error('Product is out of stock');
+          return;
+        }
+
+        if (newQuantity > product.stock) {
+          this.ToastrService.error(`Only ${product.stock} items available in stock`);
+          return;
+        }
+
+        if (newQuantity > product.maxOrderQuantity) {
+          this.ToastrService.error(`Maximum order quantity (${product.maxOrderQuantity}) has been reached`);
+          return;
+        }
+
+        this.cartItems = this.cartItems.map((item: any) => {
+          if (item._id === product._id) {
+            this.cartSubtotal += product.price.selling;
+            this.cartTotal = this.cartSubtotal - this.cartDiscount;
+            this.ToastrService.success('Product quantity updated');
+            return { ...item, quantity: newQuantity };
+          }
+          return item;
+        });
+        break;
+      }
+
+      case 'decrement': {
+        const newQuantity = product.quantity - 1;
+
+        if (newQuantity < product.moq) {
+          this.ToastrService.error(`Minimum required quantity (${product.moq}) has been reached`);
+          return;
+        }
+
+        this.cartItems = this.cartItems.map((item: any) => {
+          if (item._id === product._id && item.quantity > 1) {
+            this.cartSubtotal -= product.price.selling;
+            this.cartTotal = this.cartSubtotal - this.cartDiscount;
+            this.ToastrService.success('Product quantity updated');
+            return { ...item, quantity: newQuantity };
+          }
+          return item;
+        });
+        break;
+      }
+    }
+
+    this.getApplicableCoupons();
+  }
   deleteProduct(product: any) {
-    this.cartItems = this.cartItems.filter(
-      (item: any) => item?._id != product?._id
-    );
-    this.cartSubtotal =
-      this.cartSubtotal - product?.price?.selling * product?.quantity;
+    this.cartItems = this.cartItems.filter((item: any) => item?._id != product?._id);
+    this.cartSubtotal =  this.cartSubtotal - product?.price?.selling * product?.quantity;
+
+    this.getApplicableCoupons();
   }
   //Products managament
 
@@ -728,7 +719,7 @@ updateQuantity(type: 'increment' | 'decrement', product: any) {
         },
       });
   }
-  
+
   getAddress(template: TemplateRef<any>, customer: any) {
     this.customerDetails = customer;
     this.address = null;
@@ -775,7 +766,7 @@ updateQuantity(type: 'increment' | 'decrement', product: any) {
 
     if (this.address) {
       for (let _key of Object.keys(this.address)) this.addressForm.get(_key)?.setValue(this.address[_key]);
-      
+
       this.handleAddressMobilePattern();
       const customerCountry: any = this.countries.filter(country => country.name === this.address?.country);
       this.loadStates(customerCountry[0]._id, 'update');
@@ -837,7 +828,7 @@ updateQuantity(type: 'increment' | 'decrement', product: any) {
       city: this.getLocationName(this.cities, this.addressForm.get('city')?.value)
     };
 
-    const request$ = this.addressMode === 'add' 
+    const request$ = this.addressMode === 'add'
       ? this.customerService.addAddress({ ...addressData, customer: this.customerDetails?._id })
       : this.customerService.updateCustomerAddress({ ...addressData, refid: this.address?.refid });
 
@@ -883,6 +874,7 @@ updateQuantity(type: 'increment' | 'decrement', product: any) {
   }
 
   createOrder() {
+    this.orderForm.get('pickUpLocation')?.setValue(this.orderForm.get('pickUpLocation')?.value ? this.orderForm.get('pickUpLocation')?.value : null);
     this.orderForm.get('customerId')?.setValue(this.customerDetails?._id);
     this.orderForm.get('products')?.setValue(this.cartItems);
 
@@ -936,15 +928,15 @@ updateQuantity(type: 'increment' | 'decrement', product: any) {
     });
   }
 
- loadStates(countryId?: string, actionType?: string) {
+  loadStates(countryId?: string, actionType?: string) {
     // Clear existing states and cities when country changes
     this.states = [];
     this.cities = [];
-    
+
     // Reset state and city form controls
     this.addressForm.patchValue({
-        state: '',
-        city: ''
+      state: '',
+      city: ''
     });
 
     this.LocationService.getStates({
@@ -969,7 +961,7 @@ updateQuantity(type: 'increment' | 'decrement', product: any) {
       },
       error: (err) => console.error('Error loading states:', err)
     });
-}
+  }
 
   loadCities(stateId?: string, actionType?: string) {
     this.LocationService.getCities({
@@ -978,7 +970,7 @@ updateQuantity(type: 'increment' | 'decrement', product: any) {
       countryId: this.addressForm.get('country')?.value,
       stateId: stateId || this.addressForm.get('state')?.value
     }).subscribe({
-      next: (response: any) => {        
+      next: (response: any) => {
         if (response?.result?.cities) {
           this.cities = response.result.cities;
 
@@ -992,5 +984,33 @@ updateQuantity(type: 'increment' | 'decrement', product: any) {
       },
       error: (err) => console.error('Error loading cities:', err)
     });
+  }
+
+  couponCode: FormControl = new FormControl('');
+
+  formatDateString(date: string){
+    return new Date(date).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+  }
+
+  openCoupons(template: TemplateRef<any>) {
+    this.couponsModalRef = this.BsModalService.show(template, {
+      class: 'modal-dialog-centered',
+    });
+  }
+
+  // Get applicableCoupons
+  getApplicableCoupons() {
+    const productDocs: ProductDoc[]  = this.cartItems.map((item: any) => ({ _id: item._id, quantity: item.quantity, price: { selling: item.price.selling } }))
+    this.CouponsService.getApplicableCoupons({ products: productDocs }).subscribe({
+      next: (res: any) => {
+        if (res?.errorCode == 0) {
+          this.applicableCoupons = res?.result;
+          this.ChangeDetectorRef.markForCheck();
+        } else {
+          this.ToastrService.error(res.message);
+        }
+      },
+      error: (err: any) => this.ToastrService.error(err.message)
+    })
   }
 }

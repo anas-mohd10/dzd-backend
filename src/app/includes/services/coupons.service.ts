@@ -19,6 +19,11 @@ export class CouponsService {
     return this.http.post(`${url}`, data);
   }
 
+  getApplicableCoupons(data: any) {
+    const url = this.commonService.getFullUrl(this.couponsEndpoints.getApplicableCoupons);
+    return this.http.post(`${url}`, data);
+  }
+
   getCoupons() {
     const url = this.commonService.getFullUrl(this.couponsEndpoints.get_coupon);
     return this.http.get(`${url}`);

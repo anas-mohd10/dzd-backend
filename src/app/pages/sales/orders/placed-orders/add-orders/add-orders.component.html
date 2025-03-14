@@ -120,202 +120,277 @@
                                 {{address?.firstlane}} {{address?.secondlane ? ', ' + address?.secondlane : ''}}
                             </div>
                             <div class="area">{{address?.area}} {{address?.landmark}}</div>
-                            <div class="city">{{address?.country}} {{address?.state}} {{address?.city}}  {{address?.pincode}}</div>
+                            <div class="city">{{address?.country}} {{address?.state}} {{address?.city}}
+                                {{address?.pincode}}</div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
 
-        <div class="card">
-            <div class="card-body">
-                <div class="my-3">
-                    <ng-container *ngIf="cartItems.length == 0">
-                        <div class="emptyCart-container">
-                            <img src="assets/icons/emptyCart.gif" style="height: 150px;" alt="Icon">
-                            <button type="button" class="mt-5 btn btn-primary" (click)="openProducts(productsRef)">
-                                Add Products
-                            </button>
-                        </div>
-                    </ng-container>
-                    <ng-container *ngIf="cartItems.length > 0">
-                        <div>
-                            <div class="d-flex align-items-center mb-4 justify-content-end">
-                                <button type="button" class="btn btn-primary" (click)="openProducts(productsRef)">
-                                    Add Products
-                                </button>
-                            </div>
-
-                            <table class="table table-bordered table-stripped ">
-                                <thead>
-                                    <th class="p-2">Product</th>
-                                    <th class="p-2">Price</th>
-                                    <th class="p-2">Quantity</th>
-                                </thead>
-                                <tbody>
-                                    <tr *ngFor="let cart of cartItems; let  i = index">
-                                        <td>
-                                            <div class="d-flex align-items-center justify-content-start gap-2">
-                                                <img class="rounded border border-secondary"
-                                                    onerror="this.src = 'assets/images/default.png'"
-                                                    src="{{base}}{{cart?.thumbnail}}" alt="{{cart?.name}}" height="36"
-                                                    width="36">
-                                                <div>{{cart?.name}}</div>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <div class="fs-5 fw-bold">{{settings?.currency}} {{cart?.price?.selling}}
-                                            </div>
-                                            <div *ngIf="cart?.price?.mrp > cart?.price?.selling"
-                                                class="fs-5 text-muted text-decoration-line-through">
-                                                {{settings?.currency}} {{cart?.price?.mrp}}
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <div class="d-flex align-items-center justify-content-start gap-2">
-                                                <div class="gap-2 d-flex align-items-center justify-content-between">
-                                                    <div class="quantityBtn bg-secondary rounded cursor-pointer"
-                                                        (click)="updateQuantity('decrement', cart)">
-                                                        <svg height="16" width="16" xmlns="http://www.w3.org/2000/svg"
-                                                            fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                                                            stroke="currentColor" class="w-6 h-6">
-                                                            <path stroke-linecap="round" stroke-linejoin="round"
-                                                                d="M18 12H6" />
-                                                        </svg>
-                                                    </div>
-                                                    <div>
-                                                        <input class="form-control" type="number"
-                                                            [value]="cart.quantity"
-                                                            (blur)="updateQuantityWithInput($event, cart)"
-                                                            [max]="cart.maxOrderQuantity"
-                                                            style="width: 100px; height: 30px;" />
-                                                    </div>
-                                                    <div class="quantityBtn bg-secondary rounded cursor-pointer"
-                                                        (click)="updateQuantity('increment', cart)">
-                                                        <svg height="16" width="16" xmlns="http://www.w3.org/2000/svg"
-                                                            fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                                                            stroke="currentColor" class="w-6 h-6">
-                                                            <path stroke-linecap="round" stroke-linejoin="round"
-                                                                d="M12 4.5v15m7.5-7.5h-15" />
-                                                        </svg>
-                                                    </div>
-                                                </div>
-                                                <div class="deleteBtn bg-danger rounded text-white cursor-pointer"
-                                                    (click)="deleteProduct(cart)">
-                                                    <svg height="20px" width="20px" xmlns="http://www.w3.org/2000/svg"
-                                                        fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                                                        stroke="currentColor" class="w-6 h-6">
-                                                        <path stroke-linecap="round" stroke-linejoin="round"
-                                                            d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0" />
-                                                    </svg>
-                                                </div>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </ng-container>
-                </div>
-            </div>
-        </div>
-
-        <div class="card my-4">
-            <div class="card-body">
-                <div *ngIf="(settings?.isPickUp == true || settings?.isPickUp == true) && address">
-                    <div class="form-group mb-3" *ngIf="settings?.isPickUp == true && address">
-                        <label class="fs-6 mb-3">Choose a Pickup Location</label>
-                        <select class="form-select fs-6" formControlName="pickUpLocation">
-                            <option value="" disabled>-- Select an option --</option>
-                            <ng-container *ngFor="let pickupLocation of pickupLocations; let i = index">
-                                <option value="{{pickupLocation?._id}}">
-                                    <div>{{pickupLocation?.name}}</div>
-                                    <div>( {{pickupLocation?.city}} )</div>
-                                </option>
+        <div class="row">
+            <div class="col-lg-7">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="my-3">
+                            <ng-container *ngIf="cartItems.length == 0">
+                                <div class="emptyCart-container">
+                                    <img src="assets/icons/emptyCart.gif" style="height: 150px;" alt="Icon">
+                                    <button type="button" class="mt-5 btn btn-primary"
+                                        (click)="openProducts(productsRef)">
+                                        Add Products
+                                    </button>
+                                </div>
                             </ng-container>
-                        </select>
+                            <ng-container *ngIf="cartItems.length > 0">
+                                <div>
+                                    <div class="d-flex align-items-center mb-4 justify-content-end">
+                                        <button type="button" class="btn btn-primary"
+                                            (click)="openProducts(productsRef)">
+                                            Add Products
+                                        </button>
+                                    </div>
+
+                                    <table class="table table-bordered table-stripped ">
+                                        <thead>
+                                            <th class="p-2">Product</th>
+                                            <th class="p-2">Price</th>
+                                            <th class="p-2">Quantity</th>
+                                        </thead>
+                                        <tbody>
+                                            <tr *ngFor="let cart of cartItems; let  i = index">
+                                                <td>
+                                                    <div class="d-flex align-items-center justify-content-start gap-2">
+                                                        <img class="rounded border border-secondary"
+                                                            onerror="this.src = 'assets/images/default.png'"
+                                                            src="{{base}}{{cart?.thumbnail}}" alt="{{cart?.name}}"
+                                                            height="36" width="36">
+                                                        <div>{{cart?.name}}</div>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div class="fs-5 fw-bold">{{settings?.currency}}
+                                                        {{cart?.price?.selling}}
+                                                    </div>
+                                                    <div *ngIf="cart?.price?.mrp > cart?.price?.selling"
+                                                        class="fs-5 text-muted text-decoration-line-through">
+                                                        {{settings?.currency}} {{cart?.price?.mrp}}
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div class="d-flex align-items-center justify-content-start gap-2">
+                                                        <div
+                                                            class="gap-2 d-flex align-items-center justify-content-between">
+                                                            <div class="quantityBtn bg-secondary rounded cursor-pointer"
+                                                                (click)="updateQuantity('decrement', cart)">
+                                                                <svg height="16" width="16"
+                                                                    xmlns="http://www.w3.org/2000/svg" fill="none"
+                                                                    viewBox="0 0 24 24" stroke-width="1.5"
+                                                                    stroke="currentColor" class="w-6 h-6">
+                                                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                                                        d="M18 12H6" />
+                                                                </svg>
+                                                            </div>
+                                                            <div>
+                                                                <input class="form-control" type="number"
+                                                                    [value]="cart.quantity"
+                                                                    (blur)="updateQuantityWithInput($event, cart)"
+                                                                    [max]="cart.maxOrderQuantity"
+                                                                    style="width: 100px; height: 30px;" />
+                                                            </div>
+                                                            <div class="quantityBtn bg-secondary rounded cursor-pointer"
+                                                                (click)="updateQuantity('increment', cart)">
+                                                                <svg height="16" width="16"
+                                                                    xmlns="http://www.w3.org/2000/svg" fill="none"
+                                                                    viewBox="0 0 24 24" stroke-width="1.5"
+                                                                    stroke="currentColor" class="w-6 h-6">
+                                                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                                                        d="M12 4.5v15m7.5-7.5h-15" />
+                                                                </svg>
+                                                            </div>
+                                                        </div>
+                                                        <div class="deleteBtn bg-danger rounded text-white cursor-pointer"
+                                                            (click)="deleteProduct(cart)">
+                                                            <svg height="20px" width="20px"
+                                                                xmlns="http://www.w3.org/2000/svg" fill="none"
+                                                                viewBox="0 0 24 24" stroke-width="1.5"
+                                                                stroke="currentColor" class="w-6 h-6">
+                                                                <path stroke-linecap="round" stroke-linejoin="round"
+                                                                    d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0" />
+                                                            </svg>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </ng-container>
+                        </div>
                     </div>
-                    <div class="mb-3" *ngIf="settings?.isDeliverySlots == true && address">
-                        <label class="fs-6 mb-3">Select a delivery dates</label>
-                        <div class="dates" *ngIf="dates.length > 0">
-                            <ng-container *ngFor="let date of dates">
-                                <div class="date" (click)="selectDeliveryDate(date)"
-                                    [ngClass]="{'active': deliveryDate == date}">
-                                    <div class="text-center">
-                                        <div class="fs-5">{{formatDate(date, 'month')}}</div>
-                                        <div class="fs-2 my-2 fw-bold">{{formatDate(date, 'dateNumber')}}</div>
-                                        <div class="fs-5 text-primary">{{formatDate(date, 'day')}}</div>
+                </div>
+
+                <div class="card my-4">
+                    <div class="card-body">
+                        <div>
+                            <div class="form-group mb-3" *ngIf="settings?.isPickUp == true">
+                                <label class="fs-6 mb-3">Choose a Pickup Location</label>
+                                <select class="form-select fs-6" formControlName="pickUpLocation">
+                                    <option value="" disabled>-- Select an option --</option>
+                                    <ng-container *ngFor="let pickupLocation of pickupLocations; let i = index">
+                                        <option value="{{pickupLocation?._id}}">
+                                            <div>{{pickupLocation?.name}}</div>
+                                            <div>( {{pickupLocation?.city}} )</div>
+                                        </option>
+                                    </ng-container>
+                                </select>
+                            </div>
+                            <div class="mb-3" *ngIf="settings?.isDeliverySlots == true && address">
+                                <label class="fs-6 mb-3">Select a delivery dates</label>
+                                <div class="dates" *ngIf="dates.length > 0">
+                                    <ng-container *ngFor="let date of dates">
+                                        <div class="date" (click)="selectDeliveryDate(date)"
+                                            [ngClass]="{'active': deliveryDate == date}">
+                                            <div class="text-center">
+                                                <div class="fs-5">{{formatDate(date, 'month')}}</div>
+                                                <div class="fs-2 my-2 fw-bold">{{formatDate(date, 'dateNumber')}}</div>
+                                                <div class="fs-5 text-primary">{{formatDate(date, 'day')}}</div>
+                                            </div>
+                                        </div>
+                                    </ng-container>
+                                </div>
+                            </div>
+                            <div class="col-12" *ngIf="orderForm.get('deliveryDate')?.value">
+                                <label class="fs-6 mb-3">Available timeslots</label>
+                                <div class="timeslots">
+                                    <ng-container *ngFor="let time of timeslots">
+                                        <div class="timeslot fs-5" (click)="selectDeliveryTime(time?.refid)"
+                                            [ngClass]="{'active': deliveryTime == time?.refid, 'border border-danger': (formControls.deliverySlot.touched || isSubmitted) && formControls.deliverySlot.errors?.required}">
+                                            <div> {{time?.from}} - {{time?.to}}</div>
+                                        </div>
+                                    </ng-container>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+        
+                <div class="card">
+                    <div class="card-body">
+                        <div class="mb-3">
+                            <label for="orderNote" class="fs-6 mb-3">Order Note</label>
+                            <input type="text" id="orderNote" formControlName="orderNote" class="form-control fs-6">
+                        </div>
+        
+                        <div class="mb-3">
+                            <label for="shippingNote" class="fs-6 mb-3">Shipping Note</label>
+                            <input type="text" id="shippingNote" formControlName="shippingNote" class="form-control fs-6">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-5">
+                <div class="card">
+                    <div class="card-body">
+                        <ng-container *ngIf="applicableCoupons.length > 0">
+                            <div
+                                class="d-flex align-items-center justify-content-between gap-2 rounded-3 shadow-sm p-2 border border-secondary">
+                                <div class="w-25 ratio ratio-1x1 h-100 text-success">
+                                    <svg height="20" width="20" data-slot="icon" fill="none" stroke-width="1.5"
+                                        stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"
+                                        aria-hidden="true">
+                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                            d="m9 14.25 6-6m4.5-3.493V21.75l-3.75-1.5-3.75 1.5-3.75-1.5-3.75 1.5V4.757c0-1.108.806-2.057 1.907-2.185a48.507 48.507 0 0 1 11.186 0c1.1.128 1.907 1.077 1.907 2.185ZM9.75 9h.008v.008H9.75V9Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm4.125 4.5h.008v.008h-.008V13.5Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z">
+                                        </path>
+                                    </svg>
+                                </div>
+                                <div class="w-75">
+                                    <div class="d-flex align-items-center justify-content-between">
+                                        <div class="fs-6 bg-secondary p-2 rounded border border-dotted"
+                                            style="width: max-content;">{{applicableCoupons[0].code}}</div>
+                                        <button class="fs-6 btn btn-primary p-2 rounded"
+                                            style="width: max-content;">Apply</button>
+                                    </div>
+                                    <div class="fs-5 my-2">{{applicableCoupons[0].title}}</div>
+                                    <div class="text-muted">Valid till
+                                        {{formatDateString(applicableCoupons[0].lastDate)}}</div>
+                                </div>
+                            </div>
+                            <ng-container *ngIf="applicableCoupons.length > 1">
+                                <div class="d-flex align-items-center justify-content-center gap-1 my-8 cursor-pointer"
+                                    (click)="openCoupons(couponsTemplate)">
+                                    <div class="fs-5">View all coupons</div>
+                                    <div>
+                                        <svg height="16" width="16" data-slot="icon" fill="none" stroke-width="1.5"
+                                            stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"
+                                            aria-hidden="true">
+                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                d="m8.25 4.5 7.5 7.5-7.5 7.5"></path>
+                                        </svg>
                                     </div>
                                 </div>
                             </ng-container>
-                        </div>
-                    </div>
-                    <div class="col-12" *ngIf="orderForm.get('deliveryDate')?.value">
-                        <label class="fs-6 mb-3">Available timeslots</label>
-                        <div class="timeslots">
-                            <ng-container *ngFor="let time of timeslots">
-                                <div class="timeslot fs-5" (click)="selectDeliveryTime(time?.refid)"
-                                    [ngClass]="{'active': deliveryTime == time?.refid, 'border border-danger': (formControls.deliverySlot.touched || isSubmitted) && formControls.deliverySlot.errors?.required}">
-                                    <div> {{time?.from}} - {{time?.to}}</div>
-                                </div>
-                            </ng-container>
+                        </ng-container>
+                        <div [ngClass]="{'my-3': applicableCoupons.length > 0}">
+                            <div class="d-flex align-items-center justify-content-between gap-2">
+                                <input type="text" class="form-control w-75" placeholder="Coupon Code"
+                                    [formControl]="couponCode">
+                                <button [disabled]="!couponCode.value" class="btn btn-secondary w-25">Apply</button>
+                            </div>
+                            <div class="my-3">
+                                <a class="text-dark fs-5" routerLink="{{ appRoute.coupons.ADD_COUPONS_LIST }}"
+                                    target="_blank">Create Coupon?</a>
+                            </div>
                         </div>
                     </div>
                 </div>
-                <div class="row">
-                    <div class="col-lg-4 form-group">
-                        <label class="fs-6 mb-3 required">Payment Method</label>
-                        <select class="form-select mb-3 fs-6" formControlName="paymentMethod"
-                            [ngClass]="{ 'is-invalid': (formControls.paymentMethod.touched || isSubmitted) && formControls.paymentMethod.errors?.required}">
-                            <option value="" disabled>-- Select an option --</option>
-                            <option value="COD">Cash On Delivery</option>
-                            <option value="ONLINE">Online</option>
-                        </select>
-                    </div>
 
-                    <div class="col-lg-4 form-group" *ngIf="orderForm.get('paymentMethod')?.value == 'ONLINE'">
-                        <label class="fs-6 mb-3">Transaction ID</label>
-                        <input type="text" formControlName="transactionId" class="form-control fs-6">
-                    </div>
+                <div class="card my-4">
+                    <div class="card-body">
+                        <div>
+                            <div class="form-group my-4">
+                                <label class="fs-6 mb-3 required">Payment Method</label>
+                                <select class="form-select mb-3 fs-6" formControlName="paymentMethod"
+                                    [ngClass]="{ 'is-invalid': (formControls.paymentMethod.touched || isSubmitted) && formControls.paymentMethod.errors?.required}">
+                                    <option value="" disabled>-- Select an option --</option>
+                                    <option value="COD">Cash On Delivery</option>
+                                    <option value="ONLINE">Online</option>
+                                </select>
+                            </div>
 
-                    <div class="col-lg-4 form-group">
-                        <label class="fs-6 mb-3">Additional Charge</label>
-                        <input type="text" formControlName="additionalCharge" class="form-control fs-6"
-                            [ngClass]="{ 'is-invalid': (formControls.additionalCharge.touched || isSubmitted) && (formControls.additionalCharge.errors?.required || formControls.additionalCharge.errors?.pattern)}">
-                    </div>
+                            <div class="form-group" *ngIf="orderForm.get('paymentMethod')?.value == 'ONLINE'">
+                                <label class="fs-6 mb-3">Transaction ID</label>
+                                <input type="text" formControlName="transactionId" class="form-control fs-6">
+                            </div>
 
-                    <div class="col-lg-4 form-group">
-                        <label class="fs-6 mb-3">Shipping Charge</label>
-                        <input type="text" formControlName="shippingCost" class="form-control fs-6"
-                            [ngClass]="{ 'is-invalid': (formControls.shippingCost.touched || isSubmitted) && (formControls.shippingCost.errors?.required || formControls.shippingCost.errors?.pattern)}">
-                    </div>
+                            <div class="form-group"
+                                [ngClass]="{'my-4': orderForm.get('paymentMethod')?.value == 'ONLINE'}">
+                                <label class="fs-6 mb-3">Additional Charge</label>
+                                <input type="text" formControlName="additionalCharge" class="form-control fs-6"
+                                    [ngClass]="{ 'is-invalid': (formControls.additionalCharge.touched || isSubmitted) && (formControls.additionalCharge.errors?.required || formControls.additionalCharge.errors?.pattern)}">
+                            </div>
 
+                            <div class="form-group my-4">
+                                <label class="fs-6 mb-3">Shipping Charge</label>
+                                <input type="text" formControlName="shippingCost" class="form-control fs-6"
+                                    [ngClass]="{ 'is-invalid': (formControls.shippingCost.touched || isSubmitted) && (formControls.shippingCost.errors?.required || formControls.shippingCost.errors?.pattern)}">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="d-flex align-items-center justify-content-end gap-2">
+                    <button routerLink="{{ appRoute.orders.ORDERS_LIST}}" class="btn btn-secondary w-50">
+                        Cancel
+                    </button>
+                    <button class="btn btn-primary w-50" (click)="createOrder()">
+                        Place Order
+                    </button>
                 </div>
             </div>
         </div>
 
-        <div class="card my-4">
-            <div class="card-body">
-                <div class="mb-3">
-                    <label for="orderNote" class="fs-6 mb-3">Order Note</label>
-                    <input type="text" id="orderNote" formControlName="orderNote" class="form-control fs-6">
-                </div>
-
-                <div class="mb-3">
-                    <label for="shippingNote" class="fs-6 mb-3">Shipping Note</label>
-                    <input type="text" id="shippingNote" formControlName="shippingNote" class="form-control fs-6">
-                </div>
-            </div>
-        </div>
-
-        <div class="d-flex align-items-center justify-content-end gap-2">
-            <button routerLink="{{ appRoute.orders.ORDERS_LIST}}" class="btn btn-secondary">
-                Cancel
-            </button>
-            <button class="btn btn-primary" (click)="createOrder()">
-                Place Order
-            </button>
-        </div>
     </form>
 </div>
 
@@ -463,7 +538,8 @@
 
                 <div class="col-lg-6 form-group mb-3">
                     <label class="fs-6 mb-3 required">Country</label>
-                    <select placeholder="Select Country" class="form-select" formControlName="country" (change)="loadStates()">
+                    <select placeholder="Select Country" class="form-select" formControlName="country"
+                        (change)="loadStates()">
                         <option value="" disabled>-- Select an option --</option>
                         <option *ngFor="let country of countries" [value]="country._id">{{country.name}}</option>
                     </select>
@@ -472,7 +548,8 @@
                 <div class="col-lg-6 mb-3" *ngIf="states.length > 0 && addressForm.get('country')?.value">
                     <div class="form-group">
                         <label class="fs-6 mb-3 required">State / Emirate</label>
-                        <select placeholder="Select State" class="form-select" formControlName="state" (change)="loadCities()">
+                        <select placeholder="Select State" class="form-select" formControlName="state"
+                            (change)="loadCities()">
                             <option value="" disabled>-- Select an option --</option>
                             <option *ngFor="let state of states" [value]="state._id">{{state.name}}</option>
                         </select>
@@ -508,5 +585,41 @@
                 </div>
             </div>
         </form>
+    </div>
+</ng-template>
+
+<ng-template #couponsTemplate>
+    <div class="modal-header pb-0">
+        <h4 class="fs-2 fw-bold pull-left">Coupons</h4>
+        <button type="button" class="btn-close close pull-right" aria-label="Close" (click)="couponsModalRef?.hide()">
+            <span aria-hidden="true" class="visually-hidden">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <div *ngFor="let applicableCoupon of applicableCoupons">
+            <div
+                class="d-flex align-items-center justify-content-between gap-2 rounded-3 shadow-sm p-2 border border-secondary my-3">
+                <div class="w-25 ratio ratio-1x1 h-100 text-success">
+                    <svg height="20" width="20" data-slot="icon" fill="none" stroke-width="1.5" stroke="currentColor"
+                        viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                            d="m9 14.25 6-6m4.5-3.493V21.75l-3.75-1.5-3.75 1.5-3.75-1.5-3.75 1.5V4.757c0-1.108.806-2.057 1.907-2.185a48.507 48.507 0 0 1 11.186 0c1.1.128 1.907 1.077 1.907 2.185ZM9.75 9h.008v.008H9.75V9Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm4.125 4.5h.008v.008h-.008V13.5Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z">
+                        </path>
+                    </svg>
+                </div>
+                <div class="w-75">
+                    <div class="d-flex align-items-center justify-content-between">
+                        <div class="fs-6 bg-secondary p-2 rounded border border-dotted" style="width: max-content;">
+                            {{applicableCoupon.code}}
+                        </div>
+                        <button class="fs-6 btn btn-primary p-2 rounded" style="width: max-content;">Apply</button>
+                    </div>
+                    <div class="fs-5 my-2">{{applicableCoupon.title}}</div>
+                    <div class="text-muted">
+                        Valid till {{formatDateString(applicableCoupon.lastDate)}}
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </ng-template>
