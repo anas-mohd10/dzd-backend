@@ -53,7 +53,7 @@ export class AuthenticationComponent implements OnInit {
           clientSecret: new FormControl(''),
         }),
         isRateLimitEnabled: new FormControl(false),
-        rateLimitWindowMs: new FormControl(15), // Default 15 minutes
+        rateLimitWindowMs: new FormControl(15), // Store in minutes
         rateLimitMaxRequests: new FormControl(5),
     })
 
@@ -65,38 +65,46 @@ export class AuthenticationComponent implements OnInit {
   }
 
   msToMins(ms: number) {
-    if(!ms) return 0
-    // convert ms to mins if it is greater than 60000 else return s
-    if (ms > 60000) {
-      return ms / 60000 + ' mins';
-    } else {
-      return ms / 1000 +'s';
-    }
+    if(!ms) return 0;
+    return ms >= 60 ? `${ms} minutes` : `${ms} seconds`;
   }
 
+  // Convert milliseconds to minutes when receiving from server
   getSettings() {
     this.AppSettingsService.getGeneralSettingsbyId('1').subscribe({
       next: (res: any) => {
         if (res?.errorCode == 0) {
-          this.form.patchValue(res?.result)
-          this.ChangeDetectorRef.markForCheck()
-        } else { }
-      }, error: (err: any) => { }
-    })
+          const settings = {...res.result};
+          if (settings.rateLimitWindowMs) {
+            settings.rateLimitWindowMs = settings.rateLimitWindowMs / (60 * 1000); // Convert ms to minutes
+          }
+          this.form.patchValue(settings);
+          this.ChangeDetectorRef.markForCheck();
+        }
+      },
+      error: (err: any) => { }
+    });
   }
 
+  // Convert minutes to milliseconds when sending to server
   onSubmit() {
-    this.AppSettingsService.updateSettings(this.form.value).subscribe({
+    const formData = {...this.form.value};
+    if (formData.rateLimitWindowMs) {
+      formData.rateLimitWindowMs = formData.rateLimitWindowMs * 60 * 1000; // Convert minutes to ms
+    }
+    
+    this.AppSettingsService.updateSettings(formData).subscribe({
       next: (res: any) => {
         if (res?.errorCode == 0) {
-          this.getSettings()
-          this.ChangeDetectorRef.markForCheck()
-          this.HotToastService.success(res?.message)
+          this.getSettings();
+          this.ChangeDetectorRef.markForCheck();
+          this.HotToastService.success(res?.message);
         } else {
-          this.HotToastService.error(res?.message)
+          this.HotToastService.error(res?.message);
         }
-      }, error: (err: any) => {
-        this.HotToastService.error(err?.message)
+      },
+      error: (err: any) => {
+        this.HotToastService.error(err?.message);
       }
     });
   }
