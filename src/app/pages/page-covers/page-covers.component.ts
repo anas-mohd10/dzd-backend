@@ -104,35 +104,36 @@ export class PageCoversComponent implements OnInit {
     this.modalRef = this.BsModalService.show(template, {
       class: 'modal-dialog-centered modal-lg',
       ignoreBackdropClick: true,
-    });
+    });   
     if (pageCover) {
       this.details = pageCover;
       this.isEditMode = true;
       this.form.patchValue(pageCover);
-      this.desktop = pageCover.desktopCover.path;
-      this.mobile = pageCover.mobileCover.path;
+      // Safely handle potentially undefined properties
+      this.desktop = pageCover.desktopCover?.path || '';
+      this.mobile = pageCover.mobileCover?.path || '';
     }
   }
 
-  onMediaTriggered(type: string, event: any, method: string) {
-    if (method == 'add') {
-      if (type == 'desktop') {
-        this.form.get('desktopCover')?.setValue(event?._id);
-        this.desktop = event.path;
-      } else {
-        this.form.get('mobileCover')?.setValue(event?._id);
-        this.mobile = event.path;
-      }
+onMediaTriggered(type: string, event: any, method: string) {
+  if (method == 'add') {
+    if (type == 'desktop') {
+      this.form.get('desktopCover')?.setValue(event?._id);
+      this.desktop = event.path;
     } else {
-      if (type == 'desktop') {
-        this.form.get('desktopCover')?.setValue(null);
-        this.desktop = '';
-      } else {
-        this.form.get('mobileCover')?.setValue(null);
-        this.mobile = '';
-      }
+      this.form.get('mobileCover')?.setValue(event?._id);
+      this.mobile = event.path;
+    }
+  } else {
+    if (type == 'desktop') {
+      this.form.get('desktopCover')?.setValue(null);
+      this.desktop = '';
+    } else {
+      this.form.get('mobileCover')?.setValue(null);
+      this.mobile = '';
     }
   }
+}
 
   onSubmit() {
     this.isEditMode ? this.updatePageCover() : this.addPageCover();
