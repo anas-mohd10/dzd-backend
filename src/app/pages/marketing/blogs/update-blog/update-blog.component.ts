@@ -1,6 +1,7 @@
 import {
   ChangeDetectorRef,
   Component,
+  HostListener,
   OnInit,
   TemplateRef,
 } from '@angular/core';
@@ -12,6 +13,9 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { HotToastService } from '@ngneat/hot-toast';
 import { environment } from 'src/environments/environment';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
+// Add these imports at the top
+import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
+import { PlatformService } from 'src/app/includes/services/platform.service';
 
 interface Media {
   title: string;
@@ -31,7 +35,25 @@ interface Media {
   selector: 'app-update-blog',
   templateUrl: './update-blog.component.html',
   styleUrls: ['./update-blog.component.scss'],
+  styles: [`
+    .product-item {
+      cursor: pointer;
+      padding: 8px;
+      border-radius: 4px;
+    }
+    .product-item:hover {
+      background-color: #f8f9fa;
+    }
+    .select-btn {
+      opacity: 0;
+    }
+    .product-item:hover .select-btn {
+      opacity: 1;
+    }
+  `]
 })
+
+
 export class UpdateBlogComponent implements OnInit {
   appRoute = appRoutes;
   form: FormGroup;
@@ -73,8 +95,21 @@ export class UpdateBlogComponent implements OnInit {
     private Toast: HotToastService,
     private ChangeDetectorRef: ChangeDetectorRef,
     private ActivatedRoute: ActivatedRoute,
-    private BsModalService: BsModalService
-  ) {}
+    private BsModalService: BsModalService,
+    private PlatformService: PlatformService,
+  ) {
+    // Add this in constructor
+    this.searchControl.valueChanges.pipe(
+      debounceTime(200),
+      distinctUntilChanged()
+    ).subscribe(value => {
+      if (value) {
+        this.searchProducts(value);
+      } else {
+        this.searchResults = [];
+      }
+    });
+  }
 
   get formControls() {
     return this.form.controls;
@@ -86,7 +121,6 @@ export class UpdateBlogComponent implements OnInit {
       description: new FormControl('', Validators.required),
       overview: new FormControl(''),
       isActive: new FormControl(true),
-      isFeatured: new FormControl(false),
       category: new FormControl('', Validators.required),
       seoTitle: new FormControl(''),
       seoDescription: new FormControl(''),
@@ -94,9 +128,10 @@ export class UpdateBlogComponent implements OnInit {
       canonicalUrl: new FormControl(''),
       thumbnail: new FormControl(null, Validators.required),
       cover: new FormControl(null),
+      products: new FormControl([]), // Add products form control
     });
 
-    this.blogQuery = this.ActivatedRoute.snapshot.params.blog || '';
+    this.blogQuery = this.ActivatedRoute.snapshot.params['blog'] || '';
     this.BlogService.blogDetails(this.blogQuery).subscribe({
       next: (res: any) => {
         if (res?.errorCode == 0) {
@@ -106,11 +141,21 @@ export class UpdateBlogComponent implements OnInit {
           }
           this.previews.thumbnail = this.blogDetails.thumbnail?.path;
           this.previews.cover = this.blogDetails.cover?.path;
+          if (this.blogDetails.products) {
+            this.selectedProducts = this.blogDetails.products;
+          }
           this.ChangeDetectorRef.markForCheck();
         }
       },
     });
   }
+
+  selectedProducts: any[] = [];
+  dropdownInputs: any = {
+    placeholder: 'Search products',
+    searchText: '',
+  };
+  base = environment.baseUrl;
 
   handleCover(event: any) {
     this.previews.cover = event.path;
@@ -182,5 +227,55 @@ export class UpdateBlogComponent implements OnInit {
         this.Toast.error(err.error.message);
       },
     });
+  }
+
+  // Add these new methods
+  onProductSelect(product: any) {
+    if (!this.selectedProducts.find(p => p._id === product._id)) {
+      this.selectedProducts.push(product);
+      this.form.get('products')?.setValue(this.selectedProducts.map(p => p._id));
+    }
+  }
+
+  onRemoveProduct(product: any) {
+    this.selectedProducts = this.selectedProducts.filter(p => p._id !== product._id);
+    this.form.get('products')?.setValue(this.selectedProducts.map(p => p._id));
+  }
+
+  searchControl = new FormControl('');
+  searchResults: any[] = [];
+  showDropdown = false;
+
+
+  // Add these new methods
+  searchProducts(keyword: string) {
+    this.PlatformService.getRedirectionResults({ keyword }).subscribe({
+      next: (res: any) => {
+        if (res?.errorCode === 0) {
+          this.searchResults = res.result.products || [];
+        }
+      }
+    });
+  }
+
+  selectProduct(product: any) {
+    if (!this.selectedProducts.find(p => p._id === product._id)) {
+      this.selectedProducts.push(product);
+      this.form.get('products')?.setValue(this.selectedProducts.map(p => p._id));
+    }
+    this.searchControl.setValue('');
+    this.showDropdown = false;
+  }
+
+  removeProduct(product: any) {
+    this.selectedProducts = this.selectedProducts.filter(p => p._id !== product._id);
+    this.form.get('products')?.setValue(this.selectedProducts.map(p => p._id));
+  }
+
+  @HostListener('document:click', ['$event'])
+  onDocumentClick(event: MouseEvent) {
+    if (!(event.target as HTMLElement).closest('.product-search-container')) {
+      this.showDropdown = false;
+    }
   }
 }
