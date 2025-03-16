@@ -19,45 +19,59 @@ export class AuthenticationComponent implements OnInit {
     private AppSettingsService: AppSettingsService
   ) { }
 
+  // In the form initialization, add new controls
   ngOnInit(): void {
-    this.form = new FormGroup({
-      isOtpLogin: new FormControl(false),
-      isPasswordLogin: new FormControl(true),
-      isFacebookLogin: new FormControl(false),
-      isGoogleLogin: new FormControl(false),
-      isRecaptchaEnabled: new FormControl(false),
-      recaptchaSiteKey: new FormControl(''),
-      recaptchaSecretKey: new FormControl(''),
-      isOtpForGuestCheckout: new FormControl(false),
-      isGuestCheckout: new FormControl(false),
-      isOtpForRegistration: new FormControl(false),
-      androidRecaptchaKey: new FormControl(''),
-      iosRecaptchaKey: new FormControl(''),
-      recaptchaEnterpriseKey: new FormControl(''),
-      recaptchaProjectId: new FormControl(''),
-// recaptchaSiteKey: { type: String },
-// recaptchaProjectId: {type: String},
-// recaptchaPrivateKey: {type: String},
-// recaptchaEmail: {type: String},
-      recaptchaPrivateKey: new FormControl(''),
-      recaptchaEmail: new FormControl(''),
-      facebookLogin: new FormGroup({
-        text: new FormControl('Login with Facebook'),
-        clientId: new FormControl(''),
-        clientSecret: new FormControl(''),
-      }),
-      googleLogin: new FormGroup({
-        text: new FormControl('Login with Google'),
-        clientId: new FormControl(''),
-        clientSecret: new FormControl(''),
-      }),
+      this.form = new FormGroup({
+        isOtpLogin: new FormControl(false),
+        isPasswordLogin: new FormControl(true),
+        isFacebookLogin: new FormControl(false),
+        isGoogleLogin: new FormControl(false),
+        isRecaptchaEnabled: new FormControl(false),
+        recaptchaSiteKey: new FormControl(''),
+        recaptchaSecretKey: new FormControl(''),
+        isOtpForGuestCheckout: new FormControl(false),
+        isGuestCheckout: new FormControl(false),
+        isOtpForRegistration: new FormControl(false),
+        androidRecaptchaKey: new FormControl(''),
+        iosRecaptchaKey: new FormControl(''),
+        recaptchaEnterpriseKey: new FormControl(''),
+        recaptchaProjectId: new FormControl(''),
+    // recaptchaSiteKey: { type: String },
+    // recaptchaProjectId: {type: String},
+    // recaptchaPrivateKey: {type: String},
+    // recaptchaEmail: {type: String},
+        recaptchaPrivateKey: new FormControl(''),
+        recaptchaEmail: new FormControl(''),
+        facebookLogin: new FormGroup({
+          text: new FormControl('Login with Facebook'),
+          clientId: new FormControl(''),
+          clientSecret: new FormControl(''),
+        }),
+        googleLogin: new FormGroup({
+          text: new FormControl('Login with Google'),
+          clientId: new FormControl(''),
+          clientSecret: new FormControl(''),
+        }),
+        isRateLimitEnabled: new FormControl(false),
+        rateLimitWindowMs: new FormControl(15), // Default 15 minutes
+        rateLimitMaxRequests: new FormControl(5),
     })
 
-    this.getSettings()
+      this.getSettings()
   }
 
   toggleAuthOptions(event: { toggleState: boolean, switchId: string }) {
     this.form.get(event.switchId)?.patchValue(event.toggleState);
+  }
+
+  msToMins(ms: number) {
+    if(!ms) return 0
+    // convert ms to mins if it is greater than 60000 else return s
+    if (ms > 60000) {
+      return ms / 60000 + ' mins';
+    } else {
+      return ms / 1000 +'s';
+    }
   }
 
   getSettings() {
