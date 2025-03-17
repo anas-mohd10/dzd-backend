@@ -7,6 +7,16 @@ $activeBackground: #00BDAB20;
 $border: #E4E6EF;
 $grey: #888888;
 
+.addressCards {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+}
+
+.type{
+  width: max-content;
+}
+
 .quantityBtn{
   height: 24px;
   width: 24px;

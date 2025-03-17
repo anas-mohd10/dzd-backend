@@ -1,7 +1,8 @@
-import { ChangeDetectorRef, Component, OnInit, TemplateRef, ViewChild} from '@angular/core';
-import {  FormBuilder,
+import { ChangeDetectorRef, Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
+import {
+  FormBuilder,
   FormControl,
-  FormGroup,  Validators,
+  FormGroup, Validators,
 } from '@angular/forms';
 import { Router } from '@angular/router';
 import { HotToastService } from '@ngneat/hot-toast';
@@ -37,6 +38,15 @@ interface ProductDoc {
   price: { selling: number }
 }
 
+interface Customer {
+  name: string,
+  email: string,
+  countryCode: string,
+  mobile: string,
+  userid: string,
+  _id: string,
+}
+
 @Component({
   selector: 'app-add-orders',
   templateUrl: './add-orders.component.html',
@@ -69,12 +79,12 @@ export class AddOrdersComponent implements OnInit {
   productids: any = [];
 
   customer: FormControl = new FormControl('');
-  customers: Array<any> = [];
+  customers: Customer[] = [];
   addressModalRef?: BsModalRef;
   manageAddressModalRef?: BsModalRef;
-  addressDetails: Array<any> = [];
+  addressItems: Array<any> = [];
   address: any;
-  customerDetails: any = {};
+  customerDetails: any;
   addressForm!: FormGroup;
   @ViewChild('addressRef') addressModal!: TemplateRef<any>;
   productsModalRef?: BsModalRef;
@@ -122,9 +132,12 @@ export class AddOrdersComponent implements OnInit {
     private DeliverySlotsService: DeliverySlotsService,
     private LocationService: LocationService
   ) {
-    this.customer.valueChanges.pipe(debounceTime(500)).subscribe(() => {
-      this.getCustomers();
-    });
+    // Trigger only if customer details have not been filled
+    if (!this.customerDetails) {
+      this.customer.valueChanges.pipe(debounceTime(500)).subscribe(() => {
+        this.getCustomers();
+      });
+    }
   }
 
   ngOnInit(): void {
@@ -267,7 +280,7 @@ export class AddOrdersComponent implements OnInit {
           });
           this.addCustomerRef?.hide();
           const customerDetails = res?.result;
-          this.getAddress(this.addressModal, customerDetails);
+          this.getAddress(customerDetails);
         } else {
           this.ToastrService.error(res.message);
         }
@@ -398,6 +411,7 @@ export class AddOrdersComponent implements OnInit {
       paymentMethod: ['', Validators.required],
       customerId: ['', Validators.required],
       transactionId: [''],
+      paymentStatus: ['Paid', Validators.required],
       additionalCharge: [0, Validators.pattern(/^[0-9]+$/)],
       products: [[], Validators.required],
       clickPoint: [null],
@@ -691,7 +705,7 @@ export class AddOrdersComponent implements OnInit {
   }
   deleteProduct(product: any) {
     this.cartItems = this.cartItems.filter((item: any) => item?._id != product?._id);
-    this.cartSubtotal =  this.cartSubtotal - product?.price?.selling * product?.quantity;
+    this.cartSubtotal = this.cartSubtotal - product?.price?.selling * product?.quantity;
 
     this.getApplicableCoupons();
   }
@@ -720,29 +734,33 @@ export class AddOrdersComponent implements OnInit {
       });
   }
 
-  getAddress(template: TemplateRef<any>, customer: any) {
+  getAddress(customer: any) {
     this.customerDetails = customer;
     this.address = null;
     this.addressForm.reset();
     this.addressForm.patchValue({ countryCode: '', type: '' });
-    this.customer.setValue(customer?.name);
-    this.addressModalRef = this.BsModalService.show(template, {
-      class: 'modal-lg modal-dialog-centered',
-      ignoreBackdropClick: true,
-    });
+    this.customers = []
+    this.orderForm.get('customerId')?.setValue(this.customerDetails?._id);
+    // this.addressModalRef = this.BsModalService.show(template, { class: 'modal-lg modal-dialog-centered', ignoreBackdropClick: true, });
     this.customerService.getAddress({ userid: customer?.userid }).subscribe({
       next: (res: any) => {
         if (res?.errorCode == 0) {
-          this.addressDetails = res?.result;
+          this.addressItems = res?.result;
+          this.addressItems.forEach((addressItem: any) => {
+            if (addressItem?.isDefault == true) {
+              this.address = addressItem
+            }
+          })
           this.ChangeDetectorRef.markForCheck();
         } else {
           this.ToastrService.error(res.message);
         }
-      },
-      error: (err: any) => {
+      }, error: (err: any) => {
         this.ToastrService.error(err.message);
       },
     });
+
+    this.ChangeDetectorRef.markForCheck()
   }
 
   selectAddress(address: any) {
@@ -805,7 +823,7 @@ export class AddOrdersComponent implements OnInit {
     this.customerService.getAddress({ userid: this.customerDetails?.userid }).subscribe({
       next: (res: any) => {
         if (res?.errorCode === 0) {
-          this.addressDetails = res?.result;
+          this.addressItems = res?.result;
           this.ChangeDetectorRef.markForCheck();
         } else {
           this.ToastrService.error(res.message);
@@ -988,7 +1006,7 @@ export class AddOrdersComponent implements OnInit {
 
   couponCode: FormControl = new FormControl('');
 
-  formatDateString(date: string){
+  formatDateString(date: string) {
     return new Date(date).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
   }
 
@@ -1000,7 +1018,7 @@ export class AddOrdersComponent implements OnInit {
 
   // Get applicableCoupons
   getApplicableCoupons() {
-    const productDocs: ProductDoc[]  = this.cartItems.map((item: any) => ({ _id: item._id, quantity: item.quantity, price: { selling: item.price.selling } }))
+    const productDocs: ProductDoc[] = this.cartItems.map((item: any) => ({ _id: item._id, quantity: item.quantity, price: { selling: item.price.selling } }))
     this.CouponsService.getApplicableCoupons({ products: productDocs }).subscribe({
       next: (res: any) => {
         if (res?.errorCode == 0) {

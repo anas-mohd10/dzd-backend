@@ -1,5 +1,4 @@
 <div>
-
     <div class="page-header">
         <div class="page-title">
             <h1 class="fw-bold">Add Orders</h1>
@@ -20,48 +19,6 @@
             </div>
         </div>
     </div>
-
-    <ng-template #createUser>
-        <div class="modal-header">
-            <h4 class="fs-2 fw-bold pull-left">Create Customer</h4>
-            <button type="button" class="btn-close close pull-right" aria-label="Close" (click)="closeCreateCustomer()">
-                <span aria-hidden="true" class="visually-hidden">&times;</span>
-            </button>
-        </div>
-        <div class="modal-body">
-            <form [formGroup]="userForm" (ngSubmit)="createCustomer()">
-                <div class="row">
-                    <div class="col-lg-6 mb-3">
-                        <label for="userName" class="fs-6 mb-3">Name</label>
-                        <input id="userName" type="text" placeholder="Name" formControlName="name" class="form-control">
-                    </div>
-                    <div class="col-lg-6 mb-3">
-                        <label for="userEmail" class="fs-6 mb-3">Email</label>
-                        <input id="userEmail" type="text" placeholder="Email" formControlName="email"
-                            class="form-control">
-                    </div>
-                    <div class="col-lg-6 mb-3">
-                        <label for="userCountry" class="fs-6 mb-3">Country Code</label>
-                        <select class="form-select" formControlName="countryCode" id="userCountry"
-                            (change)="handleUserMobilePattern()">
-                            <option value="" disabled>-- Select an option --</option>
-                            <option value="+91">+91</option>
-                            <option value="+971">+971</option>
-                        </select>
-                    </div>
-                    <div class="col-lg-6 mb-3">
-                        <label for="userMobile" class="fs-6 mb-3">Mobile</label>
-                        <input id="userMobile" type="text" placeholder="Mobile" formControlName="mobile"
-                            class="form-control">
-                    </div>
-                </div>
-                <div class="d-flex align-items-center justify-content-end gap-2">
-                    <button type="submit" class="btn btn-primary">Save changes</button>
-                </div>
-            </form>
-        </div>
-    </ng-template>
-
     <form [formGroup]="orderForm">
         <div class="card my-4">
             <div class="card-body">
@@ -69,7 +26,8 @@
                     <div class="row">
                         <div class="col-lg-10">
                             <label for="searchUsers" class="fs-6 mb-3 required">Customers</label>
-                            <input id="searchUsers" autocomplete="off" type="search" placeholder="Search customers here"
+                            <input id="searchUsers" value="{{customerDetails?.name}} - {{customerDetails?.email}}"
+                                autocomplete="off" type="search" placeholder="Search customers here"
                                 class="form-control" [formControl]="customer"
                                 [ngClass]="{ 'is-invalid': (formControls.customerId.touched || isSubmitted) && formControls.customerId.errors?.required}">
                         </div>
@@ -83,53 +41,133 @@
                     </div>
 
                     <ng-container *ngIf="customers.length > 0">
-                        <div class="customers mt-3">
-                            <ng-container *ngFor="let customer of customers; let i = index">
-                                <div class="customerCard p-2 d-flex align-items-center justify-content-between"
-                                    (click)="getAddress(addressRef, customer)"
-                                    [ngClass]="{'active': customerDetails?._id == customer?._id}">
-                                    <div class="d-flex align-items-center justify-content-between">
-                                        <div class="index me-3">{{i + 1}}</div>
-                                        <div class="name">{{customer?.name}}</div>
-                                        <div class="mobile ms-3">{{customer?.countryCode}} {{customer?.mobile}}
-                                        </div>
-                                    </div>
-                                    <div class="name">{{customer?.email}}</div>
+                        <div class="row my-4" *ngFor="let customer of customers; let i = index">
+                            <div class="col-lg-10">
+                                <div style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap;"
+                                    class="fs-5 w-100">{{customer.name}}</div>
+                                <div class="w-100"
+                                    style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
+                                    {{customer.email}}
                                 </div>
-                            </ng-container>
+                                <div>{{customer.countryCode}} {{customer.mobile}}</div>
+                            </div>
+                            <div class="col-lg-2">
+                                <button (click)="getAddress(customer)"
+                                    class="btn w-100 btn-secondary d-flex align-items-center justify-content-center">
+                                    <div>Select</div>
+                                    <div>
+                                        <svg height="16" width="16" data-slot="icon" fill="none" stroke-width="1.5"
+                                            stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"
+                                            aria-hidden="true">
+                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                d="m8.25 4.5 7.5 7.5-7.5 7.5"></path>
+                                        </svg>
+                                    </div>
+                                </button>
+                            </div>
                         </div>
                     </ng-container>
                 </div>
 
-                <div class="my-3" *ngIf="address">
+                <ng-container *ngIf="customerDetails">
+                    <div class="my-12">
+                        <div class="row  align-items-center">
+                            <div class="col-lg-10">
+                                <div class="fs-4">Delivery Address</div>
+                                <p class="text-muted">Choose delivery address from the below list</p>
+                            </div>
+                            <div class="col-lg-2">
+                                <button class="btn btn-primary w-100" (click)="openManage(manageRef)">
+                                    <div>Add Address</div>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="addressCards mt-4">
+                            <ng-container *ngFor="let addressItem of addressItems">
+                                <div class="bg-white d-flex align-items-stretch justify-content-between rounded border position-relative"
+                                    [ngClass]="{'border-primary': addressItem?._id == address?._id, 'border-secondary': addressItem?._id != address?._id}">
+                                    <div class="form-check my-4" style="width: 20px; height: 20px;">
+                                        <input (click)="selectAddress(addressItem)" style="width: 20px; height: 20px;"
+                                            class="form-check-input" type="checkbox"
+                                            [checked]="addressItem?._id == address?._id" id="defaultAddress">
+                                    </div>
+                                    <div class="p-4 d-flex flex-column justify-content-between"
+                                        style="width: calc(100% - 20px);">
+                                        <div>
+                                            <div class="fs-6">
+                                                {{addressItem?.name}}
+                                                {{addressItem?.countryCode ? ', ' + addressItem?.countryCode : ''}}
+                                                {{addressItem?.mobile ? addressItem?.mobile : ''}}
+                                            </div>
+                                            <div class="type bg-secondary p-2 rounded fs-6 my-1">{{addressItem?.type}}</div>
+                                            <div class="fs-6">
+                                                {{addressItem?.firstlane}}
+                                                {{addressItem?.secondlane ? ', ' + addressItem?.secondlane : ''}}
+                                            </div>
+                                            <div class="fs-6 my-1">
+                                                {{addressItem?.city}}
+                                                {{addressItem?.area ? ', ' + addressItem?.area : ''}}
+                                                {{addressItem?.landmark ? ', ' + addressItem?.landmark : ''}}
+                                            </div>
+                                            <div class="fs-6">
+                                                {{addressItem?.state}}
+                                                {{addressItem?.country ? ', ' + addressItem?.country : ''}}
+                                            </div>
+                                        </div>
+                                        <div class="btn w-100 p-2 btn-secondary mt-2" (click)="openManage(manageRef)">
+                                            Edit
+                                            <span>
+                                                <svg width="18" height="18" data-slot="icon" fill="none"
+                                                    stroke-width="1.5" stroke="currentColor" viewBox="0 0 24 24"
+                                                    xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                                        d="m8.25 4.5 7.5 7.5-7.5 7.5"></path>
+                                                </svg>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </ng-container>
+                        </div>
+                    </div>
+                </ng-container>
+            </div>
+
+            <div class="my-3" *ngIf="address">
+                <div class="d-flex align-items-center justify-content-between">
                     <div class="fs-6 mb-3">Customer Address :</div>
-                    <div class="addressCard">
-                        <div class="addressHeader p-3 d-flex justify-content-between align-items-center">
-                            <div class="type pe-2 ps-2">{{address?.type}}</div>
-                            <div class="manageAddress p-1" (click)="openManage(manageRef)">
-                                <svg height="18px" width="18px" xmlns="http://www.w3.org/2000/svg" fill="none"
-                                    viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-                                    <path stroke-linecap="round" stroke-linejoin="round"
-                                        d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L6.832 19.82a4.5 4.5 0 01-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 011.13-1.897L16.863 4.487zm0 0L19.5 7.125" />
-                                </svg>
-                            </div>
+                    <div>
+                        <button class="btn btn-primary">
+                            <div>Choose </div>
+                        </button>
+                    </div>
+                </div>
+                <div class="addressCard">
+                    <div class="addressHeader p-3 d-flex justify-content-between align-items-center">
+                        <div class="type pe-2 ps-2">{{address?.type}}</div>
+                        <div class="manageAddress p-1" (click)="openManage(manageRef)">
+                            <svg height="18px" width="18px" xmlns="http://www.w3.org/2000/svg" fill="none"
+                                viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                    d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L6.832 19.82a4.5 4.5 0 01-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 011.13-1.897L16.863 4.487zm0 0L19.5 7.125" />
+                            </svg>
                         </div>
-                        <div class="p-3">
-                            <div class="details">{{address?.countryCode}} {{address?.mobile}}</div>
-                            <div class="lane">
-                                {{address?.firstlane}} {{address?.secondlane ? ', ' + address?.secondlane : ''}}
-                            </div>
-                            <div class="area">{{address?.area}} {{address?.landmark}}</div>
-                            <div class="city">{{address?.country}} {{address?.state}} {{address?.city}}
-                                {{address?.pincode}}</div>
+                    </div>
+                    <div class="p-3">
+                        <div class="details">{{address?.countryCode}} {{address?.mobile}}</div>
+                        <div class="lane">
+                            {{address?.firstlane}} {{address?.secondlane ? ', ' + address?.secondlane : ''}}
                         </div>
+                        <div class="area">{{address?.area}} {{address?.landmark}}</div>
+                        <div class="city">{{address?.country}} {{address?.state}} {{address?.city}}
+                            {{address?.pincode}}</div>
                     </div>
                 </div>
             </div>
         </div>
 
         <div class="row">
-            <div class="col-lg-7">
+            <div class="col-lg-8">
                 <div class="card">
                     <div class="card-body">
                         <div class="my-3">
@@ -274,23 +312,24 @@
                         </div>
                     </div>
                 </div>
-        
+
                 <div class="card">
                     <div class="card-body">
                         <div class="mb-3">
                             <label for="orderNote" class="fs-6 mb-3">Order Note</label>
                             <input type="text" id="orderNote" formControlName="orderNote" class="form-control fs-6">
                         </div>
-        
+
                         <div class="mb-3">
                             <label for="shippingNote" class="fs-6 mb-3">Shipping Note</label>
-                            <input type="text" id="shippingNote" formControlName="shippingNote" class="form-control fs-6">
+                            <input type="text" id="shippingNote" formControlName="shippingNote"
+                                class="form-control fs-6">
                         </div>
                     </div>
                 </div>
             </div>
 
-            <div class="col-lg-5">
+            <div class="col-lg-4">
                 <div class="card">
                     <div class="card-body">
                         <ng-container *ngIf="applicableCoupons.length > 0">
@@ -326,7 +365,8 @@
                                             stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"
                                             aria-hidden="true">
                                             <path stroke-linecap="round" stroke-linejoin="round"
-                                                d="m8.25 4.5 7.5 7.5-7.5 7.5"></path>
+                                                d="m8.25 4.5 7.5 7.5-7.5 7.5">
+                                            </path>
                                         </svg>
                                     </div>
                                 </div>
@@ -334,9 +374,10 @@
                         </ng-container>
                         <div [ngClass]="{'my-3': applicableCoupons.length > 0}">
                             <div class="d-flex align-items-center justify-content-between gap-2">
-                                <input type="text" class="form-control w-75" placeholder="Coupon Code"
+                                <input type="text" class="form-control" style="width: 60%;" placeholder="Coupon Code"
                                     [formControl]="couponCode">
-                                <button [disabled]="!couponCode.value" class="btn btn-secondary w-25">Apply</button>
+                                <button [disabled]="!couponCode.value" style="width: 40%;"
+                                    class="btn btn-secondary">Apply</button>
                             </div>
                             <div class="my-3">
                                 <a class="text-dark fs-5" routerLink="{{ appRoute.coupons.ADD_COUPONS_LIST }}"
@@ -350,12 +391,21 @@
                     <div class="card-body">
                         <div>
                             <div class="form-group my-4">
-                                <label class="fs-6 mb-3 required">Payment Method</label>
+                                <label class="fs-6 mb-3">Payment Method</label>
                                 <select class="form-select mb-3 fs-6" formControlName="paymentMethod"
                                     [ngClass]="{ 'is-invalid': (formControls.paymentMethod.touched || isSubmitted) && formControls.paymentMethod.errors?.required}">
                                     <option value="" disabled>-- Select an option --</option>
                                     <option value="COD">Cash On Delivery</option>
                                     <option value="ONLINE">Online</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group my-4" *ngIf="orderForm.get('paymentMethod')?.value == 'ONLINE'">
+                                <label class="fs-6 mb-3">Payment Status</label>
+                                <select class="form-select mb-3 fs-6" formControlName="paymentStatus">
+                                    <option value="" disabled>-- Select an option --</option>
+                                    <option value="Paid">Paid</option>
+                                    <option value="Pending">Pending</option>
                                 </select>
                             </div>
 
@@ -390,13 +440,55 @@
                 </div>
             </div>
         </div>
-
     </form>
 </div>
 
-<ng-template #addressRef>
+<ng-template #createUser>
+    <div class="modal-header">
+        <h4 class="fs-2 fw-bold pull-left">Create Customer</h4>
+        <button type="button" class="btn-close close pull-right" aria-label="Close" (click)="closeCreateCustomer()">
+            <span aria-hidden="true" class="visually-hidden">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <form [formGroup]="userForm" (ngSubmit)="createCustomer()">
+            <div class="row">
+                <div class="col-lg-6 mb-3">
+                    <label for="userName" class="fs-6 mb-3">Name</label>
+                    <input id="userName" type="text" placeholder="Name" formControlName="name" class="form-control">
+                </div>
+                <div class="col-lg-6 mb-3">
+                    <label for="userEmail" class="fs-6 mb-3">Email</label>
+                    <input id="userEmail" type="text" placeholder="Email" formControlName="email" class="form-control">
+                </div>
+                <div class="col-lg-6 mb-3">
+                    <label for="userCountry" class="fs-6 mb-3">Country Code</label>
+                    <select class="form-select" formControlName="countryCode" id="userCountry"
+                        (change)="handleUserMobilePattern()">
+                        <option value="" disabled>-- Select an option --</option>
+                        <option value="+91">+91</option>
+                        <option value="+971">+971</option>
+                    </select>
+                </div>
+                <div class="col-lg-6 mb-3">
+                    <label for="userMobile" class="fs-6 mb-3">Mobile</label>
+                    <input id="userMobile" type="text" placeholder="Mobile" formControlName="mobile"
+                        class="form-control">
+                </div>
+            </div>
+            <div class="d-flex align-items-center justify-content-end gap-2">
+                <button type="submit" class="btn btn-primary">Save changes</button>
+            </div>
+        </form>
+    </div>
+</ng-template>
+
+<!-- <ng-template #addressRef>
     <div class="modal-header pb-0">
         <h4 class="fs-2 fw-bold pull-left">Select Address</h4>
+        <button type="button" class="btn-close close pull-right" aria-label="Close" (click)="addressModalRef?.hide()">
+            <span aria-hidden="true" class="visually-hidden">&times;</span>
+        </button>
     </div>
     <div class="modal-body pt-4">
         <div class="addressWrapper">
@@ -429,7 +521,7 @@
             </div>
         </div>
     </div>
-</ng-template>
+</ng-template> -->
 
 <ng-template #productsRef>
     <div class="modal-header pb-0">
