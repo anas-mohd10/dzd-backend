@@ -297,6 +297,9 @@ export class UpdateAppSettingsComponent implements OnInit {
         this.form.get('commaSeparation')?.setValue(
           res?.result?.commaSeparation ?? true  // Use nullish coalescing for default
         );
+        this.form.get('currencyLocation')?.setValue(
+          res?.result?.currencyLocation ?? 'before'
+        );
         this.form.get('decimalValues')?.setValue(
           Number(res?.result?.decimalValues)
         );
@@ -378,6 +381,7 @@ export class UpdateAppSettingsComponent implements OnInit {
       defaultImage: [''],
       isNotifyStock: ['false'],
       commaSeparation: [true],
+      currencyLocation: ['before'],
       decimalValues: [  ],
       cartButton: ['Add to Cart', Validators.required],
       stockButton: ['Out of Stock', Validators.required],
@@ -546,6 +550,7 @@ export class UpdateAppSettingsComponent implements OnInit {
       notes: { packingSlip: this.form.get('packingSlip')?.value },
       deliverSlotBufferTime: this.form.get('deliverSlotBufferTime')?.value || 60,
       commaSeparation: Boolean(this.form.get('commaSeparation')?.value),
+      currencyLocation: this.form.get('currencyLocation')?.value,
       decimalValues: Number(this.form.get('decimalValues')?.value),
       verifyNumberWithTwilio: this.form.get('verifyNumberWithTwilio')?.value,
       buttons: {
