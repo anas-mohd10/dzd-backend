@@ -75,9 +75,6 @@ export class AuthenticationComponent implements OnInit {
       next: (res: any) => {
         if (res?.errorCode == 0) {
           const settings = {...res.result};
-          if (settings.rateLimitWindowMs) {
-            settings.rateLimitWindowMs = settings.rateLimitWindowMs / (60 * 1000); // Convert ms to minutes
-          }
           this.form.patchValue(settings);
           this.ChangeDetectorRef.markForCheck();
         }
