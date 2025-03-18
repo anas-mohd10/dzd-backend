@@ -277,7 +277,7 @@ export const appRoutes = {
   blogs: {
     list: `${app}/blogs`,
     create: `${app}/blogs/create-blog`,
-    update: `${app}/blogs/update-blog`
+    update: `${app}/blogs/update-blog?slug=`
   },
   catalogs: {
     list: `${app}/catalogs`,

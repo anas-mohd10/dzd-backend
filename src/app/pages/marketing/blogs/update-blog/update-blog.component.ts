@@ -31,6 +31,15 @@ interface Media {
   createdAt: string;
 }
 
+// Add this interface at the top of the file
+interface BlogCategory {
+  _id: string;
+  title: string;
+  thumbnail: string;
+  slug: string;
+  isActive: boolean;
+}
+
 @Component({
   selector: 'app-update-blog',
   templateUrl: './update-blog.component.html',
@@ -57,6 +66,7 @@ interface Media {
 export class UpdateBlogComponent implements OnInit {
   appRoute = appRoutes;
   form: FormGroup;
+  categories: BlogCategory[] = [];
   isSubmitted: boolean = false;
   previews: any = { thumbnail: '', cover: '' };
   files: any = { thumbnail: null, cover: null };
@@ -88,6 +98,8 @@ export class UpdateBlogComponent implements OnInit {
       { class: 'be-vietnam-pro', name: 'Be Vietnam Pro' },
     ],
   };
+  slug: any;
+
 
   constructor(
     private BlogService: BlogService,
@@ -116,11 +128,29 @@ export class UpdateBlogComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    console.log('get blog details')
+    this.slug = this.ActivatedRoute.snapshot.queryParams.blog || '';
+    console.log(this.slug)
+    // Get the slug from route params
+    this.ActivatedRoute.queryParams.subscribe(params => {
+      console.log(params)
+      if (params['blog']) {
+        this.blogQuery = params['blog'];
+        this.getBlogDetails();
+      }
+    });
+
+    this.initializeForm();
+    this.getCategories();
+  }
+
+  initializeForm() {
     this.form = new FormGroup({
       title: new FormControl('', Validators.required),
       description: new FormControl('', Validators.required),
       overview: new FormControl(''),
       isActive: new FormControl(true),
+      isFeatured: new FormControl(false),
       category: new FormControl('', Validators.required),
       seoTitle: new FormControl(''),
       seoDescription: new FormControl(''),
@@ -128,25 +158,49 @@ export class UpdateBlogComponent implements OnInit {
       canonicalUrl: new FormControl(''),
       thumbnail: new FormControl(null, Validators.required),
       cover: new FormControl(null),
-      products: new FormControl([]), // Add products form control
+      products: new FormControl([]),
     });
+  }
 
-    this.blogQuery = this.ActivatedRoute.snapshot.params['blog'] || '';
-    this.BlogService.blogDetails(this.blogQuery).subscribe({
+  getBlogDetails() {
+    console.log('get blog details')
+    this.BlogService.getBlogBySlug(this.blogQuery).subscribe({
       next: (res: any) => {
-        if (res?.errorCode == 0) {
-          this.blogDetails = res?.result;
-          for (let key of Object.keys(this.blogDetails)) {
-            this.form.get(key)?.setValue(this.blogDetails[key]);
-          }
-          this.previews.thumbnail = this.blogDetails.thumbnail?.path;
-          this.previews.cover = this.blogDetails.cover?.path;
-          if (this.blogDetails.products) {
-            this.selectedProducts = this.blogDetails.products;
-          }
+        if (res?.errorCode === 0) {
+          const blog = res.result;
+          // Update form values
+          this.form.patchValue({
+            title: blog.title,
+            description: blog.description,
+            overview: blog.overview,
+            isActive: blog.isActive,
+            isFeatured: blog.isFeatured,
+            category: blog.category?._id,
+            seoTitle: blog.seoTitle,
+            seoDescription: blog.seoDescription,
+            seoKeywords: blog.seoKeywords,
+            canonicalUrl: blog.canonicalUrl,
+            thumbnail: blog.thumbnail?._id,
+            cover: blog.cover?._id,
+            products: blog.products?.map((p: any) => p._id) || [],
+          });
+
+          // Update previews
+          this.previews = {
+            thumbnail: blog.thumbnail?.path,
+            cover: blog.cover?.path,
+          };
+
+          // Update selected products
+          this.selectedProducts = blog.products || [];
+          
+          this.blogDetails = blog;
           this.ChangeDetectorRef.markForCheck();
         }
       },
+      error: (err: any) => {
+        this.Toast.error(err.error.message);
+      }
     });
   }
 
@@ -278,4 +332,18 @@ export class UpdateBlogComponent implements OnInit {
       this.showDropdown = false;
     }
   }
+
+
+
+  getCategories() {
+    this.BlogService.getCategories().subscribe({
+      next: (res: any) => {
+        if (res?.errorCode === 0) {
+          this.categories = res.result;
+          this.ChangeDetectorRef.markForCheck();
+        }
+      }
+    });
+  }
+
 }

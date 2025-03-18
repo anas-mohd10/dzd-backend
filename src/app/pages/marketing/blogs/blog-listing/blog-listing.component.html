@@ -13,9 +13,14 @@
         </li>
       </ul>
     </div>
-    <button class="btn btn-primary" routerLink="{{ appRoute.blogs.create }}">
-      Create blog
-    </button>
+    <div class="d-flex gap-2">
+      <button class="btn btn-secondary" (click)="openCategoryModal(categoryModal)">
+        Create Category
+      </button>
+      <button class="btn btn-primary" routerLink="{{ appRoute.blogs.create }}">
+        Create blog
+      </button>
+    </div>
   </div>
 
   <div class="card my-4">
@@ -36,8 +41,8 @@
       </div>
       <div class="blogs my-6" *ngIf="blogs.length > 0">
         <ng-container *ngFor="let blog of blogs">
-          <a class="blog" routerLink="{{appRoute.blogs.update + '/' + blog.slug}}">
-            <img src={{blog?.thumbnail}} alt={{blog?.title}} class="rounded"
+          <a class="blog" [routerLink]="[appRoute.blogs.update]" [queryParams]="{ slug: blog.slug }">
+            <img src="{{blog?.thumbnail}}" alt="{{blog?.title}}" class="rounded"
               onerror="this.src = 'assets/images/default.png'">
             <div class="mt-4">
               <div>{{blog?.category}}</div>
@@ -45,6 +50,7 @@
               <div class="text-muted">{{blog?.createdAt}}</div>
             </div>
           </a>
+
         </ng-container>
       </div>
 
@@ -57,3 +63,38 @@
     </div>
   </div>
 </div>
+
+
+
+<!-- Add this at the bottom of the file -->
+<ng-template #categoryModal>
+  <div class="modal-header">
+    <h4 class="modal-title">Create Category</h4>
+    <button type="button" class="btn-close" (click)="modalRef.hide()"></button>
+  </div>
+  <div class="modal-body">
+    <form [formGroup]="categoryForm">
+      <div class="mb-3">
+        <label class="form-label required">Title</label>
+        <input type="text" class="form-control" formControlName="title">
+      </div>
+      <div class="mb-3">
+        <label class="form-label required">Thumbnail</label>
+        <div id="thumbnail" class="default-banner position-relative">
+          <app-assets [previewDetails]="categoryThumbnail" (mediaClicked)="handleCategoryThumbnail($event)">
+          </app-assets>
+
+          <div *ngIf="categoryThumbnail">
+            <div class="position-absolute bottom-0 end-0 m-4">
+              <button class="btn btn-danger" (click)="removeCategoryThumbnail()">Remove</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <button class="btn btn-secondary" (click)="modalRef.hide()">Cancel</button>
+    <button class="btn btn-primary" (click)="createCategory()">Create</button>
+  </div>
+</ng-template>
