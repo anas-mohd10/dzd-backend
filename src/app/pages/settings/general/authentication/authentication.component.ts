@@ -90,9 +90,9 @@ export class AuthenticationComponent implements OnInit {
   onSubmit() {
     const formData = {...this.form.value};
     if (formData.rateLimitWindowMs) {
-      formData.rateLimitWindowMs = formData.rateLimitWindowMs * 60 * 1000; // Convert minutes to ms
+      formData.rateLimitWindowMs = formData.rateLimitWindowMs;
     }
-    
+
     this.AppSettingsService.updateSettings(formData).subscribe({
       next: (res: any) => {
         if (res?.errorCode == 0) {
