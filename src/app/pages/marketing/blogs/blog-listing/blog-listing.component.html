@@ -41,11 +41,11 @@
       </div>
       <div class="blogs my-6" *ngIf="blogs.length > 0">
         <ng-container *ngFor="let blog of blogs">
-          <a class="blog" [routerLink]="[appRoute.blogs.update]" [queryParams]="{ slug: blog.slug }">
+          <a class="blog" routerLink="{{appRoute.blogs.update + '/' + blog.slug}}">
             <img src="{{blog?.thumbnail}}" alt="{{blog?.title}}" class="rounded"
               onerror="this.src = 'assets/images/default.png'">
             <div class="mt-4">
-              <div>{{blog?.category}}</div>
+              <div>{{blog?.category?.title || blog?.category}}</div>
               <div class="fs-5 title">{{blog?.title}}</div>
               <div class="text-muted">{{blog?.createdAt}}</div>
             </div>

@@ -7,7 +7,10 @@ import { UpdateBlogComponent } from './update-blog/update-blog.component';
 const routes: Routes = [
   { path: '', component: BlogListingComponent },
   { path: 'create-blog', component: CreateBlogComponent },
-  { path: 'update-blog/:blog', component: UpdateBlogComponent }
+  {
+    path: 'update-blog/:slug',  // Changed from 'update-blog'
+    component: UpdateBlogComponent
+  }
 ];
 
 @NgModule({

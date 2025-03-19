@@ -128,18 +128,14 @@ export class UpdateBlogComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    console.log('get blog details')
-    this.slug = this.ActivatedRoute.snapshot.queryParams.blog || '';
-    console.log(this.slug)
     // Get the slug from route params
-    this.ActivatedRoute.queryParams.subscribe(params => {
-      console.log(params)
-      if (params['blog']) {
-        this.blogQuery = params['blog'];
+    this.ActivatedRoute.params.subscribe(params => {
+      if (params['slug']) {
+        this.blogQuery = params['slug'];
         this.getBlogDetails();
       }
     });
-
+  
     this.initializeForm();
     this.getCategories();
   }
