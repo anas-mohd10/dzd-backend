@@ -217,7 +217,7 @@ export class UpdateProductComponent implements OnInit {
         } else {
         }
       },
-      error: (err: any) => {},
+      error: (err: any) => { },
     });
   }
 
@@ -262,7 +262,7 @@ export class UpdateProductComponent implements OnInit {
         } else {
         }
       },
-      error: (err: any) => {},
+      error: (err: any) => { },
     });
   }
 
@@ -475,7 +475,7 @@ export class UpdateProductComponent implements OnInit {
           this.ChangeDetectorRef.markForCheck();
         }
       },
-      error: (err: any) => {},
+      error: (err: any) => { },
     });
   }
 
@@ -572,7 +572,7 @@ export class UpdateProductComponent implements OnInit {
   //   this.productCategory.setValue('');
   // }
 
-  toggleAddOnItems() {}
+  toggleAddOnItems() { }
 
   saveChanges() {
     this.ChangeDetectorRef.markForCheck();
@@ -590,11 +590,6 @@ export class UpdateProductComponent implements OnInit {
 
     if (this.categories && this.categories.length == 0) {
       this.HotToastService.error('Please add at least one category');
-      return;
-    }
-
-    if (!this.primaryCategory.value) {
-      this.HotToastService.error('Please select primary category');
       return;
     }
 
@@ -624,11 +619,11 @@ export class UpdateProductComponent implements OnInit {
       },
       brand: this.selectedBrand
         ? {
-            name: this.selectedBrand.name,
-            slug: this.selectedBrand.slug,
-            thumbnail: this.selectedBrand.thumbnail,
-            cover: this.selectedBrand.cover,
-          }
+          name: this.selectedBrand.name,
+          slug: this.selectedBrand.slug,
+          thumbnail: this.selectedBrand.thumbnail,
+          cover: this.selectedBrand.cover,
+        }
         : null,
       parentId: this.productDetails?.parentId,
       tagIcons: this.tagIcons,
@@ -680,9 +675,17 @@ export class UpdateProductComponent implements OnInit {
         id: this.categories.map((category: any) => category?._id),
         refid: this.categories.map((category: any) => category?.catid),
       },
+      primaryCategory: this.primaryCategory.value ? {
+        name: this.primaryCategory.value.name,
+        slug: this.primaryCategory.value.slug,
+        thumbnail: this.primaryCategory.value.thumbnail,
+        cover: this.primaryCategory.value.cover,
+        hierarchies: this.primaryCategory.value.hierarchies,
+      } : null,
       categories: this.categories.map((category: any) => ({
         name: category.name,
         slug: category.slug,
+        hierarchies: category.hierarchies,
         thumbnail: category.thumbnail,
         cover: category.cover,
       })),
@@ -877,7 +880,7 @@ export class UpdateProductComponent implements OnInit {
         } else {
         }
       },
-      error: (err: any) => {},
+      error: (err: any) => { },
     });
 
     this.addOnOptionForm = new FormGroup({
@@ -972,15 +975,15 @@ export class UpdateProductComponent implements OnInit {
             details: {
               description:
                 res.result.localizedDetails?.description?.[
-                  this.settings.primaryLang
+                this.settings.primaryLang
                 ] || res.result?.details?.description,
               features:
                 res.result.localizedDetails?.features?.[
-                  this.settings.primaryLang
+                this.settings.primaryLang
                 ] || res.result?.details?.features,
               longDescription:
                 res.result.localizedDetails?.longDescription?.[
-                  this.settings.primaryLang
+                this.settings.primaryLang
                 ] || res.result?.details?.longDescription,
             },
             metaTitle:
@@ -988,7 +991,7 @@ export class UpdateProductComponent implements OnInit {
               res.result?.metaTitle,
             metaDescription:
               res.result.localizedMetaDescriptions?.[
-                this.settings.primaryLang
+              this.settings.primaryLang
               ] || res.result?.metaDescription,
             metaKeywords:
               res.result.localizedMetaKeywords?.[this.settings.primaryLang] ||
@@ -1105,7 +1108,7 @@ export class UpdateProductComponent implements OnInit {
         } else {
         }
       },
-      error: (err: any) => {},
+      error: (err: any) => { },
     });
 
     this.ProductService.getActiveProduct().subscribe({
@@ -1116,7 +1119,7 @@ export class UpdateProductComponent implements OnInit {
         } else {
         }
       },
-      error: (err: any) => {},
+      error: (err: any) => { },
     });
 
     this.taxClassService.getTaxClasses().subscribe({
@@ -1126,7 +1129,7 @@ export class UpdateProductComponent implements OnInit {
         } else {
         }
       },
-      error: (err: any) => {},
+      error: (err: any) => { },
     });
   }
 

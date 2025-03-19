@@ -6,6 +6,12 @@ import { CategoryService } from '../../../../includes/services/category.service'
 import { HotToastService } from '@ngneat/hot-toast';
 import slugify from 'slugify';
 
+interface Hierarchy {
+  name: string;
+  slug: string;
+  _id: string;
+}
+
 @Component({
   selector: 'app-add-category',
   templateUrl: './add-category.component.html',
@@ -22,7 +28,7 @@ export class AddCategoryComponent implements OnInit {
   cover: string = '';
   mobileCover: string = '';
   thumbnail: string = '';
-
+  hierarchies: Array<Hierarchy> = [];
   constructor(
     private Router: Router,
     private CategoryService: CategoryService,
@@ -142,6 +148,7 @@ export class AddCategoryComponent implements OnInit {
     let categoryParentItem = categoryMap.get(categoryItems[categoryItems.length - 1]);
     this.rootDoc = categoryRootItem;
     this.parentDoc = categoryParentItem;
+    this.hierarchies.push(...this.parentDoc.hierarchies, this.formatCategoryDoc(this.parentDoc))
   }
 
   formatCategoryDoc(categoryDoc: any) {
@@ -161,6 +168,7 @@ export class AddCategoryComponent implements OnInit {
 
     this.CategoryService.addCategory({
       ...this.form.value,
+      hierarchies: this.hierarchies,
       rootDetails: this.form.get('isRoot')?.value == 'false' && this.formatCategoryDoc(this.rootDoc),
       parentDetails: this.form.get('isRoot')?.value == 'false' && this.formatCategoryDoc(this.parentDoc),
     }).subscribe({
