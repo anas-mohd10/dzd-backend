@@ -26,6 +26,7 @@ export class CartSettingsComponent implements OnInit {
       isTopSelling: new FormControl(false),
       minimumCartAmount: new FormControl(0, Validators.pattern('^[0-9]*$')),
       isTopRated: new FormControl(false),
+      isCartRedirect: new FormControl(false),
       isAbandonedCartEnabled: new FormControl(false),
       abandonedCartHours: new FormControl(2),
     })
