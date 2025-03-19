@@ -1,3 +1,4 @@
+
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -16,7 +17,7 @@ export class UpdateNotificationsComponent implements OnInit {
   isSubmitted: boolean;
   appRoute = appRoutes;
   customersData: Array<any> = [];
-  customers: any;
+  customers: Array<string> = []; // Changed to Array<string> for storing customer IDs
   startDate: string = new Date().toISOString().split('T')[0];
   date = new Date();
   formattedDate: number = this.date.setDate(this.date.getDate() + 2);
@@ -52,39 +53,91 @@ export class UpdateNotificationsComponent implements OnInit {
 
     this.form.get('scheduledDate')?.setValue(this.scheduleDate); // set default schedule date
 
+    // First get all customers
+    this.fetchCustomers();
+
+    // Then get notification details and set the customers
+    this.fetchNotificationDetails();
+  }
+
+  fetchCustomers() {
     this.CustomersService.getActiveCustomers().subscribe({
       next: (res: any) => {
         if (res?.errorCode == 0) {
           this.customersData = res?.result;
-          for (let customer of this.customersData)
+          for (let customer of this.customersData) {
             customer.title =
               (customer?.name ? customer?.name : '-- Incomplete Profile --') +
               ' ( ' +
               customer?.mobile +
               ' )';
+          }
+          // Fetch notification details after customers are loaded
+          this.fetchNotificationDetails();
           this.ChangeDetectorRef.markForCheck();
         }
       },
-      error: (err: any) => {},
+      error: (err: any) => {
+        console.error('Error fetching customers:', err);
+      },
     });
+  }
 
+  fetchNotificationDetails() {
+    if (!this.notificationId) return;
+    
     this.NotificationsService.getNotificationDetails(
       this.notificationId
     ).subscribe({
       next: (res: any) => {
         if (res?.errorCode == 0) {
           this.notificationDetails = res?.result;
-          this.form.patchValue(res?.result);
-          this.customers = res?.result?.customers;
-          if (this.thumbnail) this.thumbnail = res?.result?.thumbnail?.path;
-          if (res?.result?.scheduledDate)
-            this.form
-              .get('scheduledDate')
-              ?.setValue(res?.result?.scheduledDate.split('T')[0]);
+          
+          // Update form values first
+          this.form.patchValue({
+            title: res?.result?.title,
+            channel: res?.result?.channel,
+            content: res?.result?.content,
+            type: res?.result?.type || 'instant',
+            redirection: res?.result?.redirection,
+            thumbnail: res?.result?.thumbnail?._id,
+            isStoreLevel: res?.result?.isStoreLevel.toString(),
+            isActive: res?.result?.isActive.toString(),
+          });
+          
+          // Handle scheduled date and time
+          if (res?.result?.scheduledDate) {
+            const scheduledDateTime = new Date(res?.result?.scheduledDate);
+            this.form.get('scheduledDate')?.setValue(scheduledDateTime.toISOString().split('T')[0]);
+            
+            // Format time as HH:MM
+            const hours = scheduledDateTime.getHours().toString().padStart(2, '0');
+            const minutes = scheduledDateTime.getMinutes().toString().padStart(2, '0');
+            this.form.get('scheduledTime')?.setValue(`${hours}:${minutes}`);
+          }
+          
+          // Set thumbnail if available
+          if (res?.result?.thumbnail?.path) {
+            this.thumbnail = res?.result?.thumbnail?.path;
+          }
+          
+          // Process customers - ensure we're working with IDs
+          if (res?.result?.customers && Array.isArray(res?.result?.customers)) {
+            // If customers are objects with _id property
+            if (typeof res?.result?.customers[0] === 'object') {
+              this.customers = res?.result?.customers.map((customer: any) => customer._id);
+            } else {
+              // If customers are already IDs
+              this.customers = res?.result?.customers;
+            }
+          }
+          
           this.ChangeDetectorRef.markForCheck();
         }
       },
-      error: (err: any) => {},
+      error: (err: any) => {
+        console.error('Error fetching notification details:', err);
+      },
     });
   }
 
@@ -123,11 +176,14 @@ export class UpdateNotificationsComponent implements OnInit {
         if (res.errorCode == 0) {
           this.HotToastService.success(res?.message);
           this.Router.navigate([this.appRoute.notification.NOTIFICATION_LIST]);
-        } else if (res.errorCode == 0) {
-          this.HotToastService.error(res?.message);
+        } else {
+          this.HotToastService.error(res?.message || 'Failed to update notification');
         }
       },
-      error: (err: any) => {},
+      error: (err: any) => {
+        this.HotToastService.error('An error occurred while updating the notification');
+        console.error('Error updating notification:', err);
+      },
     });
   }
 }

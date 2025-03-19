@@ -37,9 +37,15 @@
 
                <div class="my-3"
                   *ngIf="form.get('isStoreLevel')?.value == false || form.get('isStoreLevel')?.value == 'false'">
-                  <ng-select [items]="customersData" bindLabel="title" bindValue="_id" [(ngModel)]="customers"
-                     [ngModelOptions]="{standalone: true}" placeholder="Select customers" [multiple]="true"
-                     [closeOnSelect]="false" [hideSelected]="true">
+                  <ng-select [items]="customersData" 
+                     bindLabel="title" 
+                     bindValue="_id" 
+                     [(ngModel)]="customers" 
+                     [ngModelOptions]="{standalone: true}" 
+                     placeholder="Select customers" 
+                     [multiple]="true"
+                     [closeOnSelect]="false" 
+                     [hideSelected]="true">
                   </ng-select>
                </div>
             </div>
@@ -126,7 +132,7 @@
       <a routerLink="{{ appRoute.notification.NOTIFICATION_LIST }}" class=" btn btn-secondary fs-6">
          Cancel
       </a>
-      <button type="submit" class="btn btn-primary">
+      <button type="submit" class="btn btn-primary" (click)="onSubmit()">
          Save changes
       </button>
    </div>
