@@ -237,16 +237,18 @@
               onerror="this.src = 'assets/images/default.png'" alt="Product" />
           </div>
           <div class="d-flex align-items-center justify-content-between w-75">
-            <div>
-              <div class="fs-5">{{product?.name}}</div>
-              <div class="fs-6 my-1"><span class="text-muted">Current Price:</span> {{product?.price}}</div>
-              <div class="fs-6 text-muted">Sold <span class="text-primary">{{product?.count}}</span> times </div>
-            </div>
-            <div>
-              <svg height="18" width="18" data-slot="icon" fill="none" stroke-width="1.5" stroke="currentColor"
-                viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                <path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5"></path>
-              </svg>
+            <div class="w-100 d-flex align-items-center justify-content-between">
+              <div class="text-truncate">
+                <div class="fs-5 ">{{product?.name}}</div>
+                <div class="fs-6 my-1"><span class="text-muted">Current Price:</span> {{product?.price}}</div>
+                <div class="fs-6 text-muted">Sold <span class="text-primary">{{product?.count}}</span> times </div>
+              </div>
+              <div>
+                <svg height="18" width="18" data-slot="icon" fill="none" stroke-width="1.5" stroke="currentColor"
+                  viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5"></path>
+                </svg>
+              </div>
             </div>
           </div>
         </div>

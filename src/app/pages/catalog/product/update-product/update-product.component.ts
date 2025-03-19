@@ -778,6 +778,7 @@ productIconClicked(event: any, type: string = 'add') {
         }
       },
       error: (err: any) => {
+        this.isSaving = false;
         this.HotToastService.error(err.error.message);
       },
     });
