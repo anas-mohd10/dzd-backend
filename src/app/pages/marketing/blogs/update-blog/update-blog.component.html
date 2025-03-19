@@ -132,10 +132,10 @@
               <div class="d-flex flex-wrap gap-2 mb-3" *ngIf="selectedProducts && selectedProducts.length > 0">
                 <div *ngFor="let product of selectedProducts" class="bg-light p-2 rounded-3 d-flex align-items-center">
                   <div class="d-flex align-items-center gap-2">
-                    <img [src]="base + product.thumbnail" class="rounded" width="30" height="30" [alt]="product.name"
+                    <img [src]="base + product?.thumbnail" class="rounded" width="30" height="30" [alt]="product?.name"
                       onerror="this.src='assets/images/default.png'">
-                    <span class="fs-6">{{product.name}}</span>
-                    <span class="text-muted small">{{product.sku}}</span>
+                    <span class="fs-6">{{product?.name}}</span>
+                    <span class="text-muted small">{{product?.sku}}</span>
                     <button class="btn btn-sm text-danger border-0" (click)="removeProduct(product)">
                       <svg height="16" width="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"></path>
