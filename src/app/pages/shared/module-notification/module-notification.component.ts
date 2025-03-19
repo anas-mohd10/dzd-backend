@@ -35,8 +35,10 @@ export class ModuleNotificationComponent implements OnInit, OnChanges {
   couponForm: FormGroup;
   form: FormGroup;
   isInvalid: boolean;
+  isLoading: boolean = false;
+  isButtonDisabled: boolean = false;
 
-  ngOnChanges(changes: SimpleChanges): void {}
+  ngOnChanges(changes: SimpleChanges): void { }
 
   constructor(
     private BsModalService: BsModalService,
@@ -45,7 +47,7 @@ export class ModuleNotificationComponent implements OnInit, OnChanges {
     private CouponsService: CouponsService,
     private ChangeDetectorRef: ChangeDetectorRef,
     private CustomersService: CustomersService
-  ) {}
+  ) { }
 
   openModal(template: TemplateRef<any>) {
     this.modalRef = this.BsModalService.show(template, {
@@ -64,6 +66,7 @@ export class ModuleNotificationComponent implements OnInit, OnChanges {
       message:
         'Your cart is waiting for you. Complete your shopping now to secure your favorites before they are gone',
     });
+    this.isButtonDisabled = false;
   }
 
   get couponControls() {
@@ -102,6 +105,9 @@ export class ModuleNotificationComponent implements OnInit, OnChanges {
   }
 
   send() {
+    if (this.isButtonDisabled) return;
+    this.isButtonDisabled = true;
+
     this.NotificationsService.moduleNotifications({
       type: this.type,
       query: this.query,
@@ -113,10 +119,12 @@ export class ModuleNotificationComponent implements OnInit, OnChanges {
           this.Toast.success(res?.message);
         } else {
           this.Toast.error(res?.message);
+          this.isButtonDisabled = false;
         }
       },
       error: (err: any) => {
         this.Toast.error(err?.error?.message);
+        this.isButtonDisabled = false;
       },
     });
   }
@@ -169,19 +177,19 @@ export class ModuleNotificationComponent implements OnInit, OnChanges {
             .get('sms')
             ?.setValue(
               this.form.get('sms')?.value +
-                `. Use ${res?.result?.code} coupon code`
+              `. Use ${res?.result?.code} coupon code`
             );
           this.form
             .get('subject')
             ?.setValue(
               this.form.get('subject')?.value +
-                `. Use ${res?.result?.code} coupon code`
+              `. Use ${res?.result?.code} coupon code`
             );
           this.form
             .get('message')
             ?.setValue(
               this.form.get('message')?.value +
-                `. Use ${res?.result?.code} coupon code`
+              `. Use ${res?.result?.code} coupon code`
             );
           this.modalRef = this.BsModalService.show(this.template, {
             class: 'modal-lg modal-dialog-centered',
