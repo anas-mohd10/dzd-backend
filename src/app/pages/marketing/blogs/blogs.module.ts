@@ -9,12 +9,14 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AngularEditorModule } from '@kolkov/angular-editor';
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 import { SharedModule } from '../../shared/shared.module';
+import { BlogCategoriesComponent } from './blog-categories/blog-categories.component';
 
 @NgModule({
   declarations: [
     BlogListingComponent,
     CreateBlogComponent,
-    UpdateBlogComponent
+    UpdateBlogComponent,
+    BlogCategoriesComponent
   ],
   imports: [
     CommonModule,

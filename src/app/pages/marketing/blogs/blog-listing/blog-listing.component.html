@@ -14,8 +14,8 @@
       </ul>
     </div>
     <div class="d-flex gap-2">
-      <button class="btn btn-secondary" (click)="openCategoryModal(categoryModal)">
-        Create Category
+      <button class="btn btn-secondary" routerLink="{{ appRoute.blogs.categories }}">
+        View categories
       </button>
       <button class="btn btn-primary" routerLink="{{ appRoute.blogs.create }}">
         Create blog
@@ -57,44 +57,6 @@
       <div *ngIf="blogs.length == 0">
         <app-no-results></app-no-results>
       </div>
-
-      <app-pagination (pageTrigger)="onPageTriggered($event)" [totalResults]="totalResults" [totalPages]="totalPages"
-        [pageIndex]="page" [pageSize]="limit"></app-pagination>
     </div>
   </div>
 </div>
-
-
-
-<!-- Add this at the bottom of the file -->
-<ng-template #categoryModal>
-  <div class="modal-header">
-    <h4 class="modal-title">Create Category</h4>
-    <button type="button" class="btn-close" (click)="modalRef.hide()"></button>
-  </div>
-  <div class="modal-body">
-    <form [formGroup]="categoryForm">
-      <div class="mb-3">
-        <label class="form-label required">Title</label>
-        <input type="text" class="form-control" formControlName="title">
-      </div>
-      <div class="mb-3">
-        <label class="form-label required">Thumbnail</label>
-        <div id="thumbnail" class="default-banner position-relative">
-          <app-assets [previewDetails]="categoryThumbnail" (mediaClicked)="handleCategoryThumbnail($event)">
-          </app-assets>
-
-          <div *ngIf="categoryThumbnail">
-            <div class="position-absolute bottom-0 end-0 m-4">
-              <button class="btn btn-danger" (click)="removeCategoryThumbnail()">Remove</button>
-            </div>
-          </div>
-        </div>
-      </div>
-    </form>
-  </div>
-  <div class="modal-footer">
-    <button class="btn btn-secondary" (click)="modalRef.hide()">Cancel</button>
-    <button class="btn btn-primary" (click)="createCategory()">Create</button>
-  </div>
-</ng-template>
