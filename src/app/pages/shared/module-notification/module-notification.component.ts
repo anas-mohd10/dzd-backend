@@ -5,6 +5,8 @@ import {
   Input,
   OnChanges,
   OnInit,
+  Output,
+  EventEmitter,
   SimpleChanges,
   TemplateRef,
   ViewChild,
@@ -37,6 +39,13 @@ export class ModuleNotificationComponent implements OnInit, OnChanges {
   isInvalid: boolean;
   isLoading: boolean = false;
   isButtonDisabled: boolean = false;
+
+  @Output() notificationTriggered = new EventEmitter<void>();
+
+  triggerNotification() {
+    // Logic to trigger the notification
+    this.notificationTriggered.emit();
+  }
 
   ngOnChanges(changes: SimpleChanges): void { }
 
@@ -117,6 +126,7 @@ export class ModuleNotificationComponent implements OnInit, OnChanges {
         if (res?.errorCode == 0) {
           this.closeModal();
           this.Toast.success(res?.message);
+          this.notificationTriggered.emit();
         } else {
           this.Toast.error(res?.message);
           this.isButtonDisabled = false;

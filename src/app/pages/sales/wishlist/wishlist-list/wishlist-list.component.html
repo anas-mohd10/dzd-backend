@@ -33,6 +33,7 @@
           <th>Customer</th>
           <th>Email & Mobile</th>
           <th>Products</th>
+          <th>Total</th>
           <th>Action</th>
         </tr>
       </thead>
@@ -47,6 +48,7 @@
               <div>{{ customer?.mobile }}</div>
             </td>
             <td>{{ customer?.products }}</td>
+            <td>{{ customer?.formattedWishlistTotal }}</td>
             <td>
               <div routerLink="{{ appRoute.wishlist.DETAILS }}" [queryParams]="{ user: customer?.userid }">
                 <svg height="20px" width="20px" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"

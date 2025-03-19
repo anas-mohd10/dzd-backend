@@ -13,10 +13,11 @@ import { NotificationsService } from 'src/app/includes/services/notifications.se
 })
 export class UpdateNotificationsComponent implements OnInit {
   form: FormGroup;
-  isSubmitted: boolean;
+  isSubmitted: boolean = false;
+  isLoading: boolean = true;
   appRoute = appRoutes;
   customersData: Array<any> = [];
-  customers: any;
+  customers: Array<string> = [];
   startDate: string = new Date().toISOString().split('T')[0];
   date = new Date();
   formattedDate: number = this.date.setDate(this.date.getDate() + 2);
@@ -26,66 +27,141 @@ export class UpdateNotificationsComponent implements OnInit {
   notificationDetails: any;
 
   constructor(
-    private NotificationsService: NotificationsService,
-    private CustomersService: CustomersService,
-    private Router: Router,
-    private ActivatedRoute: ActivatedRoute,
-    private HotToastService: HotToastService,
-    private ChangeDetectorRef: ChangeDetectorRef
-  ) {}
-
-  ngOnInit(): void {
-    this.notificationId = this.ActivatedRoute.snapshot.queryParams.id || '';
-
+    private notificationsService: NotificationsService,
+    private customersService: CustomersService,
+    private router: Router,
+    private activatedRoute: ActivatedRoute,
+    private hotToastService: HotToastService,
+    private cdr: ChangeDetectorRef
+  ) {
+    // Initialize form
     this.form = new FormGroup({
       title: new FormControl('', Validators.required),
       channel: new FormControl('', Validators.required),
       content: new FormControl('', Validators.required),
       type: new FormControl('instant'),
-      scheduledDate: new FormControl(''),
+      scheduledDate: new FormControl(this.scheduleDate),
       scheduledTime: new FormControl('10:00'),
       redirection: new FormControl(''),
       thumbnail: new FormControl(null),
       isStoreLevel: new FormControl('true'),
       isActive: new FormControl('true'),
     });
+  }
 
-    this.form.get('scheduledDate')?.setValue(this.scheduleDate); // set default schedule date
+  ngOnInit(): void {
+    this.notificationId = this.activatedRoute.snapshot.queryParams.id || '';
+    this.loadData();
+  }
 
-    this.CustomersService.getActiveCustomers().subscribe({
-      next: (res: any) => {
-        if (res?.errorCode == 0) {
-          this.customersData = res?.result;
-          for (let customer of this.customersData)
-            customer.title =
-              (customer?.name ? customer?.name : '-- Incomplete Profile --') +
-              ' ( ' +
-              customer?.mobile +
-              ' )';
-          this.ChangeDetectorRef.markForCheck();
+  async loadData() {
+    this.isLoading = true;
+    
+    try {
+      // Use Promise.all to fetch data in parallel
+      const [customersData, notificationData] = await Promise.all([
+        this.fetchCustomers(),
+        this.fetchNotificationDetails()
+      ]);
+      
+      // Process customers data if successful
+      if (customersData && customersData.errorCode === 0) {
+        this.customersData = customersData.result.map((customer: any) => ({
+          ...customer,
+          title: (customer?.name ? customer?.name : '-- Incomplete Profile --') + 
+                 ' ( ' + customer?.mobile + ' )'
+        }));
+      }
+      
+      // Process notification details if successful
+      if (notificationData && notificationData.errorCode === 0) {
+        this.notificationDetails = notificationData.result;
+        this.populateForm(notificationData.result);
+      }
+    } catch (error) {
+      console.error('Error loading data:', error);
+      this.hotToastService.error('Failed to load data. Please try again.');
+    } finally {
+      this.isLoading = false;
+      this.cdr.markForCheck();
+    }
+  }
+  
+  fetchCustomers(): Promise<any> {
+    return new Promise((resolve, reject) => {
+      if (!this.customersService) {
+        resolve({ errorCode: 1, result: [] });
+        return;
+      }
+      
+      this.customersService.getActiveCustomers().subscribe({
+        next: (res: any) => resolve(res),
+        error: (err: any) => {
+          console.error('Error fetching customers:', err);
+          reject(err);
         }
-      },
-      error: (err: any) => {},
+      });
     });
-
-    this.NotificationsService.getNotificationDetails(
-      this.notificationId
-    ).subscribe({
-      next: (res: any) => {
-        if (res?.errorCode == 0) {
-          this.notificationDetails = res?.result;
-          this.form.patchValue(res?.result);
-          this.customers = res?.result?.customers;
-          if (this.thumbnail) this.thumbnail = res?.result?.thumbnail?.path;
-          if (res?.result?.scheduledDate)
-            this.form
-              .get('scheduledDate')
-              ?.setValue(res?.result?.scheduledDate.split('T')[0]);
-          this.ChangeDetectorRef.markForCheck();
+  }
+  
+  fetchNotificationDetails(): Promise<any> {
+    return new Promise((resolve, reject) => {
+      if (!this.notificationId) {
+        resolve({ errorCode: 0, result: null });
+        return;
+      }
+      
+      this.notificationsService.getNotificationDetails(this.notificationId).subscribe({
+        next: (res: any) => resolve(res),
+        error: (err: any) => {
+          console.error('Error fetching notification details:', err);
+          reject(err);
         }
-      },
-      error: (err: any) => {},
+      });
     });
+  }
+
+  populateForm(data: any) {
+    if (!data) return;
+
+    // Update form values
+    this.form.patchValue({
+      title: data.title,
+      channel: data.channel,
+      content: data.content,
+      type: data.type || 'instant',
+      redirection: data.redirection,
+      thumbnail: data.thumbnail?._id,
+      isStoreLevel: data.isStoreLevel.toString(),
+      isActive: data.isActive.toString(),
+    });
+    
+    // Handle scheduled date and time
+    if (data.scheduledDate) {
+      const scheduledDateTime = new Date(data.scheduledDate);
+      this.form.get('scheduledDate')?.setValue(scheduledDateTime.toISOString().split('T')[0]);
+      
+      // Format time as HH:MM
+      const hours = scheduledDateTime.getHours().toString().padStart(2, '0');
+      const minutes = scheduledDateTime.getMinutes().toString().padStart(2, '0');
+      this.form.get('scheduledTime')?.setValue(`${hours}:${minutes}`);
+    }
+    
+    // Set thumbnail if available
+    if (data.thumbnail?.path) {
+      this.thumbnail = data.thumbnail.path;
+    }
+    
+    // Process customers - ensure we're working with IDs
+    if (data.customers && Array.isArray(data.customers)) {
+      // If customers are objects with _id property
+      if (data.customers.length > 0 && typeof data.customers[0] === 'object') {
+        this.customers = data.customers.map((customer: any) => customer._id);
+      } else {
+        // If customers are already IDs
+        this.customers = data.customers;
+      }
+    }
   }
 
   compareFn(item: any, selected: any) {
@@ -112,22 +188,33 @@ export class UpdateNotificationsComponent implements OnInit {
       return;
     }
 
-    this.NotificationsService.updateNotification({
+    let scheduledDateTime = null;
+    if (this.form.get('type')?.value === 'scheduled' && 
+        this.form.get('scheduledDate')?.value && 
+        this.form.get('scheduledTime')?.value) {
+      scheduledDateTime = new Date(
+        `${this.form.get('scheduledDate')?.value}T${this.form.get('scheduledTime')?.value}`
+      ).toISOString();
+    }
+
+    this.notificationsService.updateNotification({
       ...this.form.value,
-      scheduled: this.form.get('scheduledDate')?.value && this.form.get('scheduledTime')?.value ? 
-        new Date(`${this.form.get('scheduledDate')?.value}T${this.form.get('scheduledTime')?.value}`).toISOString() : null,
+      scheduled: scheduledDateTime,
       _id: this.notificationId,
       customers: this.customers,
     }).subscribe({
       next: (res: any) => {
         if (res.errorCode == 0) {
-          this.HotToastService.success(res?.message);
-          this.Router.navigate([this.appRoute.notification.NOTIFICATION_LIST]);
-        } else if (res.errorCode == 0) {
-          this.HotToastService.error(res?.message);
+          this.hotToastService.success(res?.message);
+          this.router.navigate([this.appRoute.notification.NOTIFICATION_LIST]);
+        } else {
+          this.hotToastService.error(res?.message || 'Failed to update notification');
         }
       },
-      error: (err: any) => {},
+      error: (err: any) => {
+        this.hotToastService.error('An error occurred while updating the notification');
+        console.error('Error updating notification:', err);
+      },
     });
   }
 }
