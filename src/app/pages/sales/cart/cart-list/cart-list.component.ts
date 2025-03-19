@@ -56,7 +56,7 @@ export class CartListComponent implements OnInit {
     private CouponsService: CouponsService,
     private AppSettingsService: AppSettingsService,
     private ActivatedRoute: ActivatedRoute
-  ) {}
+  ) { }
 
   get formControls() {
     return this.form.controls;
@@ -64,6 +64,10 @@ export class CartListComponent implements OnInit {
 
   get couponControls() {
     return this.couponForm.controls;
+  }
+
+  onNotificationTriggered() {
+    this.getCarts();
   }
 
   ngOnInit(): void {
@@ -249,6 +253,7 @@ export class CartListComponent implements OnInit {
         if (res?.errorCode == 0) {
           this.ToastrService.success(res?.message);
           this.closeNotify();
+          this.getCarts();
           this.ChangeDetectorRef.markForCheck();
         } else {
           this.ToastrService.error(res?.message);

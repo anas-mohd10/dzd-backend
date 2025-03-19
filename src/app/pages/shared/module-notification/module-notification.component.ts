@@ -5,6 +5,8 @@ import {
   Input,
   OnChanges,
   OnInit,
+  Output,
+  EventEmitter,
   SimpleChanges,
   TemplateRef,
   ViewChild,
@@ -35,8 +37,14 @@ export class ModuleNotificationComponent implements OnInit, OnChanges {
   couponForm: FormGroup;
   form: FormGroup;
   isInvalid: boolean;
+  @Output() notificationTriggered = new EventEmitter<void>();
 
-  ngOnChanges(changes: SimpleChanges): void {}
+  triggerNotification() {
+    // Logic to trigger the notification
+    this.notificationTriggered.emit();
+  }
+
+  ngOnChanges(changes: SimpleChanges): void { }
 
   constructor(
     private BsModalService: BsModalService,
@@ -45,7 +53,7 @@ export class ModuleNotificationComponent implements OnInit, OnChanges {
     private CouponsService: CouponsService,
     private ChangeDetectorRef: ChangeDetectorRef,
     private CustomersService: CustomersService
-  ) {}
+  ) { }
 
   openModal(template: TemplateRef<any>) {
     this.modalRef = this.BsModalService.show(template, {
@@ -111,6 +119,7 @@ export class ModuleNotificationComponent implements OnInit, OnChanges {
         if (res?.errorCode == 0) {
           this.closeModal();
           this.Toast.success(res?.message);
+          this.notificationTriggered.emit();
         } else {
           this.Toast.error(res?.message);
         }
@@ -169,19 +178,19 @@ export class ModuleNotificationComponent implements OnInit, OnChanges {
             .get('sms')
             ?.setValue(
               this.form.get('sms')?.value +
-                `. Use ${res?.result?.code} coupon code`
+              `. Use ${res?.result?.code} coupon code`
             );
           this.form
             .get('subject')
             ?.setValue(
               this.form.get('subject')?.value +
-                `. Use ${res?.result?.code} coupon code`
+              `. Use ${res?.result?.code} coupon code`
             );
           this.form
             .get('message')
             ?.setValue(
               this.form.get('message')?.value +
-                `. Use ${res?.result?.code} coupon code`
+              `. Use ${res?.result?.code} coupon code`
             );
           this.modalRef = this.BsModalService.show(this.template, {
             class: 'modal-lg modal-dialog-centered',
