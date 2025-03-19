@@ -175,7 +175,7 @@ export class BlogCategoriesComponent implements OnInit {
           this.HotToastService.error(res.message)
         }
       }, error: (err: any) => {
-        this.HotToastService.error(err.message)
+        this.HotToastService.error(err?.error?.message)
       }
     })
   }
@@ -198,7 +198,7 @@ export class BlogCategoriesComponent implements OnInit {
           this.HotToastService.error(res.message)
         }
       }, error: (err: any) => {
-        this.HotToastService.error(err.message)
+        this.HotToastService.error(err?.error?.message)
       }
     })
   }
