@@ -1,119 +1,118 @@
 <div>
-    <div class="page-header d-flex align-items-start justify-content-between">
-        <div>
-            <div class="page-title">
-                <h1 class="fw-bold">SMS Settings</h1>
-            </div>
-            <ul class="breadcrumb">
-                <li class="breadcrumb-item fs-6">
-                    <a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a>
-                </li>
-                <li class="breadcrumb-item active fs-6">
-                    <a routerLink="{{ appRoute.smsSettings }}">SMS Settings</a>
-                </li>
-            </ul>
+  <div class="page-header d-flex align-items-start justify-content-between">
+    <div>
+      <div class="page-title">
+        <h1 class="fw-bold">SMS Settings</h1>
+      </div>
+      <ul class="breadcrumb">
+        <li class="breadcrumb-item fs-6">
+          <a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a>
+        </li>
+        <li class="breadcrumb-item active fs-6">
+          <a routerLink="{{ appRoute.smsSettings }}">SMS Settings</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="my-4">
+
+    <div class="card mb-4">
+      <div class="card-body">
+        <div class="d-flex align-items-center justify-content-start gap-2">
+          <div class="fs-5">SMS Gateway Enabled</div>
+          <app-switch (switchToggled)="enableSmsSettings($event)" [switchId]="''"
+            [isToggledProps]="isSmsGatewayEnabled.value"></app-switch>
         </div>
+      </div>
     </div>
 
-    <div class="my-4">
-
-        <div class="card mb-4">
-            <div class="card-body">
-                <div class="d-flex align-items-center justify-content-start gap-2">
-                    <div class="fs-5">SMS Gateway Enabled</div>
-                    <app-switch (switchToggled)="enableSmsSettings($event)" [switchId]="''"
-                        [isToggledProps]="isSmsGatewayEnabled.value"></app-switch>
-                </div>
-            </div>
-        </div>
-
-        <div class="card">
-            <div class="card-body">
-                <div class="fs-6">Configure SMS gateways for sending SMS notifications</div>
-                <div class="sms-gateways my-4">
-                    <div class="sms-gateway cursor-pointer border p-2 rounded-2"
-                        (click)="open(template, smsGatewayItem?.id)" *ngFor="let smsGatewayItem of smsGatewayItems"
-                        [ngClass]="{
-                            'border-secondary': !smsGatewayEnabled(smsGatewayItem?.id), 
+    <div class="card">
+      <div class="card-body">
+        <div class="fs-6">Configure SMS gateways for sending SMS notifications</div>
+        <div class="sms-gateways my-4">
+          <div class="sms-gateway cursor-pointer border p-2 rounded-2" (click)="open(template, smsGatewayItem?.id)"
+            *ngFor="let smsGatewayItem of smsGatewayItems" [ngClass]="{
+                            'border-secondary': !smsGatewayEnabled(smsGatewayItem?.id),
                             'border-primary': smsGatewayEnabled(smsGatewayItem?.id)
                         }">
-                        <div class="ratio ratio-1x1">
-                            <img src="{{smsGatewayItem?.logo}}" class="h-100 w-100" alt={{smsGatewayItem.title}}>
-                        </div>
-                        <div class="fs-5 text-center mt-2">{{smsGatewayItem?.title}}</div>
-                    </div>
-                </div>
+            <div class="ratio ratio-1x1">
+              <img src="{{smsGatewayItem?.logo}}" class="h-100 w-100" alt={{smsGatewayItem.title}}>
             </div>
+            <div class="fs-5 text-center mt-2">{{smsGatewayItem?.title}}</div>
+          </div>
         </div>
-
+      </div>
     </div>
+
+  </div>
 </div>
 
 <ng-template #template>
-    <div class="modal-header">
-        <h4 class="fs-2 fw-bold pull-left">{{activeSmsGateway?.title}} Details</h4>
-        <div class="d-flex align-items-center justify-content-end gap-2">
-            <div class="d-flex align-items-center justify-content-end gap-1">
-                <label for="gatewayEnabled" class="fs-5">Enabled</label>
-                <app-switch id="gatewayEnabled" (switchToggled)="enableSmsGateway($event)"
-                    [isToggledProps]="form.get('isEnabled')?.value" [switchId]="''"></app-switch>
-            </div>
-            <button type="button" class="btn-close close pull-right" aria-label="Close" (click)="close()">
-                <span aria-hidden="true" class="visually-hidden">&times;</span>
-            </button>
-        </div>
+  <div class="modal-header">
+    <h4 class="fs-2 fw-bold pull-left">{{activeSmsGateway?.title}} Details</h4>
+    <div class="d-flex align-items-center justify-content-end gap-2">
+      <div class="d-flex align-items-center justify-content-end gap-1">
+        <label for="gatewayEnabled" class="fs-5">Enabled</label>
+        <app-switch id="gatewayEnabled" (switchToggled)="enableSmsGateway($event)"
+          [isToggledProps]="form.get('isEnabled')?.value" [switchId]="''"></app-switch>
+      </div>
+      <button type="button" class="btn-close close pull-right" aria-label="Close" (click)="close()">
+        <span aria-hidden="true" class="visually-hidden">&times;</span>
+      </button>
     </div>
-    <div class="modal-body">
-        <form [formGroup]="form" (ngSubmit)="onSubmit()">
-            <div class="form-group mb-3"
-                *ngIf="smsGatewayConfig[form.get('smsGateway')?.value || activeSmsGateway?.id]?.includes('username')">
-                <label for="username" class="fs-6 mb-3 required">Username</label>
-                <input type="text" id="username" formControlName="username" class="form-control">
-            </div>
-            <div class="form-group mb-3"
-                *ngIf="smsGatewayConfig[form.get('smsGateway')?.value || activeSmsGateway?.id]?.includes('password')">
-                <label for="password" class="fs-6 mb-3 required">Password</label>
-                <input type="text" id="password" formControlName="password" class="form-control">
-            </div>
-            <div class="form-group mb-3"
-                *ngIf="smsGatewayConfig[form.get('smsGateway')?.value || activeSmsGateway?.id]?.includes('senderId')">
-                <label for="senderId" class="fs-6 mb-3 required">Sender ID</label>
-                <input type="text" id="senderId" formControlName="senderId" class="form-control">
-            </div>
-            <div class="form-group mb-3"
-                *ngIf="smsGatewayConfig[form.get('smsGateway')?.value || activeSmsGateway?.id]?.includes('fromNumber')">
-                <label for="fromNumber" class="fs-6 mb-3 required">From Number</label>
-                <input type="text" id="fromNumber" formControlName="fromNumber" class="form-control">
-            </div>
-            <div class="form-group mb-3"
-                *ngIf="smsGatewayConfig[form.get('smsGateway')?.value || activeSmsGateway?.id]?.includes('port')">
-                <label for="port" class="fs-6 mb-3 required">Port</label>
-                <input type="text" id="port" formControlName="port" class="form-control">
-            </div>
-            <div class="form-group mb-3"
-                *ngIf="smsGatewayConfig[form.get('smsGateway')?.value || activeSmsGateway?.id]?.includes('clientId')">
-                <label for="clientId" class="fs-6 mb-3 required">Client ID</label>
-                <input type="text" id="clientId" formControlName="clientId" class="form-control">
-            </div>
-            <div class="form-group mb-3"
-                *ngIf="smsGatewayConfig[form.get('smsGateway')?.value || activeSmsGateway?.id]?.includes('apiUrl')">
-                <label for="apiUrl" class="fs-6 mb-3 required">API Url</label>
-                <input type="text" id="apiUrl" formControlName="apiUrl" class="form-control">
-            </div>
-            <div class="form-group mb-3">
-                <label for="senderId" class="fs-6 mb-3 required">Usage</label>
-                <div class="d-flex align-items-center justify-content-start gap-2 flex-wrap">
-                    <div class="border p-2 rounded" *ngFor="let usageItem of usageItems"
-                        (click)="toggleUsageItem(usageItem)" [ngClass]="{
+  </div>
+  <div class="modal-body">
+    <form [formGroup]="form" (ngSubmit)="onSubmit()">
+      <div class="form-group mb-3"
+        *ngIf="smsGatewayConfig[form.get('smsGateway')?.value || activeSmsGateway?.id]?.includes('username')">
+        <label for="username" class="fs-6 mb-3 required">Username</label>
+        <input type="text" id="username" formControlName="username" class="form-control">
+      </div>
+      <div class="form-group mb-3"
+        *ngIf="smsGatewayConfig[form.get('smsGateway')?.value || activeSmsGateway?.id]?.includes('password')">
+        <label for="password" class="fs-6 mb-3 required">Password</label>
+        <input type="text" id="password" formControlName="password" class="form-control">
+      </div>
+      <div class="form-group mb-3"
+        *ngIf="smsGatewayConfig[form.get('smsGateway')?.value || activeSmsGateway?.id]?.includes('senderId')">
+        <label for="senderId" class="fs-6 mb-3 required">Sender ID</label>
+        <input type="text" id="senderId" formControlName="senderId" class="form-control">
+      </div>
+      <div class="form-group mb-3"
+        *ngIf="smsGatewayConfig[form.get('smsGateway')?.value || activeSmsGateway?.id]?.includes('fromNumber')">
+        <label for="fromNumber" class="fs-6 mb-3 required">From Number</label>
+        <input type="text" id="fromNumber" formControlName="fromNumber" class="form-control">
+      </div>
+      <div class="form-group mb-3"
+        *ngIf="smsGatewayConfig[form.get('smsGateway')?.value || activeSmsGateway?.id]?.includes('port')">
+        <label for="port" class="fs-6 mb-3 required">Port</label>
+        <input type="text" id="port" formControlName="port" class="form-control">
+      </div>
+      <div class="form-group mb-3"
+        *ngIf="smsGatewayConfig[form.get('smsGateway')?.value || activeSmsGateway?.id]?.includes('clientId')">
+        <label for="clientId" class="fs-6 mb-3 required">Client ID</label>
+        <input type="text" id="clientId" formControlName="clientId" class="form-control">
+      </div>
+      <div class="form-group mb-3"
+        *ngIf="smsGatewayConfig[form.get('smsGateway')?.value || activeSmsGateway?.id]?.includes('apiUrl')">
+        <label for="apiUrl" class="fs-6 mb-3 required">API Url</label>
+        <input type="text" id="apiUrl" formControlName="apiUrl" class="form-control">
+      </div>
+      <div class="form-group mb-3">
+        <label for="senderId" class="fs-6 mb-3 required">Usage</label>
+        <div class="d-flex align-items-center justify-content-start gap-2 flex-wrap">
+          <div class="border p-2 rounded" *ngFor="let usageItem of usageItems" (click)="toggleUsageItem(usageItem)"
+            [ngClass]="{
                             'border-primary': usageItemExists(usageItem),
                          'border-secondary': !usageItemExists(usageItem)}">
-                        {{usageItem.title}}</div>
-                </div>
-            </div>
+            {{usageItem.title}}</div>
+        </div>
+      </div>
 
-            <div class="d-flex align-items-center justify-content-end">
-                <button tpe="submit" class="btn btn-primary">Save changes</button>
-            </div>
-        </form>
-    </div>
+      <div class="d-flex align-items-center justify-content-end">
+        <button tpe="submit" class="btn btn-primary">Save changes</button>
+      </div>
+    </form>
+  </div>
 </ng-template>

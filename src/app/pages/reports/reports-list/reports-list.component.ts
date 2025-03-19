@@ -167,7 +167,7 @@ export class ReportsListComponent implements OnInit {
           },
         });
         break;
-      
+
       case 'basic-product':
         this.reportsService.basicProductReport().subscribe({
           next: (res: any) => {
@@ -281,8 +281,14 @@ export class ReportsListComponent implements OnInit {
       return false;
     }
     if (this.dateRange == 'custom') {
-      this.startDate = new Date(this.startDate).toISOString().split('T')[0]
-      this.endDate = new Date(this.endDate).toISOString().split('T')[0]
+      // Fix: Use local date format to avoid timezone issues
+      const formatLocalDate = (dateString: string) => {
+        const date = new Date(dateString);
+        return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
+      };
+
+      this.startDate = formatLocalDate(this.startDate);
+      this.endDate = formatLocalDate(this.endDate);
 
       if (this.startDate == '' || this.endDate == '') {
         this.toastService.error('Please select a valid date range')
@@ -299,7 +305,6 @@ export class ReportsListComponent implements OnInit {
       }
     }
 
-
     return true;
   }
 
@@ -313,6 +318,8 @@ export class ReportsListComponent implements OnInit {
       startDate: this.isCustomRange ? this.startDate : '',
       endDate: this.isCustomRange ? this.endDate : ''
     };
+
+    console.log(this.isCustomRange, this.startDate, this.endDate, "start date and end date---------")
     // Close modal first
     this.closeDateRangeModal();
 
@@ -344,9 +351,9 @@ export class ReportsListComponent implements OnInit {
       case 'enquiry-report':
         this.generateEnquiryReport(params);
         break;
-        case 'deliveryReport':
-          this.generateDeliveryReport(params);
-          break;
+      case 'deliveryReport':
+        this.generateDeliveryReport(params);
+        break;
       case 'abandonedorder-report':
         this.generateAbandonedOrderReport(params);
         break;
@@ -480,7 +487,7 @@ export class ReportsListComponent implements OnInit {
       },
     });
   }
-  
+
 
 
 
@@ -544,7 +551,7 @@ export class ReportsListComponent implements OnInit {
     });
   }
 
- generateCustomerOrderReport(params: any) {
+  generateCustomerOrderReport(params: any) {
     this.reportsService.customerOrderReport(
       params.dateRange,
       params.startDate,

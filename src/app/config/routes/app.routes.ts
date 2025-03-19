@@ -277,7 +277,8 @@ export const appRoutes = {
   blogs: {
     list: `${app}/blogs`,
     create: `${app}/blogs/create-blog`,
-    update: `${app}/blogs/update-blog`
+    update: `${app}/blogs/update-blog`,
+    categories: `${app}/blogs/blog-categories`
   },
   catalogs: {
     list: `${app}/catalogs`,
@@ -319,6 +320,7 @@ export const appRoutes = {
   shippingRules: `${app}/shipping-rules`,
   internationalisation: `${app}/internationalization`,
   smsSettings: `${app}/sms-settings`,
+  customSms: `${app}/custom-messages`,
   sitemapSettings: `${app}/sitemap-settings`,
   authSettings: `${app}/auth-settings`,
   countries: `${app}/locations/countries`,

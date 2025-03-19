@@ -79,9 +79,14 @@ input[type=button],
    font-weight: normal !important;
 }
 
-.addressWrapper {
-   margin: 3rem 0;
+.login-activities {
+   height: max-content;
+   max-height: 500px;
+   overflow-y: scroll;
+}
 
+.addressWrapper {
+   
    .addressCards {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
@@ -112,7 +117,7 @@ input[type=button],
 
 .transactions {
    overflow-y: scroll;
-   max-height: 200px;
+   max-height: 500px;
    height: max-content;
 }
 

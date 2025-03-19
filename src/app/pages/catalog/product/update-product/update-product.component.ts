@@ -128,6 +128,7 @@ export class UpdateProductComponent implements OnInit {
   productDetails: any; // Store product details
   addOnItems: Array<any> = [];
   thumbnailPreview: string = '';
+  videoThumbnailPreview: string = '';
   activeRelatedProducts: Array<any> = [];
   relatedProduct: FormControl = new FormControl('');
   storeFields: Array<StoreField> = [];
@@ -555,6 +556,10 @@ productIconClicked(event: any, type: string = 'add') {
 
   productThumbnailClicked(event: any) {
     this.form.get('thumbnail')?.setValue(event.path);
+  }
+  
+  productVideoThumbnailClicked(event: any) {
+    this.form.get('videoThumbnail')?.setValue(event.path);
   }
 
   toggleProductCategory(event: any, type: string) {
@@ -1051,6 +1056,7 @@ productIconClicked(event: any, type: string = 'add') {
           this.icons = res?.result?.productIcons || [];
           this.thumbnailPreview = res?.result?.thumbnail;
           this.ChangeDetectorRef.markForCheck();
+          this.videoThumbnailPreview = res?.result?.videoThumbnail;
         }
       },
       error: (err: any) => {
@@ -1064,6 +1070,7 @@ productIconClicked(event: any, type: string = 'add') {
       category: new FormControl(null), // Default category
       parentCategories: new FormControl('', Validators.required), //Main category
       thumbnail: new FormControl(null),
+      videoThumbnail:new FormControl(null),
       isActive: new FormControl('true'),
       sku: new FormControl('', Validators.required),
       tax: new FormControl(''),
@@ -1117,6 +1124,7 @@ productIconClicked(event: any, type: string = 'add') {
         Validators.pattern('^\\d+(\\.\\d+)?$'),
       ]),
       thumbnail: new FormControl(''),
+      videoThumbnail: new FormControl(''),
       files: new FormControl(''),
       video: new FormControl(''),
       unit: new FormControl(''),

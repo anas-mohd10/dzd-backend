@@ -13,7 +13,7 @@ export class AdvanceTablesWidget4Component implements OnInit {
   constructor(private DashboardService: DashboardService, private ChangeDetectorRef: ChangeDetectorRef) { }
 
   ngOnInit(): void {
-    this.DashboardService.getTopSellingProducts({}).subscribe((res: any) => {
+    this.DashboardService.getTopSellingProducts().subscribe((res: any) => {
       if (res?.errorCode == 0) {
         this.products = res?.result
         this.ChangeDetectorRef.markForCheck()

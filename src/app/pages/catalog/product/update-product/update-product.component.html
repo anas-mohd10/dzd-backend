@@ -43,10 +43,10 @@
     <div class="card">
       <div class="card-body">
         <div class="fs-5 mb-3">
-          Created on 
+          Created on
           {{getFormatDate(productDetails?.createdAt)}}
           {{getFormatTime(productDetails?.createdAt)}}
-          and last updated on 
+          and last updated on
           {{getFormatDate(productDetails?.updatedAt)}}
           {{getFormatTime(productDetails?.updatedAt)}}
         </div>
@@ -299,16 +299,13 @@
                 </div>
               </div>
               <div class="d-flex align-items-center justify-content-center gap-2">
-                <button 
-                class="btn btn-secondary" 
-                [disabled]="isSaving" 
-                (click)="saveChanges()">
-                <span *ngIf="isSaving">
-                  <i class="spinner-border spinner-border-sm me-1"></i>
-                </span>
-                {{ isSaving ? 'Saving...' : 'Save and Close' }}
-              </button> 
-              <button class="btn btn-primary" (click)="toggleTab(1)">Continue</button>
+                <button class="btn btn-secondary" [disabled]="isSaving" (click)="saveChanges()">
+                  <span *ngIf="isSaving">
+                    <i class="spinner-border spinner-border-sm me-1"></i>
+                  </span>
+                  {{ isSaving ? 'Saving...' : 'Save and Close' }}
+                </button>
+                <button class="btn btn-primary" (click)="toggleTab(1)">Continue</button>
               </div>
             </tab>
 
@@ -327,20 +324,17 @@
                   </div>
                   <div class="d-flex flex-wrap align-items-center justify-content-start gap-2 mt-6">
                     <ng-container *ngFor="let attribute of attributes; let i = index">
-                      <div class="d-flex cursor-pointer align-items-center bg-secondary p-2 rounded justify-content-start gap-2">
+                      <div
+                        class="d-flex cursor-pointer align-items-center bg-secondary p-2 rounded justify-content-start gap-2">
                         <div class="d-flex align-items-center justify-content-start gap-2">
                           <div class="fs-5">{{attribute?.title}} : </div>
                           <ng-container [ngSwitch]="attribute?.type">
-                            <div *ngSwitchCase="'color'" 
-                                 [style.background-color]="attribute?.value"
-                                 class="rounded-circle" 
-                                 style="width: 30px; height: 30px; border: 1px solid #ddd;">
+                            <div *ngSwitchCase="'color'" [style.background-color]="attribute?.value"
+                              class="rounded-circle" style="width: 30px; height: 30px; border: 1px solid #ddd;">
                             </div>
                             <div *ngSwitchCase="'image'" class="rounded" style="width: 30px; height: 30px;">
-                              <img [src]="base + attribute?.value" 
-                                   class="img-fluid rounded object-fit-cover"
-                                   style="width: 100%; height: 100%;" 
-                                   alt="Variant Image">
+                              <img [src]="base + attribute?.value" class="img-fluid rounded object-fit-cover"
+                                style="width: 100%; height: 100%;" alt="Variant Image">
                             </div>
                             <div *ngSwitchDefault class="fs-5">{{attribute?.value}}</div>
                           </ng-container>
@@ -408,9 +402,20 @@
 
             <tab heading="Product Medias">
               <div class="my-6">
-                <div class="mb-3 form-group">
-                  <label class="fs-6 mb-3" id="video">Video</label>
-                  <input type="text" class="form-control" id="video" formControlName="video" />
+                <div class="row">
+                  <div class="mb-3 col-lg-3">
+                    <label for="videoThumbnail" class="fs-6 mb-3">Video Thumbnail</label>
+                    <div id="videoThumbnail">
+                      <div class="ratio ratio-1x1 h-auto w-100 rounded">
+                        <app-assets [image]="'contain'" [previewDetails]="videoThumbnailPreview"
+                          (mediaClicked)="productVideoThumbnailClicked($event)"></app-assets>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="mb-3 col-lg-9 form-group">
+                    <label class="fs-6 mb-3" id="video">Video</label>
+                    <input type="text" class="form-control" id="video" formControlName="video" />
+                  </div>
                 </div>
                 <div class="mb-3 form-group">
                   <label class="fs-6 mb-3" id="productBanner">Product Banner</label>
@@ -429,8 +434,9 @@
                 </div>
                 <div class="mb-3">
                   <label for="images" class="fs-6 mb-3 required">Product images</label>
-                  <div class="row flex-nowrap wrapperBox" id="images" cdkDropList cdkDropListOrientation="horizontal" (cdkDropListDropped)="dropProductImages($event)">
-                    <div class="col-lg-2" >
+                  <div class="row flex-nowrap wrapperBox" id="images" cdkDropList cdkDropListOrientation="horizontal"
+                    (cdkDropListDropped)="dropProductImages($event)">
+                    <div class="col-lg-2">
                       <div class="ratio ratio-1x1 h-auto w-100 rounded">
                         <app-assets (mediaClicked)="productMediaClicked($event)" [image]="'cover'" [multiSelect]="true"
                           [previewEnabled]="false" [selectedItems]="images"></app-assets>
@@ -464,56 +470,52 @@
                   </div>
                 </div>
                 <div class="mb-3">
-  <label for="icons" class="fs-6 mb-3">Product Icons</label>
-  <div class="row" id="icons">
-    <div class="col-lg-2" *ngFor="let icon of icons">
-      <div class="ratio border ratio-1x1 h-auto w-100 rounded position-relative">
-        <div class="close-icon rounded bg-danger text-white"
-          (click)="productIconClicked(icon, 'remove')">
-          <svg height="18" width="18" data-slot="icon" fill="none" stroke-width="1.5"
-            stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"
-            aria-hidden="true">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12"></path>
-          </svg>
-        </div>
-        <img src="{{base}}{{icon}}" class="rounded object-fit-cover" class="h-100 w-100 object-cover">
-      </div>
-    </div>
-    <div class="col-lg-2">
-      <div class="ratio ratio-1x1 h-auto w-100 rounded">
-        <app-assets 
-          (mediaClicked)="productIconClicked($event)" 
-          [previewEnabled]="false">
-        </app-assets>
-      </div>
-    </div>
-  </div>
-</div>
+                  <label for="icons" class="fs-6 mb-3">Product Icons</label>
+                  <div class="row" id="icons">
+                    <div class="col-lg-2" *ngFor="let icon of icons">
+                      <div class="ratio border ratio-1x1 h-auto w-100 rounded position-relative">
+                        <div class="close-icon rounded bg-danger text-white"
+                          (click)="productIconClicked(icon, 'remove')">
+                          <svg height="18" width="18" data-slot="icon" fill="none" stroke-width="1.5"
+                            stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"
+                            aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12"></path>
+                          </svg>
+                        </div>
+                        <img src="{{base}}{{icon}}" class="rounded object-fit-cover" class="h-100 w-100 object-cover">
+                      </div>
+                    </div>
+                    <div class="col-lg-2">
+                      <div class="ratio ratio-1x1 h-auto w-100 rounded">
+                        <app-assets (mediaClicked)="productIconClicked($event)" [previewEnabled]="false">
+                        </app-assets>
+                      </div>
+                    </div>
+                  </div>
+                </div>
                 <div class="mb-3">
-  <label for="tags" class="fs-6 mb-3">Product Tags</label>
-  <div class="row" id="tags">
-    <div class="col-lg-2" *ngFor="let icon of tagIcons">
-      <div class="ratio border ratio-1x1 h-auto w-100 rounded position-relative">
-        <div class="close-icon rounded bg-danger text-white" (click)="removeTagIcons(icon)">
-          <svg height="18" width="18" data-slot="icon" fill="none" stroke-width="1.5"
-            stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"
-            aria-hidden="true">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12"></path>
-          </svg>
-        </div>
-        <img src="{{base}}{{icon}}" class="rounded" class="h-100 w-100">
-      </div>
-    </div>
-    <div class="col-lg-2">
-      <div class="ratio ratio-1x1 h-auto w-100 rounded">
-        <app-assets 
-          (mediaClicked)="handleTagIcons($event)" 
-          [previewEnabled]="false">
-        </app-assets>
-      </div>
-    </div>
-  </div>
-</div>
+                  <label for="tags" class="fs-6 mb-3">Product Tags</label>
+                  <div class="row" id="tags">
+                    <div class="col-lg-2" *ngFor="let icon of tagIcons">
+                      <div class="ratio border ratio-1x1 h-auto w-100 rounded position-relative">
+                        <div class="close-icon rounded bg-danger text-white" (click)="removeTagIcons(icon)">
+                          <svg height="18" width="18" data-slot="icon" fill="none" stroke-width="1.5"
+                            stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"
+                            aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12"></path>
+                          </svg>
+                        </div>
+                        <img src="{{base}}{{icon}}" class="rounded" class="h-100 w-100">
+                      </div>
+                    </div>
+                    <div class="col-lg-2">
+                      <div class="ratio ratio-1x1 h-auto w-100 rounded">
+                        <app-assets (mediaClicked)="handleTagIcons($event)" [previewEnabled]="false">
+                        </app-assets>
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
 
               <div class="d-flex align-items-center justify-content-center gap-2">
@@ -548,15 +550,12 @@
               <div class="d-flex align-items-center justify-content-center gap-2">
                 <button class="btn border border-primary bg-white text-primary" (click)="toggleTab(3)">Back</button>
                 <!-- <button class="btn btn-primary" (click)="saveChanges()">Save changes</button> -->
-                <button 
-                class="btn btn-primary" 
-                [disabled]="isSaving" 
-                (click)="saveChanges()">
-                <span *ngIf="isSaving">
-                  <i class="spinner-border spinner-border-sm me-1"></i>
-                </span>
-                {{ isSaving ? 'Saving...' : 'Save and Close' }}
-              </button> 
+                <button class="btn btn-primary" [disabled]="isSaving" (click)="saveChanges()">
+                  <span *ngIf="isSaving">
+                    <i class="spinner-border spinner-border-sm me-1"></i>
+                  </span>
+                  {{ isSaving ? 'Saving...' : 'Save and Close' }}
+                </button>
               </div>
             </tab>
           </tabset>
@@ -667,25 +666,20 @@
             <div class="row">
               <div class="col-lg-12 d-flex justify-content-end">
                 <div class="ratio ratio-1x1 h-auto w-25 rounded">
-                  <app-assets 
-                    (mediaClicked)="handleAttributeImage($event)" 
-                    [image]="'cover'" 
-                    [previewEnabled]="false">
+                  <app-assets (mediaClicked)="handleAttributeImage($event)" [image]="'cover'" [previewEnabled]="false">
                   </app-assets>
                 </div>
               </div>
               <div class="col-lg-12 mt-3 d-flex justify-content-end" *ngIf="attributeForm.get('value')?.value">
                 <div class="ratio border ratio-1x1 h-auto w-25 rounded position-relative">
                   <div class="close-icon rounded bg-danger text-white" (click)="removeAttributeImage()">
-                    <svg height="18" width="18" data-slot="icon" fill="none" stroke-width="1.5"
-                      stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"
-                      aria-hidden="true">
+                    <svg height="18" width="18" data-slot="icon" fill="none" stroke-width="1.5" stroke="currentColor"
+                      viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
                       <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12"></path>
                     </svg>
                   </div>
-                  <img [src]="base + attributeForm.get('value')?.value" 
-                       class="h-100 w-100 rounded object-fit-cover" 
-                       alt="Attribute Image">
+                  <img [src]="base + attributeForm.get('value')?.value" class="h-100 w-100 rounded object-fit-cover"
+                    alt="Attribute Image">
                 </div>
               </div>
             </div>

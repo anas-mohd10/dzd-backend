@@ -188,6 +188,32 @@
           </div>
         </div>
       </div>
+      <!-- Add after recaptcha section -->
+      <div class="card my-4">
+        <div class="card-body">
+          <div class="row">
+            <div class="col-lg-4">
+              <div class="fs-5">Rate Limiting</div>
+            </div>
+            <div class="col-lg-8">
+              <app-switch (switchToggled)="toggleAuthOptions($event)" [switchId]="'isRateLimitEnabled'"
+                [isToggledProps]="form.get('isRateLimitEnabled')?.value"></app-switch>
+            </div>
+          </div>
+
+          <div class="row mt-4" *ngIf="form.get('isRateLimitEnabled')?.value">
+            <div class="col-lg-6 form-group mb-3">
+              <label for="rateLimitWindowMs" class="fs-6 mb-1">Time Window (minutes)</label>
+              <input type="number" id="rateLimitWindowMs" formControlName="rateLimitWindowMs" class="form-control">
+            </div>
+            <div class="col-lg-6 form-group mb-3">
+              <label for="rateLimitMaxRequests" class="fs-6 mb-1">Max Requests per Window</label>
+              <input type="number" id="rateLimitMaxRequests" formControlName="rateLimitMaxRequests"
+                class="form-control">
+            </div>
+          </div>
+        </div>
+      </div>
     </form>
   </div>
 </div>

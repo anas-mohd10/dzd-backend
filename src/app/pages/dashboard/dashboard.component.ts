@@ -70,6 +70,15 @@ export class DashboardComponent implements OnInit {
   modalRef?: BsModalRef
   storeTips: any;
 
+  quickLinks: Array<any> = [
+    { title: 'Orders', description: 'Manage your latest orders', redirection: appRoutes.orders.ORDERS_LIST },
+    { title: 'Products', description: 'View all your products here', redirection: appRoutes.product.ALL_PRODUCTS },
+    { title: 'Create coupons', description: 'Create new coupon code and give discounts to customers', redirection: appRoutes.coupons.ADD_COUPONS_LIST },
+    { title: 'Customers', description: 'View all your customers here', redirection: appRoutes.customers.CUSTOMERS_LIST },
+    { title: 'Collections', description: 'View all your collections here', redirection: appRoutes.collection.COLLECTION_LIST },
+    { title: 'Brands', description: 'View all your brands here', redirection: appRoutes.brand.BRAND_LIST },
+  ]
+
   items: Array<any> = [
     { title: 'Create catalog', description: 'Create a new dynamic catalog page as per your needs', redirection: appRoutes.catalogs.create },
     { title: 'View products', description: 'View all your products here', redirection: appRoutes.product.ALL_PRODUCTS },
@@ -119,10 +128,17 @@ export class DashboardComponent implements OnInit {
       }
     })
 
-    this.DashboardService.getTopSellingProducts({}).subscribe((res: any) => {
-      if (res?.errorCode == 0) {
-        this.products = res?.result
-        this.ChangeDetectorRef.markForCheck()
+    // Top Selling Products
+    this.DashboardService.getTopSellingProducts().subscribe({
+      next: (res: any) => {
+        if (res?.errorCode == 0) {
+          this.products = res?.result
+          this.ChangeDetectorRef.markForCheck()
+        } else {
+          this.ToastrService.error(res?.message)
+        }
+      }, error: (err: any) => {
+        this.ToastrService.error(err?.message)
       }
     })
 
@@ -210,10 +226,10 @@ export class DashboardComponent implements OnInit {
     const parts = query.split('=');
     if (parts.length === 2) {
       params[parts[0]] = parts[1];
-   }
-  return params;
+    }
+    return params;
   }
-  
+
   open(template: TemplateRef<any>) {
     this.modalRef = this.BsModalService.show(template, { class: 'modal-lg modal-dialog-centered' });
   }

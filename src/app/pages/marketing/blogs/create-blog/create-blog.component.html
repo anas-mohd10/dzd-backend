@@ -53,10 +53,13 @@
                         </div>
                         <div class="form-group mb-3">
                             <label for="category" class="form-label required">Category</label>
-                            <input type="text" id="category" formControlName="category" placeholder="Eg. Fashion"
-                                class="form-control"
-                                [ngClass]="{
-                                    'is-invalid':  (formControls.category.touched || isSubmitted) && formControls.category.errors?.required}">
+                            <select id="category" formControlName="category" class="form-select"
+                                [ngClass]="{'is-invalid': (formControls.category.touched || isSubmitted) && formControls.category.errors?.required}">
+                                <option value="">Select Category</option>
+                                <option *ngFor="let category of categories" [value]="category._id">
+                                    {{category.title}}
+                                </option>
+                            </select>
                         </div>
                         <div class="form-group mb-3">
                             <label for="isActive" class="form-label">Status</label>

@@ -12,6 +12,13 @@
             object-fit: contain;
         }
 
+        
+        video {
+            height: 200px;
+            width: 100%;
+            object-fit: contain;
+        }
+
            .asset-checkbox {
                 background-color: #ffffff;
                height: 2rem;
@@ -96,6 +103,12 @@
         position: relative;
 
         img {
+            height: 140px;
+            width: 100%;
+            object-fit: contain;
+        }
+
+        video {
             height: 140px;
             width: 100%;
             object-fit: contain;

@@ -291,11 +291,14 @@ export class UpdateAppSettingsComponent implements OnInit {
         this.form.get('favicon')?.setValue(res?.result?.favicon)
         this.form.get('defaultBanner')?.setValue(res?.result?.defaultBanner)
         this.form.get('defaultMobileBanner')?.setValue(res?.result?.defaultMobileBanner)
-
+        this.form.get('verifyNumberWithTwilio')?.setValue(res?.result?.verifyNumberWithTwilio)
         this.form.get('deliverSlotBufferTime')?.setValue(res?.result?.deliverSlotBufferTime || 60);
 
         this.form.get('commaSeparation')?.setValue(
           res?.result?.commaSeparation ?? true  // Use nullish coalescing for default
+        );
+        this.form.get('currencyLocation')?.setValue(
+          res?.result?.currencyLocation ?? 'before'
         );
         this.form.get('decimalValues')?.setValue(
           Number(res?.result?.decimalValues)
@@ -378,6 +381,7 @@ export class UpdateAppSettingsComponent implements OnInit {
       defaultImage: [''],
       isNotifyStock: ['false'],
       commaSeparation: [true],
+      currencyLocation: ['before'],
       decimalValues: [  ],
       cartButton: ['Add to Cart', Validators.required],
       stockButton: ['Out of Stock', Validators.required],
@@ -389,6 +393,7 @@ export class UpdateAppSettingsComponent implements OnInit {
       defaultShippingCharge: ['0'],
       defaultMinimumCartAmount: ['0'],
       deliverSlotBufferTime: [60],
+      verifyNumberWithTwilio: ['false'],
     })
   }
 
@@ -491,6 +496,7 @@ export class UpdateAppSettingsComponent implements OnInit {
       this.isSubmitted = true
       return
     }
+    console.log("this.form", this.form.get('verifyNumberWithTwilio')?.value)
     this.AppSettingsService.updateGeneralSettings({
       colors: {
         primary: this.form.get('primary')?.value,
@@ -544,7 +550,9 @@ export class UpdateAppSettingsComponent implements OnInit {
       notes: { packingSlip: this.form.get('packingSlip')?.value },
       deliverSlotBufferTime: this.form.get('deliverSlotBufferTime')?.value || 60,
       commaSeparation: Boolean(this.form.get('commaSeparation')?.value),
+      currencyLocation: this.form.get('currencyLocation')?.value,
       decimalValues: Number(this.form.get('decimalValues')?.value),
+      verifyNumberWithTwilio: this.form.get('verifyNumberWithTwilio')?.value,
       buttons: {
         cart: this.form.get('cartButton')?.value,
         stock: this.form.get('stockButton')?.value,

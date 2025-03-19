@@ -19,7 +19,7 @@ import { environment } from 'src/environments/environment';
 })
 export class SmsSettingsComponent implements OnInit {
   appRoute = appRoutes;
-  form: FormGroup = new FormGroup({}); 
+  form: FormGroup = new FormGroup({});
   isSmsGatewayEnabled: FormControl = new FormControl(false);
   smsGatewayItems: Array<any> = [
     {
@@ -64,6 +64,7 @@ export class SmsSettingsComponent implements OnInit {
     { title: 'Order Shipped', value: 'order-shipped' },
     { title: 'Order Failed', value: 'order-failed' },
     { title: 'Product Status Update', value: 'product-status-update' },
+    { verifyPhoneNo: true, title: 'Verify Phone Number', value: 'verify-phone-no' },
   ];
 
   constructor(

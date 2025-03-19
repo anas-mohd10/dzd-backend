@@ -121,7 +121,12 @@ export class UpdateCategoryComponent implements OnInit {
       next: (res: any) => {
         if (res.errorCode == 0) {
           this.categoryDoc = res?.result;
-          this.form.patchValue(res.result)
+          this.form.patchValue(res.result);
+
+          // Set image paths
+          this.cover = res.result?.cover || '';
+          this.mobileCover = res.result?.mobileCover || '';
+          this.thumbnail = res.result?.thumbnail || '';
 
           // Set Root and Parent Details based on the categoryDoc
           if (res?.result?.rootDetails) {

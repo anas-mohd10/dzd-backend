@@ -22,6 +22,7 @@ import { HotToastService } from '@ngneat/hot-toast';
 import { AppSettingsService } from 'src/app/includes/services/app.settings.service';
 import { OrdersService } from 'src/app/includes/services/orders.service';
 import { Country, ICountry, State, IState, City, ICity } from 'country-state-city'
+import { debounceTime } from 'rxjs/operators';
 
 interface CustomerOrder {
   orderNo: string;
@@ -34,9 +35,20 @@ interface CustomerOrder {
 }
 
 interface CustomerOrderDetails {
-  totalResults: number;
-  totalPages: number;
+  totalResults: number | 0;
+  totalPages: number | 1;
   orders: Array<CustomerOrder>;
+}
+
+interface LoginActivity {
+  userAgent: string;
+  loginId: string;
+  loginIp: string;
+  logoutIp: string;
+  loginTimezone: string;
+  logoutTimezone: string;
+  loginTime: string;
+  logoutTime: string;
 }
 
 @Component({
@@ -72,7 +84,7 @@ export class UpdateCustomersComponent implements OnInit {
   walletRef?: BsModalRef;
   transactions: Array<any> = [];
   amount: FormControl = new FormControl('', [Validators.required, Validators.pattern(/^\d+(\.\d{1,2})?$/)]);
-  description: FormControl = new FormControl('');
+  description: FormControl = new FormControl('Transaction successful! Your wallet has been updated.');
   isWalletSubmitted: boolean = false;
   settings: any = {};
   referralCode: FormControl = new FormControl('');
@@ -97,6 +109,15 @@ export class UpdateCustomersComponent implements OnInit {
   cancelledOrders: Array<string> = ['CANCELLED', 'PENDING', 'FAILED'];
   previousCountry: string = '';
   previousState: string = '';
+  loginRef?: BsModalRef;
+  loginActivities: Array<LoginActivity> = [];
+  manageWalletRef?: BsModalRef;
+
+  walletKeyword: FormControl = new FormControl('');
+  walletPageIndex: number = 1;
+  walletPageSize: number = 10;
+  walletTotalPages: number = 1;
+  walletTotalResults: number = 0;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -105,10 +126,16 @@ export class UpdateCustomersComponent implements OnInit {
     private route: ActivatedRoute,
     private ChangeDetectorRef: ChangeDetectorRef,
     private router: Router,
-    private Toast: HotToastService,
+    private HotToastService: HotToastService,
     private BsModalService: BsModalService,
     private AppSettingsService: AppSettingsService
-  ) { }
+  ) {
+    this.walletKeyword.valueChanges
+      .pipe(debounceTime(500))
+      .subscribe((value: any) => {
+        this.getTransactions();
+      });
+  }
 
   // Get State list from country code
   getStateList() {
@@ -122,42 +149,38 @@ export class UpdateCustomersComponent implements OnInit {
       this.cities = [];
       this.previousState = ''; // Reset previous state
     }
-  
+
     this.previousCountry = selectedCountry; // Store previous country value
-  
+
     const countryCode = this.countries.find((country: ICountry) => country.name === selectedCountry);
-  
+
     if (countryCode) {
       this.states = State.getStatesOfCountry(countryCode.isoCode);
       this.ChangeDetectorRef.markForCheck();
     }
   }
-  
+
   // Get City list from state code and country code
   getCityList() {
     const selectedState = this.addressForm.get('state')?.value;
-  
+
     if (this.previousState && this.previousState !== selectedState) {
       // If the state has changed, reset city
       this.addressForm.patchValue({
         city: '',
       });
     }
-  
+
     this.previousState = selectedState; // Store previous state value
-  
+
     const countryCode = this.countries.find((country: ICountry) => country.name === this.addressForm.get('country')?.value);
     const stateCode = this.states.find((state: IState) => state.name === selectedState);
-  
+
     if (countryCode && stateCode) {
       this.cities = City.getCitiesOfState(countryCode.isoCode, stateCode.isoCode);
       this.ChangeDetectorRef.markForCheck();
     }
   }
-  
-
-
-
 
   //Function to open the saved cards modal
   openSavedCards(template: TemplateRef<any>) {
@@ -193,11 +216,11 @@ export class UpdateCustomersComponent implements OnInit {
           this.router.navigate([this.appRoute.customers.CUSTOMERS_LIST]);
           this.ChangeDetectorRef.markForCheck();
         } else {
-          this.Toast.error(res?.message);
+          this.HotToastService.error(res?.message);
         }
       },
       error: (err: any) => {
-        this.Toast.error(err?.error?.message);
+        this.HotToastService.error(err?.error?.message);
       },
     });
   }
@@ -254,6 +277,13 @@ export class UpdateCustomersComponent implements OnInit {
         );
         break;
     }
+  }
+
+  openLoginActivities(template: TemplateRef<any>) {
+    this.loginRef = this.BsModalService.show(template, {
+      class: 'modal-dialog-centered modal-lg',
+      ignoreBackdropClick: true,
+    });
   }
 
   openCustomerOrders(template: TemplateRef<any>) {
@@ -378,7 +408,7 @@ export class UpdateCustomersComponent implements OnInit {
 
   openWallet(template: TemplateRef<any>) {
     this.walletRef = this.BsModalService.show(template, {
-      class: 'modal-lg modal-dialog-centered',
+      class: 'modal-xl modal-dialog-centered',
       ignoreBackdropClick: true,
     });
     this.getTransactions();
@@ -387,7 +417,7 @@ export class UpdateCustomersComponent implements OnInit {
   closeWallet() {
     this.walletRef?.hide();
     this.amount?.reset();
-    this.description?.reset();
+    this.description?.setValue('Transaction successful! Your wallet has been updated.');
     this.isWalletSubmitted = false;
   }
 
@@ -421,14 +451,33 @@ export class UpdateCustomersComponent implements OnInit {
       });
   }
 
+  onWalletPageChange(event: { pageIndex: number; pageSize: number }) {
+    this.walletPageIndex = event.pageIndex;
+    this.walletPageSize = event.pageSize;
+    this.getTransactions();
+  }
+
   getTransactions() {
     this.customerService
-      .getTransactions(this.customerDetails?.slug, this.transactionType.value)
+      .getTransactions({
+        customerId: this.customerDetails?._id,
+        type: this.transactionType.value,
+        pageIndex: this.walletPageIndex,
+        pageSize: this.walletPageSize,
+        keyword: this.walletKeyword.value
+      })
       .subscribe({
         next: (res: any) => {
           if (res?.errorCode == 0) {
-            this.transactions = res?.result;
+            this.transactions = res?.result?.transactions;
+            this.walletTotalPages = res?.result?.totalPages;
+            this.walletTotalResults = res?.result?.totalResults;
+            this.ChangeDetectorRef.markForCheck();
+          } else {
+            this.HotToastService.error(res?.message);
           }
+        }, error: (err: any) => {
+          this.HotToastService.error(err?.message);
         },
       });
   }
@@ -449,19 +498,20 @@ export class UpdateCustomersComponent implements OnInit {
       .subscribe({
         next: (res: any) => {
           if (res?.errorCode == 0) {
-            this.Toast.success(res?.message);
+            this.HotToastService.success(res?.message);
             this.amount?.reset();
-            this.description?.reset();
+            this.description?.setValue('Transaction successful! Your wallet has been updated.');
             this.getTransactions();
             this.getCustomerDetails();
+            this.closeManageWallet();
             this.isWalletSubmitted = false;
             this.ChangeDetectorRef.markForCheck();
           } else {
-            this.Toast.error(res?.message);
+            this.HotToastService.error(res?.message);
           }
         },
         error: (err: any) => {
-          this.Toast.error(err?.message);
+          this.HotToastService.error(err?.message);
         },
       });
   }
@@ -519,12 +569,12 @@ export class UpdateCustomersComponent implements OnInit {
         if (res?.errorCode == 0) {
           if (res?.result) {
             this.isEmailExists = true;
-            this.Toast.error('Email address already exists');
+            this.HotToastService.error('Email address already exists');
           } else {
             this.isEmailExists = false;
           }
         } else {
-          this.Toast.error(res?.message);
+          this.HotToastService.error(res?.message);
         }
       });
   }
@@ -542,12 +592,12 @@ export class UpdateCustomersComponent implements OnInit {
         if (res?.errorCode == 0) {
           if (res?.result) {
             this.isPhoneExists = true;
-            this.Toast.error('Email address already exists');
+            this.HotToastService.error('Email address already exists');
           } else {
             this.isPhoneExists = false;
           }
         } else {
-          this.Toast.error(res?.message);
+          this.HotToastService.error(res?.message);
         }
       });
   }
@@ -555,7 +605,7 @@ export class UpdateCustomersComponent implements OnInit {
 
   addAddress() {
     if (!this.addressForm.valid) {
-      this.Toast.error('Please fill all required fields before saving the address.');
+      this.HotToastService.error('Please fill all required fields before saving the address.');
       this.isAddressSubmitted = true;
       return;
     }
@@ -575,12 +625,12 @@ export class UpdateCustomersComponent implements OnInit {
             isDefault: false,
             type: 'Home',
           });
-          this.Toast.success(res?.message);
+          this.HotToastService.success(res?.message);
           this.isAddressSubmitted = false;
           this.isEditAddress = false;
           this.modalRef?.hide();
         } else {
-          this.Toast.error(res?.message);
+          this.HotToastService.error(res?.message);
         }
       });
     } else {
@@ -596,12 +646,12 @@ export class UpdateCustomersComponent implements OnInit {
               isDefault: false,
               type: 'Home',
             });
-            this.Toast.success(res?.message);
+            this.HotToastService.success(res?.message);
             this.modalRef?.hide();
             this.isEditAddress = false;
             this.isAddressSubmitted = false;
           } else {
-            this.Toast.error(res?.message);
+            this.HotToastService.error(res?.message);
           }
         });
     }
@@ -637,7 +687,7 @@ export class UpdateCustomersComponent implements OnInit {
     this.customerService.updateDefaultAddress(refid).subscribe((res: any) => {
       if (res?.errorCode == 0) {
         this.getAddress();
-        this.Toast.success(res?.message);
+        this.HotToastService.success(res?.message);
         this.ChangeDetectorRef.markForCheck();
       }
     });
@@ -653,7 +703,7 @@ export class UpdateCustomersComponent implements OnInit {
       .subscribe((res: any) => {
         if (res?.errorCode == 0) {
           this.getAddress();
-          this.Toast.success(res?.message);
+          this.HotToastService.success(res?.message);
           this.ChangeDetectorRef.markForCheck();
         }
       });
@@ -671,6 +721,20 @@ export class UpdateCustomersComponent implements OnInit {
     this.selectedAddress = address;
   }
 
+  openManageWallet(template: TemplateRef<any>) {
+    this.manageWalletRef = this.BsModalService.show(template, {
+      class: 'modal-sm modal-dialog-centered',
+      ignoreBackdropClick: true,
+    });
+  }
+
+  closeManageWallet() {
+    this.manageWalletRef?.hide();
+    this.amount?.reset();
+    this.description?.setValue('Transaction successful! Your wallet has been updated.');
+    this.isWalletSubmitted = false;
+  }
+
   getCustomerDetails() {
     this.customerService.getCustomerDetails(this.slug).subscribe((res: any) => {
       this.customerDetails = res?.result;
@@ -681,6 +745,9 @@ export class UpdateCustomersComponent implements OnInit {
         countryCode: res?.result?.countryCode,
         mobile: res?.result?.mobile
       })
+      this.loginActivities = res?.result?.loginActivities || [];
+      // Reverse the login activities array
+      this.loginActivities.reverse();
       this.handleAddressMobilePattern()
       this.referralCode.disable();
       this.form.patchValue(res?.result);
@@ -689,11 +756,26 @@ export class UpdateCustomersComponent implements OnInit {
     });
   }
 
+  formatDate(date: string): string {
+    const dt = new Date(date);
+
+    return dt.toLocaleString('en-US', {
+      year: 'numeric',
+      month: 'short',
+      day: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit',
+      second: '2-digit',
+      timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone, // User's system timezone
+      timeZoneName: 'short'
+    });
+  }
+
   deleteCard(cardNo: any) {
     this.savedCards = this.savedCards.filter(
       (item: any) => item?.cardNo !== cardNo
     );
-    this.Toast.success('Card deleted successfully');
+    this.HotToastService.success('Card deleted successfully');
   }
 
   onSubmit() {
@@ -714,14 +796,14 @@ export class UpdateCustomersComponent implements OnInit {
       .subscribe({
         next: (res: any) => {
           if (res.errorCode == 0) {
-            this.Toast.success(res?.message);
+            this.HotToastService.success(res?.message);
             this.router.navigate([this.appRoute.customers.CUSTOMERS_LIST]);
           } else if (res.errorCode == 0) {
-            this.Toast.error(res?.message);
+            this.HotToastService.error(res?.message);
           }
         },
         error: (err: any) => {
-          this.Toast.error(err?.error?.message);
+          this.HotToastService.error(err?.error?.message);
         },
       });
   }

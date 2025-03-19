@@ -3,6 +3,14 @@ $darkGrey: #333333;
 $mediumGrey: #555555;
 $white: #ffffff;
 
+.text-red{
+  color: #e6021c;
+}
+
+.text-green{
+  color: #38aa4b;
+}
+
 .btn, label{
   font-weight: 400 !important;
 }
@@ -331,7 +339,7 @@ $white: #ffffff;
 }
 
 .selling_box {
-  padding: 24px;
+  padding: 16px;
   border-radius: 8px;
   background-color: white;
   height: calc(100% - 42px);

@@ -47,6 +47,7 @@ export class DropdownResultsComponent implements OnInit, OnChanges {
       case "brands":
       case "collections":
       case "categories":
+      case "parents":
         if (isExists) {
           this.HotToastService.info("Item removed successfully")
           this.dropdownInputs = this.dropdownInputs.filter((input: any) => input._id !== item._id);
@@ -78,10 +79,12 @@ export class DropdownResultsComponent implements OnInit, OnChanges {
             products: res?.result?.products || [],
             categories: res?.result?.categories || [],
             brands: res?.result?.brands || [],
+            parents: res?.result?.parents || [],
             collections: res?.result?.collections || [],
             staticPages: res?.result?.staticPages || []
           };
           this.dropdownResults = resultMap[this.type] || [];
+          console.log("dropdownResults", this.dropdownResults)
           this.ChangeDetectorRef.markForCheck();
         } else {
           this.HotToastService.error(res.message)
