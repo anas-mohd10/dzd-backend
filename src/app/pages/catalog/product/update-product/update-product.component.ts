@@ -778,7 +778,7 @@ productIconClicked(event: any, type: string = 'add') {
         }
       },
       error: (err: any) => {
-        this.isSaving = false;
+        this.isSaving = false; // Re-enable button if form is invalid
         this.HotToastService.error(err.error.message);
       },
     });
