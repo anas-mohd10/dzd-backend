@@ -54,7 +54,7 @@
               <label for="category" class="form-label required">Category</label>
               <select id="category" formControlName="category" class="form-select"
                 [ngClass]="{'is-invalid': (formControls.category.touched || isSubmitted) && formControls.category.errors?.required}">
-                <option value="">Select Category</option>
+                <option value="" disabled>-- Select an option --</option>
                 <option *ngFor="let category of categories" [value]="category._id">
                   {{category.title}}
                 </option>
@@ -105,10 +105,9 @@
               <label for="description" class="form-label required">Description</label>
               <angular-editor id="description" class="form-control" formControlName="description"
                 [config]="editorConfig"
-                [ngClass]="{
-                                    'is-invalid':  (formControls.description.touched || isSubmitted) && formControls.description.errors?.required}"></angular-editor>
+                [ngClass]="{'is-invalid':  (formControls.description.touched || isSubmitted) && formControls.description.errors?.required}"></angular-editor>
             </div>
-            <div class="p-4 rounded border border-secondary">
+            <div class="p-4 mb-3 rounded border border-secondary">
               <div class="fw-bold fs-2 mb-6">SEO details</div>
               <div class="form-group mb-3">
                 <label for="seoTitle" class="form-label">Title</label>
@@ -127,10 +126,10 @@
                 <input type="text" id="canonicalUrl" formControlName="canonicalUrl" class="form-control">
               </div>
             </div>
-            <!-- Add this before the SEO details section -->
+
             <div class="form-group mb-3">
-              <label class="fs-6 mb-3">Tagged Products</label>
-              <div class="d-flex flex-wrap gap-2 mb-3">
+              <label class="form-label">Tagged Products</label>
+              <div class="d-flex flex-wrap gap-2 mb-3" *ngIf="selectedProducts && selectedProducts.length > 0">
                 <div *ngFor="let product of selectedProducts" class="bg-light p-2 rounded-3 d-flex align-items-center">
                   <div class="d-flex align-items-center gap-2">
                     <img [src]="base + product.thumbnail" class="rounded" width="30" height="30" [alt]="product.name"

@@ -128,16 +128,10 @@ export class UpdateBlogComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    // Get the slug from route params
-    this.ActivatedRoute.params.subscribe(params => {
-      if (params['slug']) {
-        this.blogQuery = params['slug'];
-        this.getBlogDetails();
-      }
-    });
-  
-    this.initializeForm();
     this.getCategories();
+    this.initializeForm();
+    this.blogQuery = this.ActivatedRoute.snapshot.params['slug'];
+    this.getBlogDetails();
   }
 
   initializeForm() {
@@ -159,38 +153,20 @@ export class UpdateBlogComponent implements OnInit {
   }
 
   getBlogDetails() {
-    console.log('get blog details')
     this.BlogService.getBlogBySlug(this.blogQuery).subscribe({
       next: (res: any) => {
         if (res?.errorCode === 0) {
-          const blog = res.result;
-          // Update form values
-          this.form.patchValue({
-            title: blog.title,
-            description: blog.description,
-            overview: blog.overview,
-            isActive: blog.isActive,
-            isFeatured: blog.isFeatured,
-            category: blog.category?._id,
-            seoTitle: blog.seoTitle,
-            seoDescription: blog.seoDescription,
-            seoKeywords: blog.seoKeywords,
-            canonicalUrl: blog.canonicalUrl,
-            thumbnail: blog.thumbnail?._id,
-            cover: blog.cover?._id,
-            products: blog.products?.map((p: any) => p._id) || [],
-          });
+          this.form.patchValue(res.result);
 
-          // Update previews
-          this.previews = {
-            thumbnail: blog.thumbnail?.path,
-            cover: blog.cover?.path,
-          };
-
-          // Update selected products
-          this.selectedProducts = blog.products || [];
-          
-          this.blogDetails = blog;
+          if (res.result.category) {
+            let categoryDoc = this.categories.find(category => category.title === res.result.category.title);
+            console.log(res.result.category.title)
+            console.log(this.categories)
+            this.form.patchValue({ category: categoryDoc?._id });
+          }
+          this.previews = { thumbnail: res.result.thumbnail?.path, cover: res.result.cover?.path, };
+          this.selectedProducts = res.result.products || [];
+          this.blogDetails = res.result;
           this.ChangeDetectorRef.markForCheck();
         }
       },
@@ -263,6 +239,10 @@ export class UpdateBlogComponent implements OnInit {
 
     this.BlogService.updateBlog({
       ...this.form.value,
+      category: {
+        title: this.categories.find(category => category._id === this.form.value.category)?.title,
+        thumbnail: this.categories.find(category => category._id === this.form.value.category)?.thumbnail
+      },
       slug: this.blogQuery,
     }).subscribe({
       next: (res: any) => {
@@ -328,8 +308,6 @@ export class UpdateBlogComponent implements OnInit {
       this.showDropdown = false;
     }
   }
-
-
 
   getCategories() {
     this.BlogService.getCategories().subscribe({

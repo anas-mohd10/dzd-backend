@@ -61,7 +61,7 @@ export class CreateBlogComponent implements OnInit {
     private Router: Router,
     private Toast: HotToastService,
     private ChangeDetectorRef: ChangeDetectorRef
-  ) {}
+  ) { }
 
   get formControls() {
     return this.form.controls;
@@ -122,7 +122,13 @@ export class CreateBlogComponent implements OnInit {
       return;
     }
 
-    this.BlogService.createBlog(this.form.value).subscribe({
+    this.BlogService.createBlog({
+      ...this.form.value,
+      category: {
+        title: this.categories.find(category => category._id === this.form.value.category)?.title,
+        thumbnail: this.categories.find(category => category._id === this.form.value.category)?.thumbnail
+      }
+    }).subscribe({
       next: (res: any) => {
         if (res?.errorCode == 0) {
           this.Router.navigate([appRoutes.blogs.list]);

@@ -7,7 +7,7 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 @Component({
   selector: 'app-blog-listing',
   templateUrl: './blog-listing.component.html',
-  styleUrls: ['./blog-listing.component.scss']
+  styleUrls: ['./blog-listing.component.scss'],
 })
 export class BlogListingComponent implements OnInit {
 clear() {
