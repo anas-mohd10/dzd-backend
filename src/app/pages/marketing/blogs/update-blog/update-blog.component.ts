@@ -283,6 +283,7 @@ export class UpdateBlogComponent implements OnInit {
       next: (res: any) => {
         if (res?.errorCode === 0) {
           this.searchResults = res.result.products || [];
+          this.ChangeDetectorRef.markForCheck();
         }
       }
     });
