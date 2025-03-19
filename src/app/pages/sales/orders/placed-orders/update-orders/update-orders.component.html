@@ -57,7 +57,16 @@
   <div class="position-relative mt-4">
     <div class="alert alert-warning fs-6"
       *ngIf="order?.paymentMethod == 'ONLINE' && !isCancelled && order?.paymentStatus == 'PENDING'">
-      Please proceed with the payment to facilitate the processing of the order request
+      Please proceed with the payment to facilitat e the processing of the order request
+    </div>
+
+    <div class="alert alert-danger fs-6"
+      *ngIf="order?.paymentMethod == 'ONLINE' && order?.payment?.isProcessing == true">
+      <div class="fs-3">Payment is being processed.</div>
+      <div class="fs-6">
+        New payment won't be processed until the previous payment is completed. 
+        You can proceed with updating the order status but payment will be processed in the background.
+      </div>
     </div>
 
     <div *ngIf="isCancelled">
@@ -147,6 +156,18 @@
                   <th class="p-2 text-muted fw-normal">Delivery</th>
                   <td class="p-2">
                     {{order?.deliveryType == '1' ? 'Click and collect' : 'Home delivery' }}
+                  </td>
+                </tr>
+                <!-- Add new row for cancellation details -->
+                <tr *ngIf="order?.cancel">
+                  <th class="p-2 text-muted fw-normal">Cancelled By</th>
+                  <td class="p-2">
+                    <ng-container *ngIf="order?.cancel?.cancelledBy === 'CUSTOMER'">
+                      Customer
+                    </ng-container>
+                    <ng-container *ngIf="order?.cancel?.cancelledBy === 'ADMIN'">
+                      {{ order?.cancel?.cancelledByEmail || 'Admin' }}
+                    </ng-container>
                   </td>
                 </tr>
               </table>
@@ -679,6 +700,17 @@
       <p class="fs-6 my-2">Are you sure you want to cancel {{bulkProducts.length}} products?</p>
       <button type="button" class="btn btn-default" (click)="confirmBulkUpdate()">Yes</button>
       <button type="button" class="btn btn-primary" (click)="declineBulkUpdate()">No</button>
+    </div>
+  </ng-template>
+
+  <ng-template #failedPayment>
+    <div class="modal-body">
+      <div class="modal-title">Payment Failed</div>
+      <p class="fs-6 my-2">Do you want to convert the payment to COD?</p>
+      <button type="button" class="btn btn-default" (click)="orderForceUpdate()"
+        [disabled]="isForceProcessing">Yes</button>
+      <button type="button" class="btn btn-primary" (click)="declineForceUpdate()"
+        [disabled]="isForceProcessing">No</button>
     </div>
   </ng-template>
 </div>

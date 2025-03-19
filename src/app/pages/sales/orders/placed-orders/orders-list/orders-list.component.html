@@ -78,7 +78,7 @@
               <div class="cursor-pointer" [ngClass]="{'text-primary': status?.status == activeStatus}"
                 (click)="getStatus(status)">
                 {{status?.status}}
-                <span class="p-2 rounded" [ngClass]="{'bg-primary text-white': status?.status == activeStatus, 
+                <span class="p-2 rounded" [ngClass]="{'bg-primary text-white': status?.status == activeStatus,
                   'bg-secondary': status?.status != activeStatus}">
                   {{status?.count}}
                 </span>
@@ -218,7 +218,8 @@
           </td>
           <td *ngIf="settings.isPickUp == true">
             <div *ngIf="order?.pickUpLocation">
-              <div class="cursor-pointer" tooltip="{{order?.pickUpLocation?.address}}">{{order?.pickUpLocation?.name + ", " + order?.pickUpLocation?.city}}</div>
+              <div class="cursor-pointer" tooltip="{{order?.pickUpLocation?.address}}">{{order?.pickUpLocation?.name +
+                ", " + order?.pickUpLocation?.city}}</div>
             </div>
             <div *ngIf="order?.clickPoint">
               {{order?.clickPoint?.address?.city}}
@@ -284,8 +285,8 @@
             </div>
           </td>
           <td>
-            <div class="rounded d-flex align-items-center justify-content-center p-1" [ngClass]="{'success-orders': successOrders.includes(order?.orderStatus), 
-              'accepted-orders': acceptedOrders.includes(order?.orderStatus), 
+            <div class="rounded d-flex align-items-center justify-content-center p-1" [ngClass]="{'success-orders': successOrders.includes(order?.orderStatus),
+              'accepted-orders': acceptedOrders.includes(order?.orderStatus),
               'cancelled-orders': cancelledOrders.includes(order?.orderStatus)}">
               {{formatOrderStatus(order?.orderStatus)}}
             </div>

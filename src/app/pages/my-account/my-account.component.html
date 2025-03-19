@@ -1,204 +1,153 @@
-<div class="profilePageContainer">
-    <div class="page-header">
-        <div class="page-title">
-            <h1 class="fw-bold">Account Overview</h1>
-        </div>
-        <div class="row">
-            <div class="col d-flex align-items-start justify-content-between">
-                <ul class="breadcrumb">
-                    <li class="breadcrumb-item fs-6">
-                        <a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a>
-                    </li>
-                    <li class="breadcrumb-item active fs-6">
-                        <a routerLink="{{ appRoute.account.MY_ACCOUNT }}">My Account</a>
-                    </li>
-                </ul>
+<div>
+    <div class="page-header d-flex align-items-start justify-content-between">
+        <div>
+            <div class="page-title">
+                <h1 class="fw-bold">Account Overview</h1>
             </div>
+            <ul class="breadcrumb">
+                <li class="breadcrumb-item fs-6">
+                    <a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a>
+                </li>
+                <li class="breadcrumb-item active fs-6">
+                    <a routerLink="{{ appRoute.account.MY_ACCOUNT }}">My Account</a>
+                </li>
+            </ul>
         </div>
     </div>
-    <div class="accountHeader">
-        <div class="accountDetailsHeader">
-            <div class="accountPicture">
-                <i class="bi bi-person-circle"></i>
+
+    <div class="my-4">
+        <div>
+            <div class="my-4 d-flex align-items-center justify-content-between">
+                <div class="fs-5">
+                    Account created on
+                    {{formatDate(adminDetails?.createdAt)}} at
+                    {{formatTime(adminDetails?.createdAt)}}
+                </div>
+                <button class="btn btn-danger d-flex align-items-center justify-content-center gap-2 px-4 py-3"
+                    (click)="logout(logoutModal)">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+                        <polyline points="16 17 21 12 16 7"></polyline>
+                        <line x1="21" y1="12" x2="9" y2="12"></line>
+                    </svg>
+                    <span>Logout</span>
+                </button>
             </div>
-            <div class="accountDetails">
-                <div class="accountName">{{adminDetails?.firstname}} {{adminDetails?.lastname}}</div>
-                <div class="accountEmail">{{adminDetails?.email}}</div>
-                <div class="accountMobile">{{adminDetails?.countryCode}} {{adminDetails?.mobile}}</div>
-                <div class="accountCreated">Account created on {{adminDetails?.createdAt}}</div>
-            </div>
-        </div>
 
-        <nav>
-            <div class="nav nav-tabs" id="nav-tab" role="tablist">
-                <button class="nav-link active" id="nav-home-tab" data-bs-toggle="tab" data-bs-target="#overview"
-                    type="button" role="tab" aria-controls="nav-home" aria-selected="true">Overview</button>
-                <button class="nav-link" id="nav-home-tab" data-bs-toggle="tab" data-bs-target="#edit-details"
-                    type="button" role="tab" aria-controls="nav-home" aria-selected="true">Settings</button>
-                <!-- <button class="nav-link" id="nav-profile-tab" data-bs-toggle="tab" data-bs-target="#product-details"
-                    type="button" role="tab" aria-controls="nav-profile" aria-selected="false">My Activity
-                </button> -->
-            </div>
-        </nav>
-    </div>
-    <div class="accountActivities">
-        <div class="tab-content" id="nav-tabContent">
-            <div class="tab-pane fade basic-details-container active show" id="overview" role="tabpanel"
-                aria-labelledby="nav-home-tab">
-                <div class="profileDetails">
-                    <div class="tabHeader">
-                        <div class="tabTitle">Profile Details</div>
-                    </div>
-                    <div class="profileDetailsContainer">
-                        <div class="profileDetailsTitles">
-                            <div class="profileText">
-                                Username
-                            </div>
-                            <div class="profileText">
-                                First Name
-                            </div>
-                            <div class="profileText">
-                                Last Name
-                            </div>
-                            <div class="profileText">
-                                Email Address
-                            </div>
-                            <div class="profileText">
-                                Country Code
-                            </div>
-                            <div class="profileText">
-                                Mobile Number
-                            </div>
-                        </div>
-                        <div class="profileDetailsValue">
-                            <div class="profileText">
-                                {{adminDetails?.username ? adminDetails?.username : '-'}}
-                            </div>
-                            <div class="profileText">
-                                {{adminDetails?.firstname ? adminDetails?.firstname : '-'}}
-                            </div>
-                            <div class="profileText">
-                                {{adminDetails?.lastname ? adminDetails?.lastname : '-'}}
-                            </div>
-                            <div class="profileText">
-                                {{adminDetails?.email ? adminDetails?.email : '-'}}
-                            </div>
-                            <div class="profileText">
-                                {{adminDetails?.countryCode ? adminDetails?.countryCode : '-'}}
-                            </div>
-                            <div class="profileText">
-                                {{adminDetails?.mobile ? adminDetails?.mobile : '-'}}
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="tab-pane fade basic-details-container formContainer" id="edit-details" role="tabpanel"
-                aria-labelledby="nav-home-tab">
-                <div class="tabHeader">
-                    <div class="tabTitle">Edit Details</div>
-                </div>
-                <div class="editForm">
-                    <form [formGroup]="form">
-
-                        <div class="profileText">
-                            <div class="title required">First Name</div>
-                            <input type="email" class="form-control" formControlName="firstname"
-                                placeholder="Enter your first name" (click)="touchAction(true)">
-                        </div>
-
-                        <div class="profileText">
-                            <div class="title">Last Name</div>
-                            <input type="email" class="form-control" formControlName="lastname"
-                                placeholder="Enter your last name" (click)="touchAction(true)">
-                        </div>
-
-                        <div class="profileText">
-                            <div class="title">Country Code</div>
-                            <input type="email" class="form-control" formControlName="countryCode"
-                                placeholder="Enter your country code" (click)="touchAction(true)">
-                        </div>
-
-                        <div class="profileText">
-                            <div class="title">Mobile Number</div>
-                            <input type="email" class="form-control" formControlName="mobile"
-                                placeholder="Enter mobile number" (click)="touchAction(true)">
-                        </div>
-                    </form>
-                </div>
-                <div class="formButtons" *ngIf="isTouched">
-                    <button type="button" class="btn btn-secondary" (click)="touchAction(false)">Discard</button>
-                    <button type="button" class="btn btn-primary" (click)="editDetails()">Save Changes</button>
-                </div>
-
-                <div class="tabHeader">
-                    <div class="tabTitle">Sign-in Method</div>
-                </div>
-
-                <div class="signInMethod">
-                    <div class="signInMethodLeft">
-                        <div class="signInMethodText">
-                            Email Address
-                        </div>
-                        <div class="signInMethodText">
-                            Password
-                        </div>
-                    </div>
-                    <div class="signInMethodRight">
-                        <div class="signInMethodText">
-                            {{adminDetails?.email ? adminDetails?.email : '-'}}
-                        </div>
-                        <div class="signInMethodText">
-                            <button *ngIf="!isResetPassword" type="button" class="btn btn-secondary"
-                                (click)="resetPassword(true)">
-                                Reset Password
-                            </button>
-
-                            <div class="passwordContainer" *ngIf="isResetPassword">
-                                <div class="passwordFields">
-                                    <form [formGroup]="passwordForm">
-                                        <div class="profileText">
-                                            <div class="title">Current Password</div>
-                                            <input type="password" class="form-control" formControlName="oldPassword"
-                                                [ngClass]="{
-                                                'is-invalid':
-                                                (passwordControls.oldPassword.touched || isPasswordSubmitted) &&
-                                                passwordControls.oldPassword.errors?.required
-                                              }">
-                                        </div>
-                                        <div class="profileText">
-                                            <div class="title">New Password</div>
-                                            <input type="password" class="form-control" formControlName="password"
-                                                [ngClass]="{
-                                                'is-invalid':
-                                                (passwordControls.password.touched || isPasswordSubmitted) &&
-                                                passwordControls.password.errors?.required
-                                              }">
-                                        </div>
-                                        <div class="profileText">
-                                            <div class="title">Confirm New Password</div>
-                                            <input type="password" class="form-control"
-                                                formControlName="confirmPassword" [ngClass]="{
-                                                    'is-invalid':
-                                                    (passwordControls.confirmPassword.touched || isPasswordSubmitted) &&
-                                                    passwordControls.confirmPassword.errors?.required
-                                                  }">
-                                        </div>
-                                    </form>
+            <tabset [justified]="true" type="pills">
+                <tab heading="Profile Details" id="tab1">
+                    <div class="card my-4">
+                        <div class="card-body">
+                            <form [formGroup]="form" (ngSubmit)="editDetails()">
+                                <div class="form-group">
+                                    <div class="fs-6 my-2">First Name</div>
+                                    <input type="email" class="form-control" formControlName="firstname"
+                                        placeholder="Enter your first name">
                                 </div>
-
-                                <div class="passwordButtons">
+                                <div class="form-group my-3">
+                                    <div class="fs-6 my-2">Last Name</div>
+                                    <input type="email" class="form-control" formControlName="lastname"
+                                        placeholder="Enter your last name">
+                                </div>
+                                <div class="form-group">
+                                    <div class="fs-6 my-2">Email Address</div>
+                                    <input type="email" class="form-control pe-none" formControlName="email"
+                                        placeholder="Enter your email address">
+                                </div>
+                                <div class="row my-3">
+                                    <div class="form-group col-lg-4">
+                                        <div class="fs-6 my-2">Country Code</div>
+                                        <input type="email" class="form-control" formControlName="countryCode"
+                                            placeholder="Enter your country code">
+                                    </div>
+                                    <div class="form-group col-lg-8">
+                                        <div class="fs-6 my-2">Mobile Number</div>
+                                        <input type="email" class="form-control" formControlName="mobile"
+                                            placeholder="Enter your mobile number">
+                                    </div>
+                                </div>
+                                <div class="d-flex align-items-center justify-content-end gap-3">
                                     <button type="button" class="btn btn-secondary"
-                                        (click)="resetPassword(false)">Cancel</button>
-                                    <button type="button" class="btn btn-primary" (click)="changePassword()">
-                                        Save Changes
-                                    </button>
+                                        (click)="resetForm()">Discard</button>
+                                    <button type="submit" class="btn btn-primary">Save Changes</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </tab>
+                <tab heading="Profile Settings" id="tab2">
+                    <div class="card my-4">
+                        <div class="card-body">
+                            <div class="accordion" id="profileSettings">
+                                <div class="accordion-item">
+                                    <h2 class="accordion-header m-0">
+                                        <button class="accordion-button fs-5" type="button" data-bs-toggle="collapse"
+                                            data-bs-target="#resetPassword" aria-expanded="true"
+                                            aria-controls="resetPassword">
+                                            Reset Password
+                                        </button>
+                                    </h2>
+                                    <div id="resetPassword" class="accordion-collapse collapse show"
+                                        data-bs-parent="#profileSettings">
+                                        <div class="accordion-body">
+                                            <form [formGroup]="passwordForm" (ngSubmit)="changePassword()">
+                                                <div class="form-group">
+                                                    <div class="fs-6 my-2">Current Password</div>
+                                                    <input type="password" class="form-control"
+                                                        placeholder="Enter Current Password"
+                                                        formControlName="oldPassword" [ngClass]="{
+                                                    'is-invalid':
+                                                    (controls.oldPassword.touched || isPasswordSubmitted) &&
+                                                    controls.oldPassword.errors?.required
+                                                  }">
+                                                </div>
+                                                <div class="form-group my-3">
+                                                    <div class="fs-6 my-2">New Password</div>
+                                                    <input type="password" class="form-control"
+                                                        placeholder="Enter New Password" formControlName="password"
+                                                        [ngClass]="{
+                                                    'is-invalid':
+                                                    (controls.password.touched || isPasswordSubmitted) &&
+                                                    controls.password.errors?.required
+                                                  }">
+                                                </div>
+                                                <div class="form-group">
+                                                    <div class="fs-6 my-2">Confirm New Password</div>
+                                                    <input type="password" class="form-control"
+                                                        placeholder="Confirm New Password"
+                                                        formControlName="confirmPassword" [ngClass]="{
+                                                        'is-invalid':
+                                                        (controls.confirmPassword.touched || isPasswordSubmitted) &&
+                                                        controls.confirmPassword.errors?.required
+                                                      }">
+                                                </div>
+                                                <div class="d-flex align-items-center justify-content-end gap-3 my-3">
+                                                    <button type="button" class="btn btn-secondary"
+                                                        (click)="resetPassword(false)">Cancel</button>
+                                                    <button type="button" class="btn btn-primary">
+                                                        Save Changes
+                                                    </button>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
-            </div>
+                </tab>
+            </tabset>
         </div>
     </div>
 </div>
+
+<ng-template #logoutModal>
+    <div class="modal-body text-center">
+        <p class="mb-4">Are you sure you want to logout?</p>
+        <div class="d-flex justify-content-center gap-3">
+            <button type="button" class="btn btn-danger logout-btn" (click)="confirmLogout()">Continue</button>
+            <button type="button" class="btn btn-secondary logout-btn" (click)="declineLogout()">No</button>
+        </div>
+    </div>
+</ng-template>

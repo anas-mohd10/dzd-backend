@@ -29,6 +29,13 @@
             border-radius: 10px 10px 0 0;
         }
 
+        .video {
+            height: 10rem;
+            width: 100%;
+            object-fit: contain;
+            border-radius: 10px 10px 0 0;
+        }
+
         .details {
             display: flex;
             align-items: flex-start;
@@ -58,7 +65,7 @@
             border: 1px solid rgb(149, 157, 165);
             display: grid;
             place-items: center;
-
+            z-index: 10;
             .checked {
                 background: #20BDAB;
                 height: 1rem;
@@ -104,6 +111,12 @@
         position: relative;
 
         img {
+            height: 140px;
+            width: 100%;
+            object-fit: contain;
+        }
+
+        .video {
             height: 140px;
             width: 100%;
             object-fit: contain;

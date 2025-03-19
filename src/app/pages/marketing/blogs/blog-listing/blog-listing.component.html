@@ -13,9 +13,14 @@
         </li>
       </ul>
     </div>
-    <button class="btn btn-primary" routerLink="{{ appRoute.blogs.create }}">
-      Create blog
-    </button>
+    <div class="d-flex gap-2">
+      <button class="btn btn-secondary" routerLink="{{ appRoute.blogs.categories }}">
+        View categories
+      </button>
+      <button class="btn btn-primary" routerLink="{{ appRoute.blogs.create }}">
+        Create blog
+      </button>
+    </div>
   </div>
 
   <div class="card my-4">
@@ -37,23 +42,21 @@
       <div class="blogs my-6" *ngIf="blogs.length > 0">
         <ng-container *ngFor="let blog of blogs">
           <a class="blog" routerLink="{{appRoute.blogs.update + '/' + blog.slug}}">
-            <img src={{blog?.thumbnail}} alt={{blog?.title}} class="rounded"
+            <img src="{{blog?.thumbnail}}" alt="{{blog?.title}}" class="rounded"
               onerror="this.src = 'assets/images/default.png'">
             <div class="mt-4">
-              <div>{{blog?.category}}</div>
+              <div>{{blog?.category?.title || blog?.category}}</div>
               <div class="fs-5 title">{{blog?.title}}</div>
               <div class="text-muted">{{blog?.createdAt}}</div>
             </div>
           </a>
+
         </ng-container>
       </div>
 
       <div *ngIf="blogs.length == 0">
         <app-no-results></app-no-results>
       </div>
-
-      <app-pagination (pageTrigger)="onPageTriggered($event)" [totalResults]="totalResults" [totalPages]="totalPages"
-        [pageIndex]="page" [pageSize]="limit"></app-pagination>
     </div>
   </div>
 </div>

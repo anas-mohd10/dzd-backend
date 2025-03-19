@@ -11,6 +11,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { appRoutes } from '../../../../config/routes';
 import { CategoryService } from '../../../../includes/services/category.service';
 import { HotToastService } from '@ngneat/hot-toast';
+import slugify from 'slugify';
 
 interface parentDetails {
   refid: string;
@@ -26,27 +27,23 @@ export class UpdateCategoryComponent implements OnInit {
   form: FormGroup = new FormGroup({});
   isSubmitted: boolean = false;
   appRoute = appRoutes;
-  details: any;
   categories: Array<any> = [];
-  categoryDetails: Array<any> = [];
-  root: string = '';
-  path: string = '';
-  parentDetails: parentDetails = {
-    refid: '',
-    catid: '',
-  };
-  categorySlug: string = '';
+  categoryDocs: Array<any> = [];
+  rootDoc: any;
+  parentDoc: any;
   cover: string = '';
   mobileCover: string = '';
   thumbnail: string = '';
+  categoryDoc: any;
+  categoryId: string = '';
 
   constructor(
     private Router: Router,
     private CategoryService: CategoryService,
     private HotToastService: HotToastService,
-    private ChangeDetectorRef: ChangeDetectorRef,
-    private ActivatedRoute: ActivatedRoute
-  ) {}
+    private ActivatedRoute: ActivatedRoute,
+    private ChangeDetectorRef: ChangeDetectorRef
+  ) { }
 
   get formControls() {
     return this.form.controls;
@@ -54,16 +51,16 @@ export class UpdateCategoryComponent implements OnInit {
 
   onThumbnailTriggered(event: any) {
     this.form.get('thumbnail')?.setValue(event?.path);
-    this.thumbnail = event.path;
+    this.thumbnail = event?.path;
   }
 
   onCoverTriggered(event: any) {
     this.form.get('cover')?.setValue(event?.path);
-    this.cover = event.path;
+    this.cover = event?.path;
   }
 
   onMobileCoverTriggered(event: any) {
-    this.form.get('mobileCover')?.setValue(event?.path);  
+    this.form.get('mobileCover')?.setValue(event?.path);
     this.mobileCover = event.path;
   }
 
@@ -84,152 +81,143 @@ export class UpdateCategoryComponent implements OnInit {
     }
   }
 
-  formatDate(date: string) {
-    return new Date(date).toLocaleString();
+  onHierarchyChange() {
+    if (this.form.get('isRoot')?.value == 'true') {
+      this.form.get('hierarchy')?.setValue('');
+      this.rootDoc = null;
+      this.parentDoc = null;
+      this.form.get('hierarchy')?.clearValidators();
+      this.form.get('hierarchy')?.updateValueAndValidity();
+    } else {
+      this.form.get('hierarchy')?.setValidators([Validators.required]);
+      this.form.get('hierarchy')?.updateValueAndValidity();
+    }
   }
 
   ngOnInit(): void {
-    this.categorySlug = this.ActivatedRoute.snapshot.queryParams.category || '';
-    this.initForm();
-    this.getCategory();
-    this.CategoryService.getCategoryDetails(this.categorySlug).subscribe({
-      next: (res: any) => {
-        if (res?.errorCode == 0) {
-          this.details = res?.result;
-          this.cover = res?.result?.cover;
-          this.mobileCover = res?.result?.mobileCover;
-          this.thumbnail = res?.result?.thumbnail;
-          this.parentDetails = {
-            refid: res?.result?.parent?.refid?._id,
-            catid: res?.result?.parent?.catid,
-          };
-          res?.result?.root ? (this.root = res?.result?.root?._id) : null;
-          this.form.patchValue(res?.result);
-          this.path = res?.result?.path;
-          this.ChangeDetectorRef.markForCheck();
-        } else {
-        }
-      },
-      error: (err: any) => {},
-    });
-  }
+    this.categoryId = this.ActivatedRoute.snapshot.queryParams['category'] || '';
 
-  initForm() {
     this.form = new FormGroup({
       name: new FormControl('', Validators.required),
+      slug: new FormControl(''),
+      description: new FormControl(''),
       thumbnail: new FormControl(null),
       cover: new FormControl(null),
       mobileCover: new FormControl(null),
+      hierarchy: new FormControl(''),
       isRoot: new FormControl(true),
-      parent: new FormControl(''),
       isActive: new FormControl(true),
-      isFeatured: new FormControl(false),
       isArchive: new FormControl(false),
-      description: new FormControl(''),
+      isMenu: new FormControl(false),
+      isFilter: new FormControl(true),
       metaTitle: new FormControl(''),
       metaDescription: new FormControl(''),
       metaKeywords: new FormControl(''),
     });
-  }
 
-  getCategory() {
-    this.CategoryService.getCategory().subscribe({
+    this.fetchCategories();
+
+    this.CategoryService.getCategoryDetails(this.categoryId).subscribe({
       next: (res: any) => {
-        this.categoryDetails = res?.result;
-        for (let i = 0; i < res?.result.length; i++) {
-          if (
-            res?.result[i]?.isActive == true &&
-            res?.result[i]?.isArchive == false
-          ) {
-            if (res?.result[i]?.parent && !res?.result[i]?.root) {
-              this.categories.push(
-                res?.result[i]?.parent.refid.name + ' > ' + res?.result[i]?.name
-              );
-            }
-            if (!res?.result[i]?.parent && res?.result[i]?.root) {
-              this.categories.push(
-                res?.result[i]?.root.name + ' > ' + res?.result[i]?.name
-              );
-            }
-            if (res?.result[i]?.parent && res?.result[i]?.root) {
-              if (
-                res?.result[i]?.parent.refid?._id != res?.result[i]?.root?._id
-              ) {
-                this.categories.push(
-                  res?.result[i]?.root.name +
-                    ' > ' +
-                    res?.result[i]?.parent.refid.name +
-                    ' > ' +
-                    res?.result[i]?.name
-                );
-              } else if (
-                res?.result[i]?.parent.refid?._id == res?.result[i]?.root?._id
-              ) {
-                this.categories.push(
-                  res?.result[i]?.root.name + ' > ' + res?.result[i]?.name
-                );
-              }
-            }
-            if (!res?.result[i]?.parent && !res?.result[i]?.root) {
-              this.categories.push(res?.result[i]?.name);
-            }
-          }
-        }
+        if (res.errorCode == 0) {
+          this.categoryDoc = res?.result;
+          this.form.patchValue(res.result);
 
-        this.ChangeDetectorRef.markForCheck();
-      },
-      error: (err: any) => {},
+          // Set image paths
+          this.cover = res.result?.cover || '';
+          this.mobileCover = res.result?.mobileCover || '';
+          this.thumbnail = res.result?.thumbnail || '';
+
+          // Set Root and Parent Details based on the categoryDoc
+          if (res?.result?.rootDetails) {
+            this.rootDoc = res?.result?.rootDetails;
+          }
+
+          if (res?.result?.parentDetails) {
+            this.parentDoc = res?.result?.parentDetails;
+          }
+
+          this.ChangeDetectorRef.markForCheck();
+        } else { }
+      }, error: (err: any) => { }
     });
   }
 
-  getParentDetails(event: any) {
-    this.path = event.value;
-    let split = event.value.split(' > ');
-    let len = split.length;
-    for (let category of this.categoryDetails) {
-      if (len > 1) {
-        if (split[0] == category.name) {
-          this.root = category?._id;
-        }
-        if (split[len - 1] == category.name) {
-          this.parentDetails.refid = category?._id;
-          this.parentDetails.catid = category.catid;
-        }
-      } else if (len == 1) {
-        if (split[0] == category.name) {
-          this.root = category?._id;
-          this.parentDetails.refid = category?._id;
-          this.parentDetails.catid = category.catid;
-        }
-      }
+  generateSlug() {
+    this.form.get('slug')?.setValue(slugify(this.form.get('name')?.value, { lower: true, strict: true, remove: /[*+~.()'"!:@]/g, trim: true }));
+    this.ChangeDetectorRef.markForCheck();
+  }
+
+  fetchCategories() {
+    this.CategoryService.getCategory().subscribe({
+      next: (res: any) => {
+        if (res?.errorCode == 0) {
+          this.categoryDocs = res?.result;
+
+          this.categories = this.categoryDocs.map((category: any) => {
+            if (category.slug == this.categoryId) return
+            let categoryDocItem = category.name;
+            if (category.rootDetails && category.rootDetails.slug == category.parentDetails.slug) {
+              categoryDocItem = category.rootDetails.name + ' > ' + category.name;
+            } else if (category.parentDetails) {
+              categoryDocItem = category.rootDetails.name + ' > ' + category.parentDetails.name + ' > ' + category.name;
+            }
+
+            return {
+              ...category,
+              name: categoryDocItem
+            }
+          });
+
+          // Sort the categories by name
+          this.categories.sort((a: any, b: any) => a.name.localeCompare(b.name));
+          this.ChangeDetectorRef.markForCheck();
+        } else { }
+      },
+      error: (err: any) => { },
+    });
+  }
+
+  getParentDocs() {
+    let categoryMap = new Map();
+    this.categoryDocs.forEach((category: any) => (categoryMap.set(category.name, category)));
+    let categoryItems = this.form.get('hierarchy')?.value.split(' > ');
+    let categoryRootItem = categoryMap.get(categoryItems[0]);
+    let categoryParentItem = categoryMap.get(categoryItems[categoryItems.length - 1]);
+    this.rootDoc = categoryRootItem;
+    this.parentDoc = categoryParentItem;
+  }
+
+  formatCategoryDoc(categoryDoc: any) {
+    return {
+      name: categoryDoc.name,
+      slug: categoryDoc.slug,
+      _id: categoryDoc._id,
     }
+  }
+
+  formatDate(date: string) {
+    return new Date(date).toLocaleString('en-US', {
+      year: 'numeric',
+      month: 'short',
+      day: 'numeric',
+      hour: 'numeric',
+      minute: 'numeric',
+    });
   }
 
   onSubmit() {
     if (!this.form.valid) {
       this.isSubmitted = true;
+      this.HotToastService.error('Please fill all the required fields');
       return;
     }
 
-    this.CategoryService.updateCategory(this.details.slug, {
-      name: this.form.get('name')?.value,
-      isRoot: this.form.get('isRoot')?.value,
-      root: this.root ? this.root : null,
-      parent: this.parentDetails?.refid ? this.parentDetails : null,
-      _id: this.details?._id,
-      slug: this.details.slug,
-      description: this.form.get('description')?.value,
-      metaTitle: this.form.get('metaTitle')?.value,
-      metaDescription: this.form.get('metaDescription')?.value,
-      metaKeywords: this.form.get('metaKeywords')?.value,
-      thumbnail: this.form.get('thumbnail')?.value,
-      cover: this.form.get('cover')?.value,
-      mobileCover: this.form.get('mobileCover')?.value,
-      catid: this.details.catid,
-      isActive: this.form.get('isActive')?.value,
-      isFeatured: this.form.get('isFeatured')?.value,
-      isArchive: this.form.get('isArchive')?.value,
-      path: this.path,
+    this.CategoryService.updateCategory(this.categoryDoc.slug, {
+      ...this.form.value,
+      _id: this.categoryDoc._id,
+      rootDetails: ['false', false].includes(this.form.get('isRoot')?.value) && this.formatCategoryDoc(this.rootDoc),
+      parentDetails: ['false', false].includes(this.form.get('isRoot')?.value) && this.formatCategoryDoc(this.parentDoc),
     }).subscribe({
       next: (res: any) => {
         if (res.errorCode != 0) {
@@ -246,7 +234,7 @@ export class UpdateCategoryComponent implements OnInit {
   }
 
   onRestore() {
-    this.CategoryService.restoreCategory(this.details?._id).subscribe({
+    this.CategoryService.restoreCategory(this.categoryDoc?._id).subscribe({
       next: (res: any) => {
         if (res?.errorCode == 0) {
           this.HotToastService.success(res?.message);
@@ -262,7 +250,7 @@ export class UpdateCategoryComponent implements OnInit {
   }
 
   onDelete() {
-    this.CategoryService.deleteCategory(this.details?._id).subscribe({
+    this.CategoryService.deleteCategory(this.categoryDoc?._id).subscribe({
       next: (res: any) => {
         if (res?.errorCode == 0) {
           this.Router.navigate([appRoutes.category.CATEGORY_LIST]);

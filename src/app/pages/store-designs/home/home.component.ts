@@ -36,19 +36,20 @@ export class HomeComponent implements OnInit {
       type: 'magestic-mosaic',
       icon: 'assets/widgets/rush-lake.png',
       description:
-        'The following widget can be used to show images within a particular category.The widget contains images.',
+        `The following widget can be used to show images within a particular category.The widget contains images. 
+       <strong>Magestic Mosaic - 800(w) x 244(h) - 1(Largest one) , 390(w) x 244(h) - 4(Smaller ones)</strong>`,
     }, {
       title: 'Glamour Glaze',
       type: 'glamour-glaze',
       icon: 'assets/widgets/volta-lake.png',
       description:
-        'The widget can be used to showcase new brands or existing brands.The widget contains two section with image and description section on either side and vice-versa.The description box has a black border, with heading, subheading and button.',
+        'The widget can be used to showcase new brands or existing brands.The widget contains two section with image and description section on either side and vice-versa.The description box has a black border, with heading, subheading and button. <strong>Glamour Glaze - 800(w) x 697(h) - 1(Bigger one) ,390(w) x 220(h) - 3(Smaller ones)</strong>',
     }, {
       title: 'Dazzle Design',
       type: 'dazzle-design',
       icon: 'assets/widgets/1x4.png',
       description:
-        'The following widget can be used to show collection of categories.The following widget is a collection of card where it has one main card and other 4 cards.The cards contain an image and decrotaive text which is center aligned with the image.',
+        'The following widget can be used to show collection of categories.The following widget is a collection of card where it has one main card and other 4 cards.The cards contain an image and decrotaive text which is center aligned with the image. <strong>Dazzle Design - 595(w) x 595(h) - 1(bigger one) , 287(w) x 287(h) - 4 (smaller ones)</strong>',
     }, {
       title: 'Celestial Canvas',
       type: 'celestial-canvas',
@@ -93,13 +94,13 @@ export class HomeComponent implements OnInit {
       type: 'noble-nodes',
       icon: 'assets/widgets/noble-nodes.png',
       description:
-        'The following widget can be used to show images within a particular category.The widget contains images.',
+        'The following widget can be used to show images within a particular category.The widget contains images.<strong> Noble Nodes - 595(w) x 320(h) - 2(equal ones),390(w) x 320(h) - 1(smaller one), 800(w) x 320(h) - 1(bigger one)</strong>',
     }, {
       title: 'Prime Plates',
       type: 'prime-plates',
       icon: 'assets/widgets/prime-plates.png',
       description:
-        'The following widget can be used to show images within a particular category.The widget contains images.',
+        'The following widget can be used to show images within a particular category.The widget contains images.<strong>Prime Plates - 390(w) x 320(h) - 1(smaller one),800(w) x 320(h) - 1(bigger one)</strong>',
     }, {
       title: 'Elite Elements',
       type: 'elite-elements',
@@ -116,7 +117,7 @@ export class HomeComponent implements OnInit {
       type: 'twin-towers',
       icon: 'assets/widgets/twin-towers.png',
       description:
-        'The following widget can be used to show images within a particular category.The widget contains images.',
+        'The following widget can be used to show images within a particular category.The widget contains images.<strong>Twin Towers - 595(w) x 320(h) - 2</strong>',
     }, {
       title: 'Slider Spotlight',
       type: 'slider-spotlight',
@@ -128,7 +129,7 @@ export class HomeComponent implements OnInit {
       type: 'trending-teasers',
       icon: 'assets/widgets/trending-teasers.png',
       description:
-        'The following widget can be used to show images within a particular category. The widget contains images.',
+        'The following widget can be used to show images within a particular category. The widget contains images. <strong>Trending Teasers - 1210(w) x 320(h) - 1(bigger one),595(w) x 320(h) - 2(smaller ones)</strong>',
     }, {
       title: 'Smart Tiles',
       type: 'smart-tiles',
@@ -306,6 +307,13 @@ export class HomeComponent implements OnInit {
     { key: 'Open static page', value: 'static-pages' },
     { key: 'Open CMS page', value: 'cms-pages' },
     { key: 'Search filters', value: 'search-filters' },
+  ];
+  sortOptions: Array<any> = [
+    { key: 'Popularity', value: 'popularity' },
+    { key: 'Newest', value: 'newest' },
+    { key: 'Oldest', value: 'oldest' },
+    { key: 'Price: Low to High', value: 'ascending' },
+    { key: 'Price: High to Low', value: 'descending' },
   ];
   screenLoad: number = 0;
   hyperlinkheroForm: FormGroup;
@@ -1002,6 +1010,8 @@ export class HomeComponent implements OnInit {
       url: event,
     };
     this.widgetImagePreview = this.widgetImages[this.widgetImagePreviewIndex];
+    this.widgetImagePreviewIndex = null;
+    this.widgetImagePreview = null;
     this.ChangeDetectorRef.markForCheck();
   }
 
@@ -1021,6 +1031,8 @@ export class HomeComponent implements OnInit {
   deleteWidgetImage(index: number, event: Event): void {
     event.stopPropagation();
     this.widgetImages.splice(index, 1);
+    this.widgetImagePreviewIndex = null;
+    this.widgetImagePreview = null;
   }
 
   getWidgetImagePreview(index: number) {
@@ -1418,6 +1430,7 @@ export class HomeComponent implements OnInit {
 
       sliderButtonPosition: new FormControl('relative'),
       paginationPosition: new FormControl('relative'),
+      sortOptions: new FormControl('popularity'),
       hovering: new FormGroup({
         desktop: new FormControl(false),
         mobile: new FormControl(false),

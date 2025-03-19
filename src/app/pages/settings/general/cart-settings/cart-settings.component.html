@@ -73,6 +73,35 @@
                 </div>
             </div>
         </div>
+        <div class="card my-4">
+            <div class="card-body">
+                <div class="row align-items-center">
+                    <div class="col-lg-4 fs-5">Cart Redirection</div>
+                    <div class="col-lg-8 form-group">
+                        <app-switch [isToggledProps]="form.get('isCartRedirect')?.value" [switchId]="'isCartRedirect'"
+                            (switchToggled)="onSwitchTriggered($event)"></app-switch>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-body">
+                <div class="row align-items-center">
+                    <div class="col-lg-4 fs-5">Abandoned Cart Enabled</div>
+                    <div class="col-lg-8">
+                        <app-switch [isToggledProps]="form.get('isAbandonedCartEnabled')?.value" [switchId]="'isAbandonedCartEnabled'"
+                            (switchToggled)="onSwitchTriggered($event)"></app-switch>
+                    </div>
+                </div>
+                <div class="row align-items-center mt-8" *ngIf="form.get('isAbandonedCartEnabled')?.value == true">
+                    <div class="col-lg-4 fs-5">Abandoned Cart Hours</div>
+                    <div class="col-lg-8 form-group">
+                        <input type="number" class="form-control" formControlName="abandonedCartHours">
+                    </div>
+                </div>
+            </div>
+        </div>
+        
     </form>
 
 </div>

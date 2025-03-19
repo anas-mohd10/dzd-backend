@@ -80,3 +80,5 @@ export * from './pickup.endpoints';
 export * from './app-keys.endpoints';
 export * from './location.endpoints';
 export * from './platform.endpoints'
+export * from './menu.navigation.endpoints'
+export * from './sms.endpoits'

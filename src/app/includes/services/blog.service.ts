@@ -3,6 +3,13 @@ import { HttpClient } from '@angular/common/http';
 import { CommonService } from './common.service';
 import { blogEndpoints } from '../../config/endpoints';
 
+interface BlogCategory {
+  _id: string;
+  title: string;
+  thumbnail: string;
+  slug: string;
+  isActive: boolean;
+}
 @Injectable({
   providedIn: 'root'
 })
@@ -23,6 +30,8 @@ export class BlogService {
     return this.http.post(`${url}`, data);
   }
 
+
+
   importBlogs(formData: any) {
     const url = this.commonService.getFullUrl(blogEndpoints.importBlogs);
     return this.http.post(`${url}`, formData);
@@ -41,5 +50,36 @@ export class BlogService {
   deleteBlog(blog: string) {
     const url = this.commonService.getFullUrl(blogEndpoints.deleteBlog + `/${blog}`);
     return this.http.delete(`${url}`);
+  }
+
+  activeBlogs() {
+    const url = this.commonService.getFullUrl(blogEndpoints.activeBlogs);
+    return this.http.get(`${url}`);
+  }
+
+  // Add these methods to your existing BlogService
+  createCategory(data: any) {
+    return this.http.post(this.commonService.getFullUrl(blogEndpoints.createBlogCategory), data);
+  }
+
+  // Add this method if it doesn't exist
+  getCategories() {
+    return this.http.get<{ errorCode: number, result: BlogCategory[] }>(this.commonService.getFullUrl(blogEndpoints.blogCategories));
+  }
+
+  getCategoryDetails(slug: string) {
+    return this.http.get(this.commonService.getFullUrl(`${blogEndpoints.blogCategory}/${slug}`));
+  }
+
+  updateCategory(categoryId: string | undefined, data: any) {
+    return this.http.put(this.commonService.getFullUrl(`${blogEndpoints.updateBlogCategory}/${categoryId}`), data);
+  }
+
+  deleteCategory(slug: string) {
+    return this.http.delete(this.commonService.getFullUrl(`${blogEndpoints.deleteBlogCategory}/${slug}`));
+  }
+
+  getBlogBySlug(slug: string) {
+    return this.http.get(this.commonService.getFullUrl(`/blogs/${slug}`));
   }
 }

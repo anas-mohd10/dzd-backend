@@ -31,7 +31,6 @@ export class MediaListingComponent implements OnInit {
   isUrlSubmitted: boolean = false
   files: Array<any> = []
   previews: Array<any> = []
-
   constructor(
     private MediaService: MediaService,
     private ChangeDetectorRef: ChangeDetectorRef,
@@ -118,17 +117,24 @@ export class MediaListingComponent implements OnInit {
     let files = event.target.files;
     for (let i = 0; i < files.length; i++) {
       let file = files[i];
+      let isVideo = file.type.startsWith('video/');
+      
+      // Log file information
+      console.log(`File: ${file.name}, Type: ${file.type}, Size: ${file.size} bytes`);
+      
       let reader = new FileReader();
       reader.onload = (e) => {
         this.previews.push({
           url: e.target?.result,
-          title: file.name
+          title: file.name,
+          type: isVideo ? 'video' : 'image',
+          fileType: file.type
         });
         this.files.push(file);
+        this.ChangeDetectorRef.markForCheck();
       };
       reader.readAsDataURL(file);
     }
-    this.ChangeDetectorRef.markForCheck();
   }
 
   cancelMedias() {
@@ -143,25 +149,34 @@ export class MediaListingComponent implements OnInit {
   }
 
   addMedias() {
-    let formdata = new FormData()
-    for (let file of this.files) formdata.append('file', file)
+    let formdata = new FormData();
+    
+    for (let file of this.files) {
+      console.log(`Adding file: ${file.name}, type: ${file.type}, size: ${file.size} bytes`);
+      formdata.append('file', file);
+    }
+    
     this.MediaService.addMedias(formdata).subscribe({
       next: (res: any) => {
+        console.log('Upload response:', res); // Log full response
         if (res?.errorCode == 0) {
-          this.Toast.success(res.message)
-          this.modalRef?.hide()
-          this.files = []
-          this.previews = []
-          this.getMedias()
+          this.Toast.success(res.message);
+          this.modalRef?.hide();
+          this.files = [];
+          this.previews = [];
+          this.getMedias();
         } else {
-          this.Toast.error(res.message)
+          this.Toast.error(res.message);
         }
-      }, error: (err: any) => {
-        this.Toast.error(err.error.message)
-      }, complete: () => {
-        this.ChangeDetectorRef.markForCheck()
+      }, 
+      error: (err: any) => {
+        console.error('Upload error:', err); // Log detailed error
+        this.Toast.error(err.error?.message || 'Failed to upload files');
+      }, 
+      complete: () => {
+        this.ChangeDetectorRef.markForCheck();
       }
-    })
+    });
   }
 
   clear() {
@@ -193,4 +208,36 @@ export class MediaListingComponent implements OnInit {
       }
     })
   }
+
+
+  // Check if the file is an image
+  isImageFile(path: string): boolean {
+    if (!path) return false;
+    
+    const imageExtensions = ['jpg', 'jpeg', 'png', 'gif', 'webp', 'bmp', 'svg'];
+    const extension = this.getFileExtension(path).toLowerCase();
+    
+    return imageExtensions.includes(extension);
+  }
+
+  // Check if the file is a video
+  isVideoFile(path: string): boolean {
+    if (!path) return false;
+    
+    const videoExtensions = ['mp4', 'webm', 'ogg', 'mov', 'avi', 'wmv', 'flv', 'mkv'];
+    const extension = this.getFileExtension(path).toLowerCase();
+    
+    return videoExtensions.includes(extension);
+  }
+
+  // Get file extension from path
+  getFileExtension(path: string): string {
+    if (!path) return '';
+    
+    const lastDotIndex = path.lastIndexOf('.');
+    if (lastDotIndex === -1) return '';
+    
+    return path.substring(lastDotIndex + 1);
+  }
+
 }

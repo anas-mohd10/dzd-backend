@@ -333,6 +333,15 @@
                 <option value="true">Yes</option>
               </select>
             </div>
+            <!-- Add the new field here -->
+            <div class="col-lg-4 form-group mb-3">
+              <label class="fs-6 mb-3">Include Shipping in Tax</label>
+              <select class="form-select mb-3" formControlName="isShippingTaxable">
+                <option value="" disabled>-- Select an option --</option>
+                <option value="false">No</option>
+                <option value="true">Yes</option>
+              </select>
+            </div>
             <div class="col-lg-4 form-group mb-3">
               <label class="fs-6 mb-3">Notify Button</label>
               <select class="form-select mb-3" formControlName="isNotifyStock">
@@ -370,49 +379,81 @@
                 <option value="true">Yes</option>
               </select>
             </div>
+            <div class="col-lg-4 form-group mb-3">
+              <label class="fs-6 mb-3">Buffer Time for Delivery Slots ( in minutes )</label>
+              <input type="number" class="form-control mb-3" formControlName="deliverSlotBufferTime"
+                placeholder="Enter buffer time in minutes" min="0" />
+            </div>
           </div>
         </div>
       </div>
 
-<div class="card my-4">
-  <div class="card-body">
-    <div class="fs-3 fw-bold mb-2">Default charges</div>
-    <div class="row">
-      <div class="col-lg-4 form-group mb-3">
-        <label class="fs-6 mb-3">Default Shipping Charge</label>
-        <input type="number" placeholder="Enter the default shipping charge" class="form-control fs-6" formControlName="defaultShippingCharge" />
+      <div class="card my-4">
+        <div class="card-body">
+          <div class="fs-3 fw-bold mb-2">Auth Settings</div>
+          <div class="row">
+            <div class="col-lg-4">
+              <label class="fs-6 mb-3">Verify number with twilio</label>
+              <select class="form-select mb-3" formControlName="verifyNumberWithTwilio">
+                <option value="" disabled>-- Select an option --</option>
+                <option value="false">No</option>
+                <option value="true">Yes</option>
+              </select>
+            </div>
+          </div>
+        </div>
       </div>
-      <div class="col-lg-4 form-group mb-3">
-        <label class="fs-6 mb-3">Minimum cart amount</label>
-        <input type="number" placeholder="Enter the minimum cart value" class="form-control fs-6" formControlName="defaultMinimumCartAmount" />
+      <div class="card my-4">
+        <div class="card-body">
+          <div class="fs-3 fw-bold mb-2">Default charges</div>
+          <div class="row">
+            <div class="col-lg-4">
+              <label class="fs-6 mb-3">Enable Default Charges</label>
+              <select class="form-select mb-3" formControlName="isDefaultChargesEnabled">
+                <option value="" disabled>-- Select an option --</option>
+                <option value="false">No</option>
+                <option value="true">Yes</option>
+              </select>
+            </div>
+            <div class="col-lg-4 form-group mb-3">
+              <label class="fs-6 mb-3">Default Shipping Charge</label>
+              <input type="number" placeholder="Enter the default shipping charge" class="form-control fs-6"
+                formControlName="defaultShippingCharge" />
+            </div>
+          </div>
+        </div>
       </div>
-    </div>
-  </div>
-</div>
 
-<div class="card my-4">
-  <div class="card-body">
-    <div class="fs-3 fw-bold mb-2">Price Formatter</div>
-    <div class="row">
-      <div class="col-lg-4 col-md-6 form-group mb-3">
-        <label class="fs-6 mb-3">Comma Separation</label>
-        <select class="form-select mb-3" formControlName="commaSeparation">
-          <option [ngValue]="false">No</option>
-          <option [ngValue]="true">Yes</option>
-        </select>
+      <div class="card my-4">
+        <div class="card-body">
+          <div class="fs-3 fw-bold mb-2">Price Formatter</div>
+          <div class="row">
+            <div class="col-lg-4 col-md-6 form-group mb-3">
+              <label class="fs-6 mb-3">Comma Separation</label>
+              <select class="form-select mb-3" formControlName="commaSeparation">
+                <option [ngValue]="false">No</option>
+                <option [ngValue]="true">Yes</option>
+              </select>
+            </div>
+            <div class="col-lg-4 col-md-6 form-group mb-3">
+              <label class="fs-6 mb-3">Decimal Values</label>
+              <select class="form-select mb-3" formControlName="decimalValues">
+                <option [ngValue]="0">0</option>
+                <option [ngValue]="1">1</option>
+                <option [ngValue]="2">2</option>
+                <option [ngValue]="3">3</option>
+              </select>
+            </div>
+            <div class="col-lg-4 col-md-6 form-group mb-3">
+              <label class="fs-6 mb-3">Currency Position</label>
+              <select class="form-select mb-3" formControlName="currencyLocation">
+                <option [ngValue]="'before'">Before</option>
+                <option [ngValue]="'after'">After</option>
+              </select>
+            </div>
+          </div>
+        </div>
       </div>
-      <div class="col-lg-4 col-md-6 form-group mb-3">
-        <label class="fs-6 mb-3">Decimal Values</label>
-        <select class="form-select mb-3" formControlName="decimalValues">
-          <option [ngValue]="0">0</option>
-          <option [ngValue]="1">1</option>
-          <option [ngValue]="2">2</option>
-          <option [ngValue]="3">3</option>
-        </select>
-      </div>
-    </div>
-  </div>
-</div>
 
 
       <div class="card my-4">
@@ -504,12 +545,10 @@
                 placeholder="Enter placeholder text" />
             </div>
             <div class="col-lg-2">
-              <button 
-              class="btn btn-secondary w-100" 
-              (click)="addPlaceholder()" 
-              [disabled]="currentlyEditingPlaceholder !== null">
-              Add Placeholder
-            </button>
+              <button class="btn btn-secondary w-100" (click)="addPlaceholder()"
+                [disabled]="currentlyEditingPlaceholder !== null">
+                Add Placeholder
+              </button>
             </div>
           </div>
           <div class="mt-3">
@@ -529,7 +568,8 @@
                   </button>
                 </div>
                 <div class="col-lg-2" *ngIf="currentlyEditingPlaceholder === placeholder">
-                  <button class="btn btn-primary w-100" type="button" (click)="savePlaceholder()" [disabled]="placeHolder.invalid">
+                  <button class="btn btn-primary w-100" type="button" (click)="savePlaceholder()"
+                    [disabled]="placeHolder.invalid">
                     Save
                   </button>
                 </div>

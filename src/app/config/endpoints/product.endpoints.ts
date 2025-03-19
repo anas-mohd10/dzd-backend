@@ -40,4 +40,5 @@ export const productEndpoints = {
     productStoreFields: '/productStoreFields',
     updateProductStoreFields: '/updateProductStoreFields',
     bulkUpdateProducts: '/product-bulk-update',
+    getProductOffers: '/getProductOffers'
 }

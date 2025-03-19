@@ -16,9 +16,23 @@
       <div class="d-flex align-items-center justify-content-end gap-2">
          <button class="btn btn-secondary" routerLink="{{ appRoute.customers.newsletterSubscribers }}">
             Newsletter subscribers
+            <span>
+               <svg width="18" height="18" data-slot="icon" fill="none" stroke-width="1.5"
+                  stroke="currentColor" viewBox="0 0 24 24"
+                  xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                  <path stroke-linecap="round" stroke-linejoin="round"
+                     d="m8.25 4.5 7.5 7.5-7.5 7.5"></path>
+               </svg>
+            </span>
          </button>
          <button class="btn btn-primary" routerLink="{{ appRoute.customers.ADD_CUSTOMERS_LIST }}">
             Add Customers
+            <span>
+               <svg width="18" height="18" data-slot="icon" fill="none" stroke-width="1.5" stroke="currentColor"
+                  viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"></path>
+               </svg>
+            </span>
          </button>
       </div>
    </div>
@@ -53,50 +67,52 @@
       </div>
    </div>
 
-   <table class="table table-bordered">
-      <thead>
-         <tr>
-            <th>Name</th>
-            <th>Email</th>
-            <th>Mobile</th>
-            <th>Source</th>
-            <th>Status</th>
-            <th>Created</th>
-            <th>Action</th>
-         </tr>
-      </thead>
-      <tbody>
-         <ng-container *ngFor="let customer of customers; let i =index">
+   <div class="table-responsive">
+      <table class="table table-bordered">
+         <thead>
             <tr>
-               <td>{{customer?.name}}</td>
-               <td>{{customer?.email}}</td>
-               <td>{{customer?.countryCode}} {{customer?.mobile}}</td>
-               <td>
-                  <span class="{{customer?.regdType}} d-flex align-items-center justify-content-center rounded">{{customer?.regdType}}</span>
-               </td>
-               <td>
-                  <span class="alert alert-success p-1 fs-6" [ngClass]="{'alert-danger': !customer?.isActive}">
-                     {{customer?.isActive ? 'Active' : 'Inactive'}}
-                  </span>
-               </td>
-               <td>
-                  {{formatDate(customer?.createdAt)}}
-                  {{formatTime(customer?.createdAt)}}
-               </td>
-               <td routerLink="{{appRoute.customers.UPDATE_CUSTOMERS_LIST + '/' + customer?.userid}}">
-                  <div class="cursor-pointer">
-                     <img src="assets/icons/editPen.svg" alt="Icon">
-                  </div>
+               <th>Name</th>
+               <th>Email</th>
+               <th>Mobile</th>
+               <th>Source</th>
+               <th>Status</th>
+               <th>Created</th>
+               <th>Action</th>
+            </tr>
+         </thead>
+         <tbody>
+            <ng-container *ngFor="let customer of customers; let i =index">
+               <tr>
+                  <td class="text-truncate" style="max-width: 150px;" title="{{customer?.name}}">{{customer?.name}}</td>
+                  <td class="text-truncate" style="max-width: 200px;" title="{{customer?.email}}">{{customer?.email}}</td>
+                  <td class="text-nowrap">{{customer?.countryCode}} {{customer?.mobile}}</td>
+                  <td>
+                     <span class="{{customer?.regdType}} d-flex align-items-center justify-content-center rounded">{{customer?.regdType}}</span>
+                  </td>
+                  <td>
+                     <span class="alert alert-success p-1 fs-6" [ngClass]="{'alert-danger': !customer?.isActive}">
+                        {{customer?.isActive ? 'Active' : 'Inactive'}}
+                     </span>
+                  </td>
+                  <td>
+                     {{formatDate(customer?.createdAt)}}
+                     {{formatTime(customer?.createdAt)}}
+                  </td>
+                  <td routerLink="{{appRoute.customers.UPDATE_CUSTOMERS_LIST + '/' + customer?.userid}}">
+                     <div class="cursor-pointer">
+                        <img src="assets/icons/editPen.svg" alt="Icon">
+                     </div>
+                  </td>
+               </tr>
+            </ng-container>
+            <tr *ngIf="customers.length == 0">
+               <td colspan="7">
+                  <app-no-results></app-no-results>
                </td>
             </tr>
-         </ng-container>
-         <tr *ngIf="customers.length == 0">
-            <td colspan="7">
-               <app-no-results></app-no-results>
-            </td>
-         </tr>
-      </tbody>
-   </table>
+         </tbody>
+      </table>
+   </div>
 
    <div class="my-4">
       <app-pagination (pageTrigger)="onPageTriggered($event)" [pageIndex]="page" [pageSize]="limit"

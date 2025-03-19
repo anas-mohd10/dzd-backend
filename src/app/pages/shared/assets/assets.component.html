@@ -1,105 +1,287 @@
-<div class="position-relative cursor-pointer h-100 w-100" (click)="open(template)">
-    <img *ngIf="preview" src="{{base}}{{preview?.path}}" alt={{preview?.title}}
-        class="bg-white top-0 start-0 position-absolute border border-secondary w-100 h-100 rounded"
-        [ngClass]="{'object-fit-cover': image == 'cover', 'object-fit-contain': !image}">
-    <div *ngIf="!preview"
-        class="mask bg-white border fs-5 top-0 start-0 border-secondary border-1 rounded h-100 w-100 position-absolute text-muted d-flex flex-column align-items-center justify-content-center">
-        <div class="rounded-circle p-4 bg-secondary">
-            <svg height="32px" width="32px" data-slot="icon" fill="none" stroke-width="1.5" stroke="currentColor"
-                viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                <path stroke-linecap="round" stroke-linejoin="round"
-                    d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5m-13.5-9L12 3m0 0 4.5 4.5M12 3v13.5">
-                </path>
-            </svg>
-        </div>
-        <div class="mt-2 text-center">
-            <span class="mx-1 text-primary">Browse files</span>
-        </div>
-        <div class="recommended fs-6 rounded text-dark" *ngIf="aspectRatio">Choose {{aspectRatio}} ratio for better
-            visibility</div>
+<div
+  class="position-relative cursor-pointer h-100 w-100"
+  (click)="open(template)"
+>
+  <!-- <img
+    *ngIf="preview"
+    src="{{ base }}{{ preview?.path }}"
+    alt="{{ preview?.title }}"
+    class="bg-white top-0 start-0 position-absolute border border-secondary w-100 h-100 rounded"
+    [ngClass]="{
+      'object-fit-cover': image == 'cover',
+      'object-fit-contain': !image
+    }"
+  /> -->
+
+  <!-- Image Preview -->
+  <img
+    *ngIf="preview && (preview.type === 'image' || isImageFile(preview?.path))"
+    [src]="
+      preview?.path ? base + preview.path : 'assets/media/Media_Preview.png'
+    "
+    [alt]="preview?.title || 'Image preview'"
+    class="bg-white top-0 start-0 position-absolute border border-secondary w-100 h-100 rounded"
+    [ngClass]="{
+      'object-fit-cover': image == 'cover',
+      'object-fit-contain': !image
+    }"
+    
+  />
+
+  <!-- Video Preview -->
+  <video
+    *ngIf="preview && (preview.type === 'video' || isVideoFile(preview?.path))"
+    [src]="preview?.path ? base + preview.path : ''"
+    class="bg-white top-0 start-0 position-absolute border border-secondary w-100 h-100 rounded"
+    [ngClass]="{
+      'object-fit-cover': image == 'cover',
+      'object-fit-contain': !image
+    }"
+    preload="metadata"
+   
+  >
+  <!-- (error)="setDefaultImage($event)"
+  (error)="setDefaultVideoPreview($event)" -->
+    <!-- <source src="{{ preview.url }}" type="video/mp4" /> -->
+    <source
+      src="{{ base }}{{ preview.url }}"
+      type="video/{{ getFileExtension(preview.path) }}"
+    />
+  </video>
+
+  <div
+    *ngIf="!preview"
+    class="mask bg-white border fs-5 top-0 start-0 border-secondary border-1 rounded h-100 w-100 position-absolute text-muted d-flex flex-column align-items-center justify-content-center"
+  >
+    <div class="rounded-circle p-4 bg-secondary">
+      <svg
+        height="32px"
+        width="32px"
+        data-slot="icon"
+        fill="none"
+        stroke-width="1.5"
+        stroke="currentColor"
+        viewBox="0 0 24 24"
+        xmlns="http://www.w3.org/2000/svg"
+        aria-hidden="true"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5m-13.5-9L12 3m0 0 4.5 4.5M12 3v13.5"
+        ></path>
+      </svg>
     </div>
+    <div class="mt-2 text-center">
+      <span class="mx-1 text-primary">Browse files</span>
+    </div>
+    <div class="recommended fs-6 rounded text-dark" *ngIf="aspectRatio">
+      Choose {{ aspectRatio }} ratio for better visibility
+    </div>
+  </div>
 </div>
 
 <ng-template #template>
-    <div class="modal-header">
-        <h4 class="fs-2 fw-bold pull-left">Asset details</h4>
-        <button type="button" class="btn-close close pull-right" aria-label="Close" (click)="close()">
-            <span aria-hidden="true" class="visually-hidden">&times;</span>
-        </button>
-    </div>
-    <div class="modal-body">
-        <tabset #staticTabs [justified]="true" type="pills">
-            <tab heading="Assets ({{totalResults}})">
+  <div class="modal-header">
+    <h4 class="fs-2 fw-bold pull-left">Asset details</h4>
+    <button
+      type="button"
+      class="btn-close close pull-right"
+      aria-label="Close"
+      (click)="close()"
+    >
+      <span aria-hidden="true" class="visually-hidden">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <tabset #staticTabs [justified]="true" type="pills">
+      <tab heading="Assets ({{ totalResults }})">
+        <div class="mt-4">
+          <input
+            type="text"
+            [formControl]="keyword"
+            (ngModelChange)="searchAssets()"
+            placeholder="Search items"
+            class="form-control"
+            accept="image/*,video/*,.gif"
+          />
+        </div>
 
-                <div class="mt-4">
-                    <input type="text" [formControl]="keyword" (ngModelChange)="searchAssets()" placeholder="Search items" class="form-control">
+        <div class="my-4">
+          <div class="assets">
+            <ng-container *ngFor="let media of medias; let i = index">
+              <div
+                class="asset border border-secondary rounded position-relative"
+              >
+                <!-- Modified checkbox to show tick mark if selected -->
+                <div
+                  class="position-absolute border border-secondary asset-checkbox rounded"
+                  [ngClass]="{ 'selected-asset': isMediaSelected(media) }"
+                  (click)="onMediaClickedHandler(media)"
+                >
+                  <!-- Show tick mark for selected items -->
+                  <svg
+                    *ngIf="isMediaSelected(media)"
+                    height="20px"
+                    width="20px"
+                    data-slot="icon"
+                    fill="none"
+                    stroke-width="1.5"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                    xmlns="http://www.w3.org/2000/svg"
+                    aria-hidden="true"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      d="M4.5 12.75l6 6 9-13.5"
+                    ></path>
+                  </svg>
+                </div>
+                <!-- <img
+                  src="{{ base }}{{ media?.path }}"
+                  alt="{{ media?.title }}"
+                  onerror="this.src = 'assets/images/default.png'"
+                /> -->
+
+                <img
+                  *ngIf="isImageFile(media.path)"
+                  src="{{ base }}{{ media.path }}"
+                  alt="{{ media.altTitle }}"
+                  onerror="this.src = 'assets/images/default.png'"
+                />
+
+                <!-- Display video previews for video files -->
+                <video *ngIf="isVideoFile(media.path)" controls>
+                  <source
+                    src="{{ base }}{{ media.path }}"
+                    type="video/{{ getFileExtension(media.path) }}"
+                  />
+                  Your browser does not support the video tag.
+                </video>
+
+                <!-- Display default icon for other file types -->
+                <div
+                  *ngIf="!isImageFile(media.path) && !isVideoFile(media.path)"
+                  class="default-file-icon"
+                >
+                  <img src="assets/images/default.png" alt="Default file" />
                 </div>
 
-                <div class="my-4">
-                    <div class="assets">
-                        <ng-container *ngFor="let media of medias; let i = index">
-                            <div class="asset border border-secondary rounded position-relative">
-                                <div class="position-absolute border border-secondary bg-white asset-checkbox rounded"
-                                    (click)="onMediaClickedHandler(media)">
-                                </div>
-                                <img src="{{base}}{{media?.path}}" alt={{media?.title}}
-                                    onerror="this.src = 'assets/images/default.png'">
-                                <div class="p-2 asset-details border-top border-secondary">
-                                    {{media?.title}}
-                                </div>
-                            </div>
-                        </ng-container>
-                    </div>
-
-                    <div *ngIf="medias.length == 0">
-                        <app-no-results></app-no-results>
-                    </div>
-
-                    <app-pagination (pageTrigger)="onPageTriggered($event)" [totalResults]="totalResults"
-                        [totalPages]="totalPages" [pageIndex]="page" [pageSize]="limit"></app-pagination>
+                <div class="p-2 asset-details border-top border-secondary">
+                  {{ media?.title }}
                 </div>
-            </tab>
-            <tab heading="Browse files">
-                <div class="my-4">
-                    <div class="position-relative rounded mt-4 uploader" *ngIf="previews.length == 0">
-                        <div class="mask fs-5 rounded d-flex align-items-center justify-content-center text-muted">
-                            Drag and drop or <span class="mx-2 text-underline text-primary">Browse files</span> here
-                        </div>
-                        <input type="file" class="form-control" multiple="multiple" (change)="onMediaChange($event)">
-                    </div>
-                    <div class="my-4" *ngIf="previews.length > 0">
-                        <div class="d-flex align-items-center justify-content-between">
-                            <div class="fs-5 text-primary">{{previews.length}} assets are ready to upload</div>
-                            <div>
-                                <input type="file" multiple="multiple" class="form-control" (change)="onMediaChange($event)">
-                            </div>
-                        </div>
-                        <div class="previews my-4">
-                            <ng-container *ngFor="let preview of previews; let i = index">
-                                <div class="preview rounded border border-secondary">
-                                    <div class="checkbox rounded bg-secondary" (click)="deleteMedia(i)">
-                                        <svg height="20px" width="20px" data-slot="icon" fill="none" stroke-width="1.5"
-                                            stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"
-                                            aria-hidden="true">
-                                            <path stroke-linecap="round" stroke-linejoin="round"
-                                                d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0">
-                                            </path>
-                                        </svg>
-                                    </div>
-                                    <img src={{preview.url}} alt={{preview.title}}>
-                                    <div class="media-details mt-2 p-2">
-                                        <div>{{preview.title}}</div>
-                                    </div>
-                                </div>
-                            </ng-container>
-                        </div>
-                        <div class="mt-2 d-flex align-items-center justify-content-end">
-                            <button class="btn me-1 btn-secondary" (click)="cancelMedias()">Cancel</button>
-                            <button class="btn ms-1 btn-primary" (click)="addMedias()">Add assets</button>
-                        </div>
-                    </div>
+              </div>
+            </ng-container>
+          </div>
+
+          <div *ngIf="medias.length == 0">
+            <app-no-results></app-no-results>
+          </div>
+
+          <app-pagination
+            (pageTrigger)="onPageTriggered($event)"
+            [totalResults]="totalResults"
+            [totalPages]="totalPages"
+            [pageIndex]="page"
+            [pageSize]="limit"
+          ></app-pagination>
+        </div>
+      </tab>
+      <tab heading="Browse files">
+        <div class="my-4">
+          <div
+            class="position-relative rounded mt-4 uploader"
+            *ngIf="previews.length == 0"
+          >
+            <div
+              class="mask fs-5 rounded d-flex align-items-center justify-content-center text-muted"
+            >
+              Drag and drop or
+              <span class="mx-2 text-underline text-primary">Browse files</span>
+              here
+            </div>
+            <input
+              type="file"
+              class="form-control"
+              multiple="multiple"
+              accept="image/*,video/*,.gif"
+              (change)="onMediaChange($event)"
+            />
+          </div>
+          <div class="my-4" *ngIf="previews.length > 0">
+            <div class="d-flex align-items-center justify-content-between">
+              <div class="fs-5 text-primary">
+                {{ previews.length }} assets are ready to upload
+              </div>
+              <div>
+                <input
+                  type="file"
+                  multiple="multiple"
+                  class="form-control"
+                  accept="image/*,video/*,.gif"
+                  (change)="onMediaChange($event)"
+                />
+              </div>
+            </div>
+            <div class="previews my-4">
+              <ng-container *ngFor="let preview of previews; let i = index">
+                <div class="preview rounded border border-secondary">
+                  <div
+                    class="checkbox rounded bg-secondary"
+                    (click)="deleteMedia(i)"
+                  >
+                    <svg
+                      height="20px"
+                      width="20px"
+                      data-slot="icon"
+                      fill="none"
+                      stroke-width="1.5"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                      xmlns="http://www.w3.org/2000/svg"
+                      aria-hidden="true"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0"
+                      ></path>
+                    </svg>
+                  </div>
+                  <!-- <img src="{{ preview.url }}" alt="{{ preview.title }}" /> -->
+
+                  <img
+                    *ngIf="!preview.type || preview.type === 'image'"
+                    src="{{ preview.url }}"
+                    alt="{{ preview.title }}"
+                  />
+                  <video
+                    *ngIf="preview.type === 'video'"
+                    controls
+                    style="width: 100%; height: auto"
+                  >
+                    <source src="{{ preview.url }}" type="video/mp4" />
+                    Your browser does not support the video tag.
+                  </video>
+                  <div class="media-details mt-2 p-2">
+                    <div>{{ preview.title }}</div>
+                  </div>
                 </div>
-            </tab>
-        </tabset>
-    </div>
+              </ng-container>
+            </div>
+            <div class="mt-2 d-flex align-items-center justify-content-end">
+              <button class="btn me-1 btn-secondary" (click)="cancelMedias()">
+                Cancel
+              </button>
+              <button class="btn ms-1 btn-primary" (click)="addMedias()">
+                Add assets
+              </button>
+            </div>
+          </div>
+        </div>
+      </tab>
+    </tabset>
+  </div>
 </ng-template>

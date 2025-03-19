@@ -150,7 +150,7 @@ export class CountriesComponent implements OnInit {
   }
 
   fetchResults() {
-    this.LocationService.getCountries({ page: this.pageIndex, limit: this.pageSize }).subscribe({
+    this.LocationService.getCountries({ pageIndex: this.pageIndex, pageSize: this.pageSize }).subscribe({
       next: (res: any) => {
         if (res && res.errorCode == 0) {
           this.dbCountries = res.result.countries;
@@ -167,6 +167,8 @@ export class CountriesComponent implements OnInit {
   }
 
   onPageTriggered(event: { pageIndex: number, pageSize: number }) {
+    this.pageIndex = event.pageIndex;
+    this.pageSize = event.pageSize;
     this.fetchResults();
   }
 

@@ -152,9 +152,9 @@ export class CustomersService {
     return this.http.post(`${url}`, data)
   }
 
-  getTransactions(customer: string, type: string) {
-    const url = this.commonService.getFullUrl(this.customerEndpoints.getWalletTransactions + `/${customer}` + `?type=` + type);
-    return this.http.get(`${url}`)
+  getTransactions(query: { customerId: string, type: string, pageIndex: number, pageSize: number, keyword: string }) {
+    const url = this.commonService.getFullUrl(this.customerEndpoints.getWalletTransactions);
+    return this.http.post(`${url}`, query)
   }
 
   getLoyaltyTransactions(customer: string, type: string) {

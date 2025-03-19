@@ -18,9 +18,129 @@
             </li>
          </ul>
       </div>
-      <button class="btn btn-danger" (click)="deleteCustomer()">
-         Delete customer
-      </button>
+      <div class="d-flex justify-content-end gap-4">
+         <button class="btn btn-danger" (click)="deleteCustomer()">
+            Delete Customer
+            <span>
+               <svg width="18" height="18" data-slot="icon" fill="none" stroke-width="1.5" stroke="currentColor"
+                  viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                  <path stroke-linecap="round" stroke-linejoin="round"
+                     d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0">
+                  </path>
+               </svg>
+            </span>
+         </button>
+         <button class="btn btn-secondary" (click)="open(addressTemplate, null)">
+            Add Address
+            <span>
+               <svg width="18" height="18" data-slot="icon" fill="none" stroke-width="1.5" stroke="currentColor"
+                  viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"></path>
+               </svg>
+            </span>
+         </button>
+         <div class="btn-group" dropdown placement="bottom right">
+            <button id="button-alignment" dropdownToggle type="button"
+               class="btn btn-secondary shadow-none border border-0 focus-ring-primary dropdown-toggle"
+               aria-controls="dropdown-alignment">
+               More Options
+            </button>
+            <ul id="dropdown-alignment" *dropdownMenu class="dropdown-menu dropdown-menu-right px-6 my-1" role="menu"
+               aria-labelledby="button-alignment" style="width: max-content;">
+               <li class="my-4 fs-6">
+                  <div class="cursor-pointer d-flex align-items-center justify-content-between gap-6"
+                     (click)="openLoginActivities(loginActivitiesTemplate)">
+                     <span>Login Activities</span>
+                     <span>
+                        <svg width="18" height="18" data-slot="icon" fill="none" stroke-width="1.5"
+                           stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"
+                           aria-hidden="true">
+                           <path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5"></path>
+                        </svg>
+                     </span>
+                  </div>
+               </li>
+               <li class="my-4 fs-6">
+                  <div class="cursor-pointer d-flex align-items-center justify-content-between gap-6"
+                     (click)="openCustomerOrders(ordersTemplate)">
+                     <span>Orders</span>
+                     <span>
+                        <svg width="18" height="18" data-slot="icon" fill="none" stroke-width="1.5"
+                           stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"
+                           aria-hidden="true">
+                           <path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5"></path>
+                        </svg>
+                     </span>
+                  </div>
+               </li>
+               <li class="my-4 fs-6">
+                  <div class="cursor-pointer d-flex align-items-center justify-content-between gap-6"
+                     (click)="openSavedCards(savedCardTemplate)">
+                     <span>Saved Cards</span>
+                     <span>
+                        <svg width="18" height="18" data-slot="icon" fill="none" stroke-width="1.5"
+                           stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"
+                           aria-hidden="true">
+                           <path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5"></path>
+                        </svg>
+                     </span>
+                  </div>
+               </li>
+               <li class="my-4 fs-6">
+                  <div class="cursor-pointer d-flex align-items-center justify-content-between gap-6"
+                     routerLink="{{appRoute.customers.referralHistory + '/' + customerDetails?.userid}}">
+                     <span>Referral History</span>
+                     <span>
+                        <svg width="18" height="18" data-slot="icon" fill="none" stroke-width="1.5"
+                           stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"
+                           aria-hidden="true">
+                           <path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5"></path>
+                        </svg>
+                     </span>
+                  </div>
+               </li>
+               <li class="my-4 fs-6">
+                  <div class="cursor-pointer d-flex align-items-center justify-content-between gap-6"
+                     (click)="openLoyalty(loyaltyTemplate)">
+                     <span>Loyalty Points</span>
+                     <span>
+                        <svg width="18" height="18" data-slot="icon" fill="none" stroke-width="1.5"
+                           stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"
+                           aria-hidden="true">
+                           <path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5"></path>
+                        </svg>
+                     </span>
+                  </div>
+               </li>
+               <li class="my-4 fs-6">
+                  <div class="cursor-pointer d-flex align-items-center justify-content-between gap-6"
+                     (click)="openWallet(walletTemplate)">
+                     <span>Wallet Transactions</span>
+                     <span>
+                        <svg width="18" height="18" data-slot="icon" fill="none" stroke-width="1.5"
+                           stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"
+                           aria-hidden="true">
+                           <path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5"></path>
+                        </svg>
+                     </span>
+                  </div>
+               </li>
+               <li class="my-4 fs-6">
+                  <div class="cursor-pointer d-flex align-items-center justify-content-between gap-6"
+                     (click)="openManageWallet(manageWalletTemplate)">
+                     <span>Manage Wallet</span>
+                     <span>
+                        <svg width="18" height="18" data-slot="icon" fill="none" stroke-width="1.5"
+                           stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"
+                           aria-hidden="true">
+                           <path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5"></path>
+                        </svg>
+                     </span>
+                  </div>
+               </li>
+            </ul>
+         </div>
+      </div>
    </div>
 
    <div class="row my-4">
@@ -38,72 +158,71 @@
                      </div>
                   </div>
 
-                  <div class="d-flex justify-content-end gap-8">
-                     <button class="btn btn-link" (click)="openCustomerOrders(ordersTemplate)">
-                        Orders
-                     </button>
-                     <button class="btn btn-link" (click)="openSavedCards(savedCardTemplate)">
-                        Saved cards
-                     </button>
-                     <button class="btn btn-link"
-                        routerLink="{{appRoute.customers.referralHistory + '/' + customerDetails?.userid}}">
-                        Referral history
-                     </button>
-                     <button class="btn btn-link" (click)="openLoyalty(loyaltyTemplate)">
-                        Loyalty points
-                     </button>
-                     <button class="btn btn-link" (click)="openWallet(walletTemplate)">
-                        Wallet transactions
-                     </button>
-                  </div>
-
-                  <div class="addressWrapper">
-                     <div class="d-flex align-items-end justify-content-between">
-                        <div class="fw-bold fs-2">Address details</div>
-                        <button class="btn btn-primary" (click)="open(addressTemplate, null)">Add address</button>
-                     </div>
-
-                     <div class="addressCards mt-3">
+                  <div class="addressWrapper my-8" *ngIf="addresses && addresses.length > 0">
+                     <div class="fs-4 mb-4">Delivery Addresses</div>
+                     <div class="addressCards">
                         <ng-container *ngFor="let address of addresses">
-                           <div class="addressCard p-3 rounded" [ngClass]="{'defaultAddressCard': address?.isDefault}">
-                              <div (click)="setDefaultAddress(address?.refid)">
-                                 <div class="contactDetails fs-6">
-                                    {{address?.name}}, {{address?.countryCode}}{{address?.mobile}}
-                                 </div>
-                                 <div class="address">
-                                    <p class="type bg-secondary p-2 rounded fs-6 mt-4 mb-1">{{address?.type}}</p>
-                                    <div class="fs-6 addressLane">
-                                       {{address?.firstlane}}, {{address?.secondlane}}
+                           <div
+                              class="bg-white d-flex align-items-stretch justify-content-between rounded border position-relative"
+                              [ngClass]="{'border-primary': address?.isDefault == true, 'border-secondary': address?.isDefault == false}">
+                              <div class="form-check my-4" style="width: 20px; height: 20px;">
+                                 <input (click)="setDefaultAddress(address?.refid)" style="width: 20px; height: 20px;"
+                                    class="form-check-input" type="checkbox" [checked]="address?.isDefault == true"
+                                    id="defaultAddress">
+                              </div>
+                              <div class="p-4 d-flex flex-column justify-content-between"
+                                 style="width: calc(100% - 20px);">
+                                 <div>
+                                    <div class="fs-6">
+                                       {{address?.name}}
+                                       {{address?.countryCode ? ', ' + address?.countryCode : ''}}
+                                       {{address?.mobile ? address?.mobile : ''}}
+                                    </div>
+                                    <div class="type bg-secondary p-2 rounded fs-6 my-1">{{address?.type}}</div>
+                                    <div class="fs-6">
+                                       {{address?.firstlane}}
+                                       {{address?.secondlane ? ', ' + address?.secondlane : ''}}
                                     </div>
                                     <div class="fs-6 my-1">
-                                       {{address?.city}}, {{address?.area}}
+                                       {{address?.city}}
+                                       {{address?.area ? ', ' + address?.area : ''}}
+                                       {{address?.landmark ? ', ' + address?.landmark : ''}}
                                     </div>
-                                    <div class="fs-6"> 
-                                       {{address?.landmark}}, {{address?.pincode}}
-                                    </div>
-                                    <div class="fs-6 mt-1"> 
-                                       {{address?.state}}, {{address?.country}}
+                                    <div class="fs-6">
+                                       {{address?.state}}
+                                       {{address?.country ? ', ' + address?.country : ''}}
                                     </div>
                                  </div>
-                              </div>
-
-                              <div class="mt-2 d-flex align-items-center justify-content-start">
-                                 <div class="btn w-50 p-2 btn-secondary me-2"
-                                    (click)="open(addressTemplate, address?.refid)">
-                                    Edit</div>
-                                 <div class="btn w-50 p-2 btn-danger" (click)="openModal(delete, address?.refid)">Delete
+                                 <div class="mt-2 d-flex align-items-center justify-content-start">
+                                    <div class="btn w-50 p-2 btn-secondary me-2"
+                                       (click)="open(addressTemplate, address?.refid)">
+                                       Edit
+                                       <span>
+                                          <svg width="18" height="18" data-slot="icon" fill="none" stroke-width="1.5"
+                                             stroke="currentColor" viewBox="0 0 24 24"
+                                             xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                                             <path stroke-linecap="round" stroke-linejoin="round"
+                                                d="m8.25 4.5 7.5 7.5-7.5 7.5"></path>
+                                          </svg>
+                                       </span>
+                                    </div>
+                                    <div class="btn w-50 p-2 btn-danger" (click)="openModal(delete, address?.refid)">
+                                       Delete
+                                       <span>
+                                          <svg width="18" height="18" data-slot="icon" fill="none" stroke-width="1.5"
+                                             stroke="currentColor" viewBox="0 0 24 24"
+                                             xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                                             <path stroke-linecap="round" stroke-linejoin="round"
+                                                d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0">
+                                             </path>
+                                          </svg>
+                                       </span>
+                                    </div>
                                  </div>
                               </div>
                            </div>
                         </ng-container>
                      </div>
-
-                     <ng-container *ngIf="addresses.length == 0">
-                        <div class="my-3 d-flex flex-column align-items-start justify-content-start">
-                           <div class="fs-4 fw-bold">No address found</div>
-                           <p class="text-muted">We couldn't find any item based on your search</p>
-                        </div>
-                     </ng-container>
                   </div>
 
                   <div class="col-lg-6">
@@ -116,6 +235,7 @@
                             }" />
                      </div>
                   </div>
+
                   <div class="col-lg-6">
                      <div class="form-group mb-3">
                         <label class="fs-6 mb-3 required"> Email</label>
@@ -129,6 +249,7 @@
                         Enter valid email address
                      </div>
                   </div>
+
                   <div class="col-lg-6">
                      <div class="form-group mb-3">
                         <label class="fs-6 mb-3 required">Country Code</label>
@@ -140,6 +261,7 @@
                         </select>
                      </div>
                   </div>
+
                   <div class="col-lg-6">
                      <div class="form-group mb-3">
                         <label class="fs-6 mb-3 required">Phone No.</label>
@@ -173,19 +295,17 @@
                      </div>
                   </div>
 
-                  <div class="col-12 d-flex align-items-center justify-content-end">
-                     <a routerLink="{{ appRoute.customers.CUSTOMERS_LIST}}"
-                        class="btn btn-secondary btn-sm fs-6 text-dark" style="width: 200px; margin-right: 20px;">
-                        Cancel
-                     </a>
-                     <button type="submit" class="btn btn-primary btn-sm fs-6" style="width: 200px"
-                        [ngClass]="{'disabled-button': !validBtn}" (click)="onSubmit()">
-                        Update
-                     </button>
-                  </div>
                </div>
             </form>
          </div>
+      </div>
+      <div class="d-flex align-items-center justify-content-end gap-2 my-4">
+         <a routerLink="{{ appRoute.customers.CUSTOMERS_LIST}}" class="btn btn-secondary">
+            Cancel
+         </a>
+         <button type="submit" class="btn btn-primary" [ngClass]="{'disabled-button': !validBtn}" (click)="onSubmit()">
+            Save Changes
+         </button>
       </div>
    </div>
 </div>
@@ -287,7 +407,7 @@
             <div class="col-lg-6">
                <div class="form-group mb-3">
                   <label class="fs-6 mb-3">Area</label>
-                  <input type="text" class="form-control fs-6" formControlName="area"/>
+                  <input type="text" class="form-control fs-6" formControlName="area" />
                </div>
             </div>
 
@@ -305,11 +425,7 @@
             <div class="col-lg-6">
                <div class="form-group mb-3">
                   <label class="fs-6 mb-3">Pincode</label>
-                  <input type="number" class="form-control fs-6" formControlName="pincode" [ngClass]="{
-                     'is-invalid':
-                     (addressControls.pincode.touched || isAddressSubmitted) &&
-                     addressControls.pincode.errors?.required
-                   }" />
+                  <input type="number" class="form-control fs-6" formControlName="pincode" />
                </div>
             </div>
 
@@ -381,71 +497,97 @@
    </div>
 </ng-template>
 
+<ng-template #manageWalletTemplate>
+   <div class="modal-header">
+      <h4 class="fs-2 fw-bold pull-left">Manage Wallet</h4>
+      <button type="button" class="btn-close close pull-right" aria-label="Close" (click)="closeManageWallet()">
+         <span aria-hidden="true" class="visually-hidden">&times;</span>
+      </button>
+   </div>
+   <div class="modal-body">
+      <div>
+         <div>Balance:- <span class="fs-2 fw-bold">{{settings?.currency}} {{customerDetails?.walletBalance}}</span>
+         </div>
+         <div class="form-group mt-4">
+            <label for="amount" class="form-label required">Amount</label>
+            <input type="text" id="amount" [formControl]="amount" placeholder="Enter amount" class="form-control"
+               [ngClass]="{'is-invalid': (amount.touched || isWalletSubmitted) && amount.errors?.required || amount.errors?.pattern}">
+         </div>
+         <div class="form-group mt-3">
+            <label for="description" class="form-label">Description</label>
+            <input type="text" id="description" [formControl]="description" placeholder="Enter reason (optional)"
+               class="form-control">
+         </div>
+         <div class="d-flex justify-content-between mt-4 gap-2">
+            <button class="btn btn-secondary w-50" [disabled]="customerDetails?.walletBalance == 0"
+               (click)="addToWallet('debit')">
+               Withdraw
+            </button>
+            <button class="btn btn-primary w-50 ms-2" (click)="addToWallet('credit')">
+               Recharge
+            </button>
+         </div>
+      </div>
+   </div>
+</ng-template>
+
 <ng-template #walletTemplate>
    <div class="modal-header">
-      <h4 class="fs-2 fw-bold pull-left">Wallet</h4>
+      <h4 class="fs-2 fw-bold pull-left">Wallet Transactions</h4>
       <button type="button" class="btn-close close pull-right" aria-label="Close" (click)="closeWallet()">
          <span aria-hidden="true" class="visually-hidden">&times;</span>
       </button>
    </div>
    <div class="modal-body">
-      <div class="row">
-         <div class="col-lg-5 mb-3">
-            <div class="mb-4">
-               <div class="fs-6 text-primary">Wallet balance</div>
-               <div class="fs-2 fw-bold">{{settings?.currency}} {{customerDetails?.walletBalance}}</div>
-            </div>
-            <div class="form-group mb-3">
-               <label for="amount" class="form-label mb-3 required">Amount</label>
-               <input type="text" id="amount" [formControl]="amount" placeholder="Wallet amount" class="form-control"
-                  [ngClass]="{'is-invalid': (amount.touched || isWalletSubmitted) && amount.errors?.required || amount.errors?.pattern}">
-            </div>
-            <div class="form-group mb-3">
-               <label for="description" class="form-label mb-3">Description</label>
-               <input type="text" id="description" [formControl]="description" placeholder="Type any reason"
-                  class="form-control">
-            </div>
-            <div class="d-flex justify-content-end align-items-center">
-               <button class="btn btn-secondary w-50 me-1" [ngClass]="{'pe-none': customerDetails?.walletBalance == 0}"
-                  (click)="addToWallet('debit')">Withdraw</button>
-               <button class="btn btn-primary w-50 ms-1" (click)="addToWallet('credit')">Add to Wallet</button>
-            </div>
+      <div>
+         Balance:- <span class="fs-2 fw-bold text-success">{{settings?.currency}}
+            {{customerDetails?.walletBalance}}</span>
+      </div>
+      <div class="my-4 row">
+         <div class="col-lg-10">
+            <input type="text" class="form-control" [formControl]="walletKeyword" placeholder="Search by keywords">
          </div>
-         <div class="col-lg-7 mb-3">
-            <div class="mb-2 d-flex justify-content-between align-items-end">
-               <div class="fs-4 fw-bold text-muted">Wallet transactions</div>
-               <div class="form-group">
-                  <label for="transactionType" class="form-label">Type</label>
-                  <select [formControl]="transactionType" id="transactionType" class="form-select"
-                     (change)="getTransactions()">
-                     <option value="" disabled>-- Select an option --</option>
-                     <option *ngFor="let type of ['all', 'credit', 'debit']" value="{{type}}">{{type == 'all' ? 'All' :
-                        type == 'credit' ? 'Credit' : 'Debit'}}</option>
-                  </select>
-               </div>
-            </div>
-            <div class="transactions">
-               <ng-container *ngFor="let transaction of transactions">
-                  <div class="p-4 bg-white rounded border border-secondary my-2"
-                     [ngClass]="{'text-muted': transaction.status == 'pending'}">
-                     <div class="mb-2 d-flex align-items-center justify-content-start">
-                        <div class="fs-3 fw-bold"
-                           [ngClass]="{'credited': transaction?.type == 'credit', 'debited': transaction?.type == 'debit'}">
-                           {{transaction?.type == 'credit' ? '+' : '-'}}
-                           {{settings?.currency}}
-                           {{transaction?.amount}}
-                        </div>
-                     </div>
-                     <div class="fs-6" *ngIf="transaction?.description">{{transaction?.description}}</div>
-                     <div class="text-muted">{{transaction?.transactionDate}}</div>
-                  </div>
-               </ng-container>
-            </div>
-            <ng-container *ngIf="transactions.length == 0">
-               <app-no-results></app-no-results>
-            </ng-container>
+         <div class="col-lg-2">
+            <select [formControl]="transactionType" id="transactionType" class="form-select"
+               (change)="getTransactions()">
+               <option value="" disabled selected>-- Select --</option>
+               <option *ngFor="let type of ['all', 'credit', 'debit']" value="{{type}}">
+                  {{ type | titlecase }}
+               </option>
+            </select>
          </div>
       </div>
+      <table class="table table-bordered">
+         <thead>
+            <th class="p-2">Date</th>
+            <th class="p-2">Amount</th>
+            <th class="p-2">Type</th>
+            <th class="p-2">Description</th>
+         </thead>
+         <tbody>
+            <tr class="fs-6" *ngFor="let transaction of transactions">
+               <td>{{formatDate(transaction?.createdAt)}}</td>
+               <td>
+                  <div>{{settings?.currency}} {{transaction?.amount}}</div>
+               </td>
+               <td>
+                  <div class="p-1 rounded text-center" [ngClass]="{
+                        'bg-success text-white': transaction?.type == 'credit', 
+                        'bg-danger text-white': transaction?.type == 'debit',
+                        'bg-secondary': transaction?.status == 'pending'
+                        }">
+                     {{transaction?.type | titlecase}}
+                  </div>
+               </td>
+               <td>{{transaction?.description}}</td>
+            </tr>
+            <tr *ngIf="transactions && transactions.length == 0">
+               <td colspan="4" class="text-center">No transactions found</td>
+            </tr>
+         </tbody>
+      </table>
+      <app-pagination [totalPages]="walletTotalPages" [totalResults]="walletTotalResults" [pageIndex]="walletPageIndex"
+         [pageSize]="walletPageSize" (pageTrigger)="onWalletPageChange($event)"></app-pagination>
    </div>
 </ng-template>
 
@@ -545,6 +687,88 @@
    </div>
 </ng-template>
 
+<ng-template #loginActivitiesTemplate>
+   <div class="modal-header">
+      <h4 class="fs-2 fw-bold pull-left">Login Activities</h4>
+      <button type="button" class="btn-close close pull-right" aria-label="Close" (click)="loginRef?.hide()">
+         <span aria-hidden="true" class="visually-hidden">&times;</span>
+      </button>
+   </div>
+   <div class="modal-body">
+      <div class="login-activities">
+         <div class="p-4 bg-white rounded border border-secondary my-2 gap-4"
+            *ngIf="customerDetails?.registrationActivity">
+            <div class="fs-5 text-primary d-flex align-items-center gap-2">
+               <div>Registration</div>
+               <svg width="20" height="20" data-slot="icon" fill="none" stroke-width="1.5" stroke="currentColor"
+                  viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                  <path stroke-linecap="round" stroke-linejoin="round"
+                     d="M8.25 9V5.25A2.25 2.25 0 0 1 10.5 3h6a2.25 2.25 0 0 1 2.25 2.25v13.5A2.25 2.25 0 0 1 16.5 21h-6a2.25 2.25 0 0 1-2.25-2.25V15M12 9l3 3m0 0-3 3m3-3H2.25">
+                  </path>
+               </svg>
+            </div>
+            <hr>
+            <ul>
+               <li *ngIf="customerDetails?.registrationActivity" class="fs-6">
+                  {{formatDate(customerDetails?.registrationActivity?.time)}}
+               </li>
+               <li *ngIf="customerDetails?.registrationActivity?.ipAddress" class="fs-5 p-1 rounded bg-secondary my-2"
+                  style="width: max-content;">
+                  {{customerDetails?.registrationActivity?.ipAddress == "::1" ? "127.0.0.1" :
+                  customerDetails?.registrationActivity?.ipAddress}}
+               </li>
+            </ul>
+         </div>
+         <ng-container *ngFor="let loginActivity of loginActivities">
+            <div
+               class="p-4 bg-white rounded border border-secondary my-2 gap-4 d-flex align-items-start justify-content-between">
+               <div class="w-50">
+                  <div class="text-primary d-flex align-items-start justify-content-start gap-2 mb-2">
+                     <div class="fs-5">Login</div>
+                     <svg width="20" height="20" data-slot="icon" fill="none" stroke-width="1.5" stroke="currentColor"
+                        viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                           d="M8.25 9V5.25A2.25 2.25 0 0 1 10.5 3h6a2.25 2.25 0 0 1 2.25 2.25v13.5A2.25 2.25 0 0 1 16.5 21h-6a2.25 2.25 0 0 1-2.25-2.25V15M12 9l3 3m0 0-3 3m3-3H2.25">
+                        </path>
+                     </svg>
+                  </div>
+                  <hr>
+                  <ul>
+                     <li *ngIf="loginActivity.loginIp" class="fs-6">{{formatDate(loginActivity.loginTime)}}</li>
+                     <li *ngIf="loginActivity.loginIp" class="fs-5 p-1 rounded bg-secondary my-2"
+                        style="width: max-content;">
+                        {{loginActivity.loginIp == "::1" ? "127.0.0.1" : loginActivity.loginIp}}
+                     </li>
+                  </ul>
+               </div>
+               <div class="w-50">
+                  <div class="text-primary d-flex align-items-start justify-content-start gap-2 mb-2">
+                     <div class="fs-5">Logout</div>
+                     <svg width="20" height="20" data-slot="icon" fill="none" stroke-width="1.5" stroke="currentColor"
+                        viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                           d="M15.75 9V5.25A2.25 2.25 0 0 0 13.5 3h-6a2.25 2.25 0 0 0-2.25 2.25v13.5A2.25 2.25 0 0 0 7.5 21h6a2.25 2.25 0 0 0 2.25-2.25V15M12 9l-3 3m0 0 3 3m-3-3h12.75">
+                        </path>
+                     </svg>
+                  </div>
+                  <hr>
+                  <ul>
+                     <li *ngIf="loginActivity.logoutIp" class="fs-6">{{formatDate(loginActivity.logoutTime)}}</li>
+                     <li *ngIf="loginActivity.logoutIp" class="fs-5 p-1 rounded bg-secondary my-2"
+                        style="width: max-content;">
+                        {{loginActivity.logoutIp == "::1" ? "127.0.0.1" : loginActivity.logoutIp}}
+                     </li>
+                  </ul>
+               </div>
+            </div>
+         </ng-container>
+      </div>
+      <div *ngIf="loginActivities.length == 0">
+         No activities found
+      </div>
+   </div>
+</ng-template>
+
 <ng-template #ordersTemplate>
    <div class="modal-header">
       <h4 class="fs-2 fw-bold pull-left">Orders ({{customerOrderDetails.totalResults || 0}})</h4>
@@ -554,7 +778,7 @@
    </div>
    <div class="modal-body">
       <div>
-         <table class="table">
+         <table class="table table-bordered">
             <thead>
                <th class="p-2">Order No</th>
                <th class="p-2">Date</th>
@@ -584,19 +808,15 @@
                   <td>{{formatOrderPayment(order.paymentMethod)}}</td>
                </tr>
                <tr *ngIf="customerOrderDetails.orders && customerOrderDetails.orders.length == 0">
-                  <td colspan="6"><app-no-results></app-no-results></td>
-               </tr>
-            </tbody>
-            <tfoot>
-               <tr>
                   <td colspan="6">
-                     <app-pagination [totalPages]="customerOrderDetails.totalPages"
-                        [totalResults]="customerOrderDetails.totalResults" [pageIndex]="page" [pageSize]="limit"
-                        (pageTrigger)="onPageTriggered($event)"></app-pagination>
+                     <app-no-results></app-no-results>
                   </td>
                </tr>
-            </tfoot>
+            </tbody>
          </table>
+         <app-pagination [totalPages]="customerOrderDetails.totalPages"
+            [totalResults]="customerOrderDetails.totalResults" [pageIndex]="page" [pageSize]="limit"
+            (pageTrigger)="onPageTriggered($event)"></app-pagination>
       </div>
    </div>
 </ng-template>

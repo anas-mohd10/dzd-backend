@@ -130,7 +130,8 @@
         <div class="row">
           <div class="form-group col-lg-6 mb-3">
             <label class="fs-6 mb-3">Applicaiton Criteria</label>
-            <select class="form-select mb-3" formControlName="criteriaType">
+            <select class="form-select mb-3" formControlName="criteriaType"
+              (change)="applyCoupon(form.get('criteriaType')?.value)">
               <option value="" disabled>-- Select an option --</option>
               <option value="products">Products</option>
               <option value="collections">Collections</option>
@@ -139,44 +140,66 @@
               <option value="complete">Store</option>
             </select>
           </div>
+          <div class="form-group col-lg-6 mb-3">
+            <label class="fs-6 mb-3">Platform Type</label>
+            <div class="select-wrapper">
+              <select formControlName="platformType" class="form-select mb-3">
+                <option value="web">Web</option>
+                <option value="app">App</option>
+                <option value="both">Both</option>
+              </select>
+            </div>
+          </div>
 
+          <div *ngIf="['categories', 'brands', 'collections', 'products'].includes(form.get('criteriaType')?.value)">
+            <div class="form-group mb-3">
+              <div class="d-flex flex-wrap gap-2">
+                <div
+                  *ngFor="let item of form.get('criteriaType')?.value == 'products' ? products : form.get('criteriaType')?.value == 'collections' ? collections : form.get('criteriaType')?.value == 'categories' ? categories : brands"
+                  class="bg-secondary p-2 rounded-3 d-flex justify-content-between">
+                  <div class="fs-6">
+                    {{ item.name }}
+                    <span *ngIf="form.get('criteriaType')?.value == 'products'">{{item.sku}}</span>
+                  </div>
+                  <span class="ms-2 cursor-pointer" (click)="onRemoveSelected(item)">
+                    <svg height="16" width="16" data-slot="icon" fill="none" stroke-width="1.5" stroke="currentColor"
+                      viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12"></path>
+                    </svg>
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
           <div *ngIf="form.get('criteriaType')?.value == 'products'">
             <div class="form-group mb-3">
               <label class="fs-6 mb-3">Products</label>
-              <ng-select class="fs-6" [items]="productsData" bindLabel="name" bindValue="_id" [(ngModel)]="products"
-                placeholder="Select products applicable to coupon" (change)="applyCoupon('product')" [multiple]=true
-                [ngModelOptions]="{standalone: true}">
-              </ng-select>
+              <app-dropdown-results [dropdownInputs]="dropdownInputs" [type]="'products'"
+                (onSelect)="onSelect($event)"></app-dropdown-results>
             </div>
           </div>
 
           <div *ngIf="form.get('criteriaType')?.value == 'collections'">
             <div class="form-group mb-3">
               <label class="fs-6 mb-3">Collection</label>
-              <ng-select class="fs-6" [items]="collectionsData" bindLabel="name" bindValue="_id"
-                [(ngModel)]="collections" placeholder="Select collections applicable to coupon"
-                (change)="applyCoupon('collection')" [multiple]=true [ngModelOptions]="{standalone: true}">
-              </ng-select>
+              <app-dropdown-results [dropdownInputs]="dropdownInputs" [type]="'collections'"
+                (onSelect)="onSelect($event)"></app-dropdown-results>
             </div>
           </div>
 
           <div *ngIf="form.get('criteriaType')?.value == 'categories'">
             <div class="form-group mb-3">
               <label class="fs-6 mb-3">Category</label>
-              <ng-select class="fs-6" [items]="categoriesData" bindLabel="name" bindValue="_id" [(ngModel)]="categories"
-                placeholder="Select categories applicable to coupon" (change)="applyCoupon('category')" [multiple]=true
-                [ngModelOptions]="{standalone: true}">
-              </ng-select>
+              <app-dropdown-results [dropdownInputs]="dropdownInputs" [type]="'categories'"
+                (onSelect)="onSelect($event)"></app-dropdown-results>
             </div>
           </div>
 
           <div *ngIf="form.get('criteriaType')?.value == 'brands'">
             <div class="form-group mb-3">
               <label class="fs-6 mb-3">Brands</label>
-              <ng-select class="fs-6" [items]="brandsData" bindLabel="name" bindValue="_id" [(ngModel)]="brands"
-                placeholder="Select brands applicable to coupon" (change)="applyCoupon('brand')" [multiple]=true
-                [ngModelOptions]="{standalone: true}">
-              </ng-select>
+              <app-dropdown-results [dropdownInputs]="dropdownInputs" [type]="'brands'"
+                (onSelect)="onSelect($event)"></app-dropdown-results>
             </div>
           </div>
         </div>

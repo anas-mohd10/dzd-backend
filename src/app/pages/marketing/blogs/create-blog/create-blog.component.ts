@@ -5,12 +5,21 @@ import { BlogService } from 'src/app/includes/services/blog.service';
 import { AngularEditorConfig } from '@kolkov/angular-editor';
 import { Router } from '@angular/router';
 import { HotToastService } from '@ngneat/hot-toast';
+interface BlogCategory {
+  _id: string;
+  title: string;
+  thumbnail: string;
+  slug: string;
+  isActive: boolean;
+}
 
 @Component({
   selector: 'app-create-blog',
   templateUrl: './create-blog.component.html',
   styleUrls: ['./create-blog.component.scss'],
 })
+
+
 export class CreateBlogComponent implements OnInit {
   appRoute = appRoutes;
   form: FormGroup;
@@ -44,19 +53,22 @@ export class CreateBlogComponent implements OnInit {
   };
   cover: string = '';
   thumbnail: string = '';
+  categories: BlogCategory[] = [];
+
 
   constructor(
     private BlogService: BlogService,
     private Router: Router,
     private Toast: HotToastService,
     private ChangeDetectorRef: ChangeDetectorRef
-  ) {}
+  ) { }
 
   get formControls() {
     return this.form.controls;
   }
 
   ngOnInit(): void {
+    console.log('heeey')
     this.form = new FormGroup({
       title: new FormControl('', Validators.required),
       overview: new FormControl(''),
@@ -70,6 +82,14 @@ export class CreateBlogComponent implements OnInit {
       canonicalUrl: new FormControl(''),
       thumbnail: new FormControl(null, Validators.required),
       cover: new FormControl(null),
+    });
+    this.BlogService.getCategories().subscribe({
+      next: (res: any) => {
+        if (res?.errorCode === 0) {
+          this.categories = res.result;
+          this.ChangeDetectorRef.markForCheck();
+        }
+      }
     });
   }
 
@@ -102,7 +122,13 @@ export class CreateBlogComponent implements OnInit {
       return;
     }
 
-    this.BlogService.createBlog(this.form.value).subscribe({
+    this.BlogService.createBlog({
+      ...this.form.value,
+      category: {
+        title: this.categories.find(category => category._id === this.form.value.category)?.title,
+        thumbnail: this.categories.find(category => category._id === this.form.value.category)?.thumbnail
+      }
+    }).subscribe({
       next: (res: any) => {
         if (res?.errorCode == 0) {
           this.Router.navigate([appRoutes.blogs.list]);
@@ -114,6 +140,17 @@ export class CreateBlogComponent implements OnInit {
       error: (err: any) => {
         this.Toast.error(err.error.message);
       },
+    });
+  }
+
+  loadCategories() {
+    this.BlogService.getCategories().subscribe({
+      next: (res: any) => {
+        if (res?.errorCode === 0) {
+          this.categories = res.result;
+          this.ChangeDetectorRef.markForCheck();
+        }
+      }
     });
   }
 }

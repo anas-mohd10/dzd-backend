@@ -22,9 +22,8 @@
 
   <div class="card mt-4">
     <div class="card-body">
-      <form (ngSubmit)="onSubmit()" [formGroup]="offerForm">
+      <form [formGroup]="form">
         <div class="row">
-
           <div class="col-lg-6">
             <div class="form-group mb-3">
               <label class="fs-6 mb-3 required">Title</label>
@@ -36,14 +35,12 @@
                   }" />
             </div>
           </div>
-
-          <div class="col-lg-6">
+          <div>
             <div class="form-group mb-3">
               <label class="fs-6 mb-3">Description</label>
               <input type="text" class="form-control fs-6" formControlName="description" />
             </div>
           </div>
-
           <div class="col-lg-6">
             <div class="form-group mb-3">
               <label class="fs-6 mb-3">Type</label>
@@ -55,7 +52,6 @@
               </select>
             </div>
           </div>
-
           <div class="col-lg-6">
             <div class="form-group mb-3">
               <label class="fs-6 mb-3 required">Value</label>
@@ -71,7 +67,6 @@
               </div>
             </div>
           </div>
-
           <div class="col-lg-6">
             <div class="form-group mb-3">
               <label class="fs-6 mb-3">Start Date</label>
@@ -82,7 +77,6 @@
                     }" />
             </div>
           </div>
-
           <div class="col-lg-6">
             <div class="form-group mb-3">
               <label class="fs-6 mb-3">End Date</label>
@@ -90,11 +84,12 @@
                 [ngClass]="{ 'is-invalid': (formControls.endDate.touched || isSubmitted) && formControls.endDate.errors?.required }" />
             </div>
           </div>
-
           <div>
             <div class="form-group mb-3">
               <label class="fs-6 mb-3">Offer type</label>
-              <select class="form-select fs-6" formControlName="offerType">
+              <select class="form-select fs-6" formControlName="offerType"
+              (change)="getTypes(form.get('offerType')?.value)"
+              >
                 <option value="" disabled>-- Select an option --</option>s
                 <option value="products">Products</option>
                 <option value="parents">Config Products</option>
@@ -106,56 +101,57 @@
             </div>
           </div>
 
-          <div *ngIf="offerForm.get('offerType')?.value == 'products'">
+          <div *ngIf="['categories', 'brands', 'collections', 'products', 'parents'].includes(form.get('offerType')?.value)">
+            <div class="form-group mb-3">
+              <div class="d-flex flex-wrap gap-2">
+                <div
+                  *ngFor="let item of form.get('offerType')?.value == 'products' ? products : form.get('offerType')?.value == 'collections' ? collections : form.get('offerType')?.value == 'categories' ? categories : form.get('offerType')?.value == 'brands' ? brands : parents"
+                  class="bg-secondary p-2 rounded-3 d-flex justify-content-between">
+                  <div class="fs-6">
+                    {{ item.name }}
+                    <span *ngIf="form.get('offerType')?.value == 'products'">{{item.sku}}</span>
+                  </div>
+                  <span class="ms-2 cursor-pointer" (click)="onRemoveSelected(item)">
+                    <svg height="16" width="16" data-slot="icon" fill="none" stroke-width="1.5" stroke="currentColor"
+                      viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12"></path>
+                    </svg>
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div *ngIf="form.get('offerType')?.value == 'products'">
             <div class="form-group mb-3">
               <label class="fs-6 mb-3">Products</label>
-              <ng-select [items]="productsdata" bindLabel="name" bindValue="_id" [(ngModel)]="products"
-                placeholder="Select products applicable to this coupon" [multiple]=true
-                [ngModelOptions]="{standalone: true}" (change)="getTypes('products')">
-              </ng-select>
+              <app-dropdown-results [dropdownInputs]="dropdownInputs" [type]="'products'" (onSelect)="onSelect($event)"></app-dropdown-results>
             </div>
           </div>
-
-          <div *ngIf="offerForm.get('offerType')?.value == 'categories'">
+          <div *ngIf="form.get('offerType')?.value == 'categories'">
             <div class="form-group mb-3">
               <label class="fs-6 mb-3">Categories</label>
-              <ng-select [items]="categoriesdata" bindLabel="name" bindValue="_id" [(ngModel)]="categories"
-                placeholder="Select categories applicable to this offer" [multiple]=true
-                [ngModelOptions]="{standalone: true}" (change)="getTypes('categories')">
-              </ng-select>
+              <app-dropdown-results [dropdownInputs]="dropdownInputs" [type]="'categories'" (onSelect)="onSelect($event)"></app-dropdown-results>
             </div>
           </div>
-
-          <div *ngIf="offerForm.get('offerType')?.value == 'collections'">
+          <div *ngIf="form.get('offerType')?.value == 'collections'">
             <div class="form-group mb-3">
               <label class="fs-6 mb-3">Collections</label>
-              <ng-select [items]="collectionsdata" bindLabel="name" bindValue="_id" [(ngModel)]="collections"
-                placeholder="Select collections applicable to this offer" [multiple]=true
-                [ngModelOptions]="{standalone: true}" (change)="getTypes('collections')">
-              </ng-select>
+              <app-dropdown-results [dropdownInputs]="dropdownInputs" [type]="'collections'" (onSelect)="onSelect($event)"></app-dropdown-results>
             </div>
           </div>
-
-          <div *ngIf="offerForm.get('offerType')?.value == 'parents'">
+          <div *ngIf="form.get('offerType')?.value == 'parents'">
             <div class="form-group mb-3">
               <label class="fs-6 mb-3">Config Products</label>
-              <ng-select [items]="parentsData" bindLabel="name" bindValue="_id" [(ngModel)]="parents"
-                placeholder="Select config products applicable to this offer" [multiple]=true
-                [ngModelOptions]="{standalone: true}" (change)="getTypes('parents')">
-              </ng-select>
+              <app-dropdown-results [dropdownInputs]="dropdownInputs" [type]="'parents'" (onSelect)="onSelect($event)"></app-dropdown-results>
             </div>
           </div>
-
-          <div *ngIf="offerForm.get('offerType')?.value == 'brands'">
+          <div *ngIf="form.get('offerType')?.value == 'brands'">
             <div class="form-group mb-3">
               <label class="fs-6 mb-3">Brands</label>
-              <ng-select [items]="brandsdata" bindLabel="name" bindValue="_id" [(ngModel)]="brands"
-                placeholder="Select brands applicable to this offer" [multiple]=true
-                [ngModelOptions]="{standalone: true}" (change)="getTypes('brands')">
-              </ng-select>
+              <app-dropdown-results [dropdownInputs]="dropdownInputs" [type]="'brands'" (onSelect)="onSelect($event)"></app-dropdown-results>
             </div>
           </div>
-
           <div class="col-lg-6">
             <div class="form-group mb-3">
               <label class="fs-6 mb-3">Active Offer?</label>
@@ -166,17 +162,16 @@
               </select>
             </div>
           </div>
-
-          <div class="d-flex align-items-center justify-content-end gap-2">
-            <a routerLink="{{ appRoute.offer.OFFER_LIST}}" class="btn btn-secondary fs-6">
-              Cancel
-            </a>
-            <button type="submit" class="btn btn-primary fs-6" S>
-              Save changes
-            </button>
-          </div>
         </div>
       </form>
     </div>
+  </div>
+  <div class="d-flex align-items-center justify-content-end gap-2 mt-4">
+    <a routerLink="{{ appRoute.offer.OFFER_LIST}}" class="btn btn-secondary fs-6">
+      Cancel
+    </a>
+    <button type="btn" (click)="onSubmit()" class="btn btn-primary fs-6" S>
+      Save changes
+    </button>
   </div>
 </div>

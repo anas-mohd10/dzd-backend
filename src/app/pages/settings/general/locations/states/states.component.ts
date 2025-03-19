@@ -108,6 +108,8 @@ export class StatesComponent implements OnInit {
   }
 
   onPageTriggered(event: { pageIndex: number, pageSize: number }) {
+    this.pageIndex = event.pageIndex;
+    this.pageSize = event.pageSize;
     this.fetchResults();
   }
 

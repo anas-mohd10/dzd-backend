@@ -27,6 +27,7 @@ import { PickupService } from 'src/app/includes/services/pickup.service';
 import { ProductService } from 'src/app/includes/services/product.service';
 import { StoresService } from 'src/app/includes/services/stores.service';
 import { environment } from 'src/environments/environment';
+import { LocationService } from 'src/app/includes/services/location.service';
 
 @Component({
   selector: 'app-add-orders',
@@ -90,6 +91,11 @@ export class AddOrdersComponent implements OnInit {
   pickupLocations: Array<any> = [];
   addCustomerRef?: BsModalRef;
   userForm: FormGroup = new FormGroup({});
+  countries: Array<any> = [];
+  states: Array<any> = [];
+  cities: Array<any> = [];
+  
+  
 
   constructor(
     private OrderService: OrdersService,
@@ -104,7 +110,8 @@ export class AddOrdersComponent implements OnInit {
     private StoresService: StoresService,
     private AppSettingsService: AppSettingsService,
     private BsModalService: BsModalService,
-    private DeliverySlotsService: DeliverySlotsService
+    private DeliverySlotsService: DeliverySlotsService,
+    private LocationService: LocationService
   ) {
     this.customer.valueChanges.pipe(debounceTime(500)).subscribe(() => {
       this.getCustomers();
@@ -135,6 +142,7 @@ export class AddOrdersComponent implements OnInit {
         this.ChangeDetectorRef.markForCheck();
       }
     });
+    this.loadLocationData();
 
     this.AppSettingsService.getGeneralSettingsbyId('1').subscribe({
       next: (response: any) => {
@@ -157,12 +165,14 @@ export class AddOrdersComponent implements OnInit {
       ]),
       firstlane: new FormControl('', Validators.required),
       secondlane: new FormControl(''),
+      country: new FormControl('', Validators.required),
+      state: new FormControl('', Validators.required),
       city: new FormControl('', Validators.required),
+
       area: new FormControl(''),
       landmark: new FormControl('',Validators.required),
       type: new FormControl('', Validators.required),
       pincode: new FormControl('',Validators.required),
-      state: new FormControl('', Validators.required),
       lat: new FormControl(''),
       lng: new FormControl(''),
       isDefault: new FormControl(false),
@@ -277,6 +287,8 @@ export class AddOrdersComponent implements OnInit {
         );
         break;
     }
+
+    this.ChangeDetectorRef.markForCheck();
   }
 
   getNextSevenDays() {
@@ -716,7 +728,7 @@ updateQuantity(type: 'increment' | 'decrement', product: any) {
         },
       });
   }
-
+  
   getAddress(template: TemplateRef<any>, customer: any) {
     this.customerDetails = customer;
     this.address = null;
@@ -754,15 +766,62 @@ updateQuantity(type: 'increment' | 'decrement', product: any) {
 
   openManage(template: TemplateRef<any>, type?: string) {
     this.addressModalRef?.hide();
+
     this.manageAddressModalRef = this.BsModalService.show(template, {
       class: 'modal-lg modal-dialog-centered',
     });
-    this.address ? (this.addressMode = 'update') : (this.addressMode = 'add');
+
+    this.address ? this.addressMode = 'update' : this.addressMode = 'add';
+
     if (this.address) {
+      for (let _key of Object.keys(this.address)) this.addressForm.get(_key)?.setValue(this.address[_key]);
+      
       this.handleAddressMobilePattern();
-      for (let _key of Object.keys(this.address))
-        this.addressForm.get(_key)?.setValue(this.address[_key]);
+      const customerCountry: any = this.countries.filter(country => country.name === this.address?.country);
+      this.loadStates(customerCountry[0]._id, 'update');
+      this.addressForm.patchValue({
+        country: customerCountry[0]._id,
+      });
     }
+
+    this.ChangeDetectorRef.markForCheck();
+  }
+
+  private getLocationName(collection: any[], id: string): string {
+    return collection.find(item => item._id === id)?.name || '';
+  }
+
+  private handleAddressResponse(res: any) {
+    if (res?.errorCode === 0) {
+      this.address = res?.result;
+      this.customers = [];
+      this.ChangeDetectorRef.markForCheck();
+      this.ToastrService.success(res?.message);
+      return true;
+    }
+    this.ToastrService.error(res.message);
+    return false;
+  }
+
+  private resetAddressForm() {
+    this.addressForm.reset();
+    this.addressForm.patchValue({ type: 'Home', countryCode: '+971' });
+    this.manageAddressModalRef?.hide();
+    this.addressModalRef?.hide();
+  }
+
+  private refreshAddressList() {
+    this.customerService.getAddress({ userid: this.customerDetails?.userid }).subscribe({
+      next: (res: any) => {
+        if (res?.errorCode === 0) {
+          this.addressDetails = res?.result;
+          this.ChangeDetectorRef.markForCheck();
+        } else {
+          this.ToastrService.error(res.message);
+        }
+      },
+      error: (err: any) => this.ToastrService.error(err.message)
+    });
   }
 
   manageAddress() {
@@ -771,73 +830,27 @@ updateQuantity(type: 'increment' | 'decrement', product: any) {
       return;
     }
 
-    switch (this.addressMode) {
-      case 'add':
-        this.customerService
-          .addAddress({
-            ...this.addressForm.value,
-            customer: this.customerDetails?._id,
-          })
-          .subscribe({
-            next: (res: any) => {
-              if (res?.errorCode == 0) {
-                this.address = res?.result;
-                this.ToastrService.success(res?.message);
-                this.ChangeDetectorRef.markForCheck();
-                this.customers = [];
-              } else {
-                this.ToastrService.error(res.message);
-              }
-            },
-            error: (err: any) => {
-              this.ToastrService.error(err.message);
-            },
-          });
-        break;
-      case 'update':
-        this.customerService
-          .updateCustomerAddress({
-            refid: this.address?.refid,
-            ...this.addressForm.value,
-          })
-          .subscribe({
-            next: (res: any) => {
-              if (res?.errorCode == 0) {
-                this.address = res?.result;
-                this.customers = [];
-                this.ChangeDetectorRef.markForCheck();
-                this.ToastrService.success(res?.message);
-              } else {
-                this.ToastrService.error(res.message);
-              }
-            },
-            error: (err: any) => {
-              this.ToastrService.error(err.message);
-            },
-          });
-        break;
-    }
-    this.addressForm.reset();
-    this.addressForm.patchValue({ type: 'Home', countryCode: '+971' });
-    this.manageAddressModalRef?.hide();
-    this.addressModalRef?.hide();
-    this.customerService
-      .getAddress({ userid: this.customerDetails?.userid })
-      .subscribe({
-        next: (res: any) => {
-          if (res?.errorCode == 0) {
-            this.addressDetails = res?.result;
-            this.ChangeDetectorRef.markForCheck();
-          } else {
-            this.ToastrService.error(res.message);
-          }
-        },
-        error: (err: any) => {
-          this.ToastrService.error(err.message);
-        },
-      });
+    const addressData = {
+      ...this.addressForm.value,
+      country: this.getLocationName(this.countries, this.addressForm.get('country')?.value),
+      state: this.getLocationName(this.states, this.addressForm.get('state')?.value),
+      city: this.getLocationName(this.cities, this.addressForm.get('city')?.value)
+    };
+
+    const request$ = this.addressMode === 'add' 
+      ? this.customerService.addAddress({ ...addressData, customer: this.customerDetails?._id })
+      : this.customerService.updateCustomerAddress({ ...addressData, refid: this.address?.refid });
+
+    request$.subscribe({
+      next: (res: any) => {
+        if (this.handleAddressResponse(res)) {
+          this.resetAddressForm();
+          this.refreshAddressList();
+        }
+      },
+      error: (err: any) => this.ToastrService.error(err.message)
+    });
   }
-  //Customer and address management
 
   getBrowserAndDevice() {
     const userAgent = navigator.userAgent;
@@ -904,6 +917,80 @@ updateQuantity(type: 'increment' | 'decrement', product: any) {
       error: (err: any) => {
         this.ToastrService.error(err.message);
       },
+    });
+  }
+
+  loadLocationData() {
+    // Load countries
+    this.LocationService.getCountries({
+      pageIndex: 1,
+      pageSize: 100
+    }).subscribe({
+      next: (response: any) => {
+        if (response?.result?.countries) {
+          this.countries = response.result.countries;
+          this.ChangeDetectorRef.markForCheck();
+        }
+      },
+      error: (err) => console.error('Error loading countries:', err)
+    });
+  }
+
+ loadStates(countryId?: string, actionType?: string) {
+    // Clear existing states and cities when country changes
+    this.states = [];
+    this.cities = [];
+    
+    // Reset state and city form controls
+    this.addressForm.patchValue({
+        state: '',
+        city: ''
+    });
+
+    this.LocationService.getStates({
+      pageIndex: 1,
+      pageSize: 100,
+      countryId: countryId || this.addressForm.get('country')?.value,
+    }).subscribe({
+      next: (response: any) => {
+        if (response?.errorCode == 0) {
+          this.states = response.result.states;
+
+          if (actionType === 'update') {
+            const stateId: string = this.states.find(state => state.name === this.address?.state)?._id;
+            this.addressForm.patchValue({ state: stateId });
+            this.loadCities(stateId, 'update');
+          }
+
+          this.ChangeDetectorRef.markForCheck();
+        } else {
+          this.ToastrService.error(response.message);
+        }
+      },
+      error: (err) => console.error('Error loading states:', err)
+    });
+}
+
+  loadCities(stateId?: string, actionType?: string) {
+    this.LocationService.getCities({
+      pageIndex: 1,
+      pageSize: 100,
+      countryId: this.addressForm.get('country')?.value,
+      stateId: stateId || this.addressForm.get('state')?.value
+    }).subscribe({
+      next: (response: any) => {        
+        if (response?.result?.cities) {
+          this.cities = response.result.cities;
+
+          if (actionType === 'update') {
+            const cityId: string = this.cities.find(city => city.name === this.address?.city)?._id;
+            this.addressForm.patchValue({ city: cityId });
+          }
+
+          this.ChangeDetectorRef.markForCheck();
+        }
+      },
+      error: (err) => console.error('Error loading cities:', err)
     });
   }
 }

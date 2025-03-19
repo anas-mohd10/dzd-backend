@@ -105,6 +105,9 @@ export class UpdateOrdersComponent implements OnInit {
   bulkStatusToUpdate: string | null = null;
   @ViewChild('bulkUpdateConfirmation') bulkUpdateConfirmation: any;
   isStatusUpdating: boolean = false
+  @ViewChild('failedPayment') failedPayment: any;
+  failedPaymenRef?: BsModalRef;
+  isForceProcessing: boolean = false
 
   constructor(
     private OrdersService: OrdersService,
@@ -164,7 +167,7 @@ export class UpdateOrdersComponent implements OnInit {
     }
   }
 
-  formatWords(wordString: string){
+  formatWords(wordString: string) {
     if (wordString) {
       return wordString
         .replace(/_/g, ' ')
@@ -635,6 +638,38 @@ export class UpdateOrdersComponent implements OnInit {
     this.isStatusUpdating = false
   }
 
+  orderForceUpdate() {
+    this.isForceProcessing = true
+    this.OrdersService.updateBulkProduct({
+      order: this.order?._id,
+      isForce: true,
+      status: this.bulkStatusToUpdate,
+      products: this.bulkProducts,
+    }).subscribe({
+      next: (res: any) => {
+        if (res?.errorCode == 0) {
+          this.HotToastService.success(res?.message);
+          this.declineForceUpdate();
+        } else {
+          this.HotToastService.error(res?.message);
+        }
+      },
+      error: (err: any) => {
+        this.HotToastService.error(err?.error?.message);
+      },
+    });
+  }
+
+  declineForceUpdate() {
+    this.failedPaymenRef?.hide();
+    this.bulkProducts = [];
+    this.isForceProcessing = false
+    this.bulkStatus = [];
+    this.isStatusUpdating = false
+    this.bulkOrderStatus.setValue('');
+    this.getOrderDetails();
+  }
+
   confirmBulkUpdate() {
     this.OrdersService.updateBulkProduct({
       order: this.order?._id,
@@ -650,6 +685,8 @@ export class UpdateOrdersComponent implements OnInit {
           this.bulkOrderStatus.setValue('');
           this.getOrderDetails();
           this.closeBulkUpdateConfirmation();
+        } else if (res?.errorCode == 400) {
+          this.failedPaymenRef = this.BsModalService.show(this.failedPayment, { class: 'modal-sm modal-dialog-centered', ignoreBackdropClick: true });
         } else {
           this.HotToastService.error(res?.message);
         }

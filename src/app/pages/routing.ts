@@ -48,6 +48,9 @@ import { SitemapSettingsComponent } from './settings/general/sitemap-settings/si
 import { CompareKeysComponent } from './catalog/compare-keys/compare-keys.component';
 import { ToastComponent } from './settings/general/toast/toast.component';
 import { NavigationSettingsComponent } from './navigation-settings/navigation-settings.component';
+import { MenuNavigationComponent } from './settings/general/menu-navigation/menu-navigation.component';
+import { SmsTemplateService } from '../includes/services/sms-template.service';
+import { SmsTemplatesComponent } from './settings/general/sms-templates/sms-templates.component';
 
 export const Routing: Routes = [
   {
@@ -470,6 +473,10 @@ export const Routing: Routes = [
         component: CartSettingsComponent,
         canActivate: [AuthenticationGuard, PermissionGuard]
       },{
+        path: 'menu-navigations',
+        component: MenuNavigationComponent,
+        canActivate: [AuthenticationGuard, PermissionGuard]
+      },{
         path: 'locations',
         loadChildren: () => import('./settings/general/locations/locations.module').then((m) => m.LocationsModule),
         canActivate: [AuthenticationGuard, PermissionGuard]
@@ -541,6 +548,11 @@ export const Routing: Routes = [
         path: 'sms-settings',
         component: SmsSettingsComponent,
         canActivate: [AuthenticationGuard, PermissionGuard]
+      },
+      {
+        path: 'custom-messages',
+        component: SmsTemplatesComponent,
+        canActivate: [AuthenticationGuard]
       }
     ]
   }, {

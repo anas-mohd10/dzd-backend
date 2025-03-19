@@ -275,7 +275,9 @@ export class UpdateAppSettingsComponent implements OnInit {
         this.form.get('itemsPerPage')?.setValue(res?.result?.itemsPerPage)
         this.form.get('isOutOfStock')?.setValue(res?.result?.isOutOfStock)
         this.form.get('isTax')?.setValue(res?.result?.isTax)
+        this.form.get('isShippingTaxable')?.setValue(res?.result?.isShippingTaxable)
         this.form.get('isIndex')?.setValue(res?.result?.isIndex)
+        this.form.get('isDefaultChargesEnabled')?.setValue(res?.result?.isDefaultChargesEnabled)
         this.form.get('isDeliveryLocationEnabled')?.setValue(res?.result?.isDeliveryLocationEnabled)
         this.form.get('isNotifyStock')?.setValue(res?.result?.isNotifyStock)
         this.form.get('packingSlip')?.setValue(res?.result?.notes?.packingSlip)
@@ -289,12 +291,17 @@ export class UpdateAppSettingsComponent implements OnInit {
         this.form.get('favicon')?.setValue(res?.result?.favicon)
         this.form.get('defaultBanner')?.setValue(res?.result?.defaultBanner)
         this.form.get('defaultMobileBanner')?.setValue(res?.result?.defaultMobileBanner)
+        this.form.get('verifyNumberWithTwilio')?.setValue(res?.result?.verifyNumberWithTwilio)
+        this.form.get('deliverSlotBufferTime')?.setValue(res?.result?.deliverSlotBufferTime || 60);
 
         this.form.get('commaSeparation')?.setValue(
           res?.result?.commaSeparation ?? true  // Use nullish coalescing for default
         );
+        this.form.get('currencyLocation')?.setValue(
+          res?.result?.currencyLocation ?? 'before'
+        );
         this.form.get('decimalValues')?.setValue(
-          Number(res?.result?.decimalValues)  
+          Number(res?.result?.decimalValues)
         );
         this.placeHolders = res?.result?.placeHolders
 
@@ -366,13 +373,16 @@ export class UpdateAppSettingsComponent implements OnInit {
       packingSlip: [''],
       isOutOfStock: ['false'],
       isTax: ['false'],
+      isShippingTaxable: ['false'], // Add this new control
       isIndex: ['false'],
+      isDefaultChargesEnabled: ['false'],
       isDeliveryLocationEnabled: ['false'],
       isStoreLive: ['true'],
       defaultImage: [''],
       isNotifyStock: ['false'],
-      commaSeparation: [true],  
-      decimalValues: [  ], 
+      commaSeparation: [true],
+      currencyLocation: ['before'],
+      decimalValues: [  ],
       cartButton: ['Add to Cart', Validators.required],
       stockButton: ['Out of Stock', Validators.required],
       notifyButton: ['Notify Me', Validators.required],
@@ -382,6 +392,8 @@ export class UpdateAppSettingsComponent implements OnInit {
       defaultMobileBanner: [''],
       defaultShippingCharge: ['0'],
       defaultMinimumCartAmount: ['0'],
+      deliverSlotBufferTime: [60],
+      verifyNumberWithTwilio: ['false'],
     })
   }
 
@@ -484,6 +496,7 @@ export class UpdateAppSettingsComponent implements OnInit {
       this.isSubmitted = true
       return
     }
+    console.log("this.form", this.form.get('verifyNumberWithTwilio')?.value)
     this.AppSettingsService.updateGeneralSettings({
       colors: {
         primary: this.form.get('primary')?.value,
@@ -505,6 +518,7 @@ export class UpdateAppSettingsComponent implements OnInit {
       isOutOfStock: this.form.get('isOutOfStock')?.value,
       isTax: this.form.get('isTax')?.value,
       isIndex: this.form.get('isIndex')?.value,
+      isDefaultChargesEnabled: this.form.get('isDefaultChargesEnabled')?.value,
       isDeliveryLocationEnabled: this.form.get('isDeliveryLocationEnabled')?.value,
       isNotifyStock: this.form.get('isNotifyStock')?.value,
       refid: this.refid,
@@ -515,6 +529,7 @@ export class UpdateAppSettingsComponent implements OnInit {
       country: this.form.get('country')?.value,
       companyName: this.form.get('companyName')?.value,
       mobile: this.form.get('mobile')?.value,
+      isShippingTaxable: this.form.get('isShippingTaxable')?.value,
       primaryLang: this.form.get('primaryLang')?.value,
       isMultiLang: this.form.get('isMultiLang')?.value,
       languages: this.form.get('languages')?.value,
@@ -533,8 +548,11 @@ export class UpdateAppSettingsComponent implements OnInit {
       offerCriteria: this.form.get('offerCriteria')?.value,
       isStoreLive: this.form.get('isStoreLive')?.value,
       notes: { packingSlip: this.form.get('packingSlip')?.value },
+      deliverSlotBufferTime: this.form.get('deliverSlotBufferTime')?.value || 60,
       commaSeparation: Boolean(this.form.get('commaSeparation')?.value),
+      currencyLocation: this.form.get('currencyLocation')?.value,
       decimalValues: Number(this.form.get('decimalValues')?.value),
+      verifyNumberWithTwilio: this.form.get('verifyNumberWithTwilio')?.value,
       buttons: {
         cart: this.form.get('cartButton')?.value,
         stock: this.form.get('stockButton')?.value,

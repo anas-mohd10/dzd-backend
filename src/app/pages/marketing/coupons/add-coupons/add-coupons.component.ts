@@ -16,42 +16,32 @@ import { ProductService } from 'src/app/includes/services/product.service';
   styleUrls: ['./add-coupons.component.scss']
 })
 export class AddCouponsComponent implements OnInit {
-  form: FormGroup;
+  form: FormGroup = new FormGroup({});
   editMode = false;
   isSubmitted: boolean;
+  isLoading: boolean = false;
   appRoute = appRoutes;
-  
-
   categories: any = []; //Array of category ids
-  categoriesData: any = []; //Data fetched from database
-  category: any = []; //Array of categorty name and id
   products: any = []; //Array of product ids
-  productsData: any = []; //Data fetched from database
-  product: any = []; //Array of product name and id
   collections: any = []; //Array of collection ids
-  collectionsData: any = []; //Data fetched from database
   brands: any = []; //Array of collection ids
-  brandsData: any = []; //Data fetched from database
-  collection: any = []; //Array of collection name and id
-
-  error_message: string;
+  slug: string = '';
   fromDate: string;
   toDate: string
   isValidValue: boolean = true
-  settings: any = {}
   startDate: string = new Date().toISOString().split('T')[0];
+  couponDetails: any;
+  isOngoing: boolean = false;
+  settings: any = {}
   isLimited: boolean = true
+  dropdownInputs: Array<any> = []
 
   constructor(
-    private productService: ProductService,
-    private categoryService: CategoryService,
-    private collectionService: CollectionService,
     private couponsService: CouponsService,
     private router: Router,
     private HotToastService: HotToastService,
     private AppSettingsService: AppSettingsService,
     private ChangeDetectorRef: ChangeDetectorRef,
-    private BrandService: BrandService
   ) { }
 
   ngOnInit(): void {
@@ -93,12 +83,8 @@ export class AddCouponsComponent implements OnInit {
       countPerUser: new FormControl('1', [Validators.required, Validators.pattern("^[0-9]*$")]),
       isMaxRedemptionEnabled: new FormControl('false'),
       maxRedemptionValue: new FormControl('', [Validators.pattern("^[0-9]*$")]),
+      platformType: new FormControl('both', Validators.required),
     });
-
-    this.getProducts()
-    this.getCategories()
-    this.getCollections()
-    this.getBrands()
 
     this.form.get('fromDate')?.setValue(this.fromDate)
     this.form.get('lastDate')?.setValue(this.toDate)
@@ -108,53 +94,68 @@ export class AddCouponsComponent implements OnInit {
     return this.form.controls;
   }
 
-  getProducts() {
-    this.productService.getActiveProduct().subscribe((res: any) => {
-      this.productsData = res?.result
-    })
+  onSelect(event: { dropdownInputs: any[] }) {
+    this.assignDropdownInputs(event.dropdownInputs)
+    this.ChangeDetectorRef.markForCheck()
   }
 
-  getCollections() {
-    this.collectionService.getActiveCollection().subscribe((res: any) => {
-      this.collectionsData = res?.result
-    })
+  assignDropdownInputs(dropdownInputs: any[]) {
+    switch (this.form.get('criteriaType')?.value) {
+      case 'products':
+        this.products = dropdownInputs
+        break;
+      case 'collections':
+        this.collections = dropdownInputs
+        break;
+      case 'categories':
+        this.categories = dropdownInputs
+        break;
+      case 'brands':
+        this.brands = dropdownInputs
+        break;
+    }
   }
 
-  getCategories() {
-    this.categoryService.getActiveCategory().subscribe((res: any) => {
-      this.categoriesData = res?.result
-    })
-  }
+  onRemoveSelected(item: any) {
+    const isExists = this.dropdownInputs.some((input: any) => input._id === item._id)
+    if (isExists) {
+      this.HotToastService.info("Item removed successfully")
+      this.dropdownInputs = this.dropdownInputs.filter((input: any) => input._id !== item._id);
+    } else {
+      this.HotToastService.success("Item added successfully")
+      this.dropdownInputs.push(item);
+    }
 
-  getBrands() {
-    this.BrandService.getActiveBrands().subscribe((res: any) => {
-      this.brandsData = res?.result
-    })
+    this.assignDropdownInputs(this.dropdownInputs)
+    this.ChangeDetectorRef.markForCheck()
   }
 
   applyCoupon(type: string) {
     switch (type) {
-      case 'product':
+      case 'products':
         this.categories = []
         this.collections = []
         this.brands = []
         break
-      case 'collection':
+      case 'collections':
         this.categories = []
         this.products = []
         this.brands = []
         break
-      case 'category':
+      case 'categories':
         this.products = []
         this.collections = []
         this.brands = []
         break
-      case 'brand':
+      case 'brands':
         this.products = []
         this.collections = []
         this.categories = []
         break
     }
+    this.dropdownInputs = []
+    this.form.get('criteriaType')?.setValue(type);
+    this.ChangeDetectorRef.markForCheck();
   }
 
   validateValue(_val: any) {
@@ -210,10 +211,10 @@ export class AddCouponsComponent implements OnInit {
         minimumType: this.form.get('minimumType')?.value,
         value: this.form.get('value')?.value,
         type: this.form.get('type')?.value,
-        categories: this.categories ? this.categories : [],
-        products: this.products ? this.products : [],
-        collections: this.collections ? this.collections : [],
-        brands: this.brands ? this.brands : [],
+        categories: this.categories ? this.categories?.map((category:any) => category?._id) : [],
+        products: this.products ? this.products?.map((product:any) => product?._id) : [],
+        collections: this.collections ? this.collections?.map((collection:any) => collection?._id) : [],
+        brands: this.brands ? this.brands?.map((brand:any) => brand?._id) : [],
         details: {
           type: this.form.get('couponType')?.value,
           value: this.form.get('couponValue')?.value,
@@ -236,6 +237,7 @@ export class AddCouponsComponent implements OnInit {
           isEnabled: this.form.get('isMaxRedemptionEnabled')?.value === 'true',
           value: this.form.get('maxRedemptionValue')?.value || null
         },
+        platformType: this.form.get('platformType')?.value,
       }
 
       return data

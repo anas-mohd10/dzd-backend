@@ -56,6 +56,19 @@ export class OfferListComponent implements OnInit {
     this.getOffers()
   }
 
+  formatWord(value: string) {
+    if(!value) return ''
+
+    return value.charAt(0).toUpperCase() + value.slice(1)
+  }
+
+  formatDate(date: string) {
+    return `${new Date(date).toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'short',
+      day: 'numeric'
+    })}`
+  }
 
   switchToggled(event: { switchId: string, toggleState: boolean }) {
     this.OfferService.updateOffer({ slug: event.switchId, isActive: event.toggleState }).subscribe({
