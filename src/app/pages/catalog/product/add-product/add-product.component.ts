@@ -470,11 +470,6 @@ export class AddProductComponent implements OnInit {
       return;
     }
 
-    if (!this.primaryCategory.value) {
-      this.HotToastService.error('Please select primary category');
-      return;
-    }
-
     if (!this.form.valid) {
       this.isSubmitted = true;
       this.isSaving = false; // Re-enable button if form is invalid
@@ -512,6 +507,7 @@ export class AddProductComponent implements OnInit {
         slug: this.primaryCategory.value.slug,
         thumbnail: this.primaryCategory.value.thumbnail,
         cover: this.primaryCategory.value.cover,
+        hierarchies: this.primaryCategory.value.hierarchies,
       } : null,
       parentId: this.parentDetails?._id,
       productIcons: this.icons,
@@ -520,6 +516,7 @@ export class AddProductComponent implements OnInit {
         name: category.name,
         slug: category.slug,
         thumbnail: category.thumbnail,
+        hierarchies: category.hierarchies,
         cover: category.cover,
       })),
       category: {

@@ -637,11 +637,6 @@ productIconClicked(event: any, type: string = 'add') {
       return;
     }
 
-    if (!this.primaryCategory.value) {
-      this.HotToastService.error('Please select primary category');
-      return;
-    }
-
     if (!this.form.valid) {
       this.isSubmitted = true;
       this.isSaving = false; // Re-enable button if form is invalid
@@ -724,9 +719,17 @@ productIconClicked(event: any, type: string = 'add') {
         id: this.categories.map((category: any) => category?._id),
         refid: this.categories.map((category: any) => category?.catid),
       },
+      primaryCategory: this.primaryCategory.value ? {
+        name: this.primaryCategory.value.name,
+        slug: this.primaryCategory.value.slug,
+        thumbnail: this.primaryCategory.value.thumbnail,
+        cover: this.primaryCategory.value.cover,
+        hierarchies: this.primaryCategory.value.hierarchies,
+      } : null,
       categories: this.categories.map((category: any) => ({
         name: category.name,
         slug: category.slug,
+        hierarchies: category.hierarchies,
         thumbnail: category.thumbnail,
         cover: category.cover,
       })),
