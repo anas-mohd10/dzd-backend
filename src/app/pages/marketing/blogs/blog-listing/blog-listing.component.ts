@@ -69,9 +69,12 @@ clear() {
   filterBlogs(status: 'active' | 'inactive' | 'all') {
     if (this.selectedFilter !== status) {
       this.selectedFilter = status;
-      localStorage.setItem('selectedFilter', status); 
+      localStorage.setItem('selectedFilter', status); // Persist the selected filter
     }
+  
+    this.getBlogs();
   }
+  
 
   getBlogs() {
     this.BlogService.blogs({
@@ -86,12 +89,12 @@ clear() {
           this.totalPages = res.result.totalPages;
           this.isLastPage = res.result.isLastPage;
           this.totalResults = res.result.totalResults;
-
+  
           const filteredBlogs: any[] = [];
           const requests = this.blogs.map((blog) =>
             this.BlogService.getBlogBySlug(blog.slug).toPromise().then((details: any) => {
               blog.isActive = details.result.isActive;
-
+  
               // Apply filtering based on the selected filter
               if (
                 (this.selectedFilter === 'active' && blog.isActive) ||
@@ -102,15 +105,16 @@ clear() {
               }
             })
           );
-
+  
           Promise.all(requests).then(() => {
             this.blogs = filteredBlogs;
             this.ChangeDetectorRef.markForCheck();
           });
         }
-      }
+      },
     });
   }
+  
 
   
   
