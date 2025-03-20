@@ -50,6 +50,7 @@
         <tr>
           <th>Customer</th>
           <th>Products</th>
+          <th>Total</th>
           <th>Date</th>
           <th>Type</th>
           <th>Action</th>
@@ -60,6 +61,7 @@
           <tr>
             <td>{{ cart?.customer?.name }}</td>
             <td>{{ cart?.products }}</td>
+            <td>{{ cart?.productsSellingTotal }}</td>
             <td>{{ cart?.date }}</td>
             <td>
               <span class="guest fs-6" [ngClass]="{ customer: cart?.type == '1' }">
@@ -114,18 +116,21 @@
     <div class="pull-left">
       <div class="fs-3 fw-bold">Carted products</div>
       <div class="my-3 fs-5">
-        <div>
+        <div class="fs-6 mb-2">
           Name : {{ cartDetails?.customer?.id?.name }}
         </div>
-        <div class="d-flex align-items-center justify-content-start gap-2 my-2">
+        <div class="d-flex align-items-center justify-content-start gap-2 mb-2 fs-6">
           <div>Mobile Number : </div>
           <div>
             {{ cartDetails?.customer?.id?.countryCode }}
             {{ cartDetails?.customer?.id?.mobile }}
           </div>
         </div>
-        <div>
+        <div class="fs-6 mb-2">
           <div>Email : {{ cartDetails?.customer?.id?.email }}</div>
+        </div>
+        <div class="fs-6">
+          <div>Total : {{ cartDetails?.formattedProductsSellingTotal }}</div>
         </div>
       </div>
     </div>
