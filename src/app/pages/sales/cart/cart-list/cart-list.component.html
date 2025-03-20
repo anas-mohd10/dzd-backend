@@ -50,6 +50,7 @@
         <tr>
           <th>Customer</th>
           <th>Products</th>
+          <th>Total</th>
           <th>Date</th>
           <th>Type</th>
           <th>Action</th>
@@ -60,6 +61,7 @@
           <tr>
             <td>{{ cart?.customer?.name }}</td>
             <td>{{ cart?.products }}</td>
+            <td>{{ cart?.productsSellingTotal }}</td>
             <td>{{ cart?.date }}</td>
             <td>
               <span class="guest fs-6" [ngClass]="{ customer: cart?.type == '1' }">
@@ -79,8 +81,16 @@
                   </svg>
                   <div class="toolTip">View products</div>
                 </div>
+                <div *ngIf="cart?.notifications?.count > 0" class="notification-flag" title="{{cart?.notifications?.latest?.title}} sent on {{cart?.notifications?.latest?.sentAt}}">
+                  <span class="badge bg-success rounded-pill">
+                    <svg height="16px" width="16px" fill="white" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.9 2 2 2zm6-6v-5c0-3.07-1.63-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.64 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2zm-2 1H8v-6c0-2.48 1.51-4.5 4-4.5s4 2.02 4 4.5v6z"></path>
+                    </svg>
+                    {{cart?.notifications?.count}}
+                  </span>
+                </div>
                 <div>
-                  <app-module-notification [query]="cart?.refid" [type]="'cart'"></app-module-notification>
+                  <app-module-notification [query]="cart?.refid" [type]="'cart'" (notificationTriggered)="onNotificationTriggered()"></app-module-notification>
                 </div>
               </div>
             </td>
@@ -106,18 +116,21 @@
     <div class="pull-left">
       <div class="fs-3 fw-bold">Carted products</div>
       <div class="my-3 fs-5">
-        <div>
+        <div class="fs-6 mb-2">
           Name : {{ cartDetails?.customer?.id?.name }}
         </div>
-        <div class="d-flex align-items-center justify-content-start gap-2 my-2">
+        <div class="d-flex align-items-center justify-content-start gap-2 mb-2 fs-6">
           <div>Mobile Number : </div>
           <div>
             {{ cartDetails?.customer?.id?.countryCode }}
             {{ cartDetails?.customer?.id?.mobile }}
           </div>
         </div>
-        <div>
+        <div class="fs-6 mb-2">
           <div>Email : {{ cartDetails?.customer?.id?.email }}</div>
+        </div>
+        <div class="fs-6">
+          <div>Total : {{ cartDetails?.formattedProductsSellingTotal }}</div>
         </div>
       </div>
     </div>

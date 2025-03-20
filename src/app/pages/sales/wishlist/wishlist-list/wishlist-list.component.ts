@@ -18,7 +18,7 @@ export class WishlistListComponent implements OnInit {
   sort: FormControl = new FormControl('')
   totalResults: number = 0
   totalPages: number = 1
-  topWishlisted: Array<any> = []
+  topWishlisted: Array<any> = [] 
 
   constructor(
     private CustomersService: CustomersService,
