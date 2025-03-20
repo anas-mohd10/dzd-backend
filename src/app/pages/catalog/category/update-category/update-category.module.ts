@@ -11,10 +11,7 @@ import { SharedModule } from 'src/app/pages/shared/shared.module';
     CommonModule,
     ReactiveFormsModule,
     SharedModule,
-    RouterModule.forChild([{
-      path: '',
-      component: UpdateCategoryComponent,
-    }]),
+    RouterModule.forChild([{ path: '', component: UpdateCategoryComponent }]),
   ],
 })
 export class UpdateCategoryModule { }
