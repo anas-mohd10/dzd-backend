@@ -192,7 +192,7 @@
                     </div>
                     <div class="mb-3" *ngIf="categories.length > 0">
                       <div class="mb-3 form-group">
-                        <label class="fs-6 mb-3 required">Primary Category</label>
+                        <label class="fs-6 mb-3">Primary Category</label>
                         <ng-select
                           [ngClass]="{'is-invalid': primaryCategory.touched && primaryCategory.errors?.required}"
                           class="fs-6" [formControl]="primaryCategory" placeholder="Select primary category"

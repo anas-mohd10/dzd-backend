@@ -18,6 +18,12 @@ interface parentDetails {
   catid: string;
 }
 
+interface Hierarchy {
+  name: string;
+  slug: string;
+  _id: string;
+}
+
 @Component({
   selector: 'app-update-category',
   templateUrl: './update-category.component.html',
@@ -36,6 +42,7 @@ export class UpdateCategoryComponent implements OnInit {
   thumbnail: string = '';
   categoryDoc: any;
   categoryId: string = '';
+  hierarchies: Array<Hierarchy> = [];
 
   constructor(
     private Router: Router,
@@ -128,6 +135,7 @@ export class UpdateCategoryComponent implements OnInit {
           this.mobileCover = res.result?.mobileCover || '';
           this.thumbnail = res.result?.thumbnail || '';
 
+
           // Set Root and Parent Details based on the categoryDoc
           if (res?.result?.rootDetails) {
             this.rootDoc = res?.result?.rootDetails;
@@ -135,6 +143,24 @@ export class UpdateCategoryComponent implements OnInit {
 
           if (res?.result?.parentDetails) {
             this.parentDoc = res?.result?.parentDetails;
+          }
+
+          if (res?.result?.hierarchies && res?.result?.hierarchies.length > 0) {
+            this.hierarchies = res?.result?.hierarchies.map((hierarchy: any) => {
+              return this.formatCategoryDoc(hierarchy);
+            });
+            // Remove null from the hierarchies
+            this.hierarchies = this.hierarchies.filter((hierarchy: any) => hierarchy !== null);
+            // Remove the duplicate hierarchies
+            this.hierarchies = this.hierarchies.filter((hierarchy: any, index: number, self: any) =>
+              index === self.findIndex((t: any) => t._id === hierarchy._id)
+            );
+            // Check if the parentDoc is already in the hierarchies
+            if (!this.hierarchies.some((hierarchy: any) => hierarchy._id == this.parentDoc._id)) {
+              this.hierarchies.push(this.formatCategoryDoc(this.parentDoc));
+            }
+          } else {
+            this.hierarchies = [this.formatCategoryDoc(this.parentDoc)];
           }
 
           this.ChangeDetectorRef.markForCheck();
@@ -186,6 +212,7 @@ export class UpdateCategoryComponent implements OnInit {
     let categoryParentItem = categoryMap.get(categoryItems[categoryItems.length - 1]);
     this.rootDoc = categoryRootItem;
     this.parentDoc = categoryParentItem;
+    this.hierarchies.push(...this.parentDoc.hierarchies, this.formatCategoryDoc(this.parentDoc))
   }
 
   formatCategoryDoc(categoryDoc: any) {
@@ -216,6 +243,7 @@ export class UpdateCategoryComponent implements OnInit {
     this.CategoryService.updateCategory(this.categoryDoc.slug, {
       ...this.form.value,
       _id: this.categoryDoc._id,
+      hierarchies: this.hierarchies,
       rootDetails: ['false', false].includes(this.form.get('isRoot')?.value) && this.formatCategoryDoc(this.rootDoc),
       parentDetails: ['false', false].includes(this.form.get('isRoot')?.value) && this.formatCategoryDoc(this.parentDoc),
     }).subscribe({
