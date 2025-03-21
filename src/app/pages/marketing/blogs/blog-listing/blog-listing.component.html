@@ -20,6 +20,36 @@
       <button class="btn btn-primary" routerLink="{{ appRoute.blogs.create }}">
         Create blog
       </button>
+      <div class="dropdown">
+        <button class="btn btn-primary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+          Filter Blogs:
+          <span class="fw-bold">
+            {{ selectedFilter === 'all' ? 'All' : selectedFilter === 'active' ? 'Active' : 'Inactive' }}
+          </span>
+        </button>
+        <ul class="dropdown-menu">
+          <li>
+            <a class="dropdown-item" [ngClass]="{ 'selected-item': selectedFilter === 'active' }"
+              (click)="filterBlogs('active')">
+              <span *ngIf="selectedFilter === 'active'"></span> Active Blogs
+            </a>
+          </li>
+          <li>
+            <a class="dropdown-item" [ngClass]="{ 'selected-item': selectedFilter === 'inactive' }"
+              (click)="filterBlogs('inactive')">
+              <span *ngIf="selectedFilter === 'inactive'"></span> Inactive Blogs
+            </a>
+          </li>
+          <li>
+            <a class="dropdown-item" [ngClass]="{ 'selected-item': selectedFilter === 'all' }"
+              (click)="filterBlogs('all')">
+              <span *ngIf="selectedFilter === 'all'"></span> All Blogs
+            </a>
+          </li>
+        </ul>
+      </div>
+
+
     </div>
   </div>
 

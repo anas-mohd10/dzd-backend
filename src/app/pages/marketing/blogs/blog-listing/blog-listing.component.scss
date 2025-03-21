@@ -105,3 +105,19 @@ $error: #F1416C;
     display: block;
   }
 }
+.selected-item {
+  background-color: #00BDAB;  /* Blue color for selected */
+  color: white;
+  font-weight: bold;
+}
+
+.dropdown-item {
+  display: flex;
+  align-items: center;
+}
+
+.dropdown-item span {
+  margin-right: 8px;
+  color: green; /* Color for the tick mark */
+  font-weight: bold;
+}
