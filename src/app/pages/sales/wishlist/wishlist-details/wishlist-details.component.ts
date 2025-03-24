@@ -35,16 +35,4 @@ export class WishlistDetailsComponent implements OnInit {
   navigateBack() {
     this.Location.back()
   }
-  exportWishlist(): void {
-    const requestBody = { userId: this.customer };    
-    this.CustomersService.exportWishlist(requestBody).subscribe({
-      next: () => {
-        this.toast.success('Wishlist export initiated successfully!');
-      },
-      error: (err) => {
-        console.error('Error exporting wishlist:', err);
-        this.toast.error('Failed to export wishlist. Please try again.');
-      }
-    });
-  }
 }
