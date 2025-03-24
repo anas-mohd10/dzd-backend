@@ -16,6 +16,10 @@ export class CartService {
     const url = this.commonService.getFullUrl(this.cartEndpoints.get_cart);
     return this.http.post(`${url}`, data)
   }
+  exportCart(requestBody: any) {
+    const url = this.commonService.getFullUrl(this.cartEndpoints.exportCart);
+    return this.http.post(url, requestBody);
+  }
 
   sendCartNotification(data: any) {
     const url = this.commonService.getFullUrl(this.cartEndpoints.cart_notification);

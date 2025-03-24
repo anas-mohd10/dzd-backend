@@ -14,6 +14,7 @@ import { CouponsService } from 'src/app/includes/services/coupons.service';
 import { environment } from 'src/environments/environment';
 import { AppSettingsService } from 'src/app/includes/services/app.settings.service';
 import { ActivatedRoute } from '@angular/router';
+import { HotToastService } from '@ngneat/hot-toast';
 
 @Component({
   selector: 'app-cart-list',
@@ -47,6 +48,7 @@ export class CartListComponent implements OnInit {
   cartQuery: any;
   @ViewChild('cartProducts') productsModal: TemplateRef<any>;
   notificationRef?: BsModalRef;
+   customer: string = ''
 
   constructor(
     private cartService: CartService,
@@ -55,7 +57,9 @@ export class CartListComponent implements OnInit {
     private BsModalService: BsModalService,
     private CouponsService: CouponsService,
     private AppSettingsService: AppSettingsService,
-    private ActivatedRoute: ActivatedRoute
+    private ActivatedRoute: ActivatedRoute,
+    private toast: HotToastService,
+
   ) { }
 
   get formControls() {
@@ -69,6 +73,20 @@ export class CartListComponent implements OnInit {
   onNotificationTriggered() {
     this.getCarts();
   }
+  exportWishlist(): void {
+    const requestBody = { userId: this.customer };    
+
+    this.cartService.exportCart(requestBody).subscribe({
+      next: () => {
+        this.toast.success('Wishlist export initiated successfully!');
+      },
+      error: (err:any) => {
+        console.error('Error exporting wishlist:', err);
+        this.toast.error('Failed to export wishlist. Please try again.');
+      }
+    });
+  }
+
 
   ngOnInit(): void {
     this.getCarts();
