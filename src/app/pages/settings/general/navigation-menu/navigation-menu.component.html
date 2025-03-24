@@ -1018,13 +1018,73 @@
                         <label for="megaMenuTitle" class="fs-6 mb-3">Title</label>
                         <input type="text" class="form-control" formControlName="title" id="megaMenuTitle">
                     </div>
-                    <div class="form-group">
+                    <div class="card my-4">
+                        <div class="row">
+                          <!-- Redirection Field -->
+                          <div class="form-group mb-3">
+                            <label class="fs-6 mb-3">Select For Redirection</label>
+                            <select class="form-select mb-3" (change)="onRedirectionChange($event)">
+                              <option value="" disabled selected>-- Select an option --</option>
+                              <option value="products">Products</option>
+                              <option value="collections">Collections</option>
+                              <option value="brands">Brands</option>
+                              <option value="categories">Categories</option>
+                              <option value="complete">Store</option>
+                            </select>
+                      
+                            <!-- Products Dropdown -->
+                            <div *ngIf="selectedOption === 'products'">
+                              <label class="fs-6 mb-3">Select Product</label>
+                              <select class="form-select mb-3" (change)="onSelectItem($event)">
+                                <option value="" disabled selected>-- Select a product --</option>
+                                <option *ngFor="let product of products" [value]="product.name">{{ product.name }}</option>
+                              </select>
+                            </div>
+                      
+                            <!-- Collections Dropdown -->
+                            <div *ngIf="selectedOption === 'collections'">
+                              <label class="fs-6 mb-3">Select Collection</label>
+                              <select class="form-select mb-3" (change)="onSelectItem($event)">
+                                <option value="" disabled selected>-- Select a collection --</option>
+                                <option *ngFor="let collection of collections" [value]="collection.name">{{ collection.name }}</option>
+                              </select>
+                            </div>
+                      
+                            <!-- Brands Dropdown -->
+                            <div *ngIf="selectedOption === 'brands'">
+                              <label class="fs-6 mb-3">Select Brand</label>
+                              <select class="form-select mb-3" (change)="onSelectItem($event)">
+                                <option value="" disabled selected>-- Select a brand --</option>
+                                <option *ngFor="let brand of brands" [value]="brand.name">{{ brand.name }}</option>
+                              </select>
+                            </div>
+                      
+                            <!-- Categories Dropdown -->
+                            <div *ngIf="selectedOption === 'categories'">
+                              <label class="fs-6 mb-3">Select Category</label>
+                              <select class="form-select mb-3" (change)="onSelectItem($event)">
+                                <option value="" disabled selected>-- Select a category --</option>
+                                <option *ngFor="let category of categories" [value]="category.name">{{ category.name }}</option>
+                              </select>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      
+                      <!-- Redirection Field -->
+                      <div class="form-group">
                         <label for="megaMenuRedirection" class="fs-6 mb-3">Redirection</label>
-                        <input type="text" class="form-control" formControlName="redirection" id="megaMenuRedirection">
-                    </div>
+                        <input
+                          type="text"
+                          class="form-control"
+                          formControlName="redirection"
+                          id="megaMenuRedirection"
+                          [value]="redirectionValue"
+                        />
+                      </div>
+                      
                 </div>
             </div>
-
             <div class="my-8">
                 <div>
                     <tabset [justified]="true" type="pills">

@@ -21,6 +21,9 @@ import { StaticPageService } from 'src/app/includes/services/static-page.service
 import { MegamenuService } from 'src/app/includes/services/megamenu.service';
 import { AngularEditorConfig } from '@kolkov/angular-editor';
 import { FooterService } from 'src/app/includes/services/footer.service';
+import { BrandService } from 'src/app/includes/services/brand.service';
+import { CollectionService } from 'src/app/includes/services/collection.service';
+import { ProductService } from 'src/app/includes/services/product.service';
 
 @Component({
   selector: 'app-navigation-menu',
@@ -38,6 +41,11 @@ export class NavigationMenuComponent implements OnInit {
   base: string = environment.base;
   activeCategory: string = '';
   menuType: FormControl = new FormControl('1');
+  products: any = [];
+  collections: any = [];
+  brands: any = [];
+  selectedOption: string = '';
+  dropdownInputs: Array<any> = [];
   settings: any = {};
   itemForm!: FormGroup;
   @ViewChild('scrollItems') scrollItems: ElementRef = new ElementRef<any>({});
@@ -136,6 +144,7 @@ export class NavigationMenuComponent implements OnInit {
     ],
   };
   facilityIndex: any = null;
+  form: FormGroup = new FormGroup({});
   footerForm: FormGroup = new FormGroup({});
   storeFacilities: Array<{
     name: string;
@@ -186,12 +195,14 @@ export class NavigationMenuComponent implements OnInit {
   isAddMenuChildItem: boolean = false;
   childNodes: Array<any> = [];
   isChildNodeSubmitted: boolean = false;
+  showProducts: boolean = false;
   childNode: any;
   childNodeDetails: any = {};
   childNodeIcon: string = '';
   childNodeIndex: any = null;
   parentMenuIndex: any = null;
   showChildNode: any = null
+  redirectionValue: string = '';
   subMenuIcon: string = '';
 
   get itemControls() {
@@ -200,6 +211,9 @@ export class NavigationMenuComponent implements OnInit {
 
   constructor(
     private CategoryService: CategoryService,
+    private ProductService: ProductService,
+    private CollectionService: CollectionService,
+    private BrandService: BrandService,
     private ChangeDetectorRef: ChangeDetectorRef,
     private ToastrService: ToastrService,
     private AppSettingsService: AppSettingsService,
@@ -209,9 +223,60 @@ export class NavigationMenuComponent implements OnInit {
     private Toast: HotToastService,
     private MegamenuService: MegamenuService,
     private StaticPageService: StaticPageService,
-    private FooterService: FooterService
+    private FooterService: FooterService,
+    private HotToastService: HotToastService,
+
   ) { }
 
+  product = [{ name: 'Product 1' }, { name: 'Product 2' }];
+  collection = [{ name: 'Collection 1' }, { name: 'Collection 2' }];
+  brand = [{ name: 'Brand 1' }, { name: 'Brand 2' }];
+  categorie = [{ name: 'Category 1' }, { name: 'Category 2' }];
+
+  onRedirectionChange(event: any) {
+    const value = event.target.value;
+    this.selectedOption = value;
+    
+    // Clear previous selection when changing redirection type
+    this.redirectionValue = '';
+    this.megaMenuForm.patchValue({
+      redirection: ''
+    });
+    
+    // If "Store" is selected, set the redirection directly
+    if (value === 'complete') {
+      this.redirectionValue = '/store';
+      this.megaMenuForm.patchValue({
+        redirection: '/store'
+      });
+    }
+  }
+
+  onSelectItem(event: any) {
+    const selectedItem = event.target.value;
+  
+    if (this.selectedOption) {
+      console.log("....", this.selectedOption);
+  
+      // Adjust the pathPrefix logic for specific cases
+      const pathPrefix = this.selectedOption === 'collections'
+        ? 'c'
+        : this.selectedOption === 'products' || this.selectedOption === 'categories'
+          ? 'p'
+          : this.selectedOption.endsWith('s')
+            ? this.selectedOption.slice(0, -1)
+            : this.selectedOption;
+  
+      this.redirectionValue = `/${pathPrefix}/${selectedItem}`;
+  
+      // Explicitly set the value and log for debugging
+      this.megaMenuForm.get('redirection')?.setValue(this.redirectionValue);
+    }
+  }
+  
+  
+  
+  
   openStoreFacilityModal(
     template: TemplateRef<any>,
     facilityDetails?: any,
@@ -247,6 +312,11 @@ export class NavigationMenuComponent implements OnInit {
     this.storeFacilityForm.reset();
     this.closeStoreFacilityModal();
   }
+  // onRedirectionChange(event: Event): void {
+  //   const selectElement = event.target as HTMLSelectElement;
+  //   this.selectedOption = selectElement.value;
+  // }
+
 
   removeStoreFacility(index: number) {
     this.storeFacilities.splice(index, 1);
@@ -433,55 +503,61 @@ export class NavigationMenuComponent implements OnInit {
   }
 
   saveMegaMenuItem() {
-    if (this.megaMenuEdit) {
-      this.megaMenuForm
-        .get('subMenuBoxes')
-        ?.patchValue({ menuBoxes: this.subMenuBoxes });
-      this.MegamenuService.updateMegaMenu({
-        _id: this.megaMenuDetails?._id,
-        ...this.megaMenuForm.value,
-        subMenus: this.subMenus,
-        advertisementMobile: this.megaMenuAdvertisementMobile
-      }).subscribe({
-        next: (res: any) => {
-          if (res?.errorCode == 0) {
-            this.Toast.success(res?.message);
-            this.closeMegaMenuModal();
-            this.getMegaMenu();
-            this.subMenus = [];
-          } else {
-            this.Toast.error(res?.message);
-          }
-        },
-        error: (err: any) => {
-          this.Toast.error(err?.error?.message || 'An error occurred');
-        },
-      });
-    } else {
-      this.megaMenuForm
-        .get('subMenuBoxes')
-        ?.patchValue({ menuBoxes: this.subMenuBoxes });
-      this.MegamenuService.addMegaMenu({
-        index: this.megaMenuItems.length + 1,
-        ...this.megaMenuForm.value,
-        subMenus: this.subMenus,
-      }).subscribe({
-        next: (res: any) => {
-          if (res?.errorCode == 0) {
-            this.Toast.success(res?.message);
-            this.closeMegaMenuModal();
-            this.subMenus = [];
-            this.getMegaMenu();
-          } else {
-            this.Toast.error(res?.message);
-          }
-        },
-        error: (err: any) => {
-          this.Toast.error(err?.error?.message);
-        },
-      });
+    // Ensure the redirection value is updated before saving
+    const currentRedirection = this.megaMenuForm.get('redirection')?.value;
+    if (!currentRedirection && this.redirectionValue) {
+      this.megaMenuForm.get('redirection')?.setValue(this.redirectionValue);
+    }
+  
+    if (this.megaMenuForm.valid) {
+      const formData = { ...this.megaMenuForm.value, subMenus: this.subMenus };
+  
+      if (this.megaMenuEdit) {
+        this.MegamenuService.updateMegaMenu({
+          _id: this.megaMenuDetails?._id,
+          ...formData,
+          advertisementMobile: this.megaMenuAdvertisementMobile,
+        }).subscribe({
+          next: (res: any) => {
+            if (res?.errorCode === 0) {
+              this.Toast.success(res.message);
+              this.closeMegaMenuModal();
+              this.getMegaMenu();
+              this.subMenus = [];
+            } else {
+              this.Toast.error(res.message);
+            }
+          },
+          error: (err: any) => {
+            this.Toast.error(err?.error?.message || 'An error occurred');
+          },
+        });
+      } else {
+        this.MegamenuService.addMegaMenu({
+          index: this.megaMenuItems.length + 1,
+          ...formData,
+        }).subscribe({
+          next: (res: any) => {
+            if (res?.errorCode === 0) {
+              this.Toast.success(res.message);
+              this.closeMegaMenuModal();
+              this.getMegaMenu();
+              this.subMenus = [];
+            } else {
+              this.Toast.error(res.message);
+            }
+          },
+          error: (err: any) => {
+            this.Toast.error(err?.error?.message);
+          },
+        });
+      }
     }
   }
+  
+  
+  
+  
 
   get megaMenuItemFormControls() {
     return this.megaMenuItemForm.controls;
@@ -623,7 +699,141 @@ export class NavigationMenuComponent implements OnInit {
     this.menuItemIcon = '';
   }
 
+
+  onSelect(event: { dropdownInputs: any[] }) {
+    this.assignDropdownInputs(event.dropdownInputs);
+  }
+
+  assignDropdownInputs(dropdownInputs: any[]) {
+    switch (this.selectedOption) {
+      case 'products':
+        this.products = dropdownInputs;
+        break;
+      case 'collections':
+        this.collections = dropdownInputs;
+        break;
+      case 'categories':
+        this.categories = dropdownInputs;
+        break;
+      case 'brands':
+        this.brands = dropdownInputs;
+        break;
+    }
+  }
+
+  onRemoveSelected(item: any) {
+    const isExists = this.dropdownInputs.some((input: any) => input._id === item._id);
+
+    if (isExists) {
+      this.dropdownInputs = this.dropdownInputs.filter((input: any) => input._id !== item._id);
+    } else {
+      this.dropdownInputs.push(item);
+    }
+
+    this.assignDropdownInputs(this.dropdownInputs);
+  }
+
+  applyCoupon(type: string) {
+    switch (type) {
+      case 'products':
+        this.categories = []
+        this.collections = []
+        this.brands = []
+        break
+      case 'collections':
+        this.categories = []
+        this.products = []
+        this.brands = []
+        break
+      case 'categories':
+        this.products = []
+        this.collections = []
+        this.brands = []
+        break
+      case 'brands':
+        this.products = []
+        this.collections = []
+        this.categories = []
+        break
+    }
+    this.dropdownInputs = []
+    this.form.get('criteriaType')?.setValue(type);
+    this.ChangeDetectorRef.markForCheck();
+  }
+  fetchData() {
+    // Fetch products
+    this.ProductService.getProducts({}).subscribe((res: any) => {
+      this.products = res.result || [];
+    });
+
+    // Fetch collections
+    this.CollectionService.getCollection().subscribe((res: any) => {
+      this.collections = res.result || [];
+    });
+
+    // Fetch brands
+    this.BrandService.getBrand().subscribe((res: any) => {
+      this.brands = res.result || [];
+    });
+
+    // Fetch categories
+    this.CategoryService.getCategories({}, {}).subscribe((res: any) => {
+      this.categories = res.result || [];
+    
+    });
+  }
+  fetchProducts() {
+    this.ProductService.getProduct().subscribe((res: any) => {
+
+      this.products = res?.result || [];
+      this.ChangeDetectorRef.detectChanges();  // Ensure change detection runs
+    });
+  }
+  
+
+  fetchCollections() {
+    this.CollectionService.getCollection().subscribe((res: any) => {
+      this.collections = res?.result || [];
+      this.ChangeDetectorRef.markForCheck();
+    });
+  }
+
+  fetchBrands() {
+    this.BrandService.getBrand().subscribe((res: any) => {
+      this.brands = res?.result || [];
+      this.ChangeDetectorRef.markForCheck();
+    });
+  }
+
+  // onRedirectionChange(event: any) {
+  //   this.selectedOption = event.target.value;
+  // }
+
+  loadSavedData() {
+    const savedValue = this.megaMenuForm.get('redirection')?.value;
+  
+    if (savedValue) {
+      if (savedValue.includes('/p/')) {
+        this.selectedOption = 'products';
+      } else if (savedValue.includes('/c/')) {
+        this.selectedOption = 'collections';
+      } else if (savedValue.includes('/brand/')) {
+        this.selectedOption = 'brands';
+      } else if (savedValue.includes('/category/')) {
+        this.selectedOption = 'categories';
+      }
+  
+      this.selectedItem = savedValue.split('/').pop() || '';
+    }
+  }
+
   ngOnInit(): void {
+    this.fetchProducts();
+    this.fetchCollections();
+    this.fetchBrands();
+
+    this.loadSavedData();
+
     this.getMegaMenu();
 
     this.getFooterDetails();
@@ -658,17 +868,22 @@ export class NavigationMenuComponent implements OnInit {
       redirection: new FormControl('', Validators.required),
     });
 
-    this.megaMenuForm = new FormGroup({
-      title: new FormControl('', Validators.required),
-      icon: new FormControl(''),
-      redirection: new FormControl('', Validators.required),
-      advertisement: new FormControl(''),
-      advertisementRedirection: new FormControl(''),
-      subMenuBoxes: new FormGroup({
-        title: new FormControl(''),
-        menuBoxes: new FormControl([]),
-      }),
-    });
+this.megaMenuForm = new FormGroup({
+  title: new FormControl('', Validators.required),
+  icon: new FormControl(''),
+  redirection: new FormControl('', Validators.required),
+  advertisement: new FormControl(''),
+  advertisementRedirection: new FormControl(''),
+  selectedProduct: new FormControl(''),
+  selectedCollection: new FormControl(''),
+  selectedBrand: new FormControl(''),
+  selectedCategory: new FormControl(''),
+  subMenuBoxes: new FormGroup({
+    title: new FormControl(''),
+    menuBoxes: new FormControl([]),
+  }),
+});
+
 
     this.StaticPageService.active().subscribe({
       next: (res: any) => {
@@ -941,7 +1156,7 @@ export class NavigationMenuComponent implements OnInit {
         case 'collection':
           this.AdminUsersService.generalSearch(
             { keyword: this.keyword.value, page: 1, limit: 30 },
-            'collection'
+            'c'
           ).subscribe((res: any) => {
             if (res?.errorCode == 0) {
               this.items = res?.result?.data;
@@ -952,7 +1167,7 @@ export class NavigationMenuComponent implements OnInit {
         case 'product':
           this.AdminUsersService.generalSearch(
             { keyword: this.keyword.value, page: 1, limit: 30 },
-            'product'
+            'p'
           ).subscribe((res: any) => {
             if (res?.errorCode == 0) {
               this.items = res?.result?.data;
@@ -1518,6 +1733,8 @@ export class NavigationMenuComponent implements OnInit {
         this.Toast.error(err?.error?.message);
       },
     });
+
   }
+
   //Advanced menu items
 }
