@@ -922,10 +922,6 @@ productIconClicked(event: any, type: string = 'add') {
           this.settings = res?.result;
           this.languages = res?.result?.languages;
 
-          // Log the loaded settings for debugging
-          console.log('Loaded settings:', this.settings);
-          console.log('Primary language:', this.settings?.primaryLang);
-
           // If product details are already loaded, update the form with correct localization
           if (this.productDetails) {
             this.updateFormWithLocalizedContent();
@@ -981,14 +977,6 @@ productIconClicked(event: any, type: string = 'add') {
         if (res?.errorCode == 0) {
           // Store the complete product details including all localized content
           this.productDetails = res?.result;
-
-          // Log the product details for debugging
-          console.log('Loaded product details:', this.productDetails);
-          console.log('Localized content:', {
-            names: this.productDetails?.localizedNames,
-            overview: this.productDetails?.localizedOverview,
-            details: this.productDetails?.localizedDetails
-          });
 
           // Basic form patching (non-localized fields)
           this.form.patchValue(res?.result);
@@ -1180,7 +1168,6 @@ productIconClicked(event: any, type: string = 'add') {
       },
       error: (err: any) => { },
     });
-    this.logLocalizedContent();
   }
   updateFormWithLocalizedContent() {
     if (!this.productDetails || !this.settings || !this.settings.primaryLang) {
@@ -1193,7 +1180,6 @@ productIconClicked(event: any, type: string = 'add') {
     }
 
     const primaryLang = this.settings.primaryLang;
-    console.log('Updating form for language:', primaryLang);
 
     // Patch the form with the localized content for the current language
     this.form.patchValue({
@@ -1213,19 +1199,8 @@ productIconClicked(event: any, type: string = 'add') {
       metaKeywords: this.productDetails.localizedMetaKeywords?.[primaryLang] || this.productDetails.metaKeywords,
     });
 
-    console.log('Form updated with localized content');
   }
-  logLocalizedContent() {
-    console.log('Current localized content:');
-    console.log('localizedNames:', this.productDetails?.localizedNames);
-    console.log('localizedOverview:', this.productDetails?.localizedOverview);
-    console.log('localizedOrigin:', this.productDetails?.localizedOrigin);
-    console.log('localizedDetails:', this.productDetails?.localizedDetails);
-    console.log('localizedMetaTitles:', this.productDetails?.localizedMetaTitles);
-    console.log('localizedMetaDescriptions:', this.productDetails?.localizedMetaDescriptions);
-    console.log('localizedMetaKeywords:', this.productDetails?.localizedMetaKeywords);
-    console.log('Current primary language:', this.settings?.primaryLang);
-  }
+
   onSaveStoreField() {
     if (!this.storeFieldForm.valid) {
       this.isStoreSubmitted = true;
