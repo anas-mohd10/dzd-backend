@@ -62,13 +62,17 @@ export class AllProductsComponent implements OnInit {
     { key: 'Invisible', value: 'false', label: 'visibility' }
   ]
   sortFilters: Array<any> = [
-    { key: 'Price : High to Low', value: '0', label: 'sort' },
-    { key: 'Price : Low to High', value: '1', label: 'sort' }
+    { key: 'Updated at', value: '-1', label: 'sort' },
+    { key: 'Price : Low to High', value: '0', label: 'sort' },
+    { key: 'Price : High to Low', value: '1', label: 'sort' },
+    { key: 'Boost Score : Low to High', value: '2', label: 'sort' },
+    { key: 'Boost Score : High to Low', value: '3', label: 'sort' },
+    { key: 'New arrivals', value: '4', label: 'sort' },
   ]
-  boostScoreFilters: Array<any> = [
-    { key: 'High to Low', value: '3', label: 'boostScore' },
-    { key: 'Low to High', value: '4', label: 'boostScore' }
-  ]
+  // boostScoreFilters: Array<any> = [
+  //   { key: 'High to Low', value: '3', label: 'boostScore' },
+  //   { key: 'Low to High', value: '4', label: 'boostScore' }
+  // ]
   visibleFilters: Array<any> = [
     { key: 'Visible products', value: '0', label: 'visibility' },
     { key: 'Invisible products', value: '1', label: 'visibility' }
