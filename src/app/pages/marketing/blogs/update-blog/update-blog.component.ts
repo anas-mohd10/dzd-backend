@@ -98,7 +98,7 @@ export class UpdateBlogComponent implements OnInit {
       { class: 'be-vietnam-pro', name: 'Be Vietnam Pro' },
     ],
   };
-  slug: any;
+  slug: string;
 
 
   constructor(
@@ -148,7 +148,9 @@ export class UpdateBlogComponent implements OnInit {
       canonicalUrl: new FormControl(''),
       thumbnail: new FormControl(null, Validators.required),
       cover: new FormControl(null),
+      slug: new FormControl('', Validators.required),
       products: new FormControl([]),
+      _id: new FormControl(''),
     });
   }
 
@@ -157,12 +159,10 @@ export class UpdateBlogComponent implements OnInit {
       next: (res: any) => {
         if (res?.errorCode === 0) {
           this.form.patchValue(res.result);
-
           if (res.result.category) {
             let categoryDoc = this.categories.find(category => category.title === res.result.category.title);
-            console.log(res.result.category.title)
-            console.log(this.categories)
             this.form.patchValue({ category: categoryDoc?._id });
+            this.form.patchValue({ _id: res.result._id });
           }
           this.previews = { thumbnail: res.result.thumbnail?.path, cover: res.result.cover?.path, };
           this.selectedProducts = res.result.products || [];
@@ -214,7 +214,7 @@ export class UpdateBlogComponent implements OnInit {
   }
 
   confirm() {
-    this.BlogService.deleteBlog(this.blogQuery).subscribe({
+    this.BlogService.deleteBlog(this.form.value._id).subscribe({
       next: (res: any) => {
         if (res?.errorCode == 0) {
           this.Router.navigate([appRoutes.blogs.list]);
@@ -236,14 +236,14 @@ export class UpdateBlogComponent implements OnInit {
       this.Toast.error("Form validation failed")
       return;
     }
-
+console.log("this.form.value.slug", this.form.value.slug)
     this.BlogService.updateBlog({
       ...this.form.value,
       category: {
         title: this.categories.find(category => category._id === this.form.value.category)?.title,
         thumbnail: this.categories.find(category => category._id === this.form.value.category)?.thumbnail
       },
-      slug: this.blogQuery,
+      // slug: this.form.value.slug || this.blogQuery,
     }).subscribe({
       next: (res: any) => {
         if (res?.errorCode == 0) {
