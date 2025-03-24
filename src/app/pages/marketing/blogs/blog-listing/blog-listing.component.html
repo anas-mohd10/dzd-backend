@@ -75,8 +75,8 @@
             <img src="{{blog?.thumbnail}}" alt="{{blog?.title}}" class="rounded"
               onerror="this.src = 'assets/images/default.png'">
             <div class="mt-4">
-              <div>{{blog?.category?.title || blog?.category}}</div>
               <div class="fs-5 title">{{blog?.title}}</div>
+              <div>{{blog?.category?.title || blog?.category}}</div>
               <div class="text-muted">{{blog?.createdAt}}</div>
             </div>
           </a>
