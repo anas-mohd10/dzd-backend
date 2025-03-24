@@ -3,6 +3,7 @@ import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { appRoutes } from 'src/app/config/routes';
 import { CustomersService } from 'src/app/includes/services/customers.service';
+import { HotToastService } from '@ngneat/hot-toast';
 
 @Component({
   selector: 'app-wishlist-details',
@@ -18,8 +19,10 @@ export class WishlistDetailsComponent implements OnInit {
     private CustomersService: CustomersService,
     private Location: Location,
     private ActivatedRoute: ActivatedRoute,
-    private ChangeDetectorRef: ChangeDetectorRef
+    private ChangeDetectorRef: ChangeDetectorRef,
+    private toast: HotToastService
   ) { }
+
 
   ngOnInit(): void {
     this.customer = this.ActivatedRoute.snapshot.queryParams['user'] || ''
@@ -31,5 +34,17 @@ export class WishlistDetailsComponent implements OnInit {
 
   navigateBack() {
     this.Location.back()
+  }
+  exportWishlist(): void {
+    const requestBody = { userId: this.customer };    
+    this.CustomersService.exportWishlist(requestBody).subscribe({
+      next: () => {
+        this.toast.success('Wishlist export initiated successfully!');
+      },
+      error: (err) => {
+        console.error('Error exporting wishlist:', err);
+        this.toast.error('Failed to export wishlist. Please try again.');
+      }
+    });
   }
 }
