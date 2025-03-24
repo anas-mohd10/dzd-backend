@@ -76,6 +76,7 @@
                <th>Mobile</th>
                <th>Source</th>
                <th>Status</th>
+               <th>Tags</th>
                <th>Created</th>
                <th>Action</th>
             </tr>
@@ -93,6 +94,31 @@
                      <span class="alert alert-success p-1 fs-6" [ngClass]="{'alert-danger': !customer?.isActive}">
                         {{customer?.isActive ? 'Active' : 'Inactive'}}
                      </span>
+                  </td>
+                  <td>
+                     <div class="tags">
+                        <div class="addTag p-1 border border-secondary rounded mb-1" (click)="openTag(tagTemplate, customer._id, customer.name)">
+                           Add tag
+                           <span>
+                              <svg height="14px" width="14px" fill="none" stroke="currentColor" stroke-width="1.5"
+                                 viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                                 <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"></path>
+                              </svg>
+                           </span>
+                        </div>
+                        <ng-container *ngFor="let tag of customer?.tags; let tagIndex = index">
+                           <div class="p-1 bg-secondary rounded tag d-flex align-items-center justify-content-center me-1 mb-1"
+                              (click)="removeTag(customer._id, tagIndex)">
+                              {{tag}}
+                              <div class="ms-1">
+                                 <svg height="14" width="14" data-slot="icon" fill="none" stroke-width="1.5" stroke="currentColor"
+                                    viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12"></path>
+                                 </svg>
+                              </div>
+                           </div>
+                        </ng-container>
+                     </div>
                   </td>
                   <td>
                      {{formatDate(customer?.createdAt)}}
@@ -120,3 +146,30 @@
    </div>
 
 </div>
+
+
+<ng-template #tagTemplate>
+  <div class="modal-header">
+    <h4 class="fs-2 fw-bold pull-left">Customer tag for {{tagCustomerName}}</h4>
+    <button type="button" class="btn-close close pull-right"    aria-label="Close" (click)="closeTag()">
+      <span aria-hidden="true" class="visually-hidden">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div>
+      <div class="form-group">
+        <label for="tag" class="form-label required">Tag</label>
+        <input type="text" placeholder="Eg. processed" [formControl]="tag" class="text-dark p-2 form-control"
+          maxLength="10"
+          [ngClass]="{'is-invalid': (tag.touched || isTagSubmitted) && (tag.errors?.required || tag.errors?.maxLength)}">
+        <div class="text-danger" *ngIf="tag.errors?.maxLength">
+          The word you entered exceeds the maximum allowed length of 10 letters.
+          Please enter a word with 10 letters or fewer.
+        </div>
+      </div>
+    </div>
+    <div class="mt-4 d-flex align-items-center justify-content-end">
+      <button class="btn btn-primary" (click)="addTag()">Continue</button>
+    </div>
+  </div>
+</ng-template>

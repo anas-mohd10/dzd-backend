@@ -1,5 +1,6 @@
 export const customerEndpoints = {
   addCustomer: '/create-customer',
+  manageCustomerTags: '/manage-customer-tags',
   get_customer: '/customer/get-customers',
   get_active_customers: '/customer/get-customer/active',
   get_customer_by_mail: '/customer/mail',

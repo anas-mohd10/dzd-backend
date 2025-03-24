@@ -1,9 +1,11 @@
-import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef, TemplateRef } from '@angular/core';
 import { appRoutes } from "../../../../config/routes/app.routes"
 import { CustomersService } from 'src/app/includes/services/customers.service';
-import { FormControl } from '@angular/forms';
 import { CsvService } from 'src/app/includes/services/csv.service';
 import { debounceTime } from 'rxjs/operators';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
+import { HotToastService } from '@ngneat/hot-toast';
 
 @Component({
   selector: 'app-customers-list',
@@ -22,11 +24,19 @@ export class CustomersListComponent implements OnInit {
   page: number = 1
   keyword: FormControl = new FormControl('')
   isActive: FormControl = new FormControl('')
-
+  tagRef?: BsModalRef
+  tagCustomerId: string = ''
+  tag: FormControl = new FormControl('', [Validators.required, Validators.maxLength(10)])
+  isTagSubmitted: boolean = false
+  tagCustomerName: string = ''
   constructor(
     private customersService: CustomersService,
     private ChangeDetectorRef: ChangeDetectorRef,
-    private CsvService: CsvService
+    private CsvService: CsvService,
+    private HotToastService: HotToastService,
+    private BsModalService: BsModalService
+
+
   ) { 
     this.keyword.valueChanges.pipe(debounceTime(500)).subscribe(() => {
       this.getCustomers()
@@ -54,6 +64,21 @@ export class CustomersListComponent implements OnInit {
     this.limit = 40
   }
 
+  removeTag( userid: string, tag: number) {
+    this.customersService.manageTags({ userid: userid, tag: tag }, 'delete').subscribe({
+      next: (res: any) => {
+        if (res?.errorCode == 0) {
+          this.getCustomers()
+          this.HotToastService.success(res.message)
+        } else {
+          this.HotToastService.error(res.message)
+        }
+      }, error: (err: any) => {
+        this.HotToastService.error(err.message)
+      }
+    })
+  }
+
   onPageTriggered(event: { pageIndex: number, pageSize: number }) {
     this.page = event.pageIndex
     this.limit = event.pageSize
@@ -79,6 +104,44 @@ export class CustomersListComponent implements OnInit {
     }, 800)
   }
 
+  openTag(template: TemplateRef<any>, userid: string, name: string) {
+    this.tagRef = this.BsModalService.show(template, { class: 'modal-md modal-dialog-centered', ignoreBackdropClick: true })
+    this.tagCustomerId = userid
+    this.tagCustomerName = name
+  }
+
+
+  addTag() {
+    if (!this.tag.valid) {
+      this.isTagSubmitted = true
+      return
+    }
+
+    this.customersService.manageTags({ userid: this.tagCustomerId, tag: this.tag.value }, 'add').subscribe({
+      next: (res: any) => {
+        if (res?.errorCode == 0) {
+          this.getCustomers()
+          this.tagRef?.hide()
+          this.HotToastService.success(res.message)
+          this.tagCustomerId = ''
+          this.isTagSubmitted = false
+          this.tag.reset()
+        } else {
+          this.HotToastService.error(res.message)
+        }
+      }, error: (err: any) => {
+        this.HotToastService.error(err.message)
+      }
+    })
+  }
+
+
+  closeTag() {
+    this.tagRef?.hide()
+    this.tagCustomerId = ''
+    this.tagCustomerName = ''
+  }
+
   downloadCustomers() {
     let payload = {
       keyword: this.keyword.value,
@@ -98,3 +161,5 @@ export class CustomersListComponent implements OnInit {
     })
   }
 }
+
+

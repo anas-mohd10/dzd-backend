@@ -16,6 +16,11 @@ export class CustomersService {
     return this.http.post(`${url}`, data)
   }
 
+  manageTags(data: any, type: string) {
+    const url = this.commonService.getFullUrl(this.customerEndpoints.manageCustomerTags + '?type=' + type);
+    return this.http.post(`${url}`, data)
+  }
+
   getCustomers() {
     const url = this.commonService.getFullUrl(this.customerEndpoints.get_customer);
     return this.http.get(`${url}`)

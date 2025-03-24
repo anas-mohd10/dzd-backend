@@ -119,7 +119,7 @@ export class OrdersListComponent implements OnInit {
   successOrders: Array<string> = ['PLACED', 'COLLECTED', 'SHIPPED', 'PARTIAL PROCESSED', 'OUT FOR DELIVERY', 'DELIVERED', 'PACKED']
   acceptedOrders: Array<string> = ['ACCEPTED']
   cancelledOrders: Array<string> = ['CANCELLED', 'PENDING', 'FAILED']
-
+  tagOptions: string[] = []
   domainUrl: string = ''
   settings: any;
 
@@ -336,7 +336,8 @@ export class OrdersListComponent implements OnInit {
         toDate: params['toDate'] || '',
         paymentMethod: params['paymentMethod'] || '',
         paymentStatus: params['paymentStatus'] || '',
-        source: params['source'] || ''
+        source: params['source'] || '',
+        customerTags: params['customerTags'] ? params['customerTags'].split(',') : [] 
       }, { emitEvent: false });
 
       // Update keyword without triggering valueChanges
@@ -380,7 +381,6 @@ export class OrdersListComponent implements OnInit {
       }
     });
 
-    console.log(orders)
 
     if (acceptedOrders > 0) {
       this.HotToastService.error("Orders in the list are already accepted")
@@ -486,6 +486,7 @@ export class OrdersListComponent implements OnInit {
       keyword: this.keyword.value,
     };
 
+
     this.OrdersService.listOrders(payload).subscribe((res: any) => {
       if (res?.errorCode == 0) {
         this.orders = res?.result?.orders;
@@ -496,8 +497,13 @@ export class OrdersListComponent implements OnInit {
         this.totalResults = res?.result?.totalResults;
         this.totalPages = res?.result?.totalPages;
         this.page = res?.result?.page;
+
+          this.tagOptions = res?.result?.filter?.tags?.options;
+        
         this.isLoading = true;
         this.ChangeDetectorRef.markForCheck();
+    
+
       }
     });
   }
@@ -513,6 +519,7 @@ export class OrdersListComponent implements OnInit {
       paymentMethod: new FormControl(''),
       paymentStatus: new FormControl(''),
       source: new FormControl(''),
+      customerTags: new FormControl([]), 
     });
 
     // Subscribe to form value changes
