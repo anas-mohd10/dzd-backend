@@ -16,7 +16,6 @@ export class CustomersService {
     return this.http.post(`${url}`, data)
   }
 
- 
   getCustomers() {
     const url = this.commonService.getFullUrl(this.customerEndpoints.get_customer);
     return this.http.get(`${url}`)
