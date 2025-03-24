@@ -159,11 +159,8 @@ export class UpdateBlogComponent implements OnInit {
       next: (res: any) => {
         if (res?.errorCode === 0) {
           this.form.patchValue(res.result);
-          console.log("----------------", res.result)
           if (res.result.category) {
             let categoryDoc = this.categories.find(category => category.title === res.result.category.title);
-            console.log(res.result.category.title)
-            console.log(this.categories)
             this.form.patchValue({ category: categoryDoc?._id });
             this.form.patchValue({ _id: res.result._id });
           }
@@ -217,7 +214,7 @@ export class UpdateBlogComponent implements OnInit {
   }
 
   confirm() {
-    this.BlogService.deleteBlog(this.blogQuery).subscribe({
+    this.BlogService.deleteBlog(this.form.value._id).subscribe({
       next: (res: any) => {
         if (res?.errorCode == 0) {
           this.Router.navigate([appRoutes.blogs.list]);
