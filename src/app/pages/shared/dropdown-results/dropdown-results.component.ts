@@ -18,6 +18,7 @@ export class DropdownResultsComponent implements OnInit, OnChanges {
   dropdownResults: Array<any> = [];
   isSubmitted: boolean = false;
   imageBase: string = environment.base
+  selectAllChecked: boolean = false;
 
   constructor(
     private PlatformService: PlatformService,
@@ -39,6 +40,35 @@ export class DropdownResultsComponent implements OnInit, OnChanges {
 
   isItemExists(item: any) {
     return this.dropdownInputs.some((input: any) => input._id === item._id)
+  }
+
+  toggleSelectAll() {
+    if (this.selectAllChecked) {
+      // Deselect all - remove all current dropdown results from inputs
+      const idsToRemove = new Set(this.dropdownResults.map(item => item._id));
+      this.dropdownInputs = this.dropdownInputs.filter(item => !idsToRemove.has(item._id));
+      this.HotToastService.info("All items deselected");
+    } else {
+      // Select all - add all current dropdown results that aren't already selected
+      const existingIds = new Set(this.dropdownInputs.map(item => item._id));
+      const newItems = this.dropdownResults.filter(item => !existingIds.has(item._id));
+      
+      if (newItems.length > 0) {
+        this.dropdownInputs = [...this.dropdownInputs, ...newItems];
+        this.HotToastService.success("All items selected");
+      }
+    }
+    
+    this.selectAllChecked = !this.selectAllChecked;
+    this.ChangeDetectorRef.markForCheck();
+    this.onSelect.emit({ dropdownInputs: this.dropdownInputs });
+  }
+
+  updateSelectAllStatus() {
+    // Check if all items in dropdown results are already in dropdownInputs
+    this.selectAllChecked = this.dropdownResults.length > 0 && 
+      this.dropdownResults.every(item => this.isItemExists(item));
+    this.ChangeDetectorRef.markForCheck();
   }
 
   onSelectItem(item: any, isExists: boolean) {
@@ -66,12 +96,13 @@ export class DropdownResultsComponent implements OnInit, OnChanges {
     }
   }
 
-  onKeywordChange(params: string) {
-    if (!params) {
-      this.dropdownResults = [];
-      return;
+  onInputFocus() {
+    if (this.keyword.value.trim()) {
+      this.onKeywordChange(this.keyword.value.trim());
     }
+  }
 
+  onKeywordChange(params: string) {
     this.PlatformService.getRedirectionResults({ keyword: params }).subscribe({
       next: (res: any) => {
         if (res?.errorCode == 0) {
@@ -84,7 +115,6 @@ export class DropdownResultsComponent implements OnInit, OnChanges {
             staticPages: res?.result?.staticPages || []
           };
           this.dropdownResults = resultMap[this.type] || [];
-          console.log("dropdownResults", this.dropdownResults)
           this.ChangeDetectorRef.markForCheck();
         } else {
           this.HotToastService.error(res.message)
@@ -93,6 +123,11 @@ export class DropdownResultsComponent implements OnInit, OnChanges {
         this.HotToastService.error(err?.message)
       }
     })
+  }
+
+  clearResults() {
+    this.keyword.setValue("");
+    this.dropdownResults = [];
   }
 
 }
