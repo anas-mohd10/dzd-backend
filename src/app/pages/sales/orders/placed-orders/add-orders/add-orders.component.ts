@@ -17,6 +17,14 @@ import { ProductService } from 'src/app/includes/services/product.service';
 import { StoresService } from 'src/app/includes/services/stores.service';
 import { environment } from 'src/environments/environment';
 import { LocationService } from 'src/app/includes/services/location.service';
+import { CartService } from 'src/app/includes/services/cart.service';
+
+interface CartDoc {
+  _id: string,
+  name: string,
+  quantity: number,
+  price: { selling: number, mrp: number }
+}
 
 interface Coupon {
   _id: string,
@@ -31,6 +39,7 @@ interface Coupon {
 interface ProductDoc {
   _id: string,
   quantity: number,
+  stock: number,
   price: { selling: number }
 }
 
@@ -82,6 +91,7 @@ export class AddOrdersComponent implements OnInit {
   totalProductPages: number = 1;
   productPageIndex: number = 1;
   productPageSize: number = 10;
+  cartItemsValues: Array<{ label: string, value: string }> = [];
 
   //Cart
   product: any;
@@ -133,6 +143,7 @@ export class AddOrdersComponent implements OnInit {
     private Router: Router,
     private ToastrService: HotToastService,
     private formBuilder: FormBuilder,
+    private CartService: CartService,
     private PickupService: PickupService,
     private productService: ProductService,
     private CouponsService: CouponsService,
@@ -649,6 +660,8 @@ export class AddOrdersComponent implements OnInit {
 
       // Get applicable coupons
       this.getApplicableCoupons();
+
+      this.getCartCalculation();
     }
   }
 
@@ -1070,7 +1083,13 @@ export class AddOrdersComponent implements OnInit {
 
   // Get applicableCoupons
   getApplicableCoupons() {
-    const productDocs: ProductDoc[] = this.cartItems.map((item: any) => ({ _id: item._id, quantity: item.quantity, price: { selling: item.price.selling } }))
+    const productDocs: ProductDoc[] = this.cartItems.map((item: any) => (
+      {
+        _id: item._id,
+        quantity: item.quantity,
+        price: { selling: item.price.selling },
+        stock: item.stock
+      }))
     this.CouponsService.getApplicableCoupons({ products: productDocs }).subscribe({
       next: (res: any) => {
         if (res?.errorCode == 0) {
@@ -1086,11 +1105,12 @@ export class AddOrdersComponent implements OnInit {
 
   updateCartItemQuantity(cartItem: ProductDoc, event: any) {
     const newQuantity = parseInt(event.target.value);
-    if (newQuantity > 0) {
+    if (newQuantity > 0 && newQuantity <= cartItem.stock) {
       const index = this.cartItems.findIndex(item => item._id === cartItem._id);
       if (index !== -1) {
         this.cartItems[index].quantity = newQuantity;
         this.calculateCartTotals();
+        this.getCartCalculation();
         this.ChangeDetectorRef.markForCheck();
       }
     }
@@ -1103,6 +1123,7 @@ export class AddOrdersComponent implements OnInit {
       if (index !== -1) {
         this.cartItems[index].price.selling = newPrice;
         this.calculateCartTotals();
+        this.getCartCalculation();
         this.ChangeDetectorRef.markForCheck();
       }
     }
@@ -1114,4 +1135,31 @@ export class AddOrdersComponent implements OnInit {
     }, 0);
     this.cartTotal = this.cartSubtotal - this.cartDiscount;
   }
+
+
+
+  getCartCalculation() {
+    const cartDocs: CartDoc[] = this.cartItems.map((item: any) => (
+      {
+        _id: item._id,
+        quantity: item.quantity,
+        price: { selling: item.price.selling, mrp: item.price.mrp },
+        name: item.name
+      }
+    ))
+
+    this.CartService.getCartCalculation({ products: cartDocs }).subscribe({
+      next: (res: any) => {
+        if (res?.errorCode == 0) {
+          this.cartItemsValues = res?.result?.cartItems;
+          this.ChangeDetectorRef.markForCheck();
+        } else {
+          this.ToastrService.error(res.message);
+        }
+      }, error: (err: any) => {
+        this.ToastrService.error(err.message);
+      }
+    })
+  }
 }
+

@@ -141,7 +141,7 @@
                                     class="fs-4 py-2 mb-4 border-bottom border-secondary d-flex align-items-center justify-content-between">
                                     <div>Items Ordered</div>
                                     <div>
-                                        <button class="btn btn-primary px-2 py-1 w-100"
+                                        <button class="btn btn-primary p-2 w-100"
                                             (click)="openProducts(productsRef)">
                                             Add Products
                                         </button>
@@ -168,22 +168,20 @@
                                                     <span>{{cartItem?.name}}</span>
                                                     <span class="text-muted">{{cartItem?.sku}}</span>
                                                     <span *ngFor="let attribute of cartItem?.attributes">
-                                                        <span *ngIf="attribute?.title">{{attribute?.title}} : {{attribute?.value}}</span>
+                                                        <span *ngIf="attribute?.title">{{attribute?.title}} :
+                                                            {{attribute?.value}}</span>
                                                     </span>
                                                 </span>
                                             </td>
                                             <td>
-                                                <input type="number" 
-                                                       class="form-control" 
-                                                       [value]="cartItem?.quantity"
-                                                       (change)="updateCartItemQuantity(cartItem, $event)">
+                                                <input type="number" class="form-control" [value]="cartItem?.quantity"
+                                                    (change)="updateCartItemQuantity(cartItem, $event)">
                                             </td>
                                             <td>{{cartItem?.price?.mrp}}</td>
                                             <td>
-                                                <input type="number" 
-                                                       class="form-control" 
-                                                       [value]="cartItem?.price?.selling"
-                                                       (change)="updateCartItemPrice(cartItem, $event)">
+                                                <input type="number" class="form-control"
+                                                    [value]="cartItem?.price?.selling"
+                                                    (change)="updateCartItemPrice(cartItem, $event)">
                                             </td>
                                             <td>{{cartItem?.price?.selling * cartItem?.quantity}}</td>
                                             <td>
@@ -263,19 +261,51 @@
                                     </div>
                                 </form>
                             </div>
-                            <div>
-                                <div class="fs-4 mb-4 py-4 border-bottom border-secondary">
-                                    Order Notes
+                            <div class="row">
+                                <div class="col-lg-8">
+                                    <div>
+                                        <div class="fs-4 mb-4 py-4 border-bottom border-secondary">
+                                            Order Notes
+                                        </div>
+                                        <input type="text" placeholder="Enter order notes" class="form-control"
+                                            formControlName="orderNote">
+                                    </div>
+                                    <div>
+                                        <div class="fs-4 mb-4 py-4 border-bottom border-secondary">
+                                            Shipping Notes
+                                        </div>
+                                        <input type="text" placeholder="Enter shipping notes" class="form-control"
+                                            formControlName="shippingNote">
+                                    </div>
                                 </div>
-                                <input type="text" placeholder="Enter order notes" class="form-control"
-                                    formControlName="orderNote">
-                            </div>
-                            <div>
-                                <div class="fs-4 mb-4 py-4 border-bottom border-secondary">
-                                    Shipping Notes
+                                <div class="col-lg-4">
+                                    <div class="fs-4 mb-4 py-4 border-bottom border-secondary">
+                                        Order Summary
+                                    </div>
+                                    <div *ngIf="cartItemsValues.length == 0">
+                                        No items
+                                    </div>
+                                    <div *ngIf="cartItemsValues.length > 0">
+                                        <div class="py-2 d-flex align-items-center justify-content-between"
+                                            [ngClass]="{
+                                                'border-bottom border-secondary': cartItemValue?.label == 'Wallet Discount',
+                                                'py-3': cartItemValue?.label == 'Grand Total'
+                                                }"
+                                            *ngFor="let cartItemValue of cartItemsValues; let index = index">
+                                            <div class="fs-6">
+                                                {{cartItemValue?.label}}
+                                            </div>
+                                            <div class="fs-6">
+                                                {{cartItemValue?.value}}
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="emailConfirmation" class="fs-6 mb-3">Email Confirmation</label>
+                                            <input id="emailConfirmation" type="checkbox" class="form-control"
+                                                formControlName="emailConfirmation">
+                                        </div>
+                                    </div>
                                 </div>
-                                <input type="text" placeholder="Enter shipping notes" class="form-control"
-                                    formControlName="shippingNote">
                             </div>
                         </form>
                     </div>
