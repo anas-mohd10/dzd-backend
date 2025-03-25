@@ -92,6 +92,7 @@ export class AddOrdersComponent implements OnInit {
   productPageIndex: number = 1;
   productPageSize: number = 10;
   cartItemsValues: Array<{ label: string, value: string }> = [];
+  emailConfirmation: FormControl = new FormControl(false);
 
   //Cart
   product: any;
@@ -486,7 +487,7 @@ export class AddOrdersComponent implements OnInit {
 
   initForm() {
     this.orderForm = this.formBuilder.group({
-      paymentMethod: ['', Validators.required],
+      paymentMethod: ['COD'],
       customerId: ['', Validators.required],
       transactionId: [''],
       paymentStatus: ['Paid', Validators.required],
@@ -1136,7 +1137,11 @@ export class AddOrdersComponent implements OnInit {
     this.cartTotal = this.cartSubtotal - this.cartDiscount;
   }
 
-
+  switchTriggered(event: { toggleState: boolean, switchId: string }) {
+    if (event.switchId == 'emailConfirmation') {
+      this.emailConfirmation.setValue(event.toggleState);
+    }
+  }
 
   getCartCalculation() {
     const cartDocs: CartDoc[] = this.cartItems.map((item: any) => (
@@ -1148,7 +1153,11 @@ export class AddOrdersComponent implements OnInit {
       }
     ))
 
-    this.CartService.getCartCalculation({ products: cartDocs }).subscribe({
+    this.CartService.getCartCalculation({ 
+      products: cartDocs, 
+      additionalCharge: this.orderForm.get('additionalCharge')?.value, 
+      shippingCost: this.orderForm.get('shippingCost')?.value
+     }).subscribe({
       next: (res: any) => {
         if (res?.errorCode == 0) {
           this.cartItemsValues = res?.result?.cartItems;
