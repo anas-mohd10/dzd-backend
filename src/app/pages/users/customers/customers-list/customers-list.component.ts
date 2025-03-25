@@ -37,7 +37,7 @@ export class CustomersListComponent implements OnInit {
     private BsModalService: BsModalService
 
 
-  ) { 
+  ) {
     this.keyword.valueChanges.pipe(debounceTime(500)).subscribe(() => {
       this.getCustomers()
     })
@@ -64,7 +64,7 @@ export class CustomersListComponent implements OnInit {
     this.limit = 40
   }
 
-  removeTag( userid: string, tag: number) {
+  removeTag(userid: string, tag: number) {
     this.customersService.manageTags({ userid: userid, tag: tag }, 'delete').subscribe({
       next: (res: any) => {
         if (res?.errorCode == 0) {
@@ -129,8 +129,14 @@ export class CustomersListComponent implements OnInit {
         } else {
           this.HotToastService.error(res.message)
         }
-      }, error: (err: any) => {
-        this.HotToastService.error(err.message)
+      },
+      error: (err: any) => {
+        // Check for the specific tag already exists error (422 status code with errorCode 1)
+        if (err.status === 422 && err.error?.errorCode === 1) {
+          this.HotToastService.error(err.error.message || 'Tag already exists for this customer')
+        } else {
+          this.HotToastService.error(err.message || 'An error occurred')
+        }
       }
     })
   }
