@@ -1,9 +1,5 @@
 import { ChangeDetectorRef, Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
-import {
-  FormBuilder,
-  FormControl,
-  FormGroup, Validators,
-} from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { HotToastService } from '@ngneat/hot-toast';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
@@ -72,6 +68,21 @@ export class AddOrdersComponent implements OnInit {
   dates: Array<any> = [];
   isCustomer: boolean = true;
 
+  isCustomerSelected: boolean = false;
+  customerQuery: FormControl = new FormControl('');
+  customerItems: Array<any> = [];
+  customerPageIndex: number = 1;
+  customerPageSize: number = 10;
+  totalCustomers: number = 10
+  totalCustomerPages: number = 1
+  tabIndex: number = 0;
+  wishlistItems: Array<any> = [];
+  productQuery: FormControl = new FormControl('');
+  totalProducts: number = 10;
+  totalProductPages: number = 1;
+  productPageIndex: number = 1;
+  productPageSize: number = 10;
+
   //Cart
   product: any;
   quantity: any = new FormControl(1, Validators.required);
@@ -133,10 +144,63 @@ export class AddOrdersComponent implements OnInit {
     private LocationService: LocationService
   ) {
     // Trigger only if customer details have not been filled
-    if (!this.customerDetails) {
-      this.customer.valueChanges.pipe(debounceTime(500)).subscribe(() => {
-        this.getCustomers();
-      });
+    this.customerQuery.valueChanges.pipe(debounceTime(500)).subscribe(() => {
+      this.fetchCustomers();
+    });
+
+    this.productQuery.valueChanges.pipe(debounceTime(500)).subscribe(() => {
+      this.getProducts();
+    });
+  }
+
+  onPageTriggered(event: { pageIndex: number, pageSize: number }, type: 'customer' | 'product') {
+    if (type == 'customer') {
+      this.customerPageIndex = event.pageIndex;
+      this.customerPageSize = event.pageSize;
+      this.fetchCustomers();
+    } else {
+      this.productPageIndex = event.pageIndex;
+      this.productPageSize = event.pageSize;
+      this.getProducts();
+    }
+  }
+
+  removeCustomer() {
+    this.isCustomerSelected = false;
+    this.tabIndex = 0;
+    this.orderForm.get('customerId')?.setValue('');
+    this.customerDetails = null;
+    this.ChangeDetectorRef.markForCheck();
+  }
+
+  selectCustomer(customerDoc: any) {
+    this.isCustomerSelected = true;
+    this.customerDetails = customerDoc;
+    this.tabIndex = 1;
+    this.orderForm.get('customerId')?.setValue(this.customerDetails?._id);
+    this.customerService.getAddress({ userid: this.customerDetails?.userid }).subscribe({
+      next: (res: any) => {
+        if (res?.errorCode == 0) {
+          this.addressItems = res?.result;
+          this.addressItems.forEach((addressItem: any) => {
+            if (addressItem?.isDefault == true) {
+              this.addressForm.patchValue(addressItem)
+            }
+          })
+          this.ChangeDetectorRef.markForCheck();
+        } else { }
+      }, error: (err: any) => { },
+    });
+
+    if (this.customerDetails && this.customerDetails?.wishlist?.length > 0) {
+      this.productService.getBulkProducts({ productIds: this.customerDetails?.wishlist }).subscribe({
+        next: (res: any) => {
+          if (res?.errorCode == 0) {
+            this.wishlistItems = res?.result;
+            this.ChangeDetectorRef.markForCheck();
+          } else { }
+        }, error: (err: any) => { }
+      })
     }
   }
 
@@ -145,6 +209,8 @@ export class AddOrdersComponent implements OnInit {
     this.initForm();
     this.getActiveCustomers();
     this.getActiveProducts();
+
+    this.fetchCustomers()
 
     this.PickupService.list().subscribe({
       next: (response: any) => {
@@ -163,6 +229,7 @@ export class AddOrdersComponent implements OnInit {
         this.ChangeDetectorRef.markForCheck();
       }
     });
+
     this.loadLocationData();
 
     this.AppSettingsService.getGeneralSettingsbyId('1').subscribe({
@@ -538,45 +605,37 @@ export class AddOrdersComponent implements OnInit {
     return `${hours.toString().padStart(2, '0')}:${minutes}`;
   }
 
-  //Products management
   openProducts(template: TemplateRef<any>) {
-    this.productsModalRef = this.BsModalService.show(template, {
-      class: 'modal-lg modal-dialog-centered',
-    });
+    this.productsModalRef = this.BsModalService.show(template, { class: 'modal-xl modal-dialog-centered' });
+    this.getProducts();
   }
 
   getProducts() {
-    if (this.keyword.value) {
-      this.productService
-        .searchProducts({
-          page: 1,
-          limit: 100,
-          name: this.keyword.value,
-          isActive: 'true',
-          isArchive: 'false',
-        })
-        .subscribe({
-          next: (res: any) => {
-            if (res?.errorCode == 0) {
-              this.products = res?.result?.data;
-              this.ChangeDetectorRef.markForCheck();
-            } else {
-              this.ToastrService.error(res.message);
-            }
-          },
-          error: (err: any) => {
-            this.ToastrService.error(err.message);
-          },
-        });
-    } else {
-      this.products = [];
-    }
+    this.productService.searchProducts({
+      page: this.productPageIndex,
+      limit: this.productPageSize,
+      name: this.productQuery.value,
+      isActive: 'true',
+      isArchive: 'false',
+    }).subscribe({
+      next: (res: any) => {
+        if (res?.errorCode == 0) {
+          this.products = res?.result?.data;
+          this.totalProducts = res?.result?.totalResults;
+          this.totalProductPages = res?.result?.totalPages;
+          this.ChangeDetectorRef.markForCheck();
+        } else {
+          this.ToastrService.error(res.message);
+        }
+      },
+      error: (err: any) => {
+        this.ToastrService.error(err.message);
+      },
+    });
   }
 
   addToCart(product: any) {
-    const isExists: boolean = this.cartItems.some(
-      (item: any) => item?._id === product?._id
-    );
+    const isExists: boolean = this.cartItems.some((item: any) => item?._id === product?._id);
     if (isExists) {
       this.ToastrService.error('Product already exists in the cart');
     } else {
@@ -592,6 +651,7 @@ export class AddOrdersComponent implements OnInit {
       this.getApplicableCoupons();
     }
   }
+
   updateQuantityWithInput(event: Event, product: any): void {
     const target = event.target as HTMLInputElement;
     if (!target) return;
@@ -643,9 +703,6 @@ export class AddOrdersComponent implements OnInit {
       this.ToastrService.success('Product quantity updated');
     }
   }
-
-
-
 
   updateQuantity(type: 'increment' | 'decrement', product: any) {
     switch (type) {
@@ -703,35 +760,32 @@ export class AddOrdersComponent implements OnInit {
 
     this.getApplicableCoupons();
   }
+
   deleteProduct(product: any) {
     this.cartItems = this.cartItems.filter((item: any) => item?._id != product?._id);
     this.cartSubtotal = this.cartSubtotal - product?.price?.selling * product?.quantity;
-
     this.getApplicableCoupons();
   }
-  //Products managament
 
-  //Customer and address management
-  getCustomers() {
-    this.customerService
-      .searchCustomers({
-        keyword: this.customer.value,
-        page: 1,
-        limit: 100,
-      })
-      .subscribe({
-        next: (res: any) => {
-          if (res?.errorCode == 0) {
-            this.customers = res?.result?.data;
-            this.ChangeDetectorRef.markForCheck();
-          } else {
-            this.ToastrService.error(res.message);
-          }
-        },
-        error: (err: any) => {
-          this.ToastrService.error(err.message);
-        },
-      });
+  fetchCustomers() {
+    this.customerService.searchCustomers({
+      keyword: this.customerQuery.value,
+      page: this.customerPageIndex,
+      limit: this.customerPageSize
+    }).subscribe({
+      next: (res: any) => {
+        if (res?.errorCode == 0) {
+          this.customerItems = res?.result?.data;
+          this.totalCustomers = res?.result?.totalResults;
+          this.totalCustomerPages = res?.result?.totalPages
+          this.ChangeDetectorRef.markForCheck();
+        } else {
+          this.ToastrService.error(res.message);
+        }
+      }, error: (err: any) => {
+        this.ToastrService.error(err.message);
+      },
+    });
   }
 
   getAddress(customer: any) {
@@ -767,9 +821,7 @@ export class AddOrdersComponent implements OnInit {
     this.address = address;
     this.orderForm.get('customerId')?.setValue(this.customerDetails?._id);
     this.addressModalRef?.hide();
-    for (let _key of Object.keys(address)) {
-      this.addressForm.get(_key)?.setValue(address[_key]);
-    }
+    for (let _key of Object.keys(address)) this.addressForm.get(_key)?.setValue(address[_key]);
     this.customers = [];
   }
 
@@ -1030,5 +1082,36 @@ export class AddOrdersComponent implements OnInit {
       },
       error: (err: any) => this.ToastrService.error(err.message)
     })
+  }
+
+  updateCartItemQuantity(cartItem: ProductDoc, event: any) {
+    const newQuantity = parseInt(event.target.value);
+    if (newQuantity > 0) {
+      const index = this.cartItems.findIndex(item => item._id === cartItem._id);
+      if (index !== -1) {
+        this.cartItems[index].quantity = newQuantity;
+        this.calculateCartTotals();
+        this.ChangeDetectorRef.markForCheck();
+      }
+    }
+  }
+
+  updateCartItemPrice(cartItem: ProductDoc, event: any) {
+    const newPrice = parseFloat(event.target.value);
+    if (newPrice >= 0) {
+      const index = this.cartItems.findIndex(item => item._id === cartItem._id);
+      if (index !== -1) {
+        this.cartItems[index].price.selling = newPrice;
+        this.calculateCartTotals();
+        this.ChangeDetectorRef.markForCheck();
+      }
+    }
+  }
+
+  private calculateCartTotals() {
+    this.cartSubtotal = this.cartItems.reduce((total, item) => {
+      return total + (item.price.selling * item.quantity);
+    }, 0);
+    this.cartTotal = this.cartSubtotal - this.cartDiscount;
   }
 }
