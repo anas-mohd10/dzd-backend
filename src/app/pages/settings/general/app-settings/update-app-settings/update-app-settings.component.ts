@@ -296,6 +296,7 @@ export class UpdateAppSettingsComponent implements OnInit {
         this.form.get('defaultMobileBanner')?.setValue(res?.result?.defaultMobileBanner)
         this.form.get('verifyNumberWithTwilio')?.setValue(res?.result?.verifyNumberWithTwilio)
         this.form.get('deliverSlotBufferTime')?.setValue(res?.result?.deliverSlotBufferTime || 60);
+        this.form.get('isVoucherEnabled')?.setValue(res?.result?.isVoucherEnabled)
 
         this.form.get('commaSeparation')?.setValue(
           res?.result?.commaSeparation ?? true  // Use nullish coalescing for default
@@ -398,6 +399,7 @@ export class UpdateAppSettingsComponent implements OnInit {
       defaultMinimumCartAmount: ['0'],
       deliverSlotBufferTime: [60],
       verifyNumberWithTwilio: ['false'],
+      isVoucherEnabled: ['false'],
     })
   }
 
@@ -567,6 +569,7 @@ export class UpdateAppSettingsComponent implements OnInit {
       currencyLocation: this.form.get('currencyLocation')?.value,
       decimalValues: Number(this.form.get('decimalValues')?.value),
       verifyNumberWithTwilio: this.form.get('verifyNumberWithTwilio')?.value,
+      isVoucherEnabled: this.form.get('isVoucherEnabled')?.value,
       buttons: {
         cart: this.form.get('cartButton')?.value,
         stock: this.form.get('stockButton')?.value,
