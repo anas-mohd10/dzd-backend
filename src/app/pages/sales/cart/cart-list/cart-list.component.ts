@@ -73,16 +73,16 @@ export class CartListComponent implements OnInit {
   onNotificationTriggered() {
     this.getCarts();
   }
-  exportWishlist(): void {
+  exportCart(): void {
     const requestBody = { userId: this.customer };    
 
     this.cartService.exportCart(requestBody).subscribe({
       next: () => {
-        this.toast.success('Wishlist export initiated successfully!');
+        this.toast.success('Cart export initiated successfully!');
       },
       error: (err:any) => {
-        console.error('Error exporting wishlist:', err);
-        this.toast.error('Failed to export wishlist. Please try again.');
+        console.error('Error exporting cart:', err);
+        this.toast.error('Failed to export cart. Please try again.');
       }
     });
   }
