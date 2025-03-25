@@ -171,4 +171,11 @@ export class CustomersService {
     const url = this.commonService.getFullUrl(this.customerEndpoints.customerDetails);
     return this.http.post(`${url}`, query)
   }
+  
+
+  manageTags(data: any, type: string) {
+    const url = this.commonService.getFullUrl(this.customerEndpoints.manageCustomerTags + '?type=' + type);
+    return this.http.post(`${url}`, data)
+  }
+
 }
