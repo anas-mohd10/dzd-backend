@@ -6,5 +6,6 @@ export const cartEndpoints = {
   cartCalculation: '/cartCalculation',
   get_cart_by_id: '/cart',
   cart_notification: '/cart/notification',
+  cartDetails: '/cartDetails',
   cartProducts: '/cart-products'
 }

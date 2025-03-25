@@ -19,13 +19,6 @@ import { environment } from 'src/environments/environment';
 import { LocationService } from 'src/app/includes/services/location.service';
 import { CartService } from 'src/app/includes/services/cart.service';
 
-interface CartDoc {
-  _id: string,
-  name: string,
-  quantity: number,
-  price: { selling: number, mrp: number }
-}
-
 interface Coupon {
   _id: string,
   title: string,
@@ -39,8 +32,22 @@ interface Coupon {
 interface ProductDoc {
   _id: string,
   quantity: number,
+  maxOrderQuantity?: number,
+  moq?: number,
   stock: number,
   price: { selling: number }
+}
+
+interface CartDoc {
+  _id: string,
+  quantity: number,
+  categories: Array<{ name: string }>,
+  maxOrderQuantity: number,
+  moq: number,
+  isDelete: boolean,
+  isActive: boolean,
+  stock: number,
+  price: { mrp: number, selling: number }
 }
 
 interface Customer {
@@ -93,6 +100,10 @@ export class AddOrdersComponent implements OnInit {
   productPageSize: number = 10;
   cartItemsValues: Array<{ label: string, value: string }> = [];
   emailConfirmation: FormControl = new FormControl(false);
+  isWalletUsed: boolean = false;
+  couponCode: FormControl = new FormControl('');
+  isCouponApplied: boolean = false;
+  cartDoc: { products: Array<any> } = { products: [] };
 
   //Cart
   product: any;
@@ -123,7 +134,7 @@ export class AddOrdersComponent implements OnInit {
   showTransactionId: boolean = false;
   store: FormControl = new FormControl('');
   deliveryTime: any = null;
-  deliveryDate: any = null;
+  deliveryDate: any = new Date();
   settings: any = {};
   deliverySlots: Array<any> = [];
   deliverySlot: any;
@@ -155,7 +166,6 @@ export class AddOrdersComponent implements OnInit {
     private DeliverySlotsService: DeliverySlotsService,
     private LocationService: LocationService
   ) {
-    // Trigger only if customer details have not been filled
     this.customerQuery.valueChanges.pipe(debounceTime(500)).subscribe(() => {
       this.fetchCustomers();
     });
@@ -189,23 +199,29 @@ export class AddOrdersComponent implements OnInit {
     this.isCustomerSelected = true;
     this.customerDetails = customerDoc;
     this.tabIndex = 1;
+    this.wishlistItems = []
+    this.cartDoc = { products: [] }
     this.orderForm.get('customerId')?.setValue(this.customerDetails?._id);
     this.customerService.getAddress({ userid: this.customerDetails?.userid }).subscribe({
       next: (res: any) => {
         if (res?.errorCode == 0) {
           this.addressItems = res?.result;
-          this.addressItems.forEach((addressItem: any) => {
-            if (addressItem?.isDefault == true) {
-              this.addressForm.patchValue(addressItem)
-            }
-          })
+          if (this.addressItems?.length > 0) {
+            this.addressItems.forEach((addressItem: any) => {
+              if (addressItem?.isDefault == true) {
+                this.addressForm.patchValue(addressItem)
+                const countryDoc: any = this.countries.find((country: any) => country?.name == addressItem?.country);
+                this.loadStates(countryDoc?._id, 'update')
+              }
+            })
+          }
           this.ChangeDetectorRef.markForCheck();
         } else { }
       }, error: (err: any) => { },
     });
 
     if (this.customerDetails && this.customerDetails?.wishlist?.length > 0) {
-      this.productService.getBulkProducts({ productIds: this.customerDetails?.wishlist }).subscribe({
+      this.productService.getBulkProducts({ productIds: this.customerDetails?.wishlist?.map((item: any) => item?._id) }).subscribe({
         next: (res: any) => {
           if (res?.errorCode == 0) {
             this.wishlistItems = res?.result;
@@ -214,12 +230,41 @@ export class AddOrdersComponent implements OnInit {
         }, error: (err: any) => { }
       })
     }
+
+    this.getCartDetails()
+  }
+
+  getCartDetails() {
+    this.CartService.getCartDetails(this.customerDetails?._id).subscribe({
+      next: (res: any) => {
+        if (res?.errorCode == 0) {
+          this.cartDoc = res?.result;
+          this.ChangeDetectorRef.markForCheck();
+        } else { }
+      }, error: (err: any) => { }
+    })
   }
 
   ngOnInit(): void {
     this.base = environment.base;
-    this.initForm();
-    this.getActiveCustomers();
+
+    this.orderForm = new FormGroup({
+      paymentMethod: new FormControl('COD'),
+      customerId: new FormControl('', Validators.required),
+      transactionId: new FormControl(''),
+      paymentStatus: new FormControl('Paid', Validators.required),
+      additionalCharge: new FormControl(0, Validators.pattern(/^[0-9]+$/)),
+      products: new FormControl([], Validators.required),
+      clickPoint: new FormControl(null),
+      pickUpLocation: new FormControl(''),
+      deliveryDate: new FormControl(''),
+      deliveryType: new FormControl('0'),
+      shippingCost: new FormControl(0, Validators.pattern(/^[0-9]+$/)),
+      deliverySlot: new FormControl(null),
+      orderNote: new FormControl(''),
+      shippingNote: new FormControl(''),
+    })
+
     this.getActiveProducts();
 
     this.fetchCustomers()
@@ -242,7 +287,7 @@ export class AddOrdersComponent implements OnInit {
       }
     });
 
-    this.loadLocationData();
+    this.fetchCountries();
 
     this.AppSettingsService.getGeneralSettingsbyId('1').subscribe({
       next: (response: any) => {
@@ -271,7 +316,7 @@ export class AddOrdersComponent implements OnInit {
 
       area: new FormControl(''),
       landmark: new FormControl('', Validators.required),
-      type: new FormControl('', Validators.required),
+      type: new FormControl('Home', Validators.required),
       pincode: new FormControl('', Validators.required),
       lat: new FormControl(''),
       lng: new FormControl(''),
@@ -281,10 +326,7 @@ export class AddOrdersComponent implements OnInit {
     this.userForm = new FormGroup({
       name: new FormControl('', Validators.required),
       countryCode: new FormControl('+971', Validators.required),
-      mobile: new FormControl('', [
-        Validators.required,
-        Validators.pattern('^[0-9]{10}$'),
-      ]),
+      mobile: new FormControl('', [Validators.required, Validators.pattern('^[0-9]{10}$')]),
       email: new FormControl('', Validators.email),
       isActive: new FormControl(true),
     });
@@ -350,22 +392,15 @@ export class AddOrdersComponent implements OnInit {
       next: (res: any) => {
         if (res?.errorCode == 0) {
           this.ToastrService.success(res.message);
-          this.userForm.patchValue({
-            name: '',
-            mobile: '',
-            email: '',
-            isActive: true,
-            countryCode: '+971',
-          });
+          this.userForm.patchValue({ name: '', mobile: '', email: '', isActive: true, countryCode: '+971', });
           this.addCustomerRef?.hide();
-          const customerDetails = res?.result;
-          this.getAddress(customerDetails);
+          this.selectCustomer(res?.result);
         } else {
           this.ToastrService.error(res.message);
         }
       },
       error: (err: any) => {
-        this.ToastrService.error(err.message);
+        this.ToastrService.error(err.error.message);
       },
     });
   }
@@ -485,40 +520,8 @@ export class AddOrdersComponent implements OnInit {
     return filteredTimeSlots;
   }
 
-  initForm() {
-    this.orderForm = this.formBuilder.group({
-      paymentMethod: ['COD'],
-      customerId: ['', Validators.required],
-      transactionId: [''],
-      paymentStatus: ['Paid', Validators.required],
-      additionalCharge: [0, Validators.pattern(/^[0-9]+$/)],
-      products: [[], Validators.required],
-      clickPoint: [null],
-      pickUpLocation: [""],
-      deliveryDate: [''],
-      deliveryType: ['0'],
-      shippingCost: [0, Validators.pattern(/^[0-9]+$/)],
-      deliverySlot: [null],
-      orderNote: [''],
-      shippingNote: [''],
-    });
-  }
-
   get formControls() {
     return this.orderForm.controls;
-  }
-
-  getActiveCustomers() {
-    this.customerService.getActiveCustomers().subscribe((res: any) => {
-      this.activeCustomersData = res?.result;
-      for (let customer of this.activeCustomersData)
-        customer.name =
-          (customer?.name ? customer?.name : ' ') +
-          ' ( ' +
-          customer?.mobile +
-          ' )';
-      this.ChangeDetectorRef.markForCheck();
-    });
   }
 
   getActiveProducts() {
@@ -971,14 +974,22 @@ export class AddOrdersComponent implements OnInit {
     const { isMobile, browser } = this.getBrowserAndDevice();
 
     this.OrderService.addOrder({
-      address: this.address,
+      address: this.addressForm.value,
       customerDetails: {
         name: this.customerDetails.name,
         countryCode: this.customerDetails.countryCode,
         mobile: this.customerDetails.mobile,
-        email: this.customerDetails.email
+        email: this.customerDetails.email,
+        tags: this.customerDetails.tags || []
       },
+      isCouponApplied: this.isCouponApplied,
+      couponCode: this.couponCode.value,
+      emailConfirmation: this.emailConfirmation.value,
+      isWalletUsed: this.isWalletUsed,
+      walletBalance: this.customerDetails?.walletBalance || 0,
+      coupon: this.couponCode.value ? this.couponCode.value : null,
       ...this.orderForm.value,
+      cartValues: this.cartItemsValues,
       source: isMobile == true ? 'MOBILE' : 'WEB',
       sourceType: browser
     }).subscribe({
@@ -989,53 +1000,53 @@ export class AddOrdersComponent implements OnInit {
         } else {
           this.ToastrService.error(res.message);
         }
-      },
-      error: (err: any) => {
-        this.ToastrService.error(err.message);
+      }, error: (err: any) => {
+        this.ToastrService.error(err?.error?.message);
       },
     });
   }
 
-  loadLocationData() {
-    // Load countries
-    this.LocationService.getCountries({
-      pageIndex: 1,
-      pageSize: 100
-    }).subscribe({
+  fetchCountries() {
+    this.LocationService.findCountries().subscribe({
       next: (response: any) => {
-        if (response?.result?.countries) {
-          this.countries = response.result.countries;
+        if (response?.errorCode == 0) {
+          this.countries = response?.result;
           this.ChangeDetectorRef.markForCheck();
+        } else {
+          this.ToastrService.error(response.message);
         }
-      },
-      error: (err) => console.error('Error loading countries:', err)
+      }, error: (err: any) => {
+        this.ToastrService.error(err.message)
+      }
     });
   }
 
   loadStates(countryId?: string, actionType?: string) {
-    // Clear existing states and cities when country changes
-    this.states = [];
-    this.cities = [];
+    if (actionType == 'add') {
+      // Clear existing states and cities when country changes
+      this.states = [];
+      this.cities = [];
 
-    // Reset state and city form controls
-    this.addressForm.patchValue({
-      state: '',
-      city: ''
-    });
+      // Reset state and city form controls
+      this.addressForm.patchValue({ state: '', city: '' });
+    }
 
-    this.LocationService.getStates({
-      pageIndex: 1,
-      pageSize: 100,
-      countryId: countryId || this.addressForm.get('country')?.value,
-    }).subscribe({
+    let country: string | undefined = ''
+    if (countryId == '') {
+      let countryItem = this.countries.find((country: any) => country?.name == this.addressForm.get('country')?.value)
+      country = countryItem?._id
+    } else {
+      country = countryId
+    }
+
+    this.LocationService.findStates(country).subscribe({
       next: (response: any) => {
         if (response?.errorCode == 0) {
-          this.states = response.result.states;
+          this.states = response.result;
 
           if (actionType === 'update') {
-            const stateId: string = this.states.find(state => state.name === this.address?.state)?._id;
-            this.addressForm.patchValue({ state: stateId });
-            this.loadCities(stateId, 'update');
+            const stateDoc: any = response.result.find((state: any) => state.name === this.addressForm.get('state')?.value);
+            this.loadCities(stateDoc?._id, 'update');
           }
 
           this.ChangeDetectorRef.markForCheck();
@@ -1048,29 +1059,28 @@ export class AddOrdersComponent implements OnInit {
   }
 
   loadCities(stateId?: string, actionType?: string) {
-    this.LocationService.getCities({
-      pageIndex: 1,
-      pageSize: 100,
-      countryId: this.addressForm.get('country')?.value,
-      stateId: stateId || this.addressForm.get('state')?.value
-    }).subscribe({
+    const countryDoc: any = this.countries.find((country: any) => country?.name == this.addressForm.get('country')?.value);
+    const stateDoc: any = this.states.find((state: any) => state?.name == this.addressForm.get('state')?.value);
+    this.LocationService.findCities(countryDoc?._id, stateDoc?._id).subscribe({
       next: (response: any) => {
-        if (response?.result?.cities) {
-          this.cities = response.result.cities;
+        if (response?.errorCode == 0) {
+          this.cities = response.result;
 
-          if (actionType === 'update') {
-            const cityId: string = this.cities.find(city => city.name === this.address?.city)?._id;
-            this.addressForm.patchValue({ city: cityId });
+          if (actionType == 'add') {
+            this.addressForm.patchValue({ city: this.cities[0].name });
           }
 
           this.ChangeDetectorRef.markForCheck();
-        }
-      },
-      error: (err) => console.error('Error loading cities:', err)
+        } else { }
+      }, error: (err) => console.error('Error loading cities:', err)
     });
   }
 
-  couponCode: FormControl = new FormControl('');
+  applyCoupon(coupon: string) {
+    this.couponCode.setValue(coupon);
+    this.isCouponApplied = true;
+    this.getCartCalculation();
+  }
 
   formatDateString(date: string) {
     return new Date(date).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
@@ -1082,7 +1092,6 @@ export class AddOrdersComponent implements OnInit {
     });
   }
 
-  // Get applicableCoupons
   getApplicableCoupons() {
     const productDocs: ProductDoc[] = this.cartItems.map((item: any) => (
       {
@@ -1104,21 +1113,55 @@ export class AddOrdersComponent implements OnInit {
     })
   }
 
-  updateCartItemQuantity(cartItem: ProductDoc, event: any) {
+  updateCartItemQuantity(cartItem: CartDoc, event: any) {
     const newQuantity = parseInt(event.target.value);
-    if (newQuantity > 0 && newQuantity <= cartItem.stock) {
-      const index = this.cartItems.findIndex(item => item._id === cartItem._id);
-      if (index !== -1) {
-        this.cartItems[index].quantity = newQuantity;
-        this.calculateCartTotals();
-        this.getCartCalculation();
-        this.ChangeDetectorRef.markForCheck();
-      }
+    const oldQuantity = cartItem.quantity;
+
+    if (!cartItem) {
+      return this.ToastrService.error('No item found')
+    }
+
+    if (newQuantity < cartItem.moq) {
+      this.ToastrService.error(`Minimum quantity is ${cartItem.moq}`)
+      event.target.value = oldQuantity;
+      return
+    }
+
+    if (newQuantity > cartItem.maxOrderQuantity) {
+      this.ToastrService.error(`Maximum quantity is ${cartItem.maxOrderQuantity}`)
+      event.target.value = oldQuantity;
+      return
+    }
+
+    if (newQuantity > cartItem.stock) {
+      this.ToastrService.error(`Available stock is ${cartItem.stock}`)
+      event.target.value = oldQuantity;
+      return
+    }
+
+    const index = this.cartItems.findIndex(item => item._id === cartItem._id);
+    if (index !== -1) {
+      this.cartItems[index].quantity = newQuantity;
+      this.calculateCartTotals();
+      this.getCartCalculation();
+      this.ChangeDetectorRef.markForCheck();
     }
   }
 
-  updateCartItemPrice(cartItem: ProductDoc, event: any) {
+  updateCartItemPrice(cartItem: CartDoc, event: any) {
     const newPrice = parseFloat(event.target.value);
+    const oldPrice = cartItem.price.selling;
+
+    if (!cartItem) {
+      return this.ToastrService.error('No item found')
+    }
+
+    if (newPrice > cartItem.price.mrp) {
+      this.ToastrService.error('Selling price cannot be greater than MRP')
+      event.target.value = oldPrice;
+      return
+    }
+
     if (newPrice >= 0) {
       const index = this.cartItems.findIndex(item => item._id === cartItem._id);
       if (index !== -1) {
@@ -1127,6 +1170,8 @@ export class AddOrdersComponent implements OnInit {
         this.getCartCalculation();
         this.ChangeDetectorRef.markForCheck();
       }
+    } else {
+      event.target.value = oldPrice;
     }
   }
 
@@ -1140,6 +1185,9 @@ export class AddOrdersComponent implements OnInit {
   switchTriggered(event: { toggleState: boolean, switchId: string }) {
     if (event.switchId == 'emailConfirmation') {
       this.emailConfirmation.setValue(event.toggleState);
+    } else if (event.switchId == 'isWalletUsed') {
+      this.isWalletUsed = event.toggleState;
+      this.getCartCalculation();
     }
   }
 
@@ -1147,17 +1195,28 @@ export class AddOrdersComponent implements OnInit {
     const cartDocs: CartDoc[] = this.cartItems.map((item: any) => (
       {
         _id: item._id,
+        maxOrderQuantity: item.maxOrderQuantity,
+        moq: item.moq,
+        stock: item.stock,
+        isDelete: item.isDelete,
+        categories: item.categories,
+        isActive: item.isActive,
         quantity: item.quantity,
         price: { selling: item.price.selling, mrp: item.price.mrp },
         name: item.name
       }
     ))
 
-    this.CartService.getCartCalculation({ 
-      products: cartDocs, 
-      additionalCharge: this.orderForm.get('additionalCharge')?.value, 
-      shippingCost: this.orderForm.get('shippingCost')?.value
-     }).subscribe({
+    this.CartService.getCartCalculation({
+      products: cartDocs,
+      customerDetails: this.customerDetails,
+      isCouponApplied: this.isCouponApplied,
+      couponCode: this.couponCode.value,
+      isWalletUsed: this.isWalletUsed,
+      walletBalance: this.customerDetails?.walletBalance || 0,
+      additionalCharge: Number(this.orderForm.get('additionalCharge')?.value),
+      shippingCost: Number(this.orderForm.get('shippingCost')?.value)
+    }).subscribe({
       next: (res: any) => {
         if (res?.errorCode == 0) {
           this.cartItemsValues = res?.result?.cartItems;

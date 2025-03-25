@@ -17,6 +17,11 @@ export class CartService {
     return this.http.post(`${url}`, data)
   }
 
+  getCartDetails(customerId: string) {
+    const url = this.commonService.getFullUrl(this.cartEndpoints.cartDetails + `/${customerId}`);
+    return this.http.get(`${url}`);
+  }
+
   getCartCalculation(cartData: any) {
     const url = this.commonService.getFullUrl(this.cartEndpoints.cartCalculation);
     return this.http.post(`${url}`, cartData)

@@ -36,6 +36,11 @@ export class LocationService {
     return this.HttpClient.post(url, data);
   }
 
+  findCountries(){
+    const url = this.CommonService.getFullUrl(locationEndpoints.findCountries);
+    return this.HttpClient.get(url);
+  }
+
   getCountry(countryId: string) {
     const url = this.CommonService.getFullUrl(locationEndpoints.country + `/${countryId}`);
     return this.HttpClient.get(url);
@@ -61,6 +66,11 @@ export class LocationService {
     return this.HttpClient.post(url, query);
   }
 
+  findStates(countryId: string | undefined) {
+    const url = this.CommonService.getFullUrl(locationEndpoints.findStates + `/${countryId}`);
+    return this.HttpClient.get(url);
+  }
+
   getState(stateId: string) {
     const url = this.CommonService.getFullUrl(locationEndpoints.state + `/${stateId}`);
     return this.HttpClient.get(url);
@@ -84,6 +94,11 @@ export class LocationService {
   getCities(query: CityQuery) {
     const url = this.CommonService.getFullUrl(locationEndpoints.cities);
     return this.HttpClient.post(url, query);
+  }
+
+  findCities(countryId: string | undefined, stateId: string | undefined) {
+    const url = this.CommonService.getFullUrl(locationEndpoints.findCities + `/${countryId}/${stateId}`);
+    return this.HttpClient.get(url);
   }
 
   getCity(cityId: string) {
