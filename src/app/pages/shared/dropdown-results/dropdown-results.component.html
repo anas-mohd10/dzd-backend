@@ -14,7 +14,7 @@
                         {{ selectAllChecked ? 'Deselect All' : 'Select All' }}
                     </label>
                 </div>
-                <button class="btn btn-sm btn-outline-secondary" (click)="clearResults()">Close</button>
+                <button class="btn btn-sm btn-primary" (click)="clearResults()">Close</button>
             </div>
             <ng-container *ngFor="let dropdownResult of dropdownResults; let i = index">
                 <!-- Products Layout -->

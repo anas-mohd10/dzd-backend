@@ -70,6 +70,7 @@ export class DropdownResultsComponent implements OnInit, OnChanges {
       this.dropdownResults.every(item => this.isItemExists(item));
     this.ChangeDetectorRef.markForCheck();
   }
+  
 
   onSelectItem(item: any, isExists: boolean) {
     switch (this.type) {
@@ -85,6 +86,8 @@ export class DropdownResultsComponent implements OnInit, OnChanges {
           this.HotToastService.success("Item added successfully")
           this.dropdownInputs.push(item);
         }
+        this.updateSelectAllStatus();
+        
         this.ChangeDetectorRef.markForCheck()
         this.onSelect.emit({ dropdownInputs: this.dropdownInputs });
         this.keyword.setValue("")
