@@ -32,3 +32,37 @@ label {
 }
 
 //Table designs
+.badge {
+    padding: 6px 12px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: 500;
+    text-transform: capitalize;
+
+    &-success {
+        background-color: #E8F5E9;
+        color: #2E7D32;
+    }
+
+    &-warning {
+        background-color: #FFF3E0;
+        color: #EF6C00;
+    }
+
+    &-danger {
+        background-color: #FFEBEE;
+        color: #C62828;
+    }
+
+    &-secondary {
+        background-color: #ECEFF1;
+        color: #455A64;
+    }
+}
+
+.voucher {
+    cursor: pointer;
+    &:hover {
+        color: var(--primary);
+    }
+}
