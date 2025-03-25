@@ -15,7 +15,10 @@ export class CustomersService {
     const url = this.commonService.getFullUrl(this.customerEndpoints.addCustomer);
     return this.http.post(`${url}`, data)
   }
-
+  exportWishlist(requestBody: any) {
+    const url = this.commonService.getFullUrl(this.customerEndpoints.exportWishlist);
+    return this.http.post(url, requestBody);
+  }
   getCustomers() {
     const url = this.commonService.getFullUrl(this.customerEndpoints.get_customer);
     return this.http.get(`${url}`)
@@ -171,4 +174,11 @@ export class CustomersService {
     const url = this.commonService.getFullUrl(this.customerEndpoints.customerDetails);
     return this.http.post(`${url}`, query)
   }
+  
+
+  manageTags(data: any, type: string) {
+    const url = this.commonService.getFullUrl(this.customerEndpoints.manageCustomerTags + '?type=' + type);
+    return this.http.post(`${url}`, data)
+  }
+
 }
