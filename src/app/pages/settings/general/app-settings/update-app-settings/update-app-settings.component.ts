@@ -390,7 +390,7 @@ export class UpdateAppSettingsComponent implements OnInit {
       stockButton: ['Out of Stock', Validators.required],
       notifyButton: ['Notify Me', Validators.required],
       logo: ['', Validators.required],
-      darkLogo: ['', Validators.required],
+      darkLogo: [''],
       favicon: ['', Validators.required],
       defaultBanner: [''],
       defaultMobileBanner: [''],
