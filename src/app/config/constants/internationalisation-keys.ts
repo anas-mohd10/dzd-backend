@@ -109,7 +109,7 @@ export const internationalisationKeys = {
     returnPolicy:'returnPolicy',
     blogs: 'blogs',
     termsandConditions: 'termsandConditions',
-    privacypolicy: 'privacypolicy',  
+    privacypolicy: 'privacypolicy',
     allrightreserved: 'allrightreserved',
     noAddressFound: 'noAddressFound',
     emptyFavourites: 'emptyFavourites',
@@ -409,5 +409,6 @@ export const internationalisationKeys = {
     deliveryDate: 'deliveryDate',
     deliveryTime: 'deliveryTime',
     homeDashboard: 'homeDashboard',
-    homeAddress: 'homeAddress'
+    homeAddress: 'homeAddress',
+    myVouchers: 'myVouchers'
 }
