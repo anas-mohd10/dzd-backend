@@ -40,8 +40,9 @@ export class UpdateCouponsComponent implements OnInit {
 
   ngOnInit(): void {
     this.initForm();
-    this.slug = this.ActivatedRoute.snapshot.queryParams.coupon || ''
-    this.getCouponBySlug()
+    this.form.get('totalUsageRemaining')?.disable();
+    this.slug = this.ActivatedRoute.snapshot.queryParams.coupon || '';
+    this.getCouponBySlug();
   }
 
   onSelect(event: { dropdownInputs: any[] }) {
@@ -67,17 +68,29 @@ export class UpdateCouponsComponent implements OnInit {
   }
 
   onRemoveSelected(item: any) {
-    const isExists = this.dropdownInputs.some((input: any) => input._id === item._id)
-    if (isExists) {
-      this.HotToastService.info("Item removed successfully")
-      this.dropdownInputs = this.dropdownInputs.filter((input: any) => input._id !== item._id);
-    } else {
-      this.HotToastService.success("Item added successfully")
-      this.dropdownInputs.push(item);
+    const criteriaType = this.form.get('criteriaType')?.value;
+    
+    switch (criteriaType) {
+      case 'products':
+        this.products = this.products.filter((product: any) => product._id !== item._id);
+        this.dropdownInputs = this.products;
+        break;
+      case 'collections':
+        this.collections = this.collections.filter((collection: any) => collection._id !== item._id);
+        this.dropdownInputs = this.collections;
+        break;
+      case 'categories':
+        this.categories = this.categories.filter((category: any) => category._id !== item._id);
+        this.dropdownInputs = this.categories;
+        break;
+      case 'brands':
+        this.brands = this.brands.filter((brand: any) => brand._id !== item._id);
+        this.dropdownInputs = this.brands;
+        break;
     }
-
-    this.assignDropdownInputs(this.dropdownInputs)
-    this.ChangeDetectorRef.markForCheck()
+  
+    this.HotToastService.info("Item removed successfully");
+    this.ChangeDetectorRef.markForCheck();
   }
 
   initForm() {
@@ -103,6 +116,7 @@ export class UpdateCouponsComponent implements OnInit {
       countPerUser: ['', Validators.pattern("^[0-9]*$")],
       isMaxRedemptionEnabled: ['false'],
       maxRedemptionValue: ['', [Validators.pattern("^[0-9]*$")]],
+      totalUsageRemaining: ['', [Validators.pattern("^[0-9]*$")]],
       platformType: ['both'],
     });
   }
@@ -114,6 +128,7 @@ export class UpdateCouponsComponent implements OnInit {
   getCouponBySlug() {
     this.CouponsService.getCouponDetails({ refid: this.slug }).subscribe((res: any) => {
       this.couponDetails = res?.result
+      console.log(this.couponDetails?.details?.totalUsageRemaining)
       this.form.get("title")?.setValue(this.couponDetails.title)
       this.form.get("code")?.setValue(this.couponDetails.code)
       this.form.get("type")?.setValue(this.couponDetails.type)
@@ -130,7 +145,7 @@ export class UpdateCouponsComponent implements OnInit {
       this.form.get("countPerUser")?.setValue(this.couponDetails.countPerUser)
       this.form.get('criteriaType')?.setValue(this.couponDetails.couponType)
       this.form.get('platformType')?.setValue(this.couponDetails.platformType || 'both');
-
+      this.form.get('totalUsageRemaining')?.setValue(this.couponDetails?.details?.totalUsageRemaining)
       const today = new Date().toISOString()
       if (today > this.couponDetails?.fromDate) {
         this.isOngoing = true
@@ -155,7 +170,7 @@ export class UpdateCouponsComponent implements OnInit {
       }
 
       this.dropdownInputs = typeKeys[this.form.get('criteriaType')?.value]
-      
+
       this.ChangeDetectorRef.markForCheck()
       this.isValidValue = true
 
@@ -253,6 +268,7 @@ export class UpdateCouponsComponent implements OnInit {
       details: {
         type: this.form.get('couponType')?.value,
         value: this.form.get('couponValue')?.value,
+        totalUsageRemaining: this.form.get('totalUsageRemaining')?.value
       },
       refid: this.slug,
       couponType: criteriaType === 'complete' ? 'complete' : 'partial',

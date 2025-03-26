@@ -1,314 +1,313 @@
 <div class="content container-fluid">
-   <div class="page-header">
-      <div class="row align-items-center">
-         <div class="col">
-            <h3 class="page-title fw-bold fs-2">
-               {{ editMode ? "Update Page Limits" : "Add Page Limits" }}
-            </h3>
-            <ul class="breadcrumb">
-               <li class="breadcrumb-item fs-6">
-                  <a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a>
-               </li>
-               <li class="breadcrumb-item fs-6">
-                  <a routerLink="{{ appRoute.storeSettings.STORE_SETTINGS }}">Page Limits</a>
-               </li>
-               <li class="breadcrumb-item active fs-6">
-                  <a routerLink="{{ appRoute.pageLimits.ADD_PAGE_LIMITS }}">
-                     {{ editMode ? "Update Page Limits" : "Add Page Limits"}}
-                  </a>
-               </li>
-            </ul>
-         </div>
+  <div class="page-header">
+    <div class="row align-items-center">
+      <div class="col">
+        <h3 class="page-title fw-bold fs-2">
+          {{ editMode ? "Update Page Limits" : "Add Page Limits" }}
+        </h3>
+        <ul class="breadcrumb">
+          <li class="breadcrumb-item fs-6">
+            <a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a>
+          </li>
+          <li class="breadcrumb-item fs-6">
+            <a routerLink="{{ appRoute.storeSettings.STORE_SETTINGS }}">Page Limits</a>
+          </li>
+          <li class="breadcrumb-item active fs-6">
+            <a routerLink="{{ appRoute.pageLimits.ADD_PAGE_LIMITS }}">
+              {{ editMode ? "Update Page Limits" : "Add Page Limits"}}
+            </a>
+          </li>
+        </ul>
       </div>
-   </div>
+    </div>
+  </div>
 
-   <div class="row mt-4 pageWrapper">
-      <div class="col-lg-7">
-         <div class="card">
-            <div class="card-body">
-               <form [formGroup]="form">
-                  <h2 class="form-title">Color Settings</h2>
-                  <div class="row mt-4">
-                     <div class="col-lg-6">
-                        <div class="form-group mb-4">
-                           <label class="fs-6 mb-3">Primary Color</label>
-                           <input type="color" placeholder="App primary color" class="form-control fs-6"
-                              style="height: 40px;" formControlName="primary" />
-                        </div>
-                     </div>
-                     <div class="col-lg-6">
-                        <div class="form-group mb-4">
-                           <label class="fs-6 mb-3">Secondary Color</label>
-                           <input type="color" placeholder="App secondary color" class="form-control fs-6"
-                              style="height: 40px;" formControlName="secondary" />
-                        </div>
-                     </div>
-                  </div>
-                  <div class="row">
-                     <div class="col-lg-4">
-                        <div class="form-group mb-4">
-                           <label class="fs-6 mb-3">Label Color</label>
-                           <input type="color" placeholder="App secondary color" class="form-control fs-6"
-                              style="height: 40px;" formControlName="label" />
-                        </div>
-                     </div>
-                     <div class="col-lg-4">
-                        <div class="form-group mb-4">
-                           <label class="fs-6 mb-3">Star Color</label>
-                           <input type="color" placeholder="App secondary color" class="form-control fs-6"
-                              style="height: 40px;" formControlName="star" />
-                        </div>
-                     </div>
-                     <div class="col-lg-4">
-                        <div class="form-group mb-4">
-                           <label class="fs-6 mb-3">Text Color</label>
-                           <input type="color" placeholder="App secondary color" class="form-control fs-6"
-                              style="height: 40px;" formControlName="text" />
-                        </div>
-                     </div>
-                  </div>
-                  <div class="row">
-                     <div class="col-lg-4">
-                        <div class="form-group mb-4">
-                           <label class="fs-6 mb-3">Toast Success Color</label>
-                           <input type="color" placeholder="App toast success color" class="form-control fs-6"
-                              style="height: 40px;" formControlName="toastSuccess" />
-                        </div>
-                     </div>
-                     <div class="col-lg-4">
-                        <div class="form-group mb-4">
-                           <label class="fs-6 mb-3">Toast Error Color</label>
-                           <input type="color" placeholder="App toast error color" class="form-control fs-6"
-                              style="height: 40px;" formControlName="toastError" />
-                        </div>
-                     </div>
-                     <div class="col-lg-4">
-                        <div class="form-group mb-4">
-                           <label class="fs-6 mb-3">Toast Info Color</label>
-                           <input type="color" placeholder="App toast error color" class="form-control fs-6"
-                              style="height: 40px;" formControlName="toastInfo" />
-                        </div>
-                     </div>
-                  </div>
-                  <h2 class="form-title">Additional Settings</h2>
+  <div class="row mt-4 pageWrapper">
+    <div class="col-lg-7">
+      <div class="card">
+        <div class="card-body">
+          <form [formGroup]="form">
+            <h2 class="form-title">Color Settings</h2>
+            <div class="row mt-4">
+              <div class="col-lg-6">
+                <div class="form-group mb-4">
+                  <label class="fs-6 mb-3">Primary Color</label>
+                  <input type="color" placeholder="App primary color" class="form-control fs-6" style="height: 40px;"
+                    formControlName="primary" />
+                </div>
+              </div>
+              <div class="col-lg-6">
+                <div class="form-group mb-4">
+                  <label class="fs-6 mb-3">Secondary Color</label>
+                  <input type="color" placeholder="App secondary color" class="form-control fs-6" style="height: 40px;"
+                    formControlName="secondary" />
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-lg-4">
+                <div class="form-group mb-4">
+                  <label class="fs-6 mb-3">Label Color</label>
+                  <input type="color" placeholder="App secondary color" class="form-control fs-6" style="height: 40px;"
+                    formControlName="label" />
+                </div>
+              </div>
+              <div class="col-lg-4">
+                <div class="form-group mb-4">
+                  <label class="fs-6 mb-3">Star Color</label>
+                  <input type="color" placeholder="App secondary color" class="form-control fs-6" style="height: 40px;"
+                    formControlName="star" />
+                </div>
+              </div>
+              <div class="col-lg-4">
+                <div class="form-group mb-4">
+                  <label class="fs-6 mb-3">Text Color</label>
+                  <input type="color" placeholder="App secondary color" class="form-control fs-6" style="height: 40px;"
+                    formControlName="text" />
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-lg-4">
+                <div class="form-group mb-4">
+                  <label class="fs-6 mb-3">Toast Success Color</label>
+                  <input type="color" placeholder="App toast success color" class="form-control fs-6"
+                    style="height: 40px;" formControlName="toastSuccess" />
+                </div>
+              </div>
+              <div class="col-lg-4">
+                <div class="form-group mb-4">
+                  <label class="fs-6 mb-3">Toast Error Color</label>
+                  <input type="color" placeholder="App toast error color" class="form-control fs-6"
+                    style="height: 40px;" formControlName="toastError" />
+                </div>
+              </div>
+              <div class="col-lg-4">
+                <div class="form-group mb-4">
+                  <label class="fs-6 mb-3">Toast Info Color</label>
+                  <input type="color" placeholder="App toast error color" class="form-control fs-6"
+                    style="height: 40px;" formControlName="toastInfo" />
+                </div>
+              </div>
+            </div>
+            <h2 class="form-title">Additional Settings</h2>
+            <div class="col-12">
+              <div class="form-group mb-4">
+                <label class="fs-6 mb-3 required">Packing Slip</label>
+                <angular-editor class="form-control fs-6" formControlName="packingSlip"
+                  [config]="editorConfig"></angular-editor>
+              </div>
+            </div>
+
+            <div class="col-12 storeWrapper">
+              <div class="card">
+                <div class="card-body">
+                  <h2 class="form-title">Store Details</h2>
                   <div class="col-12">
-                     <div class="form-group mb-4">
-                        <label class="fs-6 mb-3 required">Packing Slip</label>
-                        <angular-editor class="form-control fs-6" formControlName="packingSlip"
-                           [config]="editorConfig"></angular-editor>
-                     </div>
-                  </div>
-
-                  <div class="col-12 storeWrapper">
-                     <div class="card">
-                        <div class="card-body">
-                           <h2 class="form-title">Store Details</h2>
-                           <div class="col-12">
-                              <div class="form-group mb-3">
-                                 <label class="fs-6 mb-3 required">Store Name</label>
-                                 <input type="text" placeholder="Eg. Commerce Castle" class="form-control fs-6"
-                                    formControlName="name" [ngClass]="{'is-invalid': (formControls.name.touched || isSubmitted) &&
+                    <div class="form-group mb-3">
+                      <label class="fs-6 mb-3 required">Store Name</label>
+                      <input type="text" placeholder="Eg. Commerce Castle" class="form-control fs-6"
+                        formControlName="name" [ngClass]="{'is-invalid': (formControls.name.touched || isSubmitted) &&
                                     formControls.name.errors?.required}" />
-                              </div>
-                           </div>
-                           <div class="col-12">
-                              <div class="form-group mb-3">
-                                 <label class="fs-6 mb-3 required">Domain</label>
-                                 <input type="text" placeholder="https://commercecastle.com" class="form-control fs-6"
-                                    formControlName="domain" [ngClass]="{'is-invalid': (formControls.domain.touched || isSubmitted) &&
+                    </div>
+                  </div>
+                  <div class="col-12">
+                    <div class="form-group mb-3">
+                      <label class="fs-6 mb-3 required">Domain</label>
+                      <input type="text" placeholder="https://commercecastle.com" class="form-control fs-6"
+                        formControlName="domain" [ngClass]="{'is-invalid': (formControls.domain.touched || isSubmitted) &&
                                     formControls.domain.errors?.required}" />
-                              </div>
-                           </div>
-                           <div class="col-12">
-                              <div class="form-group mb-3">
-                                 <label class="fs-6 mb-3 required">Description</label>
-                                 <textarea type="text" placeholder="Eg. All in one ecommerce store"
-                                    class="form-control fs-6" formControlName="description" [ngClass]="{'is-invalid': (formControls.description.touched || isSubmitted) &&
+                    </div>
+                  </div>
+                  <div class="col-12">
+                    <div class="form-group mb-3">
+                      <label class="fs-6 mb-3 required">Description</label>
+                      <textarea type="text" placeholder="Eg. All in one ecommerce store" class="form-control fs-6"
+                        formControlName="description" [ngClass]="{'is-invalid': (formControls.description.touched || isSubmitted) &&
                                     formControls.description.errors?.required}"></textarea>
-                              </div>
-                           </div>
-                        </div>
-                     </div>
+                    </div>
                   </div>
+                </div>
+              </div>
+            </div>
 
-                  <div class="col-12 buttonsWrapper">
-                     <h2 class="form-title">Button Settings</h2>
-                     <p>Edit the button text as per your choice</p>
-                     <div class="row mt-2">
-                        <div class="col-lg-4" [ngClass]="{'is-invalid': (formControls.cartButton.touched || isSubmitted) &&
+            <div class="col-12 buttonsWrapper">
+              <h2 class="form-title">Button Settings</h2>
+              <p>Edit the button text as per your choice</p>
+              <div class="row mt-2">
+                <div class="col-lg-4" [ngClass]="{'is-invalid': (formControls.cartButton.touched || isSubmitted) &&
                         formControls.cartButton.errors?.required}">
-                           <div class="button" [ngStyle]="{'background-color': primary}">
-                              <input type="text" formControlName="cartButton">
-                           </div>
-                        </div>
-                        <div class="col-lg-4" [ngClass]="{'is-invalid': (formControls.stockButton.touched || isSubmitted) &&
+                  <div class="button" [ngStyle]="{'background-color': primary}">
+                    <input type="text" formControlName="cartButton">
+                  </div>
+                </div>
+                <div class="col-lg-4" [ngClass]="{'is-invalid': (formControls.stockButton.touched || isSubmitted) &&
                         formControls.stockButton.errors?.required}">
-                           <div class="button outOfStock" [ngStyle]="{'background-color': primary}">
-                              <input type="text" formControlName="stockButton">
-                           </div>
-                        </div>
-                        <div class="col-lg-4" [ngClass]="{'is-invalid': (formControls.notifyButton.touched || isSubmitted) &&
+                  <div class="button outOfStock" [ngStyle]="{'background-color': primary}">
+                    <input type="text" formControlName="stockButton">
+                  </div>
+                </div>
+                <div class="col-lg-4" [ngClass]="{'is-invalid': (formControls.notifyButton.touched || isSubmitted) &&
                         formControls.notifyButton.errors?.required}">
-                           <div class="button notifyButton" [ngStyle]="{'border-color': primary, 'color': primary}">
-                              <input type="text" formControlName="notifyButton" [ngStyle]="{'color': primary}">
-                           </div>
-                        </div>
-                     </div>
+                  <div class="button notifyButton" [ngStyle]="{'border-color': primary, 'color': primary}">
+                    <input type="text" formControlName="notifyButton" [ngStyle]="{'color': primary}">
                   </div>
-               </form>
-
-               <div class="col-12 d-flex align-items-center justify-content-end">
-                  <a routerLink="{{ appRoute.storeSettings.STORE_SETTINGS }}"
-                     class=" btn btn-secondary me-2 fs-6 text-dark fw-bold" style="width: 200px">
-                     Cancel
-                  </a>
-                  <button type="submit" class="btn btn-primary fs-6" (click)="onSubmit()" style="width: 200px">
-                     Update
-                  </button>
-               </div>
-
+                </div>
+              </div>
             </div>
-         </div>
+          </form>
+
+          <div class="col-12 d-flex align-items-center justify-content-end">
+            <a routerLink="{{ appRoute.storeSettings.STORE_SETTINGS }}"
+              class=" btn btn-secondary me-2 fs-6 text-dark fw-bold" style="width: 200px">
+              Cancel
+            </a>
+            <button type="submit" class="btn btn-primary fs-6" (click)="onSubmit()" style="width: 200px">
+              Update
+            </button>
+          </div>
+
+        </div>
       </div>
-      <div class="col-lg-5">
-         <div class="card">
-            <div class="card-body">
-               <h2 class="form-title">General Settings</h2>
-               <form [formGroup]="form">
-                  <div class="col-12">
-                     <div class="form-group mb-3">
-                        <label class="fs-6 mb-3">Currency</label>
-                        <select class="form-select fs-6" formControlName="currency">
-                           <option value="" disabled>-- Select an option --</option>
-                           <ng-container *ngFor="let currency of currencies">
-                              <option value="{{currency}}">{{currency}}</option>
-                           </ng-container>
-                        </select>
-                     </div>
-                  </div>
-
-                  <div class="col-l12">
-                     <div class="form-group mb-3">
-                        <label class="fs-6 mb-3">Font Family</label>
-                        <select class="form-select fs-6" formControlName="fontFamily">
-                           <option value="" disabled>-- Select an option --</option>
-                           <ng-container *ngFor="let font of fontFamily">
-                              <option value="{{font}}">{{font}}</option>
-                           </ng-container>
-                        </select>
-                     </div>
-                  </div>
-
-                  <div class="col-12">
-                     <div class="form-group mb-3">
-                        <label class="fs-6 mb-3">Show Out of Stock Products</label>
-                        <select class="form-select mb-3" formControlName="isOutOfStock">
-                           <option value="" disabled>-- Select an option --</option>
-                           <option value="false">No</option>
-                           <option value="true">Yes</option>
-                        </select>
-                     </div>
-                  </div>
-                  <div class="col-12">
-                     <div class="form-group mb-3">
-                        <label class="fs-6 mb-3">Enable Tax</label>
-                        <select class="form-select mb-3" formControlName="isTax">
-                           <option value="" disabled>-- Select an option --</option>
-                           <option value="false">No</option>
-                           <option value="true">Yes</option>
-                        </select>
-                     </div>
-                  </div>
-
-                  <div class="col-12">
-                     <div class="form-group mb-3">
-                        <label class="fs-6 mb-3">Notify Button ( Out of Stock Products )</label>
-                        <select class="form-select mb-3" formControlName="isNotifyStock">
-                           <option value="" disabled>-- Select an option --</option>
-                           <option value="false">No</option>
-                           <option value="true">Yes</option>
-                        </select>
-                     </div>
-                  </div>
-
-                  <div class="col-12">
-                     <div class="form-group mb-3">
-                        <label class="fs-6 mb-3 required">Items Per Page</label>
-                        <input type="number" placeholder="14" class="form-control fs-6"
-                           formControlName="itemsPerPage" />
-                     </div>
-                  </div>
-
-                  <h2 class="form-title">Store Media Settings</h2>
-
-                  <div class="col-12">
-                     <div class="form-group mb-3">
-                        <label class="fs-6 mb-3 required">Logo</label>
-                        <div class="image-upload">
-                           <input type="file" class="form-control fs-6" name="image" accept="image/*"
-                              (change)="onInputChange('logo', $event)" style="height: 100px;" required>
-                           <div class="image-upload-div">
-                              <div class="left-img">
-                                 <img src="assets/media/svg/files/upload.svg" alt="" srcset="">
-                              </div>
-                              <div class="right-text d-flex flex-column">
-                                 <span class="right-text-title fs-4 fw-bold">Click to Upload</span>
-                              </div>
-                           </div>
-                        </div>
-                     </div>
-
-                     <div class="logoPreview p-3 mt-3" *ngIf="logoFilePreview">
-                        <div class="logo d-flex align-items-center justify-content-center">
-                           <img src="{{logoFilePreview}}" alt="Logo">
-                        </div>
-                        <div class="logoClose" (click)="removeLogo('logo')">
-                           <svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 0 24 24" width="20px"
-                              fill="currentColor">
-                              <path d="M0 0h24v24H0V0z" fill="none" />
-                              <path
-                                 d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z" />
-                           </svg>
-                        </div>
-                     </div>
-                  </div>
-
-                  <div class="col-12">
-                     <div class="form-group">
-                        <label class="fs-6 mb-3 required">Favicon</label>
-                        <div class="image-upload">
-                           <input type="file" class="form-control fs-6" name="image" accept="image/*"
-                              (change)="onInputChange('favicon', $event)" style="height: 100px;" required>
-                           <div class="image-upload-div">
-                              <div class="left-img">
-                                 <img src="assets/media/svg/files/upload.svg" alt="" srcset="">
-                              </div>
-                              <div class="right-text d-flex flex-column">
-                                 <span class="right-text-title fs-4 fw-bold">Click to Upload</span>
-                              </div>
-                           </div>
-                        </div>
-                     </div>
-
-                     <div class="faviconPreview mt-3 p-3" *ngIf="faviconFilePreview">
-                        <div class="favicon">
-                           <img src="{{faviconFilePreview}}" alt="Favicon">
-                           <div class="faviconClose" (click)="removeLogo('favicon')">
-                              <svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 0 24 24" width="20px"
-                                 fill="currentColor">
-                                 <path d="M0 0h24v24H0V0z" fill="none" />
-                                 <path
-                                    d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z" />
-                              </svg>
-                           </div>
-                        </div>
-
-                     </div>
-                  </div>
-
-               </form>
+    </div>
+    <div class="col-lg-5">
+      <div class="card">
+        <div class="card-body">
+          <h2 class="form-title">General Settings</h2>
+          <form [formGroup]="form">
+            <div class="col-12">
+              <div class="form-group mb-3">
+                <label class="fs-6 mb-3">Currency</label>
+                <select class="form-select fs-6" formControlName="currency">
+                  <option value="" disabled>-- Select an option --</option>
+                  <ng-container *ngFor="let currency of currencies">
+                    <option value="{{currency}}">{{currency}}</option>
+                  </ng-container>
+                </select>
+              </div>
             </div>
-         </div>
+
+            <div class="col-l12">
+              <div class="form-group mb-3">
+                <label class="fs-6 mb-3">Font Family</label>
+                <select class="form-select fs-6" formControlName="fontFamily">
+                  <option value="" disabled>-- Select an option --</option>
+                  <ng-container *ngFor="let font of fontFamily">
+                    <option value="{{font}}">{{font}}</option>
+                  </ng-container>
+                </select>
+              </div>
+            </div>
+
+            <div class="col-12">
+              <div class="form-group mb-3">
+                <label class="fs-6 mb-3">Show Out of Stock Products</label>
+                <select class="form-select mb-3" formControlName="isOutOfStock">
+                  <option value="" disabled>-- Select an option --</option>
+                  <option value="false">No</option>
+                  <option value="true">Yes</option>
+                </select>
+              </div>
+            </div>
+            <div class="col-12">
+              <div class="form-group mb-3">
+                <label class="fs-6 mb-3">Enable Tax</label>
+                <select class="form-select mb-3" formControlName="isTax">
+                  <option value="" disabled>-- Select an option --</option>
+                  <option value="false">No</option>
+                  <option value="true">Yes</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="col-12">
+              <div class="form-group mb-3">
+                <label class="fs-6 mb-3">Notify Button ( Out of Stock Products )</label>
+                <select class="form-select mb-3" formControlName="isNotifyStock">
+                  <option value="" disabled>-- Select an option --</option>
+                  <option value="false">No</option>
+                  <option value="true">Yes</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="col-12">
+              <div class="form-group mb-3">
+                <label class="fs-6 mb-3 required">Items Per Page</label>
+                <input type="number" placeholder="14" class="form-control fs-6" formControlName="itemsPerPage" />
+              </div>
+            </div>
+
+            <h2 class="form-title">Store Media Settings</h2>
+
+            <div class="col-12">
+              <div class="form-group mb-3">
+                <label class="fs-6 mb-3 required">Logo</label>
+                <div class="image-upload">
+                  <input type="file" class="form-control fs-6" name="image" accept="image/*"
+                    (change)="onInputChange('logo', $event)" style="height: 100px;" required>
+                  <div class="image-upload-div">
+                    <div class="left-img">
+                      <img src="assets/media/svg/files/upload.svg" alt="" srcset="">
+                    </div>
+                    <div class="right-text d-flex flex-column">
+                      <span class="right-text-title fs-4 fw-bold">Click to Upload</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="logoPreview p-3 mt-3" *ngIf="logoFilePreview">
+                <div class="logo d-flex align-items-center justify-content-center">
+                  <img src="{{logoFilePreview}}" alt="Logo">
+                </div>
+                <div class="logoClose" (click)="removeLogo('logo')">
+                  <svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 0 24 24" width="20px"
+                    fill="currentColor">
+                    <path d="M0 0h24v24H0V0z" fill="none" />
+                    <path
+                      d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z" />
+                  </svg>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-12">
+              <div class="form-group">
+                <label class="fs-6 mb-3 required">Favicon</label>
+                <div class="image-upload">
+                  <input type="file" class="form-control fs-6" name="image" accept="image/*"
+                    (change)="onInputChange('favicon', $event)" style="height: 100px;" required>
+                  <div class="image-upload-div">
+                    <div class="left-img">
+                      <img src="assets/media/svg/files/upload.svg" alt="" srcset="">
+                    </div>
+                    <div class="right-text d-flex flex-column">
+                      <span class="right-text-title fs-4 fw-bold">Click to Upload</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="faviconPreview mt-3 p-3" *ngIf="faviconFilePreview">
+                <div class="favicon">
+                  <img src="{{faviconFilePreview}}" alt="Favicon">
+                  <div class="faviconClose" (click)="removeLogo('favicon')">
+                    <svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 0 24 24" width="20px"
+                      fill="currentColor">
+                      <path d="M0 0h24v24H0V0z" fill="none" />
+                      <path
+                        d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z" />
+                    </svg>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+
+          </form>
+        </div>
       </div>
-   </div>
+    </div>
+  </div>
 </div>

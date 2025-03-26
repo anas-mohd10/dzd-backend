@@ -101,19 +101,19 @@
           </select>
         </div>
         <div class="col-lg-3 form-group">
-          <label for="sort" class="form-label">Price</label>
+          <label for="sort" class="form-label">Sort based on</label>
           <select [formControl]="sort" id="sort" class="form-select" (change)="getProducts()">
             <option value="" disabled>-- Select an option --</option>
             <option *ngFor="let sortItem of sortFilters" value="{{sortItem.value}}">{{sortItem?.key}}</option>
           </select>
         </div>
-        <div class="col-lg-3 form-group">
+        <!-- <div class="col-lg-3 form-group">
           <label for="sort" class="form-label">Boost Score</label>
           <select [formControl]="sort" id="sort" class="form-select" (change)="getProducts()">
             <option value="" disabled>-- Select an option --</option>
             <option *ngFor="let sortItem of boostScoreFilters" value="{{sortItem.value}}">{{sortItem?.key}}</option>
           </select>
-        </div>
+        </div> -->
       </div>
 
       <div class="mt-3" *ngIf="categoryItems.length > 0">

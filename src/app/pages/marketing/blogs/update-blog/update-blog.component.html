@@ -96,6 +96,12 @@
                                 'is-invalid':  (formControls.title.touched || isSubmitted) && formControls.title.errors?.required}">
             </div>
             <div class="form-group mb-3">
+              <label for="slug" class="form-label">Slug</label>
+              <input type="text" id="slug" formControlName="slug" class="form-control"
+                [ngClass]="{
+                                'is-invalid':  (formControls.slug.touched || isSubmitted) && formControls.slug.errors?.required}">
+            </div>
+            <div class="form-group mb-3">
               <label for="overview" class="form-label">Overview</label>
               <textarea id="overview" formControlName="overview" class="form-control" rows="3"
                 [ngClass]="{

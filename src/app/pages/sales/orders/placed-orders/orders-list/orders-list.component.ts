@@ -119,7 +119,7 @@ export class OrdersListComponent implements OnInit {
   successOrders: Array<string> = ['PLACED', 'COLLECTED', 'SHIPPED', 'PARTIAL PROCESSED', 'OUT FOR DELIVERY', 'DELIVERED', 'PACKED']
   acceptedOrders: Array<string> = ['ACCEPTED']
   cancelledOrders: Array<string> = ['CANCELLED', 'PENDING', 'FAILED']
-
+  tagOptions: string[] = []
   domainUrl: string = ''
   settings: any;
 
@@ -381,7 +381,6 @@ export class OrdersListComponent implements OnInit {
       }
     });
 
-    console.log(orders)
 
     if (acceptedOrders > 0) {
       this.HotToastService.error("Orders in the list are already accepted")
@@ -522,6 +521,7 @@ export class OrdersListComponent implements OnInit {
       keyword: this.keyword.value,
     };
 
+
     this.OrdersService.listOrders(payload).subscribe((res: any) => {
       if (res?.errorCode == 0) {
         this.orders = res?.result?.orders;
@@ -537,6 +537,8 @@ export class OrdersListComponent implements OnInit {
 
         this.isLoading = true;
         this.ChangeDetectorRef.markForCheck();
+    
+
       }
     });
   }

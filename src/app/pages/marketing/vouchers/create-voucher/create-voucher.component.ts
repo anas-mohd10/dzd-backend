@@ -121,11 +121,23 @@ export class CreateVoucherComponent implements OnInit {
     }
   }
 
+  // Update the optCustomer method
   optCustomer(customer: any) {
     this.customers = [];
-    this.keyword = '';
+    this.keyword = customer.name;
     this.optedCustomer = customer;
-    this.form.get('user')?.setValue(customer?.name);
+    
+    // Auto-populate form fields
+    this.form.patchValue({
+      user: customer.name,
+      name: customer.name,
+      email: customer.email,
+      countryCode: customer.countryCode,
+      mobile: customer.mobile
+    });
+    
+    // Trigger mobile pattern validation
+    this.handleMobilePattern();
   }
 
   onSubmit() {

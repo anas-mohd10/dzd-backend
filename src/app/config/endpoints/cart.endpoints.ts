@@ -5,5 +5,6 @@ export const cartEndpoints = {
   get_active_carts: '/carts/active',
   get_cart_by_id: '/cart',
   cart_notification: '/cart/notification',
-  cartProducts: '/cart-products'
+  cartProducts: '/cart-products',
+  exportCart:'/export-cart',
 }
