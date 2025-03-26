@@ -245,6 +245,7 @@ export class AddOrdersComponent implements OnInit {
     }
 
     this.getCartDetails()
+    this.handleAddressMobilePattern()
   }
 
   getCartDetails() {
@@ -316,7 +317,7 @@ export class AddOrdersComponent implements OnInit {
 
     this.addressForm = new FormGroup({
       name: new FormControl('', Validators.required),
-      countryCode: new FormControl('', Validators.required),
+      countryCode: new FormControl('+971', Validators.required),
       mobile: new FormControl('', [Validators.required, Validators.pattern('^[0-9]{10}$')]),
       firstlane: new FormControl('', Validators.required),
       secondlane: new FormControl(''),

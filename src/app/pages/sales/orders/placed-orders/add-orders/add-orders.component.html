@@ -286,8 +286,12 @@
                                         <div class="row my-3">
                                             <div class="form-group col-lg-2">
                                                 <label for="customerCountryCode" class="fs-6 mb-3 required">Country Code</label>
-                                                <input id="customerCountryCode" type="text" class="form-control"
-                                                    formControlName="countryCode">
+                                               <select formControlName="countryCode" class="form-select">
+                                                <option value="" disabled>-- Select an option --</option>
+                                                <option *ngFor="let countryCode of ['+971', '+964', '+91']" [value]="countryCode">
+                                                    {{countryCode}}
+                                                </option>
+                                               </select>
                                             </div>
                                             <div class="form-group col-lg-10">
                                                 <label for="customerMobile" class="fs-6 mb-3 required">Mobile</label>
