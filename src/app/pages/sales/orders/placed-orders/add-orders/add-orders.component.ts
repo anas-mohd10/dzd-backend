@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, TemplateRef, ViewChild, HostListener } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { HotToastService } from '@ngneat/hot-toast';
@@ -149,6 +149,18 @@ export class AddOrdersComponent implements OnInit {
   applicableCoupons: Array<Coupon> = [];
   couponsModalRef?: BsModalRef;
 
+  isSticky: boolean = false;
+
+  @HostListener('window:scroll', ['$event'])
+  onScroll() {
+    const element = document.querySelector('.sticky-card');
+    if (element) {
+      const rect = element.getBoundingClientRect();
+      this.isSticky = rect.top <= 110;
+      this.ChangeDetectorRef.markForCheck();
+    }
+  }
+
   constructor(
     private OrderService: OrdersService,
     private customerService: CustomersService,
@@ -212,6 +224,7 @@ export class AddOrdersComponent implements OnInit {
                 this.addressForm.patchValue(addressItem)
                 const countryDoc: any = this.countries.find((country: any) => country?.name == addressItem?.country);
                 this.loadStates(countryDoc?._id, 'update')
+                this.handleAddressMobilePattern()
               }
             })
           }
@@ -303,21 +316,17 @@ export class AddOrdersComponent implements OnInit {
 
     this.addressForm = new FormGroup({
       name: new FormControl('', Validators.required),
-      countryCode: new FormControl(''),
-      mobile: new FormControl('', [
-        Validators.required,
-        Validators.pattern(('^[0-9]{10}$'))
-      ]),
+      countryCode: new FormControl('', Validators.required),
+      mobile: new FormControl('', [Validators.required, Validators.pattern('^[0-9]{10}$')]),
       firstlane: new FormControl('', Validators.required),
       secondlane: new FormControl(''),
       country: new FormControl('', Validators.required),
       state: new FormControl('', Validators.required),
       city: new FormControl('', Validators.required),
-
       area: new FormControl(''),
       landmark: new FormControl('', Validators.required),
-      type: new FormControl('Home', Validators.required),
-      pincode: new FormControl('', Validators.required),
+      type: new FormControl('Home'),
+      pincode: new FormControl(''),
       lat: new FormControl(''),
       lng: new FormControl(''),
       isDefault: new FormControl(false),
@@ -964,6 +973,18 @@ export class AddOrdersComponent implements OnInit {
     this.orderForm.get('pickUpLocation')?.setValue(this.orderForm.get('pickUpLocation')?.value ? this.orderForm.get('pickUpLocation')?.value : null);
     this.orderForm.get('customerId')?.setValue(this.customerDetails?._id);
     this.orderForm.get('products')?.setValue(this.cartItems);
+
+    if (!this.addressForm.valid) {
+      this.ToastrService.error('Please fill all the address fields');
+      this.isSubmitted = true;
+      return;
+    }
+
+    if (this.cartItems.length == 0) {
+      this.ToastrService.error('Please add at least one product to the cart');
+      this.isSubmitted = true;
+      return;
+    }
 
     if (!this.orderForm.valid) {
       this.ToastrService.error('Please fill all the required fields');
