@@ -331,7 +331,8 @@
 
   <div *ngIf="orders.length > 0">
     <app-pagination [pageIndex]="page" [pageSize]="limit" [totalResults]="totalResults" [totalPages]="totalPages"
-      (pageTrigger)="onPageTriggered($event)"></app-pagination>
+      (pageTrigger)="onPageTriggered($event)">
+    </app-pagination>
   </div>
 </div>
 
