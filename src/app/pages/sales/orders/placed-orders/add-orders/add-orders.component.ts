@@ -665,7 +665,7 @@ export class AddOrdersComponent implements OnInit {
       this.ToastrService.error('Product already exists in the cart');
     } else {
       this.products = [];
-      this.keyword.setValue('');
+      this.productQuery.setValue('');
       const initialQuantity = Math.max(1, product?.moq || 1);
       this.cartItems.push({ ...product, quantity: initialQuantity });
       this.cartSubtotal += product?.price?.selling * initialQuantity;

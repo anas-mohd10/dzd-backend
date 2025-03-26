@@ -135,7 +135,7 @@
                             Customer's Activites
                         </div>
                         <div class="pb-2 my-4 border-bottom border-secondary">
-                            <div class="fs-5">Shopping Cart</div>
+                            <div class="fs-5">Shopping Cart <span>[ {{cartDoc.products.length}} ]</span></div>
                             <div class="my-2">
                                 <ul class="list-unstyled" *ngIf="cartDoc && cartDoc.products.length > 0">
                                     <li class="mb-2 p-2 border rounded-2 border-secondary"
@@ -151,7 +151,7 @@
                             </div>
                         </div>
                         <div>
-                            <div class="fs-5">Wishlist</div>
+                            <div class="fs-5">Wishlist <span>[ {{wishlistItems.length}} ]</span></div>
                             <div class="my-2">
                                 <ul class="list-unstyled" *ngIf="wishlistItems && wishlistItems.length > 0">
                                     <li class="mb-2 p-2 border border-secondary"
