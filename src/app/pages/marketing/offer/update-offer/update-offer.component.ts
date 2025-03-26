@@ -76,18 +76,23 @@ export class UpdateOfferComponent implements OnInit {
     switch (offerType) {
       case 'products':
         currentList = this.products;
+        this.dropdownInputs = this.products;
         break;
       case 'collections':
         currentList = this.collections;
+        this.dropdownInputs = this.collections;
         break;
       case 'categories':
         currentList = this.categories;
+        this.dropdownInputs = this.categories;
         break;
       case 'brands':
         currentList = this.brands;
+        this.dropdownInputs = this.brands;
         break;
       case 'parents':
         currentList = this.parents;
+        this.dropdownInputs = this.parents;
         break;
       default:
         return;
