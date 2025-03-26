@@ -1,14 +1,25 @@
 <div class="position-relative">
     <div class="form-group">
         <input type="text" autocomplete="off" class="form-control" placeholder="Search for {{type}}" id="keyword"
-            [formControl]="keyword">
+            [formControl]="keyword" (focus)="onInputFocus()" (onBlur)="onInputFocus">
     </div>
     <div class="position-absolute bg-white p-3 border rounded-3 shadow-sm w-75"
         style="top: 100%; left: 0; right: 0; z-index: 1000;" *ngIf="dropdownResults && dropdownResults.length > 0">
         <div class="dropdown-results">
+            <div class="d-flex justify-content-between align-items-center mb-2 pb-2 border-bottom">
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" [checked]="selectAllChecked"
+                        (change)="toggleSelectAll()" id="selectAllCheckbox">
+                    <label class="form-check-label fw-bold" for="selectAllCheckbox">
+                        {{ selectAllChecked ? 'Deselect All' : 'Select All' }}
+                    </label>
+                </div>
+                <button class="btn btn-sm btn-primary" (click)="clearResults()">Close</button>
+            </div>
             <ng-container *ngFor="let dropdownResult of dropdownResults; let i = index">
                 <!-- Products Layout -->
-                <div class="d-flex justify-content-between align-items-center my-2 p-2 hover-bg-light" *ngIf="type == 'products'">
+                <div class="d-flex justify-content-between align-items-center my-2 p-2 hover-bg-light"
+                    *ngIf="type == 'products'">
                     <div class="d-flex align-items-center gap-3">
                         <img height="50" width="50" src="{{imageBase}}{{dropdownResult.thumbnail}}"
                             onerror="this.src='assets/images/default.png'" class="rounded border border-secondary"
@@ -20,7 +31,7 @@
                             <span class="text-info">Stock: {{dropdownResult.stock}}</span>
                         </div>
                     </div>
-                    <button class="btn btn-sm" 
+                    <button class="btn btn-sm"
                         [ngClass]="{'btn-danger': isItemExists(dropdownResult), 'btn-secondary': !isItemExists(dropdownResult)}"
                         (click)="onSelectItem(dropdownResult, isItemExists(dropdownResult))">
                         {{isItemExists(dropdownResult) ? 'Remove' : 'Select'}}
@@ -28,7 +39,8 @@
                 </div>
 
                 <!-- Parents Layout -->
-                <div class="d-flex justify-content-between align-items-center my-2 p-2 hover-bg-light" *ngIf="type == 'parents'">
+                <div class="d-flex justify-content-between align-items-center my-2 p-2 hover-bg-light"
+                    *ngIf="type == 'parents'">
                     <div class="d-flex align-items-center gap-3">
                         <div class="d-flex align-items-center gap-3">
                             <span class="fw-bold">{{dropdownResult.name}}</span>
@@ -36,7 +48,7 @@
                             <span *ngIf="dropdownResult?.cod?.isPresent" class="badge bg-success">COD Available</span>
                         </div>
                     </div>
-                    <button class="btn btn-sm" 
+                    <button class="btn btn-sm"
                         [ngClass]="{'btn-danger': isItemExists(dropdownResult), 'btn-secondary': !isItemExists(dropdownResult)}"
                         (click)="onSelectItem(dropdownResult, isItemExists(dropdownResult))">
                         {{isItemExists(dropdownResult) ? 'Remove' : 'Select'}}
@@ -52,7 +64,7 @@
                             onerror="this.src='assets/images/default.png'" alt={{dropdownResult.name}}>
                         <span class="fw-bold">{{dropdownResult.name}}</span>
                     </div>
-                    <button class="btn btn-sm" 
+                    <button class="btn btn-sm"
                         [ngClass]="{'btn-danger': isItemExists(dropdownResult), 'btn-secondary': !isItemExists(dropdownResult)}"
                         (click)="onSelectItem(dropdownResult, isItemExists(dropdownResult))">
                         {{isItemExists(dropdownResult) ? 'Remove' : 'Select'}}
@@ -64,8 +76,8 @@
 </div>
 
 <style>
-.hover-bg-light:hover {
-    background-color: rgba(0,0,0,0.05);
-    transition: background-color 0.3s ease;
-}
+    .hover-bg-light:hover {
+        background-color: rgba(0, 0, 0, 0.05);
+        transition: background-color 0.3s ease;
+    }
 </style>
