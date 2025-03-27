@@ -24,10 +24,18 @@
     <div class="card my-4">
       <div class="card-body">
         <div class="row">
+          <!-- Replace the existing coupon code input with this -->
           <div class="form-group mb-3">
             <label class="fs-6 mb-3 required">Coupon Code</label>
-            <input type="text" class="form-control fs-6" formControlName="code" placeholder="Min 3 characters"
-              [ngClass]="{ 'is-invalid': (formControls.code.touched || isSubmitted) && formControls.code.errors?.required}" />
+            <input type="text" class="form-control fs-6" formControlName="code"
+              placeholder="Enter single code or comma-separated codes (e.g., CODE1,CODE2,CODE3)"
+              [ngClass]="{ 'is-invalid': (formControls.code.touched || isSubmitted) && formControls.code.errors?.required || formControls.code.errors?.pattern }" />
+            <small class="form-text text-muted">
+              For multiple coupons, separate codes with commas (e.g., SUMMER2024,WINTER2024)
+            </small>
+            <div class="invalid-feedback" *ngIf="formControls.code.errors?.pattern">
+              Please enter valid coupon code(s). Use commas to separate multiple codes.
+            </div>
           </div>
           <div class="form-group col-lg-6 mb-3">
             <label class="fs-6 mb-3 required">Description</label>
