@@ -236,45 +236,79 @@ export class NavigationMenuComponent implements OnInit {
   onRedirectionChange(event: any) {
     const value = event.target.value;
     this.selectedOption = value;
+    this.megaMenuForm.get('selectedOption')?.setValue(value);
     
-    // Clear previous selection when changing redirection type
+    this.selectedItem = '';
     this.redirectionValue = '';
-    this.megaMenuForm.patchValue({
-      redirection: ''
-    });
     
-    // If "Store" is selected, set the redirection directly
+    const controlName = `selected${value.charAt(0).toUpperCase() + value.slice(1)}`;
+    this.megaMenuForm.get(controlName)?.setValue('');
+    
     if (value === 'complete') {
       this.redirectionValue = '/store';
-      this.megaMenuForm.patchValue({
-        redirection: '/store'
-      });
+      this.megaMenuForm.get('redirection')?.setValue('/store');
     }
   }
 
   onSelectItem(event: any) {
     const selectedItem = event.target.value;
-  
+    this.selectedItem = selectedItem;
+    
     if (this.selectedOption) {
-      console.log("....", this.selectedOption);
+      const controlName = `selected${this.selectedOption.charAt(0).toUpperCase() + this.selectedOption.slice(1)}`;
+      this.megaMenuForm.get(controlName)?.setValue(selectedItem);
+      
+      let pathPrefix;
+      switch(this.selectedOption) {
+        case 'brands': 
+          pathPrefix = 'brands';
+          break;
+        case 'products':
+          pathPrefix = 'products';
+          break;
+        case 'categories':
+          pathPrefix = 'products';
+          break;
+        case 'collections':
+          pathPrefix = 'c';
+          break;
+        case 'complete':
+          pathPrefix = 'store';
+          break;
+        default:
+          pathPrefix = this.selectedOption;
+      }
   
-      // Adjust the pathPrefix logic for specific cases
-      const pathPrefix = this.selectedOption === 'collections'
-        ? 'c'
-        : this.selectedOption === 'products' || this.selectedOption === 'categories'
-          ? 'p'
-          : this.selectedOption.endsWith('s')
-            ? this.selectedOption.slice(0, -1)
-            : this.selectedOption;
-  
-      this.redirectionValue = `/${pathPrefix}/${selectedItem}`;
-  
-      // Explicitly set the value and log for debugging
+      this.redirectionValue = this.selectedOption === 'complete' 
+        ? `/${pathPrefix}`
+        : `/${pathPrefix}/${selectedItem}`;
+        
       this.megaMenuForm.get('redirection')?.setValue(this.redirectionValue);
     }
   }
+  fetchBrand() {
+    this.BrandService.getBrand().subscribe((res: any) => {
+      this.brands = res?.result || [];
+    });
+  }
   
+  fetchProduct() {
+    this.ProductService.getProducts({}).subscribe((res: any) => {
+      this.products = res?.result || [];
+    });
+  }
   
+  fetchCategories() {
+    this.CategoryService.getCategories({}, {}).subscribe((res: any) => {
+      this.categories = res?.result || [];
+    });
+  }
+  
+  fetchCollection() {
+    this.CollectionService.getCollection().subscribe((res: any) => {
+      this.collections = res?.result || [];
+    });
+  }
   
   
   openStoreFacilityModal(
@@ -350,34 +384,37 @@ export class NavigationMenuComponent implements OnInit {
     });
   }
 
-  openMegaMenuModal(
-    template: TemplateRef<any>,
-    type?: string,
-    menuId?: string
-  ) {
+  openMegaMenuModal(template: TemplateRef<any>, type?: string, menuId?: string) {
+    this.selectedOption = '';
+    this.selectedItem = '';
+    this.redirectionValue = '';
+    this.megaMenuForm.reset();
+    this.subMenus = [];
+    this.subMenuBoxes = [];
+  
     this.megaMenuModalRef = this.modalService.show(template, {
       ignoreBackdropClick: true,
       class: 'modal-dialog-centered modal-xl',
     });
-    if (type == 'edit') {
+  
+    if (type === 'edit' && menuId) {
       this.megaMenuEdit = true;
       this.MegamenuService.getMegaMenuDetails(menuId).subscribe({
         next: (res: any) => {
-          if (res?.errorCode == 0) {
-            this.megaMenuDetails = res?.result;
-            this.subMenus = res?.result?.subMenus;
-            this.megaMenuIcon = res?.result?.icon;
-            this.megaMenuAdvertisement = res?.result?.advertisement;
-            this.megaMenuAdvertisementMobile = res?.result?.advertisementMobile;
-            this.megaMenuForm.patchValue(res?.result);
-            this.subMenuBoxes = res?.result?.subMenuBoxes?.menuBoxes;
-            this.ChangeDetectorRef.markForCheck();
+          if (res?.errorCode === 0) {
+            this.megaMenuDetails = res.result;
+            this.loadSavedData(res.result); // Now passing the required argument
           }
         },
+        error: (err) => {
+          this.Toast.error('Failed to load menu details');
+        }
       });
+    } else {
+      this.megaMenuEdit = false;
+      this.loadSavedData(); // Called without argument for new items
     }
   }
-
   removeSubMenuBox(index: number) {
     this.subMenuBoxes.splice(index, 1);
   }
@@ -389,17 +426,15 @@ export class NavigationMenuComponent implements OnInit {
   }
 
   closeMegaMenuModal() {
-    this.megaMenuModalRef?.hide();
-    this.megaMenuAdvertisement = '';
-    this.megaMenuAdvertisementMobile = '';
-    this.megaMenuIcon = '';
-    this.megaMenuDetails = {};
+    this.selectedOption = '';
+    this.selectedItem = '';
+    this.redirectionValue = '';
     this.megaMenuForm.reset();
-    this.megaMenuItemForm.reset();
-    this.subMenuBoxForm.reset();
-    this.subMenuBoxIndex = null;
-    this.subMenuBoxIcon = '';
+    this.subMenus = [];
     this.subMenuBoxes = [];
+    this.megaMenuDetails = null;
+    
+    this.megaMenuModalRef?.hide();
   }
 
   addMenuItem() {
@@ -503,60 +538,48 @@ export class NavigationMenuComponent implements OnInit {
   }
 
   saveMegaMenuItem() {
-    // Ensure the redirection value is updated before saving
-    const currentRedirection = this.megaMenuForm.get('redirection')?.value;
-    if (!currentRedirection && this.redirectionValue) {
-      this.megaMenuForm.get('redirection')?.setValue(this.redirectionValue);
+    if (this.megaMenuForm.invalid) {
+      this.megaMenuForm.markAllAsTouched();
+      return;
     }
   
-    if (this.megaMenuForm.valid) {
-      const formData = { ...this.megaMenuForm.value, subMenus: this.subMenus };
-  
-      if (this.megaMenuEdit) {
-        this.MegamenuService.updateMegaMenu({
-          _id: this.megaMenuDetails?._id,
-          ...formData,
-          advertisementMobile: this.megaMenuAdvertisementMobile,
-        }).subscribe({
-          next: (res: any) => {
-            if (res?.errorCode === 0) {
-              this.Toast.success(res.message);
-              this.closeMegaMenuModal();
-              this.getMegaMenu();
-              this.subMenus = [];
-            } else {
-              this.Toast.error(res.message);
-            }
-          },
-          error: (err: any) => {
-            this.Toast.error(err?.error?.message || 'An error occurred');
-          },
-        });
-      } else {
-        this.MegamenuService.addMegaMenu({
-          index: this.megaMenuItems.length + 1,
-          ...formData,
-        }).subscribe({
-          next: (res: any) => {
-            if (res?.errorCode === 0) {
-              this.Toast.success(res.message);
-              this.closeMegaMenuModal();
-              this.getMegaMenu();
-              this.subMenus = [];
-            } else {
-              this.Toast.error(res.message);
-            }
-          },
-          error: (err: any) => {
-            this.Toast.error(err?.error?.message);
-          },
-        });
+    const formData = {
+      ...this.megaMenuForm.value,
+      icon: this.megaMenuIcon,
+      advertisement: this.megaMenuAdvertisement,
+      advertisementMobile: this.megaMenuAdvertisementMobile,
+      subMenus: this.subMenus,
+      subMenuBoxes: {
+        title: this.megaMenuForm.value.subMenuBoxes?.title,
+        menuBoxes: this.subMenuBoxes
       }
-    }
+    };
+  
+    const saveObservable = this.megaMenuEdit
+      ? this.MegamenuService.updateMegaMenu({
+          _id: this.megaMenuDetails?._id,
+          ...formData
+        })
+      : this.MegamenuService.addMegaMenu({
+          index: this.megaMenuItems.length + 1,
+          ...formData
+        });
+  
+    saveObservable.subscribe({
+      next: (res: any) => {
+        if (res?.errorCode === 0) {
+          this.Toast.success(res.message);
+          this.closeMegaMenuModal();
+          this.getMegaMenu();
+        } else {
+          this.Toast.error(res?.message || 'Failed to save');
+        }
+      },
+      error: (err) => {
+        this.Toast.error(err.error?.message || 'Error saving menu item');
+      }
+    });
   }
-  
-  
-  
   
 
   get megaMenuItemFormControls() {
@@ -809,28 +832,62 @@ export class NavigationMenuComponent implements OnInit {
   //   this.selectedOption = event.target.value;
   // }
 
-  loadSavedData() {
-    const savedValue = this.megaMenuForm.get('redirection')?.value;
+  loadSavedData(savedData?: any) {
+    this.selectedOption = '';
+    this.selectedItem = '';
+    this.redirectionValue = '';
   
-    if (savedValue) {
-      if (savedValue.includes('/p/')) {
-        this.selectedOption = 'products';
-      } else if (savedValue.includes('/c/')) {
-        this.selectedOption = 'collections';
-      } else if (savedValue.includes('/brand/')) {
-        this.selectedOption = 'brands';
-      } else if (savedValue.includes('/category/')) {
-        this.selectedOption = 'categories';
+    if (savedData) {
+      this.megaMenuIcon = savedData.icon;
+      this.megaMenuAdvertisement = savedData.advertisement;
+      this.megaMenuAdvertisementMobile = savedData.advertisementMobile;
+  
+      this.subMenus = savedData.subMenus || [];
+      this.subMenuBoxes = savedData.subMenuBoxes?.menuBoxes || [];
+  
+      if (savedData.redirection) {
+        const redirection = savedData.redirection;
+        
+        if (redirection.includes('/brands/')) {
+          this.selectedOption = 'brands';
+          this.selectedItem = redirection.split('/brands/')[1];
+        } 
+        else if (redirection.includes('/products/')) {
+          this.selectedOption = 'products';
+          this.selectedItem = redirection.split('/products/')[1];
+        }
+        else if (redirection.includes('/products/')) {
+          this.selectedOption = 'categories';
+          this.selectedItem = redirection.split('/products/')[1];
+        }
+        else if (redirection.includes('/c/')) {
+          this.selectedOption = 'collections';
+          this.selectedItem = redirection.split('/c/')[1];
+        }
+        else if (redirection === '/store') {
+          this.selectedOption = 'complete';
+        }
+        
+        this.redirectionValue = redirection;
       }
   
-      this.selectedItem = savedValue.split('/').pop() || '';
+      this.megaMenuForm.patchValue({
+        ...savedData,
+        selectedOption: this.selectedOption,
+        selectedBrand: this.selectedOption === 'brands' ? this.selectedItem : '',
+        selectedProduct: this.selectedOption === 'products' ? this.selectedItem : '',
+        selectedCategory: this.selectedOption === 'categories' ? this.selectedItem : '',
+        selectedCollection: this.selectedOption === 'collections' ? this.selectedItem : '',
+        redirection: this.redirectionValue
+      });
     }
   }
 
   ngOnInit(): void {
-    this.fetchProducts();
-    this.fetchCollections();
     this.fetchBrands();
+    this.fetchProducts();
+    this.fetchCategories();
+    this.fetchCollections();
 
     this.loadSavedData();
 
@@ -872,18 +929,18 @@ this.megaMenuForm = new FormGroup({
   title: new FormControl('', Validators.required),
   icon: new FormControl(''),
   redirection: new FormControl('', Validators.required),
+  selectedOption: new FormControl(''),
+  selectedBrand: new FormControl(''),
+  selectedProduct: new FormControl(''),
+  selectedCategory: new FormControl(''),
+  selectedCollection: new FormControl(''),
   advertisement: new FormControl(''),
   advertisementRedirection: new FormControl(''),
-  selectedProduct: new FormControl(''),
-  selectedCollection: new FormControl(''),
-  selectedBrand: new FormControl(''),
-  selectedCategory: new FormControl(''),
   subMenuBoxes: new FormGroup({
     title: new FormControl(''),
     menuBoxes: new FormControl([]),
   }),
 });
-
 
     this.StaticPageService.active().subscribe({
       next: (res: any) => {
