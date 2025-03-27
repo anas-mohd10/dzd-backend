@@ -54,6 +54,7 @@
     <thead>
       <tr>
         <th class="p-2">Code</th>
+        <th class="p-2">Available Coupons</th>
         <th class="p-2">From Date</th>
         <th class="p-2">Last Date</th>
         <th class="p-2">Status</th>
@@ -63,6 +64,10 @@
     <tbody>
       <tr *ngFor="let coupon of coupons">
         <td>{{ coupon?.code }}</td>
+        <td>{{
+          coupon?.details?.type === 'unlimited' ? 'Unlimited' : 
+          (coupon?.details?.totalUsageRemaining > 0 ? coupon?.details?.totalUsageRemaining : coupon?.details?.value)
+        }}</td>
         <td>{{ formatDate(coupon?.fromDate) }}</td>
         <td>{{ formatDate(coupon?.lastDate) }}</td>
         <td>
