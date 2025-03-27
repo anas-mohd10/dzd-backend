@@ -1,5 +1,4 @@
 <div>
-
     <div class="page-header">
         <div class="page-title">
             <h1 class="fw-bold">Add Orders</h1>
@@ -21,492 +20,579 @@
         </div>
     </div>
 
-    <ng-template #createUser>
-        <div class="modal-header">
-            <h4 class="fs-2 fw-bold pull-left">Create Customer</h4>
-            <button type="button" class="btn-close close pull-right" aria-label="Close" (click)="closeCreateCustomer()">
-                <span aria-hidden="true" class="visually-hidden">&times;</span>
-            </button>
-        </div>
-        <div class="modal-body">
-            <form [formGroup]="userForm" (ngSubmit)="createCustomer()">
-                <div class="row">
-                    <div class="col-lg-6 mb-3">
-                        <label for="userName" class="fs-6 mb-3">Name</label>
-                        <input id="userName" type="text" placeholder="Name" formControlName="name" class="form-control">
+    <div class="my-4 card sticky-top border sticky-card" [ngClass]="{'shadow-sm border-secondary': isSticky}" style="top: 100px;" *ngIf="isCustomerSelected == true">
+        <div class="card-body p-3">
+            <div class="d-flex align-items-center justify-content-between">
+                <div class="d-flex align-items-center justify-content-start gap-2">
+                    <div *ngIf="tabIndex > 0" (click)="tabIndex = 0" class="cursor-pointer">
+                        <svg height="20" width="20" data-slot="icon" fill="none" stroke-width="1.5"
+                            stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"
+                            aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5"></path>
+                        </svg>
                     </div>
-                    <div class="col-lg-6 mb-3">
-                        <label for="userEmail" class="fs-6 mb-3">Email</label>
-                        <input id="userEmail" type="text" placeholder="Email" formControlName="email"
-                            class="form-control">
-                    </div>
-                    <div class="col-lg-6 mb-3">
-                        <label for="userCountry" class="fs-6 mb-3">Country Code</label>
-                        <select class="form-select" formControlName="countryCode" id="userCountry"
-                            (change)="handleUserMobilePattern()">
-                            <option value="" disabled>-- Select an option --</option>
-                            <option value="+91">+91</option>
-                            <option value="+971">+971</option>
-                        </select>
-                    </div>
-                    <div class="col-lg-6 mb-3">
-                        <label for="userMobile" class="fs-6 mb-3">Mobile</label>
-                        <input id="userMobile" type="text" placeholder="Mobile" formControlName="mobile"
-                            class="form-control">
+                    <div class="fs-5">
+                        You are creating order for <span class="fw-bold">
+                            {{customerDetails?.name}},
+                            {{customerDetails?.email}},
+                            {{customerDetails?.countryCode}} {{customerDetails?.mobile}}
+                        </span>
                     </div>
                 </div>
-                <div class="d-flex align-items-center justify-content-end gap-2">
-                    <button type="submit" class="btn btn-primary">Save changes</button>
+                <div *ngIf="tabIndex == 0">
+                    <button class="btn btn-primary w-100" (click)="tabIndex = 1">
+                        Continue to Checkout
+                        <span>
+                            <svg height="18" width="18" data-slot="icon" fill="none" stroke-width="1.5"
+                                stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"
+                                aria-hidden="true">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5">
+                                </path>
+                            </svg>
+                        </span>
+                    </button>
                 </div>
-            </form>
-        </div>
-    </ng-template>
-
-    <form [formGroup]="orderForm">
-        <div class="card my-4">
-            <div class="card-body">
-                <div class="form-group">
-                    <div class="row">
-                        <div class="col-lg-10">
-                            <label for="searchUsers" class="fs-6 mb-3 required">Customers</label>
-                            <input id="searchUsers" autocomplete="off" type="search" placeholder="Search customers here"
-                                class="form-control" [formControl]="customer"
-                                [ngClass]="{ 'is-invalid': (formControls.customerId.touched || isSubmitted) && formControls.customerId.errors?.required}">
-                        </div>
-                        <div class="col-lg-2">
-                            <label for="addNewUser" class="fs-6 mb-3">New Customer?</label>
-                            <button id="addNewUser" class="w-100 btn btn-secondary"
-                                (click)="openCreateCustomer(createUser)">
-                                Add customer
-                            </button>
-                        </div>
-                    </div>
-
-                    <ng-container *ngIf="customers.length > 0">
-                        <div class="customers mt-3">
-                            <ng-container *ngFor="let customer of customers; let i = index">
-                                <div class="customerCard p-2 d-flex align-items-center justify-content-between"
-                                    (click)="getAddress(addressRef, customer)"
-                                    [ngClass]="{'active': customerDetails?._id == customer?._id}">
-                                    <div class="d-flex align-items-center justify-content-between">
-                                        <div class="index me-3">{{i + 1}}</div>
-                                        <div class="name">{{customer?.name}}</div>
-                                        <div class="mobile ms-3">{{customer?.countryCode}} {{customer?.mobile}}
-                                        </div>
-                                    </div>
-                                    <div class="name">{{customer?.email}}</div>
-                                </div>
-                            </ng-container>
-                        </div>
-                    </ng-container>
-                </div>
-
-                <div class="my-3" *ngIf="address">
-                    <div class="fs-6 mb-3">Customer Address :</div>
-                    <div class="addressCard">
-                        <div class="addressHeader p-3 d-flex justify-content-between align-items-center">
-                            <div class="type pe-2 ps-2">{{address?.type}}</div>
-                            <div class="manageAddress p-1" (click)="openManage(manageRef)">
-                                <svg height="18px" width="18px" xmlns="http://www.w3.org/2000/svg" fill="none"
-                                    viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-                                    <path stroke-linecap="round" stroke-linejoin="round"
-                                        d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L6.832 19.82a4.5 4.5 0 01-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 011.13-1.897L16.863 4.487zm0 0L19.5 7.125" />
-                                </svg>
-                            </div>
-                        </div>
-                        <div class="p-3">
-                            <div class="details">{{address?.countryCode}} {{address?.mobile}}</div>
-                            <div class="lane">
-                                {{address?.firstlane}} {{address?.secondlane ? ', ' + address?.secondlane : ''}}
-                            </div>
-                            <div class="area">{{address?.area}} {{address?.landmark}}</div>
-                            <div class="city">{{address?.country}} {{address?.state}} {{address?.city}}  {{address?.pincode}}</div>
-                        </div>
-                    </div>
+                <div *ngIf="tabIndex == 1">
+                    <button class="btn btn-primary" (click)="createOrder()">
+                        Create Order
+                        <span>
+                            <svg height="18" width="18" data-slot="icon" fill="none" stroke-width="1.5"
+                                stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"
+                                aria-hidden="true">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5">
+                                </path>
+                            </svg>
+                        </span>
+                    </button>
                 </div>
             </div>
         </div>
+    </div>
 
+    <div class="my-4 card" *ngIf="tabIndex == 0">
+        <div class="card-body">
+            <div class="d-flex align-items-center justify-content-between pb-4 mb-4 border-bottom border-secondary">
+                <div class="fs-5">Please select a customer</div>
+                <button class="btn btn-secondary" (click)="openCreateCustomer(createUser)">
+                    Add Customer
+                    <span>
+                        <svg height="18" width="18" data-slot="icon" fill="none" stroke-width="1.5"
+                            stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"
+                            aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"></path>
+                        </svg>
+                    </span>
+                </button>
+            </div>
+            <div>
+                <div class="form-group">
+                    <input type="search" placeholder="Search customer here" class="form-control"
+                        [formControl]="customerQuery">
+                </div>
+                <table class="table table-bordered my-4">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Phone</th>
+                            <th>&nbsp;</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let customer of customerItems">
+                            <td>{{customer.name}}</td>
+                            <td>{{customer.email}}</td>
+                            <td>{{customer.countryCode}} {{customer.mobile}}</td>
+                            <td>
+                                <button
+                                    (click)="customer?._id == customerDetails?._id ? removeCustomer() : selectCustomer(customer)"
+                                    class="btn p-1 w-100"
+                                    [ngClass]="{'btn-danger': customer?._id == customerDetails?._id, 'btn-secondary': customer?._id != customerDetails?._id}">
+                                    {{customer?._id == customerDetails?._id ? 'Remove Customer' : 'Select Customer'}}
+                                </button>
+                            </td>
+                        </tr>
+                        <tr *ngIf="customerItems.length == 0">
+                            <td colspan="4" class="text-center">
+                                <app-no-results></app-no-results>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <app-pagination (pageTrigger)="onPageTriggered($event, 'customer')" [totalPages]="totalCustomerPages"
+                    [totalResults]="totalCustomers" [pageIndex]="customerPageIndex"
+                    [pageSize]="customerPageSize"></app-pagination>
+            </div>
+        </div>
+    </div>
+
+    <div *ngIf="isCustomerSelected == true && tabIndex == 1">
         <div class="card">
             <div class="card-body">
-                <div class="my-3">
-                    <ng-container *ngIf="cartItems.length == 0">
-                        <div class="emptyCart-container">
-                            <img src="assets/icons/emptyCart.gif" style="height: 150px;" alt="Icon">
-                            <button type="button" class="mt-5 btn btn-primary" (click)="openProducts(productsRef)">
-                                Add Products
-                            </button>
-                        </div>
-                    </ng-container>
-                    <ng-container *ngIf="cartItems.length > 0">
-                        <div>
-                            <div class="d-flex align-items-center mb-4 justify-content-end">
-                                <button type="button" class="btn btn-primary" (click)="openProducts(productsRef)">
-                                    Add Products
-                                </button>
-                            </div>
-
-                            <table class="table table-bordered table-stripped ">
-                                <thead>
-                                    <th class="p-2">Product</th>
-                                    <th class="p-2">Price</th>
-                                    <th class="p-2">Quantity</th>
-                                </thead>
-                                <tbody>
-                                    <tr *ngFor="let cart of cartItems; let  i = index">
-                                        <td>
-                                            <div class="d-flex align-items-center justify-content-start gap-2">
-                                                <img class="rounded border border-secondary"
-                                                    onerror="this.src = 'assets/images/default.png'"
-                                                    src="{{base}}{{cart?.thumbnail}}" alt="{{cart?.name}}" height="36"
-                                                    width="36">
-                                                <div>{{cart?.name}}</div>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <div class="fs-5 fw-bold">{{settings?.currency}} {{cart?.price?.selling}}
-                                            </div>
-                                            <div *ngIf="cart?.price?.mrp > cart?.price?.selling"
-                                                class="fs-5 text-muted text-decoration-line-through">
-                                                {{settings?.currency}} {{cart?.price?.mrp}}
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <div class="d-flex align-items-center justify-content-start gap-2">
-                                                <div class="gap-2 d-flex align-items-center justify-content-between">
-                                                    <div class="quantityBtn bg-secondary rounded cursor-pointer"
-                                                        (click)="updateQuantity('decrement', cart)">
-                                                        <svg height="16" width="16" xmlns="http://www.w3.org/2000/svg"
-                                                            fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                                                            stroke="currentColor" class="w-6 h-6">
-                                                            <path stroke-linecap="round" stroke-linejoin="round"
-                                                                d="M18 12H6" />
-                                                        </svg>
-                                                    </div>
-                                                    <div>
-                                                        <input class="form-control" type="number"
-                                                            [value]="cart.quantity"
-                                                            (blur)="updateQuantityWithInput($event, cart)"
-                                                            [max]="cart.maxOrderQuantity"
-                                                            style="width: 100px; height: 30px;" />
-                                                    </div>
-                                                    <div class="quantityBtn bg-secondary rounded cursor-pointer"
-                                                        (click)="updateQuantity('increment', cart)">
-                                                        <svg height="16" width="16" xmlns="http://www.w3.org/2000/svg"
-                                                            fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                                                            stroke="currentColor" class="w-6 h-6">
-                                                            <path stroke-linecap="round" stroke-linejoin="round"
-                                                                d="M12 4.5v15m7.5-7.5h-15" />
-                                                        </svg>
-                                                    </div>
-                                                </div>
-                                                <div class="deleteBtn bg-danger rounded text-white cursor-pointer"
-                                                    (click)="deleteProduct(cart)">
-                                                    <svg height="20px" width="20px" xmlns="http://www.w3.org/2000/svg"
-                                                        fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                                                        stroke="currentColor" class="w-6 h-6">
-                                                        <path stroke-linecap="round" stroke-linejoin="round"
-                                                            d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0" />
-                                                    </svg>
-                                                </div>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </ng-container>
-                </div>
-            </div>
-        </div>
-
-        <div class="card my-4">
-            <div class="card-body">
-                <div *ngIf="(settings?.isPickUp == true || settings?.isPickUp == true) && address">
-                    <div class="form-group mb-3" *ngIf="settings?.isPickUp == true && address">
-                        <label class="fs-6 mb-3">Choose a Pickup Location</label>
-                        <select class="form-select fs-6" formControlName="pickUpLocation">
-                            <option value="" disabled>-- Select an option --</option>
-                            <ng-container *ngFor="let pickupLocation of pickupLocations; let i = index">
-                                <option value="{{pickupLocation?._id}}">
-                                    <div>{{pickupLocation?.name}}</div>
-                                    <div>( {{pickupLocation?.city}} )</div>
-                                </option>
-                            </ng-container>
-                        </select>
-                    </div>
-                    <div class="mb-3" *ngIf="settings?.isDeliverySlots == true && address">
-                        <label class="fs-6 mb-3">Select a delivery dates</label>
-                        <div class="dates" *ngIf="dates.length > 0">
-                            <ng-container *ngFor="let date of dates">
-                                <div class="date" (click)="selectDeliveryDate(date)"
-                                    [ngClass]="{'active': deliveryDate == date}">
-                                    <div class="text-center">
-                                        <div class="fs-5">{{formatDate(date, 'month')}}</div>
-                                        <div class="fs-2 my-2 fw-bold">{{formatDate(date, 'dateNumber')}}</div>
-                                        <div class="fs-5 text-primary">{{formatDate(date, 'day')}}</div>
+                <div class="d-flex align-items-start justify-content-between gap-8">
+                    <div class="w-75">
+                        <form [formGroup]="orderForm">
+                            <div>
+                                <div
+                                    class="fs-4 py-2 mb-4 border-bottom text-muted border-secondary d-flex align-items-center justify-content-between">
+                                    <div>Items Ordered</div>
+                                    <div>
+                                        <button class="btn btn-primary p-2 w-100" (click)="openProducts(productsRef)">
+                                            Add Products
+                                            <span>
+                                                <svg height="16" width="16" data-slot="icon" fill="none" stroke-width="1.5"
+                                                    stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"
+                                                    aria-hidden="true">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"></path>
+                                                </svg>
+                                            </span>
+                                        </button>
                                     </div>
                                 </div>
-                            </ng-container>
-                        </div>
-                    </div>
-                    <div class="col-12" *ngIf="orderForm.get('deliveryDate')?.value">
-                        <label class="fs-6 mb-3">Available timeslots</label>
-                        <div class="timeslots">
-                            <ng-container *ngFor="let time of timeslots">
-                                <div class="timeslot fs-5" (click)="selectDeliveryTime(time?.refid)"
-                                    [ngClass]="{'active': deliveryTime == time?.refid, 'border border-danger': (formControls.deliverySlot.touched || isSubmitted) && formControls.deliverySlot.errors?.required}">
-                                    <div> {{time?.from}} - {{time?.to}}</div>
+                                <table class="table table-bordered" s>
+                                    <thead>
+                                        <tr>
+                                            <th>Product</th>
+                                            <th>Quantity</th>
+                                            <th>MRP</th>
+                                            <th>Price</th>
+                                            <th>Total</th>
+                                            <th>&nbsp;</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr *ngFor="let cartItem of cartItems">
+                                            <td class="text-truncate" style="max-width: 200px;">
+                                                <img height="34" width="34" class="rounded border border-secondary"
+                                                    src="{{base}}{{cartItem?.thumbnail}}" alt={{cartItem?.name}}
+                                                    onerror="this.src = 'assets/images/default.png'">
+                                                <span class="d-flex flex-column">
+                                                    <span>{{cartItem?.name}}</span>
+                                                    <span class="text-muted">{{cartItem?.sku}}</span>
+                                                    <span *ngFor="let attribute of cartItem?.attributes">
+                                                        <span *ngIf="attribute?.title">{{attribute?.title}} :
+                                                            {{attribute?.value}}</span>
+                                                    </span>
+                                                </span>
+                                            </td>
+                                            <td>
+                                                <input type="number" class="form-control" [value]="cartItem?.quantity"
+                                                    (change)="updateCartItemQuantity(cartItem, $event)">
+                                            </td>
+                                            <td>{{cartItem?.price?.mrp}}</td>
+                                            <td>
+                                                <input type="number" class="form-control"
+                                                    [value]="cartItem?.price?.selling"
+                                                    (change)="updateCartItemPrice(cartItem, $event)">
+                                            </td>
+                                            <td>{{cartItem?.price?.selling * cartItem?.quantity}}</td>
+                                            <td>
+                                                <button class="btn btn-danger p-1 w-100"
+                                                    (click)="deleteProduct(cartItem)">Remove</button>
+                                            </td>
+                                        </tr>
+                                        <tr *ngIf="cartItems.length == 0">
+                                            <td colspan="6">
+                                                No items
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="my-4">
+                                <form [formGroup]="addressForm">
+                                    <div>
+                                        <div class="fs-4 py-4 border-bottom text-muted border-secondary">
+                                            Account Information
+                                        </div>
+                                        <div class="form-group my-3">
+                                            <label for="customerName" class="fs-6 mb-3 required">Name</label>
+                                            <input id="customerName" type="text" class="form-control"
+                                                formControlName="name" [ngClass]="{ 'is-invalid': (addressControls.name.touched || isAddressSubmitted) && (addressControls.name.errors?.required)}">
+                                        </div>
+                                        <div class="row my-3">
+                                            <div class="form-group col-lg-2">
+                                                <label for="customerCountryCode" class="fs-6 mb-3 required">Country Code</label>
+                                               <select formControlName="countryCode" class="form-select" (change)="handleAddressMobilePattern()">
+                                                <option value="" disabled>-- Select an option --</option>
+                                                <option *ngFor="let countryCode of ['+971', '+964', '+91']" [value]="countryCode">
+                                                    {{countryCode}}
+                                                </option>
+                                               </select>
+                                            </div>
+                                            <div class="form-group col-lg-10">
+                                                <label for="customerMobile" class="fs-6 mb-3 required">Mobile</label>
+                                                <input id="customerMobile" type="text" class="form-control"
+                                                    formControlName="mobile" [ngClass]="{ 'is-invalid': (addressControls.mobile.touched || isAddressSubmitted) && (addressControls.mobile.errors?.required || addressControls.mobile.errors?.pattern)}">
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div>
+                                        <div class="fs-4 py-4 border-bottom text-muted border-secondary">
+                                            Address Information
+                                        </div>
+                                        <div class="form-group my-3">
+                                            <div class="form-group my-3">
+                                                <label class="fs-6 mb-3">Address Type</label>
+                                                <select class="form-select" formControlName="type">
+                                                    <option value="" disabled>-- Select an option --</option>
+                                                    <option value="Home">Home</option>
+                                                    <option value="Work">Work</option>
+                                                    <option value="Others">Others</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="form-group my-3">
+                                            <div class="form-group my-3">
+                                                <label class="fs-6 mb-3 required">Street Address</label>
+                                                <input type="text" placeholder="Enter street address"
+                                                    class="form-control mb-3" formControlName="firstlane" [ngClass]="{ 'is-invalid': (addressControls.firstlane.touched || isAddressSubmitted) && (addressControls.firstlane.errors?.required)}">
+                                                <input type="text" placeholder="Enter street address"
+                                                    class="form-control" formControlName="secondlane">
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-lg-6 form-group mb-3">
+                                                <label for="area" class="fs-6 mb-3">Area</label>
+                                                <input id="area" placeholder="Enter area" type="text"
+                                                    class="form-control" formControlName="area">
+                                            </div>
+                                            <div class="col-lg-6 form-group mb-3">
+                                                <label for="landmark" class="fs-6 mb-3 required">Landmark</label>
+                                                <input id="landmark" placeholder="Enter landmark" type="text"
+                                                    class="form-control" formControlName="landmark" [ngClass]="{ 'is-invalid': (addressControls.landmark.touched || isAddressSubmitted) && (addressControls.landmark.errors?.required)}">
+                                            </div>
+                                            <div class="col-lg-4 form-group">
+                                                <label for="country" class="fs-6 mb-3 required">Country</label>
+                                                <select class="form-select" formControlName="country"
+                                                    (change)="loadStates('', 'add')" [ngClass]="{'is-invalid': (addressControls.country.touched || isAddressSubmitted) && (addressControls.country.errors?.required)}">
+                                                    <option value="" disabled>-- Select an option --</option>
+                                                    <option *ngFor="let country of countries" [value]="country.name">
+                                                        {{country.name}}
+                                                    </option>
+                                                </select>
+                                            </div>
+                                            <div class="col-lg-4 form-group"
+                                                [ngClass]="{'pe-none opacity-50': states.length == 0}">
+                                                <label for="state" class="fs-6 mb-3 required">State</label>
+                                                <select class="form-select" formControlName="state"
+                                                    (change)="loadCities(states[0].name, 'add')" [ngClass]="{'is-invalid': (addressControls.state.touched || isAddressSubmitted) && (addressControls.state.errors?.required)}">
+                                                    <option value="" disabled>-- Select an option --</option>
+                                                    <option *ngFor="let state of states" [value]="state.name">
+                                                        {{state.name}}</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-lg-4 form-group"
+                                                [ngClass]="{'pe-none opacity-50': cities.length == 0}">
+                                                <label for="city" class="fs-6 mb-3 required">City</label>
+                                                <select class="form-select" formControlName="city" [ngClass]="{'is-invalid': (addressControls.city.touched || isAddressSubmitted) && (addressControls.city.errors?.required)}">
+                                                    <option value="" disabled>-- Select an option --</option>
+                                                    <option *ngFor="let city of cities" [value]="city.name">
+                                                        {{city.name}}</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                            <div>
+                                <div class="fs-4 mb-4 py-4 border-bottom border-secondary text-muted">
+                                    Payment & Shipping Information
                                 </div>
-                            </ng-container>
+                                <div class="row">
+                                    <div class="form-group col-lg-4">
+                                        <label for="paymentMethod" class="fs-6 mb-3">Payment Method</label>
+                                        <select class="form-select" formControlName="paymentMethod">
+                                            <option value="" disabled>-- Select an option --</option>
+                                            <option value="COD">Cash on Delivery</option>
+                                            <option value="ONLINE">Online Payment</option>
+                                        </select>
+                                    </div>
+
+                                    <div class="form-group col-lg-4">
+                                        <label class="fs-6 mb-3">Payment Status</label>
+                                        <select class="form-select mb-3 fs-6" formControlName="paymentStatus">
+                                            <option value="" disabled>-- Select an option --</option>
+                                            <option value="Paid">Paid</option>
+                                            <option value="Pending">Pending</option>
+                                        </select>
+                                    </div>
+
+                                    <div class="form-group col-lg-4"
+                                        [ngClass]="{'pe-none opacity-50': orderForm.get('paymentMethod')?.value == 'COD'}">
+                                        <label class="fs-6 mb-3">Transaction ID</label>
+                                        <input type="text" formControlName="transactionId" class="form-control fs-6">
+                                    </div>
+                                </div>
+                                <div class="row mt-3">
+                                    <div class="form-group col-lg-6">
+                                        <label class="fs-6 mb-3">Additional Charge</label>
+                                        <input type="text" (change)="getCartCalculation()"
+                                            formControlName="additionalCharge" class="form-control fs-6"
+                                            [ngClass]="{ 'is-invalid': (formControls.additionalCharge.touched || isSubmitted) && (formControls.additionalCharge.errors?.required || formControls.additionalCharge.errors?.pattern)}">
+                                    </div>
+
+                                    <div class="form-group col-lg-6">
+                                        <label class="fs-6 mb-3">Shipping Charge</label>
+                                        <input type="text" (change)="getCartCalculation()"
+                                            formControlName="shippingCost" class="form-control fs-6"
+                                            [ngClass]="{ 'is-invalid': (formControls.shippingCost.touched || isSubmitted) && (formControls.shippingCost.errors?.required || formControls.shippingCost.errors?.pattern)}">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-8">
+                                    <div>
+                                        <div class="fs-4 mb-4 py-4 border-bottom border-secondary text-muted">
+                                            Order Notes
+                                        </div>
+                                        <input type="text" placeholder="Enter order notes" class="form-control"
+                                            formControlName="orderNote">
+                                    </div>
+                                    <div>
+                                        <div class="fs-4 mb-4 py-4 border-bottom border-secondary text-muted">
+                                            Shipping Notes
+                                        </div>
+                                        <input type="text" placeholder="Enter shipping notes" class="form-control"
+                                            formControlName="shippingNote">
+                                    </div>
+                                </div>
+                                <div class="col-lg-4">
+                                    <div class="fs-4 mb-4 py-4 border-bottom border-secondary text-muted">
+                                        Order Summary
+                                    </div>
+                                    <div *ngIf="cartItemsValues && cartItemsValues.length == 0">
+                                        No items
+                                    </div>
+                                    <div *ngIf="cartItemsValues && cartItemsValues.length > 0">
+                                        <div class="py-2 d-flex align-items-center justify-content-between" [ngClass]="{
+                                                'border-bottom border-secondary': cartItemValue?.label == 'Wallet Discount',
+                                                'py-3': cartItemValue?.label == 'Grand Total'
+                                                }" *ngFor="let cartItemValue of cartItemsValues; let index = index">
+                                            <div class="fs-6">
+                                                {{cartItemValue?.label}}
+                                            </div>
+                                            <div class="fs-6">
+                                                {{cartItemValue?.value}}
+                                            </div>
+                                        </div>
+                                        <div class="my-4">
+                                            <div class="d-flex align-items-center justify-content-between">
+                                                <label for="emailConfirmation" class="fs-6">Email Confirmation</label>
+                                                <div id="emailConfirmation">
+                                                    <app-switch [isToggledProps]="emailConfirmation.value"
+                                                        (switchToggled)="switchTriggered($event)"
+                                                        [switchId]="'emailConfirmation'"></app-switch>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="w-25">
+                        <div>
+                            <div
+                                class="py-2 border-bottom border-secondary d-flex align-items-center justify-content-between">
+                                <div class="fs-4">
+                                    Coupons
+                                </div>
+                                <div>
+                                    <a class="text-muted" routerLink="{{ appRoute.coupons.ADD_COUPONS_LIST }}"
+                                        target="_blank">
+                                        Create Coupon?
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="d-flex my-3 align-items-center justify-content-between gap-2">
+                                <input type="text" class="form-control" style="width: 60%;" placeholder="Coupon Code"
+                                    [formControl]="couponCode">
+                                <button [disabled]="!couponCode.value || cartItems.length == 0" style="width: 40%;"
+                                    class="btn btn-secondary" (click)="applyCoupon(couponCode.value)">Apply</button>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="fs-4 py-2 border-bottom border-secondary text-muted">
+                                Wallet
+                            </div>
+                            <div class="my-2 d-flex align-items-center justify-content-between">
+                                <div>
+                                    <div class="fs-5 text-muted">Wallet Balance</div>
+                                    <div class="fs-4 mt-2">
+                                        {{settings?.currency}} {{customerDetails?.walletBalance}}
+                                    </div>
+                                </div>
+                                <div [ngClass]="{'pe-none opacity-50': customerDetails?.walletBalance == 0}">
+                                    <app-switch [isToggledProps]="isWalletUsed" (switchToggled)="switchTriggered($event)"
+                                        [switchId]="'isWalletUsed'"></app-switch>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
-                <div class="row">
-                    <div class="col-lg-4 form-group">
-                        <label class="fs-6 mb-3 required">Payment Method</label>
-                        <select class="form-select mb-3 fs-6" formControlName="paymentMethod"
-                            [ngClass]="{ 'is-invalid': (formControls.paymentMethod.touched || isSubmitted) && formControls.paymentMethod.errors?.required}">
-                            <option value="" disabled>-- Select an option --</option>
-                            <option value="COD">Cash On Delivery</option>
-                            <option value="ONLINE">Online</option>
-                        </select>
-                    </div>
-
-                    <div class="col-lg-4 form-group" *ngIf="orderForm.get('paymentMethod')?.value == 'ONLINE'">
-                        <label class="fs-6 mb-3">Transaction ID</label>
-                        <input type="text" formControlName="transactionId" class="form-control fs-6">
-                    </div>
-
-                    <div class="col-lg-4 form-group">
-                        <label class="fs-6 mb-3">Additional Charge</label>
-                        <input type="text" formControlName="additionalCharge" class="form-control fs-6"
-                            [ngClass]="{ 'is-invalid': (formControls.additionalCharge.touched || isSubmitted) && (formControls.additionalCharge.errors?.required || formControls.additionalCharge.errors?.pattern)}">
-                    </div>
-
-                    <div class="col-lg-4 form-group">
-                        <label class="fs-6 mb-3">Shipping Charge</label>
-                        <input type="text" formControlName="shippingCost" class="form-control fs-6"
-                            [ngClass]="{ 'is-invalid': (formControls.shippingCost.touched || isSubmitted) && (formControls.shippingCost.errors?.required || formControls.shippingCost.errors?.pattern)}">
-                    </div>
-
-                </div>
             </div>
         </div>
-
-        <div class="card my-4">
-            <div class="card-body">
-                <div class="mb-3">
-                    <label for="orderNote" class="fs-6 mb-3">Order Note</label>
-                    <input type="text" id="orderNote" formControlName="orderNote" class="form-control fs-6">
-                </div>
-
-                <div class="mb-3">
-                    <label for="shippingNote" class="fs-6 mb-3">Shipping Note</label>
-                    <input type="text" id="shippingNote" formControlName="shippingNote" class="form-control fs-6">
-                </div>
-            </div>
-        </div>
-
-        <div class="d-flex align-items-center justify-content-end gap-2">
-            <button routerLink="{{ appRoute.orders.ORDERS_LIST}}" class="btn btn-secondary">
+        <div class="my-4 d-flex align-items-center justify-content-end gap-2">
+            <div>
+                <button class="btn btn-secondary">
+                    <svg height="18" width="18" data-slot="icon" fill="none" stroke-width="1.5"
+                    stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"
+                    aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5"></path>
+                </svg>
                 Cancel
             </button>
-            <button class="btn btn-primary" (click)="createOrder()">
-                Place Order
-            </button>
-        </div>
-    </form>
-</div>
-
-<ng-template #addressRef>
-    <div class="modal-header pb-0">
-        <h4 class="fs-2 fw-bold pull-left">Select Address</h4>
-    </div>
-    <div class="modal-body pt-4">
-        <div class="addressWrapper">
-            <ng-container *ngFor="let addressItem of addressDetails; let i = index">
-                <div class="addressCard mb-3" (click)="selectAddress(addressItem)"
-                    [ngClass]="{'active': addressItem?._id == address?._id}">
-                    <div class="addressHeader p-3 d-flex justify-content-between align-items-center">
-                        <div class="type pe-2 ps-2">{{addressItem?.type}}</div>
-                    </div>
-                    <div class="p-3">
-                        <div class="details">{{addressItem?.countryCode}} {{addressItem?.mobile}}</div>
-                        <div class="lane">{{addressItem?.firstlane}} {{addressItem?.secondlane ? ', ' +
-                            addressItem?.secondlane :
-                            ''}}
-                        </div>
-                        <div class="area">{{addressItem?.area}} {{addressItem?.landmark}}</div>
-                        <div class="city">{{addressItem?.city}} {{addressItem?.state}} {{addressItem?.pincode}}</div>
-                    </div>
-                </div>
-            </ng-container>
-            <div class="addressCard" (click)="openManage(manageRef)">
-                <div class="addAddress">
-                    <svg height="24px" width="24px" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                        stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-                        <path stroke-linecap="round" stroke-linejoin="round"
-                            d="M12 9v6m3-3H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
-                    </svg>
-                    <p>Add new address</p>
-                </div>
+            </div>
+            <div>
+                <button class="btn btn-primary" (click)="createOrder()">
+                    Create Order
+                    <span>
+                        <svg height="18" width="18" data-slot="icon" fill="none" stroke-width="1.5"
+                            stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"
+                            aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5">
+                            </path>
+                        </svg>
+                    </span>
+                </button>
             </div>
         </div>
+    </div>
+</div>
+
+<ng-template #createUser>
+    <div class="modal-header">
+        <h4 class="fs-2 fw-bold pull-left">Create Customer</h4>
+        <button type="button" class="btn-close close pull-right" aria-label="Close" (click)="closeCreateCustomer()">
+            <span aria-hidden="true" class="visually-hidden">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <form [formGroup]="userForm" (ngSubmit)="createCustomer()">
+            <div class="row">
+                <div class="col-lg-6 mb-3">
+                    <label for="userName" class="fs-6 mb-3 required">Name</label>
+                    <input id="userName" type="text" placeholder="Name" formControlName="name" class="form-control" [ngClass]="{ 'is-invalid': (userControls.name.touched || isCustomerSubmitted) && (userControls.name.errors?.required)}">
+                </div>
+                <div class="col-lg-6 mb-3">
+                    <label for="userEmail" class="fs-6 mb-3 required">Email</label>
+                    <input id="userEmail" type="text" placeholder="Email" formControlName="email" class="form-control" [ngClass]="{ 'is-invalid': (userControls.email.touched || isCustomerSubmitted) && (userControls.email.errors?.required || userControls.email.errors?.email)}">
+                </div>
+                <div class="col-lg-6 mb-3">
+                    <label for="userCountry" class="fs-6 mb-3">Country Code</label>
+                    <select class="form-select" formControlName="countryCode" id="userCountry"
+                        (change)="handleUserMobilePattern()">
+                        <option value="" disabled>-- Select an option --</option>
+                        <option value="+91">+91</option>
+                        <option value="+971">+971</option>
+                    </select>
+                </div>
+                <div class="col-lg-6 mb-3 ">
+                    <label for="userMobile" class="fs-6 mb-3 required">Mobile</label>
+                    <input id="userMobile" type="text" placeholder="Mobile" formControlName="mobile" [ngClass]="{ 'is-invalid': (userControls.mobile.touched || isCustomerSubmitted) && (userControls.mobile.errors?.required || userControls.mobile.errors?.pattern)}"
+                        class="form-control">
+                </div>
+            </div>
+            <div class="d-flex align-items-center justify-content-end gap-2">
+                <button type="submit" class="btn btn-primary">Save changes</button>
+            </div>
+        </form>
     </div>
 </ng-template>
 
 <ng-template #productsRef>
-    <div class="modal-header pb-0">
+    <div class="modal-header">
         <h4 class="fs-2 fw-bold pull-left">Products</h4>
         <button type="button" class="btn-close close pull-right" aria-label="Close" (click)="productsModalRef?.hide()">
             <span aria-hidden="true" class="visually-hidden">&times;</span>
         </button>
     </div>
     <div class="modal-body pt-2">
-        <div class="form-group">
-            <input type="text" placeholder="Search products here" [formControl]="keyword"
-                (ngModelChange)="getProducts()" class="form-control">
+        <div class="form-group mb-4">
+            <input type="search" placeholder="Search products here" [formControl]="productQuery" class="form-control">
         </div>
 
-        <ng-container *ngIf="products.length > 0">
-            <div class="products mt-3">
-                <ng-container *ngFor="let product of products; let i = index">
-                    <div class="productCard p-2 d-flex align-items-center justify-content-between">
-                        <div class="d-flex align-items-center justify-content-between">
-                            <div class="index me-2">{{i + 1}}</div>
-                            <div class="image me-2">
-                                <img height="30" width="30" src="{{base}}{{product?.thumbnail}}" alt={{product?.name}}
-                                    onerror="this.src = 'assets/images/default.png'">
-                            </div>
-                            <div class="details">
-                                <div class="name">{{product?.name}}</div>
-                                <div class="name">SKU : {{product?.sku}}</div>
-                                <div class="name">
-                                    <ng-container *ngFor="let attribute of product?.attributes">
-                                        <ng-container *ngIf="attribute?.value">
-                                            <div>
-                                                <span class="fw-bold">{{attribute?.title}}</span>: {{attribute?.value}}
-                                            </div>
-                                        </ng-container>
-                                    </ng-container>
-                                </div>
-                                <div class="price">{{settings?.currency}} {{product?.price?.selling}}</div>
-                                <div class="stock mt-1" [ngClass]="{'outOfStock': product?.stock == 0}">
-                                    {{product?.stock > 0 ? 'In stock (' + product?.stock + ')' : 'Out of stock'}}
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>SKU</th>
+                    <th>Price</th>
+                    <th>Stock</th>
+                    <th>&nbsp;</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let product of products">
+                    <td class="text-truncate" style="max-width: 200px;">
+                        <div class="d-flex align-items-center justify-content-start gap-2">
+                            <img height="34" width="34" class="rounded border border-secondary"
+                                src="{{base}}{{product?.thumbnail}}" alt={{product?.name}}
+                                onerror="this.src = 'assets/images/default.png'">
+                            <div class="name">
+                                <div>{{product?.name}}</div>
+                                <div *ngFor="let attribute of product?.attributes">
+                                    <div *ngIf="attribute?.title">{{attribute?.title}} : {{attribute?.value}}</div>
                                 </div>
                             </div>
                         </div>
-                        <div>
-                            <button class="btn btn-primary" (click)="addToCart(product)" *ngIf="product?.stock > 0">
-                                Add to cart
-                            </button>
-                        </div>
-                    </div>
-                </ng-container>
-            </div>
-        </ng-container>
+                    </td>
+                    <td>{{product?.sku}}</td>
+                    <td>{{product?.price?.selling}}</td>
+                    <td>{{product?.stock}}</td>
+                    <td>
+                        <button class="btn btn-primary w-100 p-1" (click)="addToCart(product)">
+                            Add to cart
+                        </button>
+                    </td>
+                </tr>
+                <tr *ngIf="products.length == 0">
+                    <td colspan="5">
+                        <app-no-results></app-no-results>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <app-pagination (pageTrigger)="onPageTriggered($event, 'product')" [totalPages]="totalProductPages"
+            [totalResults]="totalProducts" [pageIndex]="productPageIndex" [pageSize]="productPageSize"></app-pagination>
     </div>
 </ng-template>
 
-<ng-template #manageRef>
+<ng-template #couponsTemplate>
     <div class="modal-header pb-0">
-        <h4 class="fs-2 fw-bold pull-left">Address Details</h4>
-        <button type="button" class="btn-close close pull-right" aria-label="Close"
-            (click)="manageAddressModalRef?.hide()">
+        <h4 class="fs-2 fw-bold pull-left">Coupons</h4>
+        <button type="button" class="btn-close close pull-right" aria-label="Close" (click)="couponsModalRef?.hide()">
             <span aria-hidden="true" class="visually-hidden">&times;</span>
         </button>
     </div>
     <div class="modal-body">
-        <form [formGroup]="addressForm">
-            <div class="row">
-                <div class="col-lg-6 mb-3 form-group">
-                    <label class="fs-6 mb-3 required">Address Type</label>
-                    <select class="form-select fs-6" formControlName="type"
-                        [ngClass]="{'is-invalid': (addressControls.type.touched || isAddressSubmitted) && addressControls.type.errors?.required }">
-                        <option value="" disabled>-- Select an option --</option>
-                        <option value="Home">Home</option>
-                        <option value="Work">Work</option>
-                        <option value="Other">Other</option>
-                    </select>
+        <div *ngFor="let applicableCoupon of applicableCoupons">
+            <div
+                class="d-flex align-items-center justify-content-between gap-2 rounded-3 shadow-sm p-2 border border-secondary my-3">
+                <div class="w-25 ratio ratio-1x1 h-100 text-success">
+                    <svg height="20" width="20" data-slot="icon" fill="none" stroke-width="1.5" stroke="currentColor"
+                        viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                            d="m9 14.25 6-6m4.5-3.493V21.75l-3.75-1.5-3.75 1.5-3.75-1.5-3.75 1.5V4.757c0-1.108.806-2.057 1.907-2.185a48.507 48.507 0 0 1 11.186 0c1.1.128 1.907 1.077 1.907 2.185ZM9.75 9h.008v.008H9.75V9Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm4.125 4.5h.008v.008h-.008V13.5Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z">
+                        </path>
+                    </svg>
                 </div>
-
-                <div class="col-lg-6 form-group mb-3">
-                    <label class="fs-6 mb-3">Name</label>
-                    <input type="text" class="form-control fs-6" formControlName="name" />
-                </div>
-
-                <div class="col-lg-6 form-group mb-3">
-                    <label class="fs-6 mb-3">Country Code</label>
-                    <select class="form-select" formControlName="countryCode" (change)="handleAddressMobilePattern()">
-                        <option value="" disabled>-- Select an option --</option>
-                        <option value="+91">+91</option>
-                        <option value="+971">+971</option>
-                    </select>
-                </div>
-
-                <div class="col-lg-6 form-group mb-3">
-                    <label class="fs-6 mb-3">Mobile Number</label>
-                    <input type="text" class="form-control fs-6" [ngClass]="{
-                          'is-invalid': addressControls.mobile.errors?.pattern
-                        }" formControlName="mobile" />
-                    <div class="mt-2 p-2 alert alert-danger" *ngIf="addressControls.mobile.errors?.pattern">
-                        Enter a valid mobile number
+                <div class="w-75">
+                    <div class="d-flex align-items-center justify-content-between">
+                        <div class="fs-6 bg-secondary p-2 rounded border border-dotted" style="width: max-content;">
+                            {{applicableCoupon.code}}
+                        </div>
+                        <button class="fs-6 btn btn-primary p-2 rounded" style="width: max-content;"
+                            (click)="applyCoupon(applicableCoupon.code)">Apply</button>
                     </div>
-                </div>
-
-                <div class="col-lg-6 form-group mb-3">
-                    <label class="fs-6 mb-3 required">Apartment</label>
-                    <input type="text" class="form-control fs-6" formControlName="firstlane"
-                        [ngClass]="{'is-invalid': (addressControls.firstlane.touched || isAddressSubmitted) && addressControls.firstlane.errors?.required }" />
-                </div>
-
-                <div class="col-lg-6 form-group mb-3">
-                    <label class="fs-6 mb-3 required">Country</label>
-                    <select placeholder="Select Country" class="form-select" formControlName="country" (change)="loadStates()">
-                        <option value="" disabled>-- Select an option --</option>
-                        <option *ngFor="let country of countries" [value]="country._id">{{country.name}}</option>
-                    </select>
-                </div>
-
-                <div class="col-lg-6 mb-3" *ngIf="states.length > 0 && addressForm.get('country')?.value">
-                    <div class="form-group">
-                        <label class="fs-6 mb-3 required">State / Emirate</label>
-                        <select placeholder="Select State" class="form-select" formControlName="state" (change)="loadCities()">
-                            <option value="" disabled>-- Select an option --</option>
-                            <option *ngFor="let state of states" [value]="state._id">{{state.name}}</option>
-                        </select>
+                    <div class="fs-5 my-2">{{applicableCoupon.title}}</div>
+                    <div class="text-muted">
+                        Valid till {{formatDateString(applicableCoupon.lastDate)}}
                     </div>
-                </div>
-
-                <div class="col-lg-6 mb-3" *ngIf="cities.length > 0 && addressForm.get('state')?.value">
-                    <div class="form-group">
-                        <label class="fs-6 mb-3 required">City / Area</label>
-                        <select placeholder="Select City" class="form-select" formControlName="city">
-                            <option value="" disabled>-- Select an option --</option>
-                            <option *ngFor="let city of cities" [value]="city._id">{{city.name}}</option>
-                        </select>
-                    </div>
-                </div>
-
-                <div class="col-lg-6 form-group mb-3">
-                    <label class="fs-6 mb-3">Landmark</label>
-                    <input type="text" class="form-control fs-6" formControlName="landmark" />
-                </div>
-
-                <div class="col-lg-6 mb-3">
-                    <div class="form-group">
-                        <label class="fs-6 mb-3">Pincode</label>
-                        <input type="number" class="form-control fs-6" formControlName="pincode" />
-                    </div>
-                </div>
-
-
-
-                <div class="d-flex align-items-center justify-content-end">
-                    <button class="btn btn-primary" (click)="manageAddress()">Save changes</button>
                 </div>
             </div>
-        </form>
+        </div>
     </div>
 </ng-template>

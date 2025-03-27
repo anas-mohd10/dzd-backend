@@ -1,7 +1,10 @@
 export const locationEndpoints = {
     countries: '/countries',
+    findCountries: '/findCountries',
     states: '/states',
+    findStates: '/findStates',
     cities: '/cities',
+    findCities: '/findCities',
     country: '/country',
     state: '/state',
     city: '/city',

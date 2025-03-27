@@ -62,9 +62,9 @@
                         <img height="40" width="40" class="rounded border border-secondary"
                             src="{{imageBase}}{{dropdownResult.thumbnail}}"
                             onerror="this.src='assets/images/default.png'" alt={{dropdownResult.name}}>
-                        <span class="fw-bold">{{dropdownResult.name}}</span>
+                        <span class="fs-5">{{dropdownResult.name}}</span>
                     </div>
-                    <button class="btn btn-sm"
+                    <button class="btn"
                         [ngClass]="{'btn-danger': isItemExists(dropdownResult), 'btn-secondary': !isItemExists(dropdownResult)}"
                         (click)="onSelectItem(dropdownResult, isItemExists(dropdownResult))">
                         {{isItemExists(dropdownResult) ? 'Remove' : 'Select'}}

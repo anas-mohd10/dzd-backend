@@ -4,6 +4,7 @@ export const couponsEndpoints = {
    get_active_coupons: '/active-coupons',
    get_product_cpupons: '/product-coupons',
    get_coupon_details: '/coupon-details',
+   getApplicableCoupons: '/applicableCoupons',
    search_coupon: '/search-coupons',
    update_coupon: '/update-coupon',
 }

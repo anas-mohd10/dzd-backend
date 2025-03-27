@@ -193,7 +193,7 @@
         <th>Order</th>
         <th>Date</th>
         <th>Customer</th>
-        <th *ngIf="settings.isPickUp == true">Store</th>
+        <th *ngIf="settings && settings.isPickUp == true">Store</th>
         <th>Total</th>
         <th>Source</th>
         <th>Tags</th>
@@ -222,8 +222,8 @@
               {{order?.customerType == 'regd' ? 'Customer' : 'Guest'}}
             </div>
           </td>
-          <td *ngIf="settings.isPickUp == true">
-            <div *ngIf="order?.pickUpLocation">
+          <td *ngIf="settings && settings.isPickUp == true">
+            <div *ngIf="order && order?.pickUpLocation">
               <div class="cursor-pointer" tooltip="{{order?.pickUpLocation?.address}}">{{order?.pickUpLocation?.name +
                 ", " + order?.pickUpLocation?.city}}</div>
             </div>

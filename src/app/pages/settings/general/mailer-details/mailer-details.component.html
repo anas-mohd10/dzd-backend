@@ -1,7 +1,7 @@
 <div>
   <div class="page-header">
     <div class="page-title">
-      <h1 class="fw-bold">Mailer details</h1>
+      <h1 class="fw-bold">Mailer Details</h1>
     </div>
     <div class="row align-items-center">
       <div class="d-flex align-items-start justify-content-between">
@@ -10,54 +10,79 @@
             <a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a>
           </li>
           <li class="breadcrumb-item fs-6">
-            <a routerLink="{{ appRoute.customMailers }}">Custom mailers</a>
+            <a routerLink="{{ appRoute.customMailers }}">Custom Mailers</a>
           </li>
           <li class="breadcrumb-item active fs-6">
-            <a routerLink="{{ appRoute.mailerDetails }}">Mailer details</a>
+            <a routerLink="{{ appRoute.mailerDetails }}">Mailer Details</a>
           </li>
         </ul>
       </div>
     </div>
   </div>
-  <div class="card my-4">
-    <div class="card-body">
-      <div class="row">
-        <div class="col-lg-3">
-          <ng-container *ngFor="let item of mailerItems">
-            <div class="border border-outline p-4 cursor-pointer rounded mb-3" [ngClass]="{
-                'bg-primary text-white': form.get('type')?.value == item.type
-              }" (click)="toggleMailer(item.type)">
-              {{ item.title }}
+  <div>
+    <div class="card my-4">
+      <div class="card-body">
+        <form [formGroup]="form">
+          <div class="d-flex justify-content-end align-items-end gap-4">
+            <div class="form-group">
+              <label for="" class="fs-6 mb-3">Type</label>
+              <select class="form-select" formControlName="type" (change)="getMailerDetails()">
+                <option value="" disabled>-- Select an option --</option>
+                <option *ngFor="let mailerItem of mailerItems" [value]="mailerItem.type">{{ mailerItem.title }}</option>
+              </select>
             </div>
-          </ng-container>
-        </div>
-        <div class="col-lg-9">
-          <form [formGroup]="form">
-            <div class="form-group mb-3">
-              <label for="subject" class="form-label required">Subject</label>
-              <input type="text" id="subject" placeholder="" formControlName="subject" class="form-control" [ngClass]="{
-                  'is-invalid':
-                    (formControls.subject.touched || isSubmitted) &&
-                    formControls.subject.errors?.required
-                }" />
-            </div>
-            <div class="form-group mb-3">
-              <label for="email" class="form-label required">Email</label>
-              <textarea formControlName="email" id="email" cols="30" rows="10" class="form-control emailContent"
-                [ngClass]="{
-                  'is-invalid':
-                    (formControls.email.touched || isSubmitted) &&
-                    formControls.email.errors?.required
-                }" (change)="detectEmailChanges()"></textarea>
-            </div>
-            <div class="d-flex my-4 justify-content-end align-items-center">
-              <button class="btn btn-primary" (click)="manageMailer()">
-                Save changes
-              </button>
-            </div>
-          </form>
-        </div>
+            <button class="btn btn-secondary" (click)="open(template)">
+              View Template
+              <span>
+                <svg height="16" width="16" data-slot="icon" fill="none" stroke-width="1.5" stroke="currentColor"
+                  viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5"></path>
+                </svg>
+              </span>
+            </button>
+            <button class="btn btn-primary" (click)="manageMailer()">
+              Save Changes
+              <span>
+                <svg height="16" width="16" data-slot="icon" fill="none" stroke-width="1.5" stroke="currentColor"
+                  viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5"></path>
+                </svg>
+              </span>
+            </button>
+          </div>
+
+          <div class="form-group mb-3">
+            <label for="subject" class="form-label required">Subject</label>
+            <input type="text" id="subject" placeholder="Enter subject" formControlName="subject" class="form-control"
+              [ngClass]="{ 'is-invalid': (formControls.subject.touched || isSubmitted) && formControls.subject.errors?.required }" />
+          </div>
+          <div class="form-group">
+            <label for="email" class="form-label required">Email</label>
+            <textarea style="font-family: monospace !important;" formControlName="email" id="email"
+              class="form-control emailContent" placeholder="Enter email"
+              [ngClass]="{ 'is-invalid': (formControls.email.touched || isSubmitted) && formControls.email.errors?.required }"></textarea>
+          </div>
+        </form>
       </div>
     </div>
   </div>
 </div>
+
+<ng-template #template>
+  <div class="modal-header">
+    <h4 class="fs-2 fw-bold pull-left">View Template</h4>
+    <button type="button" class="btn-close close pull-right" aria-label="Close" (click)="modalRef?.hide()">
+      <span aria-hidden="true" class="visually-hidden">&times;</span>
+  </button>
+  </div>
+  <div class="modal-body">
+    <div class="template-preview">
+      <iframe 
+        style="width: 100%; height: 640px; border: 1px solid #dee2e6; border-radius: 4px; background: white;" 
+        [srcdoc]="getSanitizedHtml(form.get('email')?.value)"
+        frameborder="0"
+        sandbox="allow-same-origin">
+      </iframe>
+    </div>
+  </div>
+</ng-template>
