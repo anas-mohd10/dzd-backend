@@ -233,6 +233,13 @@ export class HomeComponent implements OnInit {
       description:
         'The following widget can be used to show limited set of medias with title and description. The widget contains images.',
     },
+    {
+      title: 'Modern Carousel',
+      type: 'modern-carousel',
+      icon: 'assets/widgets/text-twirl.png',
+      description:
+        'The following widget can be used to show limited set of medias with title and description. The widget contains images.',
+    }
   ];
   homeWidgets: Array<any> = [];
   homeWidgetKeyword: FormControl = new FormControl('', Validators.required);
@@ -291,7 +298,9 @@ export class HomeComponent implements OnInit {
     'animation-banner',
     'brick-mansory-grid',
     'primary-triple-grid',
-    'full-banner',
+    'full-banner',  
+    'modern-carousel',
+    'key-points-grid',
   ];
   isWidgetLoaded: boolean = false;
   redirectionItems: Array<any> = [
