@@ -103,6 +103,12 @@ export class AddOrdersComponent implements OnInit {
   isWalletUsed: boolean = false;
   couponCode: FormControl = new FormControl('');
   isCouponApplied: boolean = false;
+  isCustomerSubmitted: boolean = false;
+  isAddressSubmitted: boolean = false;
+  userForm: FormGroup = new FormGroup({});
+  countries: Array<any> = [];
+  states: Array<any> = [];
+  cities: Array<any> = [];
   cartDoc: { products: Array<any> } = { products: [] };
 
   //Cart
@@ -138,13 +144,10 @@ export class AddOrdersComponent implements OnInit {
   settings: any = {};
   deliverySlots: Array<any> = [];
   deliverySlot: any;
-  isAddressSubmitted: boolean = false;
+
   pickupLocations: Array<any> = [];
   addCustomerRef?: BsModalRef;
-  userForm: FormGroup = new FormGroup({});
-  countries: Array<any> = [];
-  states: Array<any> = [];
-  cities: Array<any> = [];
+
 
   applicableCoupons: Array<Coupon> = [];
   couponsModalRef?: BsModalRef;
@@ -337,13 +340,17 @@ export class AddOrdersComponent implements OnInit {
       name: new FormControl('', Validators.required),
       countryCode: new FormControl('+971', Validators.required),
       mobile: new FormControl('', [Validators.required, Validators.pattern('^[0-9]{10}$')]),
-      email: new FormControl('', Validators.email),
+      email: new FormControl('', [Validators.required, Validators.email]),
       isActive: new FormControl(true),
     });
 
     this.handleUserMobilePattern();
 
     this.selectDeliveryDate(this.deliveryDate);
+  }
+
+  get userControls() {
+    return this.userForm.controls;
   }
 
   get addressControls() {
@@ -394,6 +401,7 @@ export class AddOrdersComponent implements OnInit {
 
   createCustomer() {
     if (!this.userForm.valid) {
+      this.isCustomerSubmitted = true;
       this.ToastrService.error('Please fill all the required fields');
       return;
     }
@@ -405,6 +413,7 @@ export class AddOrdersComponent implements OnInit {
           this.userForm.patchValue({ name: '', mobile: '', email: '', isActive: true, countryCode: '+971', });
           this.addCustomerRef?.hide();
           this.selectCustomer(res?.result);
+          this.isCustomerSubmitted = false;
         } else {
           this.ToastrService.error(res.message);
         }
@@ -977,7 +986,7 @@ export class AddOrdersComponent implements OnInit {
 
     if (!this.addressForm.valid) {
       this.ToastrService.error('Please fill all the address fields');
-      this.isSubmitted = true;
+      this.isAddressSubmitted = true;
       return;
     }
 
