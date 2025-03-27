@@ -47,9 +47,14 @@
             <div class="activities my-4">
                 <ng-container *ngFor="let activity of activities; let i = index">
                     <div class="p-3 mb-3 b-white rounded activity">
-                        <div>{{getLocaleDateString(activity?.date)}}, {{getLocaleTimeString(activity?.date)}}</div>
-                        <p class="my-1 text-muted">{{activity.admin.email}}</p>
-                        <div class="text-dark" [innerHTML]="activity.activity"></div>
+                        <div>
+                            <div>{{getLocaleDateString(activity?.date)}} {{getLocaleTimeString(activity?.date)}}</div>
+                            <p class="my-2 fs-6 text-muted">{{activity.admin.email}}</p>
+                            <div class="fs-5" [innerHTML]="activity.activity"></div>
+                        </div>
+                        <div>
+                            
+                        </div>
                     </div>
                 </ng-container>
             </div>
