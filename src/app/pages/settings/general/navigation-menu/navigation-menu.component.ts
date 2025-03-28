@@ -288,12 +288,12 @@ export class NavigationMenuComponent implements OnInit {
         pathPrefix = this.selectedOption;
     }
   
-    // Convert selectedItem to lowercase for the redirection URL
-    const lowercaseItem = selectedItem.toLowerCase();
+    // Convert selectedItem to lowercase and replace spaces with hyphens
+    const urlFriendlyItem = selectedItem.toLowerCase().replace(/\s+/g, '-');
     
     this.redirectionValue = this.selectedOption === 'complete' 
       ? `/${pathPrefix}`
-      : `/${pathPrefix}/${lowercaseItem}`;
+      : `/${pathPrefix}/${urlFriendlyItem}`;
       
     this.megaMenuForm.get('redirection')?.setValue(this.redirectionValue);
 }
