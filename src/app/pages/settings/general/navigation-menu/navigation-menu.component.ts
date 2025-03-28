@@ -238,9 +238,12 @@ export class NavigationMenuComponent implements OnInit {
     this.selectedOption = value;
     this.megaMenuForm.get('selectedOption')?.setValue(value);
     
+    // Clear the selected item and redirection value
     this.selectedItem = '';
     this.redirectionValue = '';
+    this.megaMenuForm.get('redirection')?.setValue('');
     
+    // Also reset any specific dropdown controls
     const controlName = `selected${value.charAt(0).toUpperCase() + value.slice(1)}`;
     this.megaMenuForm.get(controlName)?.setValue('');
     
@@ -254,37 +257,41 @@ export class NavigationMenuComponent implements OnInit {
     const selectedItem = event.target.value;
     this.selectedItem = selectedItem;
     
-    if (this.selectedOption) {
-      const controlName = `selected${this.selectedOption.charAt(0).toUpperCase() + this.selectedOption.slice(1)}`;
-      this.megaMenuForm.get(controlName)?.setValue(selectedItem);
-      
-      let pathPrefix;
-      switch(this.selectedOption) {
-        case 'brands': 
-          pathPrefix = 'brands';
-          break;
-        case 'products':
-          pathPrefix = 'products';
-          break;
-        case 'categories':
-          pathPrefix = 'products';
-          break;
-        case 'collections':
-          pathPrefix = 'c';
-          break;
-        case 'complete':
-          pathPrefix = 'store';
-          break;
-        default:
-          pathPrefix = this.selectedOption;
-      }
-  
-      this.redirectionValue = this.selectedOption === 'complete' 
-        ? `/${pathPrefix}`
-        : `/${pathPrefix}/${selectedItem}`;
-        
-      this.megaMenuForm.get('redirection')?.setValue(this.redirectionValue);
+    if (!this.selectedOption || !selectedItem) {
+      this.redirectionValue = '';
+      this.megaMenuForm.get('redirection')?.setValue('');
+      return;
     }
+    
+    const controlName = `selected${this.selectedOption.charAt(0).toUpperCase() + this.selectedOption.slice(1)}`;
+    this.megaMenuForm.get(controlName)?.setValue(selectedItem);
+    
+    let pathPrefix;
+    switch(this.selectedOption) {
+      case 'brands': 
+        pathPrefix = 'brands';
+        break;
+      case 'products':
+        pathPrefix = 'products';
+        break;
+      case 'categories':
+        pathPrefix = 'products';
+        break;
+      case 'collections':
+        pathPrefix = 'c';
+        break;
+      case 'complete':
+        pathPrefix = 'store';
+        break;
+      default:
+        pathPrefix = this.selectedOption;
+    }
+  
+    this.redirectionValue = this.selectedOption === 'complete' 
+      ? `/${pathPrefix}`
+      : `/${pathPrefix}/${selectedItem}`;
+      
+    this.megaMenuForm.get('redirection')?.setValue(this.redirectionValue);
   }
   fetchBrand() {
     this.BrandService.getBrand().subscribe((res: any) => {
