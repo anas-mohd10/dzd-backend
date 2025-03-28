@@ -1018,13 +1018,76 @@
                         <label for="megaMenuTitle" class="fs-6 mb-3">Title</label>
                         <input type="text" class="form-control" formControlName="title" id="megaMenuTitle">
                     </div>
-                    <div class="form-group">
-                        <label for="megaMenuRedirection" class="fs-6 mb-3">Redirection</label>
-                        <input type="text" class="form-control" formControlName="redirection" id="megaMenuRedirection">
+                    <div class="card my-4">
+                        <div class="row">
+                            <!-- Redirection Field -->
+                            <div class="form-group mb-3">
+                                <label class="fs-6 mb-3">Select For Redirection</label>
+                                <!-- Select For Redirection dropdown -->
+                                <!-- Main Redirection Type Dropdown -->
+                                <select class="form-select mb-3" formControlName="selectedOption"
+                                    (change)="onRedirectionChange($event)">
+                                    <option value="" disabled>-- Select an option --</option>
+                                    <option value="brands">Brands</option>
+                                    <option value="products">Products</option>
+                                    <option value="categories">Categories</option>
+                                    <option value="collections">Collections</option>
+                                    <option value="complete">Store</option>
+                                </select>
+
+                                <!-- Dynamic Dropdowns -->
+                                <div *ngIf="megaMenuForm.get('selectedOption')?.value === 'brands'">
+                                    <label class="fs-6 mb-3">Select Brand</label>
+                                    <select class="form-select mb-3" formControlName="selectedBrand"
+                                        (change)="onSelectItem($event)">
+                                        <option value="" disabled>-- Select a brand --</option>
+                                        <option *ngFor="let brand of brands" [value]="brand.name">{{ brand.name }}
+                                        </option>
+                                    </select>
+                                </div>
+
+                                <div *ngIf="megaMenuForm.get('selectedOption')?.value === 'products'">
+                                    <label class="fs-6 mb-3">Select Product</label>
+                                    <select class="form-select mb-3" formControlName="selectedProduct"
+                                        (change)="onSelectItem($event)">
+                                        <option value="" disabled>-- Select a product --</option>
+                                        <option *ngFor="let product of products" [value]="product.name">{{ product.name
+                                            }}</option>
+                                    </select>
+                                </div>
+
+                                <div *ngIf="megaMenuForm.get('selectedOption')?.value === 'categories'">
+                                    <label class="fs-6 mb-3">Select Category</label>
+                                    <select class="form-select mb-3" formControlName="selectedCategory"
+                                        (change)="onSelectItem($event)">
+                                        <option value="" disabled>-- Select a category --</option>
+                                        <option *ngFor="let category of categories" [value]="category.name">{{
+                                            category.name }}</option>
+                                    </select>
+                                </div>
+
+                                <div *ngIf="megaMenuForm.get('selectedOption')?.value === 'collections'">
+                                    <label class="fs-6 mb-3">Select Collection</label>
+                                    <select class="form-select mb-3" formControlName="selectedCollection"
+                                        (change)="onSelectItem($event)">
+                                        <option value="" disabled>-- Select a collection --</option>
+                                        <option *ngFor="let collection of collections" [value]="collection.name">{{
+                                            collection.name }}</option>
+                                    </select>
+                                </div>
+
+                                <!-- Redirection Display -->
+                                <div class="form-group mb-3" *ngIf="megaMenuForm.get('redirection')?.value">
+                                    <label class="fs-6 mb-3">Redirection</label>
+                                    <input type="text" class="form-control"
+                                        [value]="megaMenuForm.get('redirection')?.value">
+                                </div>
+                            </div>
+                        </div>
                     </div>
+
                 </div>
             </div>
-
             <div class="my-8">
                 <div>
                     <tabset [justified]="true" type="pills">
@@ -1275,7 +1338,8 @@
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <div class="col-lg-10 align-self-stretch d-flex flex-column justify-content-between">
+                                                    <div
+                                                        class="col-lg-10 align-self-stretch d-flex flex-column justify-content-between">
                                                         <div>
                                                             <input type="text" placeholder="Title"
                                                                 [ngClass]="{'is-invalid': (childNodeFormControls.title.touched || isMegaMenuItemDetailsSubmitted) && childNodeFormControls.title.errors?.required}"
