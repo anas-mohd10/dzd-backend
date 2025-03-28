@@ -252,6 +252,7 @@ export class NavigationMenuComponent implements OnInit {
       this.megaMenuForm.get('redirection')?.setValue('/store');
     }
   }
+  
 
   onSelectItem(event: any) {
     const selectedItem = event.target.value;
@@ -287,12 +288,15 @@ export class NavigationMenuComponent implements OnInit {
         pathPrefix = this.selectedOption;
     }
   
+    // Convert selectedItem to lowercase for the redirection URL
+    const lowercaseItem = selectedItem.toLowerCase();
+    
     this.redirectionValue = this.selectedOption === 'complete' 
       ? `/${pathPrefix}`
-      : `/${pathPrefix}/${selectedItem}`;
+      : `/${pathPrefix}/${lowercaseItem}`;
       
     this.megaMenuForm.get('redirection')?.setValue(this.redirectionValue);
-  }
+}
   fetchBrand() {
     this.BrandService.getBrand().subscribe((res: any) => {
       this.brands = res?.result || [];
