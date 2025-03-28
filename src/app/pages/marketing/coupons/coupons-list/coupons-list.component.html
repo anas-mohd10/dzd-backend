@@ -69,7 +69,9 @@
         <td>
           {{ coupon?.details?.type === 'unlimited' ? 'Unlimited' : coupon?.details?.totalUsageRemaining }}
         </td>
-        <td>{{coupon?.couponPerUse}}</td>
+        <td>
+        {{ coupon?.details?.type === 'unlimited' ? 'Unlimited' : coupon?.couponPerUse }}
+        </td>
         <td>{{ formatDate(coupon?.fromDate)}}</td>
         <td>{{ formatDate(coupon?.lastDate)}}</td>
         <td>
