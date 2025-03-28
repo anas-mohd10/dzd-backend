@@ -431,14 +431,13 @@ export class AddOrdersComponent implements OnInit {
   handleAddressMobilePattern() {
     switch (this.addressForm.get('countryCode')?.value) {
       case '+91':
-        this.updateAddressMobilePattern(
-          `^[0-9]{${validators.india.validation.maximum}}$`
-        );
+        this.updateAddressMobilePattern(`^[0-9]{${validators.india.validation.maximum}}$`);
         break;
       case '+971':
-        this.updateAddressMobilePattern(
-          `^[0-9]{${validators.uae.validation.maximum}}$`
-        );
+        this.updateAddressMobilePattern(`^[0-9]{${validators.uae.validation.maximum}}$`);
+        break;
+      case '+964':
+        this.updateAddressMobilePattern(`^[0-9]{${validators.iraq.validation.maximum}}$`);
         break;
     }
 
