@@ -1,5 +1,5 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormControl, FormGroup, Validators, FormsModule } from '@angular/forms';
 import { HotToastService } from '@ngneat/hot-toast';
 import { appRoutes } from 'src/app/config/routes';
 import { AppSettingsService } from 'src/app/includes/services/app.settings.service';
@@ -12,8 +12,9 @@ import { ProductService } from 'src/app/includes/services/product.service';
 })
 export class FiltersComponent implements OnInit {
   appRoute = appRoutes
-  storeFrontFields: Array<{ title: string, isFilter: boolean }> = []
+  storeFrontFields: Array<{ title: string, isShowHidden: boolean, isFilter: boolean }> = []
   form: FormGroup = new FormGroup({})
+  isShowHidden: FormControl = new FormControl(false)
   settingsForm: FormGroup = new FormGroup({})
 
   constructor(
@@ -26,10 +27,11 @@ export class FiltersComponent implements OnInit {
   ngOnInit(): void {
     this.getStoreFields()
     this.getSettings()
-    
+
     this.form = new FormGroup({
       storeFrontField: new FormControl(''),
-      isFilter: new FormControl(false)
+      isFilter: new FormControl(false),
+      isShowHidden: new FormControl(false)
     })
 
     this.settingsForm = new FormGroup({
@@ -60,7 +62,8 @@ export class FiltersComponent implements OnInit {
           this.getStoreFields()
           this.form.patchValue({
             storeFrontField: '',
-            isFilter: false
+            isFilter: false,
+            isShowHidden: false
           })
           this.HotToastService.success(res.message)
         } else {
@@ -93,6 +96,15 @@ export class FiltersComponent implements OnInit {
         this.HotToastService.error(err.error.message)
       }
     })
+  }
+
+  toggleHidden(storeFrontField: { isFilter: boolean, title: string, isShowHidden: boolean }) {
+    this.form.patchValue({
+      storeFrontField: storeFrontField.title,
+      isFilter: storeFrontField.isFilter,
+      isShowHidden: storeFrontField.isShowHidden
+    })
+    this.onSubmit()
   }
 
   onSubmitSettings() {
