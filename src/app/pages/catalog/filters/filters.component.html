@@ -102,6 +102,9 @@
         Following are product store front field, You can show/hide them on
         product listing page filters.
       </p>
+      <div class="alert alert-info fs-5">
+        Show Hidden Products: Default set to false so the products which are visible status false will not be shown in the product listing
+      </div>
       <div *ngFor="let storeFrontField of storeFrontFields">
         <div class="card my-4">
           <div class="card-body">
@@ -111,6 +114,17 @@
                   [isToggledProps]="storeFrontField.isFilter || false" [switchId]="storeFrontField.title"></app-switch>
               </div>
               <div class="fs-5">{{ storeFrontField.title }}</div>
+            </div>
+            <div *ngIf="storeFrontField.isFilter" class="d-flex mt-4 align-items-center justify-content-start gap-4">
+              <div class="fs-5 text-muted">
+                Show Hidden Products
+              </div>
+              <div>
+                <select class="form-select py-1" [(ngModel)]="storeFrontField.isShowHidden" (change)="toggleHidden(storeFrontField)">
+                  <option [ngValue]="true">Yes</option>
+                  <option [ngValue]="false">No</option>
+                </select>
+              </div>
             </div>
           </div>
         </div>
