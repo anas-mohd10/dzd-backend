@@ -326,7 +326,7 @@ export class AddOrdersComponent implements OnInit {
       secondlane: new FormControl(''),
       country: new FormControl('', Validators.required),
       state: new FormControl('', Validators.required),
-      city: new FormControl('', Validators.required),
+      city: new FormControl(''),
       area: new FormControl(''),
       landmark: new FormControl('', Validators.required),
       type: new FormControl('Home'),
@@ -930,7 +930,7 @@ export class AddOrdersComponent implements OnInit {
       ...this.addressForm.value,
       country: this.getLocationName(this.countries, this.addressForm.get('country')?.value),
       state: this.getLocationName(this.states, this.addressForm.get('state')?.value),
-      city: this.getLocationName(this.cities, this.addressForm.get('city')?.value)
+      city: this.addressForm.get('city')?.value ? this.getLocationName(this.cities, this.addressForm.get('city')?.value) : ''
     };
 
     const request$ = this.addressMode === 'add'
