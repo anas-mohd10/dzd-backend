@@ -51,6 +51,7 @@ import { NavigationSettingsComponent } from './navigation-settings/navigation-se
 import { MenuNavigationComponent } from './settings/general/menu-navigation/menu-navigation.component';
 import { SmsTemplateService } from '../includes/services/sms-template.service';
 import { SmsTemplatesComponent } from './settings/general/sms-templates/sms-templates.component';
+import { FormSettingsComponent } from './settings/general/form-settings/form-settings.component';
 
 export const Routing: Routes = [
   {
@@ -396,6 +397,10 @@ export const Routing: Routes = [
         path: 'toasts',
         component: ToastComponent,
         canActivate: [AuthenticationGuard, PermissionGuard]
+      }, {
+        path: 'form-settings',
+        component: FormSettingsComponent,
+        canActivate: [AuthenticationGuard]
       }, {
         path: 'replace-requests',
         loadChildren: () => import('./replace-requests/replace-requests.module').then((m) => m.ReplaceRequestsModule),

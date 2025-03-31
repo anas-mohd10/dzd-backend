@@ -18,6 +18,8 @@ import { StoresService } from 'src/app/includes/services/stores.service';
 import { environment } from 'src/environments/environment';
 import { LocationService } from 'src/app/includes/services/location.service';
 import { CartService } from 'src/app/includes/services/cart.service';
+import { FormSettingsService } from 'src/app/includes/services/form-settings.service';
+import { addressFieldsMap, FieldMap } from 'src/app/pages/settings/general/form-settings/fieldsMap';
 
 interface Coupon {
   _id: string,
@@ -153,6 +155,7 @@ export class AddOrdersComponent implements OnInit {
   couponsModalRef?: BsModalRef;
 
   isSticky: boolean = false;
+  addressFields: FieldMap[] = addressFieldsMap
 
   @HostListener('window:scroll', ['$event'])
   onScroll() {
@@ -174,6 +177,7 @@ export class AddOrdersComponent implements OnInit {
     private PickupService: PickupService,
     private productService: ProductService,
     private CouponsService: CouponsService,
+    private FormSettingsService: FormSettingsService,
     private ChangeDetectorRef: ChangeDetectorRef,
     private StoresService: StoresService,
     private AppSettingsService: AppSettingsService,
@@ -280,6 +284,14 @@ export class AddOrdersComponent implements OnInit {
       deliverySlot: new FormControl(null),
       orderNote: new FormControl(''),
       shippingNote: new FormControl(''),
+    })
+
+    this.FormSettingsService.getFormSettings('address').subscribe({
+      next: (res: any) => {
+        if (res?.errorCode == 0) {
+          this.addressFields = res?.result;
+        } else { }
+      }, error: (err: any) => { }
     })
 
     this.getActiveProducts();

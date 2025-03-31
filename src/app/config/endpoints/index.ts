@@ -82,3 +82,4 @@ export * from './location.endpoints';
 export * from './platform.endpoints'
 export * from './menu.navigation.endpoints'
 export * from './sms.endpoits'
+export * from './form-settings.endpoints'
