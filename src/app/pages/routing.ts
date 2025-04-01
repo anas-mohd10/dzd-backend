@@ -400,7 +400,7 @@ export const Routing: Routes = [
       }, {
         path: 'form-settings',
         component: FormSettingsComponent,
-        canActivate: [AuthenticationGuard]
+        canActivate: [AuthenticationGuard, PermissionGuard]
       }, {
         path: 'replace-requests',
         loadChildren: () => import('./replace-requests/replace-requests.module').then((m) => m.ReplaceRequestsModule),
