@@ -3,3 +3,29 @@ label,
 .btn-secondary {
     font-weight: 400 !important;
 }
+
+.editor-container {
+    height: 500px;
+    background-color: #f5f5f5;
+    border: 1px solid #ced4da;
+    border-radius: 0.25rem;
+    overflow: hidden;
+
+    ::ng-deep {
+        .monaco-editor {
+            .margin {
+                background-color: #f5f5f5 !important;
+            }
+        }
+
+        ngx-monaco-editor {
+            height: 100%;
+            display: block;
+        }
+    }
+
+    &:focus-within {
+        border-color: #80bdff;
+        box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+    }
+}

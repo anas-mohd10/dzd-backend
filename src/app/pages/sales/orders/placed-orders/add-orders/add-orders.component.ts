@@ -137,7 +137,7 @@ export class AddOrdersComponent implements OnInit {
   addressItems: Array<any> = [];
   address: any;
   customerDetails: any;
-  addressForm!: FormGroup;
+  addressForm: FormGroup = new FormGroup({});
   @ViewChild('addressRef') addressModal!: TemplateRef<any>;
   productsModalRef?: BsModalRef;
   keyword: FormControl = new FormControl('');
@@ -203,6 +203,18 @@ export class AddOrdersComponent implements OnInit {
 
     this.productQuery.valueChanges.pipe(debounceTime(500)).subscribe(() => {
       this.getProducts();
+    });
+
+    this.AppSettingsService.getGeneralSettingsbyId('1').subscribe({
+      next: (response: any) => {
+        if (response?.errorCode == 0) {
+          this.settings = response?.result;
+          this.dates = this.getNextSevenDays();
+          this.ChangeDetectorRef.markForCheck();
+        } else {
+        }
+      },
+      error: (error: any) => { },
     });
   }
 
@@ -307,8 +319,12 @@ export class AddOrdersComponent implements OnInit {
             this.addressFields.forEach((field: ImportedFieldMap) => {
               const isRequired: ValidatorFn[] = field.isRequired == true ? [Validators.required] : [];
               this.addressFieldsMap[field.fieldMap] = field;
-              const countryCode = this.getCountryCode(this.settings && this.settings.country ? this.settings.country : "AE");
-              const defaultValue = field.fieldMap == "countryCode" ? countryCode : "";
+              let defaultValue: string | undefined = ""
+              if (field.fieldMap == "countryCode") {
+                defaultValue = this.settings?.countryCode || "+971"
+              }else if(field.fieldMap == "type"){
+                defaultValue = "Home"
+              }
               this.addressForm.addControl(field.fieldMap, new FormControl(defaultValue, isRequired));
             });
           }
@@ -341,33 +357,6 @@ export class AddOrdersComponent implements OnInit {
 
     this.fetchCountries();
 
-    this.AppSettingsService.getGeneralSettingsbyId('1').subscribe({
-      next: (response: any) => {
-        if (response?.errorCode == 0) {
-          this.settings = response?.result;
-          this.dates = this.getNextSevenDays();
-          this.ChangeDetectorRef.markForCheck();
-        } else {
-        }
-      },
-      error: (error: any) => { },
-    });
-
-    this.addressForm = new FormGroup({
-      name: new FormControl('', Validators.required),
-      countryCode: new FormControl('+971', Validators.required),
-      mobile: new FormControl('', [Validators.required, Validators.pattern('^[0-9]{10}$')]),
-      firstlane: new FormControl('', Validators.required),
-      secondlane: new FormControl(''),
-      country: new FormControl('', Validators.required),
-      state: new FormControl('', Validators.required),
-      city: new FormControl(''),
-      area: new FormControl(''),
-      landmark: new FormControl('', Validators.required),
-      type: new FormControl('Home'),
-      pincode: new FormControl(''),
-    });
-
     this.userForm = new FormGroup({
       name: new FormControl('', Validators.required),
       countryCode: new FormControl('+971', Validators.required),
@@ -391,7 +380,6 @@ export class AddOrdersComponent implements OnInit {
 
   addressValidationFunction(fieldMap: string): boolean {
     const field = this.addressFieldsMap[fieldMap];
-    console.log(field)
     if (!field) return false;
 
     const control = this.addressForm.get(fieldMap);
@@ -401,8 +389,6 @@ export class AddOrdersComponent implements OnInit {
     const isTouched = control.touched;
     const isSubmitted = this.isAddressSubmitted;
     const hasError = control.errors;
-
-    console.log(isRequired, isTouched, isSubmitted, hasError)
 
     // If field is not required, only show validation if it has errors
     if (!isRequired) {
@@ -435,6 +421,10 @@ export class AddOrdersComponent implements OnInit {
     return this.addressFieldsMap[fieldMap]?.label || fieldMap;
   }
 
+  getFieldTitle(fieldMap: string): string {
+    return this.addressFieldsMap[fieldMap]?.title || fieldMap;
+  }
+
   getFieldPlaceholder(fieldMap: string): string {
     return this.addressFieldsMap[fieldMap]?.placeholder || `Enter ${this.getFieldLabel(fieldMap).toLowerCase()}`;
   }
@@ -449,6 +439,10 @@ export class AddOrdersComponent implements OnInit {
 
   checkRequiredField(fieldMap: string): boolean {
     return this.addressFieldsMap[fieldMap]?.isRequired || false;
+  }
+
+  checkVisibleField(fieldMap: string): boolean {
+    return this.addressFieldsMap[fieldMap]?.isVisible || false;
   }
 
   getFieldValidationPattern(fieldMap: string): string {
