@@ -1,5 +1,5 @@
 import { ChangeDetectorRef, Component, OnInit, TemplateRef, ViewChild, HostListener } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, ValidatorFn, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { HotToastService } from '@ngneat/hot-toast';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
@@ -19,7 +19,8 @@ import { environment } from 'src/environments/environment';
 import { LocationService } from 'src/app/includes/services/location.service';
 import { CartService } from 'src/app/includes/services/cart.service';
 import { FormSettingsService } from 'src/app/includes/services/form-settings.service';
-import { addressFieldsMap, FieldMap } from 'src/app/pages/settings/general/form-settings/fieldsMap';
+import { addressFieldsMap, FieldMap as ImportedFieldMap } from 'src/app/pages/settings/general/form-settings/fieldsMap';
+import { defaultCountries } from 'src/app/config/constants/default-countries';
 
 interface Coupon {
   _id: string,
@@ -59,6 +60,16 @@ interface Customer {
   mobile: string,
   userid: string,
   _id: string,
+}
+
+interface FieldMap {
+  fieldMap: string;
+  isRequired: boolean;
+  label?: string;
+  placeholder?: string;
+  type?: string;
+  options?: any[];
+  validationPattern?: string;
 }
 
 @Component({
@@ -155,7 +166,8 @@ export class AddOrdersComponent implements OnInit {
   couponsModalRef?: BsModalRef;
 
   isSticky: boolean = false;
-  addressFields: FieldMap[] = addressFieldsMap
+  addressFields: ImportedFieldMap[] = addressFieldsMap
+  addressFieldsMap: { [key: string]: ImportedFieldMap } = {}
 
   @HostListener('window:scroll', ['$event'])
   onScroll() {
@@ -289,7 +301,18 @@ export class AddOrdersComponent implements OnInit {
     this.FormSettingsService.getFormSettings('address').subscribe({
       next: (res: any) => {
         if (res?.errorCode == 0) {
-          this.addressFields = res?.result;
+          this.addressFields = res?.result?.fields;
+          // Dynamically set the address form values based on the address items
+          if (this.addressFields?.length > 0) {
+            this.addressFields.forEach((field: ImportedFieldMap) => {
+              const isRequired: ValidatorFn[] = field.isRequired == true ? [Validators.required] : [];
+              this.addressFieldsMap[field.fieldMap] = field;
+              const countryCode = this.getCountryCode(this.settings && this.settings.country ? this.settings.country : "AE");
+              const defaultValue = field.fieldMap == "countryCode" ? countryCode : "";
+              this.addressForm.addControl(field.fieldMap, new FormControl(defaultValue, isRequired));
+            });
+          }
+          this.ChangeDetectorRef.markForCheck();
         } else { }
       }, error: (err: any) => { }
     })
@@ -343,9 +366,6 @@ export class AddOrdersComponent implements OnInit {
       landmark: new FormControl('', Validators.required),
       type: new FormControl('Home'),
       pincode: new FormControl(''),
-      lat: new FormControl(''),
-      lng: new FormControl(''),
-      isDefault: new FormControl(false),
     });
 
     this.userForm = new FormGroup({
@@ -359,6 +379,80 @@ export class AddOrdersComponent implements OnInit {
     this.handleUserMobilePattern();
 
     this.selectDeliveryDate(this.deliveryDate);
+  }
+
+  getCountryCode(country: string) {
+    return defaultCountries.find((item: {
+      name: string,
+      countryCode: string,
+      iso_alpha2: string
+    }) => item?.name == country)?.countryCode;
+  }
+
+  addressValidationFunction(fieldMap: string): boolean {
+    const field = this.addressFieldsMap[fieldMap];
+    console.log(field)
+    if (!field) return false;
+
+    const control = this.addressForm.get(fieldMap);
+    if (!control) return false;
+
+    const isRequired = field.isRequired;
+    const isTouched = control.touched;
+    const isSubmitted = this.isAddressSubmitted;
+    const hasError = control.errors;
+
+    console.log(isRequired, isTouched, isSubmitted, hasError)
+
+    // If field is not required, only show validation if it has errors
+    if (!isRequired) {
+      return (isTouched || isSubmitted) && !!hasError;
+    }
+
+    // For required fields, show validation if touched/submitted and has errors
+    return (isTouched || isSubmitted) && !!hasError;
+  }
+
+  getFieldErrorMessage(fieldMap: string): string {
+    const control = this.addressForm.get(fieldMap);
+    if (!control || !control.errors) return '';
+
+    const errors = control.errors;
+    if (errors['required']) return 'This field is required';
+    if (errors['pattern']) return 'Please enter a valid value';
+    if (errors['email']) return 'Please enter a valid email';
+    if (errors['minlength']) return `Minimum length is ${errors['minlength'].requiredLength} characters`;
+    if (errors['maxlength']) return `Maximum length is ${errors['maxlength'].requiredLength} characters`;
+
+    return 'Invalid input';
+  }
+
+  isFieldRequired(fieldMap: string): boolean {
+    return this.addressFieldsMap[fieldMap]?.isRequired || false;
+  }
+
+  getFieldLabel(fieldMap: string): string {
+    return this.addressFieldsMap[fieldMap]?.label || fieldMap;
+  }
+
+  getFieldPlaceholder(fieldMap: string): string {
+    return this.addressFieldsMap[fieldMap]?.placeholder || `Enter ${this.getFieldLabel(fieldMap).toLowerCase()}`;
+  }
+
+  getFieldType(fieldMap: string): string {
+    return this.addressFieldsMap[fieldMap]?.type || 'text';
+  }
+
+  getFieldOptions(fieldMap: string): any[] {
+    return this.addressFieldsMap[fieldMap]?.options || [];
+  }
+
+  checkRequiredField(fieldMap: string): boolean {
+    return this.addressFieldsMap[fieldMap]?.isRequired || false;
+  }
+
+  getFieldValidationPattern(fieldMap: string): string {
+    return this.addressFieldsMap[fieldMap]?.validationPattern || '';
   }
 
   get userControls() {

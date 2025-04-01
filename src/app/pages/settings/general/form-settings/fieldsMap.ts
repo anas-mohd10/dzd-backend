@@ -3,6 +3,11 @@ export interface FieldMap {
     fieldMap: string
     isVisible: boolean
     isRequired: boolean
+    label?: string
+    placeholder?: string
+    type?: string
+    options?: any[]
+    validationPattern?: string
 }
 
 export const addressFieldsMap: FieldMap[] = [
