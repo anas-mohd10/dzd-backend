@@ -48,4 +48,9 @@ export class MenuNavigationService {
     const url = this.CommonService.getFullUrl(menuNavigationEndpoints.copyMenuNavigations);
     return this.HttpClient.put(url, {});
   }
+
+  updateGeneralSettings(data: any) {
+    const url = this.CommonService.getFullUrl(menuNavigationEndpoints.update_settings);
+    return this.HttpClient.put(url, data);
+  }
 }

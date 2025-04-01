@@ -95,6 +95,12 @@ export class MenuNavigationComponent implements OnInit {
     this.modalRef = this.BsModalService.show(template, { class: 'modal-sm modal-dialog-centered', ignoreBackdropClick: true })
   }
 
+  openMenuNavigation(template: TemplateRef<any>) {
+
+
+    this.modalRef = this.BsModalService.show(template, { class: 'modal-lg modal-dialog-centered', ignoreBackdropClick: true })
+  }
+
   close() {
     this.modalRef?.hide()
     this.form.patchValue({ parentId: null, device: this.deviceType.value, menuType: '', title: '', icon: '', redirection: '', index: '' })
@@ -145,6 +151,11 @@ export class MenuNavigationComponent implements OnInit {
       icon: new FormControl(''),
       redirection: new FormControl('', Validators.required),
       index: new FormControl(''),
+      webStyles: new FormControl(''),
+      mobileStyles: new FormControl(''),
+      isImage: new FormControl(false),
+      imageColumns: new FormControl(1),
+      groupName: new FormControl('')
     })
 
     // Set the device type to the form
@@ -293,6 +304,12 @@ export class MenuNavigationComponent implements OnInit {
       }
     })
   }
+
+
+  onSwitchTriggered(event: {toggleState: boolean, switchId: string}) {
+    this.form.get(event.switchId)?.setValue(event.toggleState)
+  }
+
 
   getBrands() {
     this.BrandService.getActiveBrands().subscribe({
@@ -494,4 +511,36 @@ reorderNestedMenuItems(items: MenuNavigation[]) {
   toggleAccordion(menuItem: MenuNavigation) {
     menuItem.isExpanded = !menuItem.isExpanded;
   }
+
+
+  onSubmit() {
+    if (this.form.get('webStyles')?.value || this.form.get('mobileStyles')?.value) {
+      const styleData = {
+        navigationMenuStyles: {
+          web: this.form.get('webStyles')?.value,
+          mobile: this.form.get('mobileStyles')?.value
+        }
+      };
+  
+      console.log(styleData);
+  
+      // Assuming MenuNavigationService has a method to update menu styles
+      this.MenuNavigationService.updateGeneralSettings(styleData).subscribe({
+        next: (res: any) => {
+          if (res.errorCode === 0) {
+            this.close(); // Close the modal
+            this.HotToastService.success(res?.message || 'Menu styles updated successfully');
+          } else {
+            this.HotToastService.error(res?.message || 'Failed to update menu styles');
+          }
+        },
+        error: (err: any) => {
+          this.HotToastService.error(err?.message || 'An error occurred while updating menu styles');
+        }
+      });
+    } else {
+      this.HotToastService.warning('Please enter at least one style');
+    }
+  }
+  
 }
