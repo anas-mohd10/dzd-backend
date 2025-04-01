@@ -64,7 +64,7 @@
       *ngIf="order?.paymentMethod == 'ONLINE' && order?.payment?.isProcessing == true">
       <div class="fs-3">Payment is being processed.</div>
       <div class="fs-6">
-        New payment won't be processed until the previous payment is completed. 
+        New payment won't be processed until the previous payment is completed.
         You can proceed with updating the order status but payment will be processed in the background.
       </div>
     </div>
@@ -454,7 +454,7 @@
                   <div class="col-lg-1 d-flex align-items-center">
                     <div class="checkbox"
                       [ngClass]="{
-                      'checked': bulkProducts.length == order?.products?.length, 
+                      'checked': bulkProducts.length == order?.products?.length,
                       'pe-none' : (order?.paymentMethod == 'ONLINE' && order?.paymentStatus == 'PENDING') || ( isStatusUpdating == true && order?.paymentGateway == 'network-international-tokenized' )}"
                       (click)="toggleBulkProduct()"></div>
                   </div>
@@ -462,8 +462,8 @@
                   <div class="col-lg-4">
                     <div class="d-flex align-items-center justify-content-end gap-2">
                       <label for="bulkStatus" class="fs-6">Status :</label>
-                      <select id="bulkStatus" [formControl]="bulkOrderStatus" [ngClass]="{'pe-none' : 
-                        ( order?.paymentMethod == 'ONLINE' && order?.paymentStatus == 'PENDING' || bulkProducts.length == 0 ) || 
+                      <select id="bulkStatus" [formControl]="bulkOrderStatus" [ngClass]="{'pe-none' :
+                        ( order?.paymentMethod == 'ONLINE' && order?.paymentStatus == 'PENDING' || bulkProducts.length == 0 ) ||
                           ( isStatusUpdating == true && order?.paymentGateway == 'network-international-tokenized' )
                           }" class="form-select w-50 fs-6" (change)="updateBulkProduct($event)">
                         <option value="" disabled>-- Select a status --</option>
@@ -478,7 +478,7 @@
                     <div class="col-lg-1">
                       <div class="checkbox"
                         [ngClass]="{
-                          'checked': bulkProducts.includes(product), 
+                          'checked': bulkProducts.includes(product),
                           'pe-none' : (order?.paymentMethod == 'ONLINE' && order?.paymentStatus == 'PENDING') || ( isStatusUpdating == true && order?.paymentGateway == 'network-international-tokenized' )}"
                         (click)="toggleBulkProduct(product)"> </div>
                     </div>
@@ -527,9 +527,9 @@
                           </div>
                           <div class="mb-2 d-flex fs-6 align-items-center justify-content-start">
                             <div class="w-25">Status:</div>
-                            <div class="w-75" [ngClass]="{'pe-none' : 
-                              ( order?.paymentMethod == 'ONLINE' && order?.paymentStatus == 'PENDING' ) || 
-                              ( isStatusUpdating == true && order?.paymentGateway == 'network-international-tokenized' ) || 
+                            <div class="w-75" [ngClass]="{'pe-none' :
+                              ( order?.paymentMethod == 'ONLINE' && order?.paymentStatus == 'PENDING' ) ||
+                              ( isStatusUpdating == true && order?.paymentGateway == 'network-international-tokenized' ) ||
                               ( product?.currentStatus?.status == 'Delivered' ) }">
                               <select class="form-select w-50 p-2" [formControl]="productOrderStatus"
                                 (change)="updateOrderStatus($event, product?.productId)">
@@ -652,11 +652,11 @@
       <div class="form-group mb-4 mt-4" *ngIf="!productToBeCancelled">
         <textarea type="text" cols="30" rows="5" autocomplete="off" [formControl]="reason"
           placeholder="Type reason for cancellation" class="form-control">
-        </textarea>
+          </textarea>
       </div>
       <div class="d-flex align-items-center justify-content-between">
-        <button type="button" class="btn btn-default p-2" (click)="confirm()">Yes</button>
-        <button type="button" class="btn btn-primary p-2" (click)="decline()">No</button>
+        <button type="button" class="btn btn-default p-2" (click)="confirm()" [disabled]="isConfirmLoading">Yes</button>
+        <button type="button" class="btn btn-primary p-2" (click)="decline()" [disabled]="isConfirmLoading">No</button>
       </div>
     </div>
   </ng-template>
@@ -665,7 +665,7 @@
     <div class="modal-header">
       <h4 class="modal-title pull-left">Notes</h4>
       <button type="button" class="btn-close close pull-right" aria-label="Close" (click)="noteModalRef?.hide()">
-        <span aria-hidden="true" class="visually-hidden">&times;</span>
+        <span aria-hidden="true" class="visually-hidden">×</span>
       </button>
     </div>
     <div class="modal-body">
@@ -695,17 +695,21 @@
     <div class="modal-body">
       <div class="modal-title">Confirmation</div>
       <p class="fs-6 my-2">Do you want to confirm?</p>
-      <button type="button" class="btn btn-default" (click)="confirmCancel()">Yes</button>
-      <button type="button" class="btn btn-primary" (click)="declineCancel()">No</button>
+      <button type="button" class="btn btn-default" (click)="confirmCancel()"
+        [disabled]="isCancelConfirmLoading">Yes</button>
+      <button type="button" class="btn btn-primary" (click)="declineCancel()"
+        [disabled]="isCancelConfirmLoading">No</button>
     </div>
   </ng-template>
 
   <ng-template #bulkUpdateConfirmation>
     <div class="modal-body">
       <div class="modal-title">Confirmation</div>
-      <p class="fs-6 my-2">Are you sure you want to cancel {{bulkProducts.length}} products?</p>
-      <button type="button" class="btn btn-default" (click)="confirmBulkUpdate()">Yes</button>
-      <button type="button" class="btn btn-primary" (click)="declineBulkUpdate()">No</button>
+      <p class="fs-6 my-2">Are you sure you want to update status of {{bulkProducts.length}} products?</p>
+      <button type="button" class="btn btn-default" (click)="confirmBulkUpdate()"
+        [disabled]="isBulkUpdateLoading">Yes</button>
+      <button type="button" class="btn btn-primary" (click)="declineBulkUpdate()"
+        [disabled]="isBulkUpdateLoading">No</button>
     </div>
   </ng-template>
 

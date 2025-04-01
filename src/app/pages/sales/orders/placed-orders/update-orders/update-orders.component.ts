@@ -16,6 +16,13 @@ import { SwiperOptions } from 'swiper';
   styleUrls: ['./update-orders.component.scss'],
 })
 export class UpdateOrdersComponent implements OnInit {
+  isConfirmLoading: boolean = false;
+  isCancelConfirmLoading: boolean = false;
+  isBulkUpdateLoading: boolean = false;
+  isForceUpdateLoading: boolean = false;
+  isStatusUpdating: boolean = false;  // Already declared. Added here to be complete
+  isRetryClicked: boolean = false;     // Already declared. Added here to be complete
+  isForceProcessing: boolean = false;   // Already declared. Added here to be complete
   appRoute = appRoutes;
   order: any;
   productCount: any;
@@ -97,17 +104,14 @@ export class UpdateOrdersComponent implements OnInit {
   paymentGateways: string[] = ['network-international-tokenized']
   retryStatusList: string[] = ["PACKED", "SHIPPED", "OUT FOR DELIVERY", "DELIVERED"];
   retryModelRef?: BsModalRef
-  isRetryClicked: boolean = false
   @ViewChild('cancelConfirmation') cancelConfirmation: any
   cancelConfirmationRef?: BsModalRef
   productToBeCancelled: string | null;
   bulkUpdateConfirmationRef?: BsModalRef;
   bulkStatusToUpdate: string | null = null;
   @ViewChild('bulkUpdateConfirmation') bulkUpdateConfirmation: any;
-  isStatusUpdating: boolean = false
   @ViewChild('failedPayment') failedPayment: any;
   failedPaymenRef?: BsModalRef;
-  isForceProcessing: boolean = false
 
   constructor(
     private OrdersService: OrdersService,
@@ -145,7 +149,9 @@ export class UpdateOrdersComponent implements OnInit {
         this.isRetryClicked = false
         this.HotToastService.error(err?.error?.message)
       }
-    })
+    }).add(() => {
+      this.isRetryClicked = false; // Re-enable buttons for retry modal
+    });
   }
 
   declineRetry() {
@@ -455,6 +461,7 @@ export class UpdateOrdersComponent implements OnInit {
   }
 
   confirmCancel() {
+    this.isCancelConfirmLoading = true;
     this.OrdersService.updateOrderStatus({
       order: this.slug,
       product: this.productToBeCancelled,
@@ -474,6 +481,8 @@ export class UpdateOrdersComponent implements OnInit {
       error: (err: any) => {
         this.HotToastService.error(err?.error?.message);
       },
+    }).add(() => {
+      this.isCancelConfirmLoading = false;
     });
   }
 
@@ -613,14 +622,8 @@ export class UpdateOrdersComponent implements OnInit {
 
   updateBulkProduct(event: any) {
     this.bulkStatusToUpdate = event?.target?.value;
-    this.isStatusUpdating = true;
+    this.openBulkUpdateConfirmation(this.bulkUpdateConfirmation);
 
-    if (this.bulkStatusToUpdate == 'CANCELLED') {
-      this.openBulkUpdateConfirmation(this.bulkUpdateConfirmation);
-      return
-    }
-
-    this.confirmBulkUpdate()
   }
 
   openBulkUpdateConfirmation(template: TemplateRef<any>) {
@@ -657,13 +660,14 @@ export class UpdateOrdersComponent implements OnInit {
       error: (err: any) => {
         this.HotToastService.error(err?.error?.message);
       },
+    }).add(() => {
+      this.isForceProcessing = false; // Re-enable buttons for force update modal
     });
   }
 
   declineForceUpdate() {
     this.failedPaymenRef?.hide();
     this.bulkProducts = [];
-    this.isForceProcessing = false
     this.bulkStatus = [];
     this.isStatusUpdating = false
     this.bulkOrderStatus.setValue('');
@@ -671,6 +675,7 @@ export class UpdateOrdersComponent implements OnInit {
   }
 
   confirmBulkUpdate() {
+    this.isBulkUpdateLoading = true;
     this.OrdersService.updateBulkProduct({
       order: this.order?._id,
       status: this.bulkStatusToUpdate,
@@ -681,7 +686,6 @@ export class UpdateOrdersComponent implements OnInit {
           this.HotToastService.success(res?.message);
           this.bulkProducts = [];
           this.bulkStatus = [];
-          this.isStatusUpdating = false
           this.bulkOrderStatus.setValue('');
           this.getOrderDetails();
           this.closeBulkUpdateConfirmation();
@@ -694,6 +698,8 @@ export class UpdateOrdersComponent implements OnInit {
       error: (err: any) => {
         this.HotToastService.error(err?.error?.message);
       },
+    }).add(() => {
+      this.isBulkUpdateLoading = false;  // Re-enable buttons for bulk update modal
     });
   }
 
@@ -734,6 +740,7 @@ export class UpdateOrdersComponent implements OnInit {
   }
 
   confirm() {
+    this.isConfirmLoading = true;
     this.OrdersService.cancelOrderDetails({
       order: this.slug,
       reason: this.reason.value,
@@ -751,6 +758,8 @@ export class UpdateOrdersComponent implements OnInit {
       error: (err: any) => {
         this.HotToastService.error(err?.message);
       },
+    }).add(() => {
+      this.isConfirmLoading = false;  // Re-enable buttons for general confirmation modal
     });
   }
 
