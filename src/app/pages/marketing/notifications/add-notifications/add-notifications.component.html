@@ -45,43 +45,43 @@
          </div>
       </div>
 
-     <div class="card">
-      <div class="card-body">
-         <div class="row">
-            <div class="col-lg-6">
-               <label class="fs-6 mb-3 required">Notification Channel</label>
-               <select class="form-select form-select-lg mb-3 fs-6" formControlName="channel"
-                  [ngClass]="{'is-invalid': (formControls.channel.touched || isSubmitted) && formControls.channel.errors?.required}">
-                  <option value="" disabled>-- Select an option --</option>
-                  <option value="sms">SMS</option>
-                  <option value="email">Email</option>
-                  <option value="app">App notification</option>
-                  <option value="push">Push notification</option>
-               </select>
+      <div class="card">
+         <div class="card-body">
+            <div class="row">
+               <div class="col-lg-6">
+                  <label class="fs-6 mb-3 required">Notification Channel</label>
+                  <select class="form-select form-select-lg mb-3 fs-6" formControlName="channel"
+                     [ngClass]="{'is-invalid': (formControls.channel.touched || isSubmitted) && formControls.channel.errors?.required}">
+                     <option value="" disabled>-- Select an option --</option>
+                     <option value="sms">SMS</option>
+                     <option value="email">Email</option>
+                     <option value="app">App notification</option>
+                     <option value="push">Push notification</option>
+                  </select>
+               </div>
+
+               <div class="col-lg-6 form-group mb-3">
+                  <label class="fs-6 mb-3">Notification Type</label>
+                  <select class="form-select fs-6" formControlName="type">
+                     <option value="" disabled>-- Select an option --</option>
+                     <option value="instant">Instant</option>
+                     <option value="scheduled">Scheduled</option>
+                  </select>
+               </div>
             </div>
-   
-            <div class="col-lg-6 form-group mb-3">
-               <label class="fs-6 mb-3">Notification Type</label>
-               <select class="form-select fs-6" formControlName="type">
-                  <option value="" disabled>-- Select an option --</option>
-                  <option value="instant">Instant</option>
-                  <option value="scheduled">Scheduled</option>
-               </select>
-            </div>
-         </div>
-   
-         <div class="row" *ngIf="form.get('type')?.value == 'scheduled'">
-            <div class="col-lg-6 form-group mb-3">
-               <label class="fs-6 mb-3">Schedule Date</label>
-               <input type="date" [min]="startDate" class="form-control fs-6" formControlName="scheduledDate" />
-            </div>
-            <div class="col-lg-6 form-group">
-               <label class="fs-6 mb-3">Schedule Time</label>
-               <input type="time" class="form-control fs-6" formControlName="scheduledTime" />
+
+            <div class="row" *ngIf="form.get('type')?.value == 'scheduled'">
+               <div class="col-lg-6 form-group mb-3">
+                  <label class="fs-6 mb-3">Schedule Date</label>
+                  <input type="date" [min]="startDate" class="form-control fs-6" formControlName="scheduledDate" />
+               </div>
+               <div class="col-lg-6 form-group">
+                  <label class="fs-6 mb-3">Schedule Time</label>
+                  <input type="time" class="form-control fs-6" formControlName="scheduledTime" />
+               </div>
             </div>
          </div>
       </div>
-     </div>
 
       <div class="card my-4">
          <div class="card-body">

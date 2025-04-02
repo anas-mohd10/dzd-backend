@@ -28,7 +28,7 @@ export class AddNotificationsComponent implements OnInit {
     private Router: Router,
     private HotToastService: HotToastService,
     private ChangeDetectorRef: ChangeDetectorRef
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.form = new FormGroup({
@@ -59,7 +59,7 @@ export class AddNotificationsComponent implements OnInit {
           this.ChangeDetectorRef.markForCheck();
         }
       },
-      error: (err: any) => {},
+      error: (err: any) => { },
     });
   }
 
@@ -84,7 +84,7 @@ export class AddNotificationsComponent implements OnInit {
     }
     this.NotificationsService.addNotification({
       ...this.form.value,
-      scheduled: this.form.get('scheduledDate')?.value && this.form.get('scheduledTime')?.value ? 
+      scheduled: this.form.get('scheduledDate')?.value && this.form.get('scheduledTime')?.value ?
         new Date(`${this.form.get('scheduledDate')?.value}T${this.form.get('scheduledTime')?.value}`).toISOString() : null,
       customers: this.customers,
     }).subscribe({
@@ -96,7 +96,7 @@ export class AddNotificationsComponent implements OnInit {
           this.HotToastService.error(res?.message);
         }
       },
-      error: (err: any) => {},
+      error: (err: any) => { },
     });
   }
 }
