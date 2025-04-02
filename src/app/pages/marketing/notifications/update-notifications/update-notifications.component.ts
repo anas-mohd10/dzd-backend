@@ -137,7 +137,7 @@ export class UpdateNotificationsComponent implements OnInit {
     });
     
     // Handle scheduled date and time
-    if (data.scheduled) {
+  if (data.scheduledDate) {
       // Create date object from UTC timestamp - it will automatically convert to local time
       const scheduledDateTime = new Date(data.scheduled);
 
@@ -152,9 +152,7 @@ export class UpdateNotificationsComponent implements OnInit {
       // Format time as HH:MM in local timezone
       const hours = scheduledDateTime.getHours().toString().padStart(2, '0');
       const minutes = scheduledDateTime.getMinutes().toString().padStart(2, '0');
-      console.log(hours, minutes, "hours, minutes")
       this.form.get('scheduledTime')?.setValue(`${hours}:${minutes}`);
-      console.log(this.form.get('scheduledTime')?.value, "scheduledTime")
     }
     
     // Set thumbnail if available
