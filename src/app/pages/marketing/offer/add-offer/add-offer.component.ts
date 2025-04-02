@@ -59,7 +59,9 @@ export class AddOfferComponent implements OnInit {
       title: ['', Validators.required],
       description: [''],
       startDate: ['', Validators.required],
+      startTime: ['', Validators.required],
       endDate: ['', Validators.required],
+      endTime: ['', Validators.required],
       type: ['percentage'],
       offerType: ['complete'],
       value: ['', [Validators.required, Validators.pattern("^[0-9]+$")]],
@@ -196,8 +198,23 @@ export class AddOfferComponent implements OnInit {
       return;
     }
 
+    const startDateTime = new Date(
+      `${this.form.value.startDate}T${this.form.value.startTime}`
+    ).toISOString();
+    
+    const endDateTime = new Date(
+      `${this.form.value.endDate}T${this.form.value.endTime}`
+    ).toISOString();
+
+    if (new Date(endDateTime) <= new Date(startDateTime)) {
+      this.HotToastService.error('End date/time must be after start date/time');
+      return;
+    }
+
     this.offerService.addOffer({
       ...this.form.value,
+      startDate: startDateTime,
+      endDate: endDateTime,
       offerType: this.form.get('offerType')?.value == 'complete' ? 'complete' : 'partial',
       categories: this.categories.length > 0 ? this.categories?.map((item: any) => item?._id) : null,
       products: this.products.length > 0 ? this.products?.map((item: any) => item?._id) : null,
