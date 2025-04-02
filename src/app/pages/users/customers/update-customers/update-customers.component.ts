@@ -1,17 +1,5 @@
-import {
-  ChangeDetectorRef,
-  Component,
-  ElementRef,
-  OnInit,
-  TemplateRef,
-  ViewChild,
-} from '@angular/core';
-import {
-  FormBuilder,
-  FormControl,
-  FormGroup,
-  Validators,
-} from '@angular/forms';
+import { ChangeDetectorRef, Component, ElementRef, OnInit, TemplateRef, ViewChild } from '@angular/core';
+import { FormBuilder, FormControl, FormGroup, ValidatorFn, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { PageTasks } from 'src/app/config/constants';
 import { validators } from 'src/app/config/constants/mobile-validators';
@@ -23,6 +11,9 @@ import { AppSettingsService } from 'src/app/includes/services/app.settings.servi
 import { OrdersService } from 'src/app/includes/services/orders.service';
 import { Country, ICountry, State, IState, City, ICity } from 'country-state-city'
 import { debounceTime } from 'rxjs/operators';
+import { FormSettingsService } from 'src/app/includes/services/form-settings.service';
+import { addressFieldsMap, FieldMap as ImportedFieldMap } from 'src/app/pages/settings/general/form-settings/fieldsMap';
+import { LocationService } from 'src/app/includes/services/location.service';
 
 interface CustomerOrder {
   orderNo: string;
@@ -74,7 +65,7 @@ export class UpdateCustomersComponent implements OnInit {
   selectedID: any = '';
   selectedAddress: string = '';
   isAddressSubmitted: boolean = false;
-  addressForm: FormGroup;
+  addressForm: FormGroup = new FormGroup({});
   defaultAddress: FormControl = new FormControl('');
   isEditAddress: boolean = false;
   addressDetails: any = {};
@@ -102,9 +93,9 @@ export class UpdateCustomersComponent implements OnInit {
   customerOrderDetails: CustomerOrderDetails = { totalResults: 0, totalPages: 0, orders: [], };
   ordersRef?: BsModalRef;
   successOrders: Array<string> = ['PLACED', 'SHIPPED', 'PARTIAL PROCESSED', 'OUT FOR DELIVERY', 'DELIVERED', 'PACKED'];
-  countries: ICountry[] = Country.getAllCountries(); // Get all countries
-  states: IState[] = [];
-  cities: ICity[] = [];
+  countries: Array<any> = [];
+  states: Array<any> = [];
+  cities: Array<any> = [];
   acceptedOrders: Array<string> = ['ACCEPTED'];
   cancelledOrders: Array<string> = ['CANCELLED', 'PENDING', 'FAILED'];
   previousCountry: string = '';
@@ -118,14 +109,18 @@ export class UpdateCustomersComponent implements OnInit {
   walletPageSize: number = 10;
   walletTotalPages: number = 1;
   walletTotalResults: number = 0;
+  addressFields: ImportedFieldMap[] = addressFieldsMap
+  addressFieldsMap: { [key: string]: ImportedFieldMap } = {}
 
   constructor(
-    private formBuilder: FormBuilder,
+    private FormBuilder: FormBuilder,
     private OrdersService: OrdersService,
-    private customerService: CustomersService,
-    private route: ActivatedRoute,
+    private CustomersService: CustomersService,
+    private ActivatedRoute: ActivatedRoute,
+    private LocationService: LocationService,
+    private FormSettingsService: FormSettingsService,
     private ChangeDetectorRef: ChangeDetectorRef,
-    private router: Router,
+    private Router: Router,
     private HotToastService: HotToastService,
     private BsModalService: BsModalService,
     private AppSettingsService: AppSettingsService
@@ -135,51 +130,6 @@ export class UpdateCustomersComponent implements OnInit {
       .subscribe((value: any) => {
         this.getTransactions();
       });
-  }
-
-  // Get State list from country code
-  getStateList() {
-    const selectedCountry = this.addressForm.get('country')?.value;
-    if (this.previousCountry && this.previousCountry !== selectedCountry) {
-      // If the country has changed, reset state and city
-      this.addressForm.patchValue({
-        state: '',
-        city: '',
-      });
-      this.cities = [];
-      this.previousState = ''; // Reset previous state
-    }
-
-    this.previousCountry = selectedCountry; // Store previous country value
-
-    const countryCode = this.countries.find((country: ICountry) => country.name === selectedCountry);
-
-    if (countryCode) {
-      this.states = State.getStatesOfCountry(countryCode.isoCode);
-      this.ChangeDetectorRef.markForCheck();
-    }
-  }
-
-  // Get City list from state code and country code
-  getCityList() {
-    const selectedState = this.addressForm.get('state')?.value;
-
-    if (this.previousState && this.previousState !== selectedState) {
-      // If the state has changed, reset city
-      this.addressForm.patchValue({
-        city: '',
-      });
-    }
-
-    this.previousState = selectedState; // Store previous state value
-
-    const countryCode = this.countries.find((country: ICountry) => country.name === this.addressForm.get('country')?.value);
-    const stateCode = this.states.find((state: IState) => state.name === selectedState);
-
-    if (countryCode && stateCode) {
-      this.cities = City.getCitiesOfState(countryCode.isoCode, stateCode.isoCode);
-      this.ChangeDetectorRef.markForCheck();
-    }
   }
 
   //Function to open the saved cards modal
@@ -196,9 +146,35 @@ export class UpdateCustomersComponent implements OnInit {
   ngOnInit(): void {
     this.initForm();
     this.managePage();
-    this.slug = this.route.snapshot.params['id'] || '';
+    this.slug = this.ActivatedRoute.snapshot.params['id'] || '';
     this.getCustomerDetails();
     this.getAddress();
+
+    this.fetchCountries();
+
+    this.FormSettingsService.getFormSettings('address').subscribe({
+      next: (res: any) => {
+        if (res?.errorCode == 0) {
+          this.addressFields = res?.result?.fields;
+          // Dynamically set the address form values based on the address items
+          if (this.addressFields?.length > 0) {
+            this.addressFields.forEach((field: ImportedFieldMap) => {
+              const isRequired: ValidatorFn[] = field.isRequired == true ? [Validators.required] : [];
+              this.addressFieldsMap[field.fieldMap] = field;
+              let defaultValue: string | undefined = ""
+              if (field.fieldMap == "countryCode") {
+                defaultValue = this.settings?.countryCode || "+971"
+              } else if (field.fieldMap == "type") {
+                defaultValue = "Home"
+              }
+              this.addressForm.addControl(field.fieldMap, new FormControl(defaultValue, isRequired));
+            });
+          }
+          this.addressForm.addControl("isDefault", new FormControl(false));
+          this.ChangeDetectorRef.markForCheck();
+        } else { }
+      }, error: (err: any) => { }
+    })
 
     this.AppSettingsService.getGeneralSettingsbyId('1').subscribe(
       (res: any) => {
@@ -209,11 +185,151 @@ export class UpdateCustomersComponent implements OnInit {
     );
   }
 
+  fetchCountries() {
+    this.LocationService.findCountries().subscribe({
+      next: (response: any) => {
+        if (response?.errorCode == 0) {
+          this.countries = response?.result;
+          this.ChangeDetectorRef.markForCheck();
+        } else {
+          this.HotToastService.error(response.message);
+        }
+      }, error: (err: any) => {
+        this.HotToastService.error(err.message)
+      }
+    });
+  }
+
+  loadStates(countryId?: string, actionType?: string) {
+    if (actionType == 'add') {
+      // Clear existing states and cities when country changes
+      this.states = [];
+      this.cities = [];
+
+      // Reset state and city form controls
+      this.addressForm.patchValue({ state: '', city: '' });
+    }
+
+    let country: string | undefined = ''
+    if (countryId == '') {
+      let countryItem: any = this.countries.find((country: any) => country?.name == this.addressForm.get('country')?.value)
+      country = countryItem?._id
+    } else {
+      country = countryId
+    }
+
+    this.LocationService.findStates(country).subscribe({
+      next: (response: any) => {
+        if (response?.errorCode == 0) {
+          this.states = response.result;
+
+          if (actionType === 'update') {
+            const stateDoc: any = response.result.find((state: any) => state.name === this.addressForm.get('state')?.value);
+            this.loadCities(stateDoc?._id, 'update');
+          }
+
+          this.ChangeDetectorRef.markForCheck();
+        } else {
+          this.HotToastService.error(response.message);
+        }
+      },
+      error: (err) => console.error('Error loading states:', err)
+    });
+  }
+
+  loadCities(stateId?: string, actionType?: string) {
+    const countryDoc: any = this.countries.find((country: any) => country?.name == this.addressForm.get('country')?.value);
+    const stateDoc: any = this.states.find((state: any) => state?.name == this.addressForm.get('state')?.value);
+    this.LocationService.findCities(countryDoc?._id, stateDoc?._id).subscribe({
+      next: (response: any) => {
+        if (response?.errorCode == 0) {
+          this.cities = response.result;
+
+          if (actionType == 'add') {
+            this.addressForm.patchValue({ city: this.cities[0].name });
+          }
+
+          this.ChangeDetectorRef.markForCheck();
+        } else { }
+      }, error: (err) => console.error('Error loading cities:', err)
+    });
+  }
+
+  addressValidationFunction(fieldMap: string): boolean {
+    const field = this.addressFieldsMap[fieldMap];
+    if (!field) return false;
+
+    const control = this.addressForm.get(fieldMap);
+    if (!control) return false;
+
+    const isRequired = field.isRequired;
+    const isTouched = control.touched;
+    const isSubmitted = this.isAddressSubmitted;
+    const hasError = control.errors;
+
+    // If field is not required, only show validation if it has errors
+    if (!isRequired) {
+      return (isTouched || isSubmitted) && !!hasError;
+    }
+
+    // For required fields, show validation if touched/submitted and has errors
+    return (isTouched || isSubmitted) && !!hasError;
+  }
+
+  getFieldErrorMessage(fieldMap: string): string {
+    const control = this.addressForm.get(fieldMap);
+    if (!control || !control.errors) return '';
+
+    const errors = control.errors;
+    if (errors['required']) return 'This field is required';
+    if (errors['pattern']) return 'Please enter a valid value';
+    if (errors['email']) return 'Please enter a valid email';
+    if (errors['minlength']) return `Minimum length is ${errors['minlength'].requiredLength} characters`;
+    if (errors['maxlength']) return `Maximum length is ${errors['maxlength'].requiredLength} characters`;
+    return 'Invalid input';
+  }
+
+  isFieldRequired(fieldMap: string): boolean {
+    return this.addressFieldsMap[fieldMap]?.isRequired || false;
+  }
+
+  getFieldLabel(fieldMap: string): string {
+    return this.addressFieldsMap[fieldMap]?.label || fieldMap;
+  }
+
+  getFieldTitle(fieldMap: string): string {
+    return this.addressFieldsMap[fieldMap]?.title || fieldMap;
+  }
+
+  getFieldPlaceholder(fieldMap: string): string {
+    return this.addressFieldsMap[fieldMap]?.placeholder || `Enter ${this.getFieldLabel(fieldMap).toLowerCase()}`;
+  }
+
+  getFieldType(fieldMap: string): string {
+    return this.addressFieldsMap[fieldMap]?.type || 'text';
+  }
+
+  getFieldOptions(fieldMap: string): any[] {
+    return this.addressFieldsMap[fieldMap]?.options || [];
+  }
+
+  checkRequiredField(fieldMap: string): boolean {
+    return this.addressFieldsMap[fieldMap]?.isRequired || false;
+  }
+
+  checkVisibleField(fieldMap: string): boolean {
+    return this.addressFieldsMap[fieldMap]?.isVisible || false;
+  }
+
+  getFieldValidationPattern(fieldMap: string): string {
+    return this.addressFieldsMap[fieldMap]?.validationPattern || '';
+  }
+
   deleteCustomer() {
-    this.customerService.deleteCustomer(this.slug).subscribe({
+    this.CustomersService.deleteCustomer(this.slug).subscribe({
       next: (res: any) => {
         if (res?.errorCode == 0) {
-          this.router.navigate([this.appRoute.customers.CUSTOMERS_LIST]);
+          this.Router.navigate([this.appRoute.customers.CUSTOMERS_LIST]);
           this.ChangeDetectorRef.markForCheck();
         } else {
           this.HotToastService.error(res?.message);
@@ -235,19 +351,13 @@ export class UpdateCustomersComponent implements OnInit {
   handleMobilePattern() {
     switch (this.form.get('countryCode')?.value) {
       case '+91':
-        this.updateMobilePattern(
-          `^[0-9]{${validators.india.validation.maximum}}$`
-        );
+        this.updateMobilePattern(`^[0-9]{${validators.india.validation.maximum}}$`);
         break;
       case '+971':
-        this.updateMobilePattern(
-          `^[0-9]{${validators.uae.validation.maximum}}$`
-        );
+        this.updateMobilePattern(`^[0-9]{${validators.uae.validation.maximum}}$`);
         break;
       case '+964':
-        this.updateMobilePattern(
-          `^[0-9]{${validators.iraq.validation.maximum}}$`
-        );
+        this.updateMobilePattern(`^[0-9]{${validators.iraq.validation.maximum}}$`);
         break;
     }
   }
@@ -262,35 +372,23 @@ export class UpdateCustomersComponent implements OnInit {
   handleAddressMobilePattern() {
     switch (this.addressForm.get('countryCode')?.value) {
       case '+91':
-        this.updateAddressMobilePattern(
-          `^[0-9]{${validators.india.validation.maximum}}$`
-        );
+        this.updateAddressMobilePattern(`^[0-9]{${validators.india.validation.maximum}}$`);
         break;
       case '+971':
-        this.updateAddressMobilePattern(
-          `^[0-9]{${validators.uae.validation.maximum}}$`
-        );
+        this.updateAddressMobilePattern(`^[0-9]{${validators.uae.validation.maximum}}$`);
         break;
       case '+964':
-        this.updateAddressMobilePattern(
-          `^[0-9]{${validators.iraq.validation.maximum}}$`
-        );
+        this.updateAddressMobilePattern(`^[0-9]{${validators.iraq.validation.maximum}}$`);
         break;
     }
   }
 
   openLoginActivities(template: TemplateRef<any>) {
-    this.loginRef = this.BsModalService.show(template, {
-      class: 'modal-dialog-centered modal-lg',
-      ignoreBackdropClick: true,
-    });
+    this.loginRef = this.BsModalService.show(template, { class: 'modal-dialog-centered modal-lg', ignoreBackdropClick: true, });
   }
 
   openCustomerOrders(template: TemplateRef<any>) {
-    this.ordersRef = this.BsModalService.show(template, {
-      class: 'modal-dialog-centered modal-lg',
-      ignoreBackdropClick: true,
-    });
+    this.ordersRef = this.BsModalService.show(template, { class: 'modal-dialog-centered modal-lg', ignoreBackdropClick: true, });
     this.getCustomerOrders();
   }
 
@@ -362,40 +460,13 @@ export class UpdateCustomersComponent implements OnInit {
   }
 
   initForm() {
-    this.form = this.formBuilder.group({
-      name: ['', Validators.required],
-      email: [
-        '',
-        [
-          Validators.required,
-          Validators.pattern("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,4}$")
-        ],
-      ],
-      countryCode: ['', Validators.required],
-      mobile: ['', [Validators.required, Validators.pattern('^[0-9]{9}$')]],
-      isActive: ['true', Validators.required],
-    });
-
-    this.addressForm = new FormGroup({
+    this.form = new FormGroup({
       name: new FormControl('', Validators.required),
-      countryCode: new FormControl(''),
-      mobile: new FormControl('', [
-        Validators.required,
-        Validators.pattern(('^[0-9]{10}$'))
-      ]),
-      firstlane: new FormControl('', Validators.required),
-      secondlane: new FormControl(''),
-      city: new FormControl('', Validators.required),
-      area: new FormControl(''),
-      country: new FormControl(''),
-      landmark: new FormControl('', Validators.required),
-      type: new FormControl('Home', Validators.required),
-      pincode: new FormControl(''),
-      state: new FormControl('', Validators.required),
-      lat: new FormControl(''),
-      lng: new FormControl(''),
-      isDefault: new FormControl(false),
-    });
+      email: new FormControl('', [Validators.required, Validators.pattern("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,4}$")],),
+      countryCode: new FormControl('', Validators.required),
+      mobile: new FormControl('', [Validators.required, Validators.pattern('^[0-9]{9}$')]),
+      isActive: new FormControl('true', Validators.required),
+    })
   }
 
   get formControls() {
@@ -407,10 +478,7 @@ export class UpdateCustomersComponent implements OnInit {
   }
 
   openWallet(template: TemplateRef<any>) {
-    this.walletRef = this.BsModalService.show(template, {
-      class: 'modal-xl modal-dialog-centered',
-      ignoreBackdropClick: true,
-    });
+    this.walletRef = this.BsModalService.show(template, { class: 'modal-xl modal-dialog-centered', ignoreBackdropClick: true, });
     this.getTransactions();
   }
 
@@ -422,10 +490,7 @@ export class UpdateCustomersComponent implements OnInit {
   }
 
   openLoyalty(template: TemplateRef<any>) {
-    this.loyaltyRef = this.BsModalService.show(template, {
-      class: 'modal-dialog-centered',
-      ignoreBackdropClick: true,
-    });
+    this.loyaltyRef = this.BsModalService.show(template, { class: 'modal-dialog-centered', ignoreBackdropClick: true, });
     this.getHistory();
   }
 
@@ -437,18 +502,16 @@ export class UpdateCustomersComponent implements OnInit {
   }
 
   getHistory() {
-    this.customerService
-      .getLoyaltyTransactions(
-        this.customerDetails?.slug,
-        this.loyalityType?.value
-      )
-      .subscribe({
-        next: (res: any) => {
-          if (res?.errorCode == 0) {
-            this.historyItems = res?.result;
-          }
-        },
-      });
+    this.CustomersService.getLoyaltyTransactions(
+      this.customerDetails?.slug,
+      this.loyalityType?.value
+    ).subscribe({
+      next: (res: any) => {
+        if (res?.errorCode == 0) {
+          this.historyItems = res?.result;
+        } else { }
+      }, error: (err: any) => { }
+    });
   }
 
   onWalletPageChange(event: { pageIndex: number; pageSize: number }) {
@@ -458,28 +521,26 @@ export class UpdateCustomersComponent implements OnInit {
   }
 
   getTransactions() {
-    this.customerService
-      .getTransactions({
-        customerId: this.customerDetails?._id,
-        type: this.transactionType.value,
-        pageIndex: this.walletPageIndex,
-        pageSize: this.walletPageSize,
-        keyword: this.walletKeyword.value
-      })
-      .subscribe({
-        next: (res: any) => {
-          if (res?.errorCode == 0) {
-            this.transactions = res?.result?.transactions;
-            this.walletTotalPages = res?.result?.totalPages;
-            this.walletTotalResults = res?.result?.totalResults;
-            this.ChangeDetectorRef.markForCheck();
-          } else {
-            this.HotToastService.error(res?.message);
-          }
-        }, error: (err: any) => {
-          this.HotToastService.error(err?.message);
-        },
-      });
+    this.CustomersService.getTransactions({
+      customerId: this.customerDetails?._id,
+      type: this.transactionType.value,
+      pageIndex: this.walletPageIndex,
+      pageSize: this.walletPageSize,
+      keyword: this.walletKeyword.value
+    }).subscribe({
+      next: (res: any) => {
+        if (res?.errorCode == 0) {
+          this.transactions = res?.result?.transactions;
+          this.walletTotalPages = res?.result?.totalPages;
+          this.walletTotalResults = res?.result?.totalResults;
+          this.ChangeDetectorRef.markForCheck();
+        } else {
+          this.HotToastService.error(res?.message);
+        }
+      }, error: (err: any) => {
+        this.HotToastService.error(err?.message);
+      },
+    });
   }
 
   addToWallet(type: string) {
@@ -488,38 +549,35 @@ export class UpdateCustomersComponent implements OnInit {
       return;
     }
 
-    this.customerService
-      .createTransaction({
-        amount: this.amount.value,
-        user: this.customerDetails?._id,
-        description: this.description.value,
-        type: type,
-      })
-      .subscribe({
-        next: (res: any) => {
-          if (res?.errorCode == 0) {
-            this.HotToastService.success(res?.message);
-            this.amount?.reset();
-            this.description?.setValue('Transaction successful! Your wallet has been updated.');
-            this.getTransactions();
-            this.getCustomerDetails();
-            this.closeManageWallet();
-            this.isWalletSubmitted = false;
-            this.ChangeDetectorRef.markForCheck();
-          } else {
-            this.HotToastService.error(res?.message);
-          }
-        },
-        error: (err: any) => {
-          this.HotToastService.error(err?.message);
-        },
-      });
+    this.CustomersService.createTransaction({
+      amount: this.amount.value,
+      user: this.customerDetails?._id,
+      description: this.description.value,
+      type: type,
+    }).subscribe({
+      next: (res: any) => {
+        if (res?.errorCode == 0) {
+          this.HotToastService.success(res?.message);
+          this.amount?.reset();
+          this.description?.setValue('Transaction successful! Your wallet has been updated.');
+          this.getTransactions();
+          this.getCustomerDetails();
+          this.closeManageWallet();
+          this.isWalletSubmitted = false;
+          this.ChangeDetectorRef.markForCheck();
+        } else {
+          this.HotToastService.error(res?.message);
+        }
+      }, error: (err: any) => {
+        this.HotToastService.error(err?.message);
+      },
+    });
   }
 
   open(template: TemplateRef<any>, address: any) {
     if (address) {
       this.isEditAddress = true;
-      this.customerService.getAddressDetails(address).subscribe((res: any) => {
+      this.CustomersService.getAddressDetails(address).subscribe((res: any) => {
         if (res?.errorCode == 0) {
           this.addressDetails = res?.result;
           for (let _key of Object.keys(res?.result)) {
@@ -527,9 +585,7 @@ export class UpdateCustomersComponent implements OnInit {
             this.addressForm.get('lat')?.setValue(res?.result?.coordinates?.lat);
             this.addressForm.get('lng')?.setValue(res?.result?.coordinates?.lng);
           }
-
-          this.getStateList();
-          this.getCityList()
+          this.loadStates('', 'update');
           this.ChangeDetectorRef.markForCheck();
         }
       });
@@ -543,6 +599,10 @@ export class UpdateCustomersComponent implements OnInit {
   close() {
     this.modalRef?.hide();
     this.addressForm.reset();
+    this.fetchCountries()
+    this.states = [];
+    this.cities = [];
+    this.addressForm.patchValue({ country: '', state: '', city: '', countryCode: '+971', isDefault: false, type: 'Home' });
   }
 
   managePage() {
@@ -560,7 +620,7 @@ export class UpdateCustomersComponent implements OnInit {
 
   //Function to check whether the email address exists
   emailExists(emailString: any) {
-    this.customerService
+    this.CustomersService
       .customerDetails({
         _id: { $eq: this.customerDetails?._id },
         email: emailString.value,
@@ -582,7 +642,7 @@ export class UpdateCustomersComponent implements OnInit {
 
   //Function to check whether the phone exists
   phoneExists(phoneString: any) {
-    this.customerService
+    this.CustomersService
       .customerDetails({
         _id: { $eq: this.customerDetails?._id },
         countryCode: this.form.get('countryCode')?.value,
@@ -616,18 +676,17 @@ export class UpdateCustomersComponent implements OnInit {
     };
 
     if (!this.isEditAddress) {
-      this.customerService.addAddress(payload).subscribe((res: any) => {
+      this.CustomersService.addAddress(payload).subscribe((res: any) => {
         if (res?.errorCode == 0) {
           this.getAddress();
           this.addressForm.reset();
-          this.addressForm.patchValue({
-            countryCode: '+971',
-            isDefault: false,
-            type: 'Home',
-          });
+          this.addressForm.patchValue({ countryCode: '+971', isDefault: false, type: 'Home' });
           this.HotToastService.success(res?.message);
           this.isAddressSubmitted = false;
           this.isEditAddress = false;
+          this.fetchCountries()
+          this.states = [];
+          this.cities = [];
           this.modalRef?.hide();
         } else {
           this.HotToastService.error(res?.message);
@@ -635,17 +694,16 @@ export class UpdateCustomersComponent implements OnInit {
       });
     } else {
       payload['refid'] = this.addressDetails?.refid;
-      this.customerService
+      this.CustomersService
         .updateCustomerAddress(payload)
         .subscribe((res: any) => {
           if (res?.errorCode == 0) {
             this.getAddress();
             this.addressForm.reset();
-            this.addressForm.patchValue({
-              countryCode: '+971',
-              isDefault: false,
-              type: 'Home',
-            });
+            this.addressForm.patchValue({ country: '', state: '', city: '', countryCode: '+971', isDefault: false, type: 'Home' });
+            this.fetchCountries()
+            this.states = [];
+            this.cities = [];
             this.HotToastService.success(res?.message);
             this.modalRef?.hide();
             this.isEditAddress = false;
@@ -658,7 +716,7 @@ export class UpdateCustomersComponent implements OnInit {
   }
 
   getAddress() {
-    this.customerService
+    this.CustomersService
       .getAddress({ userid: this.slug })
       .subscribe((res: any) => {
         if (res?.errorCode == 0) {
@@ -670,7 +728,7 @@ export class UpdateCustomersComponent implements OnInit {
 
   editAddress(refid: any) {
     this.isEditAddress = true;
-    this.customerService.getAddressDetails(refid).subscribe((res: any) => {
+    this.CustomersService.getAddressDetails(refid).subscribe((res: any) => {
       if (res?.errorCode == 0) {
         this.addressDetails = res?.result;
         for (let _key of Object.keys(res?.result)) {
@@ -684,7 +742,7 @@ export class UpdateCustomersComponent implements OnInit {
   }
 
   setDefaultAddress(refid: any) {
-    this.customerService.updateDefaultAddress(refid).subscribe((res: any) => {
+    this.CustomersService.updateDefaultAddress(refid).subscribe((res: any) => {
       if (res?.errorCode == 0) {
         this.getAddress();
         this.HotToastService.success(res?.message);
@@ -698,7 +756,7 @@ export class UpdateCustomersComponent implements OnInit {
   }
 
   confirm() {
-    this.customerService
+    this.CustomersService
       .deleteAddress(this.selectedAddress)
       .subscribe((res: any) => {
         if (res?.errorCode == 0) {
@@ -736,7 +794,7 @@ export class UpdateCustomersComponent implements OnInit {
   }
 
   getCustomerDetails() {
-    this.customerService.getCustomerDetails(this.slug).subscribe((res: any) => {
+    this.CustomersService.getCustomerDetails(this.slug).subscribe((res: any) => {
       this.customerDetails = res?.result;
       this.savedCards = res?.result?.savedCards || [];
       this.referralCode.setValue(res?.result?.referralCode);
@@ -788,7 +846,7 @@ export class UpdateCustomersComponent implements OnInit {
     emailId = emailId.toLowerCase()
     this.form.patchValue({ email: emailId })
 
-    this.customerService
+    this.CustomersService
       .updateCustomer(this.slug, {
         savedCards: this.savedCards,
         ...this.form.value,
@@ -797,7 +855,7 @@ export class UpdateCustomersComponent implements OnInit {
         next: (res: any) => {
           if (res.errorCode == 0) {
             this.HotToastService.success(res?.message);
-            this.router.navigate([this.appRoute.customers.CUSTOMERS_LIST]);
+            this.Router.navigate([this.appRoute.customers.CUSTOMERS_LIST]);
           } else if (res.errorCode == 0) {
             this.HotToastService.error(res?.message);
           }

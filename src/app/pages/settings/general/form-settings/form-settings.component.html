@@ -1,0 +1,33 @@
+<div>
+    <div class="page-header d-flex align-items-start justify-content-between">
+        <div>
+            <div class="page-title">
+                <h1 class="fw-bold">Form Settings</h1>
+            </div>
+            <ul class="breadcrumb">
+                <li class="breadcrumb-item fs-6">
+                    <a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a>
+                </li>
+                <li class="breadcrumb-item active fs-6">
+                    <a routerLink="{{ appRoute.formSettings}}">Form Settings</a>
+                </li>
+            </ul>
+        </div>
+        <div class="d-flex align-items-center justify-content-end gap-2">
+            <select [formControl]="formType" class="form-select">
+                <option value="" disabled>-- Select an option --</option>
+                <option *ngFor="let formItem of formItems" [value]="formItem.value">{{formItem.label}}</option>
+            </select>
+            <button type="button" class="btn btn-primary w-100" (click)="saveChanges()">
+                Save Changes
+            </button>
+        </div>
+    </div>
+    
+
+    <div class="my-4">
+        <ng-container *ngIf="formType.value === 'address'">
+            <app-form-address (fieldsChange)="onFieldsChange($event)" [fields]="fields"></app-form-address>
+        </ng-container>
+    </div>
+</div>

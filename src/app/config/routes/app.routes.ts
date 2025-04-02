@@ -332,6 +332,7 @@ export const appRoutes = {
   compareKeys: `${app}/compare-keys`,
   appKeys: `${app}/app-keys`,
   toasts: `${app}/toasts`,
+  formSettings: `${app}/form-settings`,
   pickupLocations: {
     list: `${app}/pickup-locations`,
     create: `${app}/pickup-locations/add`,

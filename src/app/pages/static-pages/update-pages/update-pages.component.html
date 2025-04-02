@@ -16,6 +16,8 @@
                 </li>
             </ul>
         </div>
+        <div>
+        </div>
     </div>
 
     <div class="my-4 card">
@@ -36,15 +38,18 @@
 
                 <div class="form-group mb-3">
                     <label for="description" class="fs-6 mb-3 required">Description</label>
-                        <textarea type="text" id="message" class="form-control"
-                            formControlName="description" rows="20" [ngClass]="{
-                                'is-invalid':  (formControls.description.touched || isSubmitted) && formControls.description.errors?.required}"></textarea>
+                    <div class="editor-container">
+                        <ngx-monaco-editor [options]="editorOptions" formControlName="description"
+                            [ngClass]="{'is-invalid': (formControls.description.touched || isSubmitted) && formControls.description.errors?.required}">
+                        </ngx-monaco-editor>
+                    </div>
                 </div>
 
                 <div class="row mb-3">
 
                     <div class="col-lg-3">
-                        <app-assets (mediaClicked)="onMediaClicked($event)" [previewDetails]="metaThumbnail"></app-assets>
+                        <app-assets (mediaClicked)="onMediaClicked($event)"
+                            [previewDetails]="metaThumbnail"></app-assets>
                     </div>
 
                     <div class="col-lg-9">
@@ -67,17 +72,17 @@
 
                 </div>
 
-                <div class="d-flex align-items-center justify-content-between">
-                    <button type="button" class="btn btn-danger" (click)="onDelete(template)">Delete page</button>
-
-                    <div class="d-flex align-items-center gap-2 justify-content-end">
-                        <button class="btn btn-secondary" routerLink="{{appRoute.staticPages.list}}">Cancel</button>
-                        <button type="button" (click)="onSubmit()" class="btn btn-primary">Save changes</button>
-                    </div>
-                </div>
             </form>
 
         </div>
+    </div>
+</div>
+<div class="d-flex align-items-center justify-content-between">
+    <button type="button" class="btn btn-danger" (click)="onDelete(template)">Delete page</button>
+
+    <div class="d-flex align-items-center gap-2 justify-content-end">
+        <button class="btn btn-secondary" routerLink="{{appRoute.staticPages.list}}">Cancel</button>
+        <button type="button" (click)="onSubmit()" class="btn btn-primary">Save changes</button>
     </div>
 </div>
 
@@ -86,5 +91,25 @@
         <p>Do you want to delete this page?</p>
         <button type="button" class="btn btn-default" (click)="confirm()">Yes</button>
         <button type="button" class="btn btn-primary" (click)="decline()">No</button>
+    </div>
+</ng-template>
+
+<ng-template #viewTemplate>
+    <div class="modal-header">
+        <h4 class="fs-2 fw-bold pull-left">Preview</h4>
+        <button type="button" class="btn-close close pull-right" aria-label="Close" (click)="viewModalRef?.hide()">
+            <span aria-hidden="true" class="visually-hidden">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <div class="template-preview">
+            <iframe
+                style="width: 100%; aspect-ratio: 2.14/1; height: auto; zoom: 0.8; border: 1px solid #dee2e6; border-radius: 4px; background: white; overflow: hidden;"
+                [srcdoc]="getSanitizedHtml(form.get('description')?.value)" 
+                frameborder="0" 
+                sandbox="allow-same-origin" 
+                allowfullscreen>
+            </iframe>
+        </div>
     </div>
 </ng-template>
