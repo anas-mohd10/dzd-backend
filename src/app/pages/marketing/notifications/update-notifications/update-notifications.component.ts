@@ -56,23 +56,23 @@ export class UpdateNotificationsComponent implements OnInit {
 
   async loadData() {
     this.isLoading = true;
-
+    
     try {
       // Use Promise.all to fetch data in parallel
       const [customersData, notificationData] = await Promise.all([
         this.fetchCustomers(),
         this.fetchNotificationDetails()
       ]);
-
+      
       // Process customers data if successful
       if (customersData && customersData.errorCode === 0) {
         this.customersData = customersData.result.map((customer: any) => ({
           ...customer,
-          title: (customer?.name ? customer?.name : '-- Incomplete Profile --') +
-            ' ( ' + customer?.mobile + ' )'
+          title: (customer?.name ? customer?.name : '-- Incomplete Profile --') + 
+                 ' ( ' + customer?.mobile + ' )'
         }));
       }
-
+      
       // Process notification details if successful
       if (notificationData && notificationData.errorCode === 0) {
         this.notificationDetails = notificationData.result;
@@ -86,14 +86,14 @@ export class UpdateNotificationsComponent implements OnInit {
       this.cdr.markForCheck();
     }
   }
-
+  
   fetchCustomers(): Promise<any> {
     return new Promise((resolve, reject) => {
       if (!this.customersService) {
         resolve({ errorCode: 1, result: [] });
         return;
       }
-
+      
       this.customersService.getActiveCustomers().subscribe({
         next: (res: any) => resolve(res),
         error: (err: any) => {
@@ -103,14 +103,14 @@ export class UpdateNotificationsComponent implements OnInit {
       });
     });
   }
-
+  
   fetchNotificationDetails(): Promise<any> {
     return new Promise((resolve, reject) => {
       if (!this.notificationId) {
         resolve({ errorCode: 0, result: null });
         return;
       }
-
+      
       this.notificationsService.getNotificationDetails(this.notificationId).subscribe({
         next: (res: any) => resolve(res),
         error: (err: any) => {
@@ -135,9 +135,9 @@ export class UpdateNotificationsComponent implements OnInit {
       isStoreLevel: data.isStoreLevel.toString(),
       isActive: data.isActive.toString(),
     });
-
+    
     // Handle scheduled date and time
-    if (data.scheduledDate) {
+    if (data.scheduled) {
       // Create date object from UTC timestamp - it will automatically convert to local time
       const scheduledDateTime = new Date(data.scheduled);
 
@@ -156,12 +156,12 @@ export class UpdateNotificationsComponent implements OnInit {
       this.form.get('scheduledTime')?.setValue(`${hours}:${minutes}`);
       console.log(this.form.get('scheduledTime')?.value, "scheduledTime")
     }
-
+    
     // Set thumbnail if available
     if (data.thumbnail?.path) {
       this.thumbnail = data.thumbnail.path;
     }
-
+    
     // Process customers - ensure we're working with IDs
     if (data.customers && Array.isArray(data.customers)) {
       // If customers are objects with _id property
@@ -199,9 +199,9 @@ export class UpdateNotificationsComponent implements OnInit {
     }
 
     let scheduledDateTime = null;
-    if (this.form.get('type')?.value === 'scheduled' &&
-      this.form.get('scheduledDate')?.value &&
-      this.form.get('scheduledTime')?.value) {
+    if (this.form.get('type')?.value === 'scheduled' && 
+        this.form.get('scheduledDate')?.value && 
+        this.form.get('scheduledTime')?.value) {
       scheduledDateTime = new Date(
         `${this.form.get('scheduledDate')?.value}T${this.form.get('scheduledTime')?.value}`
       ).toISOString();
