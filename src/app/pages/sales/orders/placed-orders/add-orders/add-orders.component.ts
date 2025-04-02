@@ -385,14 +385,14 @@ export class AddOrdersComponent implements OnInit {
     const control = this.addressForm.get(fieldMap);
     if (!control) return false;
 
-    const isRequired = field.isRequired;
-    const isTouched = control.touched;
-    const isSubmitted = this.isAddressSubmitted;
-    const hasError = control.errors;
+    const isRequired: boolean = field.isRequired;
+    const isTouched: boolean = control.touched;
+    const isSubmitted: boolean = this.isAddressSubmitted;
+    const hasError: boolean = control.errors ? true : false;
 
     // If field is not required, only show validation if it has errors
-    if (!isRequired) {
-      return (isTouched || isSubmitted) && !!hasError;
+    if (isRequired == false) {
+      return !!hasError;
     }
 
     // For required fields, show validation if touched/submitted and has errors
@@ -458,10 +458,26 @@ export class AddOrdersComponent implements OnInit {
   }
 
   updateAddressMobilePattern(newPattern: string) {
-    const newValidators = [Validators.required];
-    if (newPattern) newValidators.push(Validators.pattern(newPattern));
-    this.addressForm.get('mobile')?.setValidators(newValidators);
-    this.addressForm.get('mobile')?.updateValueAndValidity();
+    const mobileControl = this.addressForm.get('mobile');
+    const isRequired = this.addressFieldsMap['mobile']?.isRequired;
+    
+    if (isRequired) {
+      // If field is required, always apply validation
+      const newValidators = [Validators.required];
+      if (newPattern) newValidators.push(Validators.pattern(newPattern));
+      mobileControl?.setValidators(newValidators);
+    } else {
+      // If field is not required, only apply pattern validation when there is a value
+      mobileControl?.setValidators((control) => {
+        if (!control.value) {
+          return null; // Return null if empty (valid)
+        }
+        // If there is a value, validate the pattern
+        return Validators.pattern(newPattern)(control);
+      });
+    }
+    
+    mobileControl?.updateValueAndValidity();
   }
 
   /**

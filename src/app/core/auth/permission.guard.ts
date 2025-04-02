@@ -172,6 +172,9 @@ export class PermissionGuard implements CanActivate {
       case 'payment-settings':
         module[0] == 'payment-settings' ? path = 'payment-settings' : null
         break
+        case 'form-settings':
+          module[0] == 'form-settings' ? path = 'form-settings' : null
+          break
       case 'cart-settings':
         module[0] == 'cart-settings' ? path = 'cart-settings' : null
         break

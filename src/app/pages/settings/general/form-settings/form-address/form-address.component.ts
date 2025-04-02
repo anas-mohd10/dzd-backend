@@ -55,13 +55,56 @@ export class FormAddressComponent implements OnInit, OnDestroy {
     this.destroy$.complete();
   }
 
-  onSwitchChange(event: { toggleState: boolean, switchId: string }, index: number, type: 'isRequired' | 'isVisible') {
+  onSwitchChange(event: { toggleState: boolean, switchId: string }, index: number, type: 'isRequired' | 'isVisible', fieldMap: string) {
     const updatedFields = [...this.fields];
     updatedFields[index] = {
       ...updatedFields[index],
       [type]: event.toggleState
     };
+
+    if (type === 'isRequired' && event.toggleState == true) {
+      updatedFields[index].isVisible = true;
+    }
+
+    if (type === 'isVisible' && event.toggleState == false) {
+      updatedFields[index].isRequired = false;
+    }
+
+    // If the country isVisible is false, then the state and city areVisible should be false
+    if (fieldMap === 'country') {
+      if (type == 'isVisible' && event.toggleState == false) {
+        this.hideDependentFiels(updatedFields, ['state', 'city']);
+      }
+    }
+
+    if (fieldMap == 'mobile' || fieldMap == 'countryCode') {
+      if (type == 'isVisible' && event.toggleState == false) {
+        this.hideDependentFiels(updatedFields, [fieldMap == 'mobile' ? 'countryCode' : 'mobile']);
+      }else if(type == 'isVisible' && event.toggleState == true){
+        this.showDependentFiels(updatedFields, [fieldMap == 'mobile' ? 'countryCode' : 'mobile']);
+      }
+    }
+
     this.fieldsChange.emit(updatedFields);
+  }
+
+  hideDependentFiels(updatedFields: FieldMap[], fields: string[]) {
+    fields.forEach(field => {
+      const index = updatedFields.findIndex(f => f.fieldMap === field);
+      if (index !== -1) {
+        updatedFields[index].isVisible = false;
+        updatedFields[index].isRequired = false;
+      }
+    });
+  }
+
+  showDependentFiels(updatedFields: FieldMap[], fields: string[]) {
+    fields.forEach(field => {
+      const index = updatedFields.findIndex(f => f.fieldMap === field);
+      if (index !== -1) {
+        updatedFields[index].isVisible = true;
+      }
+    });
   }
 
   onLabelChange(event: Event, index: number) {
