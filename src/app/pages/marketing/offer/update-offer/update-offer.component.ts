@@ -400,6 +400,8 @@ export class UpdateOfferComponent implements OnInit {
     this.offerService
       .updateOffer({
         ...this.form.value,
+        startDate: startDateTime,
+        endDate: endDateTime,
         offerType:
           this.form.get('offerType')?.value == 'complete'
             ? 'complete'
