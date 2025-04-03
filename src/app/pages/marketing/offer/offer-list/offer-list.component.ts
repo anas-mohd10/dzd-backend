@@ -71,7 +71,7 @@ export class OfferListComponent implements OnInit {
   }
 
   switchToggled(event: { switchId: string, toggleState: boolean }) {
-    this.OfferService.updateOffer({ slug: event.switchId, isActive: event.toggleState }).subscribe({
+    this.OfferService.updateOffer({ slug: event.switchId, isActive: event.toggleState, isForced: true }).subscribe({
       next: (res: any) => {
         if (res?.errorCode == 0) {
           this.getOffers()
