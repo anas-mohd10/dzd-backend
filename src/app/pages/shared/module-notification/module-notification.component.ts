@@ -38,6 +38,7 @@ export class ModuleNotificationComponent implements OnInit, OnChanges {
   form: FormGroup;
   isInvalid: boolean;
   @Output() notificationTriggered = new EventEmitter<void>();
+  primaryLanguage: string;
 
   triggerNotification() {
     // Logic to trigger the notification
@@ -79,19 +80,39 @@ export class ModuleNotificationComponent implements OnInit, OnChanges {
   }
 
   ngOnInit(): void {
-    this.form = new FormGroup({
-      channel: new FormControl('push'),
-      sms: new FormControl(
-        '🛍️ Time to Complete Your Shopping! 🛒 Your items are patiently waiting in the cart. Finish your purchase now and enjoy your fabulous finds. '
-      ),
-      subject: new FormControl(
-        'Complete Your Shopping Today for Exclusive Deals!'
-      ),
-      title: new FormControl('Finish your shopping now'),
-      message: new FormControl(
-        'Your cart is waiting for you. Complete your shopping now to secure your favorites before they are gone'
-      ),
-    });
+    this.primaryLanguage = localStorage.getItem('primaryLanguage') || 'en';
+    console.log(this.primaryLanguage);
+
+    // Set form values based on primary language
+    if (this.primaryLanguage === 'ar') {
+      this.form = new FormGroup({
+        channel: new FormControl('push'),
+        sms: new FormControl(
+          '🛍️ حان الوقت لإكمال التسوق! 🛒 منتجاتك في انتظارك في سلة التسوق. أكمل عملية الشراء الآن واستمتع بمشترياتك الرائعة.'
+        ),
+        subject: new FormControl(
+          'أكمل تسوقك اليوم للحصول على عروض حصرية!'
+        ),
+        title: new FormControl('أكمل تسوقك الآن'),
+        message: new FormControl(
+          'سلة التسوق الخاصة بك في انتظارك. أكمل عملية الشراء الآن لتأمين منتجاتك المفضلة قبل نفادها'
+        ),
+      });
+    } else {
+      this.form = new FormGroup({
+        channel: new FormControl('push'),
+        sms: new FormControl(
+          '🛍️ Time to Complete Your Shopping! 🛒 Your items are patiently waiting in the cart. Finish your purchase now and enjoy your fabulous finds. '
+        ),
+        subject: new FormControl(
+          'Complete Your Shopping Today for Exclusive Deals!'
+        ),
+        title: new FormControl('Finish your shopping now'),
+        message: new FormControl(
+          'Your cart is waiting for you. Complete your shopping now to secure your favorites before they are gone'
+        ),
+      });
+    }
 
     this.couponForm = new FormGroup({
       title: new FormControl('', Validators.required),
