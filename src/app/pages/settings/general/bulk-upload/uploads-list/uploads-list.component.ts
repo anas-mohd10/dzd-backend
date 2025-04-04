@@ -38,10 +38,10 @@ export class UploadsListComponent implements OnInit {
     { title: 'Category', type: 'category' },
     { title: 'Brand', type: 'brand' },
     { title: 'User', type: 'user' },
-    { title: 'Blogs', type: 'blog' },
+    // { title: 'Blogs', type: 'blog' },
     { title: 'Collection', type: 'collection' },
     { title: 'Orders', type: 'order' },
-    { title: 'Subscribers', type: 'subscriber' },
+    // { title: 'Subscribers', type: 'subscriber' },
   ];
   fileData: any;
   fileName: string;
