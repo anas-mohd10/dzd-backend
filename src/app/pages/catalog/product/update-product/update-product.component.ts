@@ -495,12 +495,12 @@ productMediaClicked(event: any) {
   // For update product view, we need to check for both _id and path
   const eventPath = event.path;
   const eventId = event._id;
-  
+
   // Check if the item already exists in our images array
   let isExists: boolean = this.images.some(
     (item: any) => (item._id && item._id === eventId) || (item.path && item.path === eventPath)
   );
-  
+
   if (isExists) {
     // If it exists, remove it
     this.images = this.images.filter(
@@ -512,13 +512,13 @@ productMediaClicked(event: any) {
     this.images.push(event);
     this.HotToastService.success('Image added to product');
   }
-  
+
   // Update form control with the current images
   if (this.form && this.form.get('files')) {
     let files = this.images.map((item: any) => item.path) || [];
     this.form.get('files')?.setValue(files);
   }
-  
+
   // Force change detection
   if (this.ChangeDetectorRef) {
     this.ChangeDetectorRef.markForCheck();
@@ -527,9 +527,9 @@ productMediaClicked(event: any) {
 
 productIconClicked(event: any, type: string = 'add') {
   const iconPath = type === 'remove' ? event : event.path;
-  
+
   let isExists: boolean = this.icons.some(item => item === iconPath);
-  
+
   if (isExists) {
     // Remove the icon
     const index = this.icons.findIndex(item => item === iconPath);
@@ -542,7 +542,7 @@ productIconClicked(event: any, type: string = 'add') {
     this.icons.push(event.path);
     this.HotToastService.success('Icon added to product');
   }
-  
+
   // Force change detection
   if (this.ChangeDetectorRef) {
     this.ChangeDetectorRef.markForCheck();
@@ -557,7 +557,7 @@ productIconClicked(event: any, type: string = 'add') {
   productThumbnailClicked(event: any) {
     this.form.get('thumbnail')?.setValue(event.path);
   }
-  
+
   productVideoThumbnailClicked(event: any) {
     this.form.get('videoThumbnail')?.setValue(event.path);
   }
@@ -921,11 +921,20 @@ productIconClicked(event: any, type: string = 'add') {
         if (res?.errorCode == 0) {
           this.settings = res?.result;
           this.languages = res?.result?.languages;
+
+          // If product details are already loaded, update the form with correct localization
+          if (this.productDetails) {
+            this.updateFormWithLocalizedContent();
+          }
+
           this.ChangeDetectorRef.markForCheck();
         } else {
+          console.error('Failed to load settings:', res);
         }
       },
-      error: (err: any) => { },
+      error: (err: any) => {
+        console.error('Error loading settings:', err);
+      },
     });
 
     this.addOnOptionForm = new FormGroup({
@@ -966,33 +975,34 @@ productIconClicked(event: any, type: string = 'add') {
     this.ProductService.getProductDetails(this.productSlug).subscribe({
       next: (res: any) => {
         if (res?.errorCode == 0) {
+          // Store the complete product details including all localized content
+          this.productDetails = res?.result;
+
+          // Basic form patching (non-localized fields)
           this.form.patchValue(res?.result);
+
           // Check if searchKeywords exist and are not empty
-          this.searchKeywords = (res?.result?.searchKeywords || []).filter(
-            Boolean
-          );
+          this.searchKeywords = (res?.result?.searchKeywords || []).filter(Boolean);
           this.form.get('searchKeywords')?.setValue(this.searchKeywords);
 
-          this.productDetails = res?.result;
-         this.form.patchValue(res?.result);
-  
-  if (res?.result?.files && Array.isArray(res?.result?.files)) {
-  this.images = res?.result?.files
-    .filter((item: any) => item !== null && item !== undefined)
-    .map((item: any) => {
-      // If the item is already an object with a path property, use it
-      if (typeof item === 'object' && item !== null && item.path) {
-        return item;
-      }
-      // Otherwise, create a new object with a path property
-      return {
-        path: typeof item === 'string' ? item : '',
-        _id: typeof item === 'object' && item !== null && item._id ? item._id : null
-      };
-    });
-} else {
-  this.images = [];
-}
+          // Process images
+          if (res?.result?.files && Array.isArray(res?.result?.files)) {
+            this.images = res?.result?.files
+              .filter((item: any) => item !== null && item !== undefined)
+              .map((item: any) => {
+                // If the item is already an object with a path property, use it
+                if (typeof item === 'object' && item !== null && item.path) {
+                  return item;
+                }
+                // Otherwise, create a new object with a path property
+                return {
+                  path: typeof item === 'string' ? item : '',
+                  _id: typeof item === 'object' && item !== null && item._id ? item._id : null
+                };
+              });
+          } else {
+            this.images = [];
+          }
 
           // Set the primary category
           if (res?.result?.primaryCategory) {
@@ -1009,58 +1019,25 @@ productIconClicked(event: any, type: string = 'add') {
             this.form.patchValue({ brand: res.result.brand.slug });
           }
 
+          // Set other details
           this.storeFields = res?.result?.storeFrontFields;
           this.tagIcons = res?.result?.tagIcons ? res?.result?.tagIcons : [];
-          this.categories = res?.result?.categories;
           this.categories = res?.result?.categories || [];
           this.selectedCategories = this.categories.map((cat) => cat.slug);
           this.parentDetails = res?.result?.product?.id;
           this.productBannerDetails = res?.result?.productBanner && res?.result?.productBanner;
-
-          this.form.patchValue({
-            productBanner: res?.result?.productBanner?._id,
-            brand: res?.result?.brand?.slug,
-            name:
-              res.result.localizedNames?.[this.settings.primaryLang] ||
-              res.result?.name,
-            overview:
-              res.result.localizedOverview?.[this.settings.primaryLang] ||
-              res.result?.overview,
-            origin:
-              res.result.localizedOrigin?.[this.settings.primaryLang] ||
-              res.result?.origin,
-            details: {
-              description:
-                res.result.localizedDetails?.description?.[
-                this.settings.primaryLang
-                ] || res.result?.details?.description,
-              features:
-                res.result.localizedDetails?.features?.[
-                this.settings.primaryLang
-                ] || res.result?.details?.features,
-              longDescription:
-                res.result.localizedDetails?.longDescription?.[
-                this.settings.primaryLang
-                ] || res.result?.details?.longDescription,
-            },
-            metaTitle:
-              res?.result?.localizedMetaTitles?.[this.settings.primaryLang] ||
-              res.result?.metaTitle,
-            metaDescription:
-              res.result.localizedMetaDescriptions?.[
-              this.settings.primaryLang
-              ] || res.result?.metaDescription,
-            metaKeywords:
-              res.result.localizedMetaKeywords?.[this.settings.primaryLang] ||
-              res.result?.metaKeywords,
-          });
-
           this.attributes = res?.result?.attributes;
           this.relatedProducts = res?.result?.relatedProducts;
           this.icons = res?.result?.productIcons || [];
           this.thumbnailPreview = res?.result?.thumbnail;
-          this.ChangeDetectorRef.markForCheck();
           this.videoThumbnailPreview = res?.result?.videoThumbnail;
+
+          // If settings are already loaded, update the form with localized content
+          if (this.settings) {
+            this.updateFormWithLocalizedContent();
+          }
+
+          this.ChangeDetectorRef.markForCheck();
         }
       },
       error: (err: any) => {
@@ -1192,6 +1169,37 @@ productIconClicked(event: any, type: string = 'add') {
       error: (err: any) => { },
     });
   }
+  updateFormWithLocalizedContent() {
+    if (!this.productDetails || !this.settings || !this.settings.primaryLang) {
+      console.warn('Cannot update form with localized content, missing data:', {
+        hasProductDetails: !!this.productDetails,
+        hasSettings: !!this.settings,
+        primaryLang: this.settings?.primaryLang
+      });
+      return;
+    }
+
+    const primaryLang = this.settings.primaryLang;
+
+    // Patch the form with the localized content for the current language
+    this.form.patchValue({
+      name: this.productDetails.localizedNames?.[primaryLang] || this.productDetails.name,
+      overview: this.productDetails.localizedOverview?.[primaryLang] || this.productDetails.overview,
+      origin: this.productDetails.localizedOrigin?.[primaryLang] || this.productDetails.origin,
+      details: {
+        description: this.productDetails.localizedDetails?.description?.[primaryLang] ||
+                    this.productDetails.details?.description,
+        features: this.productDetails.localizedDetails?.features?.[primaryLang] ||
+                 this.productDetails.details?.features,
+        longDescription: this.productDetails.localizedDetails?.longDescription?.[primaryLang] ||
+                        this.productDetails.details?.longDescription,
+      },
+      metaTitle: this.productDetails.localizedMetaTitles?.[primaryLang] || this.productDetails.metaTitle,
+      metaDescription: this.productDetails.localizedMetaDescriptions?.[primaryLang] || this.productDetails.metaDescription,
+      metaKeywords: this.productDetails.localizedMetaKeywords?.[primaryLang] || this.productDetails.metaKeywords,
+    });
+
+  }
 
   onSaveStoreField() {
     if (!this.storeFieldForm.valid) {
@@ -1272,7 +1280,7 @@ productIconClicked(event: any, type: string = 'add') {
 
  handleTagIcons(event: any) {
   const tagPath = event.path;
-  
+
   if (this.tagIcons.includes(tagPath)) {
     this.tagIcons = this.tagIcons.filter(item => item !== tagPath);
     this.HotToastService.info('Tag removed from product');
@@ -1280,7 +1288,7 @@ productIconClicked(event: any, type: string = 'add') {
     this.tagIcons.push(tagPath);
     this.HotToastService.success('Tag added to product');
   }
-  
+
   // Force change detection
   if (this.ChangeDetectorRef) {
     this.ChangeDetectorRef.markForCheck();
@@ -1290,7 +1298,7 @@ productIconClicked(event: any, type: string = 'add') {
 removeTagIcons(icon: any) {
   this.tagIcons = this.tagIcons.filter(item => item !== icon);
   this.HotToastService.info('Tag removed from product');
-  
+
   // Force change detection
   if (this.ChangeDetectorRef) {
     this.ChangeDetectorRef.markForCheck();

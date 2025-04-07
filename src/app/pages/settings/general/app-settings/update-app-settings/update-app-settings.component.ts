@@ -122,6 +122,7 @@ export class UpdateAppSettingsComponent implements OnInit {
     }
   ];
   logo?: string;
+  darkLogo?: string;
   favicon?: string;
   defaultBanner?: string;
   defaultMobileBanner?: string;
@@ -239,6 +240,7 @@ export class UpdateAppSettingsComponent implements OnInit {
       if (res?.errorCode == 0) {
         this.data = res?.result
         this.logo = res?.result?.logo
+        this.darkLogo = res?.result?.darkLogo
         this.paymentGateways = res?.result?.paymentGateway
         this.favicon = res?.result?.favicon
         this.defaultBanner = res?.result?.defaultBanner
@@ -288,11 +290,13 @@ export class UpdateAppSettingsComponent implements OnInit {
         this.form.get('notifyButton')?.setValue(res?.result?.buttons?.notify)
         this.form.get('shippingCost')?.setValue(res?.result?.shippingCost)
         this.form.get('logo')?.setValue(res?.result?.logo)
+        this.form.get('darkLogo')?.setValue(res?.result?.darkLogo)
         this.form.get('favicon')?.setValue(res?.result?.favicon)
         this.form.get('defaultBanner')?.setValue(res?.result?.defaultBanner)
         this.form.get('defaultMobileBanner')?.setValue(res?.result?.defaultMobileBanner)
         this.form.get('verifyNumberWithTwilio')?.setValue(res?.result?.verifyNumberWithTwilio)
         this.form.get('deliverSlotBufferTime')?.setValue(res?.result?.deliverSlotBufferTime || 60);
+        this.form.get('isVoucherEnabled')?.setValue(res?.result?.isVoucherEnabled)
 
         this.form.get('commaSeparation')?.setValue(
           res?.result?.commaSeparation ?? true  // Use nullish coalescing for default
@@ -387,6 +391,7 @@ export class UpdateAppSettingsComponent implements OnInit {
       stockButton: ['Out of Stock', Validators.required],
       notifyButton: ['Notify Me', Validators.required],
       logo: ['', Validators.required],
+      darkLogo: [''],
       favicon: ['', Validators.required],
       defaultBanner: [''],
       defaultMobileBanner: [''],
@@ -394,6 +399,7 @@ export class UpdateAppSettingsComponent implements OnInit {
       defaultMinimumCartAmount: ['0'],
       deliverSlotBufferTime: [60],
       verifyNumberWithTwilio: ['false'],
+      isVoucherEnabled: ['false'],
     })
   }
 
@@ -445,6 +451,11 @@ export class UpdateAppSettingsComponent implements OnInit {
     this.form.get('logo')?.setValue(event.path)
   }
 
+  handleStoreDarkLogo(event: any) {
+    this.form.get('darkLogo')?.setValue(event.path)
+  }
+
+
   handleStoreFavicon(event: any) {
     this.form.get('favicon')?.setValue(event.path)
   }
@@ -454,6 +465,10 @@ export class UpdateAppSettingsComponent implements OnInit {
       case 'logo':
         this.form.get('logo')?.setValue('');
         this.logo = '';
+        break;
+        case 'darkLogo':
+        this.form.get('darkLogo')?.setValue('');
+        this.darkLogo = '';
         break;
       case 'favicon':
         this.form.get('favicon')?.setValue('');
@@ -539,6 +554,7 @@ export class UpdateAppSettingsComponent implements OnInit {
       description: this.form.get('description')?.value,
       shippingCost: this.form.get('shippingCost')?.value,
       logo: this.form.get('logo')?.value,
+      darkLogo: this.form.get('darkLogo')?.value,
       paymentGateway: this.form.get('paymentGateway')?.value,
       favicon: this.form.get('favicon')?.value,
       defaultBanner: this.form.get('defaultBanner')?.value,
@@ -553,6 +569,7 @@ export class UpdateAppSettingsComponent implements OnInit {
       currencyLocation: this.form.get('currencyLocation')?.value,
       decimalValues: Number(this.form.get('decimalValues')?.value),
       verifyNumberWithTwilio: this.form.get('verifyNumberWithTwilio')?.value,
+      isVoucherEnabled: this.form.get('isVoucherEnabled')?.value,
       buttons: {
         cart: this.form.get('cartButton')?.value,
         stock: this.form.get('stockButton')?.value,

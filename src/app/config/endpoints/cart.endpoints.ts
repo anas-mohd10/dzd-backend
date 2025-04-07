@@ -3,7 +3,10 @@ export const cartEndpoints = {
   get_cart: '/carts',
   search_carts: '/carts/search',
   get_active_carts: '/carts/active',
+  cartCalculation: '/cartCalculation',
   get_cart_by_id: '/cart',
   cart_notification: '/cart/notification',
-  cartProducts: '/cart-products'
+  cartDetails: '/cartDetails',
+  cartProducts: '/cart-products',
+  exportCart:'/export-cart',
 }

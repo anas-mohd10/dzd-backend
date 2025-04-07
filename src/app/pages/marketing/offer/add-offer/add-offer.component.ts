@@ -159,18 +159,23 @@ export class AddOfferComponent implements OnInit {
     switch (this.form.get('offerType')?.value) {
       case 'products':
         this.products = dropdownInputs
+        this.dropdownInputs = dropdownInputs
         break;
       case 'collections':
         this.collections = dropdownInputs
+        this.dropdownInputs = dropdownInputs
         break;
       case 'categories':
         this.categories = dropdownInputs
+        this.dropdownInputs = dropdownInputs
         break;
       case 'parents':
         this.parents = dropdownInputs
+        this.dropdownInputs = dropdownInputs
         break;
       case 'brands':
         this.brands = dropdownInputs
+        this.dropdownInputs = dropdownInputs
         break;
     }
   }

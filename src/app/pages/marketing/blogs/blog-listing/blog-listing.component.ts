@@ -27,6 +27,8 @@ clear() {
   modalRef: BsModalRef;
   categoryForm: FormGroup;
   categoryThumbnail: any;
+  selectedFilter: 'active' | 'inactive' | 'all' = 'all';
+
 
   constructor(
     private ChangeDetectorRef: ChangeDetectorRef,
@@ -41,8 +43,8 @@ clear() {
 
 
   ngOnInit(): void {
-    this.getBlogs()
-  }
+    this.selectedFilter = (localStorage.getItem('selectedFilter') as 'active' | 'inactive' | 'all') || 'all';
+    this.getBlogs();  }
 
   onPageTriggered(event: any) {
     this.page = event.pageIndex
@@ -53,24 +55,68 @@ clear() {
     this.modalRef = this.modalService.show(template);
   }
 
+  saveBlog(blog: any) {
+    this.BlogService.updateBlog(blog).subscribe({
+      next: (res: any) => {
+        if (res?.errorCode === 0) {
+          this.getBlogs();
+        }
+      }
+    });
+  }
+  
+
+  filterBlogs(status: 'active' | 'inactive' | 'all') {
+    if (this.selectedFilter !== status) {
+      this.selectedFilter = status;
+      localStorage.setItem('selectedFilter', status); // Persist the selected filter
+    }
+  
+    this.getBlogs();
+  }
+  
+
   getBlogs() {
     this.BlogService.blogs({
       page: this.page,
       limit: this.limit,
       keyword: this.keyword.value,
-      date: this.date
+      date: this.date,
     }).subscribe({
       next: (res: any) => {
-        if (res?.errorCode == 0) {
-          this.blogs = res.result.data
-          this.totalPages = res.result?.totalPages
-          this.isLastPage = res.result.isLastPage
-          this.totalResults = res.result.totalResults
-          this.ChangeDetectorRef.markForCheck()
+        if (res?.errorCode === 0) {
+          this.blogs = res.result.data;
+          this.totalPages = res.result.totalPages;
+          this.isLastPage = res.result.isLastPage;
+          this.totalResults = res.result.totalResults;
+  
+          const filteredBlogs: any[] = [];
+          const requests = this.blogs.map((blog) =>
+            this.BlogService.getBlogBySlug(blog.slug).toPromise().then((details: any) => {
+              blog.isActive = details.result.isActive;
+  
+              // Apply filtering based on the selected filter
+              if (
+                (this.selectedFilter === 'active' && blog.isActive) ||
+                (this.selectedFilter === 'inactive' && !blog.isActive) ||
+                this.selectedFilter === 'all'
+              ) {
+                filteredBlogs.push(blog);
+              }
+            })
+          );
+  
+          Promise.all(requests).then(() => {
+            this.blogs = filteredBlogs;
+            this.ChangeDetectorRef.markForCheck();
+          });
         }
-      }
-    })
+      },
+    });
   }
+  
+
+  
   
   handleCategoryThumbnail(media: any) {
     console.log(media);

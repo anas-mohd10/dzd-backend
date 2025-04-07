@@ -1,10 +1,11 @@
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, TemplateRef } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { ActivatedRoute } from '@angular/router';
 import { HotToastService } from '@ngneat/hot-toast';
+import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { appRoutes } from 'src/app/config/routes';
 import { CustomMailerService } from 'src/app/includes/services/custom-mailer.service';
+import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-mailer-details',
@@ -15,6 +16,7 @@ export class MailerDetailsComponent implements OnInit {
   appRoute = appRoutes;
   isSubmitted: boolean = false;
   mailerType: string;
+  modalRef?: BsModalRef
   mailers: Array<any> = [
     {
       title: 'Authentication',
@@ -25,8 +27,7 @@ export class MailerDetailsComponent implements OnInit {
         { title: 'Reset Password', type: 'reset-password' },
         { title: 'Welcome Customer', type: 'welcome-customer' }
       ]
-    },
-    {
+    }, {
       title: 'Orders',
       type: 'orders',
       description: 'Email templates for order management and updates',
@@ -38,12 +39,11 @@ export class MailerDetailsComponent implements OnInit {
         { title: 'Order Out for Delivery', type: 'order-out-for-delivery' },
         { title: 'Order Delivered', type: 'order-delivered' },
         { title: 'Order Cancelled', type: 'order-cancelled' },
-        { title: 'Order failed', type: 'order-failed' },
-        { title: 'Order Product Cancelled', type: 'order-product-cancelled' },
+        { title: 'Order Failed', type: 'order-failed' },
+        { title: 'Product Cancelled', type: 'order-product-cancelled' },
         { title: 'Admin Order Notification', type: 'admin-place-order-notification' }
       ]
-    },
-    {
+    }, {
       title: 'Newsletter',
       type: 'newsletters',
       description: 'Email templates for newsletter management',
@@ -53,8 +53,7 @@ export class MailerDetailsComponent implements OnInit {
         { title: 'Newsletter Verification', type: 'newsletter-verification' },
         { title: 'Newsletter Notification', type: 'newsletter-notification' }
       ]
-    },
-    {
+    }, {
       title: 'Cart & Wishlist',
       type: 'cart-wishlist',
       description: 'Email templates for abandoned cart and wishlist reminders',
@@ -62,8 +61,7 @@ export class MailerDetailsComponent implements OnInit {
         { title: 'Abandoned Cart', type: 'abandoned-cart' },
         { title: 'Abandoned Wishlist', type: 'abandoned-wishlist' }
       ]
-    },
-    {
+    }, {
       title: 'Returns & Replacements',
       type: 'returns',
       description: 'Email templates for handling product returns and replacements',
@@ -72,8 +70,7 @@ export class MailerDetailsComponent implements OnInit {
         { title: 'Replace Initiated', type: 'replace-initiated' },
         { title: 'Replace Rejected', type: 'replace-rejected' }
       ]
-    },
-    {
+    }, {
       title: 'Support & Enquiries',
       type: 'support',
       description: 'Email templates for customer support and enquiries',
@@ -82,8 +79,7 @@ export class MailerDetailsComponent implements OnInit {
         { title: 'Enquiry Submission', type: 'enquiry-submission' },
         { title: 'Enquiry Thank You', type: 'enquiry-thanking' }
       ]
-    },
-    {
+    }, {
       title: 'Vouchers & Promotions',
       type: 'vouchers',
       description: 'Email templates for vouchers and promotional content',
@@ -91,8 +87,7 @@ export class MailerDetailsComponent implements OnInit {
         { title: 'Voucher Confirmation', type: 'voucher-confirmation' },
         { title: 'Voucher Gift', type: 'voucher-gift' }
       ]
-    },
-    {
+    }, {
       title: 'Administrative',
       type: 'administrative',
       description: 'Email templates for administrative purposes',
@@ -104,15 +99,19 @@ export class MailerDetailsComponent implements OnInit {
   ];
   mailerItems: Array<any> = [];
   form: FormGroup;
-  bodyContent: SafeHtml;
 
   constructor(
     private CustomMailerService: CustomMailerService,
-    private Toast: HotToastService,
+    private HotToastService: HotToastService,
     private ActivatedRoute: ActivatedRoute,
+    private BsModalService: BsModalService,
     private ChangeDetectorRef: ChangeDetectorRef,
-    private sanitizer: DomSanitizer
+    private sanitizer: DomSanitizer,
   ) { }
+
+  open(template: TemplateRef<any>) {
+    this.modalRef = this.BsModalService.show(template, { class: 'modal-lg modal-dialog-centered' });
+  }
 
   get formControls() {
     return this.form.controls;
@@ -120,9 +119,7 @@ export class MailerDetailsComponent implements OnInit {
 
   ngOnInit(): void {
     this.mailerType = this.ActivatedRoute.snapshot.queryParams.type || 'authentication';
-    this.mailerItems = this.mailers.find(
-      (mailer) => mailer.type == this.mailerType
-    ).mailers;
+    this.mailerItems = this.mailers.find((mailer) => mailer.type == this.mailerType).mailers;
     this.form = new FormGroup({
       subject: new FormControl('', Validators.required),
       email: new FormControl('', Validators.required),
@@ -138,34 +135,19 @@ export class MailerDetailsComponent implements OnInit {
     this.isSubmitted = false;
   }
 
-  getMailerDetails(type: string) {
-    this.CustomMailerService.customMailers(type).subscribe({
+  getMailerDetails(type?: string) {
+    this.CustomMailerService.customMailers(type || this.form.value.type).subscribe({
       next: (res: any) => {
         if (res?.errorCode == 0) {
           this.form.patchValue(res?.result);
-          this.bodyContent = this.extractBodyContent(res?.result?.email);
           this.ChangeDetectorRef.markForCheck();
+        } else {
+          this.HotToastService.error(res?.message);
         }
+      }, error: (err: any) => {
+        this.HotToastService.error(err?.error?.message);
       },
     });
-  }
-
-  detectEmailChanges() {
-    this.bodyContent = this.extractBodyContent(this.form.value.email);
-  }
-
-  extractBodyContent(htmlString: string): SafeHtml {
-    const bodyStartIndex = htmlString.indexOf('<body>');
-    const bodyEndIndex = htmlString.indexOf('</body>');
-    if (bodyStartIndex !== -1 && bodyEndIndex !== -1) {
-      let subString = htmlString.substring(
-        bodyStartIndex + '<body>'.length,
-        bodyEndIndex
-      );
-      return this.sanitizer.bypassSecurityTrustHtml(subString);
-    } else {
-      return '';
-    }
   }
 
   manageMailer() {
@@ -178,15 +160,20 @@ export class MailerDetailsComponent implements OnInit {
       next: (res: any) => {
         if (res?.errorCode == 0) {
           this.getMailerDetails(this.form.value.type);
-          this.Toast.success(res?.message);
+          this.HotToastService.success(res?.message);
           this.isSubmitted = false;
         } else {
-          this.Toast.error(res?.message);
+          this.HotToastService.error(res?.message);
         }
       },
       error: (err: any) => {
-        this.Toast.error(err?.error?.message);
+        this.HotToastService.error(err?.error?.message);
       },
     });
+  }
+
+  getSanitizedHtml(html: string): SafeHtml {
+    if (!html) return '';
+    return this.sanitizer.bypassSecurityTrustHtml(html);
   }
 }

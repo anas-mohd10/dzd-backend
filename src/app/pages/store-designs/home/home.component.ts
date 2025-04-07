@@ -1376,6 +1376,7 @@ export class HomeComponent implements OnInit {
     this.getHomeWidgets();
     this.form = new FormGroup({
       visibility: new FormControl('all'),
+      buttonVisibility: new FormControl(),
       title: new FormControl(''),
       titleImage: new FormControl(null),
       description: new FormControl(''),
@@ -1435,7 +1436,6 @@ export class HomeComponent implements OnInit {
         desktop: new FormControl(false),
         mobile: new FormControl(false),
       }),
-      buttonVisibility: new FormControl(true),
       buttonText: new FormControl(''),
       buttonLink: new FormControl(''),
       slidesPerCount: new FormGroup({

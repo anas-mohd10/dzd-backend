@@ -7,7 +7,33 @@ $activeBackground: #00BDAB20;
 $border: #E4E6EF;
 $grey: #888888;
 
-.quantityBtn{
+textarea {
+  resize: none;
+}
+table{
+
+  input{
+    width: 96px;    
+  }
+}
+
+.addressCards {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+}
+
+.text-truncate {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.type {
+  width: max-content;
+}
+
+.quantityBtn {
   height: 24px;
   width: 24px;
   display: flex;
@@ -15,7 +41,7 @@ $grey: #888888;
   justify-content: center;
 }
 
-.deleteBtn{
+.deleteBtn {
   height: 24px;
   width: 24px;
   display: flex;
@@ -29,37 +55,33 @@ $grey: #888888;
   background: #ffffff;
   font-size: 15px;
 
-  tbody{
+  tbody {
 
-     tr{
+    tr {
 
-        td{
-           vertical-align: middle;
-        }
-     }
+      td {
+        vertical-align: middle;
+      }
+    }
   }
 
   thead {
 
-     tr{
+    tr {
 
-        th{
-           font-weight: 400 !important;
-        }
-     }
-     background: #E4E7F4;
-  }
-  
-  button{
-      width: 120px;
+      th {
+        font-weight: 400 !important;
+      }
+    }
+
+    background: #E4E7F4;
   }
 
-  img{
-      height: 60px;
-      width: 60px;
-      object-fit: contain;
+  button {
+    width: 120px;
   }
 }
+
 //Table designs
 
 .modal-header {
@@ -151,33 +173,6 @@ label {
         place-items: center;
         border-radius: 5px;
         cursor: pointer;
-      }
-    }
-  }
-}
-
-.products {
-  max-height: 25rem;
-  height: 100%;
-  overflow-y: scroll;
-
-  .productCard {
-    border: 1px solid #E4E6EF;
-    border-radius: 0.475rem;
-    font-size: 14px;
-    margin: 0 0 0.625rem 0;
-
-    .details {
-      .stock {
-        background: #00bd71;
-        color: $white;
-        padding: 0.25rem 0.5rem;
-        border-radius: 0.25rem;
-        width: max-content;
-
-        &.outOfStock {
-          background: #bd0900;
-        }
       }
     }
   }

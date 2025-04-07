@@ -44,11 +44,19 @@ export class ActivitiesComponent implements OnInit {
   }
 
   getLocaleDateString(date: any) {
-    return new Date(date).toLocaleDateString()
+    return new Date(date).toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric'
+    })
   }
 
   getLocaleTimeString(date: any) {
-    return new Date(date).toLocaleTimeString()
+    return new Date(date).toLocaleTimeString('en-US', {
+      hour: '2-digit',
+      minute: '2-digit',
+      hour12: true
+    })
   }
 
 

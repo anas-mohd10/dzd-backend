@@ -57,7 +57,10 @@ export class AddCouponsComponent implements OnInit {
 
     this.form = new FormGroup({
       title: new FormControl('', Validators.required),
-      code: new FormControl('', Validators.required),
+      code: new FormControl('', [
+        Validators.required,
+        Validators.pattern(/^[A-Za-z0-9]+(,[A-Za-z0-9]+)*$/), // Allow comma-separated codes
+      ]),
       type: new FormControl('percent', Validators.required),
       value: new FormControl('', [Validators.required, Validators.pattern("^[0-9]*$")]),
       fromDate: new FormControl('', Validators.required),
@@ -117,17 +120,29 @@ export class AddCouponsComponent implements OnInit {
   }
 
   onRemoveSelected(item: any) {
-    const isExists = this.dropdownInputs.some((input: any) => input._id === item._id)
-    if (isExists) {
-      this.HotToastService.info("Item removed successfully")
-      this.dropdownInputs = this.dropdownInputs.filter((input: any) => input._id !== item._id);
-    } else {
-      this.HotToastService.success("Item added successfully")
-      this.dropdownInputs.push(item);
+    const criteriaType = this.form.get('criteriaType')?.value;
+    
+    switch (criteriaType) {
+      case 'products':
+        this.products = this.products.filter((product: any) => product._id !== item._id);
+        this.dropdownInputs = this.products;
+        break;
+      case 'collections':
+        this.collections = this.collections.filter((collection: any) => collection._id !== item._id);
+        this.dropdownInputs = this.collections;
+        break;
+      case 'categories':
+        this.categories = this.categories.filter((category: any) => category._id !== item._id);
+        this.dropdownInputs = this.categories;
+        break;
+      case 'brands':
+        this.brands = this.brands.filter((brand: any) => brand._id !== item._id);
+        this.dropdownInputs = this.brands;
+        break;
     }
-
-    this.assignDropdownInputs(this.dropdownInputs)
-    this.ChangeDetectorRef.markForCheck()
+  
+    this.HotToastService.info("Item removed successfully");
+    this.ChangeDetectorRef.markForCheck();
   }
 
   applyCoupon(type: string) {
@@ -176,13 +191,29 @@ export class AddCouponsComponent implements OnInit {
     type == 'limited' ? this.isLimited = true : this.isLimited = false
   }
 
+  validateCodes(event: any) {
+    const codes = event.target.value.split(',').map((code: string) => code.trim());
+    const uniqueCodes = new Set(codes);
+
+    if (codes.length !== uniqueCodes.size) {
+      this.HotToastService.error('Duplicate coupon codes are not allowed');
+      return false;
+    }
+
+    return true;
+  }
+
   onSubmit() {
     if (!this.form.valid) {
       this.isSubmitted = true;
       return;
     }
 
-    const payload = this.createPayload()
+    if (!this.validateCodes({ target: { value: this.form.get('code')?.value } })) {
+      return;
+    }
+
+    const payload = this.createPayload();
     if (payload) {
       this.couponsService.addCoupon(payload).subscribe({
         next: (res: any) => {
@@ -196,7 +227,7 @@ export class AddCouponsComponent implements OnInit {
         error: (err: any) => {
           this.HotToastService.error(err?.message || 'Failed to add coupon');
         }
-      })
+      });
     }
   }
 
@@ -240,7 +271,9 @@ export class AddCouponsComponent implements OnInit {
         platformType: this.form.get('platformType')?.value,
       }
 
-      return data
+      return data;
     }
+    return null;
   }
-}
+
+} // end of class

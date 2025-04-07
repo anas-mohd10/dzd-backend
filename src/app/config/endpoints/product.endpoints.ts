@@ -2,6 +2,7 @@ export const productEndpoints = {
     add_product: '/add-product',
     get_product: '/products',
     get_product_by_id: '/product-id',
+    getBulkProducts: '/getBulkProducts',
     get_product_reports: '/product-report',
     get_product_page: '/products-page',
     get_product_names: '/product-names',

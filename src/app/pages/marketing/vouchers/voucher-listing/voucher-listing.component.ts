@@ -67,4 +67,14 @@ export class VoucherListingComponent implements OnInit {
     this.ClipboardService.copyFromContent(voucher)
     this.Toast.success('Copied to clipboard')
   }
+
+  getVoucherStatus(voucher: any): string {
+    if (voucher?.isAvailed) {
+      return 'Redeemed';
+    }
+    if (voucher?.paymentStatus === 'success') {
+      return 'Available';
+    }
+    return 'Pending';
+  }
 }

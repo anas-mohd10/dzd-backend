@@ -119,7 +119,7 @@ export class OrdersListComponent implements OnInit {
   successOrders: Array<string> = ['PLACED', 'COLLECTED', 'SHIPPED', 'PARTIAL PROCESSED', 'OUT FOR DELIVERY', 'DELIVERED', 'PACKED']
   acceptedOrders: Array<string> = ['ACCEPTED']
   cancelledOrders: Array<string> = ['CANCELLED', 'PENDING', 'FAILED']
-
+  tagOptions: string[] = []
   domainUrl: string = ''
   settings: any;
 
@@ -258,37 +258,37 @@ export class OrdersListComponent implements OnInit {
     });
   }
 
-  private updateQueryParams(params: any) {
-    // Get current form values
-    const formValues = this.orderForm.value;
+  // private updateQueryParams(params: any) {
+  //   // Get current form values
+  //   const formValues = this.orderForm.value;
 
-    // Merge with existing query params
-    const queryParams = {
-      status: this.activeValue,
-      page: this.page,
-      limit: this.limit,
-      keyword: this.keyword.value,
-      ...formValues,
-      ...params // Override with new params
-    };
+  //   // Merge with existing query params
+  //   const queryParams = {
+  //     status: this.activeValue,
+  //     page: this.page,
+  //     limit: this.limit,
+  //     keyword: this.keyword.value,
+  //     ...formValues,
+  //     ...params // Override with new params
+  //   };
 
-    // Remove empty values
-    Object.keys(queryParams).forEach(key => {
-      if (!queryParams[key] && queryParams[key] !== 0) {
-        delete queryParams[key];
-      }
-    });
+  //   // Remove empty values
+  //   Object.keys(queryParams).forEach(key => {
+  //     if (!queryParams[key] && queryParams[key] !== 0) {
+  //       delete queryParams[key];
+  //     }
+  //   });
 
-    // Update URL without reloading
-    this.Router.navigate([], {
-      relativeTo: this.ActivatedRoute,
-      queryParams: queryParams,
-      queryParamsHandling: 'merge',
-    }).then(() => {
-      // Call getOrders after URL is updated
-      this.getOrders();
-    });
-  }
+  //   // Update URL without reloading
+  //   this.Router.navigate([], {
+  //     relativeTo: this.ActivatedRoute,
+  //     queryParams: queryParams,
+  //     queryParamsHandling: 'merge',
+  //   }).then(() => {
+  //     // Call getOrders after URL is updated
+  //     this.getOrders();
+  //   });
+  // }
 
 
 
@@ -336,7 +336,8 @@ export class OrdersListComponent implements OnInit {
         toDate: params['toDate'] || '',
         paymentMethod: params['paymentMethod'] || '',
         paymentStatus: params['paymentStatus'] || '',
-        source: params['source'] || ''
+        source: params['source'] || '',
+        customerTags: params['customerTags'] ? params['customerTags'].split(',') : []
       }, { emitEvent: false });
 
       // Update keyword without triggering valueChanges
@@ -380,7 +381,6 @@ export class OrdersListComponent implements OnInit {
       }
     });
 
-    console.log(orders)
 
     if (acceptedOrders > 0) {
       this.HotToastService.error("Orders in the list are already accepted")
@@ -470,9 +470,44 @@ export class OrdersListComponent implements OnInit {
   }
 
   onPageTriggered(event: { pageIndex: number, pageSize: number }) {
+    const pageNumber = event.pageIndex;
+    this.page = pageNumber; // Update the component's page state
+    this.limit = event.pageSize;
+
     this.updateQueryParams({
-      page: event.pageIndex,
+      page: pageNumber,
       limit: event.pageSize
+    });
+  }
+
+  private updateQueryParams(params: any) {
+    // Get current form values
+    const formValues = this.orderForm.value;
+
+    // Ensure page number is included in the params
+    const queryParams = {
+      status: this.activeValue,
+      page: this.page, // Use the component's page state
+      limit: this.limit,
+      keyword: this.keyword.value,
+      ...formValues,
+      ...params
+    };
+
+    // Remove empty values
+    Object.keys(queryParams).forEach(key => {
+      if (!queryParams[key] && queryParams[key] !== 0) {
+        delete queryParams[key];
+      }
+    });
+
+    // Update URL and trigger API call
+    this.Router.navigate([], {
+      relativeTo: this.ActivatedRoute,
+      queryParams: queryParams,
+      queryParamsHandling: 'merge',
+    }).then(() => {
+      this.getOrders(); // Make sure to call getOrders after URL update
     });
   }
 
@@ -480,11 +515,12 @@ export class OrdersListComponent implements OnInit {
     this.isLoading = false;
     const payload = {
       status: this.activeValue,
-      page: this.page,
+      page: this.page, // Use the component's page state
       limit: this.limit,
       ...this.orderForm.value,
       keyword: this.keyword.value,
     };
+
 
     this.OrdersService.listOrders(payload).subscribe((res: any) => {
       if (res?.errorCode == 0) {
@@ -496,8 +532,13 @@ export class OrdersListComponent implements OnInit {
         this.totalResults = res?.result?.totalResults;
         this.totalPages = res?.result?.totalPages;
         this.page = res?.result?.page;
+
+          this.tagOptions = res?.result?.filter?.tags?.options;
+
         this.isLoading = true;
         this.ChangeDetectorRef.markForCheck();
+    
+
       }
     });
   }
@@ -513,6 +554,7 @@ export class OrdersListComponent implements OnInit {
       paymentMethod: new FormControl(''),
       paymentStatus: new FormControl(''),
       source: new FormControl(''),
+      customerTags: new FormControl([]),
     });
 
     // Subscribe to form value changes

@@ -54,6 +54,7 @@ export class CreateBlogComponent implements OnInit {
   cover: string = '';
   thumbnail: string = '';
   categories: BlogCategory[] = [];
+  slug: string = '';
 
 
   constructor(
@@ -71,6 +72,7 @@ export class CreateBlogComponent implements OnInit {
     console.log('heeey')
     this.form = new FormGroup({
       title: new FormControl('', Validators.required),
+      slug: new FormControl('', Validators.required),
       overview: new FormControl(''),
       description: new FormControl('', Validators.required),
       isActive: new FormControl(true),

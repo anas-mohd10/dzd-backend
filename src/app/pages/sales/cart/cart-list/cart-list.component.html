@@ -12,6 +12,19 @@
           <li class="breadcrumb-item active fs-6">
             <a routerLink="{{ appRoute.cart.CART_LIST }}">Cart</a>
           </li>
+          <div class="d-flex gap-2 export-div">
+            <div class="ms-auto">
+              <button class="btn bg-white text-primary border border-primary me-1 " (click)="exportCart()">
+                Export Cart
+                <svg height="18" width="18" fill="none" stroke-width="1.5" stroke="currentColor" viewBox="0 0 24 24"
+                  xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                  <path stroke-linecap="round" stroke-linejoin="round"
+                    d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5m-13.5-9L12 3m0 0 4.5 4.5M12 3v13.5">
+                  </path>
+                </svg>
+              </button>
+            </div>
+          </div>
         </ul>
       </div>
     </div>
@@ -61,7 +74,7 @@
           <tr>
             <td>{{ cart?.customer?.name }}</td>
             <td>{{ cart?.products }}</td>
-            <td>{{ cart?.productsSellingTotal }}</td>
+            <td>{{ cart?.total }}</td>
             <td>{{ cart?.date }}</td>
             <td>
               <span class="guest fs-6" [ngClass]="{ customer: cart?.type == '1' }">
@@ -81,16 +94,20 @@
                   </svg>
                   <div class="toolTip">View products</div>
                 </div>
-                <div *ngIf="cart?.notifications?.count > 0" class="notification-flag" title="{{cart?.notifications?.latest?.title}} sent on {{cart?.notifications?.latest?.sentAt}}">
+                <div *ngIf="cart?.notifications?.count > 0" class="notification-flag"
+                  title="{{cart?.notifications?.latest?.title}} sent on {{cart?.notifications?.latest?.sentAt}}">
                   <span class="badge bg-success rounded-pill">
                     <svg height="16px" width="16px" fill="white" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                      <path d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.9 2 2 2zm6-6v-5c0-3.07-1.63-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.64 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2zm-2 1H8v-6c0-2.48 1.51-4.5 4-4.5s4 2.02 4 4.5v6z"></path>
+                      <path
+                        d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.9 2 2 2zm6-6v-5c0-3.07-1.63-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.64 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2zm-2 1H8v-6c0-2.48 1.51-4.5 4-4.5s4 2.02 4 4.5v6z">
+                      </path>
                     </svg>
                     {{cart?.notifications?.count}}
                   </span>
                 </div>
                 <div>
-                  <app-module-notification [query]="cart?.refid" [type]="'cart'" (notificationTriggered)="onNotificationTriggered()"></app-module-notification>
+                  <app-module-notification [query]="cart?.refid" [type]="'cart'"
+                    (notificationTriggered)="onNotificationTriggered()"></app-module-notification>
                 </div>
               </div>
             </td>

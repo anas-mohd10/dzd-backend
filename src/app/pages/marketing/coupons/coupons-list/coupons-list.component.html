@@ -52,19 +52,28 @@
 
   <table class="table table-bordered">
     <thead>
-      <tr>
+      <tr >
         <th class="p-2">Code</th>
+        <th class="p-2">Available Coupons</th>
+        <th class="p-2">Used Coupons</th>
         <th class="p-2">From Date</th>
         <th class="p-2">Last Date</th>
         <th class="p-2">Status</th>
         <th class="p-2">Action</th>
       </tr>
     </thead>
-    <tbody>
-      <tr *ngFor="let coupon of coupons">
+    <tbody> 
+      <tr *ngFor="let coupon of coupons"
+      >
         <td>{{ coupon?.code }}</td>
-        <td>{{ formatDate(coupon?.fromDate) }}</td>
-        <td>{{ formatDate(coupon?.lastDate) }}</td>
+        <td>
+          {{ coupon?.details?.type === 'unlimited' ? 'Unlimited' : coupon?.details?.totalUsageRemaining }}
+        </td>
+        <td>
+        {{ coupon?.details?.type === 'unlimited' ? 'Unlimited' : coupon?.couponPerUse }}
+        </td>
+        <td>{{ formatDate(coupon?.fromDate)}}</td>
+        <td>{{ formatDate(coupon?.lastDate)}}</td>
         <td>
           <app-switch (switchToggled)="switchToggled($event)" [switchId]="coupon.refid"
             [isToggledProps]="coupon.isActive"></app-switch>

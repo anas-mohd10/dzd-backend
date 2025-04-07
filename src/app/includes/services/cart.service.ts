@@ -16,6 +16,20 @@ export class CartService {
     const url = this.commonService.getFullUrl(this.cartEndpoints.get_cart);
     return this.http.post(`${url}`, data)
   }
+  exportCart(requestBody: any) {
+    const url = this.commonService.getFullUrl(this.cartEndpoints.exportCart);
+    return this.http.post(url, requestBody);
+  }
+
+  getCartDetails(customerId: string) {
+    const url = this.commonService.getFullUrl(this.cartEndpoints.cartDetails + `/${customerId}`);
+    return this.http.get(`${url}`);
+  }
+
+  getCartCalculation(cartData: any) {
+    const url = this.commonService.getFullUrl(this.cartEndpoints.cartCalculation);
+    return this.http.post(`${url}`, cartData)
+  }
 
   sendCartNotification(data: any) {
     const url = this.commonService.getFullUrl(this.cartEndpoints.cart_notification);

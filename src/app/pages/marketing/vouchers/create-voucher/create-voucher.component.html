@@ -1,110 +1,107 @@
 <div>
-    <div class="page-header">
-        <div class="page-title">
-            <h1 class="fw-bold">Add voucher</h1>
-        </div>
-        <div class="row align-items-center">
-            <div class="col d-flex align-items-start justify-content-between">
-                <ul class="breadcrumb">
-                    <li class="breadcrumb-item fs-6">
-                        <a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a>
-                    </li>
-                    <li class="breadcrumb-item fs-6">
-                        <a routerLink="{{ appRoute.vouchers.list }}">Vouchers</a>
-                    </li>
-                    <li class="breadcrumb-item active fs-6">
-                        <a routerLink="{{ appRoute.vouchers.add }}">
-                            Add voucher
-                        </a>
-                    </li>
-                </ul>
-            </div>
-        </div>
+  <div class="page-header">
+    <div class="page-title">
+      <h1 class="fw-bold">Add voucher</h1>
     </div>
+    <div class="row align-items-center">
+      <div class="col d-flex align-items-start justify-content-between">
+        <ul class="breadcrumb">
+          <li class="breadcrumb-item fs-6">
+            <a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a>
+          </li>
+          <li class="breadcrumb-item fs-6">
+            <a routerLink="{{ appRoute.vouchers.list }}">Vouchers</a>
+          </li>
+          <li class="breadcrumb-item active fs-6">
+            <a routerLink="{{ appRoute.vouchers.add }}">
+              Add voucher
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
 
-    <div class="card mt-4">
-        <div class="card-body">
-            <div class="my-6 w-100 voucher-image">
-                <app-assets (mediaClicked)="handleMedia($event)" [aspectRatio]="'4:1'"></app-assets>
+  <div class="card mt-4">
+    <div class="card-body">
+      <!-- <div class="my-6 w-100 voucher-image">
+        <app-assets (mediaClicked)="handleMedia($event)" [aspectRatio]="'4:1'"></app-assets>
+      </div> -->
+      <div class="row">
+        <div class="col-lg-6">
+          <div class="form-group mb-3">
+            <div class="position-relative">
+              <label for="customer" class="form-label required">Customer</label>
+              <input type="text" id="customer" placeholder="Search customers" [(ngModel)]="keyword"
+                (ngModelChange)="getCustomers()" class="form-control">
+              <div class="position-absolute customers shadow w-100 mt-2 bg-white p-2 rounded"
+                *ngIf="customers.length > 0">
+                <ng-container *ngFor="let customer of customers">
+                  <div class="p-2 pointer rounded customer" (click)="optCustomer(customer)">
+                    {{customer.name}}
+                  </div>
+                </ng-container>
+              </div>
             </div>
-            <div class="row">
-                <div class="col-lg-6">
-                    <div class="form-group mb-3">
-                        <div class="position-relative">
-                            <label for="customer" class="form-label required">Customer</label>
-                            <input type="text" id="customer" placeholder="Search customers" [(ngModel)]="keyword"
-                                (ngModelChange)="getCustomers()" class="form-control">
-                            <div class="position-absolute customers shadow w-100 mt-2 bg-white p-2 rounded"
-                                *ngIf="customers.length > 0">
-                                <ng-container *ngFor="let customer of customers">
-                                    <div class="p-2 pointer rounded customer" (click)="optCustomer(customer)">
-                                        {{customer.name}}
-                                    </div>
-                                </ng-container>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <form [formGroup]="form">
+          </div>
+        </div>
+      </div>
+      <form [formGroup]="form">
 
-                <div class="row">
-                    <div class="col-lg-6 form-group mb-3">
-                        <label for="user" class="form-label">&nbsp;</label>
-                        <input type="text" class="form-control" formControlName="user" id="user" [readonly]="true"
-                            [ngClass]="{'is-invalid': (formControls.user.touched || isSubmitted) && formControls.user.errors?.required}">
-                    </div>
-                    <div class="col-lg-6 form-group mb-3">
-                        <label for="amount" class="form-label required">Amount</label>
-                        <input type="text" placeholder="Enter gift card amount" class="form-control"
-                            formControlName="amount"
-                            [ngClass]="{
+        <div class="row">
+          <!-- <div class="col-lg-6 form-group mb-3">
+            <label for="user" class="form-label">&nbsp;</label>
+            <input type="text" class="form-control" formControlName="user" id="user" [readonly]="true"
+              [ngClass]="{'is-invalid': (formControls.user.touched || isSubmitted) && formControls.user.errors?.required}">
+          </div> -->
+          <div class="col-lg-6 form-group mb-3">
+            <label for="amount" class="form-label required">Amount</label>
+            <input type="text" placeholder="Enter gift card amount" class="form-control" formControlName="amount"
+              [ngClass]="{
                                 'is-invalid':  (formControls.amount.touched || isSubmitted) && (formControls.amount.errors?.required || formControls.amount.errors?.pattern)}">
-                    </div>
-                    <div class="col-lg-6 form-group mb-3">
-                        <label for="amount" class="form-label required">Name</label>
-                        <input type="text" placeholder="Enter name" class="form-control" formControlName="name"
-                            [ngClass]="{
+          </div>
+          <div class="col-lg-6 form-group mb-3">
+            <label for="amount" class="form-label required">Name</label>
+            <input type="text" placeholder="Enter name" class="form-control" formControlName="name"
+              [ngClass]="{
                             'is-invalid': (formControls.name.touched || isSubmitted) && formControls.name.errors?.required}">
-                    </div>
-                    <div class="col-lg-6 form-group mb-3">
-                        <label for="email" class="form-label required">Email</label>
-                        <input type="text" id="email" placeholder="Enter email address" class="form-control"
-                            formControlName="email"
-                            [ngClass]="{
+          </div>
+          <div class="col-lg-6 form-group mb-3">
+            <label for="email" class="form-label required">Email</label>
+            <input type="text" id="email" placeholder="Enter email address" class="form-control" formControlName="email"
+              [ngClass]="{
                                 'is-invalid':  (formControls.email.touched || isSubmitted) && formControls.email.errors?.required || formControls.email.errors?.pattern}">
-                    </div>
-                    <div class="row">
-                        <div class="col-lg-3">
-                            <div class="form-group mb-3">
-                                <label for="country" class="form-label required">Country code</label>
-                               <select formControlName="countryCode" id="country" class="form-select" (change)="handleMobilePattern()">
-                                <option value="" disabled>-- Select an option --</option>
-                                <option *ngFor="let country of ['+91', '+971']" value="{{country}}">{{country}}</option>
-                               </select>
-                            </div>
-                        </div>
-                        <div class="col-lg-9">
-                            <div class="form-group mb-3">
-                                <label for="amount" class="form-label required">Mobile</label>
-                                <input type="text" placeholder="Enter mobile number" class="form-control"
-                                    formControlName="mobile"
-                                    [ngClass]="{
-                                        'is-invalid':  (formControls.mobile.touched || isSubmitted) && formControls.mobile.errors?.required || formControls.mobile.errors?.pattern}">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-group mb-3">
-                        <label for="message" class="form-label">Message</label>
-                        <textarea type="text" id="message" placeholder="Enter message" class="form-control"
-                            formControlName="message" rows="4"></textarea>
-                    </div>
-                </div>
-            </form>
-            <div class="d-flex align-items-center justify-content-end my-4">
-                <a class="btn btn-secondary me-2" routerLink="{{appRoute.vouchers.list}}">Cancel</a>
-                <button class="btn btn-primary ms-2" (click)="onSubmit()">Save changes</button>
+          </div>
+          <div class="row">
+            <div class="col-lg-3">
+              <div class="form-group mb-3">
+                <label for="country" class="form-label required">Country code</label>
+                <select formControlName="countryCode" id="country" class="form-select" (change)="handleMobilePattern()">
+                  <option value="" disabled>-- Select an option --</option>
+                  <option *ngFor="let country of ['+91', '+971']" value="{{country}}">{{country}}</option>
+                </select>
+              </div>
             </div>
+            <div class="col-lg-9">
+              <div class="form-group mb-3">
+                <label for="amount" class="form-label required">Mobile</label>
+                <input type="text" placeholder="Enter mobile number" class="form-control" formControlName="mobile"
+                  [ngClass]="{
+                                        'is-invalid':  (formControls.mobile.touched || isSubmitted) && formControls.mobile.errors?.required || formControls.mobile.errors?.pattern}">
+              </div>
+            </div>
+          </div>
+          <div class="form-group mb-3">
+            <label for="message" class="form-label">Message</label>
+            <textarea type="text" id="message" placeholder="Enter message" class="form-control"
+              formControlName="message" rows="4"></textarea>
+          </div>
         </div>
+      </form>
+      <div class="d-flex align-items-center justify-content-end my-4">
+        <a class="btn btn-secondary me-2" routerLink="{{appRoute.vouchers.list}}">Cancel</a>
+        <button class="btn btn-primary ms-2" (click)="onSubmit()">Save changes</button>
+      </div>
     </div>
+  </div>
 </div>

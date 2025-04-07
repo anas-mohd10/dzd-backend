@@ -330,7 +330,8 @@
          <div class="row">
             <div class="col-lg-6">
                <div class="form-group mb-3">
-                  <label class="fs-6 mb-3 required">Address Type</label>
+                  <label class="fs-6 mb-3"
+                     [ngClass]="{'required': checkRequiredField('type')}">{{getFieldTitle('type')}}</label>
                   <select class="form-select form-select-lg mb-3 fs-6" aria-label=".form-select-lg"
                      formControlName="type" [ngClass]="{
                         'is-invalid':
@@ -346,21 +347,20 @@
             </div>
 
             <div class="col-lg-6">
-               <div class="form-group mb-3">
-                  <label class="fs-6 mb-3">Name</label>
+               <div class="form-group mb-3" *ngIf="checkVisibleField('name')">
+                  <label class="fs-6 mb-3"
+                     [ngClass]="{'required': checkRequiredField('name')}">{{getFieldTitle('name')}}</label>
                   <input type="text" class="form-control fs-6" formControlName="name" [ngClass]="{
-                     'is-invalid':
-                     (addressControls.name.touched || isAddressSubmitted) &&
-                     addressControls.name.errors?.required
-                   }" />
+                     'is-invalid': addressValidationFunction('name') }" />
                </div>
             </div>
 
             <div class="col-lg-6">
-               <div class="form-group mb-3">
-                  <label class="fs-6 mb-3">Country Code</label>
-                  <select class="form-select mb-3" formControlName="countryCode"
-                     (change)="handleAddressMobilePattern()">
+               <div class="form-group mb-3" *ngIf="checkVisibleField('countryCode')">
+                  <label class="fs-6 mb-3"
+                     [ngClass]="{'required': checkRequiredField('countryCode')}">{{getFieldTitle('countryCode')}}</label>
+                  <select class="form-select mb-3" formControlName="countryCode" (change)="handleAddressMobilePattern()"
+                     [ngClass]="{'is-invalid': addressValidationFunction('countryCode') }">
                      <option value="" disabled>-- Select an option --</option>
                      <option value="+91">+91</option>
                      <option value="+971">+971</option>
@@ -370,73 +370,64 @@
             </div>
 
             <div class="col-lg-6">
-               <div class="form-group mb-3">
-                  <label class="fs-6 mb-3">Mobile Number</label>
+               <div class="form-group mb-3" *ngIf="checkVisibleField('mobile')">
+                  <label class="fs-6 mb-3"
+                     [ngClass]="{'required': checkRequiredField('mobile')}">{{getFieldTitle('mobile')}}</label>
                   <input type="number" class="form-control fs-6" formControlName="mobile" [ngClass]="{
-                     'is-invalid':
-                     (addressControls.mobile.touched || isAddressSubmitted) &&
-                     addressControls.mobile.errors?.required
-                   }" />
-                  <div class="mt-2 p-2 alert alert-danger" *ngIf="addressControls.mobile.errors?.pattern">
-                     Enter a valid mobile number
-                  </div>
+                     'is-invalid': addressValidationFunction('mobile') }" />
                </div>
             </div>
 
             <div class="col-lg-6">
-               <div class="form-group mb-3">
-                  <label class="fs-6 mb-3 required">Apartment / First Lane</label>
+               <div class="form-group mb-3" *ngIf="checkVisibleField('firstlane')">
+                  <label class="fs-6 mb-3"
+                     [ngClass]="{'required': checkRequiredField('firstlane')}">{{getFieldTitle('firstlane')}}</label>
                   <input type="text" class="form-control fs-6" formControlName="firstlane" [ngClass]="{
-                     'is-invalid':
-                     (addressControls.firstlane.touched || isAddressSubmitted) &&
-                     addressControls.firstlane.errors?.required
-                   }" />
+                     'is-invalid': addressValidationFunction('firstlane') }" />
                </div>
             </div>
             <div class="col-lg-6">
-               <div class="form-group mb-3">
-                  <label class="fs-6 mb-3 required">Second Lane</label>
+               <div class="form-group mb-3" *ngIf="checkVisibleField('secondlane')">
+                  <label class="fs-6 mb-3"
+                     [ngClass]="{'required': checkRequiredField('secondlane')}">{{getFieldTitle('secondlane')}}</label>
                   <input type="text" class="form-control fs-6" formControlName="secondlane" [ngClass]="{
-                     'is-invalid':
-                     (addressControls.secondlane.touched || isAddressSubmitted) &&
-                     addressControls.secondlane.errors?.required
-                   }" />
+                     'is-invalid': addressValidationFunction('secondlane') }" />
                </div>
             </div>
 
             <div class="col-lg-6">
-               <div class="form-group mb-3">
-                  <label class="fs-6 mb-3">Area</label>
-                  <input type="text" class="form-control fs-6" formControlName="area" />
+               <div class="form-group mb-3" *ngIf="checkVisibleField('area')">
+                  <label class="fs-6 mb-3"
+                     [ngClass]="{'required': checkRequiredField('area')}">{{getFieldTitle('area')}}</label>
+                  <input type="text" class="form-control fs-6" formControlName="area" [ngClass]="{
+                     'is-invalid': addressValidationFunction('area') }" />
                </div>
             </div>
 
             <div class="col-lg-6">
-               <div class="form-group mb-3">
-                  <label class="fs-6 mb-3">Landmark</label>
+               <div class="form-group mb-3" *ngIf="checkVisibleField('landmark')">
+                  <label class="fs-6 mb-3"
+                     [ngClass]="{'required': checkRequiredField('landmark')}">{{getFieldTitle('landmark')}}</label>
                   <input type="text" class="form-control fs-6" formControlName="landmark" [ngClass]="{
-                     'is-invalid':
-                     (addressControls.landmark.touched || isAddressSubmitted) &&
-                     addressControls.landmark.errors?.required
-                   }" />
+                     'is-invalid': addressValidationFunction('landmark') }" />
                </div>
             </div>
 
             <div class="col-lg-6">
-               <div class="form-group mb-3">
-                  <label class="fs-6 mb-3">Pincode</label>
-                  <input type="number" class="form-control fs-6" formControlName="pincode" />
+               <div class="form-group mb-3" *ngIf="checkVisibleField('pincode')">
+                  <label class="fs-6 mb-3"
+                     [ngClass]="{'required': checkRequiredField('pincode')}">{{getFieldTitle('pincode')}}</label>
+                  <input type="number" class="form-control fs-6" formControlName="pincode" [ngClass]="{
+                     'is-invalid': addressValidationFunction('pincode') }" />
                </div>
             </div>
 
             <div class="col-lg-6">
-               <div class="form-group mb-3 mb-3">
-                  <label class="fs-6 mb-3 required">Country</label>
-                  <select formControlName="country" class="form-select" (change)="getStateList()" [ngClass]="{
-                     'is-invalid':
-                     (addressControls.country.touched || isAddressSubmitted) &&
-                     addressControls.country.errors?.required
-                   }">
+               <div class="form-group mb-3" *ngIf="checkVisibleField('country')">
+                  <label class="fs-6 mb-3"
+                     [ngClass]="{'required': checkRequiredField('country')}">{{getFieldTitle('country')}}</label>
+                  <select formControlName="country" class="form-select" (change)="loadStates('', 'add')" [ngClass]="{
+                     'is-invalid': addressValidationFunction('country') }">
                      <option value="" disabled>-- Select an option --</option>
                      <option *ngFor="let country of countries" value="{{country.name}}">
                         {{country.flag}} {{country.name}}
@@ -445,14 +436,13 @@
                </div>
             </div>
 
-            <div class="col-lg-6" *ngIf="addressForm.get('country')?.value">
-               <div class="form-group mb-3 mb-3">
-                  <label class="fs-6 mb-3 required">State</label>
-                  <select formControlName="state" class="form-select" (change)="getCityList()" [ngClass]="{
-                     'is-invalid':
-                     (addressControls.state.touched || isAddressSubmitted) &&
-                     addressControls.state.errors?.required
-                   }">
+            <div class="col-lg-6">
+               <div class="form-group mb-3" *ngIf="checkVisibleField('state')"
+                  [ngClass]="{'pe-none opacity-50': states.length == 0}">
+                  <label class="fs-6 mb-3"
+                     [ngClass]="{'required': checkRequiredField('state')}">{{getFieldTitle('state')}}</label>
+                  <select formControlName="state" class="form-select" (change)="loadCities()" [ngClass]="{
+                     'is-invalid': addressValidationFunction('state') }">
                      <option value="" disabled>-- Select an option --</option>
                      <option *ngFor="let state of states" value="{{state.name}}">
                         {{state.name}}
@@ -461,14 +451,13 @@
                </div>
             </div>
 
-            <div class="col-lg-6" *ngIf="addressForm.get('state')?.value">
-               <div class="form-group mb-3 mb-3">
-                  <label class="fs-6 mb-3 required">City</label>
+            <div class="col-lg-6">
+               <div class="form-group mb-3" *ngIf="checkVisibleField('city')"
+                  [ngClass]="{'pe-none opacity-50': cities.length == 0}">
+                  <label class="fs-6 mb-3"
+                     [ngClass]="{'required': checkRequiredField('city')}">{{getFieldTitle('city')}}</label>
                   <select formControlName="city" class="form-select" [ngClass]="{
-                     'is-invalid':
-                     (addressControls.city.touched || isAddressSubmitted) &&
-                     addressControls.city.errors?.required
-                   }">
+                     'is-invalid': addressValidationFunction('city') }">
                      <option value="" disabled>-- Select an option --</option>
                      <option *ngFor="let city of cities" value="{{city.name}}">
                         {{city.name}}

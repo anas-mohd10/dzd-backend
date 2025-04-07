@@ -125,6 +125,12 @@
                   </select>
                 </div>
                 <div>
+                  <select class="form-select fs-6 text-dark" formControlName="customerTags" (change)="getOrders()">
+                    <option value="" disabled>-- Tags --</option>
+                    <option *ngFor="let tagOption of tagOptions" [value]="tagOption">{{tagOption}}</option>
+                  </select>
+                </div>
+                <div>
                   <input type="button" class="form-control btn-secondary p-1 fs-6 text-dark" value="Clear filters"
                     (click)="onReload()">
                 </div>
@@ -187,7 +193,7 @@
         <th>Order</th>
         <th>Date</th>
         <th>Customer</th>
-        <th *ngIf="settings.isPickUp == true">Store</th>
+        <th *ngIf="settings && settings.isPickUp == true">Store</th>
         <th>Total</th>
         <th>Source</th>
         <th>Tags</th>
@@ -216,8 +222,8 @@
               {{order?.customerType == 'regd' ? 'Customer' : 'Guest'}}
             </div>
           </td>
-          <td *ngIf="settings.isPickUp == true">
-            <div *ngIf="order?.pickUpLocation">
+          <td *ngIf="settings && settings.isPickUp == true">
+            <div *ngIf="order && order?.pickUpLocation">
               <div class="cursor-pointer" tooltip="{{order?.pickUpLocation?.address}}">{{order?.pickUpLocation?.name +
                 ", " + order?.pickUpLocation?.city}}</div>
             </div>
@@ -325,7 +331,8 @@
 
   <div *ngIf="orders.length > 0">
     <app-pagination [pageIndex]="page" [pageSize]="limit" [totalResults]="totalResults" [totalPages]="totalPages"
-      (pageTrigger)="onPageTriggered($event)"></app-pagination>
+      (pageTrigger)="onPageTriggered($event)">
+    </app-pagination>
   </div>
 </div>
 

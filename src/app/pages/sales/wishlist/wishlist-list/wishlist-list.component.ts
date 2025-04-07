@@ -2,6 +2,8 @@ import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { appRoutes } from 'src/app/config/routes';
 import { CustomersService } from 'src/app/includes/services/customers.service';
+import { HotToastService } from '@ngneat/hot-toast';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-wishlist-list',
@@ -19,15 +21,17 @@ export class WishlistListComponent implements OnInit {
   totalResults: number = 0
   totalPages: number = 1
   topWishlisted: Array<any> = [] 
-
+  customer: string = ''
   constructor(
     private CustomersService: CustomersService,
-    private ChangeDetectorRef: ChangeDetectorRef
+    private ChangeDetectorRef: ChangeDetectorRef,
+    private toast: HotToastService,
+    private ActivatedRoute: ActivatedRoute,
   ) { }
 
   ngOnInit(): void {
     this.searchCustomers()
-
+this.customer = this.ActivatedRoute.snapshot.queryParams['user'] || ''
     this.CustomersService.getTopWishlisted().subscribe((res: any) => {
       if (res?.errorCode == 0) {
         this.topWishlisted = res?.result
@@ -66,5 +70,18 @@ export class WishlistListComponent implements OnInit {
         }
       })
     }, 800)
+  }
+  exportWishlist(): void {
+    const requestBody = { userId: this.customer };    
+
+    this.CustomersService.exportWishlist(requestBody).subscribe({
+      next: () => {
+        this.toast.success('Wishlist export initiated successfully!');
+      },
+      error: (err) => {
+        console.error('Error exporting wishlist:', err);
+        this.toast.error('Failed to export wishlist. Please try again.');
+      }
+    });
   }
 }
