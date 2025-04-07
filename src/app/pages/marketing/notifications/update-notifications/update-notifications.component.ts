@@ -21,7 +21,7 @@ export class UpdateNotificationsComponent implements OnInit {
   startDate: string = new Date().toISOString().split('T')[0];
   date = new Date();
   formattedDate: number = this.date.setDate(this.date.getDate() + 2);
-  scheduleDate: string = this.date.toISOString().split('T')[0];
+  scheduleDate: string = new Date(this.formattedDate).toISOString().split('T')[0];
   thumbnail: string = '';
   notificationId: string = '';
   notificationDetails: any;
@@ -40,8 +40,7 @@ export class UpdateNotificationsComponent implements OnInit {
       channel: new FormControl('', Validators.required),
       content: new FormControl('', Validators.required),
       type: new FormControl('instant'),
-      scheduledDate: new FormControl(this.scheduleDate),
-      scheduledTime: new FormControl('10:00'),
+      scheduledAt: new FormControl(''), // Combined date and time
       redirection: new FormControl(''),
       thumbnail: new FormControl(null),
       isStoreLevel: new FormControl('true'),
@@ -56,23 +55,23 @@ export class UpdateNotificationsComponent implements OnInit {
 
   async loadData() {
     this.isLoading = true;
-    
+
     try {
       // Use Promise.all to fetch data in parallel
       const [customersData, notificationData] = await Promise.all([
         this.fetchCustomers(),
         this.fetchNotificationDetails()
       ]);
-      
+
       // Process customers data if successful
       if (customersData && customersData.errorCode === 0) {
         this.customersData = customersData.result.map((customer: any) => ({
           ...customer,
-          title: (customer?.name ? customer?.name : '-- Incomplete Profile --') + 
+          title: (customer?.name ? customer?.name : '-- Incomplete Profile --') +
                  ' ( ' + customer?.mobile + ' )'
         }));
       }
-      
+
       // Process notification details if successful
       if (notificationData && notificationData.errorCode === 0) {
         this.notificationDetails = notificationData.result;
@@ -86,14 +85,14 @@ export class UpdateNotificationsComponent implements OnInit {
       this.cdr.markForCheck();
     }
   }
-  
+
   fetchCustomers(): Promise<any> {
     return new Promise((resolve, reject) => {
       if (!this.customersService) {
         resolve({ errorCode: 1, result: [] });
         return;
       }
-      
+
       this.customersService.getActiveCustomers().subscribe({
         next: (res: any) => resolve(res),
         error: (err: any) => {
@@ -103,14 +102,14 @@ export class UpdateNotificationsComponent implements OnInit {
       });
     });
   }
-  
+
   fetchNotificationDetails(): Promise<any> {
     return new Promise((resolve, reject) => {
       if (!this.notificationId) {
         resolve({ errorCode: 0, result: null });
         return;
       }
-      
+
       this.notificationsService.getNotificationDetails(this.notificationId).subscribe({
         next: (res: any) => resolve(res),
         error: (err: any) => {
@@ -135,23 +134,27 @@ export class UpdateNotificationsComponent implements OnInit {
       isStoreLevel: data.isStoreLevel.toString(),
       isActive: data.isActive.toString(),
     });
-    
+
     // Handle scheduled date and time
-    if (data.scheduledDate) {
-      const scheduledDateTime = new Date(data.scheduledDate);
-      this.form.get('scheduledDate')?.setValue(scheduledDateTime.toISOString().split('T')[0]);
-      
-      // Format time as HH:MM
-      const hours = scheduledDateTime.getHours().toString().padStart(2, '0');
-      const minutes = scheduledDateTime.getMinutes().toString().padStart(2, '0');
-      this.form.get('scheduledTime')?.setValue(`${hours}:${minutes}`);
+    if (data.scheduledAt) {
+      // Convert UTC to local time
+      const scheduledDateTime = new Date(data.scheduledAt);
+      // Get local date and time components
+      const year = scheduledDateTime.getFullYear();
+      const month = String(scheduledDateTime.getMonth() + 1).padStart(2, '0');
+      const day = String(scheduledDateTime.getDate()).padStart(2, '0');
+      const hours = String(scheduledDateTime.getHours()).padStart(2, '0');
+      const minutes = String(scheduledDateTime.getMinutes()).padStart(2, '0');
+      // Format for datetime-local input (YYYY-MM-DDTHH:MM)
+      const localDateTime = `${year}-${month}-${day}T${hours}:${minutes}`;
+      this.form.get('scheduledAt')?.setValue(localDateTime);
     }
-    
+
     // Set thumbnail if available
     if (data.thumbnail?.path) {
       this.thumbnail = data.thumbnail.path;
     }
-    
+
     // Process customers - ensure we're working with IDs
     if (data.customers && Array.isArray(data.customers)) {
       // If customers are objects with _id property
@@ -189,12 +192,17 @@ export class UpdateNotificationsComponent implements OnInit {
     }
 
     let scheduledDateTime = null;
-    if (this.form.get('type')?.value === 'scheduled' && 
-        this.form.get('scheduledDate')?.value && 
+    if (this.form.get('type')?.value === 'scheduled' &&
+        this.form.get('scheduledDate')?.value &&
         this.form.get('scheduledTime')?.value) {
-      scheduledDateTime = new Date(
-        `${this.form.get('scheduledDate')?.value}T${this.form.get('scheduledTime')?.value}`
-      ).toISOString();
+
+      // Create date in local timezone
+      const dateStr = this.form.get('scheduledDate')?.value;
+      const timeStr = this.form.get('scheduledTime')?.value;
+      const localDateTime = new Date(`${dateStr}T${timeStr}`);
+
+      // Convert to UTC ISO string
+      scheduledDateTime = localDateTime.toISOString();
     }
 
     this.notificationsService.updateNotification({

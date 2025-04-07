@@ -28,7 +28,7 @@ export class AddNotificationsComponent implements OnInit {
     private Router: Router,
     private HotToastService: HotToastService,
     private ChangeDetectorRef: ChangeDetectorRef
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.form = new FormGroup({
@@ -36,8 +36,7 @@ export class AddNotificationsComponent implements OnInit {
       channel: new FormControl('', Validators.required),
       type: new FormControl('instant'),
       content: new FormControl('', Validators.required),
-      scheduledDate: new FormControl(''),
-      scheduledTime: new FormControl('10:00'),
+      scheduledAt: new FormControl(''), // Combined date and time
       redirection: new FormControl(''),
       thumbnail: new FormControl(null),
       isStoreLevel: new FormControl('true', Validators.required),
@@ -59,7 +58,7 @@ export class AddNotificationsComponent implements OnInit {
           this.ChangeDetectorRef.markForCheck();
         }
       },
-      error: (err: any) => {},
+      error: (err: any) => { },
     });
   }
 
@@ -84,8 +83,6 @@ export class AddNotificationsComponent implements OnInit {
     }
     this.NotificationsService.addNotification({
       ...this.form.value,
-      scheduled: this.form.get('scheduledDate')?.value && this.form.get('scheduledTime')?.value ? 
-        new Date(`${this.form.get('scheduledDate')?.value}T${this.form.get('scheduledTime')?.value}`).toISOString() : null,
       customers: this.customers,
     }).subscribe({
       next: (res: any) => {
@@ -96,7 +93,8 @@ export class AddNotificationsComponent implements OnInit {
           this.HotToastService.error(res?.message);
         }
       },
-      error: (err: any) => {},
+      error: (err: any) => { },
     });
   }
 }
+   

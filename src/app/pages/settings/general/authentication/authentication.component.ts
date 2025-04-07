@@ -45,7 +45,7 @@ export class AuthenticationComponent implements OnInit {
         facebookLogin: new FormGroup({
           text: new FormControl('Login with Facebook'),
           clientId: new FormControl(''),
-          clientSecret: new FormControl(''),
+        clientSecret: new FormControl(''),
         }),
         googleLogin: new FormGroup({
           text: new FormControl('Login with Google'),

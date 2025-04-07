@@ -60,6 +60,18 @@ export class UploadsListComponent implements OnInit {
   createdAt: string;
   baseUrl = `${environment.apiUrl}/${csvEndpoints.downloadImportLog}/`;
 
+  // Map of sample CSV files for each import type
+  sampleCsvFiles: { [key: string]: string } = {
+    'category': 'assets/files/categories_upload.csv',
+  'brand': 'assets/files/brands_upload.csv',
+  'user': 'assets/files/users_upload.csv',
+  'collection': 'assets/files/collection_upload.csv',
+  'product': 'assets/files/storeDadaSampleProducts.csv',
+  'blog': 'assets/files/blogs_upload.csv',
+  'order': 'assets/files/orders_upload.csv',
+  'subscriber': 'assets/files/subscribers_upload.csv',
+  };
+
   constructor(
     private CsvService: CsvService,
     private ChangeDetectorRef: ChangeDetectorRef,
@@ -315,5 +327,34 @@ export class UploadsListComponent implements OnInit {
         this.HotToastService.error(err?.error?.message);
       },
     });
+  }
+
+  /**
+   * Downloads the sample CSV file for the selected import type
+   */
+  downloadSampleCsv(): void {
+    const importType = this.importType.value;
+
+    if (!importType) {
+      this.HotToastService.error('Please select an import type first');
+      return;
+    }
+
+    const filePath = this.sampleCsvFiles[importType];
+
+    if (!filePath) {
+      this.HotToastService.error('Sample CSV not available for this import type');
+      return;
+    }
+
+    // Create a link element and trigger download
+    const link = document.createElement('a');
+    link.href = filePath;
+    link.download = `sample_${importType}.csv`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+
+    this.HotToastService.success(`Sample ${importType} CSV downloaded successfully`);
   }
 }
