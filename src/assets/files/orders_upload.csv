@@ -1,0 +1,11 @@
+orderNo,status,trackingNo,trackingURL,deliveryPerson
+ORD10001,SHIPPED,TRK123456,https://tracking.example.com/TRK123456,John Delivery
+ORD10002,OUT FOR DELIVERY,TRK234567,https://tracking.example.com/TRK234567,Mike Carrier
+ORD10003,DELIVERED,TRK345678,https://tracking.example.com/TRK345678,Sarah Shipper
+ORD10004,ACCEPTED,,,
+ORD10005,PACKED,TRK456789,https://tracking.example.com/TRK456789,
+ORD10006,CANCELLED,,,
+ORD10007,PENDING,,,
+ORD10008,SHIPPED,TRK567890,https://tracking.example.com/TRK567890,Alex Delivery
+ORD10009,DELIVERED,TRK678901,https://tracking.example.com/TRK678901,Emma Carrier
+ORD10010,FAILED,,,

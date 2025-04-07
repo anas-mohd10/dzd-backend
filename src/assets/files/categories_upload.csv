@@ -1,0 +1,7 @@
+name,description,isActive,isFeatured,isArchive,parent,slug,metaTitle,metaDescription,metaKeywords
+Electronics,All electronic products,TRUE,TRUE,FALSE,,electronics,Electronics Products,Find the best electronic products,electronics,gadgets,tech
+Smartphones,Latest smartphones,TRUE,TRUE,FALSE,Electronics,smartphones,Smartphone Collection,Discover the latest smartphones,smartphones,mobile,phones
+Laptops,High-performance laptops,TRUE,FALSE,FALSE,Electronics,laptops,Laptop Collection,Find the perfect laptop for your needs,laptops,computers
+Clothing,Fashion apparel,TRUE,TRUE,FALSE,,clothing,Fashion Clothing,Trendy fashion clothing for all,fashion,clothing,apparel
+Men's Wear,Clothing for men,TRUE,FALSE,FALSE,Clothing,mens-wear,Men's Fashion,Stylish clothing for men,men,fashion,clothing
+Women's Wear,Clothing for women,TRUE,FALSE,FALSE,Clothing,womens-wear,Women's Fashion,Elegant clothing for women,women,fashion,clothing
