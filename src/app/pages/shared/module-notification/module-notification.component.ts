@@ -93,9 +93,9 @@ export class ModuleNotificationComponent implements OnInit, OnChanges {
         subject: new FormControl(
           'أكمل تسوقك اليوم للحصول على عروض حصرية!'
         ),
-        title: new FormControl('أكمل تسوقك الآن'),
+        title: new FormControl('🛒 سلة التسوق تنتظرج!'),
         message: new FormControl(
-          'سلة التسوق الخاصة بك في انتظارك. أكمل عملية الشراء الآن لتأمين منتجاتك المفضلة قبل نفادها'
+          'اختياراتج الرائعة كل الأمهات عينهم عليها، لا تخسريها! ارجعي هسه وكملي طلبج قبل نفاذ الكمية⌛'
         ),
       });
     } else {
