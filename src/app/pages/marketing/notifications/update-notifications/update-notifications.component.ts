@@ -21,7 +21,7 @@ export class UpdateNotificationsComponent implements OnInit {
   startDate: string = new Date().toISOString().split('T')[0];
   date = new Date();
   formattedDate: number = this.date.setDate(this.date.getDate() + 2);
-  scheduleDate: string = this.date.toISOString().split('T')[0];
+  scheduleDate: string = new Date(this.formattedDate).toISOString().split('T')[0];
   thumbnail: string = '';
   notificationId: string = '';
   notificationDetails: any;
@@ -40,8 +40,7 @@ export class UpdateNotificationsComponent implements OnInit {
       channel: new FormControl('', Validators.required),
       content: new FormControl('', Validators.required),
       type: new FormControl('instant'),
-      scheduledDate: new FormControl(this.scheduleDate),
-      scheduledTime: new FormControl('10:00'),
+      scheduledAt: new FormControl(''), // Combined date and time
       redirection: new FormControl(''),
       thumbnail: new FormControl(null),
       isStoreLevel: new FormControl('true'),
@@ -69,7 +68,7 @@ export class UpdateNotificationsComponent implements OnInit {
         this.customersData = customersData.result.map((customer: any) => ({
           ...customer,
           title: (customer?.name ? customer?.name : '-- Incomplete Profile --') +
-            ' ( ' + customer?.mobile + ' )'
+                 ' ( ' + customer?.mobile + ' )'
         }));
       }
 
@@ -136,19 +135,19 @@ export class UpdateNotificationsComponent implements OnInit {
       isActive: data.isActive.toString(),
     });
 
-    if (data.scheduledDate) {
-      const scheduledDateTime = new Date(data.scheduled);
-
+    // Handle scheduled date and time
+    if (data.scheduledAt) {
+      // Convert UTC to local time
+      const scheduledDateTime = new Date(data.scheduledAt);
+      // Get local date and time components
       const year = scheduledDateTime.getFullYear();
-      const month = (scheduledDateTime.getMonth() + 1).toString().padStart(2, '0');
-      const day = scheduledDateTime.getDate().toString().padStart(2, '0');
-      const localDate = `${year}-${month}-${day}`;
-
-      this.form.get('scheduledDate')?.setValue(localDate);
-
-      const hours = scheduledDateTime.getHours().toString().padStart(2, '0');
-      const minutes = scheduledDateTime.getMinutes().toString().padStart(2, '0');
-      this.form.get('scheduledTime')?.setValue(`${hours}:${minutes}`);
+      const month = String(scheduledDateTime.getMonth() + 1).padStart(2, '0');
+      const day = String(scheduledDateTime.getDate()).padStart(2, '0');
+      const hours = String(scheduledDateTime.getHours()).padStart(2, '0');
+      const minutes = String(scheduledDateTime.getMinutes()).padStart(2, '0');
+      // Format for datetime-local input (YYYY-MM-DDTHH:MM)
+      const localDateTime = `${year}-${month}-${day}T${hours}:${minutes}`;
+      this.form.get('scheduledAt')?.setValue(localDateTime);
     }
 
     // Set thumbnail if available
@@ -194,11 +193,16 @@ export class UpdateNotificationsComponent implements OnInit {
 
     let scheduledDateTime = null;
     if (this.form.get('type')?.value === 'scheduled' &&
-      this.form.get('scheduledDate')?.value &&
-      this.form.get('scheduledTime')?.value) {
-      scheduledDateTime = new Date(
-        `${this.form.get('scheduledDate')?.value}T${this.form.get('scheduledTime')?.value}`
-      ).toISOString();
+        this.form.get('scheduledDate')?.value &&
+        this.form.get('scheduledTime')?.value) {
+
+      // Create date in local timezone
+      const dateStr = this.form.get('scheduledDate')?.value;
+      const timeStr = this.form.get('scheduledTime')?.value;
+      const localDateTime = new Date(`${dateStr}T${timeStr}`);
+
+      // Convert to UTC ISO string
+      scheduledDateTime = localDateTime.toISOString();
     }
 
     this.notificationsService.updateNotification({

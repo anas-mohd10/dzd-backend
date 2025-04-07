@@ -78,7 +78,7 @@
             </div>
             <div class="d-flex align-items-center justify-content-end">
                 <button type="button" class="btn btn-secondary me-2" (click)="closeModal()">Cancel</button>
-                <button type="button" class="btn btn-primary" (click)="send()">Send</button>
+                <button type="button" class="btn btn-primary" [disabled]="isButtonDisabled" (click)="send()">Send</button>
             </div>
         </form>
     </div>

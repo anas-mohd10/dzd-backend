@@ -37,6 +37,9 @@ export class ModuleNotificationComponent implements OnInit, OnChanges {
   couponForm: FormGroup;
   form: FormGroup;
   isInvalid: boolean;
+  isLoading: boolean = false;
+  isButtonDisabled: boolean = false;
+
   @Output() notificationTriggered = new EventEmitter<void>();
 
   triggerNotification() {
@@ -72,6 +75,7 @@ export class ModuleNotificationComponent implements OnInit, OnChanges {
       message:
         'Your cart is waiting for you. Complete your shopping now to secure your favorites before they are gone',
     });
+    this.isButtonDisabled = false;
   }
 
   get couponControls() {
@@ -110,6 +114,9 @@ export class ModuleNotificationComponent implements OnInit, OnChanges {
   }
 
   send() {
+    if (this.isButtonDisabled) return;
+    this.isButtonDisabled = true;
+
     this.NotificationsService.moduleNotifications({
       type: this.type,
       query: this.query,
@@ -122,10 +129,12 @@ export class ModuleNotificationComponent implements OnInit, OnChanges {
           this.notificationTriggered.emit();
         } else {
           this.Toast.error(res?.message);
+          this.isButtonDisabled = false;
         }
       },
       error: (err: any) => {
         this.Toast.error(err?.error?.message);
+        this.isButtonDisabled = false;
       },
     });
   }
