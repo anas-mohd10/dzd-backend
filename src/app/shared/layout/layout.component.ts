@@ -58,6 +58,7 @@ export class LayoutComponent implements OnInit, AfterViewInit {
 
   ngOnInit(): void {
     this.AppSettingsService.getGeneralSettingsbyId("1").subscribe((res: any) => {
+      localStorage.setItem('primaryLanguage', res.result.primaryLang)
       environment.base = res.result.baseS3Url;
       this.isReady = true
       this.ChangeDetectorRef.markForCheck()
