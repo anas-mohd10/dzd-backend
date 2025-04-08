@@ -193,7 +193,9 @@
         <th>Order</th>
         <th>Date</th>
         <th>Customer</th>
-        <th *ngIf="settings && settings.isPickUp == true">Store</th>
+        <th *ngIf="settings && (settings.isPickUp == true || settings.isDeliverySlots == true)">
+          {{settings && settings.isPickUp == true ? 'Store' : 'Delivery Slot'}}
+        </th>
         <th>Total</th>
         <th>Source</th>
         <th>Tags</th>
@@ -222,10 +224,11 @@
               {{order?.customerType == 'regd' ? 'Customer' : 'Guest'}}
             </div>
           </td>
-          <td *ngIf="settings && settings.isPickUp == true">
+          <td *ngIf="settings && (settings.isPickUp == true || settings.isDeliverySlots == true)">
             <div *ngIf="order && order?.pickUpLocation">
-              <div class="cursor-pointer" tooltip="{{order?.pickUpLocation?.address}}">{{order?.pickUpLocation?.name +
-                ", " + order?.pickUpLocation?.city}}</div>
+              <div class="cursor-pointer" tooltip="{{order?.pickUpLocation?.address}}">
+                {{order?.pickUpLocation?.name + ", " + order?.pickUpLocation?.city}}
+              </div>
             </div>
             <div *ngIf="order?.clickPoint">
               {{order?.clickPoint?.address?.city}}
