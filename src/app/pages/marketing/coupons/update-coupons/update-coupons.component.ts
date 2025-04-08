@@ -101,6 +101,8 @@ export class UpdateCouponsComponent implements OnInit {
       value: ['', [Validators.required, Validators.pattern("^[0-9]*$")]],
       fromDate: ['', Validators.required],
       lastDate: ['', Validators.required],
+      fromTime: ['00:00'],
+      lastTime: ['23:59'],
       file: [''],
       minPurchase: ['', [Validators.required, Validators.pattern("^[0-9]*$")]],
       categories: [],
@@ -128,13 +130,38 @@ export class UpdateCouponsComponent implements OnInit {
   getCouponBySlug() {
     this.CouponsService.getCouponDetails({ refid: this.slug }).subscribe((res: any) => {
       this.couponDetails = res?.result
-      console.log(this.couponDetails?.details?.totalUsageRemaining)
+      // Convert UTC dates from backend to local dates
+      console.log(this.couponDetails.fromDate, this.couponDetails.lastDate, 'this.couponDetails.fromDate, this.couponDetails.lastDate')
+      const fromUTC = new Date(this.couponDetails.fromDate);
+      const lastUTC = new Date(this.couponDetails.lastDate);
+
+      console.log(fromUTC, lastUTC, 'fromUTC, lastUTC')
+
+      // Format date as YYYY-MM-DD for date inputs
+      const fromDateFormatted = fromUTC.toLocaleDateString('en-CA'); // en-CA gives YYYY-MM-DD format
+      const lastDateFormatted = lastUTC.toLocaleDateString('en-CA');
+      
+      // Format time as HH:MM for time inputs
+      const fromTime = fromUTC.toLocaleTimeString('en-US', {
+        hour12: false,
+        hour: '2-digit',
+        minute: '2-digit'
+      });
+      const lastTime = lastUTC.toLocaleTimeString('en-US', {
+        hour12: false,
+        hour: '2-digit',
+        minute: '2-digit'
+      });
+
+      console.log(fromDateFormatted, lastDateFormatted, fromTime, lastTime, 'fromDateFormatted, lastDateFormatted, fromTime, lastTime')
       this.form.get("title")?.setValue(this.couponDetails.title)
       this.form.get("code")?.setValue(this.couponDetails.code)
       this.form.get("type")?.setValue(this.couponDetails.type)
       this.form.get("value")?.setValue(this.couponDetails.value)
-      this.form.get("fromDate")?.setValue(this.couponDetails.fromDate.split('T')[0])
-      this.form.get("lastDate")?.setValue(this.couponDetails.lastDate.split('T')[0])
+      this.form.get("fromDate")?.setValue(fromDateFormatted);
+      this.form.get("fromTime")?.setValue(fromTime);
+      this.form.get("lastDate")?.setValue(lastDateFormatted);
+      this.form.get("lastTime")?.setValue(lastTime);
       this.form.get("couponType")?.setValue(this.couponDetails?.details?.type)
       this.form.get("couponValue")?.setValue(this.couponDetails?.details?.value)
       this.form.get("maxDiscount")?.setValue(this.couponDetails.maxDiscount)
@@ -249,6 +276,27 @@ export class UpdateCouponsComponent implements OnInit {
       this.categories = [];
       this.brands = [];
     }
+
+
+    // Get date and time values
+    const fromDate = this.form.get('fromDate')?.value;
+    const fromTime = this.form.get('fromTime')?.value || '00:00';
+    const lastDate = this.form.get('lastDate')?.value;
+    const lastTime = this.form.get('lastTime')?.value || '23:59';
+
+    console.log(fromDate, fromTime, lastDate, lastTime, 'fromDate, fromTime, lastDate, lastTime');
+
+    // Create Date objects with local time zone
+    const fromLocalDate = new Date(`${fromDate}T${fromTime}:00`);
+    const lastLocalDate = new Date(`${lastDate}T${lastTime}:00`);
+
+    console.log(fromLocalDate, lastLocalDate, 'fromLocalDate, lastLocalDate');
+
+    // Convert to UTC string format - using toUTCString to match add component
+    const fromDateTime = fromLocalDate.toUTCString();
+    const lastDateTime = lastLocalDate.toUTCString();
+
+    console.log(fromDateTime, lastDateTime, 'fromDateTime, lastDateTime');
 
     // Create the payload
     const payload = {
