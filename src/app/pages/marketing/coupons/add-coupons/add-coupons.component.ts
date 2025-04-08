@@ -65,6 +65,8 @@ export class AddCouponsComponent implements OnInit {
       value: new FormControl('', [Validators.required, Validators.pattern("^[0-9]*$")]),
       fromDate: new FormControl('', Validators.required),
       lastDate: new FormControl('', Validators.required),
+      fromTime: new FormControl('00:00'),
+      lastTime: new FormControl('23:59'),
       file: new FormControl(''),
       minPurchase: new FormControl('', [Validators.required, Validators.pattern("^[0-9]*$")]),
       categories: new FormControl([]),
@@ -233,11 +235,21 @@ export class AddCouponsComponent implements OnInit {
 
   createPayload() {
     if (this.isValidValue) {
+      const fromDate = this.form.get('fromDate')?.value;
+      const fromTime = this.form.get('fromTime')?.value || '00:00';
+      const lastDate = this.form.get('lastDate')?.value;
+      const lastTime = this.form.get('lastTime')?.value || '23:59';
+      const fromLocalDate = new Date(`${fromDate}T${fromTime}:00`);
+      const lastLocalDate = new Date(`${lastDate}T${lastTime}:00`);
+      const fromDateTime = fromLocalDate.toUTCString();
+      const lastDateTime = lastLocalDate.toUTCString();
+
+
       const data = {
         title: this.form.get('title')?.value,
         code: this.form.get('code')?.value,
-        fromDate: this.form.get('fromDate')?.value,
-        lastDate: this.form.get('lastDate')?.value,
+        fromDate: fromDateTime,
+        lastDate: lastDateTime,
         minPurchase: this.form.get('minPurchase')?.value,
         minimumType: this.form.get('minimumType')?.value,
         value: this.form.get('value')?.value,

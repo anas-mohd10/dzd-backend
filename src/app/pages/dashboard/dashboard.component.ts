@@ -124,6 +124,7 @@ export class DashboardComponent implements OnInit {
 
     this.AppSettingsService.getGeneralSettingsbyId('1').subscribe((res: any) => {
       if (res?.errorCode == 0) {
+        localStorage.setItem('primaryLanguage', res?.result?.primaryLang)
         this.settings = res?.result
       }
     })
