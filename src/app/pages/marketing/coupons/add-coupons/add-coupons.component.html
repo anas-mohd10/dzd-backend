@@ -219,13 +219,19 @@
         <div class="row">
           <div class="form-group col-lg-6 mb-3">
             <label class="fs-6 mb-3">From Date</label>
-            <input type="date" class="form-control fs-6" [min]="fromDate" formControlName="fromDate"
-              [ngClass]="{'is-invalid': (formControls.fromDate.touched || isSubmitted) &&  formControls.fromDate.errors?.required}" />
+            <div class="d-flex gap-2">
+              <input type="date" class="form-control fs-6" [min]="fromDate" formControlName="fromDate"
+                [ngClass]="{'is-invalid': (formControls.fromDate.touched || isSubmitted) &&  formControls.fromDate.errors?.required}" />
+              <input type="time" class="form-control fs-6" formControlName="fromTime" />
+            </div>
           </div>
           <div class="form-group col-lg-6 mb-3">
             <label class="fs-6 mb-3">Last Date</label>
-            <input type="date" [min]="fromDate" class="form-control fs-6" formControlName="lastDate"
-              [ngClass]="{ 'is-invalid': (formControls.lastDate.touched || isSubmitted) && formControls.lastDate.errors?.required }" />
+            <div class="d-flex gap-2">
+              <input type="date" [min]="fromDate" class="form-control fs-6" formControlName="lastDate"
+                [ngClass]="{ 'is-invalid': (formControls.lastDate.touched || isSubmitted) && formControls.lastDate.errors?.required }" />
+              <input type="time" class="form-control fs-6" formControlName="lastTime" />
+            </div>
           </div>
         </div>
       </div>
