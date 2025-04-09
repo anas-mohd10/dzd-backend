@@ -12,10 +12,16 @@
           <a routerLink="{{ appRoute.collection.COLLECTION_LIST }}">Collections</a>
         </li>
       </ul>
+      bun
     </div>
-    <button class="btn btn-primary" routerLink="{{ appRoute.collection.ADD_COLLECTION }}">
-      Add Collection
-    </button>
+    <div class="d-flex gap-2">
+      <button class="btn btn-secondary" (click)="exportCollections()">
+        Export Collections
+      </button>
+      <button class="btn btn-primary" routerLink="{{ appRoute.collection.ADD_COLLECTION }}">
+        Add Collection
+      </button>
+    </div>
   </div>
 
   <div class="card p-4 my-4">
@@ -73,7 +79,8 @@
             </div>
           </td>
           <td>
-            <div class="cursor-pointer" routerLink="{{appRoute.collection.UPDATE_COLLECTION}}" [queryParams]="{'collection': collection.slug}">
+            <div class="cursor-pointer" routerLink="{{appRoute.collection.UPDATE_COLLECTION}}"
+              [queryParams]="{'collection': collection.slug}">
               <svg height="20" width="20" data-slot="icon" fill="none" stroke-width="1.5" stroke="currentColor"
                 viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
                 <path stroke-linecap="round" stroke-linejoin="round"

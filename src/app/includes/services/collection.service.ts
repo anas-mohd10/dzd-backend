@@ -95,4 +95,16 @@ export class CollectionService {
     const url = this.commonService.getFullUrl(this.collectionEndpoints.removeCoverImage + `/${collection}`);
     return this.http.delete(`${url}`);
   }
+
+  // Add this method to your existing CollectionService
+
+  exportSingleCollection(slug: string) {
+    const url = this.commonService.getFullUrl(`${this.collectionEndpoints.export_collection}/${slug}`);
+    return  this.http.get(url);
+  }
+
+  exportCollections() {
+    const url = this.commonService.getFullUrl(this.collectionEndpoints.export_collections);
+    return  this.http.get(url);
+  }
 }
