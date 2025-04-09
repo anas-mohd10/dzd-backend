@@ -452,6 +452,7 @@ export class CatalogComponent implements OnInit {
   ];
   widgetBlogs: any;
   settings: any;
+  domain: string = '';
   collections: Array<any> = [];
   categories: Array<any> = [];
   brands: Array<any> = [];
@@ -573,6 +574,11 @@ export class CatalogComponent implements OnInit {
     'catalog',
     'blogs',
   ];
+
+  deviceToggled(event: string) {
+    this.device = event;
+    this.ChangeDetectorRef.markForCheck();
+  }
 
   constructor(
     private BsModalService: BsModalService,
@@ -1816,6 +1822,7 @@ export class CatalogComponent implements OnInit {
       next: (res: any) => {
         if (res?.errorCode == 0) {
           this.settings = res?.result;
+          this.domain = res?.result?.domain
           environment.base = res.result.baseS3Url;
           this.base = environment.base;
           this.ChangeDetectorRef.markForCheck();
