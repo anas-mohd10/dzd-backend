@@ -340,6 +340,8 @@ export const internationalisationKeys = {
     subscribedNewsletter: 'subscribedNewsletter',
     codNotAvailable: 'codNotAvailable',
     pleaseAddAddress: 'pleaseAddAddress',
+    allBrands: 'allBrands',
+    searchForBrands: 'searchForBrands',
     selectEmirateCity: 'selectEmirateCity',
     orderDate: 'orderDate',
     order: 'order',
