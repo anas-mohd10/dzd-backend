@@ -71,20 +71,25 @@ export class OfferListComponent implements OnInit {
   }
 
   switchToggled(event: { switchId: string, toggleState: boolean }) {
-    this.OfferService.updateOffer({ slug: event.switchId, isActive: event.toggleState }).subscribe({
+    // Only pass isForced when enabling, not when disabling
+    const updateData = event.toggleState 
+      ? { slug: event.switchId, isActive: true, isForced: true }
+      : { slug: event.switchId, isActive: false };
+      
+    this.OfferService.updateOffer(updateData).subscribe({
       next: (res: any) => {
         if (res?.errorCode == 0) {
-          this.getOffers()
-          this.HotToastService.success(res?.message)
+          this.getOffers();
+          this.HotToastService.success(res?.message);
         } else {
-          this.HotToastService.error(res?.message)
+          this.HotToastService.error(res?.message);
         }
-      }, error: (err: any) => {
-        this.HotToastService.error(err?.error?.message)
+      }, 
+      error: (err: any) => {
+        this.HotToastService.error(err?.error?.message);
       }
-    })
-  }
-
+    });
+}
   deleteOffer(offerId: string, status: boolean) {
     if(status){
       return this.HotToastService.error('Deactivate offer before deleting it')

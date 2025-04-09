@@ -70,18 +70,32 @@
           <div class="col-lg-6">
             <div class="form-group mb-3">
               <label class="fs-6 mb-3">Start Date</label>
-              <input type="date" class="form-control fs-6" [min]="minDate" formControlName="startDate" [ngClass]="{
-                      'is-invalid':
-                        (formControls.startDate.touched || isSubmitted) &&
-                        formControls.startDate.errors?.required
-                    }" />
+              <div class="d-flex gap-2">
+                <input type="date" class="form-control fs-6" [min]="minDate" formControlName="startDate" [ngClass]="{
+                        'is-invalid':
+                          (formControls.startDate.touched || isSubmitted) &&
+                          formControls.startDate.errors?.required
+                      }" />
+                <input type="time" class="form-control fs-6" formControlName="startTime" [ngClass]="{
+                        'is-invalid':
+                          (formControls.startTime.touched || isSubmitted) &&
+                          formControls.startTime.errors?.required
+                      }" />
+              </div>
             </div>
           </div>
           <div class="col-lg-6">
             <div class="form-group mb-3">
               <label class="fs-6 mb-3">End Date</label>
-              <input type="date" [min]="minDate" class="form-control fs-6" formControlName="endDate"
-                [ngClass]="{ 'is-invalid': (formControls.endDate.touched || isSubmitted) && formControls.endDate.errors?.required }" />
+              <div class="d-flex gap-2">
+                <input type="date" [min]="minDate" class="form-control fs-6" formControlName="endDate"
+                  [ngClass]="{ 'is-invalid': (formControls.endDate.touched || isSubmitted) && formControls.endDate.errors?.required }" />
+                <input type="time" class="form-control fs-6" formControlName="endTime" [ngClass]="{
+                        'is-invalid':
+                          (formControls.endTime.touched || isSubmitted) &&
+                          formControls.endTime.errors?.required
+                      }" />
+              </div>
             </div>
           </div>
           <div>

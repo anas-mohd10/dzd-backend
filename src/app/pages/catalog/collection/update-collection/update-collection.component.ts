@@ -274,4 +274,37 @@ export class UpdateCollectionComponent implements OnInit {
     this.productDetails = products;
     this.updateProductOrders();
   }
+
+  // Add this method to the UpdateCollectionComponent class
+
+  exportCollection() {
+    if (!this.collectionSlug) {
+      this.HotToastService.error('Collection not found');
+      return;
+    }
+
+    this.HotToastService.info('Preparing collection export...');
+
+    this.CollectionService.exportSingleCollection(this.collectionSlug).subscribe({
+      next: (res: any) => {
+        if (res?.errorCode == 0 && res?.result?.url) {
+          // Create a temporary link and trigger download
+          const link = document.createElement('a');
+          link.href = res.result.url;
+          link.target = '_blank';
+          link.download = `collection-${this.collectionSlug}.csv`;
+          document.body.appendChild(link);
+          link.click();
+          document.body.removeChild(link);
+
+          this.HotToastService.success('Collection exported successfully');
+        } else {
+          this.HotToastService.error(res.message || 'Failed to export collection');
+        }
+      },
+      error: (err: any) => {
+        this.HotToastService.error(err.message || 'Failed to export collection');
+      }
+    });
+  }
 }

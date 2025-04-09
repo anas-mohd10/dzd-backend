@@ -22,6 +22,7 @@ export class CollectionListComponent implements OnInit {
   totalPages: number = 1
   keyword: FormControl = new FormControl("")
   isActive: FormControl = new FormControl("")
+  isExporting: boolean = false;
 
   constructor(
     private CollectionService: CollectionService,
@@ -76,4 +77,34 @@ export class CollectionListComponent implements OnInit {
     })
   }
 
+  exportCollections() {
+    if (this.isExporting) return;
+    
+    this.isExporting = true;
+    this.ToastrService.info('Preparing collections export...');
+    
+    this.CollectionService.exportCollections().subscribe({
+      next: (res: any) => {
+        this.isExporting = false;
+        if (res?.errorCode == 0 && res?.result?.url) {
+          // Create a temporary link and trigger download
+          const link = document.createElement('a');
+          link.href = res.result.url;
+          link.target = '_blank';
+          link.download = 'collections-export.csv';
+          document.body.appendChild(link);
+          link.click();
+          document.body.removeChild(link);
+          
+          this.ToastrService.success('Collections exported successfully');
+        } else {
+          this.ToastrService.error(res.message || 'Failed to export collections');
+        }
+      },
+      error: (err: any) => {
+        this.isExporting = false;
+        this.ToastrService.error(err.message || 'Failed to export collections');
+      }
+    });
+  }
 }

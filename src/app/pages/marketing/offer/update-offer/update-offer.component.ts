@@ -151,6 +151,13 @@ export class UpdateOfferComponent implements OnInit {
       next: (res: any) => {
         if (res.errorCode == 0) {
           this.offerDetails = res?.result;
+          const startDate = new Date(this.offerDetails.startDate);
+          const endDate = new Date(this.offerDetails.endDate);
+
+          const formattedStartDate = startDate.toISOString().split('T')[0];
+          const formattedStartTime = this.formatTime(startDate);
+          const formattedEndDate = endDate.toISOString().split('T')[0];
+          const formattedEndTime = this.formatTime(endDate);
           this.form.patchValue({
             title: this.offerDetails.title,
             description: this.offerDetails.description,
@@ -159,8 +166,10 @@ export class UpdateOfferComponent implements OnInit {
             value: this.offerDetails.value,
             offerType: this.offerDetails.offerType,
             isFeatured: this.offerDetails.isFeatured,
-            startDate: new Date(this.offerDetails.startDate).toISOString().split('T')[0],
-            endDate: new Date(this.offerDetails.endDate).toISOString().split('T')[0],
+            startDate: formattedStartDate,
+            startTime: formattedStartTime,
+            endDate: formattedEndDate,
+            endTime: formattedEndTime,
           })
           this.products = this.offerDetails.products
             ? this.offerDetails.products
@@ -191,12 +200,20 @@ export class UpdateOfferComponent implements OnInit {
     });
   }
 
+  private formatTime(date: Date): string {
+    const hours = date.getHours().toString().padStart(2, '0');
+    const minutes = date.getMinutes().toString().padStart(2, '0');
+    return `${hours}:${minutes}`;
+  }
+
   initForm() {
     this.form = this.formBuilder.group({
       title: ['', Validators.required],
       description: [''],
       startDate: ['', Validators.required],
+      startTime: ['', Validators.required],
       endDate: ['', Validators.required],
+      endTime: ['', Validators.required],
       type: ['percentage'],
       offerType: ['complete'],
       value: ['', [Validators.required, Validators.pattern('^[0-9]+$')]],
@@ -358,6 +375,20 @@ export class UpdateOfferComponent implements OnInit {
       return;
     }
 
+    const startDateTime = new Date(
+      `${this.form.value.startDate}T${this.form.value.startTime}`
+    ).toISOString();
+    
+    const endDateTime = new Date(
+      `${this.form.value.endDate}T${this.form.value.endTime}`
+    ).toISOString();
+  
+    // Validate that end date/time is after start date/time
+    if (new Date(endDateTime) <= new Date(startDateTime)) {
+      this.HotToastService.error('End date/time must be after start date/time');
+      return;
+    }
+
     if (this.form.get('offerType')?.value == 'complete') {
       this.products = [];
       this.categories = [];
@@ -369,6 +400,8 @@ export class UpdateOfferComponent implements OnInit {
     this.offerService
       .updateOffer({
         ...this.form.value,
+        startDate: startDateTime,
+        endDate: endDateTime,
         offerType:
           this.form.get('offerType')?.value == 'complete'
             ? 'complete'

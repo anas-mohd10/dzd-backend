@@ -8,6 +8,8 @@ export const collectionEndpoints = {
     update_collection: '/update-collection',
     get_collection_count: '/collections/count',
     deleteCollection: '/delete-collection',
+    export_collections: '/export-collections',
+    export_collection: '/export-collection',
     //Filter APIs
     search_collection: '/search-collections',
     archive_collection: '/collections/archive',
