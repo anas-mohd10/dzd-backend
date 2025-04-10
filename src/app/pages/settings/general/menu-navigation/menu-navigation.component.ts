@@ -12,6 +12,7 @@ import { BlogService } from 'src/app/includes/services/blog.service';
 import { CollectionService } from 'src/app/includes/services/collection.service';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { environment } from 'src/environments/environment';
+import { AppSettingsService } from 'src/app/includes/services/app.settings.service';
 
 interface MenuNavigation {
   _id: string
@@ -51,6 +52,7 @@ export class MenuNavigationComponent implements OnInit {
   devices: string[] = ['web', 'mobile']
   menuNavigations: MenuNavigation[] = []
   form: FormGroup = new FormGroup({})
+  stylesForm: FormGroup = new FormGroup({})
   activeMenuId: string = ''
   appRoute = appRoutes
   brands: Array<{ name: string, slug: string }> = []
@@ -67,6 +69,20 @@ export class MenuNavigationComponent implements OnInit {
   selectedCollection: string = ''
   isEditMode: boolean = false
   base: string = environment.base
+  editorOptions = {
+    theme: 'vs-dark',
+    language: 'css',
+    automaticLayout: true,
+    minimap: { enabled: true },
+    scrollBeyondLastLine: false,
+    lineNumbers: 'on',
+    roundedSelection: true,
+    fontSize: 14,
+    wordWrap: 'on',
+    folding: true,
+    formatOnPaste: true,
+    formatOnType: true,
+  };
 
   constructor(
     private BsModalService: BsModalService,
@@ -75,6 +91,7 @@ export class MenuNavigationComponent implements OnInit {
     private CategoryService: CategoryService,
     private MenuNavigationService: MenuNavigationService,
     private HotToastService: HotToastService,
+    private AppSettingsService: AppSettingsService,
     private CatalogService: CatalogService,
     private StaticPageService: StaticPageService,
     private BlogService: BlogService,
@@ -96,8 +113,6 @@ export class MenuNavigationComponent implements OnInit {
   }
 
   openMenuNavigation(template: TemplateRef<any>) {
-
-
     this.modalRef = this.BsModalService.show(template, { class: 'modal-lg modal-dialog-centered', ignoreBackdropClick: true })
   }
 
@@ -151,17 +166,29 @@ export class MenuNavigationComponent implements OnInit {
       icon: new FormControl(''),
       redirection: new FormControl('', Validators.required),
       index: new FormControl(''),
-      webStyles: new FormControl(''),
-      mobileStyles: new FormControl(''),
       isImage: new FormControl(false),
       imageColumns: new FormControl(1),
       groupName: new FormControl('')
+    })
+
+    this.stylesForm = new FormGroup({
+      web: new FormControl(''),
+      mobile: new FormControl(''),
     })
 
     // Set the device type to the form
     this.form.patchValue({ device: this.deviceType.value })
 
     this.fetchMenuDocs()
+
+    this.AppSettingsService.getGeneralSettingsbyId('1').subscribe({
+      next: (res: any) => {
+        if (res.errorCode == 0) {
+          this.stylesForm.patchValue({ ...res.result.navigationMenuStyles })
+          this.ChangeDetectorRef.markForCheck()
+        } else { }
+      }, error: (err: any) => { }
+    })
   }
 
   onMenuTypeChange(type?: string) {
@@ -217,7 +244,7 @@ export class MenuNavigationComponent implements OnInit {
   }
 
 
-  
+
 
   getMenuDoc() {
     this.MenuNavigationService.getMenuNavigation(this.activeMenuId).subscribe({
@@ -306,7 +333,7 @@ export class MenuNavigationComponent implements OnInit {
   }
 
 
-  onSwitchTriggered(event: {toggleState: boolean, switchId: string}) {
+  onSwitchTriggered(event: { toggleState: boolean, switchId: string }) {
     this.form.get(event.switchId)?.setValue(event.toggleState)
   }
 
@@ -471,40 +498,40 @@ export class MenuNavigationComponent implements OnInit {
     })
 
 
-    
+
   }
 
 
   dropNested(event: CdkDragDrop<any[]>, items: MenuNavigation[]) {
     if (event.previousContainer === event.container) {
-        moveItemInArray(items, event.previousIndex, event.currentIndex);
-        this.reorderNestedMenuItems(items);
+      moveItemInArray(items, event.previousIndex, event.currentIndex);
+      this.reorderNestedMenuItems(items);
     }
     this.ChangeDetectorRef.markForCheck();
-}
+  }
 
-reorderNestedMenuItems(items: MenuNavigation[]) {
+  reorderNestedMenuItems(items: MenuNavigation[]) {
     const updatedItems = items.map((item, index) => {
-        return {
-            _id: item._id,
-            index: index + 1
-        };
+      return {
+        _id: item._id,
+        index: index + 1
+      };
     });
 
-    this.MenuNavigationService.reorderMenuNavigations({menuNavigations: updatedItems}).subscribe({
-        next: (res: any) => {
-            if (res.errorCode == 0) {
-                this.fetchMenuDocs(); // Refresh the data
-                this.HotToastService.success(res?.message);
-            } else {
-                this.HotToastService.error(res?.message);
-            }
-        }, 
-        error: (err: any) => {
-            this.HotToastService.error(err?.message);
+    this.MenuNavigationService.reorderMenuNavigations({ menuNavigations: updatedItems }).subscribe({
+      next: (res: any) => {
+        if (res.errorCode == 0) {
+          this.fetchMenuDocs(); // Refresh the data
+          this.HotToastService.success(res?.message);
+        } else {
+          this.HotToastService.error(res?.message);
         }
+      },
+      error: (err: any) => {
+        this.HotToastService.error(err?.message);
+      }
     });
-}
+  }
 
 
 
@@ -514,18 +541,12 @@ reorderNestedMenuItems(items: MenuNavigation[]) {
 
 
   onSubmit() {
-    if (this.form.get('webStyles')?.value || this.form.get('mobileStyles')?.value) {
+    if (this.stylesForm.get('web')?.value || this.stylesForm.get('mobile')?.value) {
       const styleData = {
-        navigationMenuStyles: {
-          web: this.form.get('webStyles')?.value,
-          mobile: this.form.get('mobileStyles')?.value
-        }
+        navigationMenuStyles: { ...this.stylesForm.value }
       };
-  
-      console.log(styleData);
-  
-      // Assuming MenuNavigationService has a method to update menu styles
-      this.MenuNavigationService.updateGeneralSettings(styleData).subscribe({
+
+      this.AppSettingsService.updateSettings(styleData).subscribe({
         next: (res: any) => {
           if (res.errorCode === 0) {
             this.close(); // Close the modal
@@ -542,5 +563,5 @@ reorderNestedMenuItems(items: MenuNavigation[]) {
       this.HotToastService.warning('Please enter at least one style');
     }
   }
-  
+
 }
