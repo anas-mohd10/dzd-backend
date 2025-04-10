@@ -9,6 +9,12 @@
     </button>
   </div>
   <div class="modal-body">
+    <div class="mb-2" *ngIf="currentReportType === 'deliveryReport'">
+      <label for="orderStatuses" class="fs-6 mb-2">Order Statuses</label>
+      <ng-select [items]="orderStatusList" [multiple]="true" [closeOnSelect]="false" [searchable]="false" bindLabel="label"
+        bindValue="value" placeholder="Select order statuses" [(ngModel)]="selectedOrderStatuses">
+      </ng-select>
+    </div>
     <div class="mb-2 border cursor-pointer border-secondary rounded p-2" (click)="toggleDateRange('custom')"
       [ngClass]="{'border-primary': dateRange == 'custom', 'border-secondary':dateRange != 'custom' }">
       <div class="fs-4">Custom Range</div>
@@ -30,7 +36,9 @@
               [(ngModel)]="endDate">
           </div>
         </div>
+
       </div>
+
     </div>
 
     <div *ngFor="let dateRangeItem of dateRanges" class="mb-2 border cursor-pointer border-secondary rounded p-2"
@@ -160,7 +168,7 @@
         </div>
       </div>
     </a>
-<!-- 
+    <!-- 
     <a class="item rounded" (click)="generateOtherReports('unfullfilledStock')">
       <div class="d-flex align-items-center gap-2">
         <div class="icon p-2 rounded">
