@@ -957,6 +957,9 @@ export class CatalogComponent implements OnInit {
       case 'mobile-hover':
         this.form.get('hovering.mobile')?.setValue(event.toggleState);
         break;
+        case 'reverse-widget':
+          this.form.get('isReversed')?.setValue(event.toggleState);
+          break;
     }
   }
   //Add widgets ends here
@@ -1856,6 +1859,7 @@ export class CatalogComponent implements OnInit {
       video: new FormControl(''),
       view: new FormControl('grid'),
       textTwirlTitle: new FormControl(''),
+      isReversed: new FormControl(false),
       textTwirlDescription: new FormControl(''),
       gridsPerCount: new FormGroup({
         mobile: new FormControl(2, [
