@@ -36,6 +36,20 @@ export class ReportsListComponent implements OnInit {
   startDate: string = '';
   endDate: string = '';
   currentReportType: string = '';
+  selectedOrderStatuses: string[] = [];
+  orderStatusList: Array<any> = [
+    { label: 'Placed', value: 'PLACED' },
+    { label: 'Accepted', value: 'ACCEPTED' },
+    { label: 'Packed', value: 'PACKED' },
+    { label: 'Shipped', value: 'SHIPPED' },
+    { label: 'Out for Delivery', value: 'OUT FOR DELIVERY' },
+    { label: 'Partial Processed', value: 'PARTIAL PROCESSED' },
+    { label: 'Delivered', value: 'DELIVERED' },
+    { label: 'Collected', value: 'COLLECTED' },
+    { label: 'Failed', value: 'FAILED' },
+    { label: 'Cancelled', value: 'CANCELLED' },
+    { label: 'Pending', value: 'PENDING' }
+  ];
 
 
   saleReportItems: Array<any> =
@@ -537,13 +551,22 @@ export class ReportsListComponent implements OnInit {
     });
   }
   generateDeliveryReport(params: any) {
+    const payload = {
+      dateRange: params.dateRange,
+      startDate: params.startDate,
+      endDate: params.endDate,
+      orderStatuses: this.selectedOrderStatuses
+    };
+
     this.reportsService.deliveryReport(
-      params.dateRange,
-      params.startDate,
-      params.endDate
+      payload.dateRange,
+      payload.startDate,
+      payload.endDate,
+      payload.orderStatuses
     ).subscribe({
       next: (res: any) => {
         this.handleReportResponse(res);
+        this.selectedOrderStatuses = [];
       },
       error: (err: any) => {
         this.handleError(err);

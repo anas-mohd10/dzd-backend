@@ -73,9 +73,22 @@ export class ReportsService {
     const url = this.commonService.getFullUrl(this.productReportEndpoints.enquiryReport + `?dateRange=${dateRange}&startDate=${startDate}&endDate=${endDate}`);
     return this.http.get(`${url}`);
   }
-  deliveryReport(dateRange: string, startDate?: string, endDate?: string){   
-    const url = this.commonService.getFullUrl(this.productReportEndpoints.deliveryReport + `?dateRange=${dateRange}&startDate=${startDate}&endDate=${endDate}`);
-    return this.http.get(`${url}`);
+  deliveryReport(dateRange: string, startDate: string, endDate: string, orderStatuses?: string[]) {
+    let url = `${this.commonService.getFullUrl(this.productReportEndpoints.deliveryReport)}`;
+
+    const params: any = {};
+    if (dateRange === 'custom') {
+      params.startDate = startDate;
+      params.endDate = endDate;
+    } else {
+      params.dateRange = dateRange;
+    }
+
+    if (orderStatuses && orderStatuses.length > 0) {
+      params.orderStatuses = orderStatuses.join(',');
+    }
+
+    return this.http.get(url, { params });
   }
 
   orderMovementReport() {

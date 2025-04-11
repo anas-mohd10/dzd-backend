@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { NgSelectModule } from '@ng-select/ng-select';
 
 import { ReportsRoutingModule } from './reports-routing.module';
 import { ReportsListComponent } from './reports-list/reports-list.component';
@@ -16,6 +17,7 @@ import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
     FormsModule,
     ReactiveFormsModule,
     BsDatepickerModule.forRoot(),
+    NgSelectModule
   ]
 })
 export class ReportsModule { }
