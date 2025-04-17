@@ -43,6 +43,10 @@
                                 [ngClass]="{'is-invalid':(formControls.name.touched || isSubmitted) && formControls.name.errors?.required}" />
                         </div>
                         <div>
+                            <label class="fs-6 mb-3" for="title">Title</label>
+                            <input type="text" class="form-control fs-6" id="title" formControlName="title" />
+                         </div>
+                        <div>
                             <label class="fs-6 mb-3" for="profession">Profession</label>
                             <input type="text" class="form-control fs-6" id="profession" formControlName="profession" />
                         </div>
