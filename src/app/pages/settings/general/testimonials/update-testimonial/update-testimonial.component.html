@@ -19,99 +19,89 @@
         </ul>
     </div>
 
-    <div class="mt-4">
-        <div class="card">
-            <div class="card-body">
-                <form [formGroup]="form">
-
-                    <div class="row">
-                        <div class="col-lg-3">
-                            <label for="thumbnail" class="fs-6 mb-3">Thumbnail</label>
-                            <div class="form-group position-relative rounded ratio ratio-1x1" id="thumbnail">
-                                <input type="file" class="form-control rounded h-100 w-100 fs-6" name="image"
-                                    accept="image/*" (change)="uploadThumbnail($event)">
-                                <div *ngIf="!thumbnail"
-                                    class="position-absolute bg-light border border-secondary top-0 pe-none d-flex align-items-center justify-content-center h-100 w-100 rounded">
-                                    <div class="fs-5 text-secondary"></div>
+    <div class="card my-4">
+        <div class="card-body">
+            <form [formGroup]="form">
+                <div class="row">
+                    <div class="col-lg-3">
+                        <div>
+                            <label for="thumbnail" class="fs-6 mb-3">Avatar</label>
+                            <div class="position-relative">
+                                <div class="ratio ratio-1x1">
+                                    <app-assets [previewDetails]="form.get('avatar')?.value || ''"
+                                        (mediaClicked)="onMediaSelect($event, 'avatar')"></app-assets>
                                 </div>
-                                <div *ngIf="thumbnail"
-                                    class="position-absolute bg-light border border-secondary top-0 pe-none d-flex align-items-center justify-content-center h-100 w-100 rounded">
-                                    <img class="h-100 w-100 object-fit-cover rounded" src="{{thumbnail}}"
-                                        alt="StoreDada">
+                                <div class="position-absolute top-0 end-0 m-2" *ngIf="form.get('avatar')?.value">
+                                    <button class="btn btn-danger p-1"
+                                        (click)="form.get('avatar')?.setValue('')">Remove</button>
                                 </div>
-                            </div>
-                            <div class="my-2" *ngIf="thumbnail">
-                                <button class="btn w-100 btn-secondary" (click)="removeThumbnail()">Remove</button>
                             </div>
                         </div>
-
-                        <div class="col-lg-9">
-                            <div class="row">
-
-                                <div class="form-group mb-3">
-                                    <label for="name" class="fs-6 mb-3 required">Name</label>
-                                    <input type="text" placeholder="Eg. Alex" id="name" class="form-control fs-6"
-                                        formControlName="name"
-                                        [ngClass]="{'is-invalid':(formControls.name.touched || isSubmitted) && formControls.name.errors?.required}" />
-                                </div>
-
-                                <div class="col-lg-6 form-group mb-3">
-                                    <label class="fs-6 mb-3" for="profession">Profession</label>
-                                    <input type="text" placeholder="Eg. CEO" class="form-control fs-6" id="profession"
-                                        formControlName="profession" />
-                                </div>
-
-                                <div class="col-lg-6 form-group mb-3">
-                                    <label class="fs-6 mb-3" for="business">Business Name</label>
-                                    <input type="text" placeholder="Eg. StoreDada Technologies"
-                                        class="form-control fs-6" id="business" formControlName="business" />
-                                </div>
-
-                                <div class="col-lg-6 mb-3 form-group">
-                                    <label class="fs-6 required mb-3" for="place">Place</label>
-                                    <input type="text" id="place" placeholder="Eg. Kakkanad" class="form-control fs-6"
-                                        formControlName="place"
-                                        [ngClass]="{'is-invalid':(formControls.place.touched || isSubmitted) && formControls.place.errors?.required}" />
-                                </div>
-
-                                <div class="form-group mb-3">
-                                    <label class="fs-6 mb-3 required" id="message">Message</label>
-                                    <textarea class=" form-control fs-6" formControlName="message" style="resize: none"
-                                        id="message" rows="3"
-                                        [ngClass]="{'is-invalid':(formControls.message.touched || isSubmitted) && formControls.message.errors?.required}"></textarea>
-                                </div>
-
-                                <div class="col-lg-6 form-group mb-3">
-                                    <label class="fs-6 required mb-3" for="place">Rating</label>
-                                    <input type="text" id="place" placeholder="Eg. 4" class="form-control fs-6"
-                                       formControlName="rating"
-                                       [ngClass]="{'is-invalid':(formControls.rating.touched || isSubmitted) && formControls.rating.errors?.required || formControls.rating.errors?.pattern}" />
-                                 </div>
-
-                                <div class="col-lg-6 form-group mb-3">
-                                    <label class="fs-6 mb-3 required">Status</label>
-                                    <select class="form-select fs-6" formControlName="isActive">
-                                        <option value="" disabled>-- Select an option --</option>
-                                        <option value="true">Active</option>
-                                        <option value="false">Inactive</option>
-                                    </select>
-                                </div>
-
-                                <div class="d-flex align-items-center gap-2 justify-content-end">
-                                    <a routerLink="{{ appRoute.testimonial.TESTIMONIAL_LIST}}"
-                                        class=" btn btn-secondary">
-                                        Cancel
-                                    </a>
-                                    <button type="submit" class="btn btn-primary" (click)="onSubmit()">
-                                        Save changes
-                                    </button>
-                                </div>
-                            </div>
+                        <div class="my-3">
+                            <label for="name" class="fs-6 mb-3 required">Name</label>
+                            <input type="text" id="name" class="form-control fs-6" formControlName="name"
+                                [ngClass]="{'is-invalid':(formControls.name.touched || isSubmitted) && formControls.name.errors?.required}" />
+                        </div>
+                        <div>
+                            <label class="fs-6 mb-3" for="profession">Profession</label>
+                            <input type="text" class="form-control fs-6" id="profession" formControlName="profession" />
+                        </div>
+                        <div class="my-3">
+                            <label class="fs-6 mb-3" for="business">Business Name</label>
+                            <input type="text" class="form-control fs-6" id="business" formControlName="business" />
+                        </div>
+                        <div>
+                            <label class="fs-6 required mb-3" for="place">Place</label>
+                            <input type="text" id="place" class="form-control fs-6" formControlName="place"
+                                [ngClass]="{'is-invalid':(formControls.place.touched || isSubmitted) && formControls.place.errors?.required}" />
                         </div>
                     </div>
-
-                </form>
-            </div>
+                    <div class="col-lg-9">
+                        <div>
+                            <label for="thumbnail" class="fs-6 mb-3">Thumbnail</label>
+                            <div class="position-relative">
+                                <div class="ratio ratio-21x9">
+                                    <app-assets [previewDetails]="form.get('file')?.value || ''"
+                                        (mediaClicked)="onMediaSelect($event, 'file')"></app-assets>
+                                </div>
+                                <div class="position-absolute top-0 end-0 m-2" *ngIf="form.get('file')?.value">
+                                    <button class="btn btn-danger p-1"
+                                        (click)="form.get('file')?.setValue('')">Remove</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group my-3">
+                            <label class="fs-6 mb-3 required" id="message">Message</label>
+                            <textarea class=" form-control fs-6" formControlName="message" style="resize: none"
+                                id="message" rows="3"
+                                [ngClass]="{'is-invalid':(formControls.message.touched || isSubmitted) && formControls.message.errors?.required}"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label class="fs-6 required mb-3" for="place">Rating</label>
+                            <input type="text" id="place" placeholder="Eg. 4" class="form-control fs-6"
+                                formControlName="rating"
+                                [ngClass]="{'is-invalid':(formControls.rating.touched || isSubmitted) && formControls.rating.errors?.required || formControls.rating.errors?.pattern}" />
+                        </div>
+                        <div class="form-group my-3">
+                            <label class="fs-6 mb-3 required">Status</label>
+                            <select class="form-select fs-6" formControlName="isActive">
+                                <option value="" disabled>-- Select an option --</option>
+                                <option value="true">Active</option>
+                                <option value="false">Inactive</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </form>
         </div>
+    </div>
+
+    <div class="d-flex align-items-center gap-2 justify-content-end">
+        <a routerLink="{{ appRoute.testimonial.TESTIMONIAL_LIST}}" class=" btn btn-secondary">
+            Cancel
+        </a>
+        <button type="submit" class="btn btn-primary" (click)="onSubmit()">
+            Save changes
+        </button>
     </div>
 </div>
