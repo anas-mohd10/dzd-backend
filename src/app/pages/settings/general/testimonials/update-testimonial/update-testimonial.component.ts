@@ -17,7 +17,6 @@ export class UpdateTestimonialComponent implements OnInit {
   appRoute = appRoutes;
   form: FormGroup = new FormGroup({});
   isSubmitted = false;
-  thumbnail: any;
   details: any;
   base: string = `${environment.base}`;
   id: string;
@@ -26,21 +25,19 @@ export class UpdateTestimonialComponent implements OnInit {
     private HotToastService: HotToastService,
     private TestimonialService: TestimonialService,
     private Router: Router,
-    private UploadService: UploadService,
     private ChangeDetectorRef: ChangeDetectorRef,
     private ActivatedRoute: ActivatedRoute
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.form = new FormGroup({
       name: new FormControl('', Validators.required),
+      avatar: new FormControl(''),
       profession: new FormControl(''),
+      title: new FormControl(''),
       business: new FormControl(''),
       file: new FormControl(''),
-      rating: new FormControl('', [
-        Validators.required,
-        Validators.pattern('^[0-9]$'),
-      ]),
+      rating: new FormControl('', [Validators.required, Validators.pattern("^[0-9]$")]),
       place: new FormControl('', Validators.required),
       message: new FormControl('', Validators.required),
       isActive: new FormControl(true),
@@ -48,6 +45,14 @@ export class UpdateTestimonialComponent implements OnInit {
 
     this.id = this.ActivatedRoute.snapshot.queryParams.id || '';
     this.getTestimonial();
+  }
+
+  onMediaSelect(event: { path: string }, mediaType: string) {
+    if (mediaType == "avatar") {
+      this.form.get("avatar")?.setValue(event.path)
+    } else if (mediaType == "file") {
+      this.form.get("file")?.setValue(event.path)
+    }
   }
 
   get formControls() {
@@ -59,55 +64,11 @@ export class UpdateTestimonialComponent implements OnInit {
       next: (res: any) => {
         if (res?.errorCode == 0) {
           this.details = res?.result;
-          res?.result?.file
-            ? (this.thumbnail = `${environment.base}${res?.result?.file}`)
-            : null;
           this.form.patchValue(res?.result);
           this.ChangeDetectorRef.markForCheck();
-        } else {
-        }
+        } else { }
       },
-      error: (err: any) => {},
-    });
-  }
-
-  uploadThumbnail(event: any) {
-    let formdata = new FormData();
-    formdata.append('file', event.target.files[0]);
-    this.UploadService.uploadThumbnail(formdata).subscribe({
-      next: (res: any) => {
-        if (res?.errorCode == 0) {
-          this.HotToastService.success(res?.message);
-          this.thumbnail = res?.result?.path;
-          this.form.get('file')?.setValue(res?.result?.location);
-          this.ChangeDetectorRef.markForCheck();
-        } else {
-          this.HotToastService.error(res?.message);
-        }
-      },
-      error: (err: any) => {
-        this.HotToastService.error(err?.error?.message);
-      },
-    });
-  }
-
-  removeThumbnail() {
-    this.UploadService.removeThumbnail({
-      location: this.form.get('file')?.value,
-    }).subscribe({
-      next: (res: any) => {
-        if (res?.errorCode == 0) {
-          this.HotToastService.success(res?.message);
-          this.thumbnail = null;
-          this.form.get('file')?.setValue('');
-          this.ChangeDetectorRef.markForCheck();
-        } else {
-          this.HotToastService.error(res?.message);
-        }
-      },
-      error: (err: any) => {
-        this.HotToastService.error(err?.error?.message);
-      },
+      error: (err: any) => { },
     });
   }
 
