@@ -167,8 +167,6 @@ export class UpdateBlogComponent implements OnInit {
             this.form.patchValue({ category: categoryDoc?._id });
             this.form.patchValue({ _id: res.result._id });
           }
-          console.log("res.result.authorThumbnail?.path", res.result.authorThumbnail)
-          console.log("res.result.authorThumbnail?.path", res.result.cover?.path)
           this.previews = { thumbnail: res.result.thumbnail?.path, cover: res.result.cover?.path, authorThumbnail: res.result.authorThumbnail.path };
           this.selectedProducts = res.result.products || [];
           this.blogDetails = res.result;
@@ -250,7 +248,6 @@ export class UpdateBlogComponent implements OnInit {
       this.Toast.error("Form validation failed")
       return;
     }
-console.log("this.form.value.slug", this.form.value.slug)
     this.BlogService.updateBlog({
       ...this.form.value,
       category: {
