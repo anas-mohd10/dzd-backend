@@ -17,20 +17,20 @@ export class AddTestimonialComponent implements OnInit {
   appRoute = appRoutes
   form: FormGroup = new FormGroup({})
   isSubmitted = false;
-  thumbnail: any;
 
   constructor(
     private HotToastService: HotToastService,
     private TestimonialService: TestimonialService,
     private Router: Router,
-    private UploadService: UploadService,
     private ChangeDetectorRef: ChangeDetectorRef
   ) { }
 
   ngOnInit(): void {
     this.form = new FormGroup({
       name: new FormControl('', Validators.required),
+      avatar: new FormControl(''),
       profession: new FormControl(''),
+      title: new FormControl(''),
       business: new FormControl(''),
       file: new FormControl(''),
       rating: new FormControl('', [Validators.required, Validators.pattern("^[0-9]$")]),
@@ -40,50 +40,22 @@ export class AddTestimonialComponent implements OnInit {
     });
   }
 
+  onMediaSelect(event: { path: string }, mediaType: string) {
+    if (mediaType == "avatar") {
+      this.form.get("avatar")?.setValue(event.path)
+    } else if (mediaType == "file") {
+      this.form.get("file")?.setValue(event.path)
+    }
+  }
+
   get formControls() {
     return this.form.controls;
   }
 
-  uploadThumbnail(event: any) {
-    let formdata = new FormData()
-    formdata.append("file", event.target.files[0])
-    this.UploadService.uploadThumbnail(formdata).subscribe({
-      next: (res: any) => {
-        if (res?.errorCode == 0) {
-          this.HotToastService.success(res?.message)
-          this.thumbnail = res?.result?.path
-          this.form.get('file')?.setValue(res?.result?.location)
-          this.ChangeDetectorRef.markForCheck()
-        } else {
-          this.HotToastService.error(res?.message)
-        }
-      }, error: (err: any) => {
-        this.HotToastService.error(err?.error?.message)
-      }
-    })
-  }
-
-  removeThumbnail() {
-    this.UploadService.removeThumbnail({ location: this.form.get('file')?.value }).subscribe({
-      next: (res: any) => {
-        if (res?.errorCode == 0) {
-          this.HotToastService.success(res?.message)
-          this.thumbnail = null
-          this.form.get('file')?.setValue('')
-          this.ChangeDetectorRef.markForCheck()
-        } else {
-          this.HotToastService.error(res?.message)
-        }
-      }, error: (err: any) => {
-        this.HotToastService.error(err?.error?.message)
-      }
-    })
-  }
-
-
   onSubmit() {
     if (!this.form.valid) {
       this.isSubmitted = true
+      this.HotToastService.error('Please fill all the required fields')
       return;
     }
 
