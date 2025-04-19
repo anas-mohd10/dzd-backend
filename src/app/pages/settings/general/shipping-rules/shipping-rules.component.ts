@@ -46,6 +46,12 @@ export class ShippingRulesComponent implements OnInit {
   selectedCities: Array<any> = [];
   isEditMode: boolean = false;
   chargeDetails: any;
+  chargeRanges: Array<any> = [];
+  defaultChargeRange = {
+    minAmount: 0,
+    maxAmount: 0,
+    charge: 0
+  };
 
   constructor(
     private ShippingService: ShippingService,
@@ -129,6 +135,30 @@ export class ShippingRulesComponent implements OnInit {
     }
   }
 
+  onShippingTypeChange() {
+    const shippingType = this.form.get('shippingType')?.value;
+    
+    // Reset related fields when shipping type changes
+    if (shippingType !== 'threshold') {
+      this.form.patchValue({
+        minimumOrderAmount: null,
+        fixedCharge: null
+      });
+    }
+    
+    if (shippingType !== 'tiered') {
+      this.chargeRanges = [];
+    }
+  }
+
+  addChargeRange() {
+    this.chargeRanges.push({...this.defaultChargeRange});
+  }
+
+  removeChargeRange(index: number) {
+    this.chargeRanges.splice(index, 1);
+  }
+
   ngOnInit(): void {
     this.form = new FormGroup({
       country: new FormControl('', Validators.required),
@@ -147,6 +177,9 @@ export class ShippingRulesComponent implements OnInit {
         Validators.required,
         Validators.pattern(/^\d+$/),
       ]),
+      shippingType: new FormControl('standard'),
+      minimumOrderAmount: new FormControl(null),
+      fixedCharge: new FormControl(null),
     });
 
     this.ShippingService.shippingDetails().subscribe({
@@ -214,6 +247,25 @@ export class ShippingRulesComponent implements OnInit {
             this.selectedStates = this.chargeDetails?.states;
             this.selectedCities = this.chargeDetails?.cities;
             this.selectedHolidays = this.chargeDetails?.holidays;
+            
+            // Handle new fields
+            if (this.chargeDetails?.shippingType) {
+              this.form.patchValue({
+                shippingType: this.chargeDetails.shippingType
+              });
+              
+              if (this.chargeDetails.shippingType === 'threshold') {
+                this.form.patchValue({
+                  minimumOrderAmount: this.chargeDetails.minimumOrderAmount,
+                  fixedCharge: this.chargeDetails.fixedCharge
+                });
+              }
+              
+              if (this.chargeDetails.shippingType === 'tiered') {
+                this.chargeRanges = this.chargeDetails.chargeRanges || [];
+              }
+            }
+            
             this.ChangeDetectorRef.markForCheck();
           }
         },
@@ -234,10 +286,12 @@ export class ShippingRulesComponent implements OnInit {
       cities: [],
       cutOffTime: '12:00',
       deliveryMethod: '',
+      shippingType: 'standard'
     });
     this.selectedCities = [];
     this.selectedStates = [];
     this.selectedHolidays = [];
+    this.chargeRanges = [];
     this.isSubmitted = false;
   }
 
@@ -253,10 +307,15 @@ export class ShippingRulesComponent implements OnInit {
       return;
     }
 
+    const formData = {
+      ...this.form.value,
+      chargeRanges: this.chargeRanges
+    };
+
     if (this.isEditMode) {
       this.ShippingService.updateShippingCharge({
         _id: this.chargeDetails?._id,
-        ...this.form.value,
+        ...formData,
       }).subscribe({
         next: (res: any) => {
           if (res?.errorCode == 0) {
@@ -273,7 +332,7 @@ export class ShippingRulesComponent implements OnInit {
         },
       });
     } else {
-      this.ShippingService.createShippingCharge(this.form.value).subscribe({
+      this.ShippingService.createShippingCharge(formData).subscribe({
         next: (res: any) => {
           if (res?.errorCode == 0) {
             this.HotToastService.success(res?.message);
