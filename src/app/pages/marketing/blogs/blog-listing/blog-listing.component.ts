@@ -19,8 +19,8 @@ export class BlogListingComponent implements OnInit {
   keyword: FormControl = new FormControl('');
   date: string
   blogs: Array<any> = []
-  page: number = 1
-  limit: number = 20
+  pageIndex: number = 1
+  pageSize: number = 20
   isLastPage: boolean = false
   totalResults: number = 0
   totalPages: number = 0
@@ -46,9 +46,9 @@ export class BlogListingComponent implements OnInit {
     this.getBlogs();
   }
 
-  onPageTriggered(event: any) {
-    this.page = event.pageIndex
-    this.limit = event.pageSize
+  onPageTriggered(event: { pageIndex: number, pageSize: number }) {
+    this.pageIndex = event.pageIndex
+    this.pageSize = event.pageSize
     this.getBlogs()
   }
   openCategoryModal(template: TemplateRef<any>) {
@@ -67,8 +67,8 @@ export class BlogListingComponent implements OnInit {
 
   getBlogs() {
     this.BlogService.blogs({
-      page: this.page,
-      limit: this.limit,
+      page: this.pageIndex,
+      limit: this.pageSize,
       keyword: this.keyword.value,
       date: this.date,
       status: this.isActive.value
