@@ -68,7 +68,7 @@ export class UpdateBlogComponent implements OnInit {
   form: FormGroup;
   categories: BlogCategory[] = [];
   isSubmitted: boolean = false;
-  previews: any = { thumbnail: '', cover: '' };
+  previews: any = { thumbnail: '', cover: '', authorThumbnail: '' };
   files: any = { thumbnail: null, cover: null };
   blogDetails: any;
   blogQuery: string = '';
@@ -99,6 +99,7 @@ export class UpdateBlogComponent implements OnInit {
     ],
   };
   slug: string;
+  author:string = '';
 
 
   constructor(
@@ -141,6 +142,8 @@ export class UpdateBlogComponent implements OnInit {
       overview: new FormControl(''),
       isActive: new FormControl(true),
       isFeatured: new FormControl(false),
+      author: new FormControl(''),
+      authorThumbnail: new FormControl(null),
       category: new FormControl('', Validators.required),
       seoTitle: new FormControl(''),
       seoDescription: new FormControl(''),
@@ -164,7 +167,7 @@ export class UpdateBlogComponent implements OnInit {
             this.form.patchValue({ category: categoryDoc?._id });
             this.form.patchValue({ _id: res.result._id });
           }
-          this.previews = { thumbnail: res.result.thumbnail?.path, cover: res.result.cover?.path, };
+          this.previews = { thumbnail: res.result.thumbnail?.path, cover: res.result.cover?.path, authorThumbnail: res.result.authorThumbnail.path };
           this.selectedProducts = res.result.products || [];
           this.blogDetails = res.result;
           this.ChangeDetectorRef.markForCheck();
@@ -188,6 +191,11 @@ export class UpdateBlogComponent implements OnInit {
     this.form.get('cover')?.setValue(event?._id);
   }
 
+  handleAuthorThumbnail(event: any) {
+    this.previews.authorThumbnail = event.path;
+    this.form.get('authorThumbnail')?.setValue(event?._id);
+  }
+
   handleThumbnail(event: any) {
     this.previews.thumbnail = event.path;
     this.form.get('thumbnail')?.setValue(event?._id);
@@ -198,6 +206,10 @@ export class UpdateBlogComponent implements OnInit {
       case 'cover':
         this.form.get('cover')?.setValue(null);
         this.previews.cover = '';
+        break;
+      case 'authorThumbnail':
+        this.form.get('authorThumbnail')?.setValue(null);
+        this.previews.authorThumbnail = '';
         break;
       case 'thumbnail':
         this.form.get('thumbnail')?.setValue(null);
@@ -236,7 +248,6 @@ export class UpdateBlogComponent implements OnInit {
       this.Toast.error("Form validation failed")
       return;
     }
-console.log("this.form.value.slug", this.form.value.slug)
     this.BlogService.updateBlog({
       ...this.form.value,
       category: {

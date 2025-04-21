@@ -77,6 +77,27 @@
                                 <option value="false">No</option>
                             </select>
                         </div>
+                        <div class="form-group mb-3">
+                            <label for="author">
+                                Author
+                            </label>
+                            <input type="text" id="author" formControlName="author" class="form-control"
+                                [ngClass]="{
+                                'is-invalid':  (formControls.author.touched || isSubmitted) && formControls.author.errors?.required}">
+                        </div>
+                        <div>
+                            <label for="authorThumbnail" class="form-label required">Author Image</label>
+                            <div id="authorThumbnail" class="ratio ratio-1x1 h-auto w-100 rounded mb-3"
+                                [ngClass]="{
+                                'border border-danger':  (formControls.authorThumbnail.touched || isSubmitted) && formControls.authorThumbnail.errors?.required}">
+                                <app-assets [previewDetails]="authorThumbnail"
+                                    (mediaClicked)="handleAuthorThumbnail($event)"></app-assets>
+                            </div>
+                            <div *ngIf="authorThumbnail">
+                                <button class="btn mt-2 btn-danger w-100"
+                                    (click)="onRemove('authorThumbnail')">Remove</button>
+                            </div>
+                        </div>
                     </div>
                     <div class="col-lg-9">
                         <div class="form-group mb-3">
