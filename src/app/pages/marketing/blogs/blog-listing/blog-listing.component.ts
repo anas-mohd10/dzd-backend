@@ -10,11 +10,11 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
   styleUrls: ['./blog-listing.component.scss'],
 })
 export class BlogListingComponent implements OnInit {
-clear() {
-  //clear the form
-  this.keyword.setValue('')
-  this.date = ''
-}
+  clear() {
+    //clear the form
+    this.keyword.setValue('')
+    this.date = ''
+  }
   appRoute = appRoutes
   keyword: FormControl = new FormControl('');
   date: string
@@ -27,7 +27,7 @@ clear() {
   modalRef: BsModalRef;
   categoryForm: FormGroup;
   categoryThumbnail: any;
-  selectedFilter: 'active' | 'inactive' | 'all' = 'all';
+  isActive: FormControl = new FormControl('');
 
 
   constructor(
@@ -43,8 +43,8 @@ clear() {
 
 
   ngOnInit(): void {
-    this.selectedFilter = (localStorage.getItem('selectedFilter') as 'active' | 'inactive' | 'all') || 'all';
-    this.getBlogs();  }
+    this.getBlogs();
+  }
 
   onPageTriggered(event: any) {
     this.page = event.pageIndex
@@ -64,17 +64,6 @@ clear() {
       }
     });
   }
-  
-
-  filterBlogs(status: 'active' | 'inactive' | 'all') {
-    if (this.selectedFilter !== status) {
-      this.selectedFilter = status;
-      localStorage.setItem('selectedFilter', status); // Persist the selected filter
-    }
-  
-    this.getBlogs();
-  }
-  
 
   getBlogs() {
     this.BlogService.blogs({
@@ -82,6 +71,7 @@ clear() {
       limit: this.limit,
       keyword: this.keyword.value,
       date: this.date,
+      status: this.isActive.value
     }).subscribe({
       next: (res: any) => {
         if (res?.errorCode === 0) {
@@ -89,35 +79,12 @@ clear() {
           this.totalPages = res.result.totalPages;
           this.isLastPage = res.result.isLastPage;
           this.totalResults = res.result.totalResults;
-  
-          const filteredBlogs: any[] = [];
-          const requests = this.blogs.map((blog) =>
-            this.BlogService.getBlogBySlug(blog.slug).toPromise().then((details: any) => {
-              blog.isActive = details.result.isActive;
-  
-              // Apply filtering based on the selected filter
-              if (
-                (this.selectedFilter === 'active' && blog.isActive) ||
-                (this.selectedFilter === 'inactive' && !blog.isActive) ||
-                this.selectedFilter === 'all'
-              ) {
-                filteredBlogs.push(blog);
-              }
-            })
-          );
-  
-          Promise.all(requests).then(() => {
-            this.blogs = filteredBlogs;
-            this.ChangeDetectorRef.markForCheck();
-          });
+          this.ChangeDetectorRef.markForCheck();
         }
       },
     });
   }
-  
 
-  
-  
   handleCategoryThumbnail(media: any) {
     console.log(media);
     this.categoryThumbnail = media.path;
