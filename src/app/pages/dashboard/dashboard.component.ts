@@ -4,10 +4,10 @@ import { AuthService } from 'src/app/includes/services/auth.service';
 import { AppSettingsService } from 'src/app/includes/services/app.settings.service';
 import { ChartComponent, ApexAxisChartSeries, ApexChart, ApexXAxis, ApexDataLabels, ApexStroke, ApexYAxis, ApexTitleSubtitle, ApexLegend } from "ng-apexcharts";
 import { FormControl } from '@angular/forms';
-import { ToastrService } from 'ngx-toastr';
 import { appRoutes } from 'src/app/config/routes';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { Router } from '@angular/router';
+import { HotToastService } from '@ngneat/hot-toast';
 
 export type ChartOptions = {
   series: ApexAxisChartSeries;
@@ -95,7 +95,7 @@ export class DashboardComponent implements OnInit {
     private ChangeDetectorRef: ChangeDetectorRef,
     private AuthService: AuthService,
     private AppSettingsService: AppSettingsService,
-    private ToastrService: ToastrService,
+    private HotToastService: HotToastService,
     private BsModalService: BsModalService,
     private Router: Router
   ) { }
@@ -136,10 +136,10 @@ export class DashboardComponent implements OnInit {
           this.products = res?.result
           this.ChangeDetectorRef.markForCheck()
         } else {
-          this.ToastrService.error(res?.message)
+          this.HotToastService.error(res?.message)
         }
       }, error: (err: any) => {
-        this.ToastrService.error(err?.message)
+        this.HotToastService.error(err?.message)
       }
     })
 
@@ -202,7 +202,7 @@ export class DashboardComponent implements OnInit {
             dataLabels: { enabled: false },
             xaxis: {
               categories: labels,
-              labels: { style: { fontSize: 14 } },
+              labels: { style: { fontSize: 12 } },
             },
             yaxis: {
               labels: {
@@ -213,10 +213,10 @@ export class DashboardComponent implements OnInit {
 
           this.ChangeDetectorRef.markForCheck()
         } else {
-          this.ToastrService.error(res?.message)
+          this.HotToastService.error(res?.message)
         }
       }, error: (err: any) => {
-        this.ToastrService.error(err?.message)
+        this.HotToastService.error(err?.message)
       }
     })
   }
@@ -274,14 +274,14 @@ export class DashboardComponent implements OnInit {
             this.daysDetails = res?.result
             this.ChangeDetectorRef.markForCheck()
           } else {
-            this.ToastrService.error(res?.message)
+            this.HotToastService.error(res?.message)
           }
         }, error: (err: any) => {
-          this.ToastrService.error(err?.message)
+          this.HotToastService.error(err?.message)
         }
       })
     } else {
-      this.ToastrService.error('The entered date is not valid. Please check and try again.')
+      this.HotToastService.error('The entered date is not valid. Please check and try again.')
     }
   }
 
