@@ -66,6 +66,9 @@
       <div *ngIf="blogs.length == 0">
         <app-no-results></app-no-results>
       </div>
+
+      <app-pagination [totalResults]="totalResults" [totalPages]="totalPages" [pageIndex]="pageIndex"
+        [pageSize]="pageSize" (pageTrigger)="onPageTriggered($event)"></app-pagination>
     </div>
   </div>
 </div>
