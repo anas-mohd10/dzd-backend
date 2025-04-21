@@ -24,8 +24,8 @@ export class CreateBlogComponent implements OnInit {
   appRoute = appRoutes;
   form: FormGroup;
   isSubmitted: boolean = false;
-  previews: any = { thumbnail: '', cover: '' };
-  files: any = { thumbnail: null, cover: null };
+  previews: any = { thumbnail: '', cover: '', authorThumbnail: '' };
+  files: any = { thumbnail: null, cover: null, authorThumbnail: null };
   editorConfig: AngularEditorConfig = {
     editable: true,
     spellcheck: true,
@@ -55,6 +55,7 @@ export class CreateBlogComponent implements OnInit {
   thumbnail: string = '';
   categories: BlogCategory[] = [];
   slug: string = '';
+  authorThumbnail: string = '';
 
 
   constructor(
@@ -77,6 +78,8 @@ export class CreateBlogComponent implements OnInit {
       description: new FormControl('', Validators.required),
       isActive: new FormControl(true),
       isFeatured: new FormControl(false),
+      author: new FormControl(''),
+      authorThumbnail: new FormControl(null),
       category: new FormControl('', Validators.required),
       seoTitle: new FormControl(''),
       seoDescription: new FormControl(''),
@@ -105,6 +108,11 @@ export class CreateBlogComponent implements OnInit {
     this.form.get('thumbnail')?.setValue(event?._id);
   }
 
+  handleAuthorThumbnail(event: any) {
+    this.authorThumbnail = event.path;
+    this.form.get('authorThumbnail')?.setValue(event?._id);
+  }
+
   onRemove(mediaType: string) {
     switch (mediaType) {
       case 'cover':
@@ -115,8 +123,12 @@ export class CreateBlogComponent implements OnInit {
         this.form.get('thumbnail')?.setValue(null);
         this.thumbnail = '';
         break;
-    }
+      case 'authorThumbnail':
+        this.form.get('authorThumbnail')?.setValue(null);
+        this.authorThumbnail = '';
+        break;
   }
+}
 
   onSubmit() {
     if (!this.form.valid) {
