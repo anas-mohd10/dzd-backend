@@ -18,7 +18,10 @@ export class TestimonialService {
     const url = this.CommonService.getFullUrl(this.endpoints.create);
     return this.HttpClient.post(`${url}`, data);
   }
-
+  deleteTestimonial(id: string) {
+    const url = this.CommonService.getFullUrl(this.endpoints.delete);
+    return this.HttpClient.delete(`${url}?id=${id}`);
+  }
   getTestimonials(data: any) {
     const url = this.CommonService.getFullUrl(this.endpoints.testimonials);
     return this.HttpClient.post(`${url}`, data);
