@@ -50,6 +50,23 @@ export class TestimonialListComponent implements OnInit {
       }
     })
   }
+  onDeleteTriggered(id: string) {
+     {
+      this.TestimonialService.deleteTestimonial(id).subscribe({
+        next: (res: any) => {
+          if (res?.errorCode == 0) {
+            this.fetchData();
+            this.HotToastService.success(res?.message);
+          } else {
+            this.HotToastService.error(res?.message);
+          }
+        }, 
+        error: (err: any) => {
+          this.HotToastService.error(err?.error?.message);
+        }
+      });
+    }
+  }
 
   onSwitchTriggered(event: { switchId: string, toggleState: boolean }) {
     this.TestimonialService.updateTestimonial({ _id: event.switchId, isActive: event.toggleState }).subscribe({
