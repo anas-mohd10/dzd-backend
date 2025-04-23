@@ -50,7 +50,7 @@
       </div>
       <div class="blogs my-6" *ngIf="blogs.length > 0">
         <ng-container *ngFor="let blog of blogs">
-          <a class="blog" routerLink="{{appRoute.blogs.update + '/' + blog.slug}}">
+          <a class="blog" routerLink="{{appRoute.blogs.update + '/' + blog._id}}">
             <img src="{{blog?.thumbnail}}" alt="{{blog?.title}}" class="rounded"
               onerror="this.src = 'assets/images/default.png'">
             <div class="mt-4">
