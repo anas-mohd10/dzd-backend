@@ -36,6 +36,7 @@ export class UpdateOrdersComponent implements OnInit {
   price: any = 0;
   slug: any;
   base: string;
+  isLoading: boolean = false;
   settings: any;
   swiperConfig: SwiperOptions = {
     slidesPerView: 'auto',
@@ -335,6 +336,7 @@ export class UpdateOrdersComponent implements OnInit {
   }
 
   getOrderDetails() {
+    this.isLoading = true;
     this.OrdersService.getOrderDetails({ order: this.slug }).subscribe(
       (res: any) => {
         if (res?.errorCode == 0) {
@@ -389,6 +391,7 @@ export class UpdateOrdersComponent implements OnInit {
 
           this.ChangeDetectorRef.markForCheck();
         }
+        this.isLoading = false;
       }
     );
   }
@@ -438,7 +441,7 @@ export class UpdateOrdersComponent implements OnInit {
       this.openCancelConfirmation(this.cancelConfirmation)
       return
     }
-
+    this.isLoading = true;
     this.productReference = productItem;
     this.OrdersService.updateOrderStatus({
       order: this.slug,
@@ -453,14 +456,18 @@ export class UpdateOrdersComponent implements OnInit {
         } else {
           this.HotToastService.error(res.message);
         }
+        this.isLoading = false;
       },
       error: (err: any) => {
         this.HotToastService.error(err?.error?.message);
+        this.isLoading = false;
+
       },
     });
   }
 
   confirmCancel() {
+    this.isLoading =true
     this.isCancelConfirmLoading = true;
     this.OrdersService.updateOrderStatus({
       order: this.slug,
@@ -675,6 +682,7 @@ export class UpdateOrdersComponent implements OnInit {
   }
 
   confirmBulkUpdate() {
+    this.isLoading = true;
     this.isBulkUpdateLoading = true;
     this.OrdersService.updateBulkProduct({
       order: this.order?._id,
@@ -694,9 +702,13 @@ export class UpdateOrdersComponent implements OnInit {
         } else {
           this.HotToastService.error(res?.message);
         }
+        this.isLoading = false;
+
       },
       error: (err: any) => {
         this.HotToastService.error(err?.error?.message);
+        this.isLoading = false;
+
       },
     }).add(() => {
       this.isBulkUpdateLoading = false;  // Re-enable buttons for bulk update modal
