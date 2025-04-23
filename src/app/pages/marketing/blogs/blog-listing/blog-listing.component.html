@@ -14,6 +14,11 @@
       </ul>
     </div>
     <div class="d-flex gap-2">
+      <div class="d-flex gap-2">
+        <button class="btn btn-primary" (click)="open(promoModal)">
+            Promotional Banner
+        </button>
+    </div>
       <button class="btn btn-secondary" routerLink="{{ appRoute.blogs.categories }}">
         View categories
       </button>
@@ -72,3 +77,32 @@
     </div>
   </div>
 </div>
+
+<ng-template #promoModal>
+  <div class="modal-header">
+    <h4 class="modal-title">Promotional Banner</h4>
+    <button type="button" class="btn-close" (click)="close()"></button>
+  </div>
+  <div class="modal-body">
+    <form [formGroup]="form" (ngSubmit)="savePromo()">
+      <div class="mb-3">
+        <div class="form-group">
+          <label class="fs-6 mb-3">Promo Banner</label>
+          <div class="ratio ratio-1x1 position-relative">
+            <app-assets (mediaClicked)="handleThumbnail($event)" 
+          [previewDetails]="form.value.blogPromotionalBanner"></app-assets>
+            <div *ngIf="form.value.blogPromotionalBanner" class="position-absolute top-0 start-0">
+              <button type="button" class="p-1 btn btn-danger m-2"
+                (click)="removePromoBanner()">Remove</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="d-flex justify-content-end">
+        <button type="submit" class="btn btn-primary">
+          Save changes
+        </button>
+      </div>
+    </form>
+  </div>
+</ng-template>
