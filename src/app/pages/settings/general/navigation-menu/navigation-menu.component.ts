@@ -237,39 +237,39 @@ export class NavigationMenuComponent implements OnInit {
     const value = event.target.value;
     this.selectedOption = value;
     this.megaMenuForm.get('selectedOption')?.setValue(value);
-    
+
     // Clear the selected item and redirection value
     this.selectedItem = '';
     this.redirectionValue = '';
     this.megaMenuForm.get('redirection')?.setValue('');
-    
+
     // Also reset any specific dropdown controls
     const controlName = `selected${value.charAt(0).toUpperCase() + value.slice(1)}`;
     this.megaMenuForm.get(controlName)?.setValue('');
-    
+
     if (value === 'complete') {
       this.redirectionValue = '/store';
       this.megaMenuForm.get('redirection')?.setValue('/store');
     }
   }
-  
+
 
   onSelectItem(event: any) {
     const selectedItem = event.target.value;
     this.selectedItem = selectedItem;
-    
+
     if (!this.selectedOption || !selectedItem) {
       this.redirectionValue = '';
       this.megaMenuForm.get('redirection')?.setValue('');
       return;
     }
-    
+
     const controlName = `selected${this.selectedOption.charAt(0).toUpperCase() + this.selectedOption.slice(1)}`;
     this.megaMenuForm.get(controlName)?.setValue(selectedItem);
-    
+
     let pathPrefix;
-    switch(this.selectedOption) {
-      case 'brands': 
+    switch (this.selectedOption) {
+      case 'brands':
         pathPrefix = 'brands';
         break;
       case 'products':
@@ -287,41 +287,46 @@ export class NavigationMenuComponent implements OnInit {
       default:
         pathPrefix = this.selectedOption;
     }
-  
-    // Convert selectedItem to lowercase and replace spaces with hyphens
-    const urlFriendlyItem = selectedItem.toLowerCase().replace(/\s+/g, '-');
-    
-    this.redirectionValue = this.selectedOption === 'complete' 
+
+    // For categories, use the slug directly
+    // For other options, convert the name to a slug if needed
+    let urlFriendlyItem = selectedItem;
+    if (this.selectedOption !== 'categories') {
+      // Only convert to lowercase and replace spaces for non-category items
+      urlFriendlyItem = selectedItem.toLowerCase().replace(/\s+/g, '-');
+    }
+
+    this.redirectionValue = this.selectedOption === 'complete'
       ? `/${pathPrefix}`
       : `/${pathPrefix}/${urlFriendlyItem}`;
-      
+
     this.megaMenuForm.get('redirection')?.setValue(this.redirectionValue);
-}
+  }
   fetchBrand() {
     this.BrandService.getBrand().subscribe((res: any) => {
       this.brands = res?.result || [];
     });
   }
-  
+
   fetchProduct() {
     this.ProductService.getProducts({}).subscribe((res: any) => {
       this.products = res?.result || [];
     });
   }
-  
+
   fetchCategories() {
     this.CategoryService.getCategories({}, {}).subscribe((res: any) => {
       this.categories = res?.result || [];
     });
   }
-  
+
   fetchCollection() {
     this.CollectionService.getCollection().subscribe((res: any) => {
       this.collections = res?.result || [];
     });
   }
-  
-  
+
+
   openStoreFacilityModal(
     template: TemplateRef<any>,
     facilityDetails?: any,
@@ -402,12 +407,12 @@ export class NavigationMenuComponent implements OnInit {
     this.megaMenuForm.reset();
     this.subMenus = [];
     this.subMenuBoxes = [];
-  
+
     this.megaMenuModalRef = this.modalService.show(template, {
       ignoreBackdropClick: true,
       class: 'modal-dialog-centered modal-xl',
     });
-  
+
     if (type === 'edit' && menuId) {
       this.megaMenuEdit = true;
       this.MegamenuService.getMegaMenuDetails(menuId).subscribe({
@@ -444,7 +449,7 @@ export class NavigationMenuComponent implements OnInit {
     this.subMenus = [];
     this.subMenuBoxes = [];
     this.megaMenuDetails = null;
-    
+
     this.megaMenuModalRef?.hide();
   }
 
@@ -553,7 +558,7 @@ export class NavigationMenuComponent implements OnInit {
       this.megaMenuForm.markAllAsTouched();
       return;
     }
-  
+
     const formData = {
       ...this.megaMenuForm.value,
       icon: this.megaMenuIcon,
@@ -565,17 +570,17 @@ export class NavigationMenuComponent implements OnInit {
         menuBoxes: this.subMenuBoxes
       }
     };
-  
+
     const saveObservable = this.megaMenuEdit
       ? this.MegamenuService.updateMegaMenu({
-          _id: this.megaMenuDetails?._id,
-          ...formData
-        })
+        _id: this.megaMenuDetails?._id,
+        ...formData
+      })
       : this.MegamenuService.addMegaMenu({
-          index: this.megaMenuItems.length + 1,
-          ...formData
-        });
-  
+        index: this.megaMenuItems.length + 1,
+        ...formData
+      });
+
     saveObservable.subscribe({
       next: (res: any) => {
         if (res?.errorCode === 0) {
@@ -591,7 +596,7 @@ export class NavigationMenuComponent implements OnInit {
       }
     });
   }
-  
+
 
   get megaMenuItemFormControls() {
     return this.megaMenuItemForm.controls;
@@ -813,7 +818,7 @@ export class NavigationMenuComponent implements OnInit {
     // Fetch categories
     this.CategoryService.getCategories({}, {}).subscribe((res: any) => {
       this.categories = res.result || [];
-    
+
     });
   }
   fetchProducts() {
@@ -823,7 +828,7 @@ export class NavigationMenuComponent implements OnInit {
       this.ChangeDetectorRef.detectChanges();  // Ensure change detection runs
     });
   }
-  
+
 
   fetchCollections() {
     this.CollectionService.getCollection().subscribe((res: any) => {
@@ -847,22 +852,22 @@ export class NavigationMenuComponent implements OnInit {
     this.selectedOption = '';
     this.selectedItem = '';
     this.redirectionValue = '';
-  
+
     if (savedData) {
       this.megaMenuIcon = savedData.icon;
       this.megaMenuAdvertisement = savedData.advertisement;
       this.megaMenuAdvertisementMobile = savedData.advertisementMobile;
-  
+
       this.subMenus = savedData.subMenus || [];
       this.subMenuBoxes = savedData.subMenuBoxes?.menuBoxes || [];
-  
+
       if (savedData.redirection) {
         const redirection = savedData.redirection;
-        
+
         if (redirection.includes('/brands/')) {
           this.selectedOption = 'brands';
           this.selectedItem = redirection.split('/brands/')[1];
-        } 
+        }
         else if (redirection.includes('/products/')) {
           this.selectedOption = 'products';
           this.selectedItem = redirection.split('/products/')[1];
@@ -878,10 +883,10 @@ export class NavigationMenuComponent implements OnInit {
         else if (redirection === '/store') {
           this.selectedOption = 'complete';
         }
-        
+
         this.redirectionValue = redirection;
       }
-  
+
       this.megaMenuForm.patchValue({
         ...savedData,
         selectedOption: this.selectedOption,
@@ -936,22 +941,22 @@ export class NavigationMenuComponent implements OnInit {
       redirection: new FormControl('', Validators.required),
     });
 
-this.megaMenuForm = new FormGroup({
-  title: new FormControl('', Validators.required),
-  icon: new FormControl(''),
-  redirection: new FormControl('', Validators.required),
-  selectedOption: new FormControl(''),
-  selectedBrand: new FormControl(''),
-  selectedProduct: new FormControl(''),
-  selectedCategory: new FormControl(''),
-  selectedCollection: new FormControl(''),
-  advertisement: new FormControl(''),
-  advertisementRedirection: new FormControl(''),
-  subMenuBoxes: new FormGroup({
-    title: new FormControl(''),
-    menuBoxes: new FormControl([]),
-  }),
-});
+    this.megaMenuForm = new FormGroup({
+      title: new FormControl('', Validators.required),
+      icon: new FormControl(''),
+      redirection: new FormControl('', Validators.required),
+      selectedOption: new FormControl(''),
+      selectedBrand: new FormControl(''),
+      selectedProduct: new FormControl(''),
+      selectedCategory: new FormControl(''),
+      selectedCollection: new FormControl(''),
+      advertisement: new FormControl(''),
+      advertisementRedirection: new FormControl(''),
+      subMenuBoxes: new FormGroup({
+        title: new FormControl(''),
+        menuBoxes: new FormControl([]),
+      }),
+    });
 
     this.StaticPageService.active().subscribe({
       next: (res: any) => {

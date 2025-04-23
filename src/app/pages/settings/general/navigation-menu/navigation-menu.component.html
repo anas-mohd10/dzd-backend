@@ -1061,7 +1061,7 @@
                                     <select class="form-select mb-3" formControlName="selectedCategory"
                                         (change)="onSelectItem($event)">
                                         <option value="" disabled>-- Select a category --</option>
-                                        <option *ngFor="let category of categories" [value]="category.name">{{
+                                        <option *ngFor="let category of categories" [value]="category.slug">{{
                                             category.name }}</option>
                                     </select>
                                 </div>
