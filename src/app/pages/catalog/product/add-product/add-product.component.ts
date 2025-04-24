@@ -22,11 +22,38 @@ import { TabsetComponent } from 'ngx-bootstrap/tabs';
 import { BrandService } from 'src/app/includes/services/brand.service';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { moveItemInArray } from '@angular/cdk/drag-drop';
-import { CdkDragDrop} from '@angular/cdk/drag-drop';
+import { CdkDragDrop } from '@angular/cdk/drag-drop';
+import { debounceTime } from 'rxjs/operators';
 
 interface StoreField {
   title: string;
   description: string;
+}
+
+interface AddOnOption {
+  product: string;
+  description: string;
+  price: number;
+}
+
+interface Product {
+  name: string;
+  sku: string;
+  thumbnail: string;
+  overview: string;
+  price: {
+    mrp: number;
+    selling: number;
+  };
+  _id: string;
+}
+
+interface AddOns {
+  title: string;
+  description: string;
+  isRequired: boolean;
+  addOnType: string;
+  options: AddOnOption[];
 }
 
 @Component({
@@ -132,6 +159,35 @@ export class AddProductComponent implements OnInit {
   languages: Array<string> = [];
   tagIcons: Array<string> = [];
 
+  // Add-Ons starts here
+  addOnsRef?: BsModalRef;
+  manageAddOnsRef?: BsModalRef;
+  addOnsKeyword: FormControl = new FormControl('', Validators.required);
+  addOnSearchResults: Array<any> = [];
+  addOnProducts: Array<any> = [];
+  addOnForm: FormGroup = new FormGroup({});
+  addOnOptionForm: FormGroup = new FormGroup({});
+  addOnTypes: Array<{ key: string; value: string }> = [
+    { key: 'Select', value: 'select' },
+    { key: 'Radio', value: 'radio' },
+    { key: 'Checkbox', value: 'checkbox' },
+  ];
+  addOnProductSelectType: 'products' | 'custom' | undefined;
+  addOnTabIndex: number = 0;
+  isOptionSubmitted: boolean = false;
+  isItemSubmitted: boolean = false;
+  addOnOptions: AddOnOption[] = [];
+  addOns: AddOns[] = [];
+  addOnPageIndex: number = 1;
+  addOnPageSize: number = 10;
+  totalAddOnResults: number = 0;
+  totalAddOnPages: number = 1;
+  isEditAddOnOption: boolean = false;
+  editAddOnOptionIndex: number = 0;
+  isEditAddOn: boolean = false;
+  editAddOnIndex: number = 0;
+  // Add-Ons ends here
+
   constructor(
     private ActivatedRoute: ActivatedRoute,
     private Router: Router,
@@ -145,7 +201,194 @@ export class AddProductComponent implements OnInit {
     private HotToastService: HotToastService,
     private AppSettingsService: AppSettingsService,
     private BsModalService: BsModalService
-  ) { }
+  ) {
+    this.addOnsKeyword.valueChanges.pipe(debounceTime(500)).subscribe(() => {
+      this.searchProducts();
+    });
+  }
+
+  // Add-Ons starts here
+  // This function is used to search for products
+  searchProducts() {
+    if (!this.addOnsKeyword.value) {
+      this.addOnSearchResults = [];
+    }
+
+    if (!this.addOnsKeyword.valid) {
+      return;
+    }
+
+    this.ProductService.searchProducts({
+      name: this.addOnsKeyword.value,
+      page: this.addOnPageIndex,
+      limit: this.addOnPageSize
+    }).subscribe({
+      next: (res: any) => {
+        if (res?.errorCode == 0) {
+          this.addOnSearchResults = res?.result?.data;
+          this.totalAddOnResults = res?.result?.totalResults;
+          this.totalAddOnPages = res?.result?.totalPages;
+          this.ChangeDetectorRef.markForCheck();
+        } else {
+        }
+      },
+      error: (err: any) => { },
+    });
+  }
+
+  // This function is used to trigger the add-on page
+  addOnPageTrigger(event: { pageIndex: number; pageSize: number }) {
+    this.addOnPageIndex = event.pageIndex;
+    this.addOnPageSize = event.pageSize;
+    this.searchProducts();
+  }
+
+  // This function is used to toggle the add-on product
+  toggleAddOnProduct(product: Product, type: 'add' | 'remove') {
+    const isExists: boolean = this.addOnProducts.some(item => item?._id == product?._id);
+    if (isExists) {
+      this.addOnProducts = this.addOnProducts.filter(item => item?._id != product?._id);
+    } else {
+      this.addOnProducts.push(product);
+    }
+
+    if (type == 'add') {
+      this.addOnProductSelectType = 'custom'
+      this.addOnTabIndex = 1;
+      this.addOnOptionForm.patchValue({
+        product: product.name,
+        description: product.overview,
+        price: product.price.selling,
+      })
+    }
+
+    this.ChangeDetectorRef.markForCheck();
+  }
+
+  // This function is used to get the add-on option controls
+  get addOnOptionControls() {
+    return this.addOnOptionForm.controls;
+  }
+
+  // This function is used to add the add-on option to the addOnOptions array
+  addAddOnOption() {
+    if (!this.addOnOptionForm.valid) {
+      this.isOptionSubmitted = true;
+      this.HotToastService.error('Please fill all the fields');
+      return;
+    }
+
+    if (this.isEditAddOnOption) {
+      this.addOnOptions[this.editAddOnOptionIndex] = this.addOnOptionForm.value;
+    } else {
+      this.addOnOptions.push(this.addOnOptionForm.value);
+    }
+
+    this.isOptionSubmitted = false;
+    this.HotToastService.success(`Option ${this.isEditAddOnOption ? 'updated' : 'added'} successfully`);
+    this.addOnOptionForm.reset();
+    this.addOnTabIndex = 0;
+    this.addOnProducts = [];
+    this.addOnsKeyword.setValue('');
+    this.addOnProductSelectType = undefined;
+    this.isEditAddOnOption = false;
+    this.editAddOnOptionIndex = 0;
+    this.ChangeDetectorRef.markForCheck();
+  }
+
+  // This function is used to edit the add-on option
+  editAddOnOption(index: number) {
+    this.addOnOptionForm.patchValue(this.addOnOptions[index]);
+    this.addOnTabIndex = 1;
+    this.addOnProductSelectType = 'custom';
+    this.ChangeDetectorRef.markForCheck();
+    this.isEditAddOnOption = true;
+    this.editAddOnOptionIndex = index;
+  }
+
+  // This function is used to remove the add-on option from the addOnOptions array
+  removeAddOnOption(index: number) {
+    this.addOnOptions.splice(index, 1);
+    this.ChangeDetectorRef.markForCheck();
+  }
+
+  // This function is used to cancel the add-on item
+  cancelAddOnItem() {
+    this.addOnForm.reset();
+    this.addOnForm.patchValue({ isRequired: false });
+    this.manageAddOnsRef?.hide();
+    this.addOnTabIndex = 0;
+    this.addOnOptions = [];
+    this.addOnProducts = [];
+    this.addOnProductSelectType = undefined;
+    this.isEditAddOnOption = false;
+    this.editAddOnOptionIndex = 0;
+    this.addOnsKeyword.setValue('');
+    this.isItemSubmitted = false;
+    this.addOnOptionForm.reset();
+    this.isOptionSubmitted = false;
+    this.ChangeDetectorRef.markForCheck();
+  }
+
+  // This function is used to add the add-on to the addOns array
+  addAddOnItem() {
+    if (!this.addOnForm.valid) {
+      this.isItemSubmitted = true;
+      this.HotToastService.error('Please fill all the fields');
+      return;
+    }
+
+    if (this.addOnOptions.length == 0) {
+      this.HotToastService.error('Please add at least one option');
+      return;
+    }
+
+    this.addOnForm.patchValue({ addOnOptions: this.addOnOptions })
+
+    if (this.isEditAddOn) {
+      this.addOns[this.editAddOnIndex] = this.addOnForm.value;
+    } else {
+      this.addOns.push(this.addOnForm.value);
+    }
+
+    this.HotToastService.success(`Add-On ${this.isEditAddOn ? 'updated' : 'added'} successfully`);
+    this.cancelAddOnItem();
+  }
+
+  // This function is used to remove the add-on from the addOns array
+  removeAddOn(index: number) {
+    this.addOns.splice(index, 1);
+    this.ChangeDetectorRef.markForCheck();
+  }
+
+  // This function is used to open the manage add-on modal
+  openManageAddOns(template: TemplateRef<any>, type: 'add' | 'edit', index: number | null) {
+    this.manageAddOnsRef = this.BsModalService.show(template, { class: 'modal-dialog-centered modal-xl', ignoreBackdropClick: true });
+    if (type == 'edit' && index !== null) {
+      this.addOnForm.patchValue({ ...this.addOns[index] })
+      this.addOnOptions = this.addOns[index].options;
+      this.isEditAddOn = true;
+      this.editAddOnIndex = index;
+    }
+  }
+
+  // This function is used to get the add-on form controls
+  get addOnFormControls() {
+    return this.addOnForm.controls;
+  }
+
+  // This function is used to get the add-on option form controls
+  get addOnOptionFormControls() {
+    return this.addOnOptionForm.controls;
+  }
+
+  // This function is used to trigger the add-on switch
+  onTriggerAddOns(event: { toggleState: boolean, switchId: string }, type: string) {
+    if (type == 'isRequired') {
+      this.addOnForm.get('isRequired')?.setValue(event.toggleState);
+    }
+  }
+  // Add-Ons ends here
 
   get parentControls() {
     return this.parentForm.controls;
@@ -263,12 +506,12 @@ export class AddProductComponent implements OnInit {
   }
 
   productMediaClicked(event: any) {
-    
+
     // Check if the item already exists in our images array
     let isExists: boolean = this.images.some(
       (item: any) => item?._id == event?._id
     );
-    
+
     if (isExists) {
       // If it exists, remove it
       this.images = this.images.filter((item: any) => item?._id != event?._id);
@@ -278,19 +521,19 @@ export class AddProductComponent implements OnInit {
       this.images.push(event);
       this.HotToastService.success('Image added to product');
     }
-    
+
     // Update form control with the current images
     if (this.form && this.form.get('files')) {
       let files = this.images.map((item: any) => item.path) || [];
       this.form.get('files')?.setValue(files);
     }
-    
+
     // Force change detection
     if (this.ChangeDetectorRef) {
       this.ChangeDetectorRef.markForCheck();
     }
   }
-  dropProductImages (event: any) {
+  dropProductImages(event: any) {
     let items = [...this.images];
     moveItemInArray(items, event.previousIndex, event.currentIndex);
     this.images = [...items];
@@ -617,14 +860,26 @@ export class AddProductComponent implements OnInit {
     }
   }
 
-  searchProducts() { }
-
   get formControls() {
     return this.form.controls;
   }
 
   ngOnInit(): void {
     this.base = environment.base;
+
+    this.addOnOptionForm = new FormGroup({
+      product: new FormControl('', Validators.required),
+      price: new FormControl('', [Validators.required, Validators.pattern('^\\d+(\\.\\d+)?$')]),
+      description: new FormControl(''),
+    });
+
+    this.addOnForm = new FormGroup({
+      title: new FormControl('', Validators.required),
+      description: new FormControl(''),
+      isRequired: new FormControl(false),
+      addOnType: new FormControl('select'),
+      options: new FormControl([]),
+    });
 
     this.attributeForm = new FormGroup({
       type: new FormControl('text'),
@@ -713,7 +968,7 @@ export class AddProductComponent implements OnInit {
         Validators.pattern('^-?[0-9]\\d*(\\.\\d+)?$'),
       ]),
       thumbnail: new FormControl('', Validators.required),
-      videoThumbnail:new FormControl(null),
+      videoThumbnail: new FormControl(null),
       files: new FormControl('', Validators.required),
       video: new FormControl(''),
       unit: new FormControl(''),

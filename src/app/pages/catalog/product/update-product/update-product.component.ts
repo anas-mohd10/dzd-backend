@@ -21,7 +21,7 @@ import { debounceTime } from 'rxjs/operators';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { BrandService } from 'src/app/includes/services/brand.service';
 import { moveItemInArray } from '@angular/cdk/drag-drop';
-import { CdkDragDrop} from '@angular/cdk/drag-drop';
+import { CdkDragDrop } from '@angular/cdk/drag-drop';
 
 interface StoreField {
   title: string;
@@ -41,6 +41,18 @@ interface AddOns {
   isRequired: boolean;
   addOnType: string;
   options: AddOnOption[];
+}
+
+interface Product {
+  name: string;
+  sku: string;
+  thumbnail: string;
+  overview: string;
+  price: {
+    mrp: number;
+    selling: number;
+  };
+  _id: string;
 }
 
 @Component({
@@ -150,7 +162,18 @@ export class UpdateProductComponent implements OnInit {
   siblingsRef?: BsModalRef;
   @ViewChild('siblingsTemplate') siblingsTemplateModal: TemplateRef<any>;
   isSkipUpdate: FormControl = new FormControl(false);
+
+
+  historyRef?: BsModalRef;
+  historyPageIndex: number = 1;
+  historyPageSize: number = 5;
+  historyLists: Array<any> = [];
+  totalResults: number = 0;
+  totalPages: number = 1;
+
+  // Add-Ons starts here
   addOnsRef?: BsModalRef;
+  manageAddOnsRef?: BsModalRef;
   addOnsKeyword: FormControl = new FormControl('', Validators.required);
   addOnSearchResults: Array<any> = [];
   addOnProducts: Array<any> = [];
@@ -161,17 +184,21 @@ export class UpdateProductComponent implements OnInit {
     { key: 'Radio', value: 'radio' },
     { key: 'Checkbox', value: 'checkbox' },
   ];
+  addOnProductSelectType: 'products' | 'custom' | undefined;
+  addOnTabIndex: number = 0;
   isOptionSubmitted: boolean = false;
+  isItemSubmitted: boolean = false;
   addOnOptions: AddOnOption[] = [];
   addOns: AddOns[] = [];
-  isAddOnForm: boolean = false;
-  isAddOnEditable: boolean = false;
-  historyRef?: BsModalRef;
-  historyPageIndex: number = 1;
-  historyPageSize: number = 5;
-  historyLists: Array<any> = [];
-  totalResults: number = 0;
-  totalPages: number = 1;
+  addOnPageIndex: number = 1;
+  addOnPageSize: number = 10;
+  totalAddOnResults: number = 0;
+  totalAddOnPages: number = 1;
+  isEditAddOnOption: boolean = false;
+  editAddOnOptionIndex: number = 0;
+  isEditAddOn: boolean = false;
+  editAddOnIndex: number = 0;
+  // Add-Ons ends here
 
   constructor(
     private ActivatedRoute: ActivatedRoute,
@@ -224,7 +251,7 @@ export class UpdateProductComponent implements OnInit {
     });
   }
 
-  dropProductImages (event: any) {
+  dropProductImages(event: any) {
     let items = [...this.images];
     moveItemInArray(items, event.previousIndex, event.currentIndex);
     this.images = [...items];
@@ -249,6 +276,8 @@ export class UpdateProductComponent implements OnInit {
     });
   }
 
+  // Add-Ons starts here
+  // This function is used to search for products
   searchProducts() {
     if (!this.addOnsKeyword.value) {
       this.addOnSearchResults = [];
@@ -260,12 +289,14 @@ export class UpdateProductComponent implements OnInit {
 
     this.ProductService.searchProducts({
       name: this.addOnsKeyword.value,
-      page: 1,
-      limit: 40,
+      page: this.addOnPageIndex,
+      limit: this.addOnPageSize
     }).subscribe({
       next: (res: any) => {
         if (res?.errorCode == 0) {
           this.addOnSearchResults = res?.result?.data;
+          this.totalAddOnResults = res?.result?.totalResults;
+          this.totalAddOnPages = res?.result?.totalPages;
           this.ChangeDetectorRef.markForCheck();
         } else {
         }
@@ -274,104 +305,159 @@ export class UpdateProductComponent implements OnInit {
     });
   }
 
-  openAddOns(template: TemplateRef<any>) {
-    this.addOnsRef = this.BsModalService.show(template, {
-      class: 'modal-lg modal-dialog-centered',
-    });
+  // This function is used to trigger the add-on page
+  addOnPageTrigger(event: { pageIndex: number; pageSize: number }) {
+    this.addOnPageIndex = event.pageIndex;
+    this.addOnPageSize = event.pageSize;
+    this.searchProducts();
   }
 
-  closeAddOns() {
-    this.addOnsRef?.hide();
+  // This function is used to toggle the add-on product
+  toggleAddOnProduct(product: Product, type: 'add' | 'remove') {
+    const isExists: boolean = this.addOnProducts.some(item => item?._id == product?._id);
+    if (isExists) {
+      this.addOnProducts = this.addOnProducts.filter(item => item?._id != product?._id);
+    } else {
+      this.addOnProducts.push(product);
+    }
+
+    if (type == 'add') {
+      this.addOnProductSelectType = 'custom'
+      this.addOnTabIndex = 1;
+      this.addOnOptionForm.patchValue({
+        product: product.name,
+        description: product.overview,
+        price: product.price.selling,
+      })
+    }
+
+    this.ChangeDetectorRef.markForCheck();
   }
 
+  // This function is used to get the add-on option controls
   get addOnOptionControls() {
     return this.addOnOptionForm.controls;
   }
 
+  // This function is used to add the add-on option to the addOnOptions array
   addAddOnOption() {
     if (!this.addOnOptionForm.valid) {
       this.isOptionSubmitted = true;
+      this.HotToastService.error('Please fill all the fields');
       return;
     }
 
-    this.addOnOptions.push(this.addOnOptionForm.value);
+    if (this.isEditAddOnOption) {
+      this.addOnOptions[this.editAddOnOptionIndex] = this.addOnOptionForm.value;
+    } else {
+      this.addOnOptions.push(this.addOnOptionForm.value);
+    }
+
     this.isOptionSubmitted = false;
-    this.HotToastService.success('Option added successfully');
+    this.HotToastService.success(`Option ${this.isEditAddOnOption ? 'updated' : 'added'} successfully`);
     this.addOnOptionForm.reset();
-    this.addOnOptionForm.patchValue({
-      product: '',
-      description: '',
-      price: '',
-    });
+    this.addOnTabIndex = 0;
+    this.addOnProducts = [];
+    this.addOnsKeyword.setValue('');
+    this.addOnProductSelectType = undefined;
+    this.isEditAddOnOption = false;
+    this.editAddOnOptionIndex = 0;
+    this.ChangeDetectorRef.markForCheck();
   }
 
+  // This function is used to edit the add-on option
+  editAddOnOption(index: number) {
+    this.addOnOptionForm.patchValue(this.addOnOptions[index]);
+    this.addOnTabIndex = 1;
+    this.addOnProductSelectType = 'custom';
+    this.ChangeDetectorRef.markForCheck();
+    this.isEditAddOnOption = true;
+    this.editAddOnOptionIndex = index;
+  }
+
+  // This function is used to remove the add-on option from the addOnOptions array
   removeAddOnOption(index: number) {
-    this.HotToastService.error('Option removed successfully');
     this.addOnOptions.splice(index, 1);
+    this.ChangeDetectorRef.markForCheck();
   }
 
-  removeAddOn(index: number) {
-    this.HotToastService.error('AddOn removed successfully');
-    this.addOns.splice(index, 1);
-  }
-
-  editAddOn(index: number) {
-    this.addOnForm.patchValue(this.addOns[index]);
-    this.addOnOptions = this.addOns[index].options;
-    this.isAddOnForm = true;
-    this.isAddOnEditable = true;
-  }
-
-  closeAddOnItems() {
+  // This function is used to cancel the add-on item
+  cancelAddOnItem() {
     this.addOnForm.reset();
-    this.addOnForm.patchValue({
-      title: '',
-      description: '',
-      isRequired: false,
-      addOnType: 'select',
-    });
-    this.isAddOnForm = false;
+    this.addOnForm.patchValue({ isRequired: false });
+    this.manageAddOnsRef?.hide();
+    this.addOnTabIndex = 0;
     this.addOnOptions = [];
+    this.addOnProducts = [];
+    this.addOnProductSelectType = undefined;
+    this.isEditAddOnOption = false;
+    this.editAddOnOptionIndex = 0;
+    this.addOnsKeyword.setValue('');
+    this.isItemSubmitted = false;
     this.addOnOptionForm.reset();
-    this.addOnOptionForm.patchValue({
-      product: '',
-      description: '',
-      price: '',
-    });
+    this.isOptionSubmitted = false;
+    this.ChangeDetectorRef.markForCheck();
   }
 
-  addAddOnItems() {
+  // This function is used to add the add-on to the addOns array
+  addAddOnItem() {
     if (!this.addOnForm.valid) {
+      this.isItemSubmitted = true;
+      this.HotToastService.error('Please fill all the fields');
       return;
     }
 
-    const addOn: AddOns = {
-      ...this.addOnForm.value,
-      options: this.addOnOptions,
-    };
+    if (this.addOnOptions.length == 0) {
+      this.HotToastService.error('Please add at least one option');
+      return;
+    }
 
-    this.addOns.push(addOn);
-    this.HotToastService.success('AddOn added successfully');
-    this.addOnForm.reset();
-    this.addOnForm.patchValue({
-      title: '',
-      description: '',
-      isRequired: false,
-      addOnType: 'select',
-    });
-    this.isAddOnForm = false;
-    this.addOnOptions = [];
-    this.addOnOptionForm.reset();
-    this.addOnOptionForm.patchValue({
-      product: '',
-      description: '',
-      price: '',
-    });
+    this.addOnForm.patchValue({ addOnOptions: this.addOnOptions })
+
+    if (this.isEditAddOn) {
+      this.addOns[this.editAddOnIndex] = this.addOnForm.value;
+    } else {
+      this.addOns.push(this.addOnForm.value);
+    }
+
+    this.HotToastService.success(`Add-On ${this.isEditAddOn ? 'updated' : 'added'} successfully`);
+    this.cancelAddOnItem();
   }
 
-  toggleAddOnSwitch(event: { switchId: string; toggleState: boolean }) {
-    this.addOnForm.get('isRequired')?.setValue(event.toggleState);
+  // This function is used to remove the add-on from the addOns array
+  removeAddOn(index: number) {
+    this.addOns.splice(index, 1);
+    this.ChangeDetectorRef.markForCheck();
   }
+
+  // This function is used to open the manage add-on modal
+  openManageAddOns(template: TemplateRef<any>, type: 'add' | 'edit', index: number | null) {
+    this.manageAddOnsRef = this.BsModalService.show(template, { class: 'modal-dialog-centered modal-xl', ignoreBackdropClick: true });
+    if (type == 'edit' && index !== null) {
+      this.addOnForm.patchValue({ ...this.addOns[index] })
+      this.addOnOptions = this.addOns[index].options;
+      this.isEditAddOn = true;
+      this.editAddOnIndex = index;
+    }
+  }
+
+  // This function is used to get the add-on form controls
+  get addOnFormControls() {
+    return this.addOnForm.controls;
+  }
+
+  // This function is used to get the add-on option form controls
+  get addOnOptionFormControls() {
+    return this.addOnOptionForm.controls;
+  }
+
+  // This function is used to trigger the add-on switch
+  onTriggerAddOns(event: { toggleState: boolean, switchId: string }, type: string) {
+    if (type == 'isRequired') {
+      this.addOnForm.get('isRequired')?.setValue(event.toggleState);
+    }
+  }
+  // Add-Ons ends here
 
   onBrandChange(event: any) {
     if (event) {
@@ -491,63 +577,63 @@ export class UpdateProductComponent implements OnInit {
     this.parentForm.get('thumbnail')?.setValue(event.path);
   }
 
-productMediaClicked(event: any) {
-  // For update product view, we need to check for both _id and path
-  const eventPath = event.path;
-  const eventId = event._id;
+  productMediaClicked(event: any) {
+    // For update product view, we need to check for both _id and path
+    const eventPath = event.path;
+    const eventId = event._id;
 
-  // Check if the item already exists in our images array
-  let isExists: boolean = this.images.some(
-    (item: any) => (item._id && item._id === eventId) || (item.path && item.path === eventPath)
-  );
-
-  if (isExists) {
-    // If it exists, remove it
-    this.images = this.images.filter(
-      (item: any) => !((item._id && item._id === eventId) || (item.path && item.path === eventPath))
+    // Check if the item already exists in our images array
+    let isExists: boolean = this.images.some(
+      (item: any) => (item._id && item._id === eventId) || (item.path && item.path === eventPath)
     );
-    this.HotToastService.info('Image removed from product');
-  } else {
-    // If it doesn't exist, add it
-    this.images.push(event);
-    this.HotToastService.success('Image added to product');
-  }
 
-  // Update form control with the current images
-  if (this.form && this.form.get('files')) {
-    let files = this.images.map((item: any) => item.path) || [];
-    this.form.get('files')?.setValue(files);
-  }
-
-  // Force change detection
-  if (this.ChangeDetectorRef) {
-    this.ChangeDetectorRef.markForCheck();
-  }
-}
-
-productIconClicked(event: any, type: string = 'add') {
-  const iconPath = type === 'remove' ? event : event.path;
-
-  let isExists: boolean = this.icons.some(item => item === iconPath);
-
-  if (isExists) {
-    // Remove the icon
-    const index = this.icons.findIndex(item => item === iconPath);
-    if (index !== -1) {
-      this.icons.splice(index, 1);
-      this.HotToastService.info('Icon removed from product');
+    if (isExists) {
+      // If it exists, remove it
+      this.images = this.images.filter(
+        (item: any) => !((item._id && item._id === eventId) || (item.path && item.path === eventPath))
+      );
+      this.HotToastService.info('Image removed from product');
+    } else {
+      // If it doesn't exist, add it
+      this.images.push(event);
+      this.HotToastService.success('Image added to product');
     }
-  } else {
-    // Add the icon
-    this.icons.push(event.path);
-    this.HotToastService.success('Icon added to product');
+
+    // Update form control with the current images
+    if (this.form && this.form.get('files')) {
+      let files = this.images.map((item: any) => item.path) || [];
+      this.form.get('files')?.setValue(files);
+    }
+
+    // Force change detection
+    if (this.ChangeDetectorRef) {
+      this.ChangeDetectorRef.markForCheck();
+    }
   }
 
-  // Force change detection
-  if (this.ChangeDetectorRef) {
-    this.ChangeDetectorRef.markForCheck();
+  productIconClicked(event: any, type: string = 'add') {
+    const iconPath = type === 'remove' ? event : event.path;
+
+    let isExists: boolean = this.icons.some(item => item === iconPath);
+
+    if (isExists) {
+      // Remove the icon
+      const index = this.icons.findIndex(item => item === iconPath);
+      if (index !== -1) {
+        this.icons.splice(index, 1);
+        this.HotToastService.info('Icon removed from product');
+      }
+    } else {
+      // Add the icon
+      this.icons.push(event.path);
+      this.HotToastService.success('Icon added to product');
+    }
+
+    // Force change detection
+    if (this.ChangeDetectorRef) {
+      this.ChangeDetectorRef.markForCheck();
+    }
   }
-}
 
 
   removeProductMedia(image: any) {
@@ -597,24 +683,6 @@ productIconClicked(event: any, type: string = 'add') {
       });
     }
   }
-  // toggleProductCategory(categoryEvent: any, type: string) {
-  //   if (type == 'add') {
-  //     this.defaultCategories.forEach((defaultCategory: any) => {
-  //       if (defaultCategory.slug == categoryEvent.target.value) {
-  //         let isExists: boolean = this.categories.some((item: any) => item?.slug == defaultCategory.slug);
-  //         if (isExists) {
-  //           this.HotToastService.info('Category already added')
-  //         } else {
-  //           this.categories.push(defaultCategory);
-  //         }
-  //       }
-  //     })
-  //   } else {
-  //     this.categories = this.categories.filter((item: any) => item.slug != categoryEvent);
-  //   }
-
-  //   this.productCategory.setValue('');
-  // }
 
   toggleAddOnItems() { }
 
@@ -871,23 +939,6 @@ productIconClicked(event: any, type: string = 'add') {
     this.form.patchValue({ slug });
   }
 
-  // ngOnInit(): void {
-  //   this.base = environment.base;
-
-  //   this.BrandService.getActiveBrands().subscribe({
-  //   next: (res: any) => {
-  //     if (res.errorCode == 0) {
-  //       this.brands = res.result;
-  //       if (this.productDetails?.brand) {
-  //         this.selectedBrand = this.brands.find(brand => brand.slug === this.productDetails.brand.slug);
-  //       }
-
-  //       this.ChangeDetectorRef.markForCheck();
-  //     }
-  //   },
-  //   error: (err: any) => { }
-  // });
-
   ngOnInit(): void {
     this.base = environment.base;
 
@@ -939,7 +990,7 @@ productIconClicked(event: any, type: string = 'add') {
 
     this.addOnOptionForm = new FormGroup({
       product: new FormControl('', Validators.required),
-      price: new FormControl('', Validators.required),
+      price: new FormControl('', [Validators.required, Validators.pattern('^\\d+(\\.\\d+)?$')]),
       description: new FormControl(''),
     });
 
@@ -984,6 +1035,9 @@ productIconClicked(event: any, type: string = 'add') {
           // Check if searchKeywords exist and are not empty
           this.searchKeywords = (res?.result?.searchKeywords || []).filter(Boolean);
           this.form.get('searchKeywords')?.setValue(this.searchKeywords);
+
+          // Add-Ons
+          this.addOns = res?.result?.addOns;
 
           // Process images
           if (res?.result?.files && Array.isArray(res?.result?.files)) {
@@ -1051,7 +1105,7 @@ productIconClicked(event: any, type: string = 'add') {
       category: new FormControl(null), // Default category
       parentCategories: new FormControl('', Validators.required), //Main category
       thumbnail: new FormControl(null),
-      videoThumbnail:new FormControl(null),
+      videoThumbnail: new FormControl(null),
       isActive: new FormControl('true'),
       sku: new FormControl('', Validators.required),
       tax: new FormControl(''),
@@ -1188,11 +1242,11 @@ productIconClicked(event: any, type: string = 'add') {
       origin: this.productDetails.localizedOrigin?.[primaryLang] || this.productDetails.origin,
       details: {
         description: this.productDetails.localizedDetails?.description?.[primaryLang] ||
-                    this.productDetails.details?.description,
+          this.productDetails.details?.description,
         features: this.productDetails.localizedDetails?.features?.[primaryLang] ||
-                 this.productDetails.details?.features,
+          this.productDetails.details?.features,
         longDescription: this.productDetails.localizedDetails?.longDescription?.[primaryLang] ||
-                        this.productDetails.details?.longDescription,
+          this.productDetails.details?.longDescription,
       },
       metaTitle: this.productDetails.localizedMetaTitles?.[primaryLang] || this.productDetails.metaTitle,
       metaDescription: this.productDetails.localizedMetaDescriptions?.[primaryLang] || this.productDetails.metaDescription,
@@ -1278,32 +1332,32 @@ productIconClicked(event: any, type: string = 'add') {
     });
   }
 
- handleTagIcons(event: any) {
-  const tagPath = event.path;
+  handleTagIcons(event: any) {
+    const tagPath = event.path;
 
-  if (this.tagIcons.includes(tagPath)) {
-    this.tagIcons = this.tagIcons.filter(item => item !== tagPath);
+    if (this.tagIcons.includes(tagPath)) {
+      this.tagIcons = this.tagIcons.filter(item => item !== tagPath);
+      this.HotToastService.info('Tag removed from product');
+    } else {
+      this.tagIcons.push(tagPath);
+      this.HotToastService.success('Tag added to product');
+    }
+
+    // Force change detection
+    if (this.ChangeDetectorRef) {
+      this.ChangeDetectorRef.markForCheck();
+    }
+  }
+
+  removeTagIcons(icon: any) {
+    this.tagIcons = this.tagIcons.filter(item => item !== icon);
     this.HotToastService.info('Tag removed from product');
-  } else {
-    this.tagIcons.push(tagPath);
-    this.HotToastService.success('Tag added to product');
-  }
 
-  // Force change detection
-  if (this.ChangeDetectorRef) {
-    this.ChangeDetectorRef.markForCheck();
+    // Force change detection
+    if (this.ChangeDetectorRef) {
+      this.ChangeDetectorRef.markForCheck();
+    }
   }
-}
-
-removeTagIcons(icon: any) {
-  this.tagIcons = this.tagIcons.filter(item => item !== icon);
-  this.HotToastService.info('Tag removed from product');
-
-  // Force change detection
-  if (this.ChangeDetectorRef) {
-    this.ChangeDetectorRef.markForCheck();
-  }
-}
 
   logPagination(event: { pageIndex: number; pageSize: number }) {
     this.historyPageIndex = event.pageIndex;
@@ -1313,7 +1367,6 @@ removeTagIcons(icon: any) {
   }
 
   handleAttributeImage(event: any) {
-    console.log('Image event:', event);
     if (event && event.path) {
       this.attributeForm.patchValue({
         value: event.path,

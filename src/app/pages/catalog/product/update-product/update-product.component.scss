@@ -3,29 +3,53 @@ label,
   font-weight: 400 !important;
 }
 
-.table-wrapper{
+.addOnProductName{
+  width: 240px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  line-clamp: 1;
+}
+
+.addOnName{
+  width: 120px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  line-clamp: 1;
+}
+
+.addOnOptionDetails{
+  width: 240px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  line-clamp: 1;
+}
+
+.table-wrapper {
   height: 400px;
   overflow-y: scroll;
 }
 
-.addOnName{
+.addOnName {
   width: 240px;
 }
 
-.rightSideBg{
+.rightSideBg {
   background: #f9f9f9;
 }
 
-.level{
+.level {
   height: 12px;
   width: 12px;
   border-radius: 50%;
 
-  &.info{
+  &.info {
     background: #11b663;
   }
 
-  &.error{
+  &.error {
     background: #dd3535;
   }
 }
@@ -67,7 +91,6 @@ label,
     background: #E4E7F4;
   }
 }
-
 //Table designs
 
 .close-icon {
@@ -527,7 +550,8 @@ nav {
 .example-list.cdk-drop-list-dragging .example-box:not(.cdk-drag-placeholder) {
   transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
 }
-.wrapperBox{
+
+.wrapperBox {
   overflow-x: auto;
   max-width: 1200px;
 }
