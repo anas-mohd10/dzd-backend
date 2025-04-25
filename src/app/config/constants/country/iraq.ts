@@ -23,7 +23,7 @@
 
 export const iraqStates = [
   { state: "أربيل", cities: [] },
-  { state: "الأنبار", cities: [] },
+  { state: "انبار", cities: [] },
   { state: "بابل", cities: [] },
   { state: "بصرة", cities: [] },
   { state: "بغداد", cities: [] },
