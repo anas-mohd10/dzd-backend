@@ -937,8 +937,13 @@ export class NavigationMenuComponent implements OnInit {
 
     this.megaMenuItemForm = new FormGroup({
       icon: new FormControl(''),
-      title: new FormControl(''),
-      redirection: new FormControl('', Validators.required),
+      title: new FormControl('', Validators.required),
+      selectedOption: new FormControl(''),
+      selectedBrand: new FormControl(''),
+      selectedProduct: new FormControl(''),
+      selectedCategory: new FormControl(''),
+      selectedCollection: new FormControl(''),
+      redirection: new FormControl('', Validators.required)
     });
 
     this.megaMenuForm = new FormGroup({
@@ -1028,14 +1033,56 @@ export class NavigationMenuComponent implements OnInit {
       redirection: new FormControl('', Validators.required),
     });
   }
-
+  onMenuItemSelect(event: any) {
+    const selectedValue = event.target.value;
+    const option = this.megaMenuItemForm.get('selectedOption')?.value;
+    
+    let pathPrefix = '';
+    switch(option) {
+      case 'brands':
+        pathPrefix = '/brands';
+        break;
+      case 'products':
+        pathPrefix = '/products';
+        break;
+      case 'categories':
+        pathPrefix = '/products';
+        break;
+      case 'collections':
+        pathPrefix = '/c';
+        break;
+      case 'complete':
+        pathPrefix = '/store';
+        break;
+    }
+  
+    const urlFriendlyValue = option === 'categories' ? selectedValue : selectedValue.toLowerCase().replace(/\s+/g, '-');
+    const redirection = option === 'complete' ? pathPrefix : `${pathPrefix}/${urlFriendlyValue}`;
+    
+    this.megaMenuItemForm.get('redirection')?.setValue(redirection);
+    this.megaMenuItemForm.get('title')?.setValue(selectedValue);
+  }
+  getItemsForSelectedOption() {
+    const option = this.megaMenuItemForm.get('selectedOption')?.value;
+    switch(option) {
+      case 'brands': return this.brands;
+      case 'products': return this.products;
+      case 'categories': return this.categories;
+      case 'collections': return this.collections;
+      default: return [];
+    }
+  }
   openModal(template: TemplateRef<any>) {
     this.modalRef = this.modalService.show(template, {
       ignoreBackdropClick: true,
       class: 'modal-dialog-centered modal-lg',
     });
   }
-
+  onMenuItemRedirectionChange(event: any) {
+    const value = event.target.value;
+    this.megaMenuItemForm.get('selectedOption')?.setValue(value);
+    this.megaMenuItemForm.get('redirection')?.setValue('');
+  }
   openArchivedModal(template: TemplateRef<any>) {
     this.modalRef = this.modalService.show(template, {
       ignoreBackdropClick: true,
