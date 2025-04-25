@@ -1,4 +1,12 @@
 <div>
+  <div *ngIf="isLoading" class="loader-overlay">
+    <div class="loader-content">
+      <div class="spinner-border text-primary" role="status">
+        <span class="visually-hidden">Loading...</span>
+      </div>
+      <div class="mt-2">Processing, please wait...</div>
+    </div>
+  </div>
   <div class="page-header d-flex flex-row justify-content-between">
     <div>
       <div class="page-title">
