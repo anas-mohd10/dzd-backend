@@ -3,6 +3,7 @@ import { appRoutes } from 'src/app/config/routes';
 import { BlogService } from 'src/app/includes/services/blog.service';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { AppSettingsService } from 'src/app/includes/services/app.settings.service';
 
 @Component({
   selector: 'app-blog-listing',
@@ -10,6 +11,7 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
   styleUrls: ['./blog-listing.component.scss'],
 })
 export class BlogListingComponent implements OnInit {
+  settings: any;
   clear() {
     //clear the form
     this.keyword.setValue('')
@@ -28,12 +30,16 @@ export class BlogListingComponent implements OnInit {
   categoryForm: FormGroup;
   categoryThumbnail: any;
   isActive: FormControl = new FormControl('');
+  form: FormGroup = new FormGroup({
+    blogPromotionalBanner: new FormControl('')
+  });
 
 
   constructor(
     private ChangeDetectorRef: ChangeDetectorRef,
     private BlogService: BlogService,
-    private modalService: BsModalService
+    private modalService: BsModalService,
+    private AppSettingsService: AppSettingsService,
   ) {
     this.categoryForm = new FormGroup({
       title: new FormControl('', Validators.required),
@@ -44,6 +50,8 @@ export class BlogListingComponent implements OnInit {
 
   ngOnInit(): void {
     this.getBlogs();
+    this.loadPromoBanner();
+    
   }
 
   onPageTriggered(event: { pageIndex: number, pageSize: number }) {
@@ -104,8 +112,58 @@ export class BlogListingComponent implements OnInit {
     }
   }
 
+  loadPromoBanner() {
+    // spread the remaining settings from the current settings object
+    this.AppSettingsService.getGeneralSettingsbyId('1').subscribe({
+      next: (res: any) => {
+        if (res?.errorCode === 0) {
+          this.form.patchValue({ blogPromotionalBanner: res.result.blogPromotionalBanner });
+          console.dir(res,{depth: null})
+          this.settings = res.result;
+          this.form.patchValue({ blogPromotionalBanner: res.result.blogPromotionalBanner });
+        }
+      }
+    });
+  }
+  open(template: TemplateRef<any>) {
+    this.modalRef = this.modalService.show(template);
+  }
+
+  close() {
+    this.modalRef.hide();
+  }
+
+  handleThumbnail(media: any) {
+    this.form.patchValue({ blogPromotionalBanner: media.path });
+    this.settings.blogPromotionalBanner = media.path;
+  }
+  
+
+  removePromoBanner() {
+    this.form.get('blogPromotionalBanner')?.setValue('');
+    this.settings.blogPromotionalBanner = null;
+  }
+
+  savePromo() {
+    const updatedSettings = {
+      ...this.settings,
+      blogPromotionalBanner: this.form.value.blogPromotionalBanner
+    };
+    
+    this.AppSettingsService.updateGeneralSettings(updatedSettings).subscribe({
+      next: (res: any) => {
+        if (res?.errorCode === 0) {
+          this.modalRef.hide();
+          this.settings = updatedSettings; // Update local settings
+        }
+      }
+    });
+  }
+
   removeCategoryThumbnail() {
     this.categoryThumbnail = null;
     this.categoryForm.patchValue({ thumbnail: null });
   }
 }
+
+
