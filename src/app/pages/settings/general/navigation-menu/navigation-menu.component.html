@@ -1408,7 +1408,7 @@
                                                 <div class="col-lg-10 align-self-stretch d-flex flex-column justify-content-between">
                                                     <!-- Redirection Type Dropdown -->
                                                     <div class="form-group mb-3">
-                                                      <label class="fs-6 mb-3">Select For Redirection</label>
+                                                      <label class="fs-6 mb-3">Menu Redirection</label>
                                                       <select class="form-select mb-3" formControlName="selectedOption" 
                                                               (change)="onMenuItemRedirectionChange($event)">
                                                         <option value="" disabled>-- Select an option --</option>
@@ -1421,26 +1421,25 @@
                                                     </div>
                                                 
                                                     <!-- Dynamic Item Selection -->
-                                                    <div class="form-group mb-3" *ngIf="megaMenuItemForm.get('selectedOption')?.value">
-                                                      <label class="fs-6 mb-3">Select {{megaMenuItemForm.get('selectedOption')?.value | titlecase}}</label>
-                                                      <select class="form-select mb-3" 
-                                                              [formControlName]="'selected' + (megaMenuItemForm.get('selectedOption')?.value | titlecase)"
-                                                              (change)="onMenuItemSelect($event)">
-                                                        <option value="" disabled>-- Select a {{megaMenuItemForm.get('selectedOption')?.value}} --</option>
-                                                        <option *ngFor="let item of getItemsForSelectedOption()" 
-                                                                [value]="item.name || item.slug">
-                                                          {{item.name}}
-                                                        </option>
-                                                      </select>
-                                                    </div>
-                                                
+                                                    <div class="form-group mb-3" *ngIf="megaMenuItemForm.get('selectedOption')?.value && showDynamicDropdown">
+                                                        <label class="fs-6 mb-3">Select {{megaMenuItemForm.get('selectedOption')?.value | titlecase}}</label>
+                                                        <select class="form-select mb-3" 
+                                                                [formControlName]="'selected' + (megaMenuItemForm.get('selectedOption')?.value | titlecase)"
+                                                                (change)="onMenuItemSelect($event)">
+                                                          <option value="" disabled>-- Select a {{megaMenuItemForm.get('selectedOption')?.value}} --</option>
+                                                          <option *ngFor="let item of getItemsForSelectedOption()" 
+                                                                  [value]="item.name || item.slug">
+                                                            {{item.name}}
+                                                          </option>
+                                                        </select>
+                                                      </div>
                                                     <!-- Redirection Display -->
                                                     <div class="form-group mb-3">
                                                       <label class="fs-6 mb-3">Redirection</label>
                                                       <input type="text" class="form-control" formControlName="redirection"
                                                              [ngClass]="{'is-invalid': (megaMenuItemFormControls.redirection.touched || isMegaMenuItemDetailsSubmitted) 
                                                              && megaMenuItemFormControls.redirection.errors?.required}" 
-                                                             readonly>
+                                                             >
                                                     </div>
                                                 
                                                 </div>

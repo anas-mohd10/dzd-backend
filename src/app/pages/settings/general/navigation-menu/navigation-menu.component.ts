@@ -48,6 +48,8 @@ export class NavigationMenuComponent implements OnInit {
   dropdownInputs: Array<any> = [];
   settings: any = {};
   itemForm!: FormGroup;
+  showDynamicDropdown: boolean = false;
+
   @ViewChild('scrollItems') scrollItems: ElementRef = new ElementRef<any>({});
   translateXValue = 0;
   types: Array<any> = [
@@ -611,23 +613,38 @@ export class NavigationMenuComponent implements OnInit {
       this.isMegaMenuItemDetailsSubmitted = true;
       return;
     }
-
+  
+    const menuItemData = {
+      ...this.megaMenuItemForm.value,
+      icon: this.subMenuIcon
+    };
+  
     if (this.megaMenuItemIndex != null) {
       this.subMenus[this.megaMenuItemIndex] = {
-        ...this.megaMenuItemForm.value,
-        childNodes: this.subMenus[this.megaMenuItemIndex]['childNodes']
+        ...menuItemData,
+        childNodes: this.subMenus[this.megaMenuItemIndex]['childNodes'] || []
       };
-      this.Toast.success('Menu item added successfully');
-      this.megaMenuItemForm.reset();
-      this.isMegaMenuItemDetailsSubmitted = false;
-      this.megaMenuItemIndex = null;
+      this.Toast.success('Menu item updated successfully');
     } else {
-      this.subMenus.push({ ...this.megaMenuItemForm.value, childNodes: [] });
+      this.subMenus.push({ 
+        ...menuItemData, 
+        childNodes: [] 
+      });
       this.Toast.success('Menu item added successfully');
-      this.megaMenuItemForm.reset();
-      this.isMegaMenuItemDetailsSubmitted = false;
     }
-    this.isAddMenuItem = false
+  
+    this.megaMenuItemForm.reset({
+      selectedOption: this.megaMenuItemForm.get('selectedOption')?.value,
+    });
+    
+    this.showDynamicDropdown = false; // Hide dropdown after saving
+    this.isMegaMenuItemDetailsSubmitted = false;
+    this.megaMenuItemIndex = null;
+    this.isAddMenuItem = false;
+    
+    if (this.megaMenuItemIndex === null) {
+      this.subMenuIcon = '';
+    }
   }
 
   saveChildNodeDetails() {
@@ -659,7 +676,8 @@ export class NavigationMenuComponent implements OnInit {
     this.megaMenuItemForm.patchValue(this.subMenus[index]);
     this.subMenuIcon = this.subMenus[index]?.icon;
     this.megaMenuItemIndex = index;
-    this.isAddMenuItem = true
+    this.isAddMenuItem = true;
+    this.showDynamicDropdown = false;
   }
 
   getChildNodeItem(index: number, parentMenuIndex: number) {
@@ -868,13 +886,13 @@ export class NavigationMenuComponent implements OnInit {
           this.selectedOption = 'brands';
           this.selectedItem = redirection.split('/brands/')[1];
         }
-        else if (redirection.includes('/products/')) {
+        else if (redirection.includes('/p/')) {
           this.selectedOption = 'products';
-          this.selectedItem = redirection.split('/products/')[1];
+          this.selectedItem = redirection.split('/p/')[1];
         }
-        else if (redirection.includes('/products/')) {
+        else if (redirection.includes('/p/')) {
           this.selectedOption = 'categories';
-          this.selectedItem = redirection.split('/products/')[1];
+          this.selectedItem = redirection.split('/p/')[1];
         }
         else if (redirection.includes('/c/')) {
           this.selectedOption = 'collections';
@@ -1043,10 +1061,10 @@ export class NavigationMenuComponent implements OnInit {
         pathPrefix = '/brands';
         break;
       case 'products':
-        pathPrefix = '/products';
+        pathPrefix = '/p';
         break;
       case 'categories':
-        pathPrefix = '/products';
+        pathPrefix = '/p';
         break;
       case 'collections':
         pathPrefix = '/c';
@@ -1064,13 +1082,34 @@ export class NavigationMenuComponent implements OnInit {
   }
   getItemsForSelectedOption() {
     const option = this.megaMenuItemForm.get('selectedOption')?.value;
+    
+    // Get all items for the selected option
+    let allItems = [];
     switch(option) {
-      case 'brands': return this.brands;
-      case 'products': return this.products;
-      case 'categories': return this.categories;
-      case 'collections': return this.collections;
-      default: return [];
+      case 'brands': 
+        allItems = this.brands; 
+        break;
+      case 'products': 
+        allItems = this.products; 
+        break;
+      case 'categories': 
+        allItems = this.categories; 
+        break;
+      case 'collections': 
+        allItems = this.collections; 
+        break;
+      default: 
+        return [];
     }
+  
+    // Get the names/slugs of already saved items
+    const savedItems = this.subMenus.map(menuItem => menuItem.redirection);
+    
+    // Filter out items that are already saved
+    return allItems.filter((item:any) => {
+      const itemPath = `/${option}/${item.name?.toLowerCase().replace(/\s+/g, '-') || item.slug}`;
+      return !savedItems.includes(itemPath);
+    });
   }
   openModal(template: TemplateRef<any>) {
     this.modalRef = this.modalService.show(template, {
@@ -1078,10 +1117,12 @@ export class NavigationMenuComponent implements OnInit {
       class: 'modal-dialog-centered modal-lg',
     });
   }
+  
   onMenuItemRedirectionChange(event: any) {
     const value = event.target.value;
     this.megaMenuItemForm.get('selectedOption')?.setValue(value);
     this.megaMenuItemForm.get('redirection')?.setValue('');
+    this.showDynamicDropdown = true;
   }
   openArchivedModal(template: TemplateRef<any>) {
     this.modalRef = this.modalService.show(template, {
