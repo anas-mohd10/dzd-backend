@@ -41,6 +41,13 @@ export class ShippingChargeComponent implements OnInit {
   methodForm: FormGroup = new FormGroup({});
   countrySelected: FormControl = new FormControl('');
   defaultCountryAndState: FormControl = new FormControl('UAE,Dubai');
+      // Add new properties for charge ranges
+      chargeRanges: Array<any> = [];
+      newChargeRange: any = {
+        minAmount: null,
+        maxAmount: null,
+        charge: null
+      };
 
   constructor(
     private BsModalService: BsModalService,
@@ -120,6 +127,7 @@ export class ShippingChargeComponent implements OnInit {
         Validators.required,
         Validators.pattern(/^\d+$/),
       ]),
+
     });
 
     this.AppSettingsService.getGeneralSettingsbyId('1').subscribe({
@@ -135,20 +143,29 @@ export class ShippingChargeComponent implements OnInit {
       name: new FormControl('', Validators.required),
       amountType: new FormControl('flat'),
       amount: new FormControl('', [
-        Validators.required,
         Validators.pattern(/^\d+$/),
       ]),
       icon: new FormControl(''),
       freeAbove: new FormControl('', [
-        Validators.required,
         Validators.pattern(/^\d+$/),
       ]),
       orderAmount: new FormControl('', [
-        Validators.required,
         Validators.pattern(/^\d+$/),
       ]),
       isActive: new FormControl('true', Validators.required),
       applyOn: new FormControl('total'),
+      // Add new form controls for shipping types
+      shippingType: new FormControl('standard'),
+      freeShippingThreshold: new FormControl('499', [
+        Validators.pattern(/^\d+$/),
+      ]),
+      // Remove these fields as we'll use freeAbove and orderAmount instead
+      // minimumOrderAmount: new FormControl('', [
+      //   Validators.pattern(/^\d+$/),
+      // ]),
+      // fixedCharge: new FormControl('', [
+      //   Validators.pattern(/^\d+$/),
+      // ]),
     });
 
     this.getMethods();
@@ -160,6 +177,143 @@ export class ShippingChargeComponent implements OnInit {
   }
 
   //Delivery methods
+  // openMethod(template: TemplateRef<any>, mode?: string, methodId?: string) {
+  //   this.methodRef = this.BsModalService.show(template, {
+  //     class: 'modal-lg modal-dialog-centered',
+  //   });
+  //   if (mode == 'update') {
+  //     this.isMethodUpdate = true;
+  //     this.DeliveryMethodService.getMethod(methodId || '').subscribe({
+  //       next: (res: any) => {
+  //         if (res?.errorCode == 0) {
+  //           this.methodDetails = res?.result;
+  //           this.methodIcon = res?.result?.icon;
+
+  //           // Set charge ranges if available
+  //           if (res?.result?.chargeRanges && res?.result?.chargeRanges.length > 0) {
+  //             this.chargeRanges = [...res?.result?.chargeRanges];
+  //           } else {
+  //             this.chargeRanges = [];
+  //           }
+
+  //           this.methodForm.patchValue(res?.result);
+  //           this.ChangeDetectorRef.markForCheck();
+  //         }
+  //       },
+  //     });
+  //   }
+  // }
+
+  handleMethodIcon(event: any) {
+    this.methodForm.patchValue({ icon: event.path });
+  }
+
+  get methodFormControls() {
+    return this.methodForm.controls;
+  }
+
+  // Update the addMethod function to handle the new shipping types
+  addMethod() {
+    if (!this.methodForm.valid) {
+      this.isMethodSubmitted = true;
+
+      // Show specific validation errors
+      const controls = this.methodForm.controls;
+      for (const name in controls) {
+        if (controls[name].invalid) {
+          let errorMessage = 'Please fill in all required fields';
+
+          if (controls[name].errors?.required) {
+            errorMessage = `${name.charAt(0).toUpperCase() + name.slice(1)} is required`;
+          } else if (controls[name].errors?.pattern) {
+            errorMessage = `${name.charAt(0).toUpperCase() + name.slice(1)} has an invalid format`;
+          }
+
+          this.HotToastService.error(errorMessage);
+          break;
+        }
+      }
+      return;
+    }
+
+    // Validate based on shipping type
+    const shippingType = this.methodForm.get('shippingType')?.value;
+
+    if (shippingType === 'tiered' && this.chargeRanges.length === 0) {
+      this.HotToastService.error('At least one charge range is required for tiered pricing');
+      return;
+    }
+
+    // Prepare the data to send to the API
+    const methodData = {...this.methodForm.value};
+
+    // Add charge ranges for tiered pricing
+    if (shippingType === 'tiered') {
+      methodData.chargeRanges = this.chargeRanges;
+    }
+
+    // For threshold shipping, map the fields for API compatibility
+    if (shippingType === 'threshold') {
+      // We're using orderAmount as minimumOrderAmount and freeAbove as fixedCharge
+      methodData.minimumOrderAmount = methodData.orderAmount;
+      methodData.fixedCharge = methodData.freeAbove;
+    }
+
+    if(shippingType === 'free'){
+      // We're using orderAmount as minimumOrderAmount and freeAbove as 0
+      methodData.freeAbove = '0';
+      methodData.amount = '0';
+      methodData.minimumOrderAmount = '0';
+      methodData.orderAmount = '0';
+    }
+
+    // Additional validation based on shipping type
+    if (shippingType === 'standard' && Number(methodData.amount) <= 0) {
+      this.HotToastService.error('Amount must be greater than zero for standard shipping');
+      return;
+    }
+
+    if (this.isMethodUpdate) {
+      this.DeliveryMethodService.updateMethod({
+        _id: this.methodDetails?._id,
+        ...methodData,
+      }).subscribe({
+        next: (res: any) => {
+          if (res?.errorCode == 0) {
+            this.getMethods();
+            this.closeMethod();
+            this.ChangeDetectorRef.markForCheck();
+            this.HotToastService.success(res?.message);
+          } else {
+            this.HotToastService.error(res?.message || 'Failed to update shipping method');
+          }
+        },
+        error: (err: any) => {
+          const errorMessage = err.error?.message || 'An error occurred while updating the shipping method';
+          this.HotToastService.error(errorMessage);
+        },
+      });
+    } else {
+      this.DeliveryMethodService.addMethod(methodData).subscribe({
+        next: (res: any) => {
+          if (res?.errorCode == 0) {
+            this.getMethods();
+            this.closeMethod();
+            this.ChangeDetectorRef.markForCheck();
+            this.HotToastService.success(res?.message);
+          } else {
+            this.HotToastService.error(res?.message || 'Failed to add shipping method');
+          }
+        },
+        error: (err: any) => {
+          const errorMessage = err.error?.message || 'An error occurred while adding the shipping method';
+          this.HotToastService.error(errorMessage);
+        },
+      });
+    }
+  }
+
+  // Update the openMethod function to handle existing charge ranges
   openMethod(template: TemplateRef<any>, mode?: string, methodId?: string) {
     this.methodRef = this.BsModalService.show(template, {
       class: 'modal-lg modal-dialog-centered',
@@ -171,6 +325,14 @@ export class ShippingChargeComponent implements OnInit {
           if (res?.errorCode == 0) {
             this.methodDetails = res?.result;
             this.methodIcon = res?.result?.icon;
+
+            // Set charge ranges if available
+            if (res?.result?.chargeRanges && res?.result?.chargeRanges.length > 0) {
+              this.chargeRanges = [...res?.result?.chargeRanges];
+            } else {
+              this.chargeRanges = [];
+            }
+
             this.methodForm.patchValue(res?.result);
             this.ChangeDetectorRef.markForCheck();
           }
@@ -179,58 +341,25 @@ export class ShippingChargeComponent implements OnInit {
     }
   }
 
-  handleMethodIcon(event: any) {
-    this.methodForm.patchValue({ icon: event.path });
+  // Update the closeMethod function to reset charge ranges
+  closeMethod() {
+    this.methodIcon = '';
+    this.isMethodUpdate = false;
+    this.chargeRanges = [];
+    this.newChargeRange = {
+      minAmount: null,
+      maxAmount: null,
+      charge: null
+    };
+    this.methodRef?.hide();
+    this.methodForm.reset();
+    this.methodForm.patchValue({
+      amountType: 'flat',
+      applyOn: 'total',
+      isActive: 'true',
+      shippingType: 'standard'
+    });
   }
-
-  get methodFormControls() {
-    return this.methodForm.controls;
-  }
-
-  addMethod() {
-    if (!this.methodForm.valid) {
-      this.isMethodSubmitted = true;
-      return;
-    }
-
-    if (this.isMethodUpdate) {
-      this.DeliveryMethodService.updateMethod({
-        _id: this.methodDetails?._id,
-        ...this.methodForm.value,
-      }).subscribe({
-        next: (res: any) => {
-          if (res?.errorCode == 0) {
-            this.getMethods();
-            this.closeMethod();
-            this.ChangeDetectorRef.markForCheck();
-            this.HotToastService.success(res?.message);
-          } else {
-            this.HotToastService.error(res?.message);
-          }
-        },
-        error: (err: any) => {
-          this.HotToastService.error(err.error.message);
-        },
-      });
-    } else {
-      this.DeliveryMethodService.addMethod(this.methodForm.value).subscribe({
-        next: (res: any) => {
-          if (res?.errorCode == 0) {
-            this.getMethods();
-            this.closeMethod();
-            this.ChangeDetectorRef.markForCheck();
-            this.HotToastService.success(res?.message);
-          } else {
-            this.HotToastService.error(res?.message);
-          }
-        },
-        error: (err: any) => {
-          this.HotToastService.error(err.error.message);
-        },
-      });
-    }
-  }
-
   deleteMethod(methodId: string) {
     this.DeliveryMethodService.deleteMethod(methodId).subscribe({
       next: (res: any) => {
@@ -261,18 +390,84 @@ export class ShippingChargeComponent implements OnInit {
     });
   }
 
-  closeMethod() {
-    this.methodIcon = '';
-    this.isMethodUpdate = false;
-    this.methodRef?.hide();
-    this.methodForm.reset();
-    this.methodForm.patchValue({
-      amountType: 'flat',
-      applyOn: 'total',
-      isActive: 'true',
-    });
+  // Add new methods for handling charge ranges
+  onShippingTypeChange() {
+    const shippingType = this.methodForm.get('shippingType')?.value;
+
+    // Reset charge ranges when switching away from tiered pricing
+    if (shippingType !== 'tiered') {
+      this.chargeRanges = [];
+    }
+
+    // Set default values based on shipping type
+    if (shippingType === 'free') {
+      this.methodForm.patchValue({
+        freeAbove: '499',  // Only need freeAbove for free shipping
+        amount: '0',       // Set amount to 0 for free shipping
+        amountType: 'flat' // Default amount type
+      });
+    } else if (shippingType === 'standard') {
+      this.methodForm.patchValue({
+        freeAbove: '499',   // Free above this amount
+        orderAmount: '0',   // Minimum order amount
+        amount: '50',       // Default shipping amount
+        amountType: 'flat'  // Default amount type
+      });
+    } else if (shippingType === 'threshold') {
+      this.methodForm.patchValue({
+        orderAmount: '100',  // Minimum order amount
+        freeAbove: '10',     // Fixed charge amount
+        amount: '0',         // Not used for threshold
+        amountType: 'flat'   // Default amount type
+      });
+    }
+
+    this.ChangeDetectorRef.markForCheck();
   }
-  //Delivery methods
+
+  // Utility function to validate charge range values
+  validateChargeRange(range: any): { isValid: boolean; errorMessage?: string } {
+  // Check if any field is null or undefined (allows zero values)
+  if (range.minAmount === null || range.minAmount === undefined ||
+  range.maxAmount === null || range.maxAmount === undefined ||
+  range.charge === null || range.charge === undefined) {
+  return { isValid: false, errorMessage: 'All fields are required for charge range' };
+  }
+
+  // Check if min amount is less than max amount
+  if (Number(range.minAmount) >= Number(range.maxAmount)) {
+  return { isValid: false, errorMessage: 'Min amount must be less than max amount' };
+  }
+
+  return { isValid: true };
+  }
+
+  addChargeRange() {
+  // Use the utility function to validate
+  const validation = this.validateChargeRange(this.newChargeRange);
+
+  if (!validation.isValid) {
+  this.HotToastService.error(validation.errorMessage || 'Invalid charge range');
+  return;
+  }
+
+  // Add the new charge range
+  this.chargeRanges.push({...this.newChargeRange});
+
+  // Reset the form
+  this.newChargeRange = {
+  minAmount: null,
+  maxAmount: null,
+  charge: null
+  };
+
+  this.ChangeDetectorRef.markForCheck();
+  }
+
+  removeChargeRange(index: number) {
+    this.chargeRanges.splice(index, 1);
+    this.ChangeDetectorRef.markForCheck();
+  }
 
   getDetails() {
     this.ShippingService.shippingDetails().subscribe({
