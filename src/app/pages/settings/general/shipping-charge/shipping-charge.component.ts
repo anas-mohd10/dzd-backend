@@ -35,7 +35,7 @@ export class ShippingChargeComponent implements OnInit {
   isMethodSubmitted: boolean = false;
   isMethodUpdate: boolean = false;
   methodDetails: any;
-  countries: Array<any> = ['India', 'UAE', 'Iraq'];
+  countries: Array<any> = ['India', 'UAE', 'Iraq', 'Qatar', 'Bahrain', 'KSA', 'Oman', 'Kuwait'];
   isCountryEditable: boolean = false;
   selectedCountries: Array<any> = [];
   methodForm: FormGroup = new FormGroup({});
