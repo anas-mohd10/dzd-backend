@@ -119,14 +119,16 @@ export class ModuleNotificationComponent implements OnInit, OnChanges {
       });
     }
 
-    // Get today's date and tomorrow's date for coupon validity
+    // Get today's date
     const today = new Date();
-    const tomorrow = new Date();
-    tomorrow.setDate(today.getDate() + 1);
 
-    // Format dates for API
-    const fromDate = today.toISOString().split('T')[0] + 'T18:30:00.000Z';
-    const lastDate = tomorrow.toISOString().split('T')[0] + 'T18:29:00.000Z';
+    // Set start time to current time
+    const fromDate = today.toISOString();
+
+    // Set end time to today at 23:59:59
+    const endOfDay = new Date(today);
+    endOfDay.setHours(23, 59, 59, 999);
+    const lastDate = endOfDay.toISOString();
 
     this.couponForm = new FormGroup({
       title: new FormControl('', Validators.required),
@@ -241,6 +243,7 @@ export class ModuleNotificationComponent implements OnInit, OnChanges {
         type: 'limited',
         value: 1
       },
+      isVisibility: true,
     };
 
     this.CouponsService.addCoupon(couponPayload).subscribe({
