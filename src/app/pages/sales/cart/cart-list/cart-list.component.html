@@ -106,7 +106,7 @@
                   </span>
                 </div>
                 <div>
-                  <app-module-notification [query]="cart?.refid" [type]="'cart'"
+                  <app-module-notification [query]="cart?.refid" [type]="'cart'" [customerId]="cart?.customer?._id"
                     (notificationTriggered)="onNotificationTriggered()"></app-module-notification>
                 </div>
               </div>

@@ -48,7 +48,7 @@ export class CartListComponent implements OnInit {
   cartQuery: any;
   @ViewChild('cartProducts') productsModal: TemplateRef<any>;
   notificationRef?: BsModalRef;
-   customer: string = ''
+  customer: string = ''
 
   constructor(
     private cartService: CartService,
@@ -74,13 +74,13 @@ export class CartListComponent implements OnInit {
     this.getCarts();
   }
   exportCart(): void {
-    const requestBody = { userId: this.customer };    
+    const requestBody = { userId: this.customer };
 
     this.cartService.exportCart(requestBody).subscribe({
       next: () => {
         this.toast.success('Cart export initiated successfully!');
       },
-      error: (err:any) => {
+      error: (err: any) => {
         console.error('Error exporting cart:', err);
         this.toast.error('Failed to export cart. Please try again.');
       }
@@ -210,6 +210,7 @@ export class CartListComponent implements OnInit {
 
   openCoupon(template: TemplateRef<any>) {
     this.couponForm.get('forUser')?.setValue(this.cart?.customer?._id);
+    console.log(this.cart?.customer?._id, "cart");
     this.notifyModalRef?.hide();
     this.couponModalRef = this.BsModalService.show(template, {
       class: 'modal-lg modal-dialog-centered',
@@ -239,7 +240,25 @@ export class CartListComponent implements OnInit {
           this.couponModalRef?.hide();
           this.couponForm.reset();
           this.ToastrService.success(res?.message);
-          this.form.get('couponCode')?.setValue(res?.result?.code);
+
+          // Set the coupon code to the form
+          this.form.get('couponCode')?.setValue(res?.result[0]?.code);
+
+          // Get current message and append the coupon code
+          const currentMessage = this.form.get('message')?.value || '';
+          const couponCode = res?.result[0]?.code;
+
+          // Append coupon code to the message
+          const updatedMessage = `${currentMessage}. Use coupon code ${couponCode} to avail discount.`;
+          this.form.get('message')?.setValue(updatedMessage);
+
+          // Get current title
+          const currentTitle = this.form.get('title')?.value || '';
+
+          // Append coupon info to title if needed
+          const updatedTitle = `${currentTitle} with coupon ${couponCode}`;
+          this.form.get('title')?.setValue(updatedTitle);
+
           this.notifyModalRef = this.BsModalService.show(
             this.notificationModal,
             { class: 'modal-lg modal-dialog-centered' }
