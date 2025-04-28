@@ -1078,13 +1078,19 @@ export class NavigationMenuComponent implements OnInit {
         // For products, use the full slug including SKU
         const selectedProduct = this.products.find((p:any) => p.name === selectedValue);
         const productSlug = selectedProduct?.slug || selectedValue.toLowerCase().replace(/\s+/g, '-');
-        const redirection = `${pathPrefix}/${productSlug}`;
-        this.megaMenuItemForm.get('redirection')?.setValue(redirection);
+        const productRedirection = `${pathPrefix}/${productSlug}`;
+        this.megaMenuItemForm.get('redirection')?.setValue(productRedirection);
         this.megaMenuItemForm.get('title')?.setValue(selectedValue);
         return;
       case 'categories':
         pathPrefix = '/p';
-        break;
+        // For categories, use the exact slug from the category object
+        const selectedCategory = this.categories.find((c:any) => c.name === selectedValue);
+        const categorySlug = selectedCategory?.slug || selectedValue.toLowerCase().replace(/\s+/g, '-');
+        const categoryRedirection = `${pathPrefix}/${categorySlug}`;
+        this.megaMenuItemForm.get('redirection')?.setValue(categoryRedirection);
+        this.megaMenuItemForm.get('title')?.setValue(selectedValue);
+        return;
       case 'collections':
         pathPrefix = '/c';
         break;
