@@ -1,4 +1,4 @@
-import { Component, EventEmitter, ChangeDetectorRef, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
+import { Component, EventEmitter, ChangeDetectorRef, Input, OnChanges, OnInit, Output, SimpleChanges, ElementRef, HostListener } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 import { HotToastService } from '@ngneat/hot-toast';
 import { debounceTime } from 'rxjs/operators';
@@ -23,13 +23,22 @@ export class DropdownResultsComponent implements OnInit, OnChanges {
   constructor(
     private PlatformService: PlatformService,
     private ChangeDetectorRef: ChangeDetectorRef,
-    private HotToastService: HotToastService
+    private HotToastService: HotToastService,
+    private elementRef: ElementRef
   ) {
     this.keyword.valueChanges
       .pipe(debounceTime(500))
       .subscribe((keywordValue) => {
         this.onKeywordChange(keywordValue)
       })
+  }
+
+  // Add click outside listener
+  @HostListener('document:click', ['$event'])
+  clickOutside(event: Event) {
+    if (!this.elementRef.nativeElement.contains(event.target)) {
+      this.clearResults();
+    }
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -44,21 +53,21 @@ export class DropdownResultsComponent implements OnInit, OnChanges {
 
   toggleSelectAll() {
     if (this.selectAllChecked) {
-      // Deselect all - remove all current dropdown results from inputs
+      // Deselect all - remain unchanged
       const idsToRemove = new Set(this.dropdownResults.map(item => item._id));
       this.dropdownInputs = this.dropdownInputs.filter(item => !idsToRemove.has(item._id));
       this.HotToastService.info("All items deselected");
     } else {
-      // Select all - add all current dropdown results that aren't already selected
+      // Select all - remain unchanged
       const existingIds = new Set(this.dropdownInputs.map(item => item._id));
       const newItems = this.dropdownResults.filter(item => !existingIds.has(item._id));
-      
+
       if (newItems.length > 0) {
         this.dropdownInputs = [...this.dropdownInputs, ...newItems];
         this.HotToastService.success("All items selected");
       }
     }
-    
+
     this.selectAllChecked = !this.selectAllChecked;
     this.ChangeDetectorRef.markForCheck();
     this.onSelect.emit({ dropdownInputs: this.dropdownInputs });
@@ -66,11 +75,10 @@ export class DropdownResultsComponent implements OnInit, OnChanges {
 
   updateSelectAllStatus() {
     // Check if all items in dropdown results are already in dropdownInputs
-    this.selectAllChecked = this.dropdownResults.length > 0 && 
+    this.selectAllChecked = this.dropdownResults.length > 0 &&
       this.dropdownResults.every(item => this.isItemExists(item));
     this.ChangeDetectorRef.markForCheck();
   }
-  
 
   onSelectItem(item: any, isExists: boolean) {
     switch (this.type) {
@@ -87,7 +95,7 @@ export class DropdownResultsComponent implements OnInit, OnChanges {
           this.dropdownInputs.push(item);
         }
         this.updateSelectAllStatus();
-        
+
         this.ChangeDetectorRef.markForCheck()
         this.onSelect.emit({ dropdownInputs: this.dropdownInputs });
         this.keyword.setValue("")
@@ -100,12 +108,19 @@ export class DropdownResultsComponent implements OnInit, OnChanges {
   }
 
   onInputFocus() {
-    if (this.keyword.value.trim()) {
+    if (this.keyword.value?.trim()) {
       this.onKeywordChange(this.keyword.value.trim());
     }
   }
 
   onKeywordChange(params: string) {
+
+    if (!params || params.trim() === ' ') {
+      this.dropdownResults = [];
+      return;
+    }
+  
+
     this.PlatformService.getRedirectionResults({ keyword: params }).subscribe({
       next: (res: any) => {
         if (res?.errorCode == 0) {
@@ -131,6 +146,6 @@ export class DropdownResultsComponent implements OnInit, OnChanges {
   clearResults() {
     this.keyword.setValue("");
     this.dropdownResults = [];
+    this.ChangeDetectorRef.markForCheck();
   }
-
 }

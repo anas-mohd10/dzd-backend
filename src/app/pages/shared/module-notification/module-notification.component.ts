@@ -28,6 +28,7 @@ export class ModuleNotificationComponent implements OnInit, OnChanges {
   @ViewChild('template') template: TemplateRef<any>;
   @Input() type: string;
   @Input() query: string;
+  @Input() customerId: string;
   channels: Array<any> = [
     { type: 'email', name: 'Email' },
     { type: 'sms', name: 'SMS' },
@@ -118,6 +119,17 @@ export class ModuleNotificationComponent implements OnInit, OnChanges {
       });
     }
 
+    // Get today's date
+    const today = new Date();
+
+    // Set start time to current time
+    const fromDate = today.toISOString();
+
+    // Set end time to today at 23:59:59
+    const endOfDay = new Date(today);
+    endOfDay.setHours(23, 59, 59, 999);
+    const lastDate = endOfDay.toISOString();
+
     this.couponForm = new FormGroup({
       title: new FormControl('', Validators.required),
       couponType: new FormControl('complete'),
@@ -127,6 +139,20 @@ export class ModuleNotificationComponent implements OnInit, OnChanges {
       minPurchase: new FormControl(0),
       isVisibility: new FormControl(false),
       forUser: new FormControl('', Validators.required),
+      fromDate: new FormControl(fromDate),
+      lastDate: new FormControl(lastDate),
+      minimumType: new FormControl('cart'),
+      countPerUser: new FormControl('1'),
+      isActive: new FormControl('true'),
+      platformType: new FormControl('both'),
+      details: new FormControl({
+        type: 'limited',
+        value: 1
+      }),
+      maxRedemptionAmount: new FormControl({
+        isEnabled: false,
+        value: null
+      }),
     });
   }
 
@@ -161,6 +187,16 @@ export class ModuleNotificationComponent implements OnInit, OnChanges {
   }
 
   openCoupon(template: TemplateRef<any>) {
+    if (this.customerId) {
+      this.couponForm.get('forUser')?.setValue(this.customerId);
+      this.modalRef?.hide();
+      this.couponModalRef = this.BsModalService.show(template, {
+        class: 'modal-lg modal-dialog-centered',
+        ignoreBackdropClick: true,
+      });
+      return;
+    }
+
     let query = {};
     this.type == 'cart'
       ? (query = { userid: Number(this.query) })
@@ -197,31 +233,54 @@ export class ModuleNotificationComponent implements OnInit, OnChanges {
       // return;
     }
 
-    this.CouponsService.addCoupon(this.couponForm.value).subscribe({
+    // Create a complete payload with all required fields
+    const couponPayload = {
+      ...this.couponForm.value,
+      platformType: 'both',
+      minimumType: 'cart',
+      isActive: 'true',
+      details: {
+        type: 'limited',
+        value: 1
+      },
+      isVisibility: true,
+    };
+
+    this.CouponsService.addCoupon(couponPayload).subscribe({
       next: (res: any) => {
         if (res?.errorCode == 0) {
           this.couponModalRef?.hide();
           this.couponForm.reset();
           this.Toast.success(res?.message);
-          this.form.get('couponCode')?.setValue(res?.result?.code);
-          this.form
-            .get('sms')
-            ?.setValue(
-              this.form.get('sms')?.value +
-              `. Use ${res?.result?.code} coupon code`
+
+          // Get the coupon code from the result - checking both possible structures
+          const couponCode = Array.isArray(res?.result)
+            ? res?.result[0]?.code
+            : res?.result?.code;
+
+          if (couponCode) {
+            // Set the coupon code to the form
+            this.form.get('couponCode')?.setValue(couponCode);
+
+            // Update SMS text
+            const smsText = this.form.get('sms')?.value || '';
+            this.form.get('sms')?.setValue(
+              `${smsText}. Use ${couponCode} coupon code`
             );
-          this.form
-            .get('subject')
-            ?.setValue(
-              this.form.get('subject')?.value +
-              `. Use ${res?.result?.code} coupon code`
+
+            // Update subject text
+            const subjectText = this.form.get('subject')?.value || '';
+            this.form.get('subject')?.setValue(
+              `${subjectText}. Use ${couponCode} coupon code`
             );
-          this.form
-            .get('message')
-            ?.setValue(
-              this.form.get('message')?.value +
-              `. Use ${res?.result?.code} coupon code`
+
+            // Update message text
+            const messageText = this.form.get('message')?.value || '';
+            this.form.get('message')?.setValue(
+              `${messageText}. Use ${couponCode} coupon code`
             );
+          }
+
           this.modalRef = this.BsModalService.show(this.template, {
             class: 'modal-lg modal-dialog-centered',
           });

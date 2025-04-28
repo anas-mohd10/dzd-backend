@@ -48,6 +48,8 @@ export class NavigationMenuComponent implements OnInit {
   dropdownInputs: Array<any> = [];
   settings: any = {};
   itemForm!: FormGroup;
+  showDynamicDropdown: boolean = false;
+
   @ViewChild('scrollItems') scrollItems: ElementRef = new ElementRef<any>({});
   translateXValue = 0;
   types: Array<any> = [
@@ -288,7 +290,6 @@ export class NavigationMenuComponent implements OnInit {
         pathPrefix = this.selectedOption;
     }
 
-    // For categories, use the slug directly
     // For other options, convert the name to a slug if needed
     let urlFriendlyItem = selectedItem;
     if (this.selectedOption !== 'categories') {
@@ -316,7 +317,10 @@ export class NavigationMenuComponent implements OnInit {
 
   fetchCategories() {
     this.CategoryService.getCategories({}, {}).subscribe((res: any) => {
-      this.categories = res?.result || [];
+      this.categories = (res?.result || []).map((category: any) => ({
+        ...category,
+        slug: category.slug.toLowerCase().replace(/\s+/g, '-') 
+      }));
     });
   }
 
@@ -611,23 +615,38 @@ export class NavigationMenuComponent implements OnInit {
       this.isMegaMenuItemDetailsSubmitted = true;
       return;
     }
-
+  
+    const menuItemData = {
+      ...this.megaMenuItemForm.value,
+      icon: this.subMenuIcon
+    };
+  
     if (this.megaMenuItemIndex != null) {
       this.subMenus[this.megaMenuItemIndex] = {
-        ...this.megaMenuItemForm.value,
-        childNodes: this.subMenus[this.megaMenuItemIndex]['childNodes']
+        ...menuItemData,
+        childNodes: this.subMenus[this.megaMenuItemIndex]['childNodes'] || []
       };
-      this.Toast.success('Menu item added successfully');
-      this.megaMenuItemForm.reset();
-      this.isMegaMenuItemDetailsSubmitted = false;
-      this.megaMenuItemIndex = null;
+      this.Toast.success('Menu item updated successfully');
     } else {
-      this.subMenus.push({ ...this.megaMenuItemForm.value, childNodes: [] });
+      this.subMenus.push({ 
+        ...menuItemData, 
+        childNodes: [] 
+      });
       this.Toast.success('Menu item added successfully');
-      this.megaMenuItemForm.reset();
-      this.isMegaMenuItemDetailsSubmitted = false;
     }
-    this.isAddMenuItem = false
+  
+    this.megaMenuItemForm.reset({
+      selectedOption: this.megaMenuItemForm.get('selectedOption')?.value,
+    });
+    
+    this.showDynamicDropdown = false; // Hide dropdown after saving
+    this.isMegaMenuItemDetailsSubmitted = false;
+    this.megaMenuItemIndex = null;
+    this.isAddMenuItem = false;
+    
+    if (this.megaMenuItemIndex === null) {
+      this.subMenuIcon = '';
+    }
   }
 
   saveChildNodeDetails() {
@@ -659,7 +678,8 @@ export class NavigationMenuComponent implements OnInit {
     this.megaMenuItemForm.patchValue(this.subMenus[index]);
     this.subMenuIcon = this.subMenus[index]?.icon;
     this.megaMenuItemIndex = index;
-    this.isAddMenuItem = true
+    this.isAddMenuItem = true;
+    this.showDynamicDropdown = false;
   }
 
   getChildNodeItem(index: number, parentMenuIndex: number) {
@@ -822,10 +842,13 @@ export class NavigationMenuComponent implements OnInit {
     });
   }
   fetchProducts() {
-    this.ProductService.getProduct().subscribe((res: any) => {
-
-      this.products = res?.result || [];
-      this.ChangeDetectorRef.detectChanges();  // Ensure change detection runs
+    this.ProductService.getProducts({}).subscribe((res: any) => {
+      this.products = (res?.result || []).map((product: any) => ({
+        ...product,
+        // Ensure slug is properly formatted if needed
+        slug: product.slug || product.name.toLowerCase().replace(/\s+/g, '-') + '-' + product.sku
+      }));
+      this.ChangeDetectorRef.detectChanges();
     });
   }
 
@@ -852,29 +875,37 @@ export class NavigationMenuComponent implements OnInit {
     this.selectedOption = '';
     this.selectedItem = '';
     this.redirectionValue = '';
-
+  
     if (savedData) {
       this.megaMenuIcon = savedData.icon;
       this.megaMenuAdvertisement = savedData.advertisement;
       this.megaMenuAdvertisementMobile = savedData.advertisementMobile;
-
+  
       this.subMenus = savedData.subMenus || [];
       this.subMenuBoxes = savedData.subMenuBoxes?.menuBoxes || [];
-
+  
       if (savedData.redirection) {
         const redirection = savedData.redirection;
-
+    
         if (redirection.includes('/brands/')) {
           this.selectedOption = 'brands';
           this.selectedItem = redirection.split('/brands/')[1];
         }
-        else if (redirection.includes('/products/')) {
-          this.selectedOption = 'products';
-          this.selectedItem = redirection.split('/products/')[1];
-        }
-        else if (redirection.includes('/products/')) {
-          this.selectedOption = 'categories';
-          this.selectedItem = redirection.split('/products/')[1];
+        else if (redirection.includes('/p/')) {
+          const itemPath = redirection.split('/p/')[1];
+          // Check if this is a product by finding exact match in products
+          const isProduct = this.products.some((p:any) => 
+            p.slug === itemPath
+          );
+          
+          if (isProduct) {
+            this.selectedOption = 'products';
+            this.selectedItem = this.products.find((p:any) => p.slug === itemPath)?.name || itemPath;
+          } else {
+            // Otherwise treat as category
+            this.selectedOption = 'categories';
+            this.selectedItem = itemPath;
+          }
         }
         else if (redirection.includes('/c/')) {
           this.selectedOption = 'collections';
@@ -883,10 +914,10 @@ export class NavigationMenuComponent implements OnInit {
         else if (redirection === '/store') {
           this.selectedOption = 'complete';
         }
-
+  
         this.redirectionValue = redirection;
       }
-
+  
       this.megaMenuForm.patchValue({
         ...savedData,
         selectedOption: this.selectedOption,
@@ -937,8 +968,13 @@ export class NavigationMenuComponent implements OnInit {
 
     this.megaMenuItemForm = new FormGroup({
       icon: new FormControl(''),
-      title: new FormControl(''),
-      redirection: new FormControl('', Validators.required),
+      title: new FormControl('', Validators.required),
+      selectedOption: new FormControl(''),
+      selectedBrand: new FormControl(''),
+      selectedProduct: new FormControl(''),
+      selectedCategory: new FormControl(''),
+      selectedCollection: new FormControl(''),
+      redirection: new FormControl('', Validators.required)
     });
 
     this.megaMenuForm = new FormGroup({
@@ -1028,14 +1064,91 @@ export class NavigationMenuComponent implements OnInit {
       redirection: new FormControl('', Validators.required),
     });
   }
-
+  onMenuItemSelect(event: any) {
+    const selectedValue = event.target.value;
+    const option = this.megaMenuItemForm.get('selectedOption')?.value;
+    
+    let pathPrefix = '';
+    switch(option) {
+      case 'brands':
+        pathPrefix = '/brands';
+        break;
+      case 'products':
+        pathPrefix = '/p';
+        // For products, use the full slug including SKU
+        const selectedProduct = this.products.find((p:any) => p.name === selectedValue);
+        const productSlug = selectedProduct?.slug || selectedValue.toLowerCase().replace(/\s+/g, '-');
+        const productRedirection = `${pathPrefix}/${productSlug}`;
+        this.megaMenuItemForm.get('redirection')?.setValue(productRedirection);
+        this.megaMenuItemForm.get('title')?.setValue(selectedValue);
+        return;
+      case 'categories':
+        pathPrefix = '/products';
+        // For categories, use the exact slug from the category object
+        const selectedCategory = this.categories.find((c:any) => c.name === selectedValue);
+        const categorySlug = selectedCategory?.slug || selectedValue.toLowerCase().replace(/\s+/g, '-');
+        const categoryRedirection = `${pathPrefix}/${categorySlug}`;
+        this.megaMenuItemForm.get('redirection')?.setValue(categoryRedirection);
+        this.megaMenuItemForm.get('title')?.setValue(selectedValue);
+        return;
+      case 'collections':
+        pathPrefix = '/c';
+        break;
+      case 'complete':
+        pathPrefix = '/store';
+        break;
+    }
+  
+    const urlFriendlyValue = selectedValue.toLowerCase().replace(/\s+/g, '-');
+    const redirection = option === 'complete' ? pathPrefix : `${pathPrefix}/${urlFriendlyValue}`;
+    
+    this.megaMenuItemForm.get('redirection')?.setValue(redirection);
+    this.megaMenuItemForm.get('title')?.setValue(selectedValue);
+  }
+  getItemsForSelectedOption() {
+    const option = this.megaMenuItemForm.get('selectedOption')?.value;
+    
+    // Get all items for the selected option
+    let allItems = [];
+    switch(option) {
+      case 'brands': 
+        allItems = this.brands; 
+        break;
+      case 'products': 
+        allItems = this.products; 
+        break;
+      case 'categories': 
+        allItems = this.categories; 
+        break;
+      case 'collections': 
+        allItems = this.collections; 
+        break;
+      default: 
+        return [];
+    }
+  
+    // Get the names/slugs of already saved items
+    const savedItems = this.subMenus.map(menuItem => menuItem.redirection);
+    
+    // Filter out items that are already saved
+    return allItems.filter((item:any) => {
+      const itemPath = `/${option}/${item.name?.toLowerCase().replace(/\s+/g, '-') || item.slug}`;
+      return !savedItems.includes(itemPath);
+    });
+  }
   openModal(template: TemplateRef<any>) {
     this.modalRef = this.modalService.show(template, {
       ignoreBackdropClick: true,
       class: 'modal-dialog-centered modal-lg',
     });
   }
-
+  
+  onMenuItemRedirectionChange(event: any) {
+    const value = event.target.value;
+    this.megaMenuItemForm.get('selectedOption')?.setValue(value);
+    this.megaMenuItemForm.get('redirection')?.setValue('');
+    this.showDynamicDropdown = true;
+  }
   openArchivedModal(template: TemplateRef<any>) {
     this.modalRef = this.modalService.show(template, {
       ignoreBackdropClick: true,
