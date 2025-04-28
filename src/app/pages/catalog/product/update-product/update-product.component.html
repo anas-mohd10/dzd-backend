@@ -564,7 +564,8 @@
                       <td>{{addOn.addOnType | titlecase}}</td>
                       <td>
                         <div class="d-flex align-items-center justify-content-center gap-2">
-                          <button class="btn btn-secondary py-1 px-2 w-50" (click)="openManageAddOns(manageAddOnsTemplate, 'edit', index)">
+                          <button class="btn btn-secondary py-1 px-2 w-50"
+                            (click)="openManageAddOns(manageAddOnsTemplate, 'edit', index)">
                             Edit
                           </button>
                           <button class="btn btn-danger py-1 px-2 w-50" (click)="removeAddOn(index)">
@@ -580,29 +581,76 @@
             <tab heading="SEO Details">
               <div class="my-6">
                 <div class="form-group mb-3">
-                  <label for="metaTitle" class="fs-6 mb-3">Meta title</label>
-                  <input type="text" formControlName="metaTitle" class="form-control">
+                  <div>
+                    <label for="metaTitle"
+                      class="fs-6 mb-3 d-flex justify-content-start gap-2 align-items-center link-underline-secondary cursor-pointer">
+                      <div>Title -</div>
+                      <div (click)="generateMetaTitle()" class="text-primary">Auto Generate</div>
+                    </label>
+                    <div id="metaTitle">
+                      <p class="text-muted">
+                        This should be between 50 and 60 characters. For help in writing quality meta titles,
+                        <a href="https://developers.google.com/search/docs/appearance/title-link#page-titles">
+                          Learn more
+                        </a>
+                      </p>
+                      <input type="text" formControlName="metaTitle" class="form-control">
+                    </div>
+                  </div>
+                  <div *ngIf="validateMetaDetails('metaTitle')" class="mt-2 text-warning bg-warning bg-opacity-10 p-2 rounded fw-normal d-flex align-items-center gap-2">
+                    <div>
+                      <svg height="16" width="16" data-slot="icon" fill="none" stroke-width="1.5" stroke="currentColor"
+                        viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                          d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126ZM12 15.75h.007v.008H12v-.008Z">
+                        </path>
+                      </svg>
+                    </div>
+                    <div>{{validateMetaDetails('metaTitle')}}</div>
+                  </div>
                 </div>
                 <div class="form-group mb-3">
-                  <label for="metaDescription" class="fs-6 mb-3">Meta description</label>
-                  <input type="text" formControlName="metaDescription" class="form-control">
+                  <div>
+                    <label for="metaDescription" class="fs-6 mb-3">Description</label>
+                    <div id="metaTitle">
+                      <p class="text-muted">
+                        This should be between 100 and 150 characters. For help in writing quality meta descriptions,
+                        <a href="https://developers.google.com/search/docs/appearance/snippet#meta-descriptions">
+                          Learn more
+                        </a>
+                      </p>
+                      <input type="text" formControlName="metaDescription" class="form-control">
+                    </div>
+                  </div>
+                  <div *ngIf="validateMetaDetails('metaDescription')" class="mt-2 text-warning bg-warning bg-opacity-10 p-2 rounded fw-normal d-flex align-items-center gap-2">
+                    <div>
+                      <svg height="16" width="16" data-slot="icon" fill="none" stroke-width="1.5" stroke="currentColor"
+                        viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                          d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126ZM12 15.75h.007v.008H12v-.008Z">
+                        </path>
+                      </svg>
+                    </div>
+                    <div>{{validateMetaDetails('metaDescription')}}</div>
+                  </div>
                 </div>
                 <div class="form-group mb-3">
-                  <label for="metaKeywords" class="fs-6 mb-3">Meta keywords</label>
+                  <label for="metaKeywords" class="fs-6 mb-3">Keywords</label>
                   <input type="text" formControlName="metaKeywords" class="form-control">
                 </div>
+                <div>
+                  <p class="fs-5 mb-0">Preview</p>
+                  <p class="text-muted">Exact result listings may vary based on content and search relevancy.</p>
+                  <div class="bg-secondary p-4 rounded">
+                    <div>{{settings.domain}}p/{{productDetails.slug}}</div>
+                    <div class="fs-4 fw-bold my-1">{{form.get('metaTitle')?.value}}</div>
+                    <div>{{form.get('metaDescription')?.value}}</div>
+                  </div>
+                </div>
               </div>
 
-              <!-- 
               <div class="d-flex align-items-center justify-content-center gap-2">
-                <button class="btn border border-primary bg-white text-primary" (click)="toggleTab(3)">Back</button>
-                <button class="btn btn-primary" (click)="toggleTab(5)">Continue</button>
-              </div>
-               -->
-
-              <div class="d-flex align-items-center justify-content-center gap-2">
-                <button class="btn border border-primary bg-white text-primary" (click)="toggleTab(3)">Back</button>
-                <!-- <button class="btn btn-primary" (click)="saveChanges()">Save changes</button> -->
+                <button class="btn border border-primary bg-white text-primary" (click)="toggleTab(4)">Back</button>
                 <button class="btn btn-primary" [disabled]="isSaving" (click)="saveChanges()">
                   <span *ngIf="isSaving">
                     <i class="spinner-border spinner-border-sm me-1"></i>
@@ -929,7 +977,8 @@
             <div class="form-group my-3">
               <label for="addOnOptionProduct" class="fs-6 mb-3">Product</label>
               <input type="text" placeholder="Enter Product" id="addOnOptionProduct" class="form-control"
-                formControlName="product" [ngClass]="{'is-invalid': addOnOptionFormControls.product.errors?.required && (addOnOptionFormControls.product.touched || isOptionSubmitted)}">
+                formControlName="product"
+                [ngClass]="{'is-invalid': addOnOptionFormControls.product.errors?.required && (addOnOptionFormControls.product.touched || isOptionSubmitted)}">
             </div>
             <div class="form-group">
               <label for="addOnOptionDescription" class="fs-6 mb-3">Description</label>
@@ -938,8 +987,8 @@
             </div>
             <div class="form-group my-3">
               <label for="addOnOptionPrice" class="fs-6 mb-3">Price</label>
-              <input type="text" placeholder="Price" id="addOnOptionPrice" class="form-control"
-                formControlName="price" [ngClass]="{'is-invalid': (addOnOptionFormControls.price.errors?.required || addOnOptionFormControls.price.errors?.pattern) && (addOnOptionFormControls.price.touched || isOptionSubmitted)}">
+              <input type="text" placeholder="Price" id="addOnOptionPrice" class="form-control" formControlName="price"
+                [ngClass]="{'is-invalid': (addOnOptionFormControls.price.errors?.required || addOnOptionFormControls.price.errors?.pattern) && (addOnOptionFormControls.price.touched || isOptionSubmitted)}">
             </div>
             <div class="my-4 d-flex gap-2 align-items-center justify-content-end">
               <button class="btn btn-secondary">Cancel</button>

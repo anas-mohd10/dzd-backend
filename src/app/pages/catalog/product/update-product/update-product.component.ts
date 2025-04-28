@@ -384,7 +384,7 @@ export class UpdateProductComponent implements OnInit {
   // This function is used to cancel the add-on item
   cancelAddOnItem() {
     this.addOnForm.reset();
-    this.addOnForm.patchValue({ isRequired: false });
+    this.addOnForm.patchValue({ isRequired: false, addOnType: 'select' });
     this.manageAddOnsRef?.hide();
     this.addOnTabIndex = 0;
     this.addOnOptions = [];
@@ -412,7 +412,7 @@ export class UpdateProductComponent implements OnInit {
       return;
     }
 
-    this.addOnForm.patchValue({ addOnOptions: this.addOnOptions })
+    this.addOnForm.patchValue({ addOnOptions: this.addOnOptions, addOnType: 'select' })
 
     if (this.isEditAddOn) {
       this.addOns[this.editAddOnIndex] = this.addOnForm.value;
@@ -939,6 +939,28 @@ export class UpdateProductComponent implements OnInit {
     this.form.patchValue({ slug });
   }
 
+  generateMetaTitle() {
+    const name = this.form.get('name')?.value || '';
+    const metaTitle = `${name} - ${this.settings.name}`;
+    this.form.patchValue({ metaTitle });
+  }
+  
+  validateMetaDetails(type: 'metaTitle' | 'metaDescription') {
+    const metaDoc = this.form.get(type)?.value;
+    switch (type) {
+      case 'metaTitle':
+        if (metaDoc.length < 50 || metaDoc.length > 60) {
+           return 'It is ideal to keep the meta title between 50 and 60 characters';
+        }
+        break;
+      case 'metaDescription':
+        if (metaDoc.length < 100 || metaDoc.length > 150) {
+          return 'It is ideal to keep the meta description between 100 and 150 characters';
+        }
+        break;
+    }
+  }
+  
   ngOnInit(): void {
     this.base = environment.base;
 
@@ -972,6 +994,8 @@ export class UpdateProductComponent implements OnInit {
         if (res?.errorCode == 0) {
           this.settings = res?.result;
           this.languages = res?.result?.languages;
+
+          this.settings.domain = this.settings.domain.endsWith('/') ? this.settings.domain : `${this.settings.domain}/`;
 
           // If product details are already loaded, update the form with correct localization
           if (this.productDetails) {

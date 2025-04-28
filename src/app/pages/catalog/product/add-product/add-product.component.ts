@@ -315,7 +315,7 @@ export class AddProductComponent implements OnInit {
   // This function is used to cancel the add-on item
   cancelAddOnItem() {
     this.addOnForm.reset();
-    this.addOnForm.patchValue({ isRequired: false });
+    this.addOnForm.patchValue({ isRequired: false, addOnType: 'select' });
     this.manageAddOnsRef?.hide();
     this.addOnTabIndex = 0;
     this.addOnOptions = [];
@@ -862,6 +862,28 @@ export class AddProductComponent implements OnInit {
 
   get formControls() {
     return this.form.controls;
+  }
+
+  generateMetaTitle() {
+    const name = this.form.get('name')?.value || '';
+    const metaTitle = `${name} - ${this.settings.name}`;
+    this.form.patchValue({ metaTitle });
+  }
+  
+  validateMetaDetails(type: 'metaTitle' | 'metaDescription') {
+    const metaDoc = this.form.get(type)?.value;
+    switch (type) {
+      case 'metaTitle':
+        if (metaDoc.length < 50 || metaDoc.length > 60) {
+           return 'It is ideal to keep the meta title between 50 and 60 characters';
+        }
+        break;
+      case 'metaDescription':
+        if (metaDoc.length < 100 || metaDoc.length > 150) {
+          return 'It is ideal to keep the meta description between 100 and 150 characters';
+        }
+        break;
+    }
   }
 
   ngOnInit(): void {
