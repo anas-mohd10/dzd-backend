@@ -842,10 +842,13 @@ export class NavigationMenuComponent implements OnInit {
     });
   }
   fetchProducts() {
-    this.ProductService.getProduct().subscribe((res: any) => {
-
-      this.products = res?.result || [];
-      this.ChangeDetectorRef.detectChanges();  // Ensure change detection runs
+    this.ProductService.getProducts({}).subscribe((res: any) => {
+      this.products = (res?.result || []).map((product: any) => ({
+        ...product,
+        // Ensure slug is properly formatted if needed
+        slug: product.slug || product.name.toLowerCase().replace(/\s+/g, '-') + '-' + product.sku
+      }));
+      this.ChangeDetectorRef.detectChanges();
     });
   }
 
@@ -872,29 +875,37 @@ export class NavigationMenuComponent implements OnInit {
     this.selectedOption = '';
     this.selectedItem = '';
     this.redirectionValue = '';
-
+  
     if (savedData) {
       this.megaMenuIcon = savedData.icon;
       this.megaMenuAdvertisement = savedData.advertisement;
       this.megaMenuAdvertisementMobile = savedData.advertisementMobile;
-
+  
       this.subMenus = savedData.subMenus || [];
       this.subMenuBoxes = savedData.subMenuBoxes?.menuBoxes || [];
-
+  
       if (savedData.redirection) {
         const redirection = savedData.redirection;
-  
+    
         if (redirection.includes('/brands/')) {
           this.selectedOption = 'brands';
           this.selectedItem = redirection.split('/brands/')[1];
         }
         else if (redirection.includes('/p/')) {
-          const item = redirection.split('/p/')[1];
-          const isCategory = this.categories.some(cat => 
-            cat.slug.toLowerCase() === item.toLowerCase()
+          const itemPath = redirection.split('/p/')[1];
+          // Check if this is a product by finding exact match in products
+          const isProduct = this.products.some((p:any) => 
+            p.slug === itemPath
           );
-          this.selectedOption = isCategory ? 'categories' : 'products';
-          this.selectedItem = item;
+          
+          if (isProduct) {
+            this.selectedOption = 'products';
+            this.selectedItem = this.products.find((p:any) => p.slug === itemPath)?.name || itemPath;
+          } else {
+            // Otherwise treat as category
+            this.selectedOption = 'categories';
+            this.selectedItem = itemPath;
+          }
         }
         else if (redirection.includes('/c/')) {
           this.selectedOption = 'collections';
@@ -906,7 +917,7 @@ export class NavigationMenuComponent implements OnInit {
   
         this.redirectionValue = redirection;
       }
-
+  
       this.megaMenuForm.patchValue({
         ...savedData,
         selectedOption: this.selectedOption,
@@ -1064,7 +1075,13 @@ export class NavigationMenuComponent implements OnInit {
         break;
       case 'products':
         pathPrefix = '/p';
-        break;
+        // For products, use the full slug including SKU
+        const selectedProduct = this.products.find((p:any) => p.name === selectedValue);
+        const productSlug = selectedProduct?.slug || selectedValue.toLowerCase().replace(/\s+/g, '-');
+        const redirection = `${pathPrefix}/${productSlug}`;
+        this.megaMenuItemForm.get('redirection')?.setValue(redirection);
+        this.megaMenuItemForm.get('title')?.setValue(selectedValue);
+        return;
       case 'categories':
         pathPrefix = '/p';
         break;
