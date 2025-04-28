@@ -290,7 +290,6 @@ export class NavigationMenuComponent implements OnInit {
         pathPrefix = this.selectedOption;
     }
 
-    // For categories, use the slug directly
     // For other options, convert the name to a slug if needed
     let urlFriendlyItem = selectedItem;
     if (this.selectedOption !== 'categories') {
@@ -318,7 +317,10 @@ export class NavigationMenuComponent implements OnInit {
 
   fetchCategories() {
     this.CategoryService.getCategories({}, {}).subscribe((res: any) => {
-      this.categories = res?.result || [];
+      this.categories = (res?.result || []).map((category: any) => ({
+        ...category,
+        slug: category.slug.toLowerCase().replace(/\s+/g, '-') 
+      }));
     });
   }
 
@@ -881,18 +883,18 @@ export class NavigationMenuComponent implements OnInit {
 
       if (savedData.redirection) {
         const redirection = savedData.redirection;
-
+  
         if (redirection.includes('/brands/')) {
           this.selectedOption = 'brands';
           this.selectedItem = redirection.split('/brands/')[1];
         }
         else if (redirection.includes('/p/')) {
-          this.selectedOption = 'products';
-          this.selectedItem = redirection.split('/p/')[1];
-        }
-        else if (redirection.includes('/p/')) {
-          this.selectedOption = 'categories';
-          this.selectedItem = redirection.split('/p/')[1];
+          const item = redirection.split('/p/')[1];
+          const isCategory = this.categories.some(cat => 
+            cat.slug.toLowerCase() === item.toLowerCase()
+          );
+          this.selectedOption = isCategory ? 'categories' : 'products';
+          this.selectedItem = item;
         }
         else if (redirection.includes('/c/')) {
           this.selectedOption = 'collections';
@@ -901,7 +903,7 @@ export class NavigationMenuComponent implements OnInit {
         else if (redirection === '/store') {
           this.selectedOption = 'complete';
         }
-
+  
         this.redirectionValue = redirection;
       }
 
@@ -1074,7 +1076,7 @@ export class NavigationMenuComponent implements OnInit {
         break;
     }
   
-    const urlFriendlyValue = option === 'categories' ? selectedValue : selectedValue.toLowerCase().replace(/\s+/g, '-');
+    const urlFriendlyValue = selectedValue.toLowerCase().replace(/\s+/g, '-');
     const redirection = option === 'complete' ? pathPrefix : `${pathPrefix}/${urlFriendlyValue}`;
     
     this.megaMenuItemForm.get('redirection')?.setValue(redirection);
