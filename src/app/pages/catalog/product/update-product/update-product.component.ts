@@ -363,9 +363,53 @@ export class UpdateProductComponent implements OnInit {
   // This function is used to handle the discount method
   handleDiscountMethod() {
     if (this.addOnOptionForm.value.discountMethod == 'amount') {
+      this.addOnOptionForm.get('discountAmount')?.removeValidators([Validators.required, Validators.pattern(/^\d+(\.\d{1,2})?$/)]);
+      this.addOnOptionForm.get('discountAmount')?.updateValueAndValidity();
       this.addOnOptionForm.patchValue({ discountAmount: 0, price: this.addOnDoc?.price.selling })
     } else {
+      // Add validation for the discount amount
+      let validators = [Validators.required, Validators.pattern(/^\d+(\.\d{1,2})?$/)];
+      if (this.addOnDoc && this.addOnOptionForm.value.discountMethod == 'flat') {
+        validators.push(Validators.max(this.addOnDoc?.price?.selling));
+      }
+
+      if (this.addOnOptionForm.value.discountMethod == 'percentage') {
+        validators.push(Validators.max(100));
+      }
+
+      this.addOnOptionForm.get('discountAmount')?.setValidators(validators);
+      this.addOnOptionForm.get('discountAmount')?.updateValueAndValidity();
       this.addOnOptionForm.patchValue({ price: 0, discountAmount: 0 })
+    }
+  }
+
+  // This function is used to handle the discount amount
+  handleDiscountAmount() {
+    if (this.addOnOptionForm.value.discountMethod == 'flat') {
+      if (this.addOnDoc && this.addOnOptionForm.value.discountAmount > this.addOnDoc?.price?.selling) {
+        this.addOnOptionForm.get('discountAmount')?.setErrors({ pattern: true });
+        this.HotToastService.error('Discount amount cannot be greater than the price');
+      }
+    } else if (this.addOnOptionForm.value.discountMethod == 'percentage') {
+      if (this.addOnDoc && this.addOnOptionForm.value.discountAmount > 100) {
+        this.addOnOptionForm.get('discountAmount')?.setErrors({ pattern: true });
+        this.HotToastService.error('Discount amount cannot be greater than 100');
+      }
+    }
+  }
+
+  // This function is used to get the add-on option price
+  getAddOnOptionPrice() {
+    if (!this.addOnDoc) {
+      return 0;
+    }
+
+    if (this.addOnOptionForm.value.discountMethod == 'flat') {
+      return this.addOnDoc?.price.selling - this.addOnOptionForm.value.discountAmount;
+    }
+
+    if (this.addOnOptionForm.value.discountMethod == 'percentage') {
+      return this.addOnDoc?.price.selling - (this.addOnDoc?.price.selling * this.addOnOptionForm.value.discountAmount / 100);
     }
   }
 

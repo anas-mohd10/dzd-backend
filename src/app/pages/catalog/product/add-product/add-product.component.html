@@ -645,7 +645,7 @@
                       <input type="text" formControlName="metaTitle" class="form-control">
                     </div>
                   </div>
-                  <div *ngIf="validateMetaDetails('metaTitle')" class="mt-2 text-warning bg-warning bg-opacity-10 p-2 rounded fw-normal d-flex align-items-center gap-2">
+                  <div *ngIf="validateMetaDetails('metaTitle')" class="mt-2 text-danger bg-danger bg-opacity-10 p-2 rounded fw-normal d-flex align-items-center gap-2">
                     <div>
                       <svg height="16" width="16" data-slot="icon" fill="none" stroke-width="1.5" stroke="currentColor"
                         viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
@@ -670,7 +670,7 @@
                       <input type="text" formControlName="metaDescription" class="form-control">
                     </div>
                   </div>
-                  <div *ngIf="validateMetaDetails('metaDescription')" class="mt-2 text-warning bg-warning bg-opacity-10 p-2 rounded fw-normal d-flex align-items-center gap-2">
+                  <div *ngIf="validateMetaDetails('metaDescription')" class="mt-2 text-danger bg-danger bg-opacity-10 p-2 rounded fw-normal d-flex align-items-center gap-2">
                     <div>
                       <svg height="16" width="16" data-slot="icon" fill="none" stroke-width="1.5" stroke="currentColor"
                         viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
@@ -689,7 +689,7 @@
                 <div>
                   <p class="fs-5 mb-0">Preview</p>
                   <p class="text-muted">Exact result listings may vary based on content and search relevancy.</p>
-                  <div class="bg-secondary p-4 rounded">
+                  <div class="bg-secondary bg-opacity-50 p-4 rounded">
                     <div>{{settings.domain}}p/{{form.get('slug')?.value}}</div>
                     <div class="fs-4 fw-bold my-1">{{form.get('metaTitle')?.value}}</div>
                     <div>{{form.get('metaDescription')?.value}}</div>
@@ -967,6 +967,15 @@
               <input type="text" placeholder="Price" id="addOnOptionPrice" class="form-control" formControlName="price"
                 [ngClass]="{'is-invalid': (addOnOptionFormControls.price.errors?.required || addOnOptionFormControls.price.errors?.pattern) && (addOnOptionFormControls.price.touched || isOptionSubmitted)}">
             </div>
+            <ng-container *ngIf="['flat', 'percentage'].includes(addOnOptionForm.value.discountMethod) && addOnDoc">
+              <div class="fs-5 mb-3">
+               <span>
+                <svg height="24" width="24" data-slot="icon" fill="none" stroke-width="1.5" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="m11.25 11.25.041-.02a.75.75 0 0 1 1.063.852l-.708 2.836a.75.75 0 0 0 1.063.853l.041-.021M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9-3.75h.008v.008H12V8.25Z"></path>
+                </svg>
+               </span> Customer can purchase this add-on option for {{settings.currency}} {{getAddOnOptionPrice()}} which is {{addOnOptionForm.value.discountMethod == 'flat' ? 'a flat discount' : 'a percentage discount'}} of the current product price {{settings.currency}} {{addOnDoc.price.selling}}.
+              </div>
+            </ng-container>
             <div>
               <div class="mb-3">
                 <div class="fs-5 mb-1">Is Editable</div>
