@@ -1083,7 +1083,7 @@ export class NavigationMenuComponent implements OnInit {
         this.megaMenuItemForm.get('title')?.setValue(selectedValue);
         return;
       case 'categories':
-        pathPrefix = '/p';
+        pathPrefix = '/products';
         // For categories, use the exact slug from the category object
         const selectedCategory = this.categories.find((c:any) => c.name === selectedValue);
         const categorySlug = selectedCategory?.slug || selectedValue.toLowerCase().replace(/\s+/g, '-');
