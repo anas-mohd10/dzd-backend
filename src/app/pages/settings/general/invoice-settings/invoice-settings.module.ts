@@ -7,7 +7,7 @@ import { DataTablesModule } from 'angular-datatables';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ToastrModule } from 'ngx-toastr';
 import { WidgetsModule } from 'src/app/shared/partials/content/widgets/widgets.module';
-
+import { MonacoEditorModule } from 'ngx-monaco-editor';
 
 @NgModule({
   declarations: [
@@ -19,6 +19,7 @@ import { WidgetsModule } from 'src/app/shared/partials/content/widgets/widgets.m
     DataTablesModule,
     FormsModule,
     WidgetsModule,
+    MonacoEditorModule.forRoot(),
     ReactiveFormsModule,
     ToastrModule.forRoot({
       positionClass: 'toast-bottom-right',

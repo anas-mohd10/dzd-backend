@@ -1,6 +1,9 @@
 export const internationalisationKeys = {
     addNewAddress: 'addNewAddress',
     addToCart: 'addToCart',
+    updateCart: 'updateCart',
+    deleteFromCart: 'deleteFromCart',
+    updateAddOn: 'updateAddOn',
     amount: 'amount',
     apply: 'apply',
     applyCoupon: 'applyCoupon',
@@ -40,6 +43,7 @@ export const internationalisationKeys = {
     orderSummary: 'orderSummary',
     priceDetails: 'priceDetails',
     additionalCharge: 'additionalCharge',
+    alreadyInCart: 'alreadyInCart',
     price: 'price',
     email: 'email',
     forgotPassword: 'forgotPassword',

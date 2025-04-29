@@ -588,7 +588,14 @@ export class UpdateOrdersComponent implements OnInit {
     if (product) {
       const index = this.bulkProducts.indexOf(product);
       if (index > -1) {
+        const addOnProducts = this.order.products.filter((p: any) => p.isAddOn == true && p.productRef._id == product.productId)
         this.bulkProducts.splice(index, 1);
+        addOnProducts.forEach((addOnProduct: any) => {
+          const addOnIndex = this.bulkProducts.indexOf(addOnProduct);
+          if (addOnIndex > -1) {
+            this.bulkProducts.splice(addOnIndex, 1);
+          }
+        })
       } else {
         this.bulkProducts.push(product);
       }
@@ -602,7 +609,25 @@ export class UpdateOrdersComponent implements OnInit {
         : (this.bulkProducts = [...this.order?.products]);
     //Check the last status of the product, if cancelled then don't allow to change the status
 
+    // Push the add-on product of the parent product when the status of the parent product is changed
+    this.bulkProducts.forEach(product => {
+      if (product.isAddOn == false) {
+        const addOnProducts = this.order.products.filter((p: any) => p.isAddOn == true && p.productRef._id == product.productId)
+        // Check if the add-on product is already in the bulk products
+        addOnProducts.forEach((addOnProduct: any) => {
+          if (!this.bulkProducts.some((p: any) => p.productId == addOnProduct.productId)) {
+            this.bulkProducts.push(addOnProduct)
+          }
+        })
+      }
+    })
+
     this.bulkProducts.length > 0 ? this.toggleBulkStatus() : null;
+  }
+
+  getAddOnProducts(product: string) {
+    const addOnProducts = this.order.products.filter((p: any) => p.isAddOn == true && p.productRef._id == product)
+    return addOnProducts
   }
 
   toggleBulkStatus() {
