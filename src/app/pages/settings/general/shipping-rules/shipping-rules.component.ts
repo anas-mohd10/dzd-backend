@@ -25,7 +25,7 @@ export class ShippingRulesComponent implements OnInit {
   shippingCharges: Array<any> = [];
   shippingDetails: any;
   modalRef?: BsModalRef;
-  countries: Array<string> = ['India', 'UAE', 'Iraq'];
+  countries: Array<any> = ['India', 'UAE', 'Iraq', 'Qatar', 'Bahrain', 'KSA', 'Oman', 'Kuwait'];
   states: Array<any> = [];
   cities: Array<any> = [];
   holidays: Array<any> = [
