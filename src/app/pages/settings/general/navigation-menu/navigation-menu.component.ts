@@ -849,11 +849,13 @@ export class NavigationMenuComponent implements OnInit {
   }
   fetchProducts() {
     this.ProductService.getProducts({}).subscribe((res: any) => {
-      this.products = (res?.result || []).map((product: any) => ({
-        ...product,
-        // Ensure slug is properly formatted if needed
-        slug: product.slug || product.name.toLowerCase().replace(/\s+/g, '-') + '-' + product.sku
-      }));
+      this.products = (res?.result || [])
+        .filter((product: any) => product.isVisible !== false) // Only include products where isVisible is not false
+        .map((product: any) => ({
+          ...product,
+          // Ensure slug is properly formatted if needed
+          slug: product.slug || product.name.toLowerCase().replace(/\s+/g, '-') + '-' + product.sku
+        }));
       this.ChangeDetectorRef.detectChanges();
     });
   }
