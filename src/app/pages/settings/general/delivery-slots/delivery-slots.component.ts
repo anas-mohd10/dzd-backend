@@ -12,7 +12,8 @@ interface DeliverySlotInputs {
   from: string,
   to: string,
   refid: boolean,
-  ordersPerSlot: number
+  ordersPerSlot: number,
+  state: string
 }
 
 type CountryProps = {
