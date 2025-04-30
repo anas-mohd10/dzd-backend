@@ -90,7 +90,10 @@
   </div>
   <div class="modal-body">
     <form (ngSubmit)="updateSlotItems()">
-      <div class="row" *ngFor="let item of slotItems; let i = index">
+      <div class="row mb-3 border-bottom pb-3" *ngFor="let item of slotItems; let i = index">
+        <div class="col-lg-12">
+          <div class="fs-5 fw-bold">{{item.state}}</div>
+        </div>
         <div class="col-lg-3 mb-3 form-group">
           <label class="form-label">From</label>
           <input class="form-control" type="text" [(ngModel)]="item.from" name="from{{i}}">
