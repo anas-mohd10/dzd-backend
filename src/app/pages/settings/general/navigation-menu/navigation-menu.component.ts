@@ -622,6 +622,7 @@ export class NavigationMenuComponent implements OnInit {
     };
   
     if (this.megaMenuItemIndex != null) {
+      // Update the item with all form values, including the title
       this.subMenus[this.megaMenuItemIndex] = {
         ...menuItemData,
         childNodes: this.subMenus[this.megaMenuItemIndex]['childNodes'] || []
@@ -639,7 +640,7 @@ export class NavigationMenuComponent implements OnInit {
       selectedOption: this.megaMenuItemForm.get('selectedOption')?.value,
     });
     
-    this.showDynamicDropdown = false; // Hide dropdown after saving
+    this.showDynamicDropdown = false;
     this.isMegaMenuItemDetailsSubmitted = false;
     this.megaMenuItemIndex = null;
     this.isAddMenuItem = false;
@@ -675,8 +676,13 @@ export class NavigationMenuComponent implements OnInit {
   }
 
   getMegaMenuItem(index: number) {
-    this.megaMenuItemForm.patchValue(this.subMenus[index]);
-    this.subMenuIcon = this.subMenus[index]?.icon;
+    const item = this.subMenus[index];
+    this.megaMenuItemForm.patchValue({
+      title: item.title,
+      // selectedOption: item.selectedOption,
+      redirection: item.redirection
+    });
+    this.subMenuIcon = item?.icon;
     this.megaMenuItemIndex = index;
     this.isAddMenuItem = true;
     this.showDynamicDropdown = false;
@@ -843,11 +849,13 @@ export class NavigationMenuComponent implements OnInit {
   }
   fetchProducts() {
     this.ProductService.getProducts({}).subscribe((res: any) => {
-      this.products = (res?.result || []).map((product: any) => ({
-        ...product,
-        // Ensure slug is properly formatted if needed
-        slug: product.slug || product.name.toLowerCase().replace(/\s+/g, '-') + '-' + product.sku
-      }));
+      this.products = (res?.result || [])
+        .filter((product: any) => product.isVisible !== false) // Only include products where isVisible is not false
+        .map((product: any) => ({
+          ...product,
+          // Ensure slug is properly formatted if needed
+          slug: product.slug || product.name.toLowerCase().replace(/\s+/g, '-') + '-' + product.sku
+        }));
       this.ChangeDetectorRef.detectChanges();
     });
   }
@@ -1080,7 +1088,6 @@ export class NavigationMenuComponent implements OnInit {
         const productSlug = selectedProduct?.slug || selectedValue.toLowerCase().replace(/\s+/g, '-');
         const productRedirection = `${pathPrefix}/${productSlug}`;
         this.megaMenuItemForm.get('redirection')?.setValue(productRedirection);
-        this.megaMenuItemForm.get('title')?.setValue(selectedValue);
         return;
       case 'categories':
         pathPrefix = '/products';
@@ -1089,7 +1096,6 @@ export class NavigationMenuComponent implements OnInit {
         const categorySlug = selectedCategory?.slug || selectedValue.toLowerCase().replace(/\s+/g, '-');
         const categoryRedirection = `${pathPrefix}/${categorySlug}`;
         this.megaMenuItemForm.get('redirection')?.setValue(categoryRedirection);
-        this.megaMenuItemForm.get('title')?.setValue(selectedValue);
         return;
       case 'collections':
         pathPrefix = '/c';
@@ -1102,8 +1108,8 @@ export class NavigationMenuComponent implements OnInit {
     const urlFriendlyValue = selectedValue.toLowerCase().replace(/\s+/g, '-');
     const redirection = option === 'complete' ? pathPrefix : `${pathPrefix}/${urlFriendlyValue}`;
     
+    // Only update redirection, not title
     this.megaMenuItemForm.get('redirection')?.setValue(redirection);
-    this.megaMenuItemForm.get('title')?.setValue(selectedValue);
   }
   getItemsForSelectedOption() {
     const option = this.megaMenuItemForm.get('selectedOption')?.value;
@@ -1549,31 +1555,54 @@ export class NavigationMenuComponent implements OnInit {
       class: 'modal-dialog-centered modal-lg',
       ignoreBackdropClick: true,
     });
+    
     if (type == 'update') {
       this.isEditTitleRef = true;
       this.MenuService.getCsTitleDetails(id).subscribe({
         next: (res: any) => {
           if (res?.errorCode == 0) {
             this.titleRefDetails = res?.result;
-            this.advacnedMenuForm.patchValue(res?.result);
-            if (res?.result?.icon)
+            // Make sure to patch all form values, not just icon and thumbnail
+            this.advacnedMenuForm.patchValue({
+              title: res?.result?.title,
+              icon: res?.result?.icon?._id,
+              advertisementThumbnail: res?.result?.advertisementThumbnail?._id,
+              advertisementTitle: res?.result?.advertisementTitle,
+              advertisementButton: res?.result?.advertisementButton,
+              advertisementDescription: res?.result?.advertisementDescription,
+              advertisementRedirection: res?.result?.advertisementRedirection
+            });
+            
+            if (res?.result?.icon) {
               this.advancedMenuIcon = res?.result?.icon?.path;
-            if (res?.result?.advertisementThumbnail)
-              this.advancedAvertisementThumbnail =
-                res?.result?.advertisementThumbnail?.path;
+            }
+            if (res?.result?.advertisementThumbnail) {
+              this.advancedAvertisementThumbnail = res?.result?.advertisementThumbnail?.path;
+            }
             this.ChangeDetectorRef.markForCheck();
-          } else {
           }
         },
-        error: (err: any) => { },
+        error: (err: any) => { 
+          this.Toast.error('Failed to load title details');
+        },
       });
+    } else {
+      // Reset form for new items
+      this.isEditTitleRef = false;
+      this.advacnedMenuForm.reset();
+      this.advancedMenuIcon = '';
+      this.advancedAvertisementThumbnail = '';
     }
   }
 
   closeTitleRef() {
     this.advancedTitleRef?.hide();
     this.advacnedMenuForm.reset();
+    this.titleRefDetails = null;
     this.isEditTitleRef = false;
+    this.advancedMenuIcon = '';
+    this.advancedAvertisementThumbnail = '';
+    this.ChangeDetectorRef.markForCheck();
   }
 
   removeTitleMedia(type: string) {
