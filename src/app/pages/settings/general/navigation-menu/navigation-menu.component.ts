@@ -122,6 +122,8 @@ export class NavigationMenuComponent implements OnInit {
   footerCategories: Array<any> = [];
   activeAdvancedMenuItemIndex: any;
   headerText: FormControl = new FormControl('');
+  newHeaderText: string = '';
+  headerTexts: string[] = [];
   //Footer Details
   editorConfig: AngularEditorConfig = {
     editable: true,
@@ -943,6 +945,7 @@ export class NavigationMenuComponent implements OnInit {
     this.fetchProducts();
     this.fetchCategories();
     this.fetchCollections();
+    this.getSettings();
 
     this.loadSavedData();
 
@@ -1213,14 +1216,52 @@ export class NavigationMenuComponent implements OnInit {
       (res: any) => {
         if (res?.errorCode == 0) {
           this.menuType.setValue(res?.result?.menuType);
-          this.headerText.setValue(res?.result?.headerText);
+          
+          if (Array.isArray(res?.result?.headerText)) {
+            this.headerTexts = [...res?.result?.headerText];
+          } else if (res?.result?.headerText) {
+            this.headerTexts = [res?.result?.headerText];
+          } else {
+            this.headerTexts = [];
+          }
+          
           this.settings = res?.result;
           this.ChangeDetectorRef.markForCheck();
         }
       }
     );
   }
-
+  addHeaderText() {
+    if (this.newHeaderText.trim()) {
+      this.headerTexts.push(this.newHeaderText);
+      this.newHeaderText = '';
+    }
+  }
+  
+  removeHeaderText(index: number) {
+    this.headerTexts.splice(index, 1);
+  }
+  
+  saveTexts() {
+    this.AppSettingsService.updateSettings({
+      headerText: this.headerTexts.filter(text => text.trim())
+    }).subscribe({
+      next: (res: any) => {
+        if (res?.errorCode == 0) {
+          this.Toast.success(res?.message);
+        } else {
+          this.Toast.error(res?.message);
+        }
+      },
+      error: (err: any) => {
+        this.Toast.error(err?.error?.message);
+      },
+      complete: () => {
+        this.getSettings();
+        this.ChangeDetectorRef.markForCheck();
+      },
+    });
+  }
   addToMegaCategory(category: any) {
     if (!category?.isMegaMenu) {
       this.CategoryService.updateCategory(category?.slug, {
