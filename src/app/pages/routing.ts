@@ -52,6 +52,7 @@ import { MenuNavigationComponent } from './settings/general/menu-navigation/menu
 import { SmsTemplateService } from '../includes/services/sms-template.service';
 import { SmsTemplatesComponent } from './settings/general/sms-templates/sms-templates.component';
 import { FormSettingsComponent } from './settings/general/form-settings/form-settings.component';
+import { CurrencySettingsComponent } from './settings/general/currency-settings/currency-settings.component';
 
 export const Routing: Routes = [
   {
@@ -464,6 +465,10 @@ export const Routing: Routes = [
       }, {
         path: 'enquiries',
         component: EnquiresComponent,
+        canActivate: [AuthenticationGuard, PermissionGuard]
+      }, {
+        path: 'currency-settings',
+        component: CurrencySettingsComponent,
         canActivate: [AuthenticationGuard, PermissionGuard]
       }, {
         path: 'pickup-locations',

@@ -333,6 +333,7 @@ export const appRoutes = {
   appKeys: `${app}/app-keys`,
   toasts: `${app}/toasts`,
   formSettings: `${app}/form-settings`,
+  currencySettings: `${app}/currency-settings`,
   pickupLocations: {
     list: `${app}/pickup-locations`,
     create: `${app}/pickup-locations/add`,

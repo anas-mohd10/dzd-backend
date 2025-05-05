@@ -102,6 +102,7 @@ import { MenuNavigationComponent } from './pages/settings/general/menu-navigatio
 import { FormSettingsComponent } from './pages/settings/general/form-settings/form-settings.component';
 import { FormAddressComponent } from './pages/settings/general/form-settings/form-address/form-address.component';
 import { FormLoginComponent } from './pages/settings/general/form-settings/form-login/form-login.component';
+import { CurrencySettingsComponent } from './pages/settings/general/currency-settings/currency-settings.component';
 
 const DragConfig = {
   dragStartThreshold: 0,
@@ -177,6 +178,7 @@ const DragConfig = {
     FormSettingsComponent,
     FormAddressComponent,
     FormLoginComponent,
+    CurrencySettingsComponent,
   ],
   imports: [
     provideFirebaseApp(() => initializeApp(environment.firebaseConfig)),
