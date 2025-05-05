@@ -26,7 +26,26 @@
                     </option>
                 </select>
             </div>
-            <button class="btn btn-primary" (click)="open(template)">Add Navigation</button>
+            <button class="btn btn-primary" (click)="open(template)">
+                Add Navigation
+                <span>
+                    <svg height="18" width="18" data-slot="icon" fill="none" stroke-width="1.5" stroke="currentColor"
+                        viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"></path>
+                    </svg>
+                </span>
+            </button>
+            <button class="btn btn-secondary" (click)="openMenuNavigation(menuModal)">
+                Add Styles
+                <span>
+                    <svg height="18" width="18" data-slot="icon" fill="none" stroke-width="1.5" stroke="currentColor"
+                        viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M9.53 16.122a3 3 0 0 0-5.78 1.128 2.25 2.25 0 0 1-2.4 2.245 4.5 4.5 0 0 0 8.4-2.245c0-.399-.078-.78-.22-1.128Zm0 0a15.998 15.998 0 0 0 3.388-1.62m-5.043-.025a15.994 15.994 0 0 1 1.622-3.395m3.42 3.42a15.995 15.995 0 0 0 4.764-4.648l3.876-5.814a1.151 1.151 0 0 0-1.597-1.597L14.146 6.32a15.996 15.996 0 0 0-4.649 4.763m3.42 3.42a6.776 6.776 0 0 0-3.42-3.42">
+                        </path>
+                    </svg>
+                </span>
+            </button>
         </div>
     </div>
 
@@ -52,7 +71,8 @@
                     <div class="d-flex align-items-center justify-content-between">
                         <div>
                             <div class="fs-6 d-flex align-items-center gap-2">
-                                <img src="{{base}}{{menuNavigation.icon}}" onerror="this.src = 'assets/images/default.png'" alt="menu-icon" class="rounded"
+                                <img src="{{base}}{{menuNavigation.icon}}"
+                                    onerror="this.src = 'assets/images/default.png'" alt="menu-icon" class="rounded"
                                     style="width: 24px; height: 24px;">
                                 <div>{{menuNavigation.title}}</div>
                             </div>
@@ -126,6 +146,18 @@
                     <option *ngFor="let menuType of menuTypes" [value]="menuType.value">{{ menuType.label }}</option>
                 </select>
             </div>
+            <div class="form-group my-3 d-flex justify-content-between">
+                <label for="isImage">Menu Image type</label>
+                <app-switch id="isImage" [switchId]="'isImage'" (switchToggled)="onSwitchTriggered($event)"
+                    [isToggledProps]="form.get('isImage')?.value">
+                </app-switch>
+            </div>
+            <div class="form-group my-3" *ngIf="form.get('isImage')?.value">
+                <label for="imageColumns" class="form-label">Number of Image Columns</label>
+                <input type="number" class="form-control" formControlName="imageColumns" id="imageColumns" min="1"
+                    max="6" placeholder="Enter number of columns (1-6)">
+                <small class="text-muted">Select between 1-6 columns for image display</small>
+            </div>
             <div class="form-group my-3" *ngIf="form.value.menuType == 'brands'">
                 <label for="brands" class="form-label">Brands</label>
                 <ng-select [items]="brands" bindLabel="name" bindValue="slug" [(ngModel)]="selectedBrand"
@@ -175,7 +207,8 @@
             <div class="form-group my-3" *ngIf="form.value.menuType">
                 <div class="ratio ratio-1x1 position-relative">
                     <div class="h-100 w-100">
-                        <app-assets [previewDetails]="form.value.icon" (mediaClicked)="handleMenuIcon($event)"></app-assets>
+                        <app-assets [previewDetails]="form.value.icon"
+                            (mediaClicked)="handleMenuIcon($event)"></app-assets>
                     </div>
                     <div *ngIf="form.value.icon">
                         <button class="btn btn-danger p-2 position-absolute bottom-0 end-0"
@@ -187,6 +220,12 @@
                 <label for="redirection" class="form-label">Redirection</label>
                 <input type="text" class="form-control" formControlName="redirection" id="redirection"
                     placeholder="Enter redirection">
+            </div>
+            <div class="form-group my-3">
+                <label for="groupName" class="form-label">Add Menu Class Name</label>
+                <input type="text" class="form-control" formControlName="groupName" id="groupName"
+                    placeholder="Enter class name">
+                <small class="text-muted">Custom class names if required</small>
             </div>
         </form>
         <div class="d-flex justify-content-end mt-3 gap-2">
@@ -206,14 +245,15 @@
 </ng-template>
 
 <ng-template #nestedMenu let-items>
-    <div class="ms-4 mt-4" cdkDropList cdkDropListOrientation="vertical" (cdkDropListDropped)="dropNested($event, items)">
-        <div cdkDrag *ngFor="let item of items" class="rounded my-1  nested-list" >
-            <div >
+    <div class="ms-4 mt-4" cdkDropList cdkDropListOrientation="vertical"
+        (cdkDropListDropped)="dropNested($event, items)">
+        <div cdkDrag *ngFor="let item of items" class="rounded my-1  nested-list">
+            <div>
                 <div class="d-flex align-items-center justify-content-between p-2">
                     <div>
                         <div class="fs-6 d-flex align-items-center gap-2">
-                            <img src="{{base}}{{item.icon}}" onerror="this.src = 'assets/images/default.png'" alt="menu-icon" class="rounded"
-                                style="width: 24px; height: 24px;">
+                            <img src="{{base}}{{item.icon}}" onerror="this.src = 'assets/images/default.png'"
+                                alt="menu-icon" class="rounded" style="width: 24px; height: 24px;">
                             <div>{{item.title}}</div>
                         </div>
                     </div>
@@ -257,13 +297,41 @@
                         </div>
                     </div>
                 </div>
-    
+
                 <div class="nested-menu" *ngIf="item.isExpanded && item.menuItems?.length > 0">
                     <ng-container *ngTemplateOutlet="nestedMenu; context: { $implicit: item.menuItems }">
                     </ng-container>
                 </div>
             </div>
-          
+
         </div>
+    </div>
+</ng-template>
+
+
+<ng-template #menuModal>
+    <div class="modal-header">
+        <h4 class="fs-2 fw-bold">Navigation Menu Styles</h4>
+        <button type="button" class="btn-close" (click)="close()"></button>
+    </div>
+    <div class="modal-body">
+        <form [formGroup]="stylesForm" (ngSubmit)="onSubmit()">
+            <div class="d-flex flex-column gap-4">
+                <div class="form-group">
+                    <label for="name" class="fs-6 mb-3">Web Styles</label>
+                    <ngx-monaco-editor class="form-control" [options]="editorOptions" formControlName="web">
+                    </ngx-monaco-editor>
+                </div>
+
+                <div class="form-group">
+                    <label for="name" class="fs-6 mb-3">Mobile Styles</label>
+                    <ngx-monaco-editor class="form-control" [options]="editorOptions" formControlName="mobile">
+                    </ngx-monaco-editor>
+                </div>
+            </div>
+            <div class="d-flex justify-content-end mt-4">
+                <button class="btn btn-primary" type="submit">Save Changes</button>
+            </div>
+        </form>
     </div>
 </ng-template>

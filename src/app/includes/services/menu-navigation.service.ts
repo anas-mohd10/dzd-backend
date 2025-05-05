@@ -43,7 +43,6 @@ export class MenuNavigationService {
     return this.HttpClient.post(url, data);
   }
 
-
   copyMenuNavigations() {
     const url = this.CommonService.getFullUrl(menuNavigationEndpoints.copyMenuNavigations);
     return this.HttpClient.put(url, {});
