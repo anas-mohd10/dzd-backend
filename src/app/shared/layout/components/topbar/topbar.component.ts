@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, Input, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { Router } from '@angular/router'; // Add this import
 import { appRoutes } from 'src/app/config/routes';
 import { NotificationsService } from 'src/app/includes/services/notifications.service';
@@ -19,7 +19,6 @@ export class TopbarComponent implements OnInit {
   toolbarUserAvatarHeightClass = 'symbol-30px symbol-md-40px';
   toolbarButtonIconSizeClass = 'svg-icon-1';
   headerLeft: string = 'menu';
-  settings: any = {}
   modalRef?: BsModalRef;
 
   @ViewChild('container') container: any;
@@ -31,12 +30,12 @@ export class TopbarComponent implements OnInit {
   userData: any = this.AuthService.getCurrentUser()
   currentPage: any = this.pages[0]
   notifications: any = []
+  @Input('settings') settings: any
 
   constructor(
     private layout: LayoutService,
     private NotificationsService: NotificationsService,
     private ChangeDetectorRef: ChangeDetectorRef,
-    private AppSettingsService: AppSettingsService,
     private BsModalService: BsModalService,
     private AuthService: AuthService,
     private router: Router // Add Router to constructor
@@ -52,13 +51,6 @@ export class TopbarComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.AppSettingsService.getGeneralSettingsbyId("1").subscribe((res: any) => {
-      environment.base = res.result.baseS3Url;
-      if (res?.errorCode == 0) {
-        this.settings = res?.result
-        this.ChangeDetectorRef.markForCheck()
-      }
-    })
     this.headerLeft = this.layout.getProp('header.left') as string;
 
     this.NotificationsService.latestNotifications({ page: this.currentPage }).subscribe((res: any) => {

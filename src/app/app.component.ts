@@ -34,6 +34,7 @@ export class AppComponent implements OnInit {
   audio: HTMLAudioElement = new Audio();
 
   constructor(
+    private AppSettingsService: AppSettingsService,
     private AdminUsersService: AdminUsersService,
     private FirebaseApp: FirebaseApp,
     private HotToastService: HotToastService,
@@ -53,6 +54,17 @@ export class AppComponent implements OnInit {
     //     bFilter: false,
     //   });
     // }
+
+    this.AppSettingsService.getSettings().subscribe((res: any) => {
+      if (res?.errorCode == 0) {
+        // Update the favicon
+        const favicon = document.querySelector('link[rel="icon"]');
+        if (favicon) {
+          favicon.setAttribute('href', `${res?.result?.baseS3Url}${res?.result?.adminFavicon}`);
+        }
+        this.ChangeDetectorRef.markForCheck()
+      }
+    })
   }
 
   // Request permission for notifications
