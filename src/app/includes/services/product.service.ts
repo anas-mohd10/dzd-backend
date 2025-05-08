@@ -199,8 +199,8 @@ export class ProductService {
 
   //Product details for dashboard
   getProductDetails(productSlug: string) {
-    const url = this.commonService.getFullUrl(this.productEndpoints.getProductDetails + `/${productSlug}`);
-    return this.http.get(`${url}`);
+    const url = this.commonService.getFullUrl(this.productEndpoints.getProductDetails);
+    return this.http.post(`${url}`, { productSlug });
   }
   //Product details for dashboard
 
