@@ -868,7 +868,7 @@ productIconClicked(event: any, type: string = 'add') {
       .replace(/[^a-z0-9\s]/g, '') // Remove special characters (optional)
       .trim() // Remove any extra spaces at the start and end
       .replace(/\s+/g, '-'); // Replace spaces with '-'
-    this.form.patchValue({ slug });
+    this.form.patchValue({ slug: `${slug}-${this.productDetails?.sku}` });
   }
 
   // ngOnInit(): void {
