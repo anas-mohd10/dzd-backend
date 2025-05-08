@@ -115,6 +115,10 @@ export class AllProductsComponent implements OnInit {
     private HotToastService: HotToastService
   ) { }
 
+  getProductSlug(productId: string) {
+    return `${this.domainUrl}p/${encodeURIComponent(productId)}`
+  }
+
   openExport(template: TemplateRef<any>) {
     this.exportModalRef = this.BsModalService.show(template, {
       class: 'modal-dialog-centered modal-sm',
