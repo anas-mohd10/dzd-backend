@@ -26,6 +26,7 @@ export class MediaDetailsComponent implements OnInit {
   isSubmitted: boolean = false;
   timestamp: string
   mediaDownload: string;
+  router:any
   mediaPath: string = ''
 
   constructor(
@@ -92,7 +93,7 @@ export class MediaDetailsComponent implements OnInit {
   }
 
   saveDetails() {
-    if (!this.title.valid) {
+      if (!this.title.valid) {
       this.isSubmitted = true
       return
     }
@@ -104,6 +105,32 @@ export class MediaDetailsComponent implements OnInit {
       next: (res: any) => {
         if (res?.errorCode == 0) {
           this.Toast.success(res?.message)
+        } else {
+          this.Toast.error(res?.message)
+        }
+      }, error: (err: any) => {
+        this.Toast.error(err?.error?.message)
+      }, complete: () => {
+        this.getMediaDetails()
+        this.ChangeDetectorRef.markForCheck()
+      }
+    })
+  }
+
+  updateDetails() {    
+    if (!this.title.valid) {
+      this.isSubmitted = true
+      return
+    }
+
+    this.MediaService.updateMedia(this.mediaQuery, {
+      title: `${this.title.value}`,
+      altTitle: this.altTitle.value
+    }).subscribe({
+      next: (res: any) => {
+        if (res?.errorCode == 0) {
+          this.Toast.success(res?.message)
+          this.Router.navigateByUrl(this.appRoute.mediaLibrary)
         } else {
           this.Toast.error(res?.message)
         }
