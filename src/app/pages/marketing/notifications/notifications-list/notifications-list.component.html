@@ -1,119 +1,118 @@
 <div>
-   <div class="page-header d-flex align-items-start justify-content-between">
-      <div>
-         <div class="page-title">
-            <h1 class="fw-bold">Notifications</h1>
-         </div>
-         <ul class="breadcrumb">
-            <li class="breadcrumb-item fs-6">
-               <a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a>
-            </li>
-            <li class="breadcrumb-item active fs-6">
-               <a routerLink="{{ appRoute.notification.NOTIFICATION_LIST }}">Notifications</a>
-            </li>
-         </ul>
+  <div class="page-header d-flex align-items-start justify-content-between">
+    <div>
+      <div class="page-title">
+        <h1 class="fw-bold">Notifications</h1>
       </div>
-      <button class="btn btn-primary" routerLink="{{ appRoute.notification.ADD_NOTIFICATION }}">
-         Add notification
-      </button>
-   </div>
+      <ul class="breadcrumb">
+        <li class="breadcrumb-item fs-6">
+          <a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a>
+        </li>
+        <li class="breadcrumb-item active fs-6">
+          <a routerLink="{{ appRoute.notification.NOTIFICATION_LIST }}">Notifications</a>
+        </li>
+      </ul>
+    </div>
+    <button class="btn btn-primary" routerLink="{{ appRoute.notification.ADD_NOTIFICATION }}">
+      Add notification
+    </button>
+  </div>
 
-   <div class="my-4 card">
-      <div class="card-body">
-         <form [formGroup]="form">
-            <div class="row d-flex align-items-center justify-content-end">
-               <div class="col-lg-3">
-                  <label class="fs-6 mb-1">Type</label>
-                  <select name="type" id="type" class="form-select fs-6" formControlName="type"
-                     (change)="getNotifications()">
-                     <option value="" disabled>-- Select an option --</option>
-                     <option value="instant">Instant</option>
-                     <option value="scheduled">Scheduled</option>
-                  </select>
-               </div>
-               <div class="col-lg-3">
-                  <label class="fs-6 mb-1">Status</label>
-                  <select name="status" id="status" class="form-select fs-6" formControlName="status"
-                     (change)="getNotifications()">
-                     <option value="" disabled>-- Select an option --</option>
-                     <option value="sent">Sent</option>
-                     <option value="pending">Pending</option>
-                     <option value="rejected">Rejected</option>
-                  </select>
-               </div>
-               <div class="col-lg-3">
-                  <label class="fs-6 mb-1">Channel</label>
-                  <select name="channel" id="channel" class="form-select fs-6" formControlName="channel"
-                     (change)="getNotifications()">
-                     <option value="" disabled>-- Select an option --</option>
-                     <option value="push">Push notification</option>
-                     <option value="email">Email</option>
-                     <option value="sms">SMS</option>
-                     <option value="app">App notification</option>
-                  </select>
-               </div>
-               <div class="col-lg-3">
-                  <label class="fs-6 mb-1">&nbsp;</label>
-                  <input type="button" class="btn w-100 btn-secondary" value="Clear filters" (click)="clearFilters()">
-               </div>
+  <div class="my-4 card">
+    <div class="card-body">
+      <form [formGroup]="form">
+        <div class="row d-flex align-items-center justify-content-end">
+          <div class="col-lg-3">
+            <label class="fs-6 mb-1">Type</label>
+            <select name="type" id="type" class="form-select fs-6" formControlName="type" (change)="getNotifications()">
+              <option value="" disabled>-- Select an option --</option>
+              <option value="instant">Instant</option>
+              <option value="scheduled">Scheduled</option>
+            </select>
+          </div>
+          <div class="col-lg-3">
+            <label class="fs-6 mb-1">Status</label>
+            <select name="status" id="status" class="form-select fs-6" formControlName="status"
+              (change)="getNotifications()">
+              <option value="" disabled>-- Select an option --</option>
+              <option value="sent">Sent</option>
+              <option value="pending">Pending</option>
+              <option value="rejected">Rejected</option>
+            </select>
+          </div>
+          <div class="col-lg-3">
+            <label class="fs-6 mb-1">Channel</label>
+            <select name="channel" id="channel" class="form-select fs-6" formControlName="channel"
+              (change)="getNotifications()">
+              <option value="" disabled>-- Select an option --</option>
+              <option value="push">Push notification</option>
+              <option value="email">Email</option>
+              <option value="sms">SMS</option>
+              <!-- <option value="app">App notification</option> -->
+            </select>
+          </div>
+          <div class="col-lg-3">
+            <label class="fs-6 mb-1">&nbsp;</label>
+            <input type="button" class="btn w-100 btn-secondary" value="Clear filters" (click)="clearFilters()">
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div>
+    <table class="table table-bordered">
+      <thead>
+        <tr>
+          <th>Title</th>
+          <th>Channel</th>
+          <th>Type</th>
+          <th>Date</th>
+          <th>Status</th>
+          <th>&nbsp;</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let notification of notifications">
+          <td>{{notification?.title}}</td>
+          <td>
+            {{formatWord(notification?.channel)}}
+          </td>
+          <td>
+            {{formatWord(notification?.type)}}
+          </td>
+          <td>
+            {{formatDate(notification?.createdAt)}}
+            {{formatTime(notification?.createdAt)}}
+          </td>
+          <td>
+            {{formatWord(notification?.status)}}
+          </td>
+          <td>
+            <div class="cursor-pointer" routerLink="{{appRoute.notification.UPDATE_NOTIFICATION}}"
+              [queryParams]="{'id': notification?._id}">
+              <svg height="18" width="18" data-slot="icon" fill="none" stroke-width="1.5" stroke="currentColor"
+                viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round"
+                  d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z">
+                </path>
+                <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z">
+                </path>
+              </svg>
             </div>
-         </form>
-      </div>
-   </div>
+          </td>
+        </tr>
+        <tr *ngIf="notifications.length == 0">
+          <td colspan="6">
+            <app-no-results></app-no-results>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 
-   <div>
-      <table class="table table-bordered">
-         <thead>
-            <tr>
-               <th>Title</th>
-               <th>Channel</th>
-               <th>Type</th>
-               <th>Date</th>
-               <th>Status</th>
-               <th>&nbsp;</th>
-            </tr>
-         </thead>
-         <tbody>
-            <tr *ngFor="let notification of notifications">
-               <td>{{notification?.title}}</td>
-               <td>
-                  {{formatWord(notification?.channel)}}
-               </td>
-               <td>
-                  {{formatWord(notification?.type)}}
-               </td>
-               <td>
-                  {{formatDate(notification?.createdAt)}}
-                  {{formatTime(notification?.createdAt)}}
-               </td>
-               <td>
-                  {{formatWord(notification?.status)}}
-               </td>
-               <td>
-                  <div class="cursor-pointer" routerLink="{{appRoute.notification.UPDATE_NOTIFICATION}}"
-                     [queryParams]="{'id': notification?._id}">
-                     <svg height="18" width="18" data-slot="icon" fill="none" stroke-width="1.5" stroke="currentColor"
-                        viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                        <path stroke-linecap="round" stroke-linejoin="round"
-                           d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z">
-                        </path>
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z">
-                        </path>
-                     </svg>
-                  </div>
-               </td>
-            </tr>
-            <tr *ngIf="notifications.length == 0">
-               <td colspan="6">
-                  <app-no-results></app-no-results>
-               </td>
-            </tr>
-         </tbody>
-      </table>
-   </div>
-
-   <div class="my-4">
-      <app-pagination (pageTrigger)="onPageTriggered($event)" [totalResults]="totalResults" [totalPages]="totalPages"
-         [pageIndex]="page" [pageSize]="limit"></app-pagination>
-   </div>
+  <div class="my-4">
+    <app-pagination (pageTrigger)="onPageTriggered($event)" [totalResults]="totalResults" [totalPages]="totalPages"
+      [pageIndex]="page" [pageSize]="limit"></app-pagination>
+  </div>
 </div>
