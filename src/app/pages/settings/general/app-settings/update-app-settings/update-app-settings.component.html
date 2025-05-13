@@ -547,6 +547,24 @@
         </div>
       </div>
 
+      <div class="card my-4">
+        <div class="card-body">
+          <div class="fs-3 fw-bold mb-2">Add On Settings</div>
+          <p class="text-muted">Edit the add on settings of your store</p>
+          <div class="d-flex flex-column gap-4">
+            <div>
+              <label class="fs-6 mb-3">Enable Add On Label</label>
+              <app-switch (switchToggled)="toggleAddOnLabel($event)"
+                [isToggledProps]="form.get('isAddOnLabelEnabled')?.value"></app-switch>
+            </div>
+            <div>
+              <label class="fs-6 mb-3">Add On Label</label>
+              <input type="text" class="form-control fs-6" formControlName="addOnLabel" />
+            </div>
+          </div>
+        </div>
+      </div>
+
       <div class="card">
         <div class="card-body">
           <div class="fs-3 fw-bold mb-2">Placeholder Settings</div>

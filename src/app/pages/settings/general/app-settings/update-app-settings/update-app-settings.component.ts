@@ -274,6 +274,8 @@ export class UpdateAppSettingsComponent implements OnInit {
         this.form.get('defaultImage')?.setValue(res?.result?.defaultImage)
         this.defaultImage = res?.result?.defaultImage
         this.form.get('description')?.setValue(res?.result?.description)
+        this.form.get('addOnLabel')?.setValue(res?.result?.addOnLabel)
+        this.form.get('isAddOnLabelEnabled')?.setValue(res?.result?.isAddOnLabelEnabled)
         this.form.get('itemsPerPage')?.setValue(res?.result?.itemsPerPage)
         this.form.get('isOutOfStock')?.setValue(res?.result?.isOutOfStock)
         this.form.get('isTax')?.setValue(res?.result?.isTax)
@@ -376,6 +378,8 @@ export class UpdateAppSettingsComponent implements OnInit {
       languages: [[]],
       packingSlip: [''],
       isOutOfStock: ['false'],
+      addOnLabel:['Add On'],
+      isAddOnLabelEnabled:['false'],
       isTax: ['false'],
       isShippingTaxable: ['false'], // Add this new control
       isIndex: ['false'],
@@ -421,7 +425,9 @@ export class UpdateAppSettingsComponent implements OnInit {
     }
   }
 
-
+  toggleAddOnLabel(event: { toggleState: boolean, switchId: string }) {
+    this.form.get('isAddOnLabelEnabled')?.setValue(event.toggleState)
+  }
 
   declineDiscard() {
     this.discardModalRef?.hide()
@@ -549,6 +555,8 @@ export class UpdateAppSettingsComponent implements OnInit {
       isMultiLang: this.form.get('isMultiLang')?.value,
       languages: this.form.get('languages')?.value,
       defaultImage: this.form.get('defaultImage')?.value,
+      isAddOnLabelEnabled: this.form.get('isAddOnLabelEnabled')?.value,
+      addOnLabel: this.form.get('addOnLabel')?.value,
       name: this.form.get('name')?.value,
       domain: this.form.get('domain')?.value,
       description: this.form.get('description')?.value,
