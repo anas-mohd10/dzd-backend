@@ -41,13 +41,6 @@ interface WidgetProps {
 export class CatalogComponent implements OnInit {
   widgets: Array<WidgetProps> = [
     {
-      title: 'Classic Banners',
-      type: 'classic-banners',
-      icon: 'assets/widgets/banner.png',
-      description:
-        'This widget is used to showcase banner and carousel with only image.',
-    },
-    {
       title: 'Magestic Mosaic',
       type: 'magestic-mosaic',
       icon: 'assets/widgets/rush-lake.png',
@@ -258,12 +251,6 @@ export class CatalogComponent implements OnInit {
       description:
         'The following widget can be used to show images within a particular category.The widget contains images. <strong>Noble Nodes - 595(w) x 320(h) - 2(equal ones),390(w) x 320(h) - 1(smaller one), 800(w) x 320(h) - 1(bigger one) </strong>',
     }, {
-      title: 'Prime Plates',
-      type: 'prime-plates',
-      icon: 'assets/widgets/prime-plates.png',
-      description:
-        'The following widget can be used to show images within a particular category.The widget contains images. <strong> Prime Plates - 390(w) x 320(h) - 1(smaller one),800(w) x 320(h) - 1(bigger one) </strong>',
-    }, {
       title: 'Elite Elements',
       type: 'elite-elements',
       icon: 'assets/widgets/elite-elements.png',
@@ -310,13 +297,7 @@ export class CatalogComponent implements OnInit {
       icon: 'assets/widgets/image-slider.png',
       description:
         'The following widget can be used to show images within a particular category. The widget contains images.',
-    }, {
-      title: 'Radiant Rectangles',
-      type: 'radiant-rectangles',
-      icon: 'assets/widgets/radiant-rectangles.png',
-      description:
-        'The following widget can be used to showcase products.The widget contains an image of the product and white descriptive box.The descriptive box contains name of the product, actual price and off price and off percentage, which are center aligned with respect to the box.',
-    }, {
+    },  {
       title: 'Quad Squares',
       type: 'quad-square',
       icon: 'assets/widgets/quad-sqaure.png',
@@ -425,7 +406,11 @@ export class CatalogComponent implements OnInit {
   widgetDetails: any;
   widgetImageTypes: Array<any> = [
     'image-slider',
-    'classic-banners',
+    'radiant-rectangles',
+    'quad-square',
+    'prime-plates',
+    'elite-elements',
+    'noble-nodes',
     'magestic-mosaic',
     'glamour-glaze',
     'dazzle-design',
@@ -440,7 +425,9 @@ export class CatalogComponent implements OnInit {
     'animation-banner',
     'brick-mansory-grid',
     'primary-triple-grid',
-    'full-banner',
+    'full-banner',  
+    'modern-carousel',
+    'key-points-grid',
   ];
   widgetImages: Array<any> = [];
   sortOptions: Array<any> = [
