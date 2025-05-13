@@ -31,6 +31,7 @@ interface StoreField {
 
 interface AddOnOption {
   _id: string;
+  name: string;
   product: Product;
   description: string;
   price: number;
@@ -332,6 +333,7 @@ export class UpdateProductComponent implements OnInit {
       this.addOnTabIndex = 1;
       this.addOnDoc = product;
       this.addOnOptionForm.patchValue({
+        name: product.name,
         product: product._id,
         description: product.overview,
         price: product.price.selling,
@@ -421,6 +423,8 @@ export class UpdateProductComponent implements OnInit {
       return;
     }
 
+    console.log(this.addOnOptionForm.value);
+
     if (this.isEditAddOnOption) {
       this.addOnOptions[this.editAddOnOptionIndex] = { ...this.addOnOptionForm.value, product: this.addOnDoc };
     } else {
@@ -434,6 +438,7 @@ export class UpdateProductComponent implements OnInit {
 
   // This function is used to edit the add-on option
   editAddOnOption(index: number) {
+    console.log(this.addOnOptions[index]);
     this.addOnOptionForm.patchValue(this.addOnOptions[index]);
     this.addOnTabIndex = 1;
     this.isProductSelected = true;
@@ -1103,6 +1108,7 @@ export class UpdateProductComponent implements OnInit {
     });
 
     this.addOnOptionForm = new FormGroup({
+      name: new FormControl('', Validators.required),
       _id: new FormControl(''),
       product: new FormControl('', Validators.required),
       price: new FormControl(0, [Validators.pattern('^\\d+(\\.\\d+)?$')]),

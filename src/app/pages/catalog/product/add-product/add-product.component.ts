@@ -32,6 +32,7 @@ interface StoreField {
 
 interface AddOnOption {
   _id: string;
+  name: string;
   product: Product;
   description: string;
   price: number;
@@ -263,6 +264,7 @@ export class AddProductComponent implements OnInit {
       this.addOnTabIndex = 1;
       this.addOnDoc = product;
       this.addOnOptionForm.patchValue({
+        name: product.name,
         product: product._id,
         description: product.overview,
         price: product.price.selling,
@@ -979,6 +981,7 @@ export class AddProductComponent implements OnInit {
     this.base = environment.base;
 
     this.addOnOptionForm = new FormGroup({
+      name: new FormControl('', Validators.required),
       _id: new FormControl(''),
       product: new FormControl('', Validators.required),
       price: new FormControl(0, [Validators.pattern('^\\d+(\\.\\d+)?$')]),

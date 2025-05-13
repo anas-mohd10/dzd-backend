@@ -864,7 +864,7 @@
             <tbody>
               <tr *ngFor="let addOnOption of addOnOptions; let index = index">
                 <td>
-                  <div class="addOnOptionTitle">{{addOnOption.product.name}}</div>
+                  <div class="addOnOptionTitle">{{addOnOption.name}}</div>
                 </td>
                 <td>
                   <div>{{addOnOption.discountMethod | titlecase}}</div>
@@ -953,8 +953,9 @@
           <form [formGroup]="addOnOptionForm" (ngSubmit)="addAddOnOption()">
             <div class="form-group my-3">
               <label for="addOnOptionProduct" class="fs-6 mb-3">Product</label>
-              <input type="text" [disabled]="true" placeholder="Enter Product" id="addOnOptionProduct"
-                class="form-control" [value]="addOnDoc?.name">
+              <input type="text" placeholder="Enter Product" id="addOnOptionProduct" class="form-control"
+                formControlName="name"
+                [ngClass]="{'is-invalid': (addOnOptionFormControls.name.errors?.required) && (addOnOptionFormControls.name.touched || isOptionSubmitted)} ">
             </div>
             <div class="form-group">
               <label for="addOnOptionDescription" class="fs-6 mb-3">Description</label>
@@ -984,11 +985,16 @@
             </div>
             <ng-container *ngIf="['flat', 'percentage'].includes(addOnOptionForm.value.discountMethod) && addOnDoc">
               <div class="fs-5 mb-3">
-               <span>
-                <svg height="24" width="24" data-slot="icon" fill="none" stroke-width="1.5" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="m11.25 11.25.041-.02a.75.75 0 0 1 1.063.852l-.708 2.836a.75.75 0 0 0 1.063.853l.041-.021M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9-3.75h.008v.008H12V8.25Z"></path>
-                </svg>
-               </span> Customer can purchase this add-on option for {{settings.currency}} {{getAddOnOptionPrice()}} which is {{addOnOptionForm.value.discountMethod == 'flat' ? 'a flat discount' : 'a percentage discount'}} of the current product price {{settings.currency}} {{addOnDoc.price.selling}}.
+                <span>
+                  <svg height="24" width="24" data-slot="icon" fill="none" stroke-width="1.5" stroke="currentColor"
+                    viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                      d="m11.25 11.25.041-.02a.75.75 0 0 1 1.063.852l-.708 2.836a.75.75 0 0 0 1.063.853l.041-.021M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9-3.75h.008v.008H12V8.25Z">
+                    </path>
+                  </svg>
+                </span> Customer can purchase this add-on option for {{settings.currency}} {{getAddOnOptionPrice()}}
+                which is {{addOnOptionForm.value.discountMethod == 'flat' ? 'a flat discount' : 'a percentage
+                discount'}} of the current product price {{settings.currency}} {{addOnDoc.price.selling}}.
               </div>
             </ng-container>
             <div>
