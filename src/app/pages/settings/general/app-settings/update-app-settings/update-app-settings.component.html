@@ -547,20 +547,27 @@
         </div>
       </div>
 
-      <div class="card my-4">
+      <div class="card my-4" id="addOnSettings">
         <div class="card-body">
           <div class="fs-3 fw-bold mb-2">Add On Settings</div>
           <p class="text-muted">Edit the add on settings of your store</p>
           <div class="d-flex flex-column gap-4">
             <div>
-              <label class="fs-6 mb-3">Enable Add On Label</label>
-              <app-switch (switchToggled)="toggleAddOnLabel($event)"
-                [isToggledProps]="form.get('isAddOnLabelEnabled')?.value"></app-switch>
+              <label class="fs-5 mb-3">Enable Add On</label>
+              <app-switch (switchToggled)="toggleAddOnItems($event)"
+                [isToggledProps]="form.get('isAddOnEnabled')?.value" [switchId]="'isAddOnEnabled'"></app-switch>
             </div>
-            <div>
-              <label class="fs-6 mb-3">Add On Label</label>
-              <input type="text" class="form-control fs-6" formControlName="addOnLabel" />
-            </div>
+            <ng-container *ngIf="form.get('isAddOnEnabled')?.value == true">
+              <div>
+                <label class="fs-5 mb-3">Display Label</label>
+                <app-switch (switchToggled)="toggleAddOnItems($event)"
+                  [isToggledProps]="form.get('isAddOnLabelEnabled')?.value" [switchId]="'isAddOnLabelEnabled'"></app-switch>
+              </div>
+              <div>
+                <label class="fs-5 mb-3">Label</label>
+                <input type="text" class="form-control fs-6" formControlName="addOnLabel" />
+              </div>
+            </ng-container>
           </div>
         </div>
       </div>

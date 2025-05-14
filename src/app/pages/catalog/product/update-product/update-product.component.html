@@ -521,61 +521,72 @@
               </div>
             </tab>
             <tab heading="Add Ons">
-              <div class="d-flex justify-content-between align-items-center pb-4 border-bottom border-secondary my-8">
-                <div class="fs-4">Add-Ons</div>
-                <button class="btn btn-secondary d-flex align-items-center justify-content-center gap-2"
-                  (click)="openManageAddOns(manageAddOnsTemplate, 'add', null)">
-                  <div>Manage Add Ons</div>
-                  <div>
-                    <svg height="16" width="16" data-slot="icon" fill="none" stroke-width="1.5" stroke="currentColor"
-                      viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                      <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"></path>
-                    </svg>
-                  </div>
-                </button>
-              </div>
-              <ng-container *ngIf="addOns.length == 0">
-                <div class="fs-5 text-muted">No add-ons found</div>
+              <ng-container *ngIf="settings.isAddOnEnabled == true">
+                <div class="d-flex justify-content-between align-items-center pb-4 border-bottom border-secondary my-8">
+                  <div class="fs-4">Add-Ons</div>
+                  <button class="btn btn-secondary d-flex align-items-center justify-content-center gap-2"
+                    (click)="openManageAddOns(manageAddOnsTemplate, 'add', null)">
+                    <div>Manage Add Ons</div>
+                    <div>
+                      <svg height="16" width="16" data-slot="icon" fill="none" stroke-width="1.5" stroke="currentColor"
+                        viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"></path>
+                      </svg>
+                    </div>
+                  </button>
+                </div>
+                <ng-container *ngIf="addOns.length == 0">
+                  <div class="fs-5 text-muted">No add-ons found</div>
+                </ng-container>
+                <ng-container *ngIf="addOns.length > 0">
+                  <table class="table table-bordered">
+                    <thead>
+                      <tr>
+                        <th width="20%" class="p-2">Title</th>
+                        <th width="20%" class="p-2">Description</th>
+                        <th width="20%" class="p-2">Is Required</th>
+                        <th width="20%" class="p-2">Add-On Type</th>
+                        <th width="20%" class="p-2">&nbsp;</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr *ngFor="let addOn of addOns; let index = index">
+                        <td>
+                          <div class="addOnName">
+                            {{addOn.title}}
+                          </div>
+                        </td>
+                        <td>
+                          <div class="addOnOptionDetails">
+                            {{addOn.description}}
+                          </div>
+                        </td>
+                        <td>{{addOn.isRequired ? 'Yes' : 'No'}}</td>
+                        <td>{{addOn.addOnType | titlecase}}</td>
+                        <td>
+                          <div class="d-flex align-items-center justify-content-center gap-2">
+                            <button class="btn btn-secondary py-1 px-2 w-50"
+                              (click)="openManageAddOns(manageAddOnsTemplate, 'edit', index)">
+                              Edit
+                            </button>
+                            <button class="btn btn-danger py-1 px-2 w-50" (click)="removeAddOn(index)">
+                              Remove
+                            </button>
+                          </div>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </ng-container>
               </ng-container>
-              <ng-container *ngIf="addOns.length > 0">
-                <table class="table table-bordered">
-                  <thead>
-                    <tr>
-                      <th width="20%" class="p-2">Title</th>
-                      <th width="20%" class="p-2">Description</th>
-                      <th width="20%" class="p-2">Is Required</th>
-                      <th width="20%" class="p-2">Add-On Type</th>
-                      <th width="20%" class="p-2">&nbsp;</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr *ngFor="let addOn of addOns; let index = index">
-                      <td>
-                        <div class="addOnName">
-                          {{addOn.title}}
-                        </div>
-                      </td>
-                      <td>
-                        <div class="addOnOptionDetails">
-                          {{addOn.description}}
-                        </div>
-                      </td>
-                      <td>{{addOn.isRequired ? 'Yes' : 'No'}}</td>
-                      <td>{{addOn.addOnType | titlecase}}</td>
-                      <td>
-                        <div class="d-flex align-items-center justify-content-center gap-2">
-                          <button class="btn btn-secondary py-1 px-2 w-50"
-                            (click)="openManageAddOns(manageAddOnsTemplate, 'edit', index)">
-                            Edit
-                          </button>
-                          <button class="btn btn-danger py-1 px-2 w-50" (click)="removeAddOn(index)">
-                            Remove
-                          </button>
-                        </div>
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
+              <ng-container *ngIf="settings.isAddOnEnabled == false">
+                <div class="alert alert-warning fs-5 my-4">
+                  Add Ons are not enabled. You can
+                  <a routerLink="{{appRoute.storeSettings.STORE_SETTINGS}}" [fragment]="'addOnSettings'"
+                    class="text-primary">
+                    Enable Add Ons here
+                  </a>
+                </div>
               </ng-container>
             </tab>
             <tab heading="SEO Details">

@@ -229,6 +229,16 @@ export class UpdateAppSettingsComponent implements OnInit {
     this.primary = '#00BDAB'
     this.secondary = '#aaaaaa'
     this.form.get('primary')?.setValue('#00BDAB')
+
+    // Add scroll handling for #addOnSettings
+    if (window.location.hash === '#addOnSettings') {
+      setTimeout(() => {
+        const addOnSettingsElement = document.getElementById('addOnSettings');
+        if (addOnSettingsElement) {
+          addOnSettingsElement.scrollIntoView({ behavior: 'smooth' });
+        }
+      }, 500); // Delay to ensure content is loaded
+    }
   }
 
   get formControls() {
@@ -276,6 +286,7 @@ export class UpdateAppSettingsComponent implements OnInit {
         this.form.get('description')?.setValue(res?.result?.description)
         this.form.get('addOnLabel')?.setValue(res?.result?.addOnLabel)
         this.form.get('isAddOnLabelEnabled')?.setValue(res?.result?.isAddOnLabelEnabled)
+        this.form.get('isAddOnEnabled')?.setValue(res?.result?.isAddOnEnabled)
         this.form.get('itemsPerPage')?.setValue(res?.result?.itemsPerPage)
         this.form.get('isOutOfStock')?.setValue(res?.result?.isOutOfStock)
         this.form.get('isTax')?.setValue(res?.result?.isTax)
@@ -380,6 +391,7 @@ export class UpdateAppSettingsComponent implements OnInit {
       isOutOfStock: ['false'],
       addOnLabel:['Add On'],
       isAddOnLabelEnabled:['false'],
+      isAddOnEnabled: ['false'],
       isTax: ['false'],
       isShippingTaxable: ['false'], // Add this new control
       isIndex: ['false'],
@@ -425,8 +437,8 @@ export class UpdateAppSettingsComponent implements OnInit {
     }
   }
 
-  toggleAddOnLabel(event: { toggleState: boolean, switchId: string }) {
-    this.form.get('isAddOnLabelEnabled')?.setValue(event.toggleState)
+  toggleAddOnItems(event: { toggleState: boolean, switchId: string }) {
+    this.form.get(event.switchId)?.setValue(event.toggleState)
   }
 
   declineDiscard() {
@@ -557,6 +569,7 @@ export class UpdateAppSettingsComponent implements OnInit {
       defaultImage: this.form.get('defaultImage')?.value,
       isAddOnLabelEnabled: this.form.get('isAddOnLabelEnabled')?.value,
       addOnLabel: this.form.get('addOnLabel')?.value,
+      isAddOnEnabled: this.form.get('isAddOnEnabled')?.value,
       name: this.form.get('name')?.value,
       domain: this.form.get('domain')?.value,
       description: this.form.get('description')?.value,
