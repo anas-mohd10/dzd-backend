@@ -1,0 +1,47 @@
+<div class="card">
+    <div class="card-body">
+        <div class="pb-2 mb-4 border-bottom border-secondary">
+            <div class="fs-2 fw-bold">New Orders</div>
+            <div class="text-muted fs-5">View all new orders</div>
+        </div>
+        <table class="table table-bordered">
+            <thead>
+                <th class="p-2">Order ID</th>
+                <th class="p-2">Customer</th>
+                <th class="p-2">Date</th>
+                <th class="p-2">Total</th>
+                <th class="p-2">Source</th>
+                <th class="p-2">Payment</th>
+                <th class="p-2">Status</th>
+                <th class="p-2">&nbsp;</th>
+            </thead>
+            <tbody>
+                <tr *ngFor="let order of newOrders">
+                    <td class="p-2">{{order.orderNo}}</td>
+                    <td class="p-2">{{order.customerDetails.name}}</td>
+                    <td class="p-2">{{formatDate(order.createdAt)}}</td>
+                    <td class="p-2">{{order.orderTotal}}</td>
+                    <td class="p-2">{{order.source}}</td>
+                    <td class="p-2">{{order.paymentMethod == 'COD' ? 'Cash' : order.paymentMethod | titlecase}}</td>
+                    <td class="p-2">
+                        <span class="badge fs-6 fw-normal" [ngClass]="order.paymentStatus == 'PAID' ? 'bg-success' : 'bg-danger'">
+                            {{order.paymentStatus | titlecase}}
+                        </span>
+                    </td>
+                    <td class="p-2">
+                        <button routerLink="{{appRoutes.orders.UPDATE_ORDER_LIST}}" [queryParams]="{order: order._id}"
+                            class="w-100 btn btn-secondary px-3 py-1">
+                            View Order
+                            <i class="bi bi-arrow-right"></i>
+                        </button>
+                    </td>
+                </tr>
+                <tr *ngIf="newOrders.length == 0">
+                    <td colspan="8">
+                        No orders found
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

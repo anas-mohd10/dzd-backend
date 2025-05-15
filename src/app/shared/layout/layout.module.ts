@@ -13,12 +13,10 @@ import { Routing } from '../../pages/routing';
 import { AsideComponent } from './components/aside/aside.component';
 import { HeaderComponent } from './components/header/header.component';
 import { ContentComponent } from './components/content/content.component';
-import { ScriptsInitComponent } from './components/scripts-init/scripts-init.component';
 import { AsideMenuComponent } from './components/aside/aside-menu/aside-menu.component';
 import { TopbarComponent } from './components/topbar/topbar.component';
-import { PageTitleComponent } from './components/header/page-title/page-title.component';
 import { HeaderMenuComponent } from './components/header/header-menu/header-menu.component';
-import { DrawersModule, DropdownMenusModule, ModalsModule, EngagesModule } from '../partials';
+import { DrawersModule, ModalsModule, EngagesModule } from '../partials';
 import { EngagesComponent } from "../partials/layout/engages/engages.component";
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
@@ -34,10 +32,8 @@ const routes: Routes = [
     AsideComponent,
     HeaderComponent,
     ContentComponent,
-    ScriptsInitComponent,
     AsideMenuComponent,
     TopbarComponent,
-    PageTitleComponent,
     HeaderMenuComponent,
     EngagesComponent,
   ],
@@ -51,7 +47,6 @@ const routes: Routes = [
     ModalsModule,
     DrawersModule,
     EngagesModule,
-    DropdownMenusModule,
     BsDropdownModule,
     NgbTooltipModule,
     RouterModule,
@@ -64,10 +59,8 @@ const routes: Routes = [
     AsideComponent,
     HeaderComponent,
     ContentComponent,
-    ScriptsInitComponent,
     AsideMenuComponent,
     TopbarComponent,
-    PageTitleComponent,
     HeaderMenuComponent,
     EngagesComponent,
   ],

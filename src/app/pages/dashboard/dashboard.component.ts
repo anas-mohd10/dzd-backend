@@ -8,6 +8,7 @@ import { appRoutes } from 'src/app/config/routes';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { Router } from '@angular/router';
 import { HotToastService } from '@ngneat/hot-toast';
+import { OrdersService } from 'src/app/includes/services/orders.service';
 
 export type ChartOptions = {
   series: ApexAxisChartSeries;
@@ -88,9 +89,11 @@ export class DashboardComponent implements OnInit {
     { title: 'Create blogs', description: 'Create new blogs for your customers', redirection: appRoutes.blogs.create },
     { title: 'View blogs', description: 'View all blogs in your stores', redirection: appRoutes.blogs.list },
   ]
+  newOrders: Array<any> = []
   searchResults: Array<any> = []
-
+  monthlyRevenues: Array<any> = []
   constructor(
+    private OrdersService: OrdersService,
     private DashboardService: DashboardService,
     private ChangeDetectorRef: ChangeDetectorRef,
     private AuthService: AuthService,
@@ -100,10 +103,22 @@ export class DashboardComponent implements OnInit {
     private Router: Router
   ) { }
 
-  ngOnInit(): void {
-    let adminDetails = localStorage.getItem('UserData') || '{}'
-    this.email = JSON.parse(adminDetails)?.email
+  fetchOrders() {
+    this.DashboardService.getNewOrders().subscribe({
+      next: (res: any) => {
+        if (res && res.errorCode == 0) {
+          this.newOrders = res?.result
+          this.ChangeDetectorRef.markForCheck()
+        } else {
+          this.HotToastService.error(res?.message)
+        }
+      }, error: (err: any) => {
+        this.HotToastService.error(err?.message)
+      }
+    })
+  }
 
+  fetchStoreTips() {
     this.DashboardService.storeTips().subscribe({
       next: (res: any) => {
         if (res?.errorCode == 0) {
@@ -111,25 +126,9 @@ export class DashboardComponent implements OnInit {
         }
       }
     })
+  }
 
-
-    const today = new Date();
-    const sevenDaysFromToday = new Date();
-    sevenDaysFromToday.setDate(sevenDaysFromToday.getDate() - 6);
-
-    this.startDate.setValue(sevenDaysFromToday.toISOString().split('T')[0])
-    this.endDate.setValue(today.toISOString().split('T')[0])
-
-    this.userData = this.AuthService.getCurrentUser();
-
-    this.AppSettingsService.getGeneralSettingsbyId('1').subscribe((res: any) => {
-      if (res?.errorCode == 0) {
-        localStorage.setItem('primaryLanguage', res?.result?.primaryLang)
-        this.settings = res?.result
-      }
-    })
-
-    // Top Selling Products
+  fetchTopSellingProducts() {
     this.DashboardService.getTopSellingProducts().subscribe({
       next: (res: any) => {
         if (res?.errorCode == 0) {
@@ -142,14 +141,18 @@ export class DashboardComponent implements OnInit {
         this.HotToastService.error(err?.message)
       }
     })
+  }
 
-    this.DashboardService.getDashboard({}).subscribe((res: any) => {
+  fetchSettings() {
+    this.AppSettingsService.getGeneralSettingsbyId('1').subscribe((res: any) => {
       if (res?.errorCode == 0) {
-        this.data = res?.result
-        this.ChangeDetectorRef.markForCheck()
+        localStorage.setItem('primaryLanguage', res?.result?.primaryLang)
+        this.settings = res?.result
       }
     })
+  }
 
+  fetchMonthlyRevenue() {
     this.DashboardService.getMonthlyRevenue({}).subscribe((res: any) => {
       if (res?.errorCode == 0) {
         this.monthlyRevenue = res?.result?.monthlyResults
@@ -170,9 +173,24 @@ export class DashboardComponent implements OnInit {
         this.ChangeDetectorRef.markForCheck()
       }
     })
+  }
 
-    this.getDailyRevenues()
+  fetchQuaterlyRevenue(event: number) {
+    this.DashboardService.getMonthlyRevenue({ type: event }).subscribe({
+      next: (res: any) => {
+        if (res && res.errorCode == 0) {
+          this.monthlyRevenues = res.result?.monthlyResults
+          this.ChangeDetectorRef.markForCheck()
+        } else {
+          this.HotToastService.error(res?.message)
+        }
+      }, error: (err: any) => {
+        this.HotToastService.error(err?.message)
+      }
+    })
+  }
 
+  fetchSourceDetails() {
     this.DashboardService.sourceDetails({}).subscribe({
       next: (res: any) => {
         if (res?.errorCode == 0) {
@@ -198,16 +216,14 @@ export class DashboardComponent implements OnInit {
           this.barChartOptions = {
             series: [{ name: "Revenue", data: revenues }],
             chart: { type: "bar", height: 200, fontFamily: 'Sen, sans-serif', fontSize: 14 },
-            plotOptions: { bar: { horizontal: true, borderRadius: 5 } },
+            plotOptions: { bar: { vertical: true, borderRadius: 0 } },
             dataLabels: { enabled: false },
             xaxis: {
               categories: labels,
-              labels: { style: { fontSize: 12 } },
+              labels: { style: { fontSize: 13 } },
             },
             yaxis: {
-              labels: {
-                style: { fontSize: '14px' },
-              },
+              labels: { style: { fontSize: 13 } },
             },
           }
 
@@ -219,6 +235,39 @@ export class DashboardComponent implements OnInit {
         this.HotToastService.error(err?.message)
       }
     })
+  }
+
+  fetchDashboard() {
+    this.DashboardService.getDashboard({}).subscribe((res: any) => {
+      if (res?.errorCode == 0) {
+        this.data = res?.result
+        this.ChangeDetectorRef.markForCheck()
+      }
+    })
+  }
+
+  ngOnInit(): void {
+    let adminDetails = localStorage.getItem('UserData') || '{}'
+    this.email = JSON.parse(adminDetails)?.email
+    const today = new Date();
+    const sevenDaysFromToday = new Date();
+    sevenDaysFromToday.setDate(sevenDaysFromToday.getDate() - 6);
+    this.startDate.setValue(sevenDaysFromToday.toISOString().split('T')[0])
+    this.endDate.setValue(today.toISOString().split('T')[0])
+    this.userData = this.AuthService.getCurrentUser();
+
+    // Do an Promise.all to fetch all data
+    Promise.all([
+      this.fetchOrders(),
+      this.fetchStoreTips(),
+      this.fetchQuaterlyRevenue(3),
+      this.fetchTopSellingProducts(),
+      this.fetchSettings(),
+      this.fetchMonthlyRevenue(),
+      this.fetchSourceDetails(),
+      this.fetchDashboard(),
+      this.getDailyRevenues(),
+    ])
   }
 
   queryStringToObject(query: string): { [key: string]: string } {
