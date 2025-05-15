@@ -518,4 +518,24 @@ export class AllProductsComponent implements OnInit {
         }
       );
   }
+
+  downloadAddOnSampleFile() {
+    this.isDownloading = true;
+    const filePath: string = `/admin/assets/files/addOnProducts.csv`
+    this.HttpClient
+      .get(filePath, { responseType: 'blob' })
+      .subscribe((response: Blob) => {
+        const url = window.URL.createObjectURL(response);
+        const link = document.createElement('a');
+        link.href = url;
+        const filename = filePath.split('/').pop() || 'download.csv';
+        link.setAttribute('download', filename);
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        window.URL.revokeObjectURL(url);
+      }, error => {
+        console.error('Download failed:', error);
+      });
+  }
 }
