@@ -1,10 +1,8 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
-import { NotificationsService } from './includes/services/notifications.service';
 import { getMessaging, getToken, onMessage } from '@angular/fire/messaging';
 import { environment } from 'src/environments/environment';
 import { AdminUsersService } from './includes/services/admin.users.service';
 import { FirebaseApp } from '@angular/fire/app';
-import { ToastrService } from 'ngx-toastr';
 import { HotToastService } from '@ngneat/hot-toast';
 import { AppSettingsService } from './includes/services/app.settings.service';
 
@@ -49,15 +47,8 @@ export class AppComponent implements OnInit {
     this.requestPermission();
     this.listen()
 
-    // if ($(".datatable").length > 0) {
-    //   $(".datatable").DataTable({
-    //     bFilter: false,
-    //   });
-    // }
-
     this.AppSettingsService.getSettings().subscribe((res: any) => {
       if (res?.errorCode == 0) {
-        // Update the favicon
         const favicon = document.querySelector('link[rel="icon"]');
         if (favicon) {
           favicon.setAttribute('href', `${res?.result?.baseS3Url}${res?.result?.adminFavicon}`);

@@ -2,29 +2,23 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { InlineSVGModule } from 'ng-inline-svg';
 import { RouterModule, Routes } from '@angular/router';
-import {
-  NgbDropdownModule,
-  NgbProgressbarModule,
-  NgbTooltipModule,
-} from '@ng-bootstrap/ng-bootstrap';
+import { NgbDropdownModule, NgbProgressbarModule, NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 import { LayoutComponent } from './layout.component';
-import { ExtrasModule } from '../partials/layout/extras/extras.module';
 import { Routing } from '../../pages/routing';
 import { AsideComponent } from './components/aside/aside.component';
 import { HeaderComponent } from './components/header/header.component';
 import { ContentComponent } from './components/content/content.component';
+import { ScriptsInitComponent } from './components/scripts-init/scripts-init.component';
 import { AsideMenuComponent } from './components/aside/aside-menu/aside-menu.component';
 import { TopbarComponent } from './components/topbar/topbar.component';
-import { HeaderMenuComponent } from './components/header/header-menu/header-menu.component';
-import { DrawersModule, ModalsModule, EngagesModule } from '../partials';
-import { EngagesComponent } from "../partials/layout/engages/engages.component";
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 
-const routes: Routes = [
-  { path: '', component: LayoutComponent, children: Routing },
-];
+const routes: Routes = [{
+  path: '',
+  component: LayoutComponent,
+  children: Routing
+}];
 
 @NgModule({
   declarations: [
@@ -32,10 +26,9 @@ const routes: Routes = [
     AsideComponent,
     HeaderComponent,
     ContentComponent,
+    ScriptsInitComponent,
     AsideMenuComponent,
     TopbarComponent,
-    HeaderMenuComponent,
-    EngagesComponent,
   ],
   imports: [
     CommonModule,
@@ -43,10 +36,6 @@ const routes: Routes = [
     InlineSVGModule,
     NgbDropdownModule,
     NgbProgressbarModule,
-    ExtrasModule,
-    ModalsModule,
-    DrawersModule,
-    EngagesModule,
     BsDropdownModule,
     NgbTooltipModule,
     RouterModule,
@@ -59,10 +48,9 @@ const routes: Routes = [
     AsideComponent,
     HeaderComponent,
     ContentComponent,
+    ScriptsInitComponent,
     AsideMenuComponent,
     TopbarComponent,
-    HeaderMenuComponent,
-    EngagesComponent,
   ],
 })
 
