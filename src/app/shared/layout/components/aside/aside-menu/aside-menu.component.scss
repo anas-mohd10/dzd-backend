@@ -7,7 +7,7 @@
   font-weight: normal !important;
 }
 
-.logout-btn{
+.logout-btn {
   width: 100%;
 }
 
@@ -17,6 +17,20 @@
 
     .menu-title {
       font-size: 15px !important;
+    }
+  }
+}
+
+.menu-sub-accordion {
+  .menu-item {
+    .menu-link {
+      padding-left: 32px !important;
+    }
+
+    .menu-sub {
+      .menu-link {
+        padding-left: 40px !important;
+      }
     }
   }
 }

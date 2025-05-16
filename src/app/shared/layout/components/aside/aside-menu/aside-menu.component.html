@@ -8,7 +8,6 @@
         <path d="M15 14C12.79 15.333 9.208 15.333 7 14" stroke="#8B909A" stroke-width="1.75" stroke-linecap="round"
           stroke-linejoin="round" />
       </svg>
-
     </span>
     <span class="menu-title fw-bold">Dashboard</span>
   </a>
@@ -123,7 +122,6 @@
       </a>
     </div>
 
-
     <div class="menu-item">
       <a class="menu-link without-sub" routerLinkActive="active" routerLink="{{ appRoute.wishlist.LIST }}">
         <span class="menu-bullet">
@@ -165,19 +163,6 @@
     <span class="menu-title fw-bold">Returns</span>
   </a>
 </div>
-
-<!-- <div class="menu-item">
-  <a class="menu-link without-sub" routerLink="{{ appRoute.replaceRequests }}" routerLinkActive="active">
-    <span class="menu-icon">
-      <svg width="16" height="16" data-slot="icon" fill="none" stroke-width="1.5" stroke="currentColor"
-        viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-        <path stroke-linecap="round" stroke-linejoin="round"
-          d="M7.5 21 3 16.5m0 0L7.5 12M3 16.5h13.5m0-13.5L21 7.5m0 0L16.5 12M21 7.5H7.5"></path>
-      </svg>
-    </span>
-    <span class="menu-title fw-bold">Replace Requests</span>
-  </a>
-</div> -->
 
 <div class="menu-item menu-accordion" data-kt-menu-trigger="click" routerLinkActive="here show">
   <span class="menu-link">
@@ -588,7 +573,7 @@
     <div class="menu-item menu-accordion" routerLinkActive="here show" data-kt-menu-trigger="click">
       <span class="menu-link">
         <span class="menu-bullet">
-          <span class="bullet bullet-dot"></span>
+          <i class="bi bi-sliders"></i>
         </span>
         <span class="menu-title" data-link="/crafted/pages/profile">General</span>
         <span class="menu-arrow"></span>
@@ -936,7 +921,12 @@
     <div class="menu-item menu-accordion" routerLinkActive="here show" data-kt-menu-trigger="click">
       <span class="menu-link">
         <span class="menu-bullet">
-          <span class="bullet bullet-dot"></span>
+          <svg height="16" width="16" data-slot="icon" fill="none" stroke-width="1.5" stroke="currentColor"
+            viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round"
+              d="M15.75 15.75V18m-7.5-6.75h.008v.008H8.25v-.008Zm0 2.25h.008v.008H8.25V13.5Zm0 2.25h.008v.008H8.25v-.008Zm0 2.25h.008v.008H8.25V18Zm2.498-6.75h.007v.008h-.007v-.008Zm0 2.25h.007v.008h-.007V13.5Zm0 2.25h.007v.008h-.007v-.008Zm0 2.25h.007v.008h-.007V18Zm2.504-6.75h.008v.008h-.008v-.008Zm0 2.25h.008v.008h-.008V13.5Zm0 2.25h.008v.008h-.008v-.008Zm0 2.25h.008v.008h-.008V18Zm2.498-6.75h.008v.008h-.008v-.008Zm0 2.25h.008v.008h-.008V13.5ZM8.25 6h7.5v2.25h-7.5V6ZM12 2.25c-1.892 0-3.758.11-5.593.322C5.307 2.7 4.5 3.65 4.5 4.757V19.5a2.25 2.25 0 0 0 2.25 2.25h10.5a2.25 2.25 0 0 0 2.25-2.25V4.757c0-1.108-.806-2.057-1.907-2.185A48.507 48.507 0 0 0 12 2.25Z">
+            </path>
+          </svg>
         </span>
         <span class="menu-title" data-link="/crafted/pages/profile">Tax</span>
         <span class="menu-arrow"></span>

@@ -1,13 +1,33 @@
-.btn-primary {
-   font-weight: 400 !important;
+.btn,
+label {
+  font-weight: 400 !important;
 }
 
-.bg-white {
-   background: #ffffff;
-}
+//Table designs
+.table {
+  background: #ffffff;
+  font-size: 15px;
 
-.grid{
-   display: grid;
-   grid-template-columns: repeat(4, 1fr);
-   gap: .5rem;
+  tbody {
+
+    tr {
+
+      td {
+        vertical-align: middle;
+      }
+    }
+  }
+
+  thead {
+
+    tr {
+
+      th {
+        font-weight: 400 !important;
+      }
+    }
+
+    background: #E4E7F4;
+  }
 }
+//Table designs
