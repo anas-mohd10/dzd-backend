@@ -236,15 +236,15 @@
     </div>
   </div>
 
-  <div class="col-xl-4">
+  <div class="col-xl-4 p-4 bg-white">
     <div class="fs-4 fw-bold mb-lg-5 info_head">Top Selling Products</div>
-    <div class="selling_box">
+    <div>
       <ng-container *ngFor="let product of products">
         <div
           class="border border-secondary rounded my-1 p-2 d-flex align-items-center justify-content-between cursor-pointer"
           routerLink="{{appRoutes.product.UPDATE_PRODUCT}}" [queryParams]="{'product': product?.slug}">
           <div class="w-25 text-center">
-            <img height="60" width="60" src="{{product?.thumbnail}}" class="rounded border border-secondary"
+            <img height="48" width="60" src="{{product?.thumbnail}}" class="rounded border border-secondary"
               onerror="this.src = 'assets/images/default.png'" alt="Product" />
           </div>
           <div class="d-flex align-items-center justify-content-between w-75">
