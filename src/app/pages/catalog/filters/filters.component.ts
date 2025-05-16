@@ -16,6 +16,7 @@ export class FiltersComponent implements OnInit {
   form: FormGroup = new FormGroup({})
   isShowHidden: FormControl = new FormControl(false)
   settingsForm: FormGroup = new FormGroup({})
+  searchFilterMode: number = 1;
 
   constructor(
     private ProductService: ProductService,
@@ -41,6 +42,7 @@ export class FiltersComponent implements OnInit {
       isRatingFilter: new FormControl(false),
       isOriginFilter: new FormControl(false),
       isDiscountFilter: new FormControl(false),
+      searchFilterMode: new FormControl(1)
     })
   }
 
@@ -91,11 +93,19 @@ export class FiltersComponent implements OnInit {
       next: (res: any) => {
         if (res.errorCode == 0) {
           this.settingsForm.patchValue(res.result)
+          // Set the searchFilterMode from settings
+          this.searchFilterMode = res.result.searchFilterMode || 1;
         } else { }
       }, error: (err: any) => {
         this.HotToastService.error(err.error.message)
       }
     })
+  }
+
+  // Add new method to handle search filter mode changes
+  onSearchFilterModeChange() {
+    this.settingsForm.get('searchFilterMode')?.setValue(this.searchFilterMode);
+    this.onSubmitSettings();
   }
 
   toggleHidden(storeFrontField: { isFilter: boolean, title: string, isShowHidden: boolean }) {
