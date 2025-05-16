@@ -12,24 +12,19 @@ export class NewOrdersComponent implements OnInit {
 
   constructor() { }
 
-  formatDate(date: string){
-    return `${
-      new Date(date).toLocaleDateString('en-US', {
-        year: 'numeric',
-        month: 'short',
-        day: 'numeric'
-      })
-    } ${
-      new Date(date).toLocaleTimeString('en-US', {
+  formatDate(date: string) {
+    return `${new Date(date).toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'short',
+      day: 'numeric'
+    })
+      } ${new Date(date).toLocaleTimeString('en-US', {
         hour: '2-digit',
         minute: '2-digit',
         second: '2-digit'
       })
-    }`
+      }`
   }
 
-  ngOnInit(): void {
-    console.log(this.newOrders)
-  }
-
+  ngOnInit(): void { }
 }

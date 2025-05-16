@@ -260,7 +260,7 @@ export class DashboardComponent implements OnInit {
     Promise.all([
       this.fetchOrders(),
       this.fetchStoreTips(),
-      this.fetchQuaterlyRevenue(3),
+      this.fetchQuaterlyRevenue(6),
       this.fetchTopSellingProducts(),
       this.fetchSettings(),
       this.fetchMonthlyRevenue(),
