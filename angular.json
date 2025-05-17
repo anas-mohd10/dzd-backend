@@ -28,7 +28,8 @@
               "object-path",
               "apexcharts",
               "clipboard.js",
-              "prismjs"
+              "prismjs",
+              "i18n-iso-countries"
             ],
             "index": "src/index.html",
             "main": "src/main.ts",

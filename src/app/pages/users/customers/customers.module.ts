@@ -7,7 +7,6 @@ import { AddCustomersComponent } from './add-customers/add-customers.component';
 import { UpdateCustomersComponent } from './update-customers/update-customers.component';
 import { DataTablesModule } from 'angular-datatables';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { WidgetsModule } from 'src/app/shared/partials';
 import { AlertModule } from 'ngx-bootstrap/alert';
 import { ReferralHistoryComponent } from './referral-history/referral-history.component';
 import { SharedModule } from '../../shared/shared.module';
@@ -33,7 +32,6 @@ import { TooltipModule } from 'ngx-bootstrap/tooltip';
     ReactiveFormsModule,
     SharedModule,
     AlertModule,
-    WidgetsModule,
   ]
 })
 export class CustomersModule { }

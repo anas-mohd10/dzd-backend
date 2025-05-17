@@ -1,12 +1,14 @@
 <div class="card-body">
     <div class="d-flex justify-content-between align-items-center">
         <div>
-            <div class="fs-3 daysRevenue text-primary"> {{totalRevenue}} </div>
-            <p><span class="text-primary"> {{month}}</span> sales </p>
+            <div class="fs-2 fw-bold text-primary"> {{totalRevenue}} </div>
+            <div class="fs-5 mt-1">
+                <span class="text-primary"> {{month}}</span> 
+                Sales
+            </div>
         </div>
         <div class="form-group">
-            <label for="month" class="form-label m-0">Month</label>
-            <select name="month" id="month" class="form-select p-1 fs-6" [formControl]="filterMonth"
+            <select id="month" class="form-select" [formControl]="filterMonth"
                 (change)="getDetails()">
                 <option value="" disabled>-- Select an option --</option>
                 <option *ngFor="let month of months" value="{{month?.key}}">{{month?.value}}</option>
