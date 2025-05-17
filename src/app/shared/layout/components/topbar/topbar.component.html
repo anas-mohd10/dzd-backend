@@ -1,6 +1,6 @@
 <div class="d-flex align-items-center" [ngClass]="toolbarButtonMarginClass" id="kt_header_user_menu_toggle">
 
-  <div class="me-2">
+  <div class="me-2 d-none d-lg-block">
     <a class="btn btn-primary d-flex align-items-center justify-content-center" routerLink="{{appRoutes.designs.home}}">
       <svg height="18px" width="18px" data-slot="icon" fill="none" stroke-width="1.5" stroke="currentColor"
         viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
@@ -85,15 +85,6 @@
       </li>
     </ul>
   </div>
-
-  <ng-container *ngIf="headerLeft === 'menu'">
-    <div class="d-flex align-items-center d-lg-none ms-2 me-n3" title="Show header menu">
-      <div class="btn btn-icon btn-active-light-primary w-30px h-30px w-md-40px h-md-40px"
-        id="kt_header_menu_mobile_toggle">
-        <span [inlineSVG]="'./assets/media/icons/duotune/text/txt001.svg'" class="svg-icon svg-icon-1"></span>
-      </div>
-    </div>
-  </ng-container>
 </div>
 
 <ng-template #logoutModal>

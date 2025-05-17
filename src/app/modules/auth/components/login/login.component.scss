@@ -1,73 +1,3 @@
-.loginContainer {
-  height: 100vh;
-  width: 100%;
-  padding: 5%;
-  gap: 124px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  .loginLeft {
-    // flex: 1;
-
-    .login_img {
-      img {
-        @media (min-width: 1199.98px) {
-          height: 437px;
-          width: 100%;
-          object-fit: cover;
-        }
-        @media (max-width: 1199.98px) {
-          max-width: 400px;
-          width: 100%;
-        }
-      }
-    }
-
-    .loginLeftTitle {
-      font-size: 3.5rem;
-      font-weight: 800;
-    }
-
-    .loginLeftSubTitle {
-      font-size: 1.2rem;
-      font-weight: 700;
-    }
-  }
-
-  .loginRight {
-    max-width: 490px;
-    width: 100%;
-    background: #ffffff;
-    padding: 35px 40px 40px 40px;
-    border-radius: 8px;
-
-    @media (max-width: 1199.98px) {
-      max-width: 450px;
-    }
-
-    .login-logo {
-      margin: 0 0 40px 0;
-      height: 40px;
-      text-align: center;
-
-      img{
-        height: 50px;
-        width: auto;
-      }
-    }
-
-    input {
-      height: 46px;
-    }
-  }
-}
-.login_label {
-  color: #3C3C43;
-  font-size: 16px;
-  font-weight: 500;
-  margin-bottom: 8px;
-}
 .forgot {
   color: #3C3C43;
   font-size: 16px;
@@ -78,18 +8,19 @@
   cursor: pointer;
 }
 
-.btn-seconday{
+.btn,
+label {
   font-weight: 400;
 }
 
-.password-icon{
-  height: 28px;
-  width: 28px;
+.password-icon {
+  height: 30px;
+  width: 30px;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
-.modal-header{
+.modal-header {
   border-bottom: none !important;
 }

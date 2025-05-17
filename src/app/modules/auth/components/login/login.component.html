@@ -1,30 +1,24 @@
-<div class="loginContainer">
-  <div class="loginLeft">
-    <div class="login_img">
-      <img src="assets/images/LoginImg.png" alt="Storedada">
-    </div>
+<div class="row mx-auto" style="height: 100vh;">
+  <div class="col-lg-8 h-100 d-none d-lg-flex flex-column justify-content-center align-items-center">
+    <img class="w-50 h-50" src="assets/images/1311212_312.svg" alt="Storedada">
   </div>
-  <div class="loginRight">
-    <div class="login-logo">
-      <img alt="Logo" src="assets/images/storedada.jpg" />
+  <div class="col-lg-4 h-100 bg-white px-12 d-flex flex-column justify-content-center align-items-center">
+    <div class="w-100 my-8 d-flex align-items-start">
+      <img width="240" class="h-100" alt="Logo" src="assets/images/storedada-logo.png" />
     </div>
     <form class="form w-100" [formGroup]="form" novalidate="novalidate" id="kt_login_signin_form" (ngSubmit)="submit()">
       <div class="fv-row mb-5">
-        <label class="login_label" for="">
+        <label class="fs-5 mb-2" for="email">
           Email
         </label>
-        <input class="form-control fs-6" placeholder="Email address" type="text" formControlName="email"
-          autocomplete="off" [ngClass]="{
-          'is-invalid':
-          (formControls.email.touched || isSubmitted) &&
-          formControls.email.errors?.required
-        }" />
+        <input id="email" class="form-control fs-6" placeholder="Email address" type="text" formControlName="email"
+          autocomplete="off" [ngClass]="{'is-invalid': (formControls.email.touched || isSubmitted) && formControls.email.errors?.required}" />
       </div>
       <div class="fv-row mb-5">
-        <label class="login_label" for="">
+        <label class="fs-5 mb-2" for="password">
           Password
         </label>
-        <div class="position-relative">
+        <div id="password" class="position-relative">
           <input class="form-control fs-6" placeholder="Password" type="{{isPassword ? 'password': 'text'}}"
             autocomplete="off" formControlName="password"
             [ngClass]="{'is-invalid': (formControls.password.touched || isSubmitted) && formControls.password.errors?.required}" />
@@ -63,7 +57,7 @@
 
 <ng-template #template>
   <div class="modal-header">
-    <h4 class="fs-2 fw-bold pull-left">Enter your email to reset password</h4>
+    <h4 class="fs-2 fw-bold pull-left">Reset Password</h4>
     <button type="button" class="btn-close close pull-right" aria-label="Close" (click)="modalRef?.hide()">
       <span aria-hidden="true" class="visually-hidden">&times;</span>
     </button>
@@ -74,9 +68,9 @@
         [ngClass]="{
           'is-invalid': (email.touched || isValidated) && email.errors?.['required']}">
     </div>
-    <div class="mt-3 d-flex flex-column">
+    <div class="mt-3 d-flex flex-column gap-2">
       <button class="btn btn-primary" (click)="confirm()">Reset Password</button>
-      <button class="btn btn-link me-2" (click)="modalRef?.hide()">Cancel</button>
+      <button class="btn border border-danger text-danger" (click)="modalRef?.hide()">Cancel</button>
     </div>
   </div>
 </ng-template>

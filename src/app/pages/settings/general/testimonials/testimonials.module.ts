@@ -5,7 +5,6 @@ import { TestimonialListComponent } from './testimonial-list/testimonial-list.co
 import { AddTestimonialComponent } from './add-testimonial/add-testimonial.component';
 import { UpdateTestimonialComponent } from './update-testimonial/update-testimonial.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { WidgetsModule } from 'src/app/shared/partials';
 import { SharedModule } from 'src/app/pages/shared/shared.module';
 
 @NgModule({
@@ -18,7 +17,6 @@ import { SharedModule } from 'src/app/pages/shared/shared.module';
     CommonModule,
     TestimonialsRoutingModule,
     FormsModule,
-    WidgetsModule,
     SharedModule,
     ReactiveFormsModule,
   ]

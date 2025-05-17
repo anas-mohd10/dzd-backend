@@ -4,7 +4,6 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { HotToastService } from '@ngneat/hot-toast';
 import { appRoutes } from 'src/app/config/routes/app.routes';
 import { TestimonialService } from 'src/app/includes/services/testimonial.service';
-import { UploadService } from 'src/app/includes/services/upload.service';
 import { environment } from 'src/environments/environment';
 
 @Component({

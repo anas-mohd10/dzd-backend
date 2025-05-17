@@ -5,7 +5,6 @@ import { OrdersListComponent } from '../placed-orders/orders-list/orders-list.co
 import { AddOrdersComponent } from '../placed-orders/add-orders/add-orders.component';
 import { UpdateOrdersComponent } from '../placed-orders/update-orders/update-orders.component';
 import { ToastrModule } from 'ngx-toastr';
-import { WidgetsModule } from '../../../../shared/partials';
 import { DataTablesModule } from 'angular-datatables';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgSelectModule } from '@ng-select/ng-select';
@@ -34,7 +33,6 @@ import { TooltipModule } from 'ngx-bootstrap/tooltip';
       preventDuplicates: true,
       progressBar: true,
     }),
-    WidgetsModule,
     SwiperModule
   ]
 })

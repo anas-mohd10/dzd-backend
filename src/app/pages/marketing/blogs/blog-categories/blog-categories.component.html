@@ -72,6 +72,9 @@
                         </div>
                     </td>
                 </tr>
+                <tr *ngIf="categories.length === 0">
+                    <td colspan="5" class="text-center">No items found</td>
+                </tr>
             </tbody>
         </table>
     </div>

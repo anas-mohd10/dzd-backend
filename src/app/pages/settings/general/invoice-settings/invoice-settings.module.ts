@@ -6,7 +6,6 @@ import { InvoiceListComponent } from './invoice-list/invoice-list.component';
 import { DataTablesModule } from 'angular-datatables';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ToastrModule } from 'ngx-toastr';
-import { WidgetsModule } from 'src/app/shared/partials/content/widgets/widgets.module';
 
 
 @NgModule({
@@ -18,7 +17,6 @@ import { WidgetsModule } from 'src/app/shared/partials/content/widgets/widgets.m
     InvoiceSettingsRoutingModule,
     DataTablesModule,
     FormsModule,
-    WidgetsModule,
     ReactiveFormsModule,
     ToastrModule.forRoot({
       positionClass: 'toast-bottom-right',

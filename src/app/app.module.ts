@@ -97,7 +97,6 @@ import { SitemapSettingsComponent } from './pages/settings/general/sitemap-setti
 import { CompareKeysComponent } from './pages/catalog/compare-keys/compare-keys.component';
 import { ToastComponent } from './pages/settings/general/toast/toast.component';
 import { NavigationSettingsComponent } from './pages/navigation-settings/navigation-settings.component';
-import { ExtrasModule } from "./shared/partials/layout/extras/extras.module";
 import { MenuNavigationComponent } from './pages/settings/general/menu-navigation/menu-navigation.component';
 import { FormSettingsComponent } from './pages/settings/general/form-settings/form-settings.component';
 import { FormAddressComponent } from './pages/settings/general/form-settings/form-address/form-address.component';
@@ -201,7 +200,7 @@ const DragConfig = {
     DragDropModule,
     NgbModule,
     NgSelectModule,
-    LayoutModule,
+    // LayoutModule,
     CommonModule,
     FormsModule,
     FontAwesomeModule,
@@ -210,7 +209,6 @@ const DragConfig = {
     SwiperModule,
     TabsModule.forRoot(),
     SharedModule,
-    ExtrasModule
 ],
   exports: [
     RouterModule,

@@ -66,7 +66,6 @@ export class LoginComponent implements OnInit, OnDestroy {
     }
 
     const emailAddress: string = this.form.get('email')?.value.toLowerCase()
-    console.log(emailAddress, "emailAddress")
     this.form.patchValue({ email: emailAddress })
 
     this.authService.login(this.form.value).subscribe({
@@ -86,7 +85,7 @@ export class LoginComponent implements OnInit, OnDestroy {
   }
 
   forgotPassword(template: TemplateRef<any>) {
-    this.modalRef = this.BsModalService.show(template, { class: 'modal-dialog-centered' });
+    this.modalRef = this.BsModalService.show(template, { class: 'modal-sm modal-dialog-centered' });
   }
 
   togglePassword() {
