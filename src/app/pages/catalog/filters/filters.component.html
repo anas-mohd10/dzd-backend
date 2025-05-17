@@ -20,6 +20,27 @@
       <div class="fs-3">Predefined Filters</div>
       <p class="text-muted">Following are predefined filters, You can show/hide them on product listing page filters.
       </p>
+
+      <!-- Add Search Filter Mode Configuration -->
+      <div class="card my-4">
+        <div class="card-body">
+          <div class="d-flex align-items-center justify-content-between">
+            <div class="d-flex align-items-center gap-4">
+              <div class="fs-5">Search Filter Mode</div>
+            </div>
+            <div>
+              <select class="form-select py-1" [(ngModel)]="searchFilterMode" (change)="onSearchFilterModeChange()">
+                <option [ngValue]="1">Show only filters related to search results</option>
+                <option [ngValue]="2">Show all available filters</option>
+              </select>
+            </div>
+          </div>
+          <div class="mt-2 text-muted">
+            Configure how filters behave when users search for products
+          </div>
+        </div>
+      </div>
+
       <div class="card my-4">
         <div class="card-body">
           <div class="d-flex align-items-center justify-content-start gap-4">
@@ -103,7 +124,8 @@
         product listing page filters.
       </p>
       <div class="alert alert-info fs-5">
-        Show Hidden Products: Default set to false so the products which are visible status false will not be shown in the product listing
+        Show Hidden Products: Default set to false so the products which are visible status false will not be shown in
+        the product listing
       </div>
       <div *ngFor="let storeFrontField of storeFrontFields">
         <div class="card my-4">
@@ -120,7 +142,8 @@
                 Show Hidden Products
               </div>
               <div>
-                <select class="form-select py-1" [(ngModel)]="storeFrontField.isShowHidden" (change)="toggleHidden(storeFrontField)">
+                <select class="form-select py-1" [(ngModel)]="storeFrontField.isShowHidden"
+                  (change)="toggleHidden(storeFrontField)">
                   <option [ngValue]="true">Yes</option>
                   <option [ngValue]="false">No</option>
                 </select>
