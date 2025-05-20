@@ -17,6 +17,16 @@ export class ClickpulsePanelComponent implements OnInit {
   private tabUpdate$ = new Subject<{ index: number; field: string; value: string }>();
   private tabItemUpdate$ = new Subject<{ index: number; field: string; value: string }>();
   inViewTab: ClickPulsePanel | null = null;
+  initialTab: ClickPulsePanel = {
+    title: '',
+    description: '',
+    tabIndex: 0,
+    tabItems: [],
+    displayType: 'grid',
+    gridColumns: 1,
+    carouselItems: 1,
+    isCollapsed: true
+  }
 
   constructor(
     private HotToastService: HotToastService,
@@ -32,16 +42,64 @@ export class ClickpulsePanelComponent implements OnInit {
     });
   }
 
+  collapseAll() {
+    this.tabs.forEach(tab => {
+      tab.isCollapsed = true
+    })
+    this.ChangeDetectorRef.markForCheck()
+  }
+  
+  expandAll() {
+    this.tabs.forEach(tab => {
+      tab.isCollapsed = false
+    })
+    this.ChangeDetectorRef.markForCheck()
+  }
+
   saveTab() {
-    this.tabs.push({ title: '', description: '', tabIndex: this.tabs.length + 1, tabItems: [] })
+    this.tabs.push({ ...this.initialTab, tabIndex: this.tabs.length })
     this.HotToastService.success('Tab added successfully');
     this.ChangeDetectorRef.markForCheck()
+  }
+
+  saveTabItem() {
+    if (this.inViewTab && this.inViewTab.tabIndex !== undefined) {
+      if (this.tabs[this.inViewTab.tabIndex]) {
+        this.tabs[this.inViewTab.tabIndex].tabItems.push({
+          title: '',
+          description: '',
+          tabItemIndex: this.tabs[this.inViewTab.tabIndex].tabItems.length + 1,
+          isCollapsed: true,
+          type: 'image'
+        });
+        this.HotToastService.success('Tab item added successfully');
+        this.ChangeDetectorRef.markForCheck();
+      }
+    }
   }
 
   removeTab(index: number) {
     this.tabs.splice(index, 1);
     this.HotToastService.success('Tab removed successfully');
     this.ChangeDetectorRef.markForCheck()
+  }
+
+  toggleTabCollapse(index: number) {
+    console.log(index, "index")
+    if (index != undefined) {
+      console.log(this.tabs[index], "this.tabs[index]")
+      this.tabs[index]['isCollapsed'] = this.tabs[index]['isCollapsed'] ? false : true
+      this.ChangeDetectorRef.markForCheck()
+    }
+    console.log(this.tabs, "this.tabs")
+  }
+
+  removeTabItem(index: number) {
+    if (this.inViewTab && this.inViewTab.tabIndex) {
+      this.tabs[this.inViewTab.tabIndex].tabItems.splice(index, 1);
+      this.HotToastService.success('Tab item removed successfully');
+      this.ChangeDetectorRef.markForCheck()
+    }
   }
 
   viewTab(index: number) {

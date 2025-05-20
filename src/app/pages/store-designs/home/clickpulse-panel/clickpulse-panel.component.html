@@ -1,32 +1,55 @@
 <div *ngIf="inViewTab == null">
-    <div class="fs-4 fw-bold mb-2">Tabs</div>
+    <div class="d-flex pb-4 justify-content-between align-items-center">
+        <div class="fs-3 fw-bold">Tabs</div>
+        <div class="d-flex align-items-center gap-4">
+            <div class="cursor-pointer text-muted" (click)="collapseAll()">
+                <i class="fa fa-chevron-up"></i>
+                Collapse
+            </div>
+            <div class="cursor-pointer text-muted" (click)="expandAll()">
+                <i class="fa fa-chevron-down"></i>
+                Expand
+            </div>
+        </div>
+    </div>
     <ng-container *ngIf="tabs && tabs.length">
         <div class="d-flex flex-column gap-4 mb-2">
             <div *ngFor="let tab of tabs; let index = index">
-                <div class="d-flex flex-column gap-2 p-4 border rounded-3 border-secondary">
-                    <div class="mb-4 d-flex justify-content-between">
+                <div class="d-flex flex-column gap-2 px-4 pt-4 border rounded-3 border-secondary">
+                    <div class="pb-4 d-flex justify-content-between" [ngClass]="{'border-bottom border-secondary': tab.isCollapsed == false}">
                         <div class="fs-6">#{{ index + 1 }} | {{ tab.title || 'Untitled' }}</div>
                         <div class="d-flex gap-2">
                             <div class="cursor-pointer text-primary" (click)="viewTab(index)">
-                                View Tab
+                                View
                             </div>
                             <div class="cursor-pointer text-danger" (click)="removeTab(index)">
-                                Remove Tab
+                                Remove
                             </div>
-                       </div>
-                    </div>
-                    <div class="d-flex flex-column gap-2">
-                        <div class="form-group">
-                            <label class="fs-6 mb-1" id="title">Title</label>
-                            <input id="title" class="form-control" type="text" [value]="tab.title"
-                                (input)="onTabChange(index, 'title', $event)" placeholder="Enter Title" />
-                        </div>
-                        <div class="form-group">
-                            <label class="fs-6 mb-1" id="description">Description</label>
-                            <input id="description" class="form-control" type="text" [value]="tab.description"
-                                (input)="onTabChange(index, 'description', $event)" placeholder="Enter Description" />
+                            <div class="cursor-pointer text-danger" (click)="toggleTabCollapse(index)">
+                                <ng-container *ngIf="tab.isCollapsed == true">
+                                    <i class="fa fa-chevron-down"></i>
+                                </ng-container>
+                                <ng-container *ngIf="tab.isCollapsed == false">
+                                    <i class="fa fa-chevron-up"></i>
+                                </ng-container>
+                            </div>
                         </div>
                     </div>
+                    <ng-container *ngIf="tab.isCollapsed == false">
+                        <div class="mt-4 pb-4 d-flex flex-column gap-2">
+                            <div class="form-group">
+                                <label class="fs-6 mb-1" id="title">Title</label>
+                                <input id="title" class="form-control" type="text" [value]="tab.title"
+                                    (input)="onTabChange(index, 'title', $event)" placeholder="Enter Title" />
+                            </div>
+                            <div class="form-group">
+                                <label class="fs-6 mb-1" id="description">Description</label>
+                                <input id="description" class="form-control" type="text" [value]="tab.description"
+                                    (input)="onTabChange(index, 'description', $event)"
+                                    placeholder="Enter Description" />
+                            </div>
+                        </div>
+                    </ng-container>
                 </div>
             </div>
         </div>
@@ -37,10 +60,30 @@
     </button>
 </div>
 <div *ngIf="inViewTab">
-    <div class="d-flex align-items-start gap-2">
+    <div class="d-flex align-items-start gap-2 mb-2">
         <div class="cursor-pointer" (click)="inViewTab = null">
             <i class="fa fa-arrow-left"></i>
         </div>
         <div class="fs-4 fw-bold mb-2">Tab Details | {{ inViewTab.title || 'Untitled' }}</div>
     </div>
+    <ng-container *ngIf="tabs[inViewTab.tabIndex] && tabs[inViewTab.tabIndex].tabItems.length">
+        <div class="d-flex flex-column mb-2 gap-2">
+            <div *ngFor="let tabItem of tabs[inViewTab.tabIndex].tabItems; let tabItemIndex = index">
+                <div class="d-flex flex-column gap-2 p-4 border rounded-3 border-secondary">
+                    <div class="mb-4 pb-4 border-bottom border-secondary d-flex justify-content-between">
+                        <div class="fs-6">#{{ tabItemIndex + 1 }} | {{ tabItem.title || 'Untitled' }}</div>
+                        <div class="d-flex gap-2">
+                            <div class="cursor-pointer text-danger" (click)="removeTabItem(tabItemIndex)">
+                                Remove Tab
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </ng-container>
+    <button class="btn btn-secondary" (click)="saveTabItem()">
+        <i class="fa fa-plus"></i>
+        Add Tab Item
+    </button>
 </div>

@@ -133,6 +133,10 @@ export const editorConfig: AngularEditorConfig = {
 export interface ClickPulsePanel {
     title: string,
     description: string,
+    displayType: 'grid' | 'carousel',
+    gridColumns: number,
+    carouselItems: number,
     tabIndex: number,
-    tabItems: Array<any>
+    tabItems: Array<any>,
+    isCollapsed: boolean,
 }
