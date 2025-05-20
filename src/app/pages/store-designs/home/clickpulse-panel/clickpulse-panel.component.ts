@@ -1,5 +1,5 @@
 import { ChangeDetectorRef, Component, EventEmitter, OnInit, Output } from '@angular/core';
-import { Validators, FormGroup, FormControl } from '@angular/forms';
+import { FormGroup } from '@angular/forms';
 import { HotToastService } from '@ngneat/hot-toast';
 import { ClickPulsePanel } from '../home.constants';
 import { Subject } from 'rxjs';
@@ -14,7 +14,6 @@ export class ClickpulsePanelComponent implements OnInit {
   form: FormGroup = new FormGroup({});
   @Output() handleClickpulse: EventEmitter<any> = new EventEmitter();
   tabs: Array<ClickPulsePanel> = [];
-  tabsForm: FormGroup[] = [];
   private tabUpdate$ = new Subject<{ index: number; field: string; value: string }>();
   private tabItemUpdate$ = new Subject<{ index: number; field: string; value: string }>();
   inViewTab: ClickPulsePanel | null = null;
