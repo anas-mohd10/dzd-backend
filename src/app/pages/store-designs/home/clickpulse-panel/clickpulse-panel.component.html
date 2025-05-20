@@ -1,0 +1,46 @@
+<div *ngIf="inViewTab == null">
+    <div class="fs-4 fw-bold mb-2">Tabs</div>
+    <ng-container *ngIf="tabs && tabs.length">
+        <div class="d-flex flex-column gap-4 mb-2">
+            <div *ngFor="let tab of tabs; let index = index">
+                <div class="d-flex flex-column gap-2 p-4 border rounded-3 border-secondary">
+                    <div class="mb-4 d-flex justify-content-between">
+                        <div class="fs-6">#{{ index + 1 }} | {{ tab.title || 'Untitled' }}</div>
+                        <div class="d-flex gap-2">
+                            <div class="cursor-pointer text-primary" (click)="viewTab(index)">
+                                View Tab
+                            </div>
+                            <div class="cursor-pointer text-danger" (click)="removeTab(index)">
+                                Remove Tab
+                            </div>
+                       </div>
+                    </div>
+                    <div class="d-flex flex-column gap-2">
+                        <div class="form-group">
+                            <label class="fs-6 mb-1" id="title">Title</label>
+                            <input id="title" class="form-control" type="text" [value]="tab.title"
+                                (input)="onTabChange(index, 'title', $event)" placeholder="Enter Title" />
+                        </div>
+                        <div class="form-group">
+                            <label class="fs-6 mb-1" id="description">Description</label>
+                            <input id="description" class="form-control" type="text" [value]="tab.description"
+                                (input)="onTabChange(index, 'description', $event)" placeholder="Enter Description" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </ng-container>
+    <button class="btn btn-secondary" (click)="saveTab()">
+        <i class="fa fa-plus"></i>
+        Add Tab
+    </button>
+</div>
+<div *ngIf="inViewTab">
+    <div class="d-flex align-items-start gap-2">
+        <div class="cursor-pointer" (click)="inViewTab = null">
+            <i class="fa fa-arrow-left"></i>
+        </div>
+        <div class="fs-4 fw-bold mb-2">Tab Details | {{ inViewTab.title || 'Untitled' }}</div>
+    </div>
+</div>
