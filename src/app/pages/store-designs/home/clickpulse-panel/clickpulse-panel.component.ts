@@ -16,6 +16,7 @@ export class ClickpulsePanelComponent implements OnInit {
   tabs: Array<ClickPulsePanel> = [];
   tabsForm: FormGroup[] = [];
   private tabUpdate$ = new Subject<{ index: number; field: string; value: string }>();
+  private tabItemUpdate$ = new Subject<{ index: number; field: string; value: string }>();
   inViewTab: ClickPulsePanel | null = null;
 
   constructor(
