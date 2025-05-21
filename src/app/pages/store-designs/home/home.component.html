@@ -120,7 +120,7 @@
                     <ng-container *ngFor="let widget of homeWidgets; let i = index">
                         <div class="modal-widget h-100 p-4 rounded border w-100" (click)="focusWidget(widget)"
                             [ngClass]="{'border-primary shadow-sm': focusedWidget.type == widget.type, 'border-secondary border-dotted': focusedWidget.type != widget.type}">
-                            <img class="h-auto w-100 ratio ratio-1x1" src="{{widget?.icon}}" alt="{{widget?.title}}">
+                            <img class="h-auto w-100 ratio ratio-1x1" src="{{widget?.icon}}" alt="{{widget?.title}}" onerror="this.src='assets/images/default.png'">
                             <div class="text-center mt-2 fs-6">{{widget?.title}}</div>
                         </div>
                     </ng-container>
@@ -135,8 +135,7 @@
                     <div class="fw-bold fs-4">{{focusedWidget.title}}</div>
                     <div>
                         <button class="btn btn-secondary py-2 px-3 me-1" (click)="closeWidgets()">Cancel</button>
-                        <button class="btn btn-primary py-2 px-3 ms-1" (click)="addWidget(focusedWidget)">Add to
-                            page</button>
+                        <button class="btn btn-primary py-2 px-3 ms-1" (click)="addWidget(focusedWidget)">Add to Page</button>
                     </div>
                 </div>
                 <div class="my-5">
@@ -700,7 +699,8 @@
                                                     class="form-select">
                                                     <option value="" disabled>-- Select an option --</option>
                                                     <option *ngFor="let blog of blogs" value="{{blog.slug}}">
-                                                        {{blog.title}}</option>
+                                                        {{blog.title}}
+                                                    </option>
                                                 </select>
                                             </div>
                                         </div>
@@ -719,8 +719,11 @@
 
                     <div *ngIf="widgetDetails?.widgetType == 'blogs'">
                         <div class="d-flex flex-wrap align-items-center justify-content-start gap-2 my-4">
-                            <div class="bg-secondary rounded p-2" *ngFor="let widgetBlog of widgetBlogs">
-                                {{widgetBlog.title}}
+                            <div class="bg-secondary rounded px-3 py-2 d-flex align-items-center justify-content-between gap-2" *ngFor="let widgetBlog of widgetBlogs; let index = index">
+                                <div>{{widgetBlog.title}}</div>
+                                <div class="cursor-pointer" (click)="removeBlog(index)">
+                                    <i class="fa fa-times"></i>
+                                </div>
                             </div>
                         </div>
                         <div>

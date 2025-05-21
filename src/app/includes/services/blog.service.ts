@@ -30,8 +30,6 @@ export class BlogService {
     return this.http.post(`${url}`, data);
   }
 
-
-
   importBlogs(formData: any) {
     const url = this.commonService.getFullUrl(blogEndpoints.importBlogs);
     return this.http.post(`${url}`, formData);
