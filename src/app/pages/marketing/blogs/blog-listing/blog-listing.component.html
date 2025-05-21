@@ -53,16 +53,19 @@
       </div>
       <div class="blogs my-6" *ngIf="blogs.length > 0">
         <ng-container *ngFor="let blog of blogs">
-          <a class="blog position-relative" routerLink="{{appRoute.blogs.update + '/' + blog._id}}">
-            <div *ngIf="blog.isDraft" class="position-absolute top-0 start-0">
-              <span class="badge bg-secondary">Draft</span>
+          <a class="blog" routerLink="{{appRoute.blogs.update + '/' + blog._id}}">
+            <div class="position-relative">
+              <div *ngIf="blog?.isDraft == true" class="position-absolute top-0 start-0 m-2">
+                <span class="bg-secondary px-2 py-1 text-dark rounded shadow">Draft</span>
+              </div>
+              <img src="{{blog?.thumbnail}}" alt="{{blog?.title}}" class="rounded"
+                onerror="this.src = 'assets/images/default.png'">
+              <div class="position-absolute bottom-0 end-0 m-2 text-dark bg-secondary px-2 py-1 rounded">
+                {{blog?.category?.title || blog?.category}}</div>
             </div>
-            <img src="{{blog?.thumbnail}}" alt="{{blog?.title}}" class="rounded"
-              onerror="this.src = 'assets/images/default.png'">
             <div class="mt-4">
               <div class="fs-5 title">{{blog?.title}}</div>
-              <div>{{blog?.category?.title || blog?.category}}</div>
-              <div class="text-muted">{{blog?.createdAt}}</div>
+              <div class="text-muted fs-6">{{blog?.createdAt}}</div>
             </div>
           </a>
 
