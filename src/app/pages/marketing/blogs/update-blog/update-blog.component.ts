@@ -16,6 +16,7 @@ import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 // Add these imports at the top
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import { PlatformService } from 'src/app/includes/services/platform.service';
+import { AppSettingsService } from 'src/app/includes/services/app.settings.service';
 
 interface Media {
   title: string;
@@ -88,18 +89,10 @@ export class UpdateBlogComponent implements OnInit {
     defaultParagraphSeparator: '',
     defaultFontName: '',
     defaultFontSize: '',
-    fonts: [
-      { class: 'arial', name: 'Arial' },
-      { class: 'times-new-roman', name: 'Times New Roman' },
-      { class: 'calibri', name: 'Calibri' },
-      { class: 'comic-sans-ms', name: 'Comic Sans MS' },
-      { class: 'manrope', name: 'Sen' },
-      { class: 'Sen', name: 'Sen' },
-      { class: 'be-vietnam-pro', name: 'Be Vietnam Pro' },
-    ],
   };
   slug: string;
   author:string = '';
+  settings: any = {};
 
 
   constructor(
@@ -108,6 +101,7 @@ export class UpdateBlogComponent implements OnInit {
     private Toast: HotToastService,
     private ChangeDetectorRef: ChangeDetectorRef,
     private ActivatedRoute: ActivatedRoute,
+    private AppSettingsService: AppSettingsService,
     private BsModalService: BsModalService,
     private PlatformService: PlatformService,
   ) {
@@ -133,6 +127,24 @@ export class UpdateBlogComponent implements OnInit {
     this.initializeForm();
     this.blogQuery = this.ActivatedRoute.snapshot.params['slug'];
     this.getBlogDetails();
+
+    this.AppSettingsService.getSettings().subscribe({
+      next: (res: any) => {
+        if (res?.errorCode == 0) {
+          this.settings = res.result;
+          this.ChangeDetectorRef.markForCheck();
+        }
+      }
+    })
+  }
+
+  getUrl(urlType: 'live' | 'draft') {
+    const domainUrl: string = this.settings.domain.endsWith('/') ? this.settings.domain : `${this.settings.domain}/`;
+    if (urlType === 'live') {
+      return `${domainUrl}blogs/${this.blogDetails.slug}`;
+    } else {
+      return `${domainUrl}blogs/draft/${this.blogDetails.slug}`;
+    }
   }
 
   initializeForm() {
@@ -141,6 +153,7 @@ export class UpdateBlogComponent implements OnInit {
       description: new FormControl('', Validators.required),
       overview: new FormControl(''),
       isActive: new FormControl(true),
+      isDraft: new FormControl(false),
       isFeatured: new FormControl(false),
       author: new FormControl(''),
       authorThumbnail: new FormControl(null),
@@ -167,7 +180,7 @@ export class UpdateBlogComponent implements OnInit {
             this.form.patchValue({ category: categoryDoc?._id });
             this.form.patchValue({ _id: res.result._id });
           }
-          this.previews = { thumbnail: res.result.thumbnail?.path, cover: res.result.cover?.path, authorThumbnail: res.result.authorThumbnail.path };
+          this.previews = { thumbnail: res.result?.thumbnail?.path, cover: res.result?.cover?.path, authorThumbnail: res.result?.authorThumbnail?.path };
           this.selectedProducts = res.result.products || [];
           this.blogDetails = res.result;
           this.ChangeDetectorRef.markForCheck();

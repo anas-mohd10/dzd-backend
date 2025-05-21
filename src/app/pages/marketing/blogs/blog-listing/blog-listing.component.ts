@@ -5,6 +5,15 @@ import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { AppSettingsService } from 'src/app/includes/services/app.settings.service';
 
+interface Blog {
+  _id: string;
+  title: string;
+  thumbnail: string;
+  category: { title: string };
+  createdAt: string;
+  isDraft: boolean;
+}
+
 @Component({
   selector: 'app-blog-listing',
   templateUrl: './blog-listing.component.html',
@@ -20,7 +29,7 @@ export class BlogListingComponent implements OnInit {
   appRoute = appRoutes
   keyword: FormControl = new FormControl('');
   date: string
-  blogs: Array<any> = []
+  blogs: Blog[] = []
   pageIndex: number = 1
   pageSize: number = 20
   isLastPage: boolean = false
@@ -51,7 +60,7 @@ export class BlogListingComponent implements OnInit {
   ngOnInit(): void {
     this.getBlogs();
     this.loadPromoBanner();
-    
+
   }
 
   onPageTriggered(event: { pageIndex: number, pageSize: number }) {
@@ -118,7 +127,7 @@ export class BlogListingComponent implements OnInit {
       next: (res: any) => {
         if (res?.errorCode === 0) {
           this.form.patchValue({ blogPromotionalBanner: res.result.blogPromotionalBanner });
-          console.dir(res,{depth: null})
+          console.dir(res, { depth: null })
           this.settings = res.result;
           this.form.patchValue({ blogPromotionalBanner: res.result.blogPromotionalBanner });
         }
@@ -137,7 +146,7 @@ export class BlogListingComponent implements OnInit {
     this.form.patchValue({ blogPromotionalBanner: media.path });
     this.settings.blogPromotionalBanner = media.path;
   }
-  
+
 
   removePromoBanner() {
     this.form.get('blogPromotionalBanner')?.setValue('');
@@ -149,7 +158,7 @@ export class BlogListingComponent implements OnInit {
       ...this.settings,
       blogPromotionalBanner: this.form.value.blogPromotionalBanner
     };
-    
+
     this.AppSettingsService.updateGeneralSettings(updatedSettings).subscribe({
       next: (res: any) => {
         if (res?.errorCode === 0) {
