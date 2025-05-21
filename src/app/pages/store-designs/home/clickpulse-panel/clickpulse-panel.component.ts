@@ -11,6 +11,7 @@ import { debounceTime } from 'rxjs/operators';
   styleUrls: ['./clickpulse-panel.component.scss']
 })
 export class ClickpulsePanelComponent implements OnInit {
+ SliderImage: string = '';
   form: FormGroup = new FormGroup({});
   @Output() handleClickpulse: EventEmitter<any> = new EventEmitter();
   tabs: Array<ClickPulsePanel> = [];
@@ -34,6 +35,7 @@ export class ClickpulsePanelComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    
     this.tabUpdate$.pipe(debounceTime(500)).subscribe(({ index, field, value }) => {
       if (this.tabs[index]) {
         (this.tabs[index] as any)[field] = value;
@@ -109,5 +111,14 @@ export class ClickpulsePanelComponent implements OnInit {
 
   onTabChange(index: number, field: 'title' | 'description', value: Event) {
     this.tabUpdate$.next({ index, field, value: (value.target as HTMLInputElement).value });
+  }
+
+  onTabItemChange(index: number, field: 'title' | 'description', value: Event) {
+    this.tabItemUpdate$.next({ index, field, value: (value.target as HTMLInputElement).value });
+  }
+
+  onTitleImageTriggered(event: any) {
+    this.SliderImage = event.path;
+    this.form.get('titleImage')?.setValue(event?._id);
   }
 }
