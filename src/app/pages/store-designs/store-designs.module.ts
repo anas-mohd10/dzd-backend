@@ -20,6 +20,7 @@ import { ProductDesignsComponent } from './product-designs/product-designs.compo
 import { TabsModule } from 'ngx-bootstrap/tabs';
 import { ProductListingComponent } from './product-listing/product-listing.component';
 import { NgSelectModule } from '@ng-select/ng-select';
+import { BlogsComponent } from './home/blogs/blogs.component';
 
 @NgModule({
   declarations: [
@@ -30,7 +31,8 @@ import { NgSelectModule } from '@ng-select/ng-select';
     ContactComponent,
     AboutComponent,
     ProductDesignsComponent,
-    ProductListingComponent
+    ProductListingComponent,
+    BlogsComponent
   ],
   imports: [
     CommonModule,

@@ -1,0 +1,24 @@
+<div class="my-8">
+    <div class="fs-3 fw-bold mb-3">Widget Blogs</div>
+    <div class="fs-5 text-muted">Below is the list of blogs that you can use in your widget. Drag and drop the blogs to
+        reorder them.</div>
+    <div class="example-list my-4" cdkDropList cdkDropListOrientation="vertical"
+        (cdkDropListDropped)="dropBlogs($event)">
+        <div class="example-box  p-6" *ngFor="let widgetBlog of widgetBlogs; let index = index" cdkDrag>
+            <div>
+                <div class="fs-5">{{widgetBlog.title}}</div>
+                <div class="fs-6 text-muted">{{widgetBlog.createdAt | date: 'MMM d, yyyy'}}</div>
+            </div>
+            <div class="cursor-pointer" (click)="removeBlog(index)">
+                <i class="fa fa-times"></i>
+            </div>
+        </div>
+    </div>
+    <div>
+        <label for="blogs" class="fs-6 mb-3">Blogs</label>
+        <select [formControl]="widgetBlog" id="blogs" class="form-select" (change)="saveBlogs()">
+            <option value="" disabled>-- Select an option --</option>
+            <option *ngFor="let blog of blogs" value="{{blog.slug}}">{{blog.title}}</option>
+        </select>
+    </div>
+</div>

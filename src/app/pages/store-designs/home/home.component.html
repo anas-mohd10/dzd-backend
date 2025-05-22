@@ -718,21 +718,7 @@
                     </div>
 
                     <div *ngIf="widgetDetails?.widgetType == 'blogs'">
-                        <div class="d-flex flex-wrap align-items-center justify-content-start gap-2 my-4">
-                            <div class="bg-secondary rounded px-3 py-2 d-flex align-items-center justify-content-between gap-2" *ngFor="let widgetBlog of widgetBlogs; let index = index">
-                                <div>{{widgetBlog.title}}</div>
-                                <div class="cursor-pointer" (click)="removeBlog(index)">
-                                    <i class="fa fa-times"></i>
-                                </div>
-                            </div>
-                        </div>
-                        <div>
-                            <label for="blogs" class="fs-6 mb-3">Blogs</label>
-                            <select [formControl]="widgetBlog" id="blogs" class="form-select" (change)="saveBlogs()">
-                                <option value="" disabled>-- Select an option --</option>
-                                <option *ngFor="let blog of blogs" value="{{blog.slug}}">{{blog.title}}</option>
-                            </select>
-                        </div>
+                        <app-blogs [widgetBlogItems]="widgetBlogs" (widgetBlogsChange)="widgetBlogsChange($event)"></app-blogs>
                     </div>
 
                     <div *ngIf="widgetDetails?.widgetType == 'key-points-grid'">
