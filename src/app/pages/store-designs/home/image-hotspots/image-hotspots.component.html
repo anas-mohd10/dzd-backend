@@ -1,0 +1,49 @@
+<div class="image-hotspot-container">
+    <div class="image-wrapper" (click)="addHotspot($event)">
+        <img src="{{imageUrl}}" alt="Hotspot Image" class="hotspot-image">
+        <div *ngFor="let hotspot of hotspots" class="hotspot-marker" [style.left.px]="hotspot.xCoords"
+            [style.top.px]="hotspot.yCoords">
+            <div class="hotspot-dot"></div>
+        </div>
+    </div>
+    <div *ngIf="hotspots.length > 0">
+        <div class="pb-4 mb-4 border-bottom border-secondary">
+            <div class="fs-4">Hotspot Coordinates</div>
+            <p class="text-muted mt-1"> List of hotspots coordinates on the image. You can edit the label and product
+                SKU of each hotspot. </p>
+        </div>
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>Point</th>
+                    <th>X</th>
+                    <th>Y</th>
+                    <th>Label</th>
+                    <th>Product</th>
+                    <th>&nbsp;</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let hotspot of hotspots; let i = index">
+                    <td>{{i + 1}}</td>
+                    <td>{{hotspot.xCoords}}</td>
+                    <td>{{hotspot.yCoords}}</td>
+                    <td>
+                        <input type="text" class="form-control" placeholder="Enter Label" value="{{hotspot.label}}"
+                            (input)="onHotspotChange(i, 'label', $event)">
+                    </td>
+                    <td>
+                        <input type="text" class="form-control" placeholder="Enter Product SKU"
+                            value="{{hotspot.productId}}" (input)="onHotspotChange(i, 'productId', $event)">
+                    </td>
+                    <td>
+                        <button class="btn btn-danger py-1 px-3" (click)="removeHotspot(i)">
+                            Remove
+                            <i class="fa fa-times"></i>
+                        </button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

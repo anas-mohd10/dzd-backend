@@ -6,6 +6,18 @@ import { Subject } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
 import { cloneDeep } from 'lodash';
 
+interface Hotspot {
+  x: number;
+  y: number;
+  label: string;
+  product: string;
+}
+
+interface ShowHotspots {
+  tabItemIndex: number;
+  isShow: boolean;
+}
+
 @Component({
   selector: 'app-clickpulse-panel',
   templateUrl: './clickpulse-panel.component.html',
@@ -18,10 +30,12 @@ export class ClickpulsePanelComponent implements OnInit, OnChanges {
   private tabUpdate$ = new Subject<{ index: number; field: string; value: string }>();
   private tabItemUpdate$ = new Subject<{
     index: number;
-    field: 'title' | 'contentItem' | 'videoItem' | 'imageItem';
+    field: 'title' | 'contentItem' | 'videoItem' | 'imageItem' | 'isCoordsEnabled';
     value: string
   }>();
   inViewTab: ClickPulsePanel | null = null;
+  inViewTabItem: ClickPulsePanel['tabItems'][0] | null = null;
+  showHotspots: ShowHotspots | null = null;
   initialTab: ClickPulsePanel = {
     title: '',
     description: '',
@@ -30,7 +44,7 @@ export class ClickpulsePanelComponent implements OnInit, OnChanges {
     displayType: 'grid',
     gridColumns: 1,
     carouselItems: 1,
-    isCollapsed: true
+    isCollapsed: true,
   }
 
   initialTabItem: any = {
@@ -39,6 +53,7 @@ export class ClickpulsePanelComponent implements OnInit, OnChanges {
     imageItem: null,
     videoItem: null,
     isCollapsed: true,
+    isCoordsEnabled: 'no',
     tabItemIndex: 0,
     contentItem: '',
     hotspots: [],
@@ -58,7 +73,7 @@ export class ClickpulsePanelComponent implements OnInit, OnChanges {
         isCollapsed: true,
         tabItems: tab.tabItems.map((item: any, itemIndex: number) => ({
           ...item,
-          isCollapsed: true,
+          isCollapsed: this.inViewTabItem ? this.inViewTabItem.tabItemIndex == itemIndex ? false : true : true,
           tabItemIndex: itemIndex
         }))
       }));
@@ -86,17 +101,37 @@ export class ClickpulsePanelComponent implements OnInit, OnChanges {
     });
   }
 
-  collapseAll() {
-    this.tabs.forEach(tab => {
-      tab.isCollapsed = true
-    })
+  collapseAll(type: 'tab' | 'tabItem') {
+    if (type == 'tab') {
+      this.tabs.forEach(tab => {
+        tab.isCollapsed = true
+      })
+    }
+
+    if (type == 'tabItem') {
+      this.tabs.forEach(tab => {
+        tab.tabItems.forEach(tabItem => {
+          tabItem.isCollapsed = true
+        })
+      })
+    }
     this.ChangeDetectorRef.markForCheck()
   }
 
-  expandAll() {
-    this.tabs.forEach(tab => {
-      tab.isCollapsed = false
-    })
+  expandAll(type: 'tab' | 'tabItem') {
+    if (type == 'tab') {
+      this.tabs.forEach(tab => {
+        tab.isCollapsed = false
+      })
+    }
+
+    if (type == 'tabItem') {
+      this.tabs.forEach(tab => {
+        tab.tabItems.forEach(tabItem => {
+          tabItem.isCollapsed = false
+        })
+      })
+    }
     this.ChangeDetectorRef.markForCheck()
   }
 
@@ -137,6 +172,17 @@ export class ClickpulsePanelComponent implements OnInit, OnChanges {
     }
   }
 
+  toggleTabItemCollapse(tabIndex: number, index: number) {
+    if (index != undefined) {
+      this.tabs[tabIndex]['tabItems'][index]['isCollapsed'] = this.tabs[tabIndex]['tabItems'][index]['isCollapsed'] ? false : true
+      if (this.tabs[tabIndex]['tabItems'][index]['isCollapsed'] == false) {
+        this.inViewTabItem = this.tabs[tabIndex]['tabItems'][index];
+      }
+
+      this.ChangeDetectorRef.markForCheck()
+    }
+  }
+
   removeTabItem(index: number) {
     if (this.inViewTab && this.inViewTab.tabIndex) {
       this.tabs[this.inViewTab.tabIndex].tabItems.splice(index, 1);
@@ -155,17 +201,34 @@ export class ClickpulsePanelComponent implements OnInit, OnChanges {
     this.tabUpdate$.next({ index, field, value: (value.target as HTMLInputElement).value });
   }
 
-  onTabItemChange(
-    index: number,
-    field: 'title' | 'contentItem' | 'videoItem' | 'imageItem',
-    value: Event
-  ) {
+  onTabItemChange(index: number, field: 'title' | 'contentItem' | 'videoItem' | 'imageItem', value: Event) {
     this.tabItemUpdate$.next({ index, field, value: (value.target as HTMLInputElement).value });
   }
 
   onTitleImageTriggered(event: { path: string }, index: number) {
     this.tabItemUpdate$.next({ index, field: 'imageItem', value: event.path });
   }
+
+  toggleCoords(event: { toggleState: boolean, switchId: string }, index: number) {
+    this.tabItemUpdate$.next({ index, field: 'isCoordsEnabled', value: event.toggleState ? 'yes' : 'no' });
+  }
+
+  toggleShowHotspot(tabItemIndex: number, type: 'show' | 'hide') {
+    if (type == 'show') {
+      this.showHotspots = { tabItemIndex, isShow: true };
+    }
+
+    if (type == 'hide') {
+      this.showHotspots = null;
+    }
+  }
+
+  handleHotspots(event: any) {
+    if (this.inViewTab && this.inViewTab.tabIndex !== undefined && this.inViewTabItem && this.inViewTabItem.tabItemIndex !== undefined) {
+      this.tabs[this.inViewTab.tabIndex].tabItems[this.inViewTabItem.tabItemIndex].hotspots = event;
+      this.handleClickpulse.emit(this.tabs);
+      this.ChangeDetectorRef.markForCheck();
+    }
+  }
 }
 
- 

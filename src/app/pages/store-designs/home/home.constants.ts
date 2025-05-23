@@ -145,6 +145,7 @@ export interface ClickPulsePanel {
         contentItem: string,
         isCollapsed: boolean,
         tabItemIndex: number,
+        isCoordsEnabled: string,
         hotspots: Array<{
             xCoords: number,
             yCoords: number,

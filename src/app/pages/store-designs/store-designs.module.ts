@@ -8,6 +8,7 @@ import { DesignSharedModule } from './shared/design.shared.module';
 import { SharedModule } from '../shared/shared.module';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { TooltipModule } from 'ngx-bootstrap/tooltip';
+import { PopoverModule } from 'ngx-bootstrap/popover';
 import { AccordionModule } from 'ngx-bootstrap/accordion';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CatalogComponent } from './catalog/catalog.component';
@@ -21,6 +22,7 @@ import { TabsModule } from 'ngx-bootstrap/tabs';
 import { ProductListingComponent } from './product-listing/product-listing.component';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { ClickpulsePanelComponent } from './home/clickpulse-panel/clickpulse-panel.component';
+import { ImageHotspotsComponent } from './home/image-hotspots/image-hotspots.component';
 
 @NgModule({
   declarations: [
@@ -32,7 +34,8 @@ import { ClickpulsePanelComponent } from './home/clickpulse-panel/clickpulse-pan
     AboutComponent,
     ProductDesignsComponent,
     ProductListingComponent,
-    ClickpulsePanelComponent
+    ClickpulsePanelComponent,
+    ImageHotspotsComponent
   ],
   imports: [
     CommonModule,
@@ -42,6 +45,7 @@ import { ClickpulsePanelComponent } from './home/clickpulse-panel/clickpulse-pan
     TabsModule.forRoot(),
     BsDatepickerModule,
     AngularEditorModule,
+    PopoverModule,
     ReactiveFormsModule,
     TooltipModule,
     DesignSharedModule,
