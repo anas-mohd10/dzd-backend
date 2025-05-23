@@ -112,6 +112,7 @@ export class UpdateCategoryComponent implements OnInit {
       cover: new FormControl(null),
       mobileCover: new FormControl(null),
       hierarchy: new FormControl(''),
+      isFeatured: new FormControl(false),
       isRoot: new FormControl(true),
       isActive: new FormControl(true),
       isArchive: new FormControl(false),

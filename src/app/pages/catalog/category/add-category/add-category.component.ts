@@ -93,6 +93,7 @@ export class AddCategoryComponent implements OnInit {
       thumbnail: new FormControl(null),
       cover: new FormControl(null),
       mobileCover: new FormControl(null),
+      isFeatured: new FormControl(false),
       hierarchy: new FormControl(''),
       isRoot: new FormControl(true),
       isActive: new FormControl(true),
