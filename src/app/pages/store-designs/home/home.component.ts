@@ -593,19 +593,6 @@ export class HomeComponent implements OnInit {
     this.Toast.info('Key point removed successfully')
   }
 
-  saveBlogs() {
-    console.log(this.blogsMap);
-    let blogItem = this.blogsMap[this.widgetBlog.value]
-    this.widgetBlogs.push(blogItem)
-    this.widgetBlog.setValue('')
-    this.Toast.success('Blog added successfully')
-  }
-
-  removeBlog(blogIndex: number) {
-    this.widgetBlogs.splice(blogIndex, 1)
-    this.Toast.info('Blog removed successfully')
-  }
-
   removeInsightHubThumbnail(type: string) {
     if (type == 'small') {
       this.insightHubForm.get('insightHubThumbnailSmall')?.setValue(null);
@@ -614,6 +601,28 @@ export class HomeComponent implements OnInit {
       this.insightHubForm.get('insightHubThumbnailLarge')?.setValue(null);
       this.insightHubThumbnailLarge = '';
     }
+  }
+
+  getBlogs(query: string) {
+    const blogIds: string[] = this.widgetBlogs.map((blog: any) => blog?._id);
+    this.BlogService.blogs({ 
+      keyword: query, 
+      page: 1, 
+      limit: 100,
+      blogIds
+    }).subscribe({
+      next: (res: any) => {
+        if (res?.errorCode == 0) {
+          this.blogs = res?.result?.data;
+          if (res.result.data && res.result.data.length > 0) {
+            res.result.data.map((blog: any) => {
+              this.blogsMap[blog.slug] = blog;
+            })
+          }
+          this.ChangeDetectorRef.markForCheck();
+        }
+      },
+    });
   }
 
   onRedirectionSelected() {
@@ -794,7 +803,6 @@ export class HomeComponent implements OnInit {
           }
           if (this.widgetDetails?.widgetType == 'blogs') {
             this.widgetBlogs = this.widgetDetails?.blogs;
-            this.getBlogs('');
           }
           if (this.widgetDetails?.widgetType == 'testimonial-cards') {
             this.widgetTestimonials = this.widgetDetails?.testimonials;
@@ -1091,6 +1099,11 @@ export class HomeComponent implements OnInit {
     let items = [...this.widgetImages];
     moveItemInArray(items, event.previousIndex, event.currentIndex);
     this.widgetImages = [...items];
+  }
+
+  widgetBlogsChange(event: any){
+   this.widgetBlogs = event;
+   this.ChangeDetectorRef.markForCheck();
   }
 
   updateWidget(type?: string) {
@@ -1583,22 +1596,6 @@ export class HomeComponent implements OnInit {
 
   isIdInArray(idToCheck: string, array: any[]) {
     return array.some((item) => item?._id === idToCheck);
-  }
-
-  getBlogs(query: string) {
-    this.BlogService.blogs({ keyword: query, page: 1, limit: 100 }).subscribe({
-      next: (res: any) => {
-        if (res?.errorCode == 0) {
-          this.blogs = res?.result?.data;
-          if (res.result.data && res.result.data.length > 0) {
-            res.result.data.map((blog: any) => {
-              this.blogsMap[blog.slug] = blog;
-            })
-          }
-          this.ChangeDetectorRef.markForCheck();
-        }
-      },
-    });
   }
 
   openHistory(template: TemplateRef<any>) {
