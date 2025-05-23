@@ -140,12 +140,12 @@ export class NavigationMenuComponent implements OnInit {
     defaultParagraphSeparator: '',
     defaultFontName: '',
     defaultFontSize: '',
-    fonts: [
-      { class: 'arial', name: 'Arial' },
-      { class: 'Sen', name: 'Sen' },
-      { class: 'josefin', name: 'Josefin Sans' },
-      { class: 'poppins', name: 'Poppins' },
-    ],
+    sanitize: false,
+    toolbarHiddenButtons: [
+      [
+        'fontName',
+      ]
+    ]
   };
   facilityIndex: any = null;
   form: FormGroup = new FormGroup({});
