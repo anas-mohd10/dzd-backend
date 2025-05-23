@@ -17,6 +17,7 @@ import { BrandService } from 'src/app/includes/services/brand.service';
 import { CatalogService } from 'src/app/includes/services/catalog.service';
 import { widgets } from './home.widgets';
 import {
+  ClickPulsePanel,
   cmsPages,
   editorConfig,
   hiddenDisplaySettings,
@@ -125,6 +126,7 @@ export class HomeComponent implements OnInit {
   homeWidgetKeyword: FormControl = new FormControl('', Validators.required);
   tileProductsInput: FormControl = new FormControl('', Validators.required);
   testimonialKeyword: FormControl = new FormControl('', Validators.required);
+  tabs: Array<ClickPulsePanel> = [];
 
   constructor(
     private BsModalService: BsModalService,
@@ -144,8 +146,10 @@ export class HomeComponent implements OnInit {
 
 
   // Clickpulse
-  handleClickpulse(event: any) { 
-
+  handleClickpulse(event: any) {
+    this.tabs = event;
+    console.log(this.tabs, "this.tabs")
+    this.ChangeDetectorRef.markForCheck();
   }
   // Clickpulse
 
@@ -469,9 +473,7 @@ export class HomeComponent implements OnInit {
             }
             this.widgetImagePreview = this.widgetImages[0];
             this.widgetImagePreviewIndex = 0;
-            this.previewDetails = this.widgetImagePreview?.url
-              ? this.widgetImagePreview?.url?.path
-              : '';
+            this.previewDetails = this.widgetImagePreview?.url ? this.widgetImagePreview?.url?.path : '';
             this.widgetForm.patchValue(this.widgetImagePreview);
           }
           if (this.widgetDetails?.widgetType == 'blogs') {
@@ -564,6 +566,10 @@ export class HomeComponent implements OnInit {
 
           if (this.widgetDetails?.widgetType == 'key-points-grid') {
             this.keyPoints = res?.result?.keyPoints
+          }
+
+          if (this.widgetDetails?.widgetType == 'clickpulse-panel') {
+            this.tabs = res?.result?.tabs;
           }
 
           this.widgetDetails?.endDate
@@ -780,6 +786,7 @@ export class HomeComponent implements OnInit {
   updateWidget(type?: string) {
     let widgetPayload = {
       ...this.form.value,
+      tabs: this.tabs,
       refid: this.widgetDetails?.refid,
     };
 

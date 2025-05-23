@@ -137,6 +137,20 @@ export interface ClickPulsePanel {
     gridColumns: number,
     carouselItems: number,
     tabIndex: number,
-    tabItems: Array<any>,
+    tabItems: Array<{
+        title: string,
+        blockType: 'image' | 'video' | 'text',
+        imageItem: any,
+        videoItem: any,
+        contentItem: string,
+        isCollapsed: boolean,
+        tabItemIndex: number,
+        hotspots: Array<{
+            xCoords: number,
+            yCoords: number,
+            productId: string,
+            label: string,
+        }>
+    }>,
     isCollapsed: boolean,
 }

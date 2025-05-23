@@ -1,22 +1,26 @@
-import { ChangeDetectorRef, Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { ChangeDetectorRef, Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { HotToastService } from '@ngneat/hot-toast';
 import { ClickPulsePanel } from '../home.constants';
 import { Subject } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
+import { cloneDeep } from 'lodash';
 
 @Component({
   selector: 'app-clickpulse-panel',
   templateUrl: './clickpulse-panel.component.html',
   styleUrls: ['./clickpulse-panel.component.scss']
 })
-export class ClickpulsePanelComponent implements OnInit {
- SliderImage: string = '';
+export class ClickpulsePanelComponent implements OnInit, OnChanges {
   form: FormGroup = new FormGroup({});
+  @Input() tabs: Array<ClickPulsePanel> = [];
   @Output() handleClickpulse: EventEmitter<any> = new EventEmitter();
-  tabs: Array<ClickPulsePanel> = [];
   private tabUpdate$ = new Subject<{ index: number; field: string; value: string }>();
-  private tabItemUpdate$ = new Subject<{ index: number; field: string; value: string }>();
+  private tabItemUpdate$ = new Subject<{
+    index: number;
+    field: 'title' | 'contentItem' | 'videoItem' | 'imageItem';
+    value: string
+  }>();
   inViewTab: ClickPulsePanel | null = null;
   initialTab: ClickPulsePanel = {
     title: '',
@@ -29,17 +33,55 @@ export class ClickpulsePanelComponent implements OnInit {
     isCollapsed: true
   }
 
+  initialTabItem: any = {
+    title: '',
+    blockType: 'image',
+    imageItem: null,
+    videoItem: null,
+    isCollapsed: true,
+    tabItemIndex: 0,
+    contentItem: '',
+    hotspots: [],
+  }
+
   constructor(
     private HotToastService: HotToastService,
     private ChangeDetectorRef: ChangeDetectorRef
   ) { }
 
+  ngOnChanges(changes: SimpleChanges): void {
+    const tabDocs = changes['tabs']['currentValue'];
+    if (tabDocs && tabDocs.length) {
+      this.tabs = cloneDeep(tabDocs).map((tab: any, index: number) => ({
+        ...tab,
+        tabIndex: index,
+        isCollapsed: true,
+        tabItems: tab.tabItems.map((item: any, itemIndex: number) => ({
+          ...item,
+          isCollapsed: true,
+          tabItemIndex: itemIndex
+        }))
+      }));
+    }
+    this.ChangeDetectorRef.markForCheck();
+  }
+
   ngOnInit(): void {
-    
     this.tabUpdate$.pipe(debounceTime(500)).subscribe(({ index, field, value }) => {
       if (this.tabs[index]) {
         (this.tabs[index] as any)[field] = value;
+        this.handleClickpulse.emit(this.tabs);
         this.ChangeDetectorRef.markForCheck();
+      }
+    });
+
+    this.tabItemUpdate$.pipe(debounceTime(500)).subscribe(({ index, field, value }) => {
+      if (this.inViewTab && this.inViewTab.tabIndex !== undefined) {
+        if (this.tabs[this.inViewTab.tabIndex]) {
+          this.tabs[this.inViewTab.tabIndex].tabItems[index][field] = value;
+          this.handleClickpulse.emit(this.tabs);
+          this.ChangeDetectorRef.markForCheck();
+        }
       }
     });
   }
@@ -50,7 +92,7 @@ export class ClickpulsePanelComponent implements OnInit {
     })
     this.ChangeDetectorRef.markForCheck()
   }
-  
+
   expandAll() {
     this.tabs.forEach(tab => {
       tab.isCollapsed = false
@@ -59,21 +101,22 @@ export class ClickpulsePanelComponent implements OnInit {
   }
 
   saveTab() {
-    this.tabs.push({ ...this.initialTab, tabIndex: this.tabs.length })
+    const newTab = {
+      ...this.initialTab,
+      tabIndex: this.tabs.length,
+      tabItems: []
+    };
+    this.tabs.push(newTab);
     this.HotToastService.success('Tab added successfully');
+    this.handleClickpulse.emit(this.tabs);
     this.ChangeDetectorRef.markForCheck()
   }
 
   saveTabItem() {
     if (this.inViewTab && this.inViewTab.tabIndex !== undefined) {
       if (this.tabs[this.inViewTab.tabIndex]) {
-        this.tabs[this.inViewTab.tabIndex].tabItems.push({
-          title: '',
-          description: '',
-          tabItemIndex: this.tabs[this.inViewTab.tabIndex].tabItems.length + 1,
-          isCollapsed: true,
-          type: 'image'
-        });
+        this.tabs[this.inViewTab.tabIndex].tabItems.push(this.initialTabItem);
+        this.handleClickpulse.emit(this.tabs);
         this.HotToastService.success('Tab item added successfully');
         this.ChangeDetectorRef.markForCheck();
       }
@@ -83,23 +126,22 @@ export class ClickpulsePanelComponent implements OnInit {
   removeTab(index: number) {
     this.tabs.splice(index, 1);
     this.HotToastService.success('Tab removed successfully');
+    this.handleClickpulse.emit(this.tabs);
     this.ChangeDetectorRef.markForCheck()
   }
 
   toggleTabCollapse(index: number) {
-    console.log(index, "index")
     if (index != undefined) {
-      console.log(this.tabs[index], "this.tabs[index]")
       this.tabs[index]['isCollapsed'] = this.tabs[index]['isCollapsed'] ? false : true
       this.ChangeDetectorRef.markForCheck()
     }
-    console.log(this.tabs, "this.tabs")
   }
 
   removeTabItem(index: number) {
     if (this.inViewTab && this.inViewTab.tabIndex) {
       this.tabs[this.inViewTab.tabIndex].tabItems.splice(index, 1);
       this.HotToastService.success('Tab item removed successfully');
+      this.handleClickpulse.emit(this.tabs);
       this.ChangeDetectorRef.markForCheck()
     }
   }
@@ -113,12 +155,17 @@ export class ClickpulsePanelComponent implements OnInit {
     this.tabUpdate$.next({ index, field, value: (value.target as HTMLInputElement).value });
   }
 
-  onTabItemChange(index: number, field: 'title' | 'description', value: Event) {
+  onTabItemChange(
+    index: number,
+    field: 'title' | 'contentItem' | 'videoItem' | 'imageItem',
+    value: Event
+  ) {
     this.tabItemUpdate$.next({ index, field, value: (value.target as HTMLInputElement).value });
   }
 
-  onTitleImageTriggered(event: any) {
-    this.SliderImage = event.path;
-    this.form.get('titleImage')?.setValue(event?._id);
+  onTitleImageTriggered(event: { path: string }, index: number) {
+    this.tabItemUpdate$.next({ index, field: 'imageItem', value: event.path });
   }
 }
+
+ 

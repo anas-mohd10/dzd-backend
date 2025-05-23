@@ -519,7 +519,7 @@
                     </div>
 
                     <ng-container *ngIf="widgetDetails?.widgetType == 'clickpulse-panel'">
-                        <app-clickpulse-panel></app-clickpulse-panel>
+                        <app-clickpulse-panel [tabs]="tabs" (handleClickpulse)="handleClickpulse($event)"></app-clickpulse-panel>
                     </ng-container>
 
                     <div *ngIf="widgetImageTypes.includes(widgetDetails?.widgetType)">
@@ -595,8 +595,7 @@
                                                 <label for="title" class="form-label">Title</label>
                                                 <input type="text" formControlName="title" class="form-control">
                                             </div>
-                                            <div class="form-group mb-3"
-                                                >
+                                            <div class="form-group mb-3">
                                                 <label for="title" class="form-label">Description</label>
                                                 <input type="text" formControlName="description" class="form-control">
                                             </div>
