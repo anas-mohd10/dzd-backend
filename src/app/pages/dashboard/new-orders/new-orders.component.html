@@ -17,19 +17,19 @@
             </thead>
             <tbody>
                 <tr *ngFor="let order of newOrders">
-                    <td class="p-2">{{order.orderNo}}</td>
-                    <td class="p-2">{{order.customerDetails.name}}</td>
-                    <td class="p-2">{{formatDate(order.createdAt)}}</td>
-                    <td class="p-2">{{order.orderTotal}}</td>
-                    <td class="p-2">{{order.source}}</td>
-                    <td class="p-2">{{order.paymentMethod == 'COD' ? 'Cash' : order.paymentMethod | titlecase}}</td>
+                    <td class="p-2">{{order?.orderNo}}</td>
+                    <td class="p-2">{{order?.customerId?.name || order?.guestId?.name}}</td>
+                    <td class="p-2">{{formatDate(order?.createdAt)}}</td>
+                    <td class="p-2">{{order?.total}}</td>
+                    <td class="p-2">{{order?.source}}</td>
+                    <td class="p-2">{{order?.paymentMethod == 'COD' ? 'Cash' : order?.paymentMethod | titlecase}}</td>
                     <td class="p-2">
-                        <span class="badge fs-6 fw-normal" [ngClass]="order.paymentStatus == 'PAID' ? 'bg-success' : 'bg-danger'">
-                            {{order.paymentStatus | titlecase}}
+                        <span class="badge fs-6 fw-normal" [ngClass]="order?.paymentStatus == 'PAID' ? 'bg-success' : 'bg-danger'">
+                            {{order?.paymentStatus | titlecase}}
                         </span>
                     </td>
                     <td class="p-2">
-                        <button routerLink="{{appRoutes.orders.UPDATE_ORDER_LIST}}" [queryParams]="{order: order._id}"
+                        <button routerLink="{{appRoutes.orders.UPDATE_ORDER_LIST}}" [queryParams]="{order: order?._id}"
                             class="w-100 btn btn-secondary px-3 py-1">
                             View Order
                             <i class="bi bi-arrow-right"></i>
