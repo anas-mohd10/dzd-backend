@@ -18,9 +18,9 @@
             <tbody>
                 <tr *ngFor="let order of newOrders">
                     <td class="p-2">{{order?.orderNo}}</td>
-                    <td class="p-2">{{order?.customerId?.name || order?.guestId?.name}}</td>
+                    <td class="p-2">{{order?.customerDetails?.name || order?.guestDetails?.name}}</td>
                     <td class="p-2">{{formatDate(order?.createdAt)}}</td>
-                    <td class="p-2">{{order?.total}}</td>
+                    <td class="p-2">{{order?.orderTotal}}</td>
                     <td class="p-2">{{order?.source}}</td>
                     <td class="p-2">{{order?.paymentMethod == 'COD' ? 'Cash' : order?.paymentMethod | titlecase}}</td>
                     <td class="p-2">
