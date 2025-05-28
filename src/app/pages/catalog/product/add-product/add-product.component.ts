@@ -27,6 +27,7 @@ import { CdkDragDrop} from '@angular/cdk/drag-drop';
 interface StoreField {
   title: string;
   description: string;
+  isVisible: boolean;
 }
 
 @Component({
@@ -635,6 +636,7 @@ export class AddProductComponent implements OnInit {
     this.storeFieldForm = new FormGroup({
       title: new FormControl('', Validators.required),
       description: new FormControl('', Validators.required),
+      isVisible: new FormControl(true),
     });
 
     this.tagsForm = new FormGroup({
@@ -831,6 +833,7 @@ export class AddProductComponent implements OnInit {
 
     this.storeFields.push(this.storeFieldForm.value);
     this.storeFieldForm.reset();
+    this.storeFieldForm.get('isVisible')?.setValue(true);
     this.isStoreSubmitted = false;
   }
 
