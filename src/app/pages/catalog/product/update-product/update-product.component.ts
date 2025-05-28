@@ -726,7 +726,7 @@ productIconClicked(event: any, type: string = 'add') {
         cover: this.primaryCategory.value.cover,
         hierarchies: this.primaryCategory.value.hierarchies,
       } : null,
-      categories: this.categories.map((category: any) => ({
+      categories: this.categories.filter(category => category != null).map((category: any) => ({
         name: category.name,
         slug: category.slug,
         hierarchies: category.hierarchies,
