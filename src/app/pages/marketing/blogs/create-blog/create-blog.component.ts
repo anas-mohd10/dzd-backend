@@ -42,15 +42,11 @@ export class CreateBlogComponent implements OnInit {
     defaultFontName: '',
     defaultFontSize: '',
     sanitize: false,
-    fonts: [
-      { class: 'arial', name: 'Arial' },
-      { class: 'times-new-roman', name: 'Times New Roman' },
-      { class: 'calibri', name: 'Calibri' },
-      { class: 'comic-sans-ms', name: 'Comic Sans MS' },
-      { class: 'manrope', name: 'Sen' },
-      { class: 'Sen', name: 'Sen' },
-      { class: 'be-vietnam-pro', name: 'Be Vietnam Pro' },
-    ],
+    toolbarHiddenButtons: [
+      [
+        'fontName',
+      ]
+    ]
   };
   cover: string = '';
   thumbnail: string = '';
