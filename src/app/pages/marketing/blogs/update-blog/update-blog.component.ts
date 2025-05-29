@@ -88,15 +88,12 @@ export class UpdateBlogComponent implements OnInit {
     defaultParagraphSeparator: '',
     defaultFontName: '',
     defaultFontSize: '',
-    fonts: [
-      { class: 'arial', name: 'Arial' },
-      { class: 'times-new-roman', name: 'Times New Roman' },
-      { class: 'calibri', name: 'Calibri' },
-      { class: 'comic-sans-ms', name: 'Comic Sans MS' },
-      { class: 'manrope', name: 'Sen' },
-      { class: 'Sen', name: 'Sen' },
-      { class: 'be-vietnam-pro', name: 'Be Vietnam Pro' },
-    ],
+    sanitize: false,
+    toolbarHiddenButtons: [
+      [
+        'fontName',
+      ]
+    ]
   };
   slug: string;
   author:string = '';
