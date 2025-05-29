@@ -173,6 +173,7 @@ export class UpdateProductComponent implements OnInit {
   historyLists: Array<any> = [];
   totalResults: number = 0;
   totalPages: number = 1;
+  storeFieldIndex: number | null;
 
   constructor(
     private ActivatedRoute: ActivatedRoute,
@@ -1199,8 +1200,14 @@ export class UpdateProductComponent implements OnInit {
     // Get the form values
     const formValue = this.storeFieldForm.value;
 
-    // Save the modified form value
-    this.storeFields.push(formValue);
+    if (this.storeFieldIndex) {
+      this.storeFields[this.storeFieldIndex] = formValue;
+      this.storeFieldIndex = null;
+    } else {
+      // Save the modified form value
+      this.storeFields.push(formValue);
+    }
+
     this.storeFieldForm.reset();
     this.storeFieldForm.get('isVisible')?.setValue(true);
     this.isStoreSubmitted = false;
@@ -1208,6 +1215,11 @@ export class UpdateProductComponent implements OnInit {
 
   removeStoreField(storeFieldIndex: number) {
     this.storeFields.splice(storeFieldIndex, 1);
+  }
+
+  editStoreField(storeFieldIndex: number) {
+    this.storeFieldIndex = storeFieldIndex;
+    this.storeFieldForm.patchValue(this.storeFields[storeFieldIndex]);
   }
 
   removeAttribute(attributeIndex: number) {

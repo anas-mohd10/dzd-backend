@@ -22,7 +22,7 @@ import { TabsetComponent } from 'ngx-bootstrap/tabs';
 import { BrandService } from 'src/app/includes/services/brand.service';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { moveItemInArray } from '@angular/cdk/drag-drop';
-import { CdkDragDrop} from '@angular/cdk/drag-drop';
+import { CdkDragDrop } from '@angular/cdk/drag-drop';
 
 interface StoreField {
   title: string;
@@ -132,6 +132,7 @@ export class AddProductComponent implements OnInit {
   ];
   languages: Array<string> = [];
   tagIcons: Array<string> = [];
+  storeFieldIndex: number | null;
 
   constructor(
     private ActivatedRoute: ActivatedRoute,
@@ -264,12 +265,12 @@ export class AddProductComponent implements OnInit {
   }
 
   productMediaClicked(event: any) {
-    
+
     // Check if the item already exists in our images array
     let isExists: boolean = this.images.some(
       (item: any) => item?._id == event?._id
     );
-    
+
     if (isExists) {
       // If it exists, remove it
       this.images = this.images.filter((item: any) => item?._id != event?._id);
@@ -279,19 +280,19 @@ export class AddProductComponent implements OnInit {
       this.images.push(event);
       this.HotToastService.success('Image added to product');
     }
-    
+
     // Update form control with the current images
     if (this.form && this.form.get('files')) {
       let files = this.images.map((item: any) => item.path) || [];
       this.form.get('files')?.setValue(files);
     }
-    
+
     // Force change detection
     if (this.ChangeDetectorRef) {
       this.ChangeDetectorRef.markForCheck();
     }
   }
-  dropProductImages (event: any) {
+  dropProductImages(event: any) {
     let items = [...this.images];
     moveItemInArray(items, event.previousIndex, event.currentIndex);
     this.images = [...items];
@@ -715,7 +716,7 @@ export class AddProductComponent implements OnInit {
         Validators.pattern('^-?[0-9]\\d*(\\.\\d+)?$'),
       ]),
       thumbnail: new FormControl('', Validators.required),
-      videoThumbnail:new FormControl(null),
+      videoThumbnail: new FormControl(null),
       files: new FormControl('', Validators.required),
       video: new FormControl(''),
       unit: new FormControl(''),
@@ -831,7 +832,17 @@ export class AddProductComponent implements OnInit {
       return;
     }
 
-    this.storeFields.push(this.storeFieldForm.value);
+    // Get the form values
+    const formValue = this.storeFieldForm.value;
+
+    if (this.storeFieldIndex) {
+      this.storeFields[this.storeFieldIndex] = formValue;
+      this.storeFieldIndex = null;
+    } else {
+      // Save the modified form value
+      this.storeFields.push(formValue);
+    }
+
     this.storeFieldForm.reset();
     this.storeFieldForm.get('isVisible')?.setValue(true);
     this.isStoreSubmitted = false;
@@ -839,6 +850,11 @@ export class AddProductComponent implements OnInit {
 
   removeStoreField(storeFieldIndex: number) {
     this.storeFields.splice(storeFieldIndex, 1);
+  }
+
+  editStoreField(storeFieldIndex: number) {
+    this.storeFieldIndex = storeFieldIndex;
+    this.storeFieldForm.patchValue(this.storeFields[storeFieldIndex]);
   }
 
   removeAttribute(attributeIndex: number) {
