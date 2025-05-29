@@ -361,11 +361,18 @@
               <div class="my-6">
                 <div class="mb-3">
                   <div class="row mb-3" *ngFor="let storeField of storeFields; let i = index">
-                    <div class="col-lg-4 form-group">
+                    <div class="col-lg-2 form-group">
                       <input type="text" class="form-control" value="{{storeField.title}}" disabled>
                     </div>
-                    <div class="col-lg-6 form-group">
+                    <div class="col-lg-4 form-group">
                       <input type="text" class="form-control" value="{{storeField.description}}" disabled>
+                    </div>
+                    <div class="col-lg-2 form-group">
+                      <input type="text" class="form-control" value="Visible - {{storeField.isVisible == true ? 'Yes' : 'No'}}" disabled>
+                    </div>
+                    <div class="col-lg-2 form-group">
+                      <button class="btn btn-secondary w-100" value="Remove fields"
+                        (click)="editStoreField(i)">Edit Details</button>
                     </div>
                     <div class="col-lg-2 form-group">
                       <button class="btn btn-danger w-100" value="Remove fields"
@@ -373,25 +380,37 @@
                     </div>
                   </div>
                 </div>
-                <form [formGroup]="storeFieldForm" class="row mb-3">
-                  <div class="form-group col-lg-4">
-                    <label for="storeTitle" class="fs-6 mb-3">Title</label>
-                    <input type="text" id="storeTitle" formControlName="title" class="form-control"
-                      [ngClass]="{
-                      'is-invalid': (storeFieldControls.title.touched || isStoreSubmitted) && storeFieldControls.title.errors?.required }">
+                <div>
+                  <div class="pb-4 mb-4 border-bottom border-secondary fs-4">Store Front Fields</div>
+                  <form [formGroup]="storeFieldForm" class="row mb-3">
+                    <div class="form-group col-lg-3">
+                      <label for="storeTitle" class="fs-6 mb-3">Title</label>
+                      <input type="text" id="storeTitle" formControlName="title" class="form-control"
+                        [ngClass]="{ 'is-invalid': (storeFieldControls.title.touched || isStoreSubmitted) && storeFieldControls.title.errors?.required }">
+                    </div>
+                    <div class="form-group col-lg-4">
+                      <label for="storeDescription" class="fs-6 mb-3">Description</label>
+                      <input type="text" id="storeDescription" formControlName="description" class="form-control"
+                        [ngClass]="{ 'is-invalid': (storeFieldControls.description.touched || isStoreSubmitted) && storeFieldControls.description.errors?.required }">
+                    </div>
+                    <div class="col-lg-3 form-group">
+                      <label for="storeIsVisible" class="fs-6 mb-3">Visible</label>
+                      <select formControlName="isVisible" id="storeIsVisible" class="form-select">
+                        <option value="" disabled>-- Select an option --</option>
+                        <option *ngFor="let value of [true, false]" value="{{value}}">{{value == true ? 'Yes' : 'No'}}
+                        </option>
+                      </select>
+                    </div>
+                    <div class="form-group col-lg-2">
+                      <label for="storeSave" class="fs-6 mb-3">&nbsp;</label>
+                      <input type="button" class="btn btn-secondary w-100" (click)="onSaveStoreField()"
+                        value="Save fields">
+                    </div>
+                  </form>
+                  <div class="mb-4 fs-5 alert alert-warning p-2">
+                    Only visible store fields will be displayed in Product Details
                   </div>
-                  <div class="form-group col-lg-6">
-                    <label for="storeDescription" class="fs-6 mb-3">Description</label>
-                    <input type="text" id="storeDescription" formControlName="description" class="form-control"
-                      [ngClass]="{
-                      'is-invalid': (storeFieldControls.description.touched || isStoreSubmitted) && storeFieldControls.description.errors?.required }">
-                  </div>
-                  <div class="form-group col-lg-2">
-                    <label for="storeSave" class="fs-6 mb-3">&nbsp;</label>
-                    <input type="button" class="btn btn-secondary w-100" (click)="onSaveStoreField()"
-                      value="Save fields">
-                  </div>
-                </form>
+                </div>
               </div>
 
               <div class="d-flex align-items-center justify-content-center gap-2">

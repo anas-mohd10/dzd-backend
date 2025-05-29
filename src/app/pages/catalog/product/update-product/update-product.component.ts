@@ -21,12 +21,13 @@ import { debounceTime } from 'rxjs/operators';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { BrandService } from 'src/app/includes/services/brand.service';
 import { moveItemInArray } from '@angular/cdk/drag-drop';
-import { CdkDragDrop} from '@angular/cdk/drag-drop';
+import { CdkDragDrop } from '@angular/cdk/drag-drop';
 
 interface StoreField {
   title: string;
   description: string;
   isFilter: boolean;
+  isVisible: boolean;
 }
 
 interface AddOnOption {
@@ -172,6 +173,7 @@ export class UpdateProductComponent implements OnInit {
   historyLists: Array<any> = [];
   totalResults: number = 0;
   totalPages: number = 1;
+  storeFieldIndex: number | null;
 
   constructor(
     private ActivatedRoute: ActivatedRoute,
@@ -224,7 +226,7 @@ export class UpdateProductComponent implements OnInit {
     });
   }
 
-  dropProductImages (event: any) {
+  dropProductImages(event: any) {
     let items = [...this.images];
     moveItemInArray(items, event.previousIndex, event.currentIndex);
     this.images = [...items];
@@ -491,63 +493,63 @@ export class UpdateProductComponent implements OnInit {
     this.parentForm.get('thumbnail')?.setValue(event.path);
   }
 
-productMediaClicked(event: any) {
-  // For update product view, we need to check for both _id and path
-  const eventPath = event.path;
-  const eventId = event._id;
+  productMediaClicked(event: any) {
+    // For update product view, we need to check for both _id and path
+    const eventPath = event.path;
+    const eventId = event._id;
 
-  // Check if the item already exists in our images array
-  let isExists: boolean = this.images.some(
-    (item: any) => (item._id && item._id === eventId) || (item.path && item.path === eventPath)
-  );
-
-  if (isExists) {
-    // If it exists, remove it
-    this.images = this.images.filter(
-      (item: any) => !((item._id && item._id === eventId) || (item.path && item.path === eventPath))
+    // Check if the item already exists in our images array
+    let isExists: boolean = this.images.some(
+      (item: any) => (item._id && item._id === eventId) || (item.path && item.path === eventPath)
     );
-    this.HotToastService.info('Image removed from product');
-  } else {
-    // If it doesn't exist, add it
-    this.images.push(event);
-    this.HotToastService.success('Image added to product');
-  }
 
-  // Update form control with the current images
-  if (this.form && this.form.get('files')) {
-    let files = this.images.map((item: any) => item.path) || [];
-    this.form.get('files')?.setValue(files);
-  }
-
-  // Force change detection
-  if (this.ChangeDetectorRef) {
-    this.ChangeDetectorRef.markForCheck();
-  }
-}
-
-productIconClicked(event: any, type: string = 'add') {
-  const iconPath = type === 'remove' ? event : event.path;
-
-  let isExists: boolean = this.icons.some(item => item === iconPath);
-
-  if (isExists) {
-    // Remove the icon
-    const index = this.icons.findIndex(item => item === iconPath);
-    if (index !== -1) {
-      this.icons.splice(index, 1);
-      this.HotToastService.info('Icon removed from product');
+    if (isExists) {
+      // If it exists, remove it
+      this.images = this.images.filter(
+        (item: any) => !((item._id && item._id === eventId) || (item.path && item.path === eventPath))
+      );
+      this.HotToastService.info('Image removed from product');
+    } else {
+      // If it doesn't exist, add it
+      this.images.push(event);
+      this.HotToastService.success('Image added to product');
     }
-  } else {
-    // Add the icon
-    this.icons.push(event.path);
-    this.HotToastService.success('Icon added to product');
+
+    // Update form control with the current images
+    if (this.form && this.form.get('files')) {
+      let files = this.images.map((item: any) => item.path) || [];
+      this.form.get('files')?.setValue(files);
+    }
+
+    // Force change detection
+    if (this.ChangeDetectorRef) {
+      this.ChangeDetectorRef.markForCheck();
+    }
   }
 
-  // Force change detection
-  if (this.ChangeDetectorRef) {
-    this.ChangeDetectorRef.markForCheck();
+  productIconClicked(event: any, type: string = 'add') {
+    const iconPath = type === 'remove' ? event : event.path;
+
+    let isExists: boolean = this.icons.some(item => item === iconPath);
+
+    if (isExists) {
+      // Remove the icon
+      const index = this.icons.findIndex(item => item === iconPath);
+      if (index !== -1) {
+        this.icons.splice(index, 1);
+        this.HotToastService.info('Icon removed from product');
+      }
+    } else {
+      // Add the icon
+      this.icons.push(event.path);
+      this.HotToastService.success('Icon added to product');
+    }
+
+    // Force change detection
+    if (this.ChangeDetectorRef) {
+      this.ChangeDetectorRef.markForCheck();
+    }
   }
-}
 
 
   removeProductMedia(image: any) {
@@ -726,7 +728,7 @@ productIconClicked(event: any, type: string = 'add') {
         cover: this.primaryCategory.value.cover,
         hierarchies: this.primaryCategory.value.hierarchies,
       } : null,
-      categories: this.categories.map((category: any) => ({
+      categories: this.categories.filter(category => category != null).map((category: any) => ({
         name: category.name,
         slug: category.slug,
         hierarchies: category.hierarchies,
@@ -871,22 +873,9 @@ productIconClicked(event: any, type: string = 'add') {
     this.form.patchValue({ slug: `${slug}-${this.productDetails?.sku}` });
   }
 
-  // ngOnInit(): void {
-  //   this.base = environment.base;
-
-  //   this.BrandService.getActiveBrands().subscribe({
-  //   next: (res: any) => {
-  //     if (res.errorCode == 0) {
-  //       this.brands = res.result;
-  //       if (this.productDetails?.brand) {
-  //         this.selectedBrand = this.brands.find(brand => brand.slug === this.productDetails.brand.slug);
-  //       }
-
-  //       this.ChangeDetectorRef.markForCheck();
-  //     }
-  //   },
-  //   error: (err: any) => { }
-  // });
+  onToggleStoreField(event: { toggleState: boolean, switchId: string }) {
+    this.storeFieldForm.get('isVisible')?.setValue(event.toggleState);
+  }
 
   ngOnInit(): void {
     this.base = environment.base;
@@ -968,6 +957,7 @@ productIconClicked(event: any, type: string = 'add') {
       title: new FormControl('', Validators.required),
       description: new FormControl('', Validators.required),
       isFilter: new FormControl(false),
+      isVisible: new FormControl(true),
     });
 
     this.productSlug = this.ActivatedRoute.snapshot.queryParams.product || '';
@@ -1051,7 +1041,7 @@ productIconClicked(event: any, type: string = 'add') {
       category: new FormControl(null), // Default category
       parentCategories: new FormControl('', Validators.required), //Main category
       thumbnail: new FormControl(null),
-      videoThumbnail:new FormControl(null),
+      videoThumbnail: new FormControl(null),
       isActive: new FormControl('true'),
       sku: new FormControl('', Validators.required),
       tax: new FormControl(''),
@@ -1188,11 +1178,11 @@ productIconClicked(event: any, type: string = 'add') {
       origin: this.productDetails.localizedOrigin?.[primaryLang] || this.productDetails.origin,
       details: {
         description: this.productDetails.localizedDetails?.description?.[primaryLang] ||
-                    this.productDetails.details?.description,
+          this.productDetails.details?.description,
         features: this.productDetails.localizedDetails?.features?.[primaryLang] ||
-                 this.productDetails.details?.features,
+          this.productDetails.details?.features,
         longDescription: this.productDetails.localizedDetails?.longDescription?.[primaryLang] ||
-                        this.productDetails.details?.longDescription,
+          this.productDetails.details?.longDescription,
       },
       metaTitle: this.productDetails.localizedMetaTitles?.[primaryLang] || this.productDetails.metaTitle,
       metaDescription: this.productDetails.localizedMetaDescriptions?.[primaryLang] || this.productDetails.metaDescription,
@@ -1210,14 +1200,26 @@ productIconClicked(event: any, type: string = 'add') {
     // Get the form values
     const formValue = this.storeFieldForm.value;
 
-    // Save the modified form value
-    this.storeFields.push(formValue);
+    if (this.storeFieldIndex) {
+      this.storeFields[this.storeFieldIndex] = formValue;
+      this.storeFieldIndex = null;
+    } else {
+      // Save the modified form value
+      this.storeFields.push(formValue);
+    }
+
     this.storeFieldForm.reset();
+    this.storeFieldForm.get('isVisible')?.setValue(true);
     this.isStoreSubmitted = false;
   }
 
   removeStoreField(storeFieldIndex: number) {
     this.storeFields.splice(storeFieldIndex, 1);
+  }
+
+  editStoreField(storeFieldIndex: number) {
+    this.storeFieldIndex = storeFieldIndex;
+    this.storeFieldForm.patchValue(this.storeFields[storeFieldIndex]);
   }
 
   removeAttribute(attributeIndex: number) {
@@ -1278,32 +1280,32 @@ productIconClicked(event: any, type: string = 'add') {
     });
   }
 
- handleTagIcons(event: any) {
-  const tagPath = event.path;
+  handleTagIcons(event: any) {
+    const tagPath = event.path;
 
-  if (this.tagIcons.includes(tagPath)) {
-    this.tagIcons = this.tagIcons.filter(item => item !== tagPath);
+    if (this.tagIcons.includes(tagPath)) {
+      this.tagIcons = this.tagIcons.filter(item => item !== tagPath);
+      this.HotToastService.info('Tag removed from product');
+    } else {
+      this.tagIcons.push(tagPath);
+      this.HotToastService.success('Tag added to product');
+    }
+
+    // Force change detection
+    if (this.ChangeDetectorRef) {
+      this.ChangeDetectorRef.markForCheck();
+    }
+  }
+
+  removeTagIcons(icon: any) {
+    this.tagIcons = this.tagIcons.filter(item => item !== icon);
     this.HotToastService.info('Tag removed from product');
-  } else {
-    this.tagIcons.push(tagPath);
-    this.HotToastService.success('Tag added to product');
-  }
 
-  // Force change detection
-  if (this.ChangeDetectorRef) {
-    this.ChangeDetectorRef.markForCheck();
+    // Force change detection
+    if (this.ChangeDetectorRef) {
+      this.ChangeDetectorRef.markForCheck();
+    }
   }
-}
-
-removeTagIcons(icon: any) {
-  this.tagIcons = this.tagIcons.filter(item => item !== icon);
-  this.HotToastService.info('Tag removed from product');
-
-  // Force change detection
-  if (this.ChangeDetectorRef) {
-    this.ChangeDetectorRef.markForCheck();
-  }
-}
 
   logPagination(event: { pageIndex: number; pageSize: number }) {
     this.historyPageIndex = event.pageIndex;
