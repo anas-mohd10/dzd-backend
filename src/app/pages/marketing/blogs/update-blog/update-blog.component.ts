@@ -164,7 +164,8 @@ export class UpdateBlogComponent implements OnInit {
             this.form.patchValue({ category: categoryDoc?._id });
             this.form.patchValue({ _id: res.result._id });
           }
-          this.previews = { thumbnail: res.result.thumbnail?.path, cover: res.result.cover?.path, authorThumbnail: res.result.authorThumbnail.path };
+
+          this.previews = { thumbnail: res.result.thumbnail?.path, cover: res.result.cover?.path, authorThumbnail: res.result.authorThumbnail?.path };
           this.selectedProducts = res.result.products || [];
           this.blogDetails = res.result;
           this.ChangeDetectorRef.markForCheck();
@@ -175,6 +176,8 @@ export class UpdateBlogComponent implements OnInit {
       }
     });
   }
+
+
 
   selectedProducts: any[] = [];
   dropdownInputs: any = {
