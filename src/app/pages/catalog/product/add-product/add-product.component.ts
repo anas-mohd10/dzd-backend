@@ -835,7 +835,8 @@ export class AddProductComponent implements OnInit {
     // Get the form values
     const formValue = this.storeFieldForm.value;
 
-    if (this.storeFieldIndex) {
+    if (this.storeFieldIndex !== null) {
+      formValue.isVisible = formValue.isVisible == 'true' ? true : false;
       this.storeFields[this.storeFieldIndex] = formValue;
       this.storeFieldIndex = null;
     } else {
