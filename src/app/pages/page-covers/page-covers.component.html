@@ -73,19 +73,21 @@
             </div>
 
             <div class="mb-3">
-                <label for="desktop" class="fs-6 mb-3">Cover image for desktop screens</label>
-                <div id="desktop" class="h-auto ratio ratio-21x9">
-                    <app-assets (mediaClicked)="onMediaTriggered('desktop', $event,'add')"
-                        [previewDetails]="desktop"></app-assets>
-                </div>
-                <div class="mt-2" *ngIf="desktop">
-                    <button class="btn btn-danger w-100"
-                        (click)="onMediaTriggered('desktop', null, 'remove')">Remove</button>
+                <label for="desktop" class="fs-6 mb-3 required">Cover image for desktop screens</label>
+                <div class="position-relative">
+                    <div id="desktop" class="h-auto ratio ratio-21x9">
+                        <app-assets (mediaClicked)="onMediaTriggered('desktop', $event,'add')" 
+                            [previewDetails]="desktop"></app-assets>
+                    </div>
+                    <div class="mt-2" *ngIf="desktop">
+                        <button class="btn btn-danger w-100"
+                            (click)="onMediaTriggered('desktop', null, 'remove')">Remove</button>
+                    </div>
                 </div>
             </div>
 
             <div class="mb-3">
-                <label for="mobile" class="fs-6 mb-3">Cover image for mobile screens</label>
+                <label for="mobile" class="fs-6 mb-3 required">Cover image for mobile screens</label>
                 <div id="mobile" class="h-auto ratio ratio-21x9">
                     <app-assets (mediaClicked)="onMediaTriggered('mobile', $event,'add')"
                         [previewDetails]="mobile"></app-assets>
