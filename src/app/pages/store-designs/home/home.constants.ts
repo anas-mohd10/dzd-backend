@@ -27,6 +27,7 @@ export const widgetImageTypes: Array<string> = [
     'trending-teasers',
     'text-twirl',
     'vibrant-banner',
+    'vibrant-video-banner',
     'animation-banner',
     'brick-mansory-grid',
     'primary-triple-grid',
