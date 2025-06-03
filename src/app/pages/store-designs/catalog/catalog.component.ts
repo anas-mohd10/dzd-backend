@@ -297,7 +297,7 @@ export class CatalogComponent implements OnInit {
       icon: 'assets/widgets/image-slider.png',
       description:
         'The following widget can be used to show images within a particular category. The widget contains images.',
-    },  {
+    }, {
       title: 'Quad Squares',
       type: 'quad-square',
       icon: 'assets/widgets/quad-sqaure.png',
@@ -425,7 +425,7 @@ export class CatalogComponent implements OnInit {
     'animation-banner',
     'brick-mansory-grid',
     'primary-triple-grid',
-    'full-banner',  
+    'full-banner',
     'modern-carousel',
     'key-points-grid',
   ];
@@ -582,7 +582,7 @@ export class CatalogComponent implements OnInit {
     private BlogService: BlogService
   ) { }
 
-  onChangeProductType(){
+  onChangeProductType() {
 
   }
 
@@ -643,7 +643,7 @@ export class CatalogComponent implements OnInit {
           this.Toast.error(res.message);
         }
       },
-      error: (err: any) => {},
+      error: (err: any) => { },
     });
   }
 
@@ -826,7 +826,7 @@ export class CatalogComponent implements OnInit {
               : '';
             this.widgetForm.patchValue(this.widgetImagePreview);
           }
-          if (this.widgetDetails?.widgetType == 'blog') {
+          if (this.widgetDetails?.widgetType == 'blogs') {
             this.widgetBlogs = this.widgetDetails?.blogs;
             this.getBlogs('');
           }
@@ -867,8 +867,8 @@ export class CatalogComponent implements OnInit {
           }
           this.widgetDetails.collection
             ? this.widgetCollection.setValue(
-                this.widgetDetails?.collection?._id
-              )
+              this.widgetDetails?.collection?._id
+            )
             : null;
           if (this.widgetProductTypes.includes(this.widgetDetails.type)) {
             this.widgetDetails.products.length > 0
@@ -889,8 +889,8 @@ export class CatalogComponent implements OnInit {
           }
           this.widgetDetails?.endDate
             ? this.saleForm
-                .get('endDate')
-                ?.setValue(new Date(this.widgetDetails?.endDate))
+              .get('endDate')
+              ?.setValue(new Date(this.widgetDetails?.endDate))
             : null;
           this.designForm.patchValue(this.widgetDetails?.styles);
           this.ChangeDetectorRef.markForCheck();
@@ -944,9 +944,9 @@ export class CatalogComponent implements OnInit {
       case 'mobile-hover':
         this.form.get('hovering.mobile')?.setValue(event.toggleState);
         break;
-        case 'reverse-widget':
-          this.form.get('isReversed')?.setValue(event.toggleState);
-          break;
+      case 'reverse-widget':
+        this.form.get('isReversed')?.setValue(event.toggleState);
+        break;
     }
   }
   //Add widgets ends here
@@ -1351,7 +1351,7 @@ export class CatalogComponent implements OnInit {
               : '';
             this.widgetForm.patchValue(this.widgetImagePreview);
           }
-          if (this.widgetDetails?.widgetType == 'blog') {
+          if (this.widgetDetails?.widgetType == 'blogs') {
             this.widgetBlogs = this.widgetDetails?.blogs;
             this.getBlogs('');
           }
@@ -1412,8 +1412,8 @@ export class CatalogComponent implements OnInit {
           }
           this.widgetDetails.collection
             ? this.widgetCollection.setValue(
-                this.widgetDetails?.collection?._id
-              )
+              this.widgetDetails?.collection?._id
+            )
             : null;
           if (this.widgetProductTypes.includes(this.widgetDetails.type)) {
             this.widgetDetails.products.length > 0
@@ -1481,7 +1481,7 @@ export class CatalogComponent implements OnInit {
       }
       widgetPayload['widgetImages'] = widgetImages;
     } else if (this.widgetDetails?.widgetType == 'blogs') {
-      let widgetBlogs = [];
+      widgetPayload['blogs'] = this.widgetBlogs;
     } else if (this.widgetDetails?.widgetType == 'testimonial-cards') {
       let widgetTestimonials = this.widgetTestimonials.map(
         (testimonial: any) => testimonial._id
@@ -1765,6 +1765,11 @@ export class CatalogComponent implements OnInit {
         }
       },
     });
+  }
+
+  widgetBlogsChange(event: any) {
+    this.widgetBlogs = event;
+    this.ChangeDetectorRef.markForCheck();
   }
 
   ngOnInit(): void {
