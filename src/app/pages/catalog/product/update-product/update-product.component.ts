@@ -1034,28 +1034,6 @@ export class UpdateProductComponent implements OnInit {
     this.form.patchValue({ slug });
   }
 
-  generateMetaTitle() {
-    const name = this.form.get('name')?.value || '';
-    const metaTitle = `${name} - ${this.settings.name}`;
-    this.form.patchValue({ metaTitle });
-  }
-
-  validateMetaDetails(type: 'metaTitle' | 'metaDescription') {
-    const metaDoc = this.form.get(type)?.value;
-    switch (type) {
-      case 'metaTitle':
-        if (metaDoc.length < 50 || metaDoc.length > 60) {
-          return 'It is ideal to keep the meta title between 50 and 60 characters';
-        }
-        break;
-      case 'metaDescription':
-        if (metaDoc.length < 100 || metaDoc.length > 150) {
-          return 'It is ideal to keep the meta description between 100 and 150 characters';
-        }
-        break;
-    }
-  }
-
   ngOnInit(): void {
     this.base = environment.base;
 
@@ -1348,6 +1326,29 @@ export class UpdateProductComponent implements OnInit {
       error: (err: any) => { },
     });
   }
+
+  generateMetaTitle() {
+    const name = this.form.get('name')?.value || '';
+    const metaTitle = `${name} - ${this.settings.name}`;
+    this.form.patchValue({ metaTitle });
+  }
+
+  validateMetaDetails(type: 'metaTitle' | 'metaDescription') {
+    const metaDoc = this.form.get(type)?.value;
+    switch (type) {
+      case 'metaTitle':
+        if (metaDoc.length < 50 || metaDoc.length > 60) {
+          return 'It is ideal to keep the meta title between 50 and 60 characters';
+        }
+        break;
+      case 'metaDescription':
+        if (metaDoc.length < 100 || metaDoc.length > 150) {
+          return 'It is ideal to keep the meta description between 100 and 150 characters';
+        }
+        break;
+    }
+  }
+
   updateFormWithLocalizedContent() {
     if (!this.productDetails || !this.settings || !this.settings.primaryLang) {
       console.warn('Cannot update form with localized content, missing data:', {
