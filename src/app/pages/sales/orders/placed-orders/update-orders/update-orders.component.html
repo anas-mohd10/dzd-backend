@@ -475,7 +475,7 @@
                   </div>
                 </div>
                 <ng-container *ngFor="let product of order?.products; let i = index">
-                  <div class="mb-8 fs-5" *ngIf="product?.isAddOn == true && settings?.isAddOnLabelEnabled == true">
+                  <div class="mb-8 fs-5" *ngIf="product?.isAddOn == true">
                     <span>
                       <svg height="18" width="18" data-slot="icon" fill="none" stroke-width="1.5" stroke="currentColor"
                         viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
@@ -513,7 +513,7 @@
                           <div>
                             <div class="mb-2">
                               {{product?.productDetails?.name || product?.productId?.name}}
-                              <ng-container *ngIf="product?.isAddOn && product?.isAddOn == true && settings?.isAddOnLabelEnabled == true">
+                              <ng-container *ngIf="product?.isAddOn && product?.isAddOn == true">
                                 <span class="fs-6 fw-normal badge badge-success">
                                   {{settings?.addOnLabel}}
                                 </span>
