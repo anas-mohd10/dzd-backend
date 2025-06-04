@@ -526,11 +526,13 @@ export class CatalogComponent implements OnInit, OnDestroy {
   redirectionDetails: any;
   duplicatedWidget: any;
   duplicateRef: BsModalRef<unknown>;
+  widgetBlog: FormControl = new FormControl('');
   selectedProductType: string = 'products';
   previewDetails: string;
   hyperLinkHeroThumbnail: string = '';
   widgetForm: any;
-  blogs: any;
+  blogs: Array<any> = [];
+  blogsMap: any = {};
   widgetTestimonials: Array<any> = [];
   cmsPages: Array<any> = [
     { title: 'FAQs', value: '/faqs' },
@@ -802,6 +804,19 @@ export class CatalogComponent implements OnInit, OnDestroy {
     this.designForm.get('backgroundImage')?.setValue(event._id);
   }
 
+
+  saveBlogs() {
+    let blogItem = this.blogsMap[this.widgetBlog.value]
+    this.widgetBlogs.push(blogItem)
+    this.widgetBlog.setValue('')
+    this.Toast.success('Blog added successfully')
+  }
+
+  removeBlog(blogIndex: number) {
+    this.widgetBlogs.splice(blogIndex, 1)
+    this.Toast.info('Blog removed successfully')
+  }
+
   openDesign(template: TemplateRef<any>, widget: any) {
     this.designRef = this.BsModalService.show(template, {
       class: 'modal-lg modal-dialog-centered',
@@ -811,6 +826,7 @@ export class CatalogComponent implements OnInit, OnDestroy {
       next: (res: any) => {
         if (res?.errorCode == 0) {
           this.widgetDetails = res?.result;
+          console.log("widgetDetails", this.widgetDetails)
           if (this.widgetImageTypes.includes(this.widgetDetails?.widgetType)) {
             for (let widgetImage of this.widgetDetails?.widgetImages) {
               this.widgetImages.push({
@@ -831,7 +847,10 @@ export class CatalogComponent implements OnInit, OnDestroy {
             this.widgetForm.patchValue(this.widgetImagePreview);
           }
           if (this.widgetDetails?.widgetType == 'blogs') {
+            console.log("reached here ---wideget type is blogs")
+            console.log("widgetDetails", this.widgetDetails)  
             this.widgetBlogs = this.widgetDetails?.blogs;
+            console.log("widgetBlogs", this.widgetBlogs)
             this.isAutoSync = this.widgetDetails?.isAutoSync || false;
             this.getBlogs('');
           }
@@ -1104,16 +1123,29 @@ export class CatalogComponent implements OnInit, OnDestroy {
   }
 
   getBlogs(query: string) {
-    this.BlogService.blogs({ keyword: query, page: 1, limit: 100 }).subscribe({
+    console.log("reached here")
+    const blogIds: string[] = this.widgetBlogs.map((blog: any) => blog?._id);
+
+    this.BlogService.blogs({
+      keyword: query,
+      page: 1,
+      limit: 100,
+      blogIds
+    }).subscribe({
       next: (res: any) => {
         if (res?.errorCode == 0) {
           this.blogs = res?.result?.data;
+          if (res.result.data && res.result.data.length > 0) {
+            res.result.data.map((blog: any) => {
+              this.blogsMap[blog.slug] = blog;
+            })
+          }
           this.ChangeDetectorRef.markForCheck();
         }
       },
     });
   }
-  // Get redirection items ends here --------------------------
+
 
   continueRedirectionQuery() {
     switch (this.widgetForm.value.redirectionType) {
@@ -1198,7 +1230,6 @@ export class CatalogComponent implements OnInit, OnDestroy {
     this.saleForm.reset()
     this.saleForm.get('saleButtonVisibility')?.setValue(true)
     this.isAutoSync = false
-    this.stopAutoSync()
   }
 
   isExpired(date: string) {
@@ -1359,6 +1390,7 @@ export class CatalogComponent implements OnInit, OnDestroy {
             this.widgetForm.patchValue(this.widgetImagePreview);
           }
           if (this.widgetDetails?.widgetType == 'blogs') {
+            console.log("reached here ---wideget type is blogs")
             this.widgetBlogs = this.widgetDetails?.blogs;
             this.isAutoSync = this.widgetDetails?.isAutoSync || false;
             this.getBlogs('');
@@ -1475,7 +1507,6 @@ export class CatalogComponent implements OnInit, OnDestroy {
     this.widgetImagePreview = null;
     this.form.reset();
     this.isAutoSync = false;
-    this.stopAutoSync();
   }
 
   updateWidget(type?: string) {
@@ -1491,7 +1522,8 @@ export class CatalogComponent implements OnInit, OnDestroy {
       }
       widgetPayload['widgetImages'] = widgetImages;
     } else if (this.widgetDetails?.widgetType == 'blogs') {
-      widgetPayload['blogs'] = this.widgetBlogs;
+      let blogItems = this.widgetBlogs?.map((widgetBlog: any) => widgetBlog._id);
+      widgetPayload['blogs'] = blogItems;
       widgetPayload['isAutoSync'] = this.isAutoSync;
     } else if (this.widgetDetails?.widgetType == 'testimonial-cards') {
       let widgetTestimonials = this.widgetTestimonials.map(
@@ -1783,58 +1815,13 @@ export class CatalogComponent implements OnInit, OnDestroy {
     this.ChangeDetectorRef.markForCheck();
   }
 
-  toggleAutoSync(value: boolean) {
-    this.isAutoSync = value;
-    if (this.isAutoSync) {
-      this.startAutoSync();
-    } else {
-      this.stopAutoSync();
-    }
-    this.ChangeDetectorRef.markForCheck();
-  }
+ 
 
   ngOnDestroy(): void {
-    this.stopAutoSync();
   }
 
-  startAutoSync() {
-    this.stopAutoSync();
-    this.syncInterval = setInterval(() => {
-      this.syncLatestBlogs();
-    }, this.SYNC_TIME);
-  }
 
-  stopAutoSync() {
-    if (this.syncInterval) {
-      clearInterval(this.syncInterval);
-      this.syncInterval = null;
-    }
-  }
-
-  syncLatestBlogs() {
-    if (!this.widgetBlogs || this.widgetBlogs.length === 0) return;
-
-    this.BlogService.blogs({
-      page: 1,
-      limit: 10,
-      sortBy: 'createdAt',
-      sortOrder: 'desc'
-    }).subscribe({
-      next: (res: any) => {
-        if (res?.errorCode == 0) {
-          if (this.widgetBlogs.length > 0 && res?.result?.data.length > 0) {
-            const updatedBlogs = this.widgetBlogs.map((widgetBlog: any) => {
-              const latestBlog = res.result.data.find((blog: any) => blog._id === widgetBlog._id);
-              return latestBlog || widgetBlog;
-            });
-            this.widgetBlogs = updatedBlogs;
-            this.Toast.info('Blogs synced successfully');
-            this.ChangeDetectorRef.markForCheck();
-          }
-        }
-      }
-    });
-  }
+ 
 
   ngOnInit(): void {
     this.homeWidgets = this.widgets;
