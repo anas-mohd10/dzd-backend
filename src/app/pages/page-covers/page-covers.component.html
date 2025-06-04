@@ -76,13 +76,18 @@
                 <label for="desktop" class="fs-6 mb-3 required">Cover image for desktop screens</label>
                 <div class="position-relative">
                     <div id="desktop" class="h-auto ratio ratio-21x9">
-                        <app-assets (mediaClicked)="onMediaTriggered('desktop', $event,'add')" 
+                        <app-assets (mediaClicked)="onMediaTriggered('desktop', $event,'add')"
                             [previewDetails]="desktop"></app-assets>
                     </div>
                     <div class="mt-2" *ngIf="desktop">
                         <button class="btn btn-danger w-100"
                             (click)="onMediaTriggered('desktop', null, 'remove')">Remove</button>
                     </div>
+                </div>
+                <!-- Add validation message -->
+                <div *ngIf="(formControls.desktopCover.touched || isSubmitted) && formControls.desktopCover.errors?.required"
+                    class="text-danger small mt-1">
+                    Desktop cover image is required
                 </div>
             </div>
 
@@ -95,6 +100,11 @@
                 <div class="mt-2" *ngIf="mobile">
                     <button class="btn btn-danger w-100"
                         (click)="onMediaTriggered('mobile', null, 'remove')">Remove</button>
+                </div>
+                <!-- Add validation message -->
+                <div *ngIf="(formControls.mobileCover.touched || isSubmitted) && formControls.mobileCover.errors?.required"
+                    class="text-danger small mt-1">
+                    Mobile cover image is required
                 </div>
             </div>
 

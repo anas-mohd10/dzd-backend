@@ -51,8 +51,8 @@ export class PageCoversComponent implements OnInit {
     this.form = new FormGroup({
       title: new FormControl('', Validators.required),
       path: new FormControl('', Validators.required),
-      desktopCover: new FormControl("", Validators.required),
-      mobileCover: new FormControl("", Validators.required),
+      desktopCover: new FormControl(null, Validators.required),
+      mobileCover: new FormControl(null, Validators.required),
       isActive: new FormControl(true),
     });
   }
