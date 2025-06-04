@@ -65,21 +65,32 @@ export class BrandCardComponent implements OnInit {
 
   getBrands() {
     setTimeout(() => {
-      this.BrandService.searchBrands({
-        ...this.form.value,
+      const formValues = this.form.value;
+      const params: any = {
+        keyword: formValues.keyword,
         isArchive: false,
         page: this.page,
         limit: this.limit
-      }).subscribe((res: any) => {
-        if (res?.errorCode == 0) {
-          this.brands = res?.result?.data
-          this.page = res?.result?.page
-          this.totalResults = res?.result?.totalResults
-          this.isLastPage = res?.result?.isLastPage
-          this.totalPages = res?.result?.totalPages
-          this.ChangeDetectorRef.markForCheck()
+      };
+
+      if (formValues.isActive !== "") {
+        if (formValues.isActive === "true") {
+          params.isActive = true;
+        } else if (formValues.isActive === "false") {
+          params.isActive = false;
+          params.isArchive = false; 
         }
-      })
-    }, 800)
+      }
+      this.BrandService.searchBrands(params).subscribe((res: any) => {
+        if (res?.errorCode == 0) {
+          this.brands = res?.result?.data;
+          this.page = res?.result?.page;
+          this.totalResults = res?.result?.totalResults;
+          this.isLastPage = res?.result?.isLastPage;
+          this.totalPages = res?.result?.totalPages;
+          this.ChangeDetectorRef.markForCheck();
+        }
+      });
+    }, 800);
   }
 }
