@@ -438,7 +438,7 @@ export class CatalogComponent implements OnInit, OnDestroy {
     { key: 'Price: Low to High', value: 'ascending' },
     { key: 'Price: High to Low', value: 'descending' },
   ];
-  widgetBlogs: any;
+  widgetBlogs: Array<any> = [];
   settings: any;
   domain: string = '';
   collections: Array<any> = [];
@@ -817,6 +817,33 @@ export class CatalogComponent implements OnInit, OnDestroy {
     this.Toast.info('Blog removed successfully')
   }
 
+
+  getBlogs(query: string) {
+    console.log("inside getBlogs")
+    const blogIds: string[] = this.widgetBlogs.map((blog: any) => blog?._id);
+    console.log("blogIds", blogIds)
+    this.BlogService.blogs({
+      keyword: query,
+      page: 1,
+      limit: 100,
+      blogIds
+    }).subscribe({
+      next: (res: any) => {
+        if (res?.errorCode == 0) {
+          this.blogs = res?.result?.data;
+          if (res.result.data && res.result.data.length > 0) {
+            res.result.data.map((blog: any) => {
+              this.blogsMap[blog.slug] = blog;
+            })
+          }
+          this.ChangeDetectorRef.markForCheck();
+        }
+      },
+    });
+  }
+
+
+
   openDesign(template: TemplateRef<any>, widget: any) {
     this.designRef = this.BsModalService.show(template, {
       class: 'modal-lg modal-dialog-centered',
@@ -847,12 +874,7 @@ export class CatalogComponent implements OnInit, OnDestroy {
             this.widgetForm.patchValue(this.widgetImagePreview);
           }
           if (this.widgetDetails?.widgetType == 'blogs') {
-            console.log("reached here ---wideget type is blogs")
-            console.log("widgetDetails", this.widgetDetails)  
             this.widgetBlogs = this.widgetDetails?.blogs;
-            console.log("widgetBlogs", this.widgetBlogs)
-            this.isAutoSync = this.widgetDetails?.isAutoSync || false;
-            this.getBlogs('');
           }
           if (this.widgetDetails?.widgetType == 'testimonial-cards') {
             this.widgetTestimonials = this.widgetDetails?.testimonials;
@@ -939,6 +961,12 @@ export class CatalogComponent implements OnInit, OnDestroy {
       },
     });
   }
+
+  widgetBlogsChange(event: any) {
+    this.widgetBlogs = event;
+    this.ChangeDetectorRef.markForCheck();
+  }
+
 
   focusWidget(widget: WidgetProps) {
     this.focusedWidget = widget;
@@ -1122,29 +1150,6 @@ export class CatalogComponent implements OnInit, OnDestroy {
     });
   }
 
-  getBlogs(query: string) {
-    console.log("reached here")
-    const blogIds: string[] = this.widgetBlogs.map((blog: any) => blog?._id);
-
-    this.BlogService.blogs({
-      keyword: query,
-      page: 1,
-      limit: 100,
-      blogIds
-    }).subscribe({
-      next: (res: any) => {
-        if (res?.errorCode == 0) {
-          this.blogs = res?.result?.data;
-          if (res.result.data && res.result.data.length > 0) {
-            res.result.data.map((blog: any) => {
-              this.blogsMap[blog.slug] = blog;
-            })
-          }
-          this.ChangeDetectorRef.markForCheck();
-        }
-      },
-    });
-  }
 
 
   continueRedirectionQuery() {
@@ -1390,10 +1395,7 @@ export class CatalogComponent implements OnInit, OnDestroy {
             this.widgetForm.patchValue(this.widgetImagePreview);
           }
           if (this.widgetDetails?.widgetType == 'blogs') {
-            console.log("reached here ---wideget type is blogs")
             this.widgetBlogs = this.widgetDetails?.blogs;
-            this.isAutoSync = this.widgetDetails?.isAutoSync || false;
-            this.getBlogs('');
           }
           if (this.widgetDetails?.widgetType == 'testimonial-cards') {
             this.widgetTestimonials = this.widgetDetails?.testimonials;
@@ -1510,7 +1512,7 @@ export class CatalogComponent implements OnInit, OnDestroy {
   }
 
   updateWidget(type?: string) {
-    let widgetPayload = {
+    let widgetPayload = { 
       ...this.form.value,
       refid: this.widgetDetails?.refid,
     };
@@ -1522,9 +1524,8 @@ export class CatalogComponent implements OnInit, OnDestroy {
       }
       widgetPayload['widgetImages'] = widgetImages;
     } else if (this.widgetDetails?.widgetType == 'blogs') {
-      let blogItems = this.widgetBlogs?.map((widgetBlog: any) => widgetBlog._id);
-      widgetPayload['blogs'] = blogItems;
-      widgetPayload['isAutoSync'] = this.isAutoSync;
+      let blogItems = this.widgetBlogs?.map((widgetBlog: any) => widgetBlog._id)
+      widgetPayload = { ...widgetPayload, blogs: blogItems };
     } else if (this.widgetDetails?.widgetType == 'testimonial-cards') {
       let widgetTestimonials = this.widgetTestimonials.map(
         (testimonial: any) => testimonial._id
@@ -1810,10 +1811,7 @@ export class CatalogComponent implements OnInit, OnDestroy {
     });
   }
 
-  widgetBlogsChange(event: any) {
-    this.widgetBlogs = event;
-    this.ChangeDetectorRef.markForCheck();
-  }
+ 
 
  
 
