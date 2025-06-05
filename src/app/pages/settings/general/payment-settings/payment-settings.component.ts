@@ -41,6 +41,7 @@ export class PaymentSettingsComponent implements OnInit {
     { title: 'Razorpay', id: 'razorpay', icon: `${environment.base}razorpay.png` },
     { title: 'Rak Bank', id: 'rakbank', icon: `${environment.base}rakbank.png` },
     { title: 'Tabby', id: 'tabby', icon: `${environment.base}tabby.png` },
+    { title: 'Tamara', id: 'tamara', icon: `${environment.base}tamara.png` },
   ];
   displayIcon: string = '';
   modalRef?: BsModalRef;
@@ -54,6 +55,7 @@ export class PaymentSettingsComponent implements OnInit {
     'network-international-tokenized': ['outletReference', 'apiKey', 'apiUrl'],
     qi: ['secretKey'],
     razorpay: ['secretKey', 'keyId'],
+    tamara: ['apiUrl', 'publicKey', 'privateKey', 'payByOption']
   };
 
   get formControls() {
@@ -66,7 +68,7 @@ export class PaymentSettingsComponent implements OnInit {
     private ChangeDetectorRef: ChangeDetectorRef,
     private BsModalService: BsModalService,
     private AppSettingsService: AppSettingsService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.form = new FormGroup({
@@ -84,6 +86,7 @@ export class PaymentSettingsComponent implements OnInit {
       outletReference: new FormControl(''),
       publicKey: new FormControl(''),
       privateKey: new FormControl(''),
+      payByOption: new FormControl(''),
       region: new FormControl(''),
       serverKey: new FormControl(''),
       apiUrl: new FormControl(''),
@@ -204,12 +207,15 @@ export class PaymentSettingsComponent implements OnInit {
         return `assets/payment-icons/rakbank.png`;
       case 'tabby':
         return `assets/payment-icons/tabby.jpg`;
+      case 'tamara':
+        return `assets/payment-icons/tamara.png`;
     }
   }
 
   close() {
     this.modalRef?.hide();
     this.form.reset();
+    this.form.patchValue({ payByOption: '', isEnabled: false })
     this.displayIcon = '';
     this.isSubmitted = false;
   }
@@ -255,6 +261,8 @@ export class PaymentSettingsComponent implements OnInit {
       'serverKey',
       'apiUrl',
       'accessToken',
+      'privateKey',
+      'payByOption'
     ];
 
     fields.forEach((field) => {
