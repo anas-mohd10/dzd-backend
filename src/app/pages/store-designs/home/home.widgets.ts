@@ -172,6 +172,11 @@ export const widgets: Array<WidgetProps> = [
         icon: 'assets/widgets/text-twirl.png',
         description: 'The following widget can be used to show one full width banner. The widget contains images.',
     }, {
+        title: 'Vibrant Video Banner',
+        type: 'vibrant-video-banner',
+        icon: 'assets/widgets/text-twirl.png',
+        description: 'The following widget can be used to show one full width banner with videos. The widget contains images and video links.',
+    }, {
         title: 'Key Points',
         type: 'key-points-grid',
         icon: 'assets/widgets/text-twirl.png',

@@ -69,6 +69,7 @@ export class HomeComponent implements OnInit {
   settings: any = {};
   isDraft: boolean = false;
   widgetImages: Array<any> = [];
+  videoLinks: Array<any> = [];
   smartTileProducts: Array<any> = [];
   tileProducts: Array<any> = [];
   staticPages: Array<any> = [];
@@ -92,6 +93,8 @@ export class HomeComponent implements OnInit {
   updateRef?: BsModalRef;
   historyRef?: BsModalRef;
   designRef?: BsModalRef;
+  videoLinkRef?: BsModalRef;
+  deleteVideoLinkRef?: BsModalRef;
   device: string = 'desktop';
   selectedProductType: string = 'products';
   hyperLinkHeroThumbnail: string = '';
@@ -127,6 +130,17 @@ export class HomeComponent implements OnInit {
   tileProductsInput: FormControl = new FormControl('', Validators.required);
   testimonialKeyword: FormControl = new FormControl('', Validators.required);
   tabs: Array<ClickPulsePanel> = [];
+  videoLinkInput: string = '';
+  editVideoLinkIndex: number | null = null;
+  deleteVideoLinkIndex: number | null = null;
+  videoLinkForm: FormGroup = new FormGroup({
+    title: new FormControl(''),
+    video: new FormControl('', Validators.required),
+    description: new FormControl(''),
+    button: new FormControl(''),
+    redirection: new FormControl(''),
+    customStyles: new FormControl('')
+  });
 
   constructor(
     private BsModalService: BsModalService,
@@ -143,7 +157,14 @@ export class HomeComponent implements OnInit {
     private StaticPageService: StaticPageService,
     private BrandService: BrandService
   ) { }
-
+  animationOptions: Array<{ key: string, value: string }> = [
+    { key: 'Fade', value: 'fade' },
+    { key: 'Zoom', value: 'zoom' },
+    { key: 'Slide In Left', value: 'slide-in-left' },
+    { key: 'Slide In Right', value: 'slide-in-right' },
+    { key: 'Slide In Up', value: 'slide-in-up' },
+    { key: 'None', value: 'none' },
+  ];
 
   // Clickpulse
   handleClickpulse(event: any) {
@@ -304,9 +325,9 @@ export class HomeComponent implements OnInit {
 
   getBlogs(query: string) {
     const blogIds: string[] = this.widgetBlogs.map((blog: any) => blog?._id);
-    this.BlogService.blogs({ 
-      keyword: query, 
-      page: 1, 
+    this.BlogService.blogs({
+      keyword: query,
+      page: 1,
       limit: 100,
       blogIds
     }).subscribe({
@@ -498,6 +519,12 @@ export class HomeComponent implements OnInit {
             this.previewDetails = this.widgetImagePreview?.url ? this.widgetImagePreview?.url?.path : '';
             this.widgetForm.patchValue(this.widgetImagePreview);
           }
+
+          // Handle videoLinks for vibrant-video-banner
+          if (this.widgetDetails?.widgetType === 'vibrant-video-banner') {
+            this.videoLinks = this.widgetDetails?.videoLinks || [];
+          }
+
           if (this.widgetDetails?.widgetType == 'blogs') {
             this.widgetBlogs = this.widgetDetails?.blogs;
           }
@@ -804,9 +831,9 @@ export class HomeComponent implements OnInit {
     this.widgetImages = [...items];
   }
 
-  widgetBlogsChange(event: any){
-   this.widgetBlogs = event;
-   this.ChangeDetectorRef.markForCheck();
+  widgetBlogsChange(event: any) {
+    this.widgetBlogs = event;
+    this.ChangeDetectorRef.markForCheck();
   }
 
   updateWidget(type?: string) {
@@ -822,6 +849,11 @@ export class HomeComponent implements OnInit {
         widgetImages.push({ ...widgetImage, media: widgetImage?.url?._id });
       }
       widgetPayload['widgetImages'] = widgetImages;
+
+      // Add videoLinks to payload for vibrant-video-banner
+      if (this.widgetDetails?.widgetType === 'vibrant-video-banner') {
+        widgetPayload['videoLinks'] = this.videoLinks;
+      }
     } else if (this.widgetDetails?.widgetType == 'blogs') {
       let blogItems = this.widgetBlogs?.map((widgetBlog: any) => widgetBlog._id)
       widgetPayload = { ...widgetPayload, blogs: blogItems };
@@ -920,6 +952,8 @@ export class HomeComponent implements OnInit {
             paddingRight: 0,
             borderRadius: 0,
             borderWidth: 0,
+            isAnimation: false,
+            animationType: '',
           });
           this.closeUpdate();
           this.closeDesign();
@@ -1231,6 +1265,8 @@ export class HomeComponent implements OnInit {
       borderRadius: new FormControl(0),
       borderWidth: new FormControl(0),
       borderColor: new FormControl('#ffffff'),
+      isAnimation: new FormControl(false),
+      animationType: new FormControl(''),
     });
   }
 
@@ -1390,6 +1426,76 @@ export class HomeComponent implements OnInit {
       case 'reverse-widget':
         this.form.get('isReversed')?.setValue(event.toggleState);
         break;
+      case 'isAnimation':
+        this.designForm.get('isAnimation')?.setValue(event.toggleState);
+        if (event.toggleState == false) {
+          this.designForm.get('animationType')?.setValue('none');
+          break
+        }
     }
+  }
+
+  // Video link management methods
+  openVideoLinkModal(template: TemplateRef<any>, index?: number) {
+    this.videoLinkForm.reset();
+    this.editVideoLinkIndex = null;
+
+    if (index !== undefined) {
+      this.editVideoLinkIndex = index;
+      this.videoLinkForm.patchValue(this.videoLinks[index]);
+    }
+
+    this.videoLinkRef = this.BsModalService.show(template, {
+      class: 'modal-dialog-centered modal-lg',
+      ignoreBackdropClick: true,
+    });
+  }
+
+  closeVideoLinkModal() {
+    this.videoLinkRef?.hide();
+    this.videoLinkForm.reset();
+    this.editVideoLinkIndex = null;
+  }
+
+  saveVideoLink() {
+    if (this.videoLinkForm.valid) {
+      if (this.editVideoLinkIndex !== null) {
+        // Edit existing link
+        this.videoLinks[this.editVideoLinkIndex] = this.videoLinkForm.value;
+        this.Toast.success('Video link updated successfully');
+      } else {
+        // Add new link
+        this.videoLinks.push(this.videoLinkForm.value);
+        this.Toast.success('Video link added successfully');
+      }
+      this.closeVideoLinkModal();
+    } else {
+      this.Toast.error('Please enter a valid video URL');
+    }
+  }
+
+  editVideoLink(index: number, template: TemplateRef<any>) {
+    this.openVideoLinkModal(template, index);
+  }
+
+  confirmRemoveVideoLink(index: number, template: TemplateRef<any>) {
+    this.deleteVideoLinkIndex = index;
+    this.deleteVideoLinkRef = this.BsModalService.show(template, {
+      class: 'modal-sm modal-dialog-centered',
+      ignoreBackdropClick: true,
+    });
+  }
+
+  removeVideoLink() {
+    if (this.deleteVideoLinkIndex !== null) {
+      this.videoLinks.splice(this.deleteVideoLinkIndex, 1);
+      this.Toast.success('Video link removed successfully');
+      this.closeDeleteVideoLinkModal();
+    }
+  }
+
+  closeDeleteVideoLinkModal() {
+    this.deleteVideoLinkRef?.hide();
+    this.deleteVideoLinkIndex = null;
   }
 }

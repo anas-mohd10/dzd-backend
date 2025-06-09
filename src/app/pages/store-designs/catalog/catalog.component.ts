@@ -2,6 +2,7 @@ import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import {
   ChangeDetectorRef,
   Component,
+  OnDestroy,
   OnInit,
   TemplateRef,
 } from '@angular/core';
@@ -38,7 +39,7 @@ interface WidgetProps {
   templateUrl: './catalog.component.html',
   styleUrls: ['./catalog.component.scss'],
 })
-export class CatalogComponent implements OnInit {
+export class CatalogComponent implements OnInit, OnDestroy {
   widgets: Array<WidgetProps> = [
     {
       title: 'Magestic Mosaic',
@@ -297,7 +298,7 @@ export class CatalogComponent implements OnInit {
       icon: 'assets/widgets/image-slider.png',
       description:
         'The following widget can be used to show images within a particular category. The widget contains images.',
-    },  {
+    }, {
       title: 'Quad Squares',
       type: 'quad-square',
       icon: 'assets/widgets/quad-sqaure.png',
@@ -425,7 +426,7 @@ export class CatalogComponent implements OnInit {
     'animation-banner',
     'brick-mansory-grid',
     'primary-triple-grid',
-    'full-banner',  
+    'full-banner',
     'modern-carousel',
     'key-points-grid',
   ];
@@ -437,7 +438,7 @@ export class CatalogComponent implements OnInit {
     { key: 'Price: Low to High', value: 'ascending' },
     { key: 'Price: High to Low', value: 'descending' },
   ];
-  widgetBlogs: any;
+  widgetBlogs: Array<any> = [];
   settings: any;
   domain: string = '';
   collections: Array<any> = [];
@@ -508,6 +509,9 @@ export class CatalogComponent implements OnInit {
   widgetCollection: FormControl = new FormControl('');
   widgetBrand: FormControl = new FormControl('');
   widgetCategory: FormControl = new FormControl('');
+  isAutoSync: boolean = false;
+  private syncInterval: any;
+  private readonly SYNC_TIME = 60000; // Sync every minute
 
   insightHubForm: FormGroup;
   widgetImagePreviewIndex: any;
@@ -522,11 +526,13 @@ export class CatalogComponent implements OnInit {
   redirectionDetails: any;
   duplicatedWidget: any;
   duplicateRef: BsModalRef<unknown>;
+  widgetBlog: FormControl = new FormControl('');
   selectedProductType: string = 'products';
   previewDetails: string;
   hyperLinkHeroThumbnail: string = '';
   widgetForm: any;
-  blogs: any;
+  blogs: Array<any> = [];
+  blogsMap: any = {};
   widgetTestimonials: Array<any> = [];
   cmsPages: Array<any> = [
     { title: 'FAQs', value: '/faqs' },
@@ -582,7 +588,7 @@ export class CatalogComponent implements OnInit {
     private BlogService: BlogService
   ) { }
 
-  onChangeProductType(){
+  onChangeProductType() {
 
   }
 
@@ -643,7 +649,7 @@ export class CatalogComponent implements OnInit {
           this.Toast.error(res.message);
         }
       },
-      error: (err: any) => {},
+      error: (err: any) => { },
     });
   }
 
@@ -798,6 +804,46 @@ export class CatalogComponent implements OnInit {
     this.designForm.get('backgroundImage')?.setValue(event._id);
   }
 
+
+  saveBlogs() {
+    let blogItem = this.blogsMap[this.widgetBlog.value]
+    this.widgetBlogs.push(blogItem)
+    this.widgetBlog.setValue('')
+    this.Toast.success('Blog added successfully')
+  }
+
+  removeBlog(blogIndex: number) {
+    this.widgetBlogs.splice(blogIndex, 1)
+    this.Toast.info('Blog removed successfully')
+  }
+
+
+  getBlogs(query: string) {
+    console.log("inside getBlogs")
+    const blogIds: string[] = this.widgetBlogs.map((blog: any) => blog?._id);
+    console.log("blogIds", blogIds)
+    this.BlogService.blogs({
+      keyword: query,
+      page: 1,
+      limit: 100,
+      blogIds
+    }).subscribe({
+      next: (res: any) => {
+        if (res?.errorCode == 0) {
+          this.blogs = res?.result?.data;
+          if (res.result.data && res.result.data.length > 0) {
+            res.result.data.map((blog: any) => {
+              this.blogsMap[blog.slug] = blog;
+            })
+          }
+          this.ChangeDetectorRef.markForCheck();
+        }
+      },
+    });
+  }
+
+
+
   openDesign(template: TemplateRef<any>, widget: any) {
     this.designRef = this.BsModalService.show(template, {
       class: 'modal-lg modal-dialog-centered',
@@ -807,6 +853,7 @@ export class CatalogComponent implements OnInit {
       next: (res: any) => {
         if (res?.errorCode == 0) {
           this.widgetDetails = res?.result;
+          console.log("widgetDetails", this.widgetDetails)
           if (this.widgetImageTypes.includes(this.widgetDetails?.widgetType)) {
             for (let widgetImage of this.widgetDetails?.widgetImages) {
               this.widgetImages.push({
@@ -826,9 +873,8 @@ export class CatalogComponent implements OnInit {
               : '';
             this.widgetForm.patchValue(this.widgetImagePreview);
           }
-          if (this.widgetDetails?.widgetType == 'blog') {
+          if (this.widgetDetails?.widgetType == 'blogs') {
             this.widgetBlogs = this.widgetDetails?.blogs;
-            this.getBlogs('');
           }
           if (this.widgetDetails?.widgetType == 'testimonial-cards') {
             this.widgetTestimonials = this.widgetDetails?.testimonials;
@@ -867,8 +913,8 @@ export class CatalogComponent implements OnInit {
           }
           this.widgetDetails.collection
             ? this.widgetCollection.setValue(
-                this.widgetDetails?.collection?._id
-              )
+              this.widgetDetails?.collection?._id
+            )
             : null;
           if (this.widgetProductTypes.includes(this.widgetDetails.type)) {
             this.widgetDetails.products.length > 0
@@ -889,8 +935,8 @@ export class CatalogComponent implements OnInit {
           }
           this.widgetDetails?.endDate
             ? this.saleForm
-                .get('endDate')
-                ?.setValue(new Date(this.widgetDetails?.endDate))
+              .get('endDate')
+              ?.setValue(new Date(this.widgetDetails?.endDate))
             : null;
           this.designForm.patchValue(this.widgetDetails?.styles);
           this.ChangeDetectorRef.markForCheck();
@@ -915,6 +961,12 @@ export class CatalogComponent implements OnInit {
       },
     });
   }
+
+  widgetBlogsChange(event: any) {
+    this.widgetBlogs = event;
+    this.ChangeDetectorRef.markForCheck();
+  }
+
 
   focusWidget(widget: WidgetProps) {
     this.focusedWidget = widget;
@@ -944,9 +996,9 @@ export class CatalogComponent implements OnInit {
       case 'mobile-hover':
         this.form.get('hovering.mobile')?.setValue(event.toggleState);
         break;
-        case 'reverse-widget':
-          this.form.get('isReversed')?.setValue(event.toggleState);
-          break;
+      case 'reverse-widget':
+        this.form.get('isReversed')?.setValue(event.toggleState);
+        break;
     }
   }
   //Add widgets ends here
@@ -1098,17 +1150,7 @@ export class CatalogComponent implements OnInit {
     });
   }
 
-  getBlogs(query: string) {
-    this.BlogService.blogs({ keyword: query, page: 1, limit: 100 }).subscribe({
-      next: (res: any) => {
-        if (res?.errorCode == 0) {
-          this.blogs = res?.result?.data;
-          this.ChangeDetectorRef.markForCheck();
-        }
-      },
-    });
-  }
-  // Get redirection items ends here --------------------------
+
 
   continueRedirectionQuery() {
     switch (this.widgetForm.value.redirectionType) {
@@ -1192,6 +1234,7 @@ export class CatalogComponent implements OnInit {
     this.smartTileProducts = []
     this.saleForm.reset()
     this.saleForm.get('saleButtonVisibility')?.setValue(true)
+    this.isAutoSync = false
   }
 
   isExpired(date: string) {
@@ -1351,9 +1394,8 @@ export class CatalogComponent implements OnInit {
               : '';
             this.widgetForm.patchValue(this.widgetImagePreview);
           }
-          if (this.widgetDetails?.widgetType == 'blog') {
+          if (this.widgetDetails?.widgetType == 'blogs') {
             this.widgetBlogs = this.widgetDetails?.blogs;
-            this.getBlogs('');
           }
           if (this.widgetDetails?.widgetType == 'testimonial-cards') {
             this.widgetTestimonials = this.widgetDetails?.testimonials;
@@ -1412,8 +1454,8 @@ export class CatalogComponent implements OnInit {
           }
           this.widgetDetails.collection
             ? this.widgetCollection.setValue(
-                this.widgetDetails?.collection?._id
-              )
+              this.widgetDetails?.collection?._id
+            )
             : null;
           if (this.widgetProductTypes.includes(this.widgetDetails.type)) {
             this.widgetDetails.products.length > 0
@@ -1466,10 +1508,11 @@ export class CatalogComponent implements OnInit {
     this.widgetImagePreviewIndex = null;
     this.widgetImagePreview = null;
     this.form.reset();
+    this.isAutoSync = false;
   }
 
   updateWidget(type?: string) {
-    let widgetPayload = {
+    let widgetPayload = { 
       ...this.form.value,
       refid: this.widgetDetails?.refid,
     };
@@ -1481,7 +1524,8 @@ export class CatalogComponent implements OnInit {
       }
       widgetPayload['widgetImages'] = widgetImages;
     } else if (this.widgetDetails?.widgetType == 'blogs') {
-      let widgetBlogs = [];
+      let blogItems = this.widgetBlogs?.map((widgetBlog: any) => widgetBlog._id)
+      widgetPayload = { ...widgetPayload, blogs: blogItems };
     } else if (this.widgetDetails?.widgetType == 'testimonial-cards') {
       let widgetTestimonials = this.widgetTestimonials.map(
         (testimonial: any) => testimonial._id
@@ -1766,6 +1810,16 @@ export class CatalogComponent implements OnInit {
       },
     });
   }
+
+ 
+
+ 
+
+  ngOnDestroy(): void {
+  }
+
+
+ 
 
   ngOnInit(): void {
     this.homeWidgets = this.widgets;
