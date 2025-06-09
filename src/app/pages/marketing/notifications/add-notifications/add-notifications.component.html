@@ -1,4 +1,4 @@
-<>
+
   <div class="page-header d-flex align-items-start justify-content-between">
     <div>
       <div class="page-title">
@@ -126,8 +126,8 @@
       <a routerLink="{{ appRoute.notification.NOTIFICATION_LIST }}" class=" btn btn-secondary fs-6">
         Cancel
       </a>
-      <button type="submit" class="btn btn-primary">
-        Save changes
+      <button type="submit" class="btn btn-primary" [disabled]="isLoading">
+        {{ isLoading ? 'Saving...' : 'Save changes' }}
       </button>
     </div>
   </form>

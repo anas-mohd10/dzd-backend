@@ -13,6 +13,7 @@ import { NotificationsService } from 'src/app/includes/services/notifications.se
 export class AddNotificationsComponent implements OnInit {
   form: FormGroup;
   isSubmitted: boolean;
+  isLoading: boolean = false;
   appRoute = appRoutes;
   customersData: Array<any> = [];
   customers: any;
@@ -81,11 +82,19 @@ export class AddNotificationsComponent implements OnInit {
       this.isSubmitted = true;
       return;
     }
+
+    if (this.isLoading) {
+      return; // Prevent multiple submissions
+    }
+
+    this.isLoading = true;
+
     this.NotificationsService.addNotification({
       ...this.form.value,
       customers: this.customers,
     }).subscribe({
       next: (res: any) => {
+        this.isLoading = false;
         if (res.errorCode == 0) {
           this.HotToastService.success(res?.message);
           this.Router.navigate([this.appRoute.notification.NOTIFICATION_LIST]);
@@ -93,8 +102,9 @@ export class AddNotificationsComponent implements OnInit {
           this.HotToastService.error(res?.message);
         }
       },
-      error: (err: any) => { },
+      error: (err: any) => {
+        this.isLoading = false;
+      },
     });
   }
 }
-   
