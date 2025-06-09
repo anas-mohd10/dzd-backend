@@ -157,7 +157,14 @@ export class HomeComponent implements OnInit {
     private StaticPageService: StaticPageService,
     private BrandService: BrandService
   ) { }
-
+  animationOptions: Array<{ key: string, value: string }> = [
+    { key: 'Fade', value: 'fade' },
+    { key: 'Zoom', value: 'zoom' },
+    { key: 'Slide In Left', value: 'slide-in-left' },
+    { key: 'Slide In Right', value: 'slide-in-right' },
+    { key: 'Slide In Up', value: 'slide-in-up' },
+    { key: 'None', value: 'none' },
+  ];
 
   // Clickpulse
   handleClickpulse(event: any) {
@@ -945,6 +952,8 @@ export class HomeComponent implements OnInit {
             paddingRight: 0,
             borderRadius: 0,
             borderWidth: 0,
+            isAnimation: false,
+            animationType: '',
           });
           this.closeUpdate();
           this.closeDesign();
@@ -1256,6 +1265,8 @@ export class HomeComponent implements OnInit {
       borderRadius: new FormControl(0),
       borderWidth: new FormControl(0),
       borderColor: new FormControl('#ffffff'),
+      isAnimation: new FormControl(false),
+      animationType: new FormControl(''),
     });
   }
 
@@ -1415,6 +1426,12 @@ export class HomeComponent implements OnInit {
       case 'reverse-widget':
         this.form.get('isReversed')?.setValue(event.toggleState);
         break;
+      case 'isAnimation':
+        this.designForm.get('isAnimation')?.setValue(event.toggleState);
+        if (event.toggleState == false) {
+          this.designForm.get('animationType')?.setValue('none');
+          break
+        }
     }
   }
 
