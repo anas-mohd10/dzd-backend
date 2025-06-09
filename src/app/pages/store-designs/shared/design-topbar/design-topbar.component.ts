@@ -23,6 +23,7 @@ export class DesignTopbarComponent implements OnInit, OnChanges {
   showDevices: Array<string> = ['home', 'catalog', 'product-listing']
   hiddenPages: Array<string> = ['app-images', 'catalog', 'contact-us', 'about-us', 'product-designs']
   isPublishing: boolean = false;
+  isDraftSaved: boolean = false; // Track if draft has been saved
 
   isShowPublish: boolean = false
   isShowDraft: boolean = false
@@ -36,6 +37,11 @@ export class DesignTopbarComponent implements OnInit, OnChanges {
 
   ngOnChanges(changes: SimpleChanges): void {
     this.hiddenPages.includes(this.page) ? this.hideTopbarDetails = true : null
+    
+    // Reset draft saved state when page changes
+    if (changes['page'] && !changes['page'].firstChange) {
+      this.isDraftSaved = false;
+    }
   }
 
   ngOnInit(): void {
@@ -67,6 +73,12 @@ export class DesignTopbarComponent implements OnInit, OnChanges {
   }
 
   publishWidgets() {
+    // Only allow publish if draft has been saved
+    if (!this.isDraftSaved) {
+      this.Toast.error('Please save as draft before publishing');
+      return;
+    }
+
     this.isPublishing = true;
     switch (this.page) {
       case 'home':
@@ -88,6 +100,7 @@ export class DesignTopbarComponent implements OnInit, OnChanges {
         if (res?.errorCode == 0) {
           this.Toast.success(res?.message)
           this.isPublished.emit(true)
+          this.isDraftSaved = false; // Reset after successful publish
           this.ChangeDetectorRef.markForCheck()
         } else {
           this.Toast.error(res?.message)
@@ -104,6 +117,7 @@ export class DesignTopbarComponent implements OnInit, OnChanges {
       next: (res: any) => {
         if (res?.errorCode == 0) {
           this.Toast.success(res?.message)
+          this.isDraftSaved = true; // Mark draft as saved
           this.ChangeDetectorRef.markForCheck()
         } else {
           this.Toast.error(res?.message)
@@ -112,5 +126,17 @@ export class DesignTopbarComponent implements OnInit, OnChanges {
         this.Toast.error(err?.error?.message)
       }
     })
+  }
+
+  // Method to handle product listing draft save
+  onProductConfigDraftSaved() {
+    this.isDraftSaved = true;
+    this.ChangeDetectorRef.markForCheck();
+  }
+
+  // Method to handle product listing publish
+  onProductConfigPublished() {
+    this.isDraftSaved = false; // Reset after successful publish
+    this.ChangeDetectorRef.markForCheck();
   }
 }
