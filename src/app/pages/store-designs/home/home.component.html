@@ -1340,37 +1340,6 @@
                                         class="form-control" style="height: 46px;">
                                 </div>
                             </div>
-                            <div class="accordion-item">
-                                <h2 class="accordion-header m-0" id="animationDetails">
-                                    <button class="accordion-button fs-5 collapsed p-2" type="button"
-                                        data-bs-toggle="collapse" data-bs-target="#animation" aria-controls="animation">
-                                        Animation
-                                    </button>
-                                </h2>
-                                <div id="animation" class="accordion-collapse collapse"
-                                    aria-labelledby="animationDetails" data-bs-parent="#widgetDesign">
-                                    <div class="accordion-body d-flex flex-column gap-4">
-                                        <div class="d-flex gap-4 align-items-center justify-content-start">
-                                            <div class="fs-5 fw-normal">Enable</div>
-                                            <app-switch [switchId]="'isAnimation'"
-                                                [isToggledProps]="designForm.get('isAnimation')?.value"
-                                                (switchToggled)="switchToggled($event)">
-                                            </app-switch>
-                                        </div>
-                                        <div *ngIf="designForm.get('isAnimation')?.value == true">
-                                            <label for="animationTypeSelect" class="fs-5 mb-3">Type</label>
-                                            <select class="form-select" id="animationTypeSelect"
-                                                formControlName="animationType">
-                                                <option value="" disabled>-- Select an option --</option>
-                                                <option *ngFor="let animationOption of animationOptions"
-                                                    [value]="animationOption.value">
-                                                    {{ animationOption.key }}
-                                                </option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
                         </div>
                     </div>
                 </div>
@@ -1406,6 +1375,36 @@
                                     <button class="btn btn-danger mt-2 p-2"
                                         (click)="onRemoveBackground()">Remove</button>
                                 </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="accordion-item">
+                    <h2 class="accordion-header m-0" id="animationDetails">
+                        <button class="accordion-button fs-5 collapsed p-2" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#animation" aria-controls="animation">
+                            Animation
+                        </button>
+                    </h2>
+                    <div id="animation" class="accordion-collapse collapse" aria-labelledby="animationDetails"
+                        data-bs-parent="#widgetDesign">
+                        <div class="accordion-body d-flex flex-column gap-4">
+                            <div class="d-flex gap-4 align-items-center justify-content-start">
+                                <div class="fs-5 fw-normal">Enable</div>
+                                <app-switch [switchId]="'isAnimation'"
+                                    [isToggledProps]="designForm.get('isAnimation')?.value"
+                                    (switchToggled)="switchToggled($event)">
+                                </app-switch>
+                            </div>
+                            <div *ngIf="designForm.get('isAnimation')?.value == true">
+                                <label for="animationTypeSelect" class="fs-5 mb-3">Type</label>
+                                <select class="form-select" id="animationTypeSelect" formControlName="animationType">
+                                    <option value="" disabled>-- Select an option --</option>
+                                    <option *ngFor="let animationOption of animationOptions"
+                                        [value]="animationOption.value">
+                                        {{ animationOption.key }}
+                                    </option>
+                                </select>
                             </div>
                         </div>
                     </div>
