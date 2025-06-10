@@ -469,6 +469,7 @@ export class UpdateOrdersComponent implements OnInit {
   confirmCancel() {
     this.isLoading =true
     this.isCancelConfirmLoading = true;
+    this.cancelConfirmationRef?.hide() // Close the cancel confirmation modal
     this.OrdersService.updateOrderStatus({
       order: this.slug,
       product: this.productToBeCancelled,
