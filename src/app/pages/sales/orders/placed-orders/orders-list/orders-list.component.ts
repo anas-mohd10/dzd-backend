@@ -140,6 +140,12 @@ export class OrdersListComponent implements OnInit {
       })
   }
 
+  formatPaymentGateway(paymentGateway: string) {
+    return paymentGateway.replace(/-/g, ' ').replace(/\w\S*/g, function (txt) {
+      return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+    });
+  }
+
   //format case
   formatCase(orderData: string) {
     if (orderData) {

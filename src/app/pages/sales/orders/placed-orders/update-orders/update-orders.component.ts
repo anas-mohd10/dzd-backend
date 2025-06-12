@@ -9,6 +9,8 @@ import { AppSettingsService } from 'src/app/includes/services/app.settings.servi
 import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
 import { HotToastService } from '@ngneat/hot-toast';
 import { SwiperOptions } from 'swiper';
+import moment from 'moment-timezone';
+import * as countriesAndTimezones from 'countries-and-timezones';
 
 @Component({
   selector: 'app-update-orders',
@@ -329,6 +331,14 @@ export class UpdateOrdersComponent implements OnInit {
 
   getLocaleDateFormat(processDate: any) {
     return new Date(processDate).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric', weekday: 'short' });
+  }
+
+  formatDateString(date: string) {
+    const countryCode: string = this.settings.country.toUpperCase() === 'UAE' ? 'AE' : this.settings.country.toUpperCase();
+    const country = countriesAndTimezones.getCountry(countryCode);
+    const timezone = country?.timezones[0] || 'UTC';
+    const now = moment(date).tz(timezone).format('YYYY-MM-DD HH:mm:ss');
+    return `${now} (${timezone})`;
   }
 
   getLocaleTimeFormat(processDate: any) {

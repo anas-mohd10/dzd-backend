@@ -218,7 +218,7 @@
             {{formatTime(order?.createdAt)}}
           </td>
           <td>
-            <div class="customer-details">{{order?.customerId ? order?.customerId?.name : order?.guestId?.name}}</div>
+            <div title="{{order?.customerId ? order?.customerId?.name : order?.guestId?.name}}" class="customer-details">{{order?.customerId ? order?.customerId?.name : order?.guestId?.name}}</div>
             <div
               class="rounded border border-secondary customer-type p-1 my-1 d-flex align-items-center justify-content-center">
               {{order?.customerType == 'regd' ? 'Customer' : 'Guest'}}
@@ -289,8 +289,8 @@
           </td>
           <td>
             <div>
-              <div>{{order?.paymentMethod}}</div>
-              <div class="ellipsis text-primary fs-5 fw-bold">{{order?.paymentGateway}}</div>
+              <div class="fs-5">{{order?.paymentMethod | titlecase}}</div>
+              <div title="{{formatPaymentGateway(order?.paymentGateway)}}" class="ellipsis cursor-pointer text-primary fs-5 fw-bold">{{formatPaymentGateway(order?.paymentGateway)}}</div>
             </div>
           </td>
           <td>
@@ -303,11 +303,14 @@
           <td>
             <div class="d-flex align-items-center justify-content-start gap-3">
               <div
+                title="View Order Details"
                 class="cursor-pointer rounded action-button d-flex align-items-center justify-content-center border border-secondary"
                 routerLink="{{appRoute.orders.UPDATE_ORDER_LIST}}" [queryParams]="{'order': order?._id}">
                 <img src="assets/icons/eye.svg" alt="View order details">
               </div>
-              <div (click)="getInvoiceSignedUrl(order?._id)"
+              <div
+                title="Generate Invoice"
+                (click)="getInvoiceSignedUrl(order?._id)"
                 class="cursor-pointer rounded d-flex align-items-center justify-content-center border border-secondary action-button">
                 <img src="assets/icons/print.svg" alt="Genarete Invoice">
               </div>
