@@ -175,6 +175,10 @@ export class UpdateProductComponent implements OnInit {
   totalPages: number = 1;
   storeFieldIndex: number | null;
 
+  slugHistoryRef?: BsModalRef;
+  @ViewChild('slugHistoryTemplate') slugHistoryTemplateModal: TemplateRef<any>;
+
+
   constructor(
     private ActivatedRoute: ActivatedRoute,
     private Router: Router,
@@ -233,6 +237,26 @@ export class UpdateProductComponent implements OnInit {
   }
   closeHistory() {
     this.historyRef?.hide();
+  }
+
+  openSlugHistory(template: TemplateRef<any>) {
+    this.slugHistoryRef = this.BsModalService.show(template, {
+      class: 'modal-dialog-centered modal-md',
+      ignoreBackdropClick: true,
+    });
+  }
+
+  closeSlugHistory() {
+    this.slugHistoryRef?.hide();
+  }
+
+  copyToClipboard(text: string) {
+    navigator.clipboard.writeText(text).then(() => {
+      this.HotToastService.success('Slug copied to clipboard!');
+    }).catch(err => {
+      this.HotToastService.error('Failed to copy slug.');
+      console.error('Failed to copy: ', err);
+    });
   }
 
   getFormatDate(date: any) {

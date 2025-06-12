@@ -27,6 +27,15 @@
         </svg>
         View History
       </button>
+      <button class="btn btn-secondary d-flex align-items-center justify-content-center gap-2"
+        (click)="openSlugHistory(slugHistoryTemplate)">
+        <svg height="18" width="18" data-slot="icon" fill="none" stroke-width="1.5" stroke="currentColor"
+          viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z">
+          </path>
+        </svg>
+        Slug History
+      </button>
       <button class="btn btn-danger d-flex align-items-center justify-content-center gap-2" (click)="onDelete()">
         <svg height="16" width="16" data-slot="icon" fill="none" stroke-width="1.5" stroke="currentColor"
           viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
@@ -244,6 +253,45 @@
                           <ng-template ng-option-tmp let-item="item">
                             {{item.name}}
                           </ng-template>
+
+                          <ng-template #slugHistoryTemplate>
+                            <div class="modal-header">
+                              <h4 class="modal-title pull-left">Slug History</h4>
+                              <button type="button" class="btn-close close pull-right" aria-label="Close"
+                                (click)="closeSlugHistory()">
+                                <span aria-hidden="true" class="visually-hidden">&times;</span>
+                              </button>
+                            </div>
+                            <div class="modal-body">
+                              <div class="table-responsive" style="max-height: 400px; overflow-y: auto;">
+                                <table class="table table-hover">
+                                  <thead>
+                                    <tr *ngIf="productDetails?.slugs && productDetails?.slugs.length > 0">
+                                      <th>Slug</th>
+                                      <th>Updated At</th>
+                                    </tr>
+                                  </thead>
+                                  <tbody>
+                                    <tr *ngFor="let slugHistory of productDetails?.slugs" class="slug-history-row">
+                                      <td class="slug-cell d-flex align-items-center justify-content-between">
+                                        <span>{{ slugHistory.slug }}</span>
+                                      </td>
+                                      <td>
+                                        {{ getFormatDate(slugHistory.updatedAt) }}
+                                        {{ getFormatTime(slugHistory.updatedAt) }}
+                                      </td>
+                                    </tr>
+                                    <tr *ngIf="!productDetails?.slugs || productDetails?.slugs.length === 0">
+                                      <td colspan="2">
+                                        <app-no-results></app-no-results>
+                                      </td>
+                                    </tr>
+                                  </tbody>
+                                </table>
+                              </div>
+                            </div>
+                          </ng-template>
+
                         </ng-select>
                       </div>
                       <div class="mb-3 form-group">
@@ -368,11 +416,12 @@
                       <input type="text" class="form-control" value="{{storeField.description}}" disabled>
                     </div>
                     <div class="col-lg-2 form-group">
-                      <input type="text" class="form-control" value="Visible - {{storeField.isVisible == true ? 'Yes' : 'No'}}" disabled>
+                      <input type="text" class="form-control"
+                        value="Visible - {{storeField.isVisible == true ? 'Yes' : 'No'}}" disabled>
                     </div>
                     <div class="col-lg-2 form-group">
-                      <button class="btn btn-secondary w-100" value="Remove fields"
-                        (click)="editStoreField(i)">Edit Details</button>
+                      <button class="btn btn-secondary w-100" value="Remove fields" (click)="editStoreField(i)">Edit
+                        Details</button>
                     </div>
                     <div class="col-lg-2 form-group">
                       <button class="btn btn-danger w-100" value="Remove fields"
@@ -559,7 +608,7 @@
                 </div>
               </div>
 
-              <!-- 
+              <!--
               <div class="d-flex align-items-center justify-content-center gap-2">
                 <button class="btn border border-primary bg-white text-primary" (click)="toggleTab(3)">Back</button>
                 <button class="btn btn-primary" (click)="toggleTab(5)">Continue</button>
