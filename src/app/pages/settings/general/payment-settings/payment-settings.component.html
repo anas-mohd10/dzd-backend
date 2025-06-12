@@ -125,8 +125,8 @@
                 <div class="mb-3 form-group"
                     *ngIf="paymentGatewayConfig[form.get('paymentGateway')?.value]?.includes('apiUrl')">
                     <label for="apiUrl" class="fs-6 mb-3">API Url</label>
-                    <input type="text" id="apiUrl" placeholder="API Url" formControlName="apiUrl"
-                        class="form-control" [ngClass]="{
+                    <input type="text" id="apiUrl" placeholder="API Url" formControlName="apiUrl" class="form-control"
+                        [ngClass]="{
                         'is-invalid':
                         (formControls.apiUrl.touched || isSubmitted) &&
                         formControls.apiUrl.errors?.required
@@ -186,6 +186,20 @@
                     (formControls.outletReference.touched || isSubmitted) &&
                     formControls.outletReference.errors?.required
                   }">
+                </div>
+
+                <div class="mb-3 form-group"
+                    *ngIf="paymentGatewayConfig[form.get('paymentGateway')?.value]?.includes('username')">
+                    <label for="username" class="fs-6 mb-3">Username</label>
+                    <input type="text" id="username" placeholder="Username" formControlName="username"
+                        class="form-control" [ngClass]="{ 'is-invalid': (formControls.username.touched || isSubmitted) && formControls.username.errors?.required }">
+                </div>
+
+                <div class="mb-3 form-group"
+                    *ngIf="paymentGatewayConfig[form.get('paymentGateway')?.value]?.includes('password')">
+                    <label for="password" class="fs-6 mb-3">Password</label>
+                    <input type="text" id="password" placeholder="Password" formControlName="password"
+                        class="form-control" [ngClass]="{ 'is-invalid': (formControls.password.touched || isSubmitted) &&  formControls.password.errors?.required }">
                 </div>
 
                 <div class="mb-3 form-group"
