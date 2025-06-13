@@ -13,6 +13,7 @@ import { CategoryService } from '../../../../includes/services/category.service'
 import { HotToastService } from '@ngneat/hot-toast';
 import slugify from 'slugify';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 
 interface parentDetails {
   refid: string;
@@ -45,6 +46,10 @@ export class UpdateCategoryComponent implements OnInit {
   categoryId: string = '';
   hierarchies: Array<Hierarchy> = [];
   @ViewChild('deleteConfirmation') deleteConfirmation!: TemplateRef<any>;
+  @ViewChild('slugConfirmationTemplate') slugConfirmationTemplate: TemplateRef<any>;
+
+  slugConfirmationRef?: BsModalRef;
+  newSlugValue: string = '';
 
   constructor(
     private Router: Router,
@@ -52,8 +57,8 @@ export class UpdateCategoryComponent implements OnInit {
     private HotToastService: HotToastService,
     private ActivatedRoute: ActivatedRoute,
     private ChangeDetectorRef: ChangeDetectorRef,
-    private modalService: NgbModal
-
+    private modalService: NgbModal,
+    private BsModalService: BsModalService
   ) { }
 
   get formControls() {
@@ -175,8 +180,33 @@ export class UpdateCategoryComponent implements OnInit {
   }
 
   generateSlug() {
-    this.form.get('slug')?.setValue(slugify(this.form.get('name')?.value, { lower: true, strict: true, remove: /[*+~.()'"!:@]/g, trim: true }));
+    const newSlug = slugify(this.form.get('name')?.value, {
+      lower: true,
+      strict: true,
+      remove: /[*+~.()'"!:@]/g,
+      trim: true
+    });
+
+    // Show confirmation dialog
+    this.openSlugConfirmation(newSlug);
+  }
+
+  openSlugConfirmation(newSlug: string) {
+    this.newSlugValue = newSlug;
+    this.slugConfirmationRef = this.BsModalService.show(this.slugConfirmationTemplate, {
+      class: 'modal-dialog-centered modal-md',
+      ignoreBackdropClick: true,
+    });
+  }
+
+  confirmSlugChange() {
+    this.form.get('slug')?.setValue(this.newSlugValue);
+    this.slugConfirmationRef?.hide();
     this.ChangeDetectorRef.markForCheck();
+  }
+
+  cancelSlugChange() {
+    this.slugConfirmationRef?.hide();
   }
 
   fetchCategories() {
