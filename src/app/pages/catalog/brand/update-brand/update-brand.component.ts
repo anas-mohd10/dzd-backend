@@ -11,6 +11,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { appRoutes } from '../../../../config/routes';
 import { BrandService } from '../../../../includes/services/brand.service';
 import { HotToastService } from '@ngneat/hot-toast';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-update-brand',
@@ -28,6 +29,7 @@ export class UpdateBrandComponent implements OnInit {
   thumbnail: string;
   cover: string;
   mobileCover: string;
+  @ViewChild('deleteConfirmation') deleteConfirmation: TemplateRef<any>;
 
   constructor(
     private FormBuilder: FormBuilder,
@@ -35,7 +37,8 @@ export class UpdateBrandComponent implements OnInit {
     private ActivatedRoute: ActivatedRoute,
     private brandService: BrandService,
     private HotToastService: HotToastService,
-    private ChangeDetectorRef: ChangeDetectorRef
+    private ChangeDetectorRef: ChangeDetectorRef,
+    private modalService: NgbModal
   ) { }
 
   get formControls() {
@@ -145,6 +148,11 @@ export class UpdateBrandComponent implements OnInit {
   }
 
   onDelete() {
+    this.modalService.open(this.deleteConfirmation, { centered: true });
+  }
+
+  confirmDelete() {
+    this.modalService.dismissAll();
     this.brandService
       .deleteBrand(this.brandDetails?._id)
       .subscribe({

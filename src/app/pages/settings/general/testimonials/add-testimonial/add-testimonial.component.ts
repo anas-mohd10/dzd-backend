@@ -28,15 +28,16 @@ export class AddTestimonialComponent implements OnInit {
   ngOnInit(): void {
     this.form = new FormGroup({
       name: new FormControl('', Validators.required),
-      avatar: new FormControl(''),
+      avatar: new FormControl('',Validators.required),
       profession: new FormControl(''),
       title: new FormControl(''),
       business: new FormControl(''),
-      file: new FormControl(''),
+      file: new FormControl('',Validators.required),
       rating: new FormControl('', [Validators.required, Validators.pattern("^[0-9]$")]),
       place: new FormControl('', Validators.required),
       message: new FormControl('', Validators.required),
       isActive: new FormControl(true),
+      thumbnail: new FormControl('',Validators.required),
     });
   }
 

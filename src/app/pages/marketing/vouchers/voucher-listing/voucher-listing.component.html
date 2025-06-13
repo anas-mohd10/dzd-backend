@@ -20,7 +20,7 @@
 
   <div class="card my-4">
     <div class="card-body">
-      <input type="text" class="form-control" placeholder="Search vouchers" [formControl]="keyword"
+      <input type="search" class="form-control" id="keyword" placeholder="Search vouchers" [formControl]="keyword"
         (ngModelChange)="fetchResults('search')">
     </div>
   </div>

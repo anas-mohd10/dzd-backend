@@ -72,6 +72,7 @@ export class UpdateCustomersComponent implements OnInit {
   focusedAddress: any = {};
   modalRef?: BsModalRef;
   deleteModalRef?: BsModalRef;
+  deleteCustomerModalRef?: BsModalRef;
   walletRef?: BsModalRef;
   transactions: Array<any> = [];
   amount: FormControl = new FormControl('', [Validators.required, Validators.pattern(/^\d+(\.\d{1,2})?$/)]);
@@ -254,6 +255,34 @@ export class UpdateCustomersComponent implements OnInit {
       }, error: (err) => console.error('Error loading cities:', err)
     });
   }
+
+
+  openDeleteConfirmation(template: TemplateRef<any>) {
+    this.deleteCustomerModalRef = this.BsModalService.show(template, {
+      class: 'modal-sm modal-dialog-centered',
+    });
+  }
+  confirmDeleteCustomer() {
+    this.CustomersService.deleteCustomer(this.slug).subscribe({
+      next: (res: any) => {
+        if (res?.errorCode == 0) {
+          this.Router.navigate([this.appRoute.customers.CUSTOMERS_LIST]);
+          this.ChangeDetectorRef.markForCheck();
+        } else {
+          this.HotToastService.error(res?.message);
+        }
+      },
+      error: (err: any) => {
+        this.HotToastService.error(err?.error?.message);
+      },
+    });
+    this.deleteCustomerModalRef?.hide();
+  }
+
+  declineDeleteCustomer() {
+    this.deleteCustomerModalRef?.hide();
+  }
+
 
   addressValidationFunction(fieldMap: string): boolean {
     const field = this.addressFieldsMap[fieldMap];
