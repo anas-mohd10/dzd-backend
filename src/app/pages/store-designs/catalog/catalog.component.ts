@@ -317,12 +317,6 @@ export class CatalogComponent implements OnInit, OnDestroy {
       description:
         'The following widget can be used to run a delivery timer with custom designs',
     }, {
-      title: 'Hyper Link Hero',
-      type: 'hyperlinkhero',
-      icon: 'assets/widgets/picture-palette.png',
-      description:
-        'The following widget can be used to show images within a particular category. The widget contains images.',
-    }, {
       title: 'Aurora Grid',
       type: 'aurora-grid',
       icon: 'assets/widgets/aurora-grid.png',
@@ -334,12 +328,6 @@ export class CatalogComponent implements OnInit, OnDestroy {
       icon: 'assets/widgets/aurora-slider.png',
       description:
         'The following widget can be used to show images within a particular category. The widget contains images.',
-    }, {
-      title: 'Text Twirl',
-      type: 'text-twirl',
-      icon: 'assets/widgets/text-twirl.png',
-      description:
-        'The following widget can be used to show limited set of medias with title and description. The widget contains images.',
     }, {
       title: 'Full Banner',
       type: 'full-banner',
@@ -413,6 +401,7 @@ export class CatalogComponent implements OnInit, OnDestroy {
     'elite-elements',
     'noble-nodes',
     'magestic-mosaic',
+    'text-twirl',
     'glamour-glaze',
     'dazzle-design',
     'grandeur-gallery',
@@ -421,7 +410,6 @@ export class CatalogComponent implements OnInit, OnDestroy {
     'stellar-selections',
     'slider-spotlight',
     'trending-teasers',
-    'text-twirl',
     'vibrant-banner',
     'animation-banner',
     'brick-mansory-grid',
@@ -932,6 +920,10 @@ export class CatalogComponent implements OnInit, OnDestroy {
               this.widgetDetails?.insightHubThumbnailSmall?.path;
             this.insightHubThumbnailLarge =
               this.widgetDetails?.insightHubThumbnailLarge?.path;
+          }
+          if (this.widgetDetails?.widgetType == 'text-twirl') {
+            this.form.get('textTwirlTitle')?.setValue(this.widgetDetails?.textTwirlTitle || '');
+            this.form.get('textTwirlDescription')?.setValue(this.widgetDetails?.textTwirlDescription || '');
           }
           this.widgetDetails?.endDate
             ? this.saleForm
@@ -1474,6 +1466,10 @@ export class CatalogComponent implements OnInit, OnDestroy {
             this.insightHubThumbnailLarge =
               this.widgetDetails?.insightHubThumbnailLarge?.path;
           }
+          if (this.widgetDetails?.widgetType == 'text-twirl') {
+            this.form.get('textTwirlTitle')?.setValue(this.widgetDetails?.textTwirlTitle || '');
+            this.form.get('textTwirlDescription')?.setValue(this.widgetDetails?.textTwirlDescription || '');
+          }
           this.widgetDetails?.endDate ? this.saleForm.get("endDate")?.setValue(new Date(this.widgetDetails?.endDate)) : null
           this.designForm.patchValue(this.widgetDetails?.styles)
 
@@ -1512,7 +1508,7 @@ export class CatalogComponent implements OnInit, OnDestroy {
   }
 
   updateWidget(type?: string) {
-    let widgetPayload = { 
+    let widgetPayload = {
       ...this.form.value,
       refid: this.widgetDetails?.refid,
     };
@@ -1585,6 +1581,14 @@ export class CatalogComponent implements OnInit, OnDestroy {
 
     if (this.widgetDetails?.widgetType == 'insight-hub') {
       widgetPayload = { ...widgetPayload, ...this.insightHubForm.value };
+    }
+
+    if (this.widgetDetails?.widgetType == 'text-twirl') {
+      widgetPayload = {
+        ...widgetPayload,
+        textTwirlTitle: this.form.get('textTwirlTitle')?.value,
+        textTwirlDescription: this.form.get('textTwirlDescription')?.value
+      };
     }
 
     this.CatalogService.updateCatalogWidget(widgetPayload).subscribe({
@@ -1811,15 +1815,15 @@ export class CatalogComponent implements OnInit, OnDestroy {
     });
   }
 
- 
 
- 
+
+
 
   ngOnDestroy(): void {
   }
 
 
- 
+
 
   ngOnInit(): void {
     this.homeWidgets = this.widgets;
@@ -1860,6 +1864,16 @@ export class CatalogComponent implements OnInit, OnDestroy {
       insightHubRedirection: new FormControl(''),
       insightHubThumbnailSmall: new FormControl(null),
       insightHubThumbnailLarge: new FormControl(null),
+    });
+
+    this.hyperlinkheroForm = new FormGroup({
+      hyperlinkTitle: new FormControl(''),
+      hyperLinkCaption: new FormControl(''),
+      hyperLinkDescription: new FormControl(''),
+      hyperLinkButton: new FormControl(''),
+      hyperLinkRedirection: new FormControl(''),
+      hyperLinkThumbnail: new FormControl(null),
+      alignment: new FormControl('left'),
     });
 
     this.AppSettingsService.getGeneralSettingsbyId('1').subscribe({
