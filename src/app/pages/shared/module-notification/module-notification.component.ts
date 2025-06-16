@@ -186,9 +186,9 @@ export class ModuleNotificationComponent implements OnInit, OnChanges {
     });
   }
 
-  openCoupon(template: TemplateRef<any>) {
-    if (this.customerId) {
-      this.couponForm.get('forUser')?.setValue(this.customerId);
+  openCoupon(template: TemplateRef<any>) {    
+    if (this.customerId) {  
+      this.couponForm.get('forUser')?.setValue(this.customerId);      
       this.modalRef?.hide();
       this.couponModalRef = this.BsModalService.show(template, {
         class: 'modal-lg modal-dialog-centered',
@@ -203,8 +203,9 @@ export class ModuleNotificationComponent implements OnInit, OnChanges {
       : (query = { slug: this.query });
     if (this.type) {
       this.CustomersService.customerDetails(query).subscribe({
-        next: (res: any) => {
-          if (res?.errorCode == 0) {
+        next: (res: any) => {          
+          if (res?.errorCode == 0 || res?.meta?.error_code == 0) {
+            console.log("res?.resultres?.result", res?.result);        
             this.couponForm.get('forUser')?.setValue(res?.result?._id);
           }
         },

@@ -244,18 +244,11 @@ export const Routing: Routes = [
         path: 'coupons',
         loadChildren: () => import('./marketing/coupons/coupons.module').then((m) => m.CouponsModule),
         canActivate: [AuthenticationGuard, PermissionGuard]
-      },
-      {
-        path: 'contacts',
-        loadChildren: () => import('./settings/general/contact/contact.module').then((m) => m.ContactModule),
-        canActivate: [AuthenticationGuard, PermissionGuard]
-      },
-      {
+      }, {
         path: 'social-media',
         loadChildren: () => import('./settings/general/social.media/social.media.module').then((m) => m.SocialMediaModule),
         canActivate: [AuthenticationGuard, PermissionGuard]
-      },
-      {
+      }, {
         path: 'invoice-settings',
         loadChildren: () => import('./settings/general/invoice-settings/invoice-settings.module').then((m) => m.InvoiceSettingsModule),
         canActivate: [AuthenticationGuard, PermissionGuard]
@@ -264,11 +257,6 @@ export const Routing: Routes = [
         component: CreateProductsComponent,
         canActivate: [AuthenticationGuard]
       }, {
-        path: 'banners',
-        loadChildren: () => import('./design/banners/banners.module').then((m) => m.BannersModule),
-        canActivate: [AuthenticationGuard, PermissionGuard]
-      },
-      {
         path: 'reports',
         loadChildren: () => import('./reports/reports.module').then((m) => m.ReportsModule),
         canActivate: [AuthenticationGuard, PermissionGuard]
@@ -293,11 +281,6 @@ export const Routing: Routes = [
         component: NewsletterSubscribersComponent,
         canActivate: [AuthenticationGuard, PermissionGuard]
       }, {
-        path: 'layouts',
-        loadChildren: () => import('./design/layouts/layouts.module').then((m) => m.LayoutsModule),
-        canActivate: [AuthenticationGuard, PermissionGuard]
-      },
-      {
         path: 'blogs',
         loadChildren: () => import('./marketing/blogs/blogs.module').then((m) => m.BlogsModule),
         canActivate: [AuthenticationGuard, PermissionGuard]
@@ -482,11 +465,11 @@ export const Routing: Routes = [
         path: 'cart-settings',
         component: CartSettingsComponent,
         canActivate: [AuthenticationGuard, PermissionGuard]
-      },{
+      }, {
         path: 'menu-navigations',
         component: MenuNavigationComponent,
         canActivate: [AuthenticationGuard, PermissionGuard]
-      },{
+      }, {
         path: 'locations',
         loadChildren: () => import('./settings/general/locations/locations.module').then((m) => m.LocationsModule),
         canActivate: [AuthenticationGuard, PermissionGuard]

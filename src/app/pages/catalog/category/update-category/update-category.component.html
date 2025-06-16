@@ -27,6 +27,19 @@
         Delete category
       </button>
     </div>
+    <ng-template #deleteConfirmation let-modal>
+      <div class="modal-header align-items-center justify-content-center">
+        <h4 class="modal-title">Confirm Delete</h4>
+        <button type="button" class="btn-close" (click)="modal.dismiss()" aria-label="Close"></button>
+      </div>
+      <div class="modal-body align-items-center justify-content-center">
+        <p>Are you sure you want to delete this category? This action cannot be undone.</p>
+      </div>
+      <div class="modal-footer align-items-center justify-content-center">
+        <button type="button" class="btn btn-primary" (click)="modal.dismiss()">Cancel</button>
+        <button type="button" class="btn btn-secondary" (click)="confirmDelete(); modal.close()">Delete</button>
+      </div>
+    </ng-template>
   </div>
 
   <div class="row my-4" [ngClass]="{'pe-none opacity-50': categoryDoc?.isArchive == true}">
@@ -184,6 +197,14 @@
                       <option value="" disabled>-- Select an option --</option>
                       <option value="false" selected>No</option>
                       <option value="true">Yes</option>
+                    </select>
+                  </div>
+                  <div class="form-group mb-3">
+                    <label for="isFeatured" class="form-label">Featured</label>
+                    <select formControlName="isFeatured" class="form-select" id="isFeatured">
+                      <option value="" disabled>-- Select an option--</option>
+                      <option value="true">Yes</option>
+                      <option value="false">No</option>
                     </select>
                   </div>
 

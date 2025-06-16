@@ -4,7 +4,6 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { HotToastService } from '@ngneat/hot-toast';
 import { appRoutes } from 'src/app/config/routes/app.routes';
 import { TestimonialService } from 'src/app/includes/services/testimonial.service';
-import { UploadService } from 'src/app/includes/services/upload.service';
 import { environment } from 'src/environments/environment';
 
 @Component({
@@ -32,11 +31,11 @@ export class UpdateTestimonialComponent implements OnInit {
   ngOnInit(): void {
     this.form = new FormGroup({
       name: new FormControl('', Validators.required),
-      avatar: new FormControl(''),
+      avatar: new FormControl('',Validators.required),
       profession: new FormControl(''),
       title: new FormControl(''),
       business: new FormControl(''),
-      file: new FormControl(''),
+      file: new FormControl('',Validators.required),
       rating: new FormControl('', [Validators.required, Validators.pattern("^[0-9]$")]),
       place: new FormControl('', Validators.required),
       message: new FormControl('', Validators.required),

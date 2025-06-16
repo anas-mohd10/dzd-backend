@@ -23,9 +23,18 @@
         Restore brand
       </button>
       <button type="button" (click)="onDelete()" class="btn btn-danger">
-        Delete brand
+        Delete bran
       </button>
     </div>
+    <ng-template #deleteConfirmation let-c="close" let-d="dismiss">
+      <div class="modal-header align-items-center justify-content-center">
+        <h4 class="modal-title">Confirm Delete</h4>
+      </div>
+      <div class="modal-footer align-items-center justify-content-center">
+        <button type="button" class="btn btn-primary" (click)="d()">Cancel</button>
+        <button type="button" class="btn btn-secondary" (click)="confirmDelete()">Delete</button>
+      </div>
+    </ng-template>
   </div>
 
   <div class="my-4" [ngClass]="{'pe-none opacity-50': brandDetails?.isArchive == true}">

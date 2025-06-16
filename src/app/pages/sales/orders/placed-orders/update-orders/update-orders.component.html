@@ -4,7 +4,7 @@
       <div class="spinner-border text-primary" role="status">
         <span class="visually-hidden">Loading...</span>
       </div>
-      <div class="mt-2">Processing, please wait...</div>
+      <div class="mt-2 fs-5">Order is being Processed</div>
     </div>
   </div>
   <div class="page-header d-flex flex-row justify-content-between">
@@ -268,10 +268,12 @@
                   <tr>
                     <th class="p-2 text-muted fw-normal">Name</th>
                     <td class="p-2">
-                      {{order?.customerDetails?.name || order?.customerId?.name || order?.guestId?.name || order?.customer?.name}}
-                      <span class="d-inline-flex flex-wrap gap-1 ms-2" *ngIf="order?.customer?.tags && order?.customer?.tags.length > 0">
-                        <span *ngFor="let tag of order?.customer?.tags" 
-                              class="badge rounded-pill bg-primary px-2 py-1 fs-6">{{tag}}</span>
+                      {{order?.customerDetails?.name || order?.customerId?.name || order?.guestId?.name ||
+                      order?.customer?.name}}
+                      <span class="d-inline-flex flex-wrap gap-1 ms-2"
+                        *ngIf="order?.customer?.tags && order?.customer?.tags.length > 0">
+                        <span *ngFor="let tag of order?.customer?.tags"
+                          class="badge rounded-pill bg-primary px-2 py-1 fs-6">{{tag}}</span>
                       </span>
                     </td>
                   </tr>
@@ -295,6 +297,7 @@
                         <ng-container *ngIf="order?.address?.landmark">, {{order?.address?.landmark}}</ng-container>
                         <ng-container *ngIf="order?.address?.city">, {{order?.address?.city}}</ng-container>
                         <ng-container *ngIf="order?.address?.state">, {{order?.address?.state}}</ng-container>
+                        <ng-container *ngIf="order?.address?.mobile">, {{order?.address?.country}}</ng-container>
                         <ng-container *ngIf="order?.address?.pincode">, {{order?.address?.pincode}}</ng-container>
                         <ng-container *ngIf="order?.address?.mobile">, {{order?.address?.mobile}}</ng-container>
                       </td>
@@ -366,6 +369,7 @@
                         <ng-container *ngIf="order?.address?.landmark">, {{order?.address?.landmark}}</ng-container>
                         <ng-container *ngIf="order?.address?.city">, {{order?.address?.city}}</ng-container>
                         <ng-container *ngIf="order?.address?.state">, {{order?.address?.state}}</ng-container>
+                        <ng-container *ngIf="order?.address?.mobile">, {{order?.address?.country}}</ng-container>
                         <ng-container *ngIf="order?.address?.pincode">, {{order?.address?.pincode}}</ng-container>
                         <ng-container *ngIf="order?.address?.mobile">, {{order?.address?.mobile}}</ng-container>
                       </td>

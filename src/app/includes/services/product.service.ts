@@ -131,6 +131,11 @@ export class ProductService {
     return this.http.put(`${url}`, data);
   }
 
+  updateProductStatus(productDoc: { _id: string, isActive: boolean }) {
+    const url = this.commonService.getFullUrl(this.productEndpoints.updateProductStatus);
+    return this.http.patch(`${url}`, productDoc);
+  }
+
   getProductWebData(query: any) {
     const url = this.commonService.getFullUrl(this.productEndpoints.product_datas);
     return this.http.post(`${url}`, query);
@@ -199,8 +204,8 @@ export class ProductService {
 
   //Product details for dashboard
   getProductDetails(productSlug: string) {
-    const url = this.commonService.getFullUrl(this.productEndpoints.getProductDetails + `/${productSlug}`);
-    return this.http.get(`${url}`);
+    const url = this.commonService.getFullUrl(this.productEndpoints.getProductDetails);
+    return this.http.post(`${url}`, { productSlug });
   }
   //Product details for dashboard
 

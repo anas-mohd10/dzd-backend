@@ -115,6 +115,10 @@ export class AllProductsComponent implements OnInit {
     private HotToastService: HotToastService
   ) { }
 
+  getProductSlug(productId: string) {
+    return `${this.domainUrl}p/${encodeURIComponent(productId)}`
+  }
+
   openExport(template: TemplateRef<any>) {
     this.exportModalRef = this.BsModalService.show(template, {
       class: 'modal-dialog-centered modal-sm',
@@ -344,7 +348,7 @@ export class AllProductsComponent implements OnInit {
   }
 
   updateProduct(event: { switchId: string, toggleState: boolean }) {
-    this.ProductService.updateProduct(event.switchId, { _id: event.switchId, isActive: event.toggleState }).subscribe({
+    this.ProductService.updateProductStatus({ _id: event.switchId, isActive: event.toggleState }).subscribe({
       next: (res: any) => {
         if (res?.errorCode == 0) {
           this.getProducts()

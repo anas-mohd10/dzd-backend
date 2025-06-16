@@ -12,6 +12,7 @@ import { appRoutes } from '../../../../config/routes';
 import { CategoryService } from '../../../../includes/services/category.service';
 import { HotToastService } from '@ngneat/hot-toast';
 import slugify from 'slugify';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 interface parentDetails {
   refid: string;
@@ -43,13 +44,16 @@ export class UpdateCategoryComponent implements OnInit {
   categoryDoc: any;
   categoryId: string = '';
   hierarchies: Array<Hierarchy> = [];
+  @ViewChild('deleteConfirmation') deleteConfirmation!: TemplateRef<any>;
 
   constructor(
     private Router: Router,
     private CategoryService: CategoryService,
     private HotToastService: HotToastService,
     private ActivatedRoute: ActivatedRoute,
-    private ChangeDetectorRef: ChangeDetectorRef
+    private ChangeDetectorRef: ChangeDetectorRef,
+    private modalService: NgbModal
+
   ) { }
 
   get formControls() {
@@ -112,6 +116,7 @@ export class UpdateCategoryComponent implements OnInit {
       cover: new FormControl(null),
       mobileCover: new FormControl(null),
       hierarchy: new FormControl(''),
+      isFeatured: new FormControl(false),
       isRoot: new FormControl(true),
       isActive: new FormControl(true),
       isArchive: new FormControl(false),
@@ -278,6 +283,10 @@ export class UpdateCategoryComponent implements OnInit {
   }
 
   onDelete() {
+    this.modalService.open(this.deleteConfirmation, { centered: true });
+  }
+
+  confirmDelete() {
     this.CategoryService.deleteCategory(this.categoryDoc?._id).subscribe({
       next: (res: any) => {
         if (res?.errorCode == 0) {
@@ -292,4 +301,19 @@ export class UpdateCategoryComponent implements OnInit {
       },
     });
   }
+  // onDelete() {
+  //   this.CategoryService.deleteCategory(this.categoryDoc?._id).subscribe({
+  //     next: (res: any) => {
+  //       if (res?.errorCode == 0) {
+  //         this.Router.navigate([appRoutes.category.CATEGORY_LIST]);
+  //         this.HotToastService.success(res?.message);
+  //       } else {
+  //         this.HotToastService.error(res?.message);
+  //       }
+  //     },
+  //     error: (err: any) => {
+  //       this.HotToastService.error(err?.error?.message);
+  //     },
+  //   });
+  // }
 }

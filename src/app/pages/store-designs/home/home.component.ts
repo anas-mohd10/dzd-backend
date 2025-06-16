@@ -15,6 +15,19 @@ import { AngularEditorConfig } from '@kolkov/angular-editor';
 import { StaticPageService } from 'src/app/includes/services/static-page.service';
 import { BrandService } from 'src/app/includes/services/brand.service';
 import { CatalogService } from 'src/app/includes/services/catalog.service';
+import { widgets } from './home.widgets';
+import {
+  ClickPulsePanel,
+  cmsPages,
+  editorConfig,
+  hiddenDisplaySettings,
+  hiddenHeaderItems,
+  redirectionItems,
+  searchRedirections,
+  sortOptions,
+  widgetImageTypes,
+  widgetProductTypes
+} from './home.constants';
 
 interface WidgetProps {
   title: string;
@@ -27,417 +40,107 @@ interface WidgetProps {
   selector: 'app-home',
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss'],
-
 })
 export class HomeComponent implements OnInit {
-  widgets: Array<WidgetProps> = [
-    {
-      title: 'Magestic Mosaic',
-      type: 'magestic-mosaic',
-      icon: 'assets/widgets/rush-lake.png',
-      description:
-        `The following widget can be used to show images within a particular category.The widget contains images. 
-       <strong>Magestic Mosaic - 800(w) x 244(h) - 1(Largest one) , 390(w) x 244(h) - 4(Smaller ones)</strong>`,
-    }, {
-      title: 'Glamour Glaze',
-      type: 'glamour-glaze',
-      icon: 'assets/widgets/volta-lake.png',
-      description:
-        'The widget can be used to showcase new brands or existing brands.The widget contains two section with image and description section on either side and vice-versa.The description box has a black border, with heading, subheading and button. <strong>Glamour Glaze - 800(w) x 697(h) - 1(Bigger one) ,390(w) x 220(h) - 3(Smaller ones)</strong>',
-    }, {
-      title: 'Dazzle Design',
-      type: 'dazzle-design',
-      icon: 'assets/widgets/1x4.png',
-      description:
-        'The following widget can be used to show collection of categories.The following widget is a collection of card where it has one main card and other 4 cards.The cards contain an image and decrotaive text which is center aligned with the image. <strong>Dazzle Design - 595(w) x 595(h) - 1(bigger one) , 287(w) x 287(h) - 4 (smaller ones)</strong>',
-    }, {
-      title: 'Celestial Canvas',
-      type: 'celestial-canvas',
-      icon: 'assets/widgets/celestial-canvas.png',
-      description: 'This widget is used to showcase banner carousel and video',
-    }, {
-      title: 'Blogs',
-      type: 'blogs',
-      icon: 'assets/widgets/blogs.png',
-      description:
-        'The following widget can be used to display the recent blogs, or categories.The widget contains image and white transluscent descriptive box.The description box contain text and button.',
-    }, {
-      title: 'Custom HTML',
-      type: 'html',
-      icon: 'assets/widgets/custom-html.png',
-      description: '',
-    }, {
-      title: 'Image Slider',
-      type: 'image-slider',
-      icon: 'assets/widgets/image-slider.png',
-      description:
-        'The following widget can be used to show images within a particular category.The widget contains images.',
-    }, {
-      title: 'Video',
-      type: 'video',
-      icon: 'assets/widgets/video.png',
-      description: 'This widget is used to showcase full width video only.',
-    }, {
-      title: 'Motion Canvas',
-      type: 'motion-canvas',
-      icon: 'assets/widgets/regal-rolls.png',
-      description:
-        'The following widget can be used to showcase products.The widget contains an image of the product and white descriptive box.The descriptive box contains name of the product, actual price and off price and off percentage, which are center aligned with respect to the box.',
-    }, {
-      title: 'Products',
-      type: 'products',
-      icon: 'assets/widgets/blogs.png',
-      description:
-        'The following widget can be used to showcase products.The widget contains an image of the product and white descriptive box.The descriptive box contains name of the product, actual price and off price and off percentage, which are center aligned with respect to the box.',
-    }, {
-      title: 'Noble Nodes',
-      type: 'noble-nodes',
-      icon: 'assets/widgets/noble-nodes.png',
-      description:
-        'The following widget can be used to show images within a particular category.The widget contains images.<strong> Noble Nodes - 595(w) x 320(h) - 2(equal ones),390(w) x 320(h) - 1(smaller one), 800(w) x 320(h) - 1(bigger one)</strong>',
-    }, {
-      title: 'Prime Plates',
-      type: 'prime-plates',
-      icon: 'assets/widgets/prime-plates.png',
-      description:
-        'The following widget can be used to show images within a particular category.The widget contains images.<strong>Prime Plates - 390(w) x 320(h) - 1(smaller one),800(w) x 320(h) - 1(bigger one)</strong>',
-    }, {
-      title: 'Elite Elements',
-      type: 'elite-elements',
-      icon: 'assets/widgets/elite-elements.png',
-      description:
-        'The following widget can be used to show images within a particular category.The widget contains images.',
-    }, {
-      title: 'Sale Timer',
-      type: 'sale-timer',
-      icon: 'assets/widgets/sale-timer.png',
-      description: 'This widget is used to showcase a sale timer.',
-    }, {
-      title: 'Twin Towers',
-      type: 'twin-towers',
-      icon: 'assets/widgets/twin-towers.png',
-      description:
-        'The following widget can be used to show images within a particular category.The widget contains images.<strong>Twin Towers - 595(w) x 320(h) - 2</strong>',
-    }, {
-      title: 'Slider Spotlight',
-      type: 'slider-spotlight',
-      icon: 'assets/widgets/slider-spotlight.png',
-      description:
-        'The following widget can be used to show images within a particular category. The widget contains images.',
-    }, {
-      title: 'Trending Teasers',
-      type: 'trending-teasers',
-      icon: 'assets/widgets/trending-teasers.png',
-      description:
-        'The following widget can be used to show images within a particular category. The widget contains images. <strong>Trending Teasers - 1210(w) x 320(h) - 1(bigger one),595(w) x 320(h) - 2(smaller ones)</strong>',
-    }, {
-      title: 'Smart Tiles',
-      type: 'smart-tiles',
-      icon: 'assets/widgets/smart-tiles.png',
-      description:
-        'The following widget can be used to showcase products.The widget contains an image of the product and white descriptive box.The descriptive box contains name of the product, actual price and off price and off percentage, which are center aligned with respect to the box.',
-    }, {
-      title: 'Stellar Selections',
-      type: 'stellar-selections',
-      icon: 'assets/widgets/stellar-selections.png',
-      description:
-        'The following widget can be used to show images within a particular category. The widget contains images.',
-    }, {
-      title: 'Testimonials',
-      type: 'testimonial-cards',
-      icon: 'assets/widgets/image-slider.png',
-      description:
-        'The following widget can be used to show images within a particular category. The widget contains images.',
-    }, {
-      title: 'Radiant Rectangles',
-      type: 'radiant-rectangles',
-      icon: 'assets/widgets/radiant-rectangles.png',
-      description:
-        'The following widget can be used to showcase products.The widget contains an image of the product and white descriptive box.The descriptive box contains name of the product, actual price and off price and off percentage, which are center aligned with respect to the box.',
-    }, {
-      title: 'Quad Squares',
-      type: 'quad-square',
-      icon: 'assets/widgets/quad-sqaure.png',
-      description:
-        'The following widget can be used to show images within a particular category. The widget contains images.',
-    }, {
-      title: 'Insight Hub',
-      type: 'insight-hub',
-      icon: 'assets/widgets/store-chronicles.png',
-      description:
-        'The following widget can be used to show images within a particular category. The widget contains images.',
-    }, {
-      title: 'Delivery Timer',
-      type: 'delivery-timer',
-      icon: 'assets/widgets/delivery-timer.png',
-      description:
-        'The following widget can be used to run a delivery timer with custom designs',
-    }, {
-      title: 'Hyper Link Hero',
-      type: 'hyperlinkhero',
-      icon: 'assets/widgets/picture-palette.png',
-      description:
-        'The following widget can be used to show images within a particular category. The widget contains images.',
-    }, {
-      title: 'Aurora Grid',
-      type: 'aurora-grid',
-      icon: 'assets/widgets/aurora-grid.png',
-      description:
-        'The following widget can be used to run a delivery timer with custom designs',
-    }, {
-      title: 'Aurora Slider',
-      type: 'aurora-slider',
-      icon: 'assets/widgets/aurora-slider.png',
-      description:
-        'The following widget can be used to show images within a particular category. The widget contains images.',
-    }, {
-      title: 'Text Twirl',
-      type: 'text-twirl',
-      icon: 'assets/widgets/text-twirl.png',
-      description:
-        'The following widget can be used to show limited set of medias with title and description. The widget contains images.',
-    }, {
-      title: 'Full Banner',
-      type: 'full-banner',
-      icon: 'assets/widgets/text-twirl.png',
-      description:
-        'The following widget can be used to show limited set of medias with title and description. The widget contains images.',
-    }, {
-      title: 'Animation Banner',
-      type: 'animation-banner',
-      icon: 'assets/widgets/text-twirl.png',
-      description:
-        'The following widget can be used to show limited set of medias with title and description. The widget contains images.',
-    }, {
-      title: 'Bricks Mansory Grid',
-      type: 'brick-mansory-grid',
-      icon: 'assets/widgets/text-twirl.png',
-      description:
-        'The following widget can be used to show limited set of medias with title and description. The widget contains images.',
-    }, {
-      title: 'Primary Triple Grid',
-      type: 'primary-triple-grid',
-      icon: 'assets/widgets/text-twirl.png',
-      description:
-        'The following widget can be used to show limited set of medias with title and description. The widget contains images.',
-    }, {
-      title: 'Vibrant Banner',
-      type: 'vibrant-banner',
-      icon: 'assets/widgets/text-twirl.png',
-      description:
-        'The following widget can be used to show one full width banner. The widget contains images.',
-    }, {
-      title: 'Key Points',
-      type: 'key-points-grid',
-      icon: 'assets/widgets/text-twirl.png',
-      description:
-        'The following widget can be used to show limited set of medias with title and description. The widget contains images.',
-    },
-    {
-      title: 'Modern Carousel',
-      type: 'modern-carousel',
-      icon: 'assets/widgets/text-twirl.png',
-      description:
-        'The following widget can be used to show limited set of medias with title and description. The widget contains images.',
-    }
-  ];
-  homeWidgets: Array<any> = [];
-  homeWidgetKeyword: FormControl = new FormControl('', Validators.required);
+  widgets: Array<WidgetProps> = widgets;
+  widgetProductTypes: Array<any> = widgetProductTypes;
+  widgetImageTypes: Array<any> = widgetImageTypes;
+  isWidgetLoaded: boolean = false;
+  redirectionItems: Array<any> = redirectionItems;
+  sortOptions: Array<any> = sortOptions;
+  cmsPages: Array<any> = cmsPages;
+  searchRedirections: Array<string> = searchRedirections;
+  editorConfig: AngularEditorConfig = editorConfig
+  hiddenHeaderItems: Array<string> = hiddenHeaderItems;
+  hiddenDisplaySettings: Array<string> = hiddenDisplaySettings;
   today: Date = new Date();
-  widgetItems: Array<any> = [];
-  focusedWidget: WidgetProps = {
-    title: '',
-    type: '',
-    icon: '',
-    description: '',
-  };
-  widgetsRef?: BsModalRef;
+  focusedWidget: WidgetProps | null = null;
   confirmedWidget: any;
-  confirmRef?: BsModalRef;
   duplicateRef?: any;
   duplicatedWidget: any;
-  updateRef?: BsModalRef;
   widgetDetails: any;
-  form: FormGroup;
-  widgetForm: FormGroup;
-  widgetImages: Array<any> = [];
-  base: string = '';
-  previewDetails: string = '';
   widgetImagePreview: any;
   widgetImagePreviewIndex: any;
   widgetPreviewDetails: any;
-  smartTileProducts: Array<any> = [];
-  tileProductsInput: FormControl = new FormControl('', Validators.required);
-  tileProducts: Array<any> = [];
-  widgetProductTypes: Array<any> = [
-    'smart-tiles',
-    'aurora-slider',
-    'aurora-grid',
-    'products',
-    'motion-canvas',
-  ];
-  widgetImageTypes: Array<any> = [
-    'image-slider',
-    'radiant-rectangles',
-    'quad-square',
-    'prime-plates',
-    'elite-elements',
-    'noble-nodes',
-    'classic-banners',
-    'magestic-mosaic',
-    'glamour-glaze',
-    'dazzle-design',
-    'grandeur-gallery',
-    'celestial-canvas',
-    'twin-towers',
-    'stellar-selections',
-    'slider-spotlight',
-    'trending-teasers',
-    'text-twirl',
-    'vibrant-banner',
-    'animation-banner',
-    'brick-mansory-grid',
-    'primary-triple-grid',
-    'full-banner',  
-    'modern-carousel',
-    'key-points-grid',
-  ];
-  isWidgetLoaded: boolean = false;
-  redirectionItems: Array<any> = [
-    { key: 'None', value: '' },
-    { key: 'Open category products', value: 'category' },
-    { key: 'Open all products', value: 'all-products' },
-    { key: 'Open brand products', value: 'brand' },
-    { key: 'Open collection products', value: 'collection' },
-    { key: 'Open product details', value: 'products' },
-    { key: 'Open catalog page', value: 'catalog' },
-    { key: 'Open blogs', value: 'blogs' },
-    { key: 'Open weblink', value: 'web-links' },
-    { key: 'Open static page', value: 'static-pages' },
-    { key: 'Open CMS page', value: 'cms-pages' },
-    { key: 'Search filters', value: 'search-filters' },
-  ];
-  sortOptions: Array<any> = [
-    { key: 'Popularity', value: 'popularity' },
-    { key: 'Newest', value: 'newest' },
-    { key: 'Oldest', value: 'oldest' },
-    { key: 'Price: Low to High', value: 'ascending' },
-    { key: 'Price: High to Low', value: 'descending' },
-  ];
+  redirectionDetails: any;
+  count: number = 0;
   screenLoad: number = 0;
-  hyperlinkheroForm: FormGroup;
-  keyPointForm: FormGroup = new FormGroup({});
-  hyperLinkHeroThumbnail: string = '';
-  staticPages: Array<any> = [];
-  cmsPages: Array<any> = [
-    { title: 'FAQs', value: '/faqs' },
-    { title: 'Stores', value: '/stores' },
-    { title: 'Brands', value: '/brands' },
-    { title: 'Category', value: '/categories' },
-    { title: 'Reviews', value: '/reviews' },
-    { title: 'Contact Us', value: '/contact-us' },
-  ];
-  keyPoints: Array<any> = []
-  searchRedirections: Array<string> = [
-    'category',
-    'brands',
-    'collection',
-    'products',
-    'catalog',
-    'blogs',
-  ];
-  blogs: Array<any> = [];
   blogsMap: any = {}
+  settings: any = {};
+  isDraft: boolean = false;
+  widgetImages: Array<any> = [];
+  videoLinks: Array<any> = [];
+  smartTileProducts: Array<any> = [];
+  tileProducts: Array<any> = [];
+  staticPages: Array<any> = [];
+  keyPoints: Array<any> = []
+  blogs: Array<any> = [];
   widgetBlogs: Array<any> = [];
   redirections: Array<any> = [];
-  productForm: FormGroup;
-  productKeyword: FormControl = new FormControl('', Validators.required);
-  products: any = [];
   widgetProducts: Array<any> = [];
+  products: Array<any> = [];
+  homeWidgets: Array<any> = [];
+  widgetItems: Array<any> = [];
+  collections: Array<any> = [];
+  spotlightSliders: Array<any> = [];
+  categories: Array<any> = [];
+  brands: Array<any> = [];
+  testimonials: Array<any> = [];
+  widgetTestimonials: Array<any> = [];
+  catalogPages: Array<any> = [];
+  widgetsRef?: BsModalRef;
+  confirmRef?: BsModalRef;
+  updateRef?: BsModalRef;
   historyRef?: BsModalRef;
+  designRef?: BsModalRef;
+  videoLinkRef?: BsModalRef;
+  deleteVideoLinkRef?: BsModalRef;
+  device: string = 'desktop';
+  selectedProductType: string = 'products';
+  hyperLinkHeroThumbnail: string = '';
+  base: string = '';
+  previewDetails: string = '';
   collectionCoverDetails: string = '';
   collectionThumbnailDetails: string = '';
-  designRef?: BsModalRef;
-  designForm: FormGroup;
-  insightHubForm: FormGroup;
-  keyPointForms: FormGroup;
   backgroundDetails: string;
-  isDraft: boolean = false;
-  saleForm: FormGroup;
-  device: string = 'desktop';
-  count: number = 0;
   saleThumbnailDetails: string = '';
-  hiddenHeaderItems: Array<string> = [
-    'sale-timer',
-    'hyperlinkhero',
-    'insight-hub',
-    'key-points-grid',
-  ];
-  selectedProductType: string = 'products';
+  titleThumbnailDetails: string = '';
+  productsAdThumbnail: string;
+  insightHubThumbnailSmall: string = '';
+  insightHubThumbnailLarge: string = '';
+  keyPointThumbnail: string = '';
+  form: FormGroup = new FormGroup({});
+  widgetForm: FormGroup = new FormGroup({});
+  saleForm: FormGroup = new FormGroup({});
+  productForm: FormGroup = new FormGroup({});
+  designForm: FormGroup = new FormGroup({});
+  insightHubForm: FormGroup = new FormGroup({});
+  keyPointForms: FormGroup = new FormGroup({});
+  hyperlinkheroForm: FormGroup = new FormGroup({});
+  keyPointForm: FormGroup = new FormGroup({});
   widgetCollection: FormControl = new FormControl('');
   widgetBrand: FormControl = new FormControl('');
   widgetCategory: FormControl = new FormControl('');
   widgetBlog: FormControl = new FormControl('');
-  // redirectionQuery: FormControl = new FormControl('');
-  redirectionQuery = new FormControl(null);
-  redirectionDetails: any;
-  spotlightSliders: Array<any> = [];
-  settings: any = {};
-  collections: any = [];
-  categories: Array<any> = [];
-  brands: Array<any> = [];
-  testimonialKeyword: FormControl = new FormControl('', Validators.required);
-  testimonials: Array<any> = [];
-  widgetTestimonials: Array<any> = [];
-  titleThumbnailDetails: string = '';
-  editorConfig: AngularEditorConfig = {
-    editable: true,
-    spellcheck: true,
-    height: 'auto',
-    minHeight: '0',
-    maxHeight: 'auto',
-    width: 'auto',
-    minWidth: '0',
-    translate: 'yes',
-    enableToolbar: true,
-    showToolbar: true,
-    placeholder: 'Enter text here...',
-    defaultParagraphSeparator: '',
-    defaultFontName: '',
-    defaultFontSize: '',
-    fonts: [
-      { class: 'arial', name: 'Arial' },
-      { class: 'times-new-roman', name: 'Times New Roman' },
-      { class: 'calibri', name: 'Calibri' },
-      { class: 'comic-sans-ms', name: 'Comic Sans MS' },
-    ],
-    customClasses: [
-      {
-        name: 'quote',
-        class: 'quote',
-      },
-      {
-        name: 'redText',
-        class: 'redText',
-      },
-      {
-        name: 'titleText',
-        class: 'titleText',
-        tag: 'h1',
-      },
-    ],
-    uploadUrl: 'v1/image',
-    sanitize: true,
-    toolbarPosition: 'top',
-    toolbarHiddenButtons: [['bold', 'italic'], ['fontSize']],
-  };
-  productsAdThumbnail: string;
-  productAd: FormControl = new FormControl(null);
   productsAdRedirection: FormControl = new FormControl('');
-  insightHubThumbnailSmall: string = '';
-  insightHubThumbnailLarge: string = '';
-  keyPointThumbnail: string = '';
-  catalogPages: Array<any> = [];
+  productAd: FormControl = new FormControl(null);
+  redirectionQuery: FormControl = new FormControl(null);
+  productKeyword: FormControl = new FormControl('', Validators.required);
+  homeWidgetKeyword: FormControl = new FormControl('', Validators.required);
+  tileProductsInput: FormControl = new FormControl('', Validators.required);
+  testimonialKeyword: FormControl = new FormControl('', Validators.required);
+  tabs: Array<ClickPulsePanel> = [];
+  videoLinkInput: string = '';
+  editVideoLinkIndex: number | null = null;
+  deleteVideoLinkIndex: number | null = null;
+  videoLinkForm: FormGroup = new FormGroup({
+    title: new FormControl(''),
+    video: new FormControl('', Validators.required),
+    description: new FormControl(''),
+    button: new FormControl(''),
+    redirection: new FormControl(''),
+    customStyles: new FormControl('')
+  });
 
   constructor(
     private BsModalService: BsModalService,
@@ -454,6 +157,23 @@ export class HomeComponent implements OnInit {
     private StaticPageService: StaticPageService,
     private BrandService: BrandService
   ) { }
+  animationOptions: Array<{ key: string, value: string }> = [
+    { key: 'Fade', value: 'fade' },
+    { key: 'Zoom', value: 'zoom' },
+    { key: 'Slide In Left', value: 'slide-in-left' },
+    { key: 'Slide In Right', value: 'slide-in-right' },
+    { key: 'Slide In Up', value: 'slide-in-up' },
+    { key: 'None', value: 'none' },
+  ];
+
+  // Clickpulse
+  handleClickpulse(event: any) {
+    this.tabs = event;
+    console.log(this.tabs, "this.tabs")
+    this.ChangeDetectorRef.markForCheck();
+  }
+  // Clickpulse
+
 
   getDomain(domain: string) {
     return domain.endsWith('/') ? domain.slice(0, -1) : domain;
@@ -493,13 +213,9 @@ export class HomeComponent implements OnInit {
   }
 
   toggleTestimonials(testimonial: any) {
-    let isExists = this.widgetTestimonials.some(
-      (item: any) => item?._id == testimonial?._id
-    );
+    let isExists = this.widgetTestimonials.some((item: any) => item?._id == testimonial?._id);
     if (isExists) {
-      this.widgetTestimonials = this.widgetTestimonials.filter(
-        (item) => item?._id != testimonial?._id
-      );
+      this.widgetTestimonials = this.widgetTestimonials.filter((item) => item?._id != testimonial?._id);
     } else {
       this.widgetTestimonials.push(testimonial);
     }
@@ -533,13 +249,9 @@ export class HomeComponent implements OnInit {
   }
 
   toggleTileProducts(productDetails: any) {
-    let isExists = this.smartTileProducts.some(
-      (item: any) => item?._id == productDetails?._id
-    );
+    let isExists = this.smartTileProducts.some((item: any) => item?._id == productDetails?._id);
     if (isExists) {
-      this.smartTileProducts = this.smartTileProducts.filter(
-        (item) => item?._id != productDetails?._id
-      );
+      this.smartTileProducts = this.smartTileProducts.filter((item) => item?._id != productDetails?._id);
     } else {
       if (this.smartTileProducts.length >= 20) {
         return this.Toast.error('Maximum limit reachced');
@@ -550,11 +262,7 @@ export class HomeComponent implements OnInit {
   }
 
   isTileProductExists(productDetails: any) {
-    return this.smartTileProducts.some(
-      (item: any) => item?._id == productDetails?._id
-    )
-      ? true
-      : false;
+    return this.smartTileProducts.some((item: any) => item?._id == productDetails?._id) ? true : false;
   }
 
   handleInsightHubThumbnail(event: any, type: string) {
@@ -594,7 +302,6 @@ export class HomeComponent implements OnInit {
   }
 
   saveBlogs() {
-    console.log(this.blogsMap);
     let blogItem = this.blogsMap[this.widgetBlog.value]
     this.widgetBlogs.push(blogItem)
     this.widgetBlog.setValue('')
@@ -614,6 +321,28 @@ export class HomeComponent implements OnInit {
       this.insightHubForm.get('insightHubThumbnailLarge')?.setValue(null);
       this.insightHubThumbnailLarge = '';
     }
+  }
+
+  getBlogs(query: string) {
+    const blogIds: string[] = this.widgetBlogs.map((blog: any) => blog?._id);
+    this.BlogService.blogs({
+      keyword: query,
+      page: 1,
+      limit: 100,
+      blogIds
+    }).subscribe({
+      next: (res: any) => {
+        if (res?.errorCode == 0) {
+          this.blogs = res?.result?.data;
+          if (res.result.data && res.result.data.length > 0) {
+            res.result.data.map((blog: any) => {
+              this.blogsMap[blog.slug] = blog;
+            })
+          }
+          this.ChangeDetectorRef.markForCheck();
+        }
+      },
+    });
   }
 
   onRedirectionSelected() {
@@ -787,14 +516,17 @@ export class HomeComponent implements OnInit {
             }
             this.widgetImagePreview = this.widgetImages[0];
             this.widgetImagePreviewIndex = 0;
-            this.previewDetails = this.widgetImagePreview?.url
-              ? this.widgetImagePreview?.url?.path
-              : '';
+            this.previewDetails = this.widgetImagePreview?.url ? this.widgetImagePreview?.url?.path : '';
             this.widgetForm.patchValue(this.widgetImagePreview);
           }
+
+          // Handle videoLinks for vibrant-video-banner
+          if (this.widgetDetails?.widgetType === 'vibrant-video-banner') {
+            this.videoLinks = this.widgetDetails?.videoLinks || [];
+          }
+
           if (this.widgetDetails?.widgetType == 'blogs') {
             this.widgetBlogs = this.widgetDetails?.blogs;
-            this.getBlogs('');
           }
           if (this.widgetDetails?.widgetType == 'testimonial-cards') {
             this.widgetTestimonials = this.widgetDetails?.testimonials;
@@ -884,6 +616,10 @@ export class HomeComponent implements OnInit {
             this.keyPoints = res?.result?.keyPoints
           }
 
+          if (this.widgetDetails?.widgetType == 'clickpulse-panel') {
+            this.tabs = res?.result?.tabs;
+          }
+
           this.widgetDetails?.endDate
             ? this.saleForm
               .get('endDate')
@@ -937,7 +673,9 @@ export class HomeComponent implements OnInit {
     this.widgetsRef?.hide();
   }
 
-  addWidget(widget: WidgetProps) {
+  addWidget(widget: WidgetProps | null) {
+    if (!widget) return;
+
     this.HomeWidgetsService.addHomeWidget({
       index: this.widgetItems.length,
       widgetName: widget.title,
@@ -1093,9 +831,15 @@ export class HomeComponent implements OnInit {
     this.widgetImages = [...items];
   }
 
+  widgetBlogsChange(event: any) {
+    this.widgetBlogs = event;
+    this.ChangeDetectorRef.markForCheck();
+  }
+
   updateWidget(type?: string) {
     let widgetPayload = {
       ...this.form.value,
+      tabs: this.tabs,
       refid: this.widgetDetails?.refid,
     };
 
@@ -1105,6 +849,11 @@ export class HomeComponent implements OnInit {
         widgetImages.push({ ...widgetImage, media: widgetImage?.url?._id });
       }
       widgetPayload['widgetImages'] = widgetImages;
+
+      // Add videoLinks to payload for vibrant-video-banner
+      if (this.widgetDetails?.widgetType === 'vibrant-video-banner') {
+        widgetPayload['videoLinks'] = this.videoLinks;
+      }
     } else if (this.widgetDetails?.widgetType == 'blogs') {
       let blogItems = this.widgetBlogs?.map((widgetBlog: any) => widgetBlog._id)
       widgetPayload = { ...widgetPayload, blogs: blogItems };
@@ -1203,6 +952,8 @@ export class HomeComponent implements OnInit {
             paddingRight: 0,
             borderRadius: 0,
             borderWidth: 0,
+            isAnimation: false,
+            animationType: '',
           });
           this.closeUpdate();
           this.closeDesign();
@@ -1514,6 +1265,8 @@ export class HomeComponent implements OnInit {
       borderRadius: new FormControl(0),
       borderWidth: new FormControl(0),
       borderColor: new FormControl('#ffffff'),
+      isAnimation: new FormControl(false),
+      animationType: new FormControl(''),
     });
   }
 
@@ -1583,22 +1336,6 @@ export class HomeComponent implements OnInit {
 
   isIdInArray(idToCheck: string, array: any[]) {
     return array.some((item) => item?._id === idToCheck);
-  }
-
-  getBlogs(query: string) {
-    this.BlogService.blogs({ keyword: query, page: 1, limit: 100 }).subscribe({
-      next: (res: any) => {
-        if (res?.errorCode == 0) {
-          this.blogs = res?.result?.data;
-          if (res.result.data && res.result.data.length > 0) {
-            res.result.data.map((blog: any) => {
-              this.blogsMap[blog.slug] = blog;
-            })
-          }
-          this.ChangeDetectorRef.markForCheck();
-        }
-      },
-    });
   }
 
   openHistory(template: TemplateRef<any>) {
@@ -1689,6 +1426,76 @@ export class HomeComponent implements OnInit {
       case 'reverse-widget':
         this.form.get('isReversed')?.setValue(event.toggleState);
         break;
+      case 'isAnimation':
+        this.designForm.get('isAnimation')?.setValue(event.toggleState);
+        if (event.toggleState == false) {
+          this.designForm.get('animationType')?.setValue('none');
+          break
+        }
     }
+  }
+
+  // Video link management methods
+  openVideoLinkModal(template: TemplateRef<any>, index?: number) {
+    this.videoLinkForm.reset();
+    this.editVideoLinkIndex = null;
+
+    if (index !== undefined) {
+      this.editVideoLinkIndex = index;
+      this.videoLinkForm.patchValue(this.videoLinks[index]);
+    }
+
+    this.videoLinkRef = this.BsModalService.show(template, {
+      class: 'modal-dialog-centered modal-lg',
+      ignoreBackdropClick: true,
+    });
+  }
+
+  closeVideoLinkModal() {
+    this.videoLinkRef?.hide();
+    this.videoLinkForm.reset();
+    this.editVideoLinkIndex = null;
+  }
+
+  saveVideoLink() {
+    if (this.videoLinkForm.valid) {
+      if (this.editVideoLinkIndex !== null) {
+        // Edit existing link
+        this.videoLinks[this.editVideoLinkIndex] = this.videoLinkForm.value;
+        this.Toast.success('Video link updated successfully');
+      } else {
+        // Add new link
+        this.videoLinks.push(this.videoLinkForm.value);
+        this.Toast.success('Video link added successfully');
+      }
+      this.closeVideoLinkModal();
+    } else {
+      this.Toast.error('Please enter a valid video URL');
+    }
+  }
+
+  editVideoLink(index: number, template: TemplateRef<any>) {
+    this.openVideoLinkModal(template, index);
+  }
+
+  confirmRemoveVideoLink(index: number, template: TemplateRef<any>) {
+    this.deleteVideoLinkIndex = index;
+    this.deleteVideoLinkRef = this.BsModalService.show(template, {
+      class: 'modal-sm modal-dialog-centered',
+      ignoreBackdropClick: true,
+    });
+  }
+
+  removeVideoLink() {
+    if (this.deleteVideoLinkIndex !== null) {
+      this.videoLinks.splice(this.deleteVideoLinkIndex, 1);
+      this.Toast.success('Video link removed successfully');
+      this.closeDeleteVideoLinkModal();
+    }
+  }
+
+  closeDeleteVideoLinkModal() {
+    this.deleteVideoLinkRef?.hide();
+    this.deleteVideoLinkIndex = null;
   }
 }

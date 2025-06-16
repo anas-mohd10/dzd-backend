@@ -37,8 +37,10 @@
         <img src="assets/widgets/assets/save-dark.svg" alt="Design" class="ms-1">
       </button>
       <button class="btn btn-primary d-flex align-items-center justify-content-center" placement="bottom"
-        [ngClass]="{'disabled': !isDraft || isPublishing}" [disabled]="!isDraft || isPublishing"
-        (click)="publishWidgets()" tooltip="Publish your draft changes to live">
+        [ngClass]="{'disabled': !isDraft || isPublishing || !isDraftSaved}" 
+        [disabled]="!isDraft || isPublishing || !isDraftSaved"
+        (click)="publishWidgets()" 
+        tooltip="{{!isDraftSaved ? 'Save as draft first to enable publish' : 'Publish your draft changes to live'}}">
         <div class="me-2">{{isPublishing ? 'Publishing...' : 'Publish'}}</div>
         <img *ngIf="!isPublishing" src="assets/widgets/assets/publish.svg" alt="Design" class="ms-1">
         <div *ngIf="isPublishing" class="spinner-border spinner-border-sm ms-1" role="status">

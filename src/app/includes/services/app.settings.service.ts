@@ -29,6 +29,11 @@ export class AppSettingsService {
     return this.http.get(`${url}`);
   }
 
+  getSettings() {
+    const url = this.commonService.getFullUrl(this.generalSettingsEndpoints.getSettings);
+    return this.http.get(`${url}`);
+  }
+
   updateGeneralSettings(data: any) {
     const url = this.commonService.getFullUrl(this.generalSettingsEndpoints.update_general_settings);
     return this.http.put(`${url}`, data);

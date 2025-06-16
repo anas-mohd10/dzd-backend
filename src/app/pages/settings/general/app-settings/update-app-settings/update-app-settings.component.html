@@ -146,32 +146,42 @@
         <div class="card-body">
           <div class="fs-3 fw-bold mb-2">Media Settings</div>
           <div class="row">
-            <div class="col-lg-3">
+            <div class="col-lg-2">
               <div class="fs-5 mb-2 required">Store logo</div>
               <div class="h-auto ratio ratio-1x1 w-100">
                 <app-assets (mediaClicked)="handleStoreLogo($event)" [previewDetails]="logo"></app-assets>
               </div>
             </div>
-            <div class="col-lg-3">
+            <div class="col-lg-2">
               <div class="fs-5 mb-2">Dark Mode Logo</div>
               <div class="h-auto ratio ratio-1x1 w-100">
                 <app-assets (mediaClicked)="handleStoreDarkLogo($event)" [previewDetails]="darkLogo"></app-assets>
               </div>
             </div>
-            <div class="col-lg-3">
+            <div class="col-lg-2">
               <div class="fs-5 mb-2 required">Favicon</div>
               <div class="h-auto ratio ratio-1x1 w-100">
                 <app-assets (mediaClicked)="handleStoreFavicon($event)" [previewDetails]="favicon"></app-assets>
               </div>
             </div>
-            <div class="col-lg-3">
+            <div class="col-lg-2">
               <div class="fs-5 mb-2 required">Default Image</div>
               <div class="h-auto ratio ratio-1x1 w-100">
                 <app-assets (mediaClicked)="handleDefaultImage($event)" [previewDetails]="defaultImage"></app-assets>
               </div>
             </div>
-
-
+            <div class="col-lg-2">
+              <div class="fs-5 mb-2 required">Admin Logo</div>
+              <div class="h-auto ratio ratio-1x1 w-100">
+                <app-assets (mediaClicked)="handleAdminMedia($event, 'logo')" [previewDetails]="form.value.adminLogo"></app-assets>
+              </div>
+            </div>
+            <div class="col-lg-2">
+              <div class="fs-5 mb-2 required">Admin Favicon</div>
+              <div class="h-auto ratio ratio-1x1 w-100">
+                <app-assets (mediaClicked)="handleAdminMedia($event, 'favicon')" [previewDetails]="form.value.adminFavicon"></app-assets>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -395,6 +405,14 @@
             <div class="col-lg-4 form-group mb-3">
               <label class="fs-6 mb-3">isVoucherEnabled</label>
               <select class="form-select mb-3" formControlName="isVoucherEnabled">
+                <option value="" disabled>-- Select an option --</option>
+                <option value="false">No</option>
+                <option value="true">Yes</option>
+              </select>
+            </div>
+            <div class="col-lg-4 form-group mb-3">
+              <label class="fs-6 mb-3">Is Billing Address Enabled</label>
+              <select class="form-select mb-3" formControlName="isBillingAddressEnabled">
                 <option value="" disabled>-- Select an option --</option>
                 <option value="false">No</option>
                 <option value="true">Yes</option>

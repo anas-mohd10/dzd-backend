@@ -3,7 +3,7 @@ export const dashboardEndpoints = {
   monthly_revenue: '/monthly-revenue',
   days_revenue: '/daily-revenue',
   topSellingProducts: '/topSellingProducts',
-  new_orders: '/new-orders',
+  newOrders: '/new-orders',
   publish_dashboard: '/publish-dashboard',
   preview_dashboard: '/preview-dashboard',
   dashboard_config: '/dashboard-config',

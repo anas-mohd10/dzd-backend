@@ -47,6 +47,7 @@ export class UpdateAppSettingsComponent implements OnInit {
   // currencies: Array<any> = ['INR', 'USD', 'EUR', 'AED', 'IQD', 'دينار'],
   currencies: Array<any> = [
     { label: 'INR', value: 'INR' },
+    { label: 'Rupee', value: '₹' },
     { label: 'USD', value: 'USD' },
     { label: 'EUR', value: 'EUR' },
     { label: 'AED', value: 'AED' },
@@ -271,6 +272,8 @@ export class UpdateAppSettingsComponent implements OnInit {
         this.form.get('companyName')?.setValue(res?.result?.companyName)
         this.form.get('domain')?.setValue(res?.result?.domain)
         this.form.get('name')?.setValue(res?.result?.name)
+        this.form.get('adminLogo')?.setValue(res?.result?.adminLogo)
+        this.form.get('adminFavicon')?.setValue(res?.result?.adminFavicon)
         this.form.get('defaultImage')?.setValue(res?.result?.defaultImage)
         this.defaultImage = res?.result?.defaultImage
         this.form.get('description')?.setValue(res?.result?.description)
@@ -297,6 +300,7 @@ export class UpdateAppSettingsComponent implements OnInit {
         this.form.get('verifyNumberWithTwilio')?.setValue(res?.result?.verifyNumberWithTwilio)
         this.form.get('deliverSlotBufferTime')?.setValue(res?.result?.deliverSlotBufferTime || 60);
         this.form.get('isVoucherEnabled')?.setValue(res?.result?.isVoucherEnabled)
+        this.form.get('isBillingAddressEnabled')?.setValue(res?.result?.isBillingAddressEnabled)
 
         this.form.get('commaSeparation')?.setValue(
           res?.result?.commaSeparation ?? true  // Use nullish coalescing for default
@@ -328,6 +332,16 @@ export class UpdateAppSettingsComponent implements OnInit {
 
   handleDefaultImage(event: any) {
     this.form.get('defaultImage')?.setValue(event.path)
+  }
+
+  handleAdminMedia(event: any, mediaType: string) {
+    switch (mediaType) {
+      case 'logo':
+        this.form.get('adminLogo')?.setValue(event.path)
+        break;
+      case 'favicon':
+        this.form.get('adminFavicon')?.setValue(event.path)
+    }
   }
 
   toggleStoreStatus(event: { toggleState: boolean, switchId: string }, template: TemplateRef<any>) {
@@ -384,6 +398,8 @@ export class UpdateAppSettingsComponent implements OnInit {
       isStoreLive: ['true'],
       defaultImage: [''],
       isNotifyStock: ['false'],
+      adminLogo: [''],
+      adminFavicon: [''],
       commaSeparation: [true],
       currencyLocation: ['before'],
       decimalValues: [  ],
@@ -400,6 +416,7 @@ export class UpdateAppSettingsComponent implements OnInit {
       deliverSlotBufferTime: [60],
       verifyNumberWithTwilio: ['false'],
       isVoucherEnabled: ['false'],
+      isBillingAddressEnabled: ['false'],
     })
   }
 
@@ -550,6 +567,8 @@ export class UpdateAppSettingsComponent implements OnInit {
       languages: this.form.get('languages')?.value,
       defaultImage: this.form.get('defaultImage')?.value,
       name: this.form.get('name')?.value,
+      adminLogo: this.form.get('adminLogo')?.value,
+      adminFavicon: this.form.get('adminFavicon')?.value,
       domain: this.form.get('domain')?.value,
       description: this.form.get('description')?.value,
       shippingCost: this.form.get('shippingCost')?.value,
@@ -570,6 +589,7 @@ export class UpdateAppSettingsComponent implements OnInit {
       decimalValues: Number(this.form.get('decimalValues')?.value),
       verifyNumberWithTwilio: this.form.get('verifyNumberWithTwilio')?.value,
       isVoucherEnabled: this.form.get('isVoucherEnabled')?.value,
+      isBillingAddressEnabled: this.form.get('isBillingAddressEnabled')?.value,
       buttons: {
         cart: this.form.get('cartButton')?.value,
         stock: this.form.get('stockButton')?.value,
