@@ -140,7 +140,7 @@ export class CatalogComponent implements OnInit, OnDestroy {
       type: 'twin-towers',
       icon: 'assets/widgets/twin-towers.png',
       description:
-        'The following widget can be used to show images within a particular category.The widget contains images.  <strong>Twin Towers - 595(w) x 320(h) - 2 </strong>',
+        'The following widget can be used to show images within a particular category.The widget contains images.',
     },
     {
       title: 'Slider Spotlight',
@@ -258,22 +258,11 @@ export class CatalogComponent implements OnInit, OnDestroy {
       description:
         'The following widget can be used to show images within a particular category.The widget contains images.',
     }, {
-      title: 'Sale Timer',
-      type: 'sale-timer',
-      icon: 'assets/widgets/sale-timer.png',
-      description: 'This widget is used to showcase a sale timer.',
-    }, {
       title: 'Twin Towers',
       type: 'twin-towers',
       icon: 'assets/widgets/twin-towers.png',
       description:
         'The following widget can be used to show images within a particular category.The widget contains images.',
-    }, {
-      title: 'Slider Spotlight',
-      type: 'slider-spotlight',
-      icon: 'assets/widgets/slider-spotlight.png',
-      description:
-        'The following widget can be used to show images within a particular category. The widget contains images.',
     }, {
       title: 'Trending Teasers',
       type: 'trending-teasers',
@@ -530,6 +519,8 @@ export class CatalogComponent implements OnInit, OnDestroy {
     { title: 'Reviews', value: '/reviews' },
     { title: 'Contact Us', value: '/contact-us' },
   ];
+  keyPoints: Array<any> = []; // Added keyPoints array for key-points-grid widget
+  keyPointThumbnail: string = ''; // Added keyPointThumbnail property
   saleThumbnailDetails: string = '';
   testimonialKeyword: FormControl = new FormControl('', Validators.required);
   saleForm: FormGroup = new FormGroup({});
@@ -555,6 +546,7 @@ export class CatalogComponent implements OnInit, OnDestroy {
     'catalog',
     'blogs',
   ];
+  keyPointForm: FormGroup;
 
   deviceToggled(event: string) {
     this.device = event;
@@ -706,6 +698,33 @@ export class CatalogComponent implements OnInit, OnDestroy {
     this.hyperLinkHeroThumbnail = '';
   }
   //hyperlink hero
+
+  // Key Points Grid methods
+  handleKeyPointThumbnail(event: any) {
+    this.keyPointForm.get('icon')?.setValue(event?.path);
+    this.keyPointThumbnail = event.path;
+  }
+
+  removeKeyPointThumbnail() {
+    this.keyPointForm.get('icon')?.setValue(null);
+    this.keyPointThumbnail = '';
+  }
+
+  saveKeyPoints() {
+    if (!this.keyPointForm.valid) {
+      return;
+    }
+
+    this.keyPoints = [...this.keyPoints, this.keyPointForm.value];
+    this.keyPointForm.reset();
+    this.keyPointThumbnail = '';
+    this.Toast.success('Key point added successfully');
+  }
+
+  removeKeyPoints(pointIndex: number) {
+    this.keyPoints.splice(pointIndex, 1);
+    this.Toast.info('Key point removed successfully');
+  }
 
   toggleProductSelection(type: string) {
     this.selectedProductType = type;
@@ -899,6 +918,17 @@ export class CatalogComponent implements OnInit, OnDestroy {
               .get('saleThumbnail')
               ?.setValue(this.widgetDetails?.saleThumbnail?._id);
           }
+
+          // Handle sale-timer dates properly
+          if (this.widgetDetails?.widgetType == 'sale-timer') {
+            if (this.widgetDetails?.startDate) {
+              this.saleForm.get('startDate')?.setValue(new Date(this.widgetDetails.startDate));
+            }
+            if (this.widgetDetails?.endDate) {
+              this.saleForm.get('endDate')?.setValue(new Date(this.widgetDetails.endDate));
+            }
+          }
+
           this.widgetDetails.collection
             ? this.widgetCollection.setValue(
               this.widgetDetails?.collection?._id
@@ -925,11 +955,9 @@ export class CatalogComponent implements OnInit, OnDestroy {
             this.form.get('textTwirlTitle')?.setValue(this.widgetDetails?.textTwirlTitle || '');
             this.form.get('textTwirlDescription')?.setValue(this.widgetDetails?.textTwirlDescription || '');
           }
-          this.widgetDetails?.endDate
-            ? this.saleForm
-              .get('endDate')
-              ?.setValue(new Date(this.widgetDetails?.endDate))
-            : null;
+          if (this.widgetDetails?.widgetType == 'key-points-grid') {
+            this.keyPoints = res?.result?.keyPoints || [];
+          }
           this.designForm.patchValue(this.widgetDetails?.styles);
           this.ChangeDetectorRef.markForCheck();
           if (
@@ -1444,6 +1472,17 @@ export class CatalogComponent implements OnInit, OnDestroy {
               .get('saleThumbnail')
               ?.setValue(this.widgetDetails?.saleThumbnail?._id);
           }
+
+          // Handle sale-timer dates properly
+          if (this.widgetDetails?.widgetType == 'sale-timer') {
+            if (this.widgetDetails?.startDate) {
+              this.saleForm.get('startDate')?.setValue(new Date(this.widgetDetails.startDate));
+            }
+            if (this.widgetDetails?.endDate) {
+              this.saleForm.get('endDate')?.setValue(new Date(this.widgetDetails.endDate));
+            }
+          }
+
           this.widgetDetails.collection
             ? this.widgetCollection.setValue(
               this.widgetDetails?.collection?._id
@@ -1470,7 +1509,9 @@ export class CatalogComponent implements OnInit, OnDestroy {
             this.form.get('textTwirlTitle')?.setValue(this.widgetDetails?.textTwirlTitle || '');
             this.form.get('textTwirlDescription')?.setValue(this.widgetDetails?.textTwirlDescription || '');
           }
-          this.widgetDetails?.endDate ? this.saleForm.get("endDate")?.setValue(new Date(this.widgetDetails?.endDate)) : null
+          if (this.widgetDetails?.widgetType == 'key-points-grid') {
+            this.keyPoints = res?.result?.keyPoints || [];
+          }
           this.designForm.patchValue(this.widgetDetails?.styles)
 
 
@@ -1589,6 +1630,10 @@ export class CatalogComponent implements OnInit, OnDestroy {
         textTwirlTitle: this.form.get('textTwirlTitle')?.value,
         textTwirlDescription: this.form.get('textTwirlDescription')?.value
       };
+    }
+
+    if (this.widgetDetails?.widgetType == 'key-points-grid') {
+      widgetPayload = { ...widgetPayload, keyPoints: this.keyPoints };
     }
 
     this.CatalogService.updateCatalogWidget(widgetPayload).subscribe({
@@ -1874,6 +1919,12 @@ export class CatalogComponent implements OnInit, OnDestroy {
       hyperLinkRedirection: new FormControl(''),
       hyperLinkThumbnail: new FormControl(null),
       alignment: new FormControl('left'),
+    });
+
+    this.keyPointForm = new FormGroup({
+      title: new FormControl('', Validators.required),
+      description: new FormControl('', Validators.required),
+      icon: new FormControl(''),
     });
 
     this.AppSettingsService.getGeneralSettingsbyId('1').subscribe({
