@@ -8,9 +8,9 @@
   </ng-container>
   <div class="d-none d-lg-flex align-items-center flex-grow-1 flex-lg-grow-0">
     <a routerLink="{{appRoute.DASHBOARD}}">
-      <img *ngIf="settings && !settings.adminLogo" alt="StoreDada" height="28" class="w-100"
+      <img *ngIf="settings && !settings.adminLogo" alt="StoreDada" height="28" class="w-auto"
         src="assets/images/storedada.jpg" />
-      <img *ngIf="settings && settings.adminLogo" alt="{{settings.name || ''}}" height="28" class="w-100"
+      <img *ngIf="settings && settings.adminLogo" alt="{{settings.name || ''}}" height="28" class="w-auto"
         src="{{baseUrl}}{{settings.adminLogo}}" />
     </a>
   </div>

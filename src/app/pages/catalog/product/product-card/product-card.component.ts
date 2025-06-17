@@ -99,7 +99,7 @@ export class ProductCardComponent implements OnInit {
     private BrandService: BrandService,
     private ElementRef: ElementRef,
     private HotToastService: HotToastService
-  ) {}
+  ) { }
 
   get editFormControls() {
     return this.editForm.controls;
@@ -164,23 +164,27 @@ export class ProductCardComponent implements OnInit {
   }
 
   deleteProducts() {
-    this.ProductHeadService.deleteProducts({
-      products: this.checkedProducts,
-    }).subscribe({
-      next: (res: any) => {
-        if (res?.errorCode == 0) {
-          this.HotToastService.success(res?.message);
-          this.page = 1;
-          this.checkedProducts = [];
-          this.getProductHeads();
-        } else {
-          this.HotToastService.error(res?.message);
-        }
-      },
-      error: (err: any) => {
-        this.HotToastService.error(err?.error?.message);
-      },
-    });
+    if (confirm('Are you sure you want to delete these products?')) {
+      this.ProductHeadService.deleteProducts({
+        products: this.checkedProducts,
+      }).subscribe({
+        next: (res: any) => {
+          if (res?.errorCode == 0) {
+            this.HotToastService.success(res?.message);
+            this.page = 1;
+            this.checkedProducts = [];
+            this.getProductHeads();
+          } else {
+            this.HotToastService.error(res?.message);
+          }
+        },
+        error: (err: any) => {
+          this.HotToastService.error(err?.error?.message);
+        },
+      });
+    } else {
+      this.HotToastService.error('Action cancelled')
+    }
   }
 
   updateChildProduct(event: { switchId: string; toggleState: boolean }) {
