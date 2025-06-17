@@ -74,7 +74,7 @@ export class CartListComponent implements OnInit {
     this.getCarts();
   }
   exportCart(): void {
-    const requestBody = { userId: this.customer };
+    const requestBody = { userId: this.customer, startDate: this.fromDate.value, endDate: this.toDate.value };
 
     this.cartService.exportCart(requestBody).subscribe({
       next: () => {
