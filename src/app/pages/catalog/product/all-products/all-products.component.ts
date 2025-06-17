@@ -230,11 +230,15 @@ export class AllProductsComponent implements OnInit {
   }
 
   formatDate(date: string) {
-    return new Date(date).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' })
+    return new Date(date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })
   }
 
   formatTime(time: string) {
-    return new Date(time).toLocaleTimeString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true })
+    return new Date(time).toLocaleTimeString('en-US', { hour: 'numeric', minute: 'numeric', second: 'numeric', hour12: true })
+  }
+
+  formatUpdatedAt(date: string) {
+    return `${this.formatDate(date)} ${this.formatTime(date)}`
   }
 
   changeView(type: string) {
@@ -432,20 +436,25 @@ export class AllProductsComponent implements OnInit {
   }
 
   deleteProducts() {
-    this.ProductService.deleteProducts({ products: this.checkedProducts }).subscribe({
-      next: (res: any) => {
-        if (res?.errorCode == 0) {
-          this.checkedProducts = [];
-          this.page = 1
-          this.HotToastService.success(res?.message)
-          this.getProducts()
-        } else {
-          this.HotToastService.error(res?.message)
+    // Add a nativeconfirmation alert
+    if (confirm('Are you sure you want to delete these products?')) {
+      this.ProductService.deleteProducts({ products: this.checkedProducts }).subscribe({
+        next: (res: any) => {
+          if (res?.errorCode == 0) {
+            this.checkedProducts = [];
+            this.page = 1
+            this.HotToastService.success(res?.message)
+            this.getProducts()
+          } else {
+            this.HotToastService.error(res?.message)
+          }
+        }, error: (err: any) => {
+          this.HotToastService.error(err?.error?.message)
         }
-      }, error: (err: any) => {
-        this.HotToastService.error(err?.error?.message)
-      }
-    })
+      })
+    }else{
+      this.HotToastService.error('Action cancelled')
+    }
   }
 
   downloadSampleFile() {
