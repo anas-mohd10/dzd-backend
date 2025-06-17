@@ -178,6 +178,9 @@ export class UpdateProductComponent implements OnInit {
   slugHistoryRef?: BsModalRef;
   @ViewChild('slugHistoryTemplate') slugHistoryTemplateModal: TemplateRef<any>;
 
+  slugConfirmationRef?: BsModalRef;
+  newSlugValue: string = '';
+  @ViewChild('slugConfirmationTemplate') slugConfirmationTemplate: TemplateRef<any>;
 
   constructor(
     private ActivatedRoute: ActivatedRoute,
@@ -894,7 +897,28 @@ export class UpdateProductComponent implements OnInit {
       .replace(/[^a-z0-9\s]/g, '') // Remove special characters (optional)
       .trim() // Remove any extra spaces at the start and end
       .replace(/\s+/g, '-'); // Replace spaces with '-'
-    this.form.patchValue({ slug: `${slug}-${this.productDetails?.sku}` });
+
+    const newSlug = `${slug}-${this.productDetails?.sku}`;
+
+    // Show confirmation dialog
+    this.openSlugConfirmation(newSlug);
+  }
+
+  openSlugConfirmation(newSlug: string) {
+    this.newSlugValue = newSlug;
+    this.slugConfirmationRef = this.BsModalService.show(this.slugConfirmationTemplate, {
+      class: 'modal-dialog-centered modal-md',
+      ignoreBackdropClick: true,
+    });
+  }
+
+  confirmSlugChange() {
+    this.form.patchValue({ slug: this.newSlugValue });
+    this.slugConfirmationRef?.hide();
+  }
+
+  cancelSlugChange() {
+    this.slugConfirmationRef?.hide();
   }
 
   onToggleStoreField(event: { toggleState: boolean, switchId: string }) {
