@@ -1314,19 +1314,23 @@ export class UpdateProductComponent implements OnInit {
   }
 
   onDelete() {
-    this.ProductService.deleteProduct(this.productDetails?._id).subscribe({
-      next: (res: any) => {
-        if (res?.errorCode == 0) {
-          this.HotToastService.success(res?.message);
-          this.Router.navigate(['/app/product']);
-        } else {
-          this.HotToastService.error(res?.message);
-        }
-      },
-      error: (err: any) => {
-        this.HotToastService.error(err.error.message);
-      },
-    });
+    if (confirm('Are you sure you want to delete this product?')) {
+      this.ProductService.deleteProduct(this.productDetails?._id).subscribe({
+        next: (res: any) => {
+          if (res?.errorCode == 0) {
+            this.HotToastService.success(res?.message);
+            this.Router.navigate(['/app/product']);
+          } else {
+            this.HotToastService.error(res?.message);
+          }
+        },
+        error: (err: any) => {
+          this.HotToastService.error(err.error.message);
+        },
+      });
+    } else {
+      this.HotToastService.error('Action cancelled')
+    }
   }
 
   handleTagIcons(event: any) {

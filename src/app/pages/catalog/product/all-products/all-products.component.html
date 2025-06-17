@@ -64,20 +64,21 @@
         </div>
       </div>
       <div class="row my-2">
-      <div class="col-lg-4 mb-3 form-group">
-        <label for="categories" class="form-label">Category</label>
-        <ng-select [items]="categories" bindLabel="name" bindValue="_id" [(ngModel)]="selectedCategories" [multiple]="true"
-          [searchable]="true" placeholder="Select categories" [ngModelOptions]="{standalone: true}"
-          (change)="onCategoryTriggered()">
-        </ng-select>
-      </div>
-      
-      <div class="col-lg-4 mb-3 form-group">
-        <label for="brands" class="form-label">Brands</label>
-        <ng-select [items]="brands" bindLabel="name" bindValue="_id" [(ngModel)]="selectedBrands" [multiple]="true"
-          [searchable]="true" placeholder="Select brands" [ngModelOptions]="{standalone: true}" (change)="onBrandTriggered()">
-        </ng-select>
-      </div>
+        <div class="col-lg-4 mb-3 form-group">
+          <label for="categories" class="form-label">Category</label>
+          <ng-select [items]="categories" bindLabel="name" bindValue="_id" [(ngModel)]="selectedCategories"
+            [multiple]="true" [searchable]="true" placeholder="Select categories" [ngModelOptions]="{standalone: true}"
+            (change)="onCategoryTriggered()">
+          </ng-select>
+        </div>
+
+        <div class="col-lg-4 mb-3 form-group">
+          <label for="brands" class="form-label">Brands</label>
+          <ng-select [items]="brands" bindLabel="name" bindValue="_id" [(ngModel)]="selectedBrands" [multiple]="true"
+            [searchable]="true" placeholder="Select brands" [ngModelOptions]="{standalone: true}"
+            (change)="onBrandTriggered()">
+          </ng-select>
+        </div>
         <div class="col-lg-4 mb-3 form-group">
           <label for="status" class="form-label">Status</label>
           <select [formControl]="isActive" id="status" class="form-select" (change)="getProducts()">
@@ -174,7 +175,6 @@
                   [ngClass]="{ 'checked': checkedProducts.length == products.length }">
                 </div>
               </th>
-              <th>&nbsp;</th>
               <th>Name</th>
               <th>SKU & Type</th>
               <th>Brand</th>
@@ -197,29 +197,27 @@
                   </div>
                 </td>
                 <td>
-                  <img src="{{base}}{{product?.thumbnail}}" alt="Product" height="45" width="45"
-                    class="border border-secondary rounded" onerror="this.src = 'assets/images/default.png'">
-                </td>
-                <td>
                   <div class="productName">
+                    <div>
+                      <img src="{{base}}{{product?.thumbnail}}" alt="Product" height="40" width="40"
+                        class="border border-secondary rounded" onerror="this.src = 'assets/images/default.png'">
+                    </div>
                     <div>{{ product?.localizedNames? product?.localizedNames[settings?.primaryLang] : product?.name }}
                     </div>
                     <div class="d-flex flex-wrap align-items-center justify-content-start gap-2">
                       <div
                         class="p-1 rounded mt-1 border border-secondary d-flex align-items-center justify-content-center gap-2"
                         *ngFor="let attribute of product?.attributes">
-                        <div>{{attribute?.title}} : 
+                        <div>{{attribute?.title}} :
                           <ng-container [ngSwitch]="attribute?.type">
-                            <div *ngSwitchCase="'color'" class="d-inline-block" 
-                                 [style.background-color]="attribute?.value"
-                                 style="width: 20px; height: 20px; border: 1px solid #ddd; border-radius: 50%; vertical-align: middle;">
+                            <div *ngSwitchCase="'color'" class="d-inline-block"
+                              [style.background-color]="attribute?.value"
+                              style="width: 20px; height: 20px; border: 1px solid #ddd; border-radius: 50%; vertical-align: middle;">
                             </div>
-                            <div *ngSwitchCase="'image'" class="d-inline-block" 
-                                 style="width: 20px; height: 20px; vertical-align: middle;">
-                              <img [src]="base + attribute?.value" 
-                                   class="img-fluid rounded object-fit-cover"
-                                   style="width: 100%; height: 100%;" 
-                                   alt="Variant Image">
+                            <div *ngSwitchCase="'image'" class="d-inline-block"
+                              style="width: 20px; height: 20px; vertical-align: middle;">
+                              <img [src]="base + attribute?.value" class="img-fluid rounded object-fit-cover"
+                                style="width: 100%; height: 100%;" alt="Variant Image">
                             </div>
                             <span *ngSwitchDefault>{{attribute?.value}}</span>
                           </ng-container>
@@ -230,7 +228,8 @@
                 </td>
                 <td>
                   <div>{{product?.sku}}</div>
-                  <div class="p-1 rounded bg-secondary mt-2" style="width: max-content;">{{formatProductType(product?.type)}}</div>
+                  <div class="p-1 rounded bg-secondary mt-2" style="width: max-content;">
+                    {{formatProductType(product?.type)}}</div>
                 </td>
                 <td>{{product?.brand?.name}}</td>
                 <td>
