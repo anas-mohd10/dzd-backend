@@ -362,21 +362,14 @@
                         <app-switch [isToggledProps]="product?.isActive" [switchId]="product?._id"
                            (switchToggled)="updateChildProduct($event)"></app-switch>
                      </td>
-                     <td (click)="closeProducts()" routerLink="{{appRoute.product.UPDATE_PRODUCT}}"
-                        [queryParams]="{product: product?.slug}">
-                        <div
-                           class="d-flex cursor-pointer align-items-center justify-content-center h-20 w-20 rounded border text-muted border-secondary">
-                           <svg data-slot="icon" height="20" width="20" fill="none" stroke-width="1.5"
-                              stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"
-                              aria-hidden="true">
-                              <path stroke-linecap="round" stroke-linejoin="round"
-                                 d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z">
-                              </path>
-                              <path stroke-linecap="round" stroke-linejoin="round"
-                                 d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z">
-                              </path>
-                           </svg>
-                        </div>
+                     <td>
+                        <button class="btn btn-sm btn-outline-primary me-2" (click)="copyToClipboard(product.sku)">
+                           <i class="bi bi-clipboard"></i> Copy SKU
+                        </button>
+                        <button class="btn btn-sm btn-outline-secondary"
+                           (click)="navigateToProduct(product.sku, product.slug)">
+                           <i class="bi bi-search"></i> Find Product
+                        </button>
                      </td>
                   </tr>
                </ng-container>
@@ -387,5 +380,53 @@
       <ng-container *ngIf="childProducts.length == 0">
          <app-no-results></app-no-results>
       </ng-container>
+   </div>
+</ng-template>
+
+<!-- Child Products Modal Template -->
+<ng-template #childProductsModal>
+   <div class="modal-header">
+      <h4 class="modal-title pull-left">Child Products</h4>
+      <button type="button" class="btn-close close pull-right" aria-label="Close" (click)="closeChildProductsModal()">
+         <span aria-hidden="true" class="visually-hidden">&times;</span>
+      </button>
+   </div>
+   <div class="modal-body">
+      <div class="alert alert-warning">
+         <strong>Warning:</strong> This product has child products. Please delete them first.
+      </div>
+      <div class="table-responsive">
+         <table class="table table-bordered">
+            <thead>
+               <tr>
+                  <th>Product Name</th>
+                  <th>SKU</th>
+                  <th>Brand</th>
+                  <th>Stock</th>
+                  <th>Action</th>
+               </tr>
+            </thead>
+            <tbody>
+               <tr *ngFor="let product of childProductsToDelete">
+                  <td>{{ product.name }}</td>
+                  <td>{{ product.sku }}</td>
+                  <td>{{ product.brand?.name || 'N/A' }}</td>
+                  <td>{{ product.stock }}</td>
+                  <td>
+                     <button class="btn btn-sm btn-outline-primary me-2" (click)="copyToClipboard(product.sku)">
+                        <i class="bi bi-clipboard"></i> Copy SKU
+                     </button>
+                     <button class="btn btn-sm btn-outline-secondary"
+                        (click)="navigateToProduct(product.sku, product.slug)">
+                        <i class="bi bi-search"></i> Find Product
+                     </button>
+                  </td>
+               </tr>
+            </tbody>
+         </table>
+      </div>
+   </div>
+   <div class="modal-footer">
+      <button type="button" class="btn btn-secondary" (click)="closeChildProductsModal()">Close</button>
    </div>
 </ng-template>

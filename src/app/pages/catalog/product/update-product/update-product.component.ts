@@ -1319,7 +1319,14 @@ export class UpdateProductComponent implements OnInit {
         next: (res: any) => {
           if (res?.errorCode == 0) {
             this.HotToastService.success(res?.message);
-            this.Router.navigate(['/app/product']);
+
+            // Get the callback URL from query params
+            const callback = this.ActivatedRoute.snapshot.queryParams['callback'];
+            if (callback) {
+              this.Router.navigate([callback]);
+            } else {
+              this.Router.navigate(['/app/product']);
+            }
           } else {
             this.HotToastService.error(res?.message);
           }
