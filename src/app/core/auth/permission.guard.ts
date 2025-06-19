@@ -199,6 +199,9 @@ export class PermissionGuard implements CanActivate {
       case 'auth-settings':
         module[0] == 'auth-settings' ? path = 'auth-settings' : null
         break
+      case 'erp-settings':
+        module[0] == 'erp-settings' ? path = 'erp-settings' : null
+        break
       case 'seo-details':
         module[0] == 'seo-details' ? path = 'seo-details' : null
         break
@@ -288,6 +291,9 @@ export class PermissionGuard implements CanActivate {
         break
       case 'invoice-settings':
         module[0] == 'invoice-settings' ? path = 'invoice-settings' : null
+        break
+      case 'erp-settings':
+        module[0] == 'erp-settings' ? path = 'erp-settings' : null
         break
       case 'store-popup':
         module[0] == 'store-popup' ? path = 'store-popup' : null

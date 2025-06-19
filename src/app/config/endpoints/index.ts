@@ -47,7 +47,8 @@ export * from './reports.endpoints'
 export * from './content.endpoints'
 export * from './apps.endpoints'
 export * from './mailer.endpoints'
-export * from './shipping.endpoints'
+export * from './shipping.endpoints';
+export * from './erp-settings.endpoints';
 export * from './popup.endpoints'
 export * from './media.endpoints'
 export * from './delivery.slots.endpoints'
