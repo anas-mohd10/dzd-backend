@@ -115,7 +115,10 @@ export class UpdateCategoryComponent implements OnInit {
 
     this.form = new FormGroup({
       name: new FormControl('', Validators.required),
-      slug: new FormControl(''),
+      slug: new FormControl('', [
+        Validators.required,
+        Validators.pattern(/^[a-z0-9]+(?:-[a-z0-9]+)*$/)
+      ]),
       description: new FormControl(''),
       thumbnail: new FormControl(null),
       cover: new FormControl(null),
@@ -269,8 +272,8 @@ export class UpdateCategoryComponent implements OnInit {
   }
 
   onSubmit() {
+    this.isSubmitted = true;
     if (!this.form.valid) {
-      this.isSubmitted = true;
       this.HotToastService.error('Please fill all the required fields');
       return;
     }
