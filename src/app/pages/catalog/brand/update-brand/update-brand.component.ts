@@ -52,6 +52,10 @@ export class UpdateBrandComponent implements OnInit {
   ngOnInit(): void {
     this.form = new FormGroup({
       name: new FormControl('', Validators.required),
+      slug: new FormControl('', [
+        Validators.required,
+        Validators.pattern(/^[a-z0-9]+(?:-[a-z0-9]+)*$/)
+      ]),
       isActive: new FormControl('true'),
       isArchive: new FormControl('false'),
       isFeatured: new FormControl('false'),
@@ -109,6 +113,8 @@ export class UpdateBrandComponent implements OnInit {
   }
 
   onSubmit() {
+    this.isSubmitted = true;
+
     if (!this.form.valid) {
       return;
     }
