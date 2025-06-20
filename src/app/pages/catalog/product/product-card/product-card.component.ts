@@ -212,26 +212,30 @@ export class ProductCardComponent implements OnInit {
   }
 
   deleteProduct() {
-    this.ProductHeadService.deleteProductHead(this.headDetails?._id).subscribe({
-      next: (res: any) => {
-        if (res?.errorCode == 0) {
-          this.ToastrService.success(res?.message);
-          this.close();
-          this.getProductHeads();
-        } else if (res?.errorCode == 1 && res?.result?.products) {
+    if (confirm('Are you sure you want to delete this product?')) {
+      this.ProductHeadService.deleteProductHead(this.headDetails?._id).subscribe({
+        next: (res: any) => {
+          if (res?.errorCode == 0) {
+            this.ToastrService.success(res?.message);
+            this.close();
+            this.getProductHeads();
+          } else if (res?.errorCode == 1 && res?.result?.products) {
           this.childProductsToDelete = res?.result?.products;
           this.ToastrService.error(res?.message);
           setTimeout(() => {
             this.openChildProductsModal(this.childProductsModal);
           }, 100);
         } else {
-          this.ToastrService.error(res?.message);
-        }
-      },
-      error: (err: any) => {
-        this.ToastrService.error(err?.error?.message);
-      },
-    });
+            this.ToastrService.error(res?.message);
+          }
+        },
+        error: (err: any) => {
+          this.ToastrService.error(err?.error?.message);
+        },
+      });
+    } else {
+      this.HotToastService.error('Action cancelled');
+    }
   }
 
   ngOnInit(): void {
