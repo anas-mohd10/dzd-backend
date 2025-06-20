@@ -69,7 +69,7 @@ export class UpdateCouponsComponent implements OnInit {
 
   onRemoveSelected(item: any) {
     const criteriaType = this.form.get('criteriaType')?.value;
-    
+
     switch (criteriaType) {
       case 'products':
         this.products = this.products.filter((product: any) => product._id !== item._id);
@@ -88,7 +88,7 @@ export class UpdateCouponsComponent implements OnInit {
         this.dropdownInputs = this.brands;
         break;
     }
-  
+
     this.HotToastService.info("Item removed successfully");
     this.ChangeDetectorRef.markForCheck();
   }
@@ -140,7 +140,7 @@ export class UpdateCouponsComponent implements OnInit {
       // Format date as YYYY-MM-DD for date inputs
       const fromDateFormatted = fromUTC.toLocaleDateString('en-CA'); // en-CA gives YYYY-MM-DD format
       const lastDateFormatted = lastUTC.toLocaleDateString('en-CA');
-      
+
       // Format time as HH:MM for time inputs
       const fromTime = fromUTC.toLocaleTimeString('en-US', {
         hour12: false,
@@ -302,8 +302,8 @@ export class UpdateCouponsComponent implements OnInit {
     const payload = {
       title: this.form.get('title')?.value,
       code: this.form.get('code')?.value,
-      fromDate: this.form.get('fromDate')?.value,
-      lastDate: this.form.get('lastDate')?.value,
+      fromDate: fromDateTime,
+      lastDate: lastDateTime,
       minPurchase: this.form.get('minPurchase')?.value,
       minimumType: this.form.get('minimumType')?.value,
       value: this.form.get('value')?.value,
