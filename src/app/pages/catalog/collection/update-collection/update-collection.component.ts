@@ -96,6 +96,10 @@ export class UpdateCollectionComponent implements OnInit {
       name: new FormControl('', Validators.required),
       description: new FormControl(''),
       products: new FormControl('', Validators.required),
+      slug: new FormControl('', [
+        Validators.required,
+        Validators.pattern(/^[a-z0-9]+(?:-[a-z0-9]+)*$/)
+      ]),
       isActive: new FormControl(true),
       thumbnail: new FormControl(null),
       icons: new FormControl([]),
@@ -211,6 +215,7 @@ export class UpdateCollectionComponent implements OnInit {
   }
 
   onSubmit() {
+    this.isSubmitted = true;
     this.form.get('_id')?.setValue(this._id);
     this.selectedProducts = [];
     if (!this.isAutoCompleteEnabled) {
@@ -225,11 +230,10 @@ export class UpdateCollectionComponent implements OnInit {
 
     if (!this.form.valid) {
       this.HotToastService.error('Please fill all the required fields');
-      this.isSubmitted = true;
       return;
     }
 
-    this.CollectionService.updateCollection({...this.form.value}).subscribe({
+    this.CollectionService.updateCollection({ ...this.form.value }).subscribe({
       next: (res: any) => {
         if (res?.errorCode == 0) {
           this.Router.navigate([this.appRoute.collection.COLLECTION_LIST]);
@@ -261,7 +265,7 @@ export class UpdateCollectionComponent implements OnInit {
   }
 
   updateProductOrders() {
-    this.productDetails.forEach((product, index) => {  product.order = index + 1; });
+    this.productDetails.forEach((product, index) => { product.order = index + 1; });
     this.selectedProducts = this.productDetails.map(product => ({ product: product._id, order: product.order }));
     this.hasUnsavedOrderChanges = true;
     this.form.get('products')?.setValue(this.selectedProducts);

@@ -5,6 +5,7 @@ import {
   TemplateRef,
   ElementRef,
   HostListener,
+  ViewChild,
 } from '@angular/core';
 import {
   FormBuilder,
@@ -52,9 +53,11 @@ export class ProductCardComponent implements OnInit {
 
   modalRef?: BsModalRef;
   productRef?: BsModalRef;
+  childProductsRef?: BsModalRef;
   productDetails: any = {};
   base: string = environment.base;
   settings: any = {};
+  childProductsToDelete: Array<any> = [];
 
   taxes: Array<any> = [];
   brands: Array<any> = [];
@@ -84,6 +87,8 @@ export class ProductCardComponent implements OnInit {
 
   parentStatus: FormControl = new FormControl('');
   checkedProducts: Array<string> = [];
+
+  @ViewChild('childProductsModal') childProductsModal: TemplateRef<any>;
 
   constructor(
     private ProductService: ProductService,
@@ -213,6 +218,12 @@ export class ProductCardComponent implements OnInit {
           this.ToastrService.success(res?.message);
           this.close();
           this.getProductHeads();
+        } else if (res?.errorCode == 1 && res?.result?.products) {
+          this.childProductsToDelete = res?.result?.products;
+          this.ToastrService.error(res?.message);
+          setTimeout(() => {
+            this.openChildProductsModal(this.childProductsModal);
+          }, 100);
         } else {
           this.ToastrService.error(res?.message);
         }
@@ -584,6 +595,39 @@ export class ProductCardComponent implements OnInit {
       },
       error: (err: any) => {
         this.HotToastService.error(err?.error?.message);
+      },
+    });
+  }
+
+  openChildProductsModal(template: TemplateRef<any>) {
+    this.childProductsRef = this.BsModalService.show(template, {
+      class: 'modal-lg modal-dialog-centered',
+      ignoreBackdropClick: true,
+    });
+  }
+
+  closeChildProductsModal() {
+    this.childProductsRef?.hide();
+    this.childProductsToDelete = [];
+  }
+
+  copyToClipboard(text: string) {
+    navigator.clipboard.writeText(text).then(() => {
+      this.HotToastService.success('SKU copied to clipboard');
+    });
+  }
+
+  navigateToProduct(sku: string, slug?: string) {
+    // Close all modals
+    this.closeChildProductsModal();
+    this.close();
+    this.closeProducts();
+
+    // Navigate to the product update page with the product slug and callback
+    this.Router.navigate(['/app/product/update'], {
+      queryParams: {
+        product: slug || sku,
+        callback: '/app/product-head'
       },
     });
   }
