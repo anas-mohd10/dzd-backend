@@ -75,6 +75,7 @@ export class CreateBlogComponent implements OnInit {
       description: new FormControl('', Validators.required),
       isActive: new FormControl(true),
       isFeatured: new FormControl(false),
+      isDraft: new FormControl(true),
       author: new FormControl(''),
       authorThumbnail: new FormControl(null),
       category: new FormControl('', Validators.required),
