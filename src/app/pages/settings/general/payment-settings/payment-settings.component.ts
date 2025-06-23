@@ -57,7 +57,7 @@ export class PaymentSettingsComponent implements OnInit {
     rakbank: ['publicKey', 'privateKey'],
     'network-international': ['outletReference', 'apiKey', 'apiUrl'],
     'network-international-tokenized': ['outletReference', 'apiKey', 'apiUrl'],
-    qi: ['secretKey'],
+    qi: ['secretKey', 'apiUrl', 'username', 'password'],
   };
 
   get formControls() {
@@ -90,6 +90,8 @@ export class PaymentSettingsComponent implements OnInit {
       serverKey: new FormControl(''),
       apiUrl: new FormControl(''),
       isEnabled: new FormControl(false),
+      username: new FormControl(''),
+      password: new FormControl(''),
     });
 
     this.fetchGateways();
