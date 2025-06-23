@@ -22,15 +22,14 @@
     <div class="col-md-6 mb-4" *ngFor="let erp of erpList">
       <div class="card h-100 position-relative">
         <div class="card-header d-flex justify-content-between align-items-center">
-          <h4 class="card-title mb-0" (click)="openErpModal(erp.id)" style="cursor: pointer;">{{ erp.name }} Integration</h4>
+          <h4 class="card-title mb-0" (click)="openErpModal(erp.id)" style="cursor: pointer;">{{ erp.name }} Integration
+          </h4>
           <div class="form-check form-switch d-flex align-items-center">
-            <app-switch 
-              (switchToggled)="onToggleErpEnable(erp.id, $event)" 
-              [isToggledProps]="erp.enabled"
-              [switchId]="erp.id + 'Toggle'"
-              (click)="$event.stopPropagation()">
+            <app-switch [isToggledProps]="erp.enabled" [switchId]="erp.id + 'Toggle'"
+              (switchToggled)="onToggleErpEnable(erp.id, $event)" (click)="$event.stopPropagation()">
             </app-switch>
-            <label class="form-check-label ms-2" [for]="erp.id + 'Toggle'" (click)="$event.stopPropagation()">Enabled</label>
+            <label class="form-check-label ms-2" [for]="erp.id + 'Toggle'"
+              (click)="$event.stopPropagation()">Enabled</label>
           </div>
         </div>
         <div class="card-body" (click)="openErpModal(erp.id)" style="cursor: pointer;">
@@ -53,7 +52,8 @@
             <ng-container [ngSwitch]="field.type">
               <ng-container *ngSwitchCase="'checkbox'">
                 <div class="form-check form-switch">
-                  <input class="form-check-input" type="checkbox" [id]="field.controlName" [formControlName]="field.controlName">
+                  <input class="form-check-input" type="checkbox" [id]="field.controlName"
+                    [formControlName]="field.controlName">
                   <label class="form-check-label" [for]="field.controlName">{{ field.label }}</label>
                 </div>
               </ng-container>
@@ -61,7 +61,8 @@
                 <label class="fs-6 mb-2" [class.required]="field.required">{{ field.label }}</label>
                 <input [type]="field.type" class="form-control fs-6" [formControlName]="field.controlName"
                   [placeholder]="field.placeholder" />
-                <div *ngIf="form.get(field.controlName)?.invalid && (form.get(field.controlName)?.dirty || form.get(field.controlName)?.touched || isSubmitted)"
+                <div
+                  *ngIf="form.get(field.controlName)?.invalid && (form.get(field.controlName)?.dirty || form.get(field.controlName)?.touched || isSubmitted)"
                   class="invalid-feedback d-block">
                   <div *ngIf="form.get(field.controlName)?.errors?.['required']">{{ field.label }} is required.</div>
                 </div>
@@ -73,7 +74,8 @@
     </div>
     <div class="modal-footer">
       <button type="button" class="btn btn-secondary" (click)="modal.dismiss()">Close</button>
-      <button type="submit" class="btn btn-primary" (click)="onSubmitErp()" [disabled]="form.invalid && isSubmitted">Save</button>
+      <button type="submit" class="btn btn-primary" (click)="onSubmitErp()"
+        [disabled]="form.invalid && isSubmitted">Save</button>
     </div>
   </ng-template>
 </div>

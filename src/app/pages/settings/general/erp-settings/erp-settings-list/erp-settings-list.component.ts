@@ -7,6 +7,7 @@ import { ErpSettingsService } from 'src/app/includes/services/erp-settings.servi
 
 interface ErpFieldConfig {
   controlName: string;
+  settingKey: string;
   label: string;
   placeholder: string;
   type: string;
@@ -19,19 +20,34 @@ interface ErpFieldConfig {
   styleUrls: ['./erp-settings-list.component.scss']
 })
 export class ErpSettingsListComponent implements OnInit {
-  onToggleErpEnable(erpId: string, event: any) {
-    if (this.allErpSettings) {
-      const enabledField = `${erpId}Enabled`;
-      this.allErpSettings[enabledField] = event.target.checked;
-      // Optionally, call an update method here if individual toggles should persist immediately
-      // this.erpSettingsService.updateErpSettings(this.allErpSettings).subscribe(...);
-      // For now, we'll update the local state and save when the modal form is submitted
-      const erpInList = this.erpList.find(e => e.id === erpId);
-      if (erpInList) {
-        erpInList.enabled = event.target.checked;
-      }
-    }
+onToggleErpEnable(erpId: string, isChecked: any) {
+  const toggleState = isChecked?.toggleState;
+  const currentSettings = { ...this.allErpSettings };
+
+  // Update enabled state while preserving other settings
+  if (currentSettings.settings && currentSettings.settings[erpId]) {
+    currentSettings.settings[erpId].enabled = toggleState;
   }
+
+  // Update toggle in UI
+  const erpInList = this.erpList.find(e => e.id === erpId);
+  if (erpInList) {
+    erpInList.enabled = toggleState;
+  }
+
+  this.erpSettingsService.updateErpSettings(currentSettings).subscribe({
+    next: () => {
+      this.hotToastService.success(`${erpId} integration ${toggleState ? 'enabled' : 'disabled'} successfully`);
+    },
+    error: (err) => {
+      this.hotToastService.error(`Failed to ${toggleState ? 'enable' : 'disable'} ${erpId} integration`);
+      console.error(err);
+    }
+  });
+}
+
+
+
   @ViewChild('erpSettingsTemplate') erpSettingsTemplate!: TemplateRef<any>;
 
   appRoute = appRoutes;
@@ -42,12 +58,12 @@ export class ErpSettingsListComponent implements OnInit {
 
   erpList = [
     { id: 'odoo', name: 'Odoo', enabled: false },
-    { id: 'zoho', name: 'Zoho', enabled: false },
-    { id: 'sap', name: 'SAP', enabled: false },
+    // { id: 'zoho', name: 'Zoho', enabled: false },
+    // { id: 'sap', name: 'SAP', enabled: false },
     // Add more ERP configs here
   ];
 
-  selectedErp: string | null = null;
+  selectedErp: string = '';
   selectedErpName: string = '';
   selectedErpFields: ErpFieldConfig[] = [];
 
@@ -68,12 +84,14 @@ export class ErpSettingsListComponent implements OnInit {
     this.isLoading = true;
     this.erpSettingsService.getErpSettings().subscribe({
       next: (res: any) => {
-        this.allErpSettings = res.result?.settings || {};
+        this.allErpSettings = res.result || {};
         // Update enabled status in erpList
         this.erpList = this.erpList.map(erp => ({
           ...erp,
-          enabled: !!this.allErpSettings[`${erp.id}Enabled`]
+          enabled: !!this.allErpSettings.settings?.[erp.id]?.enabled
         }));
+
+
         this.isLoading = false;
         this.cdr.detectChanges();
       },
@@ -90,63 +108,75 @@ export class ErpSettingsListComponent implements OnInit {
     this.selectedErpName = this.erpList.find(e => e.id === erpId)?.name || erpId;
     this.form = this.formBuilder.group({}); // Reset form
 
-    // Use allErpSettings to populate the form
-    this.buildFormFromErp(erpId, this.allErpSettings);
+    // Pass the correct settings structure to buildFormFromErp
+    this.buildFormFromErp(erpId, this.allErpSettings?.settings || {});
     this.modalService.open(this.erpSettingsTemplate, { size: 'lg', backdrop: 'static' });
   }
 
   buildFormFromErp(erpId: string, currentSettings: any) {
     const fieldsMap: { [key: string]: ErpFieldConfig[] } = {
       odoo: [
-        { controlName: 'odooUrl', label: 'Odoo URL', placeholder: 'https://your-odoo.com', type: 'text', required: true },
-        { controlName: 'odooDb', label: 'Odoo DB Name', placeholder: 'odoo_db', type: 'text', required: true },
-        { controlName: 'odooUsername', label: 'Odoo Username', placeholder: 'admin', type: 'text', required: true },
-        { controlName: 'odooPassword', label: 'Odoo Password / API Key', placeholder: '••••••••', type: 'password', required: false },
-        { controlName: 'odooEnabled', label: 'Enabled', placeholder: '', type: 'checkbox', required: false }
+        { controlName: 'url', settingKey: 'url', label: 'Odoo URL', placeholder: 'https://your-odoo.com', type: 'text', required: true },
+        { controlName: 'db', settingKey: 'db', label: 'Odoo DB Name', placeholder: 'odoo_db', type: 'text', required: true },
+        { controlName: 'username', settingKey: 'username', label: 'Odoo Username', placeholder: 'admin', type: 'text', required: true },
+        { controlName: 'password', settingKey: 'password', label: 'Odoo Password / API Key', placeholder: '••••••••', type: 'password', required: false },
+        { controlName: 'enabled', settingKey: 'enabled', label: 'Enabled', placeholder: '', type: 'checkbox', required: false }
       ],
       zoho: [
-        { controlName: 'zohoUrl', label: 'Zoho URL', placeholder: 'https://zoho.com', type: 'text', required: true },
-        { controlName: 'zohoToken', label: 'Zoho API Token', placeholder: 'your-token', type: 'text', required: true },
-        { controlName: 'zohoEnabled', label: 'Enabled', placeholder: '', type: 'checkbox', required: false }
+        { controlName: 'url', settingKey: 'url', label: 'Zoho URL', placeholder: 'https://zoho.com', type: 'text', required: true },
+        { controlName: 'token', settingKey: 'token', label: 'Zoho API Token', placeholder: 'your-token', type: 'text', required: true },
+        { controlName: 'enabled', settingKey: 'enabled', label: 'Enabled', placeholder: '', type: 'checkbox', required: false }
       ],
       sap: [
-        { controlName: 'sapUrl', label: 'SAP URL', placeholder: 'https://sap.com', type: 'text', required: true },
-        { controlName: 'sapClientId', label: 'SAP Client ID', placeholder: 'client-id', type: 'text', required: true },
-        { controlName: 'sapEnabled', label: 'Enabled', placeholder: '', type: 'checkbox', required: false }
+        { controlName: 'url', settingKey: 'url', label: 'SAP URL', placeholder: 'https://sap.com', type: 'text', required: true },
+        { controlName: 'clientId', settingKey: 'clientId', label: 'SAP Client ID', placeholder: 'client-id', type: 'text', required: true },
+        { controlName: 'enabled', settingKey: 'enabled', label: 'Enabled', placeholder: '', type: 'checkbox', required: false }
       ]
-      // Define fields for other ERPs similarly
     };
 
     this.selectedErpFields = fieldsMap[erpId] || [];
     const newFormGroup: { [key: string]: any } = {};
 
+    // Get the ERP settings from the correct path in the response
+    const erpSettings = currentSettings?.[erpId] || {};
+
     for (const field of this.selectedErpFields) {
+      const fieldValue = erpSettings[field.settingKey];
       newFormGroup[field.controlName] = [
-        currentSettings[field.controlName] || (field.type === 'checkbox' ? false : ''),
+        fieldValue !== undefined ? fieldValue : (field.type === 'checkbox' ? false : ''),
         field.required ? Validators.required : null
       ];
     }
+
     this.form = this.formBuilder.group(newFormGroup);
   }
 
   onSubmitErp() {
     this.isSubmitted = true;
-    if (!this.form.valid) {
+    if (!this.form.valid || !this.selectedErp) {
       this.hotToastService.error('Please fill all required fields');
       return;
     }
 
-    // Merge form values into the allErpSettings object
-    const updatedSettings = { ...this.allErpSettings, ...this.form.value };
+    const currentSettings = { ...this.allErpSettings };
+    if (!currentSettings.settings) {
+      currentSettings.settings = {};
+    }
+    
+    // Update only the selected ERP's settings while preserving existing data
+    currentSettings.settings[this.selectedErp] = {
+      ...currentSettings.settings[this.selectedErp],
+      ...this.form.value
+    };
 
-    this.erpSettingsService.updateErpSettings(updatedSettings).subscribe({
-      next: () => {
+    this.erpSettingsService.updateErpSettings(currentSettings).subscribe({
+      next: (response: any) => {
         this.hotToastService.success('ERP settings saved successfully!');
-        this.allErpSettings = updatedSettings; // Update local cache
-         // Update enabled status in erpList after saving
+        this.allErpSettings = response.result; // Update local cache with response
+        // Update enabled status in erpList after saving
         this.erpList = this.erpList.map(erp => ({
           ...erp,
-          enabled: !!this.allErpSettings[`${erp.id}Enabled`]
+          enabled: !!response.result.settings?.[erp.id]?.enabled
         }));
         this.modalService.dismissAll();
         this.form.markAsPristine();

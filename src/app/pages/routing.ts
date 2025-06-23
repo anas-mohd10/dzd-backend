@@ -54,8 +54,8 @@ import { SmsTemplatesComponent } from './settings/general/sms-templates/sms-temp
 import { FormSettingsComponent } from './settings/general/form-settings/form-settings.component';
 
 export const Routing: Routes = [
-
   {
+
     path: 'app',
     children: [
       {
@@ -255,10 +255,9 @@ export const Routing: Routes = [
       },
       {
         path: 'erp-settings',
-        loadChildren: () => import('./settings/general/erp-settings/erp-settings.module').then(m => m.ErpSettingsModule),
+        loadChildren: () => import('./settings/general/erp-settings/erp-settings.module').then((m) => m.ErpSettingsModule),
         canActivate: [AuthenticationGuard]
-      },
-      {
+      }, {
         path: 'create-products',
         component: CreateProductsComponent,
         canActivate: [AuthenticationGuard]
