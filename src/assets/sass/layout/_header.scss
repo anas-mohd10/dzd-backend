@@ -24,6 +24,7 @@
 			// height: get($header-config, fixed, height, desktop);
 			height: 80px;
 			padding: 0;
+			z-index: 9999;
 			box-shadow: get($header-config, fixed, box-shadow);
 		}
 

@@ -583,36 +583,61 @@
           <div class="card mt-3"
             *ngIf="order && order.paymentMethod == 'ONLINE' && order?.paymentGateway != 'network-international-tokenized'">
             <div class="card-body">
-              <div class="fs-3 mb-2 fw-bold">
-                Payment Details
-              </div>
-              <form [formGroup]="form">
-                <div class="row">
-                  <div class="col-lg-6 mb-3">
-                    <div class="form-group">
-                      <label for="orderId" class="form-label mb-3">Payment Order</label>
-                      <input type="text" placeholder="Order ID" class="form-control" formControlName="orderId">
+              <div class="d-flex flex-column gap-3">
+                <div>
+                  <div class="mb-2 pb-2 border-bottom border-secondary">
+                    <div class="fs-3 fw-bold">Payment Details</div>
+                    <div class="text-muted mt-1 fs-6 fw-normal">Details of the payment made for this order</div>
+                  </div>
+                  <form [formGroup]="form">
+                    <div class="row">
+                      <div class="col-lg-6 mb-3">
+                        <div class="form-group">
+                          <label for="orderId" class="form-label mb-3">Payment Order</label>
+                          <input type="text" placeholder="Order ID" class="form-control" formControlName="orderId">
+                        </div>
+                      </div>
+                      <div class="col-lg-6 mb-3">
+                        <div class="form-group">
+                          <label for="orderId" class="form-label mb-3">Transaction Reference</label>
+                          <input type="text" placeholder="Transaction Reference ID" class="form-control"
+                            formControlName="paymentId">
+                        </div>
+                      </div>
+                      <div class="form-group mb-3">
+                        <label for="orderId" class="form-label mb-3">Payment Message</label>
+                        <input type="text" placeholder="Payment Message" class="form-control"
+                          formControlName="paymentMessage">
+                      </div>
+                      <div class="mb-3" *ngIf="form.get('transactionTime')?.value">
+                        <label for="transactionTime" class="form-label mb-3">Transaction Time</label>
+                        <input type="text" id="transactionTime" readonly class="form-control"
+                          value="{{formatDateString(form.get('transactionTime')?.value)}}">
+                      </div>
                     </div>
+                  </form>
+                </div>
+                <div *ngIf="order && order.payment && order.payment.activities && order.payment.activities.length">
+                  <div class="mb-2 pb-2 border-bottom border-secondary">
+                    <div class="fs-3 fw-bold">Payment Activities</div>
+                    <div class="text-muted mt-1 fs-6 fw-normal">List of payment activities for this order</div>
                   </div>
-                  <div class="col-lg-6 mb-3">
-                    <div class="form-group">
-                      <label for="orderId" class="form-label mb-3">Transaction Reference</label>
-                      <input type="text" placeholder="Transaction Reference ID" class="form-control"
-                        formControlName="paymentId">
+                  <div class="d-flex align-items-start gap-4 my-4" *ngFor="let activity of order.payment.activities; let index = index">
+                    <div class="fs-5">{{index + 1}}.</div>
+                    <div class="d-flex flex-column gap-2">
+                      <div class="d-flex align-items-center justify-content-start gap-2">
+                        <code class="px-0 mx-0">{{activity.id}}</code>
+                        <div>{{activity.status}}</div>
+                      </div>
+                      <div class="d-flex align-items-end justify-content-start gap-2">
+                        <div class="fs-6 text-muted fw-normal">{{activity.currency}}</div>
+                        <div class="fs-3 fw-normal">{{activity.amount | number:'1.2-2'}}</div>
+                      </div>
+                      <div class="fs-6">{{formatDateString(activity.created)}}</div>
                     </div>
-                  </div>
-                  <div class="form-group mb-3">
-                    <label for="orderId" class="form-label mb-3">Payment Message</label>
-                    <input type="text" placeholder="Payment Message" class="form-control"
-                      formControlName="paymentMessage">
-                  </div>
-                  <div class="mb-3" *ngIf="form.get('transactionTime')?.value">
-                    <label for="transactionTime" class="form-label mb-3">Transaction Time</label>
-                    <input type="text" id="transactionTime" readonly class="form-control"
-                      value="{{getLocalDate(form.get('transactionTime')?.value)}}">
                   </div>
                 </div>
-              </form>
+              </div>
             </div>
           </div>
 

@@ -12,6 +12,12 @@ import { AppSettingsService } from 'src/app/includes/services/app.settings.servi
 import { PaymentDetailsService } from 'src/app/includes/services/payment-details.service';
 import { environment } from 'src/environments/environment';
 
+interface Pg {
+  title: string;
+  id: string;
+  icon: string;
+}
+
 @Component({
   selector: 'app-payment-settings',
   templateUrl: './payment-settings.component.html',
@@ -26,26 +32,16 @@ export class PaymentSettingsComponent implements OnInit {
   isEditMode: boolean = false;
   isSubmitted: boolean = false;
   form: FormGroup = new FormGroup({});
-  pgs: Array<any> = [
-    { title: 'Paytabs', id: 'paytabs', icon: `${environment.base}paytabs.png` },
-    { title: 'Tabby', id: 'tabby', icon: `${environment.base}tabby.png` },
+  pgs: Array<Pg> = [
+    { title: 'Network', id: 'network-international', icon: `${environment.base}network-international.png` },
+    { title: 'Network ( Tokenized )', id: 'network-international-tokenized', icon: `${environment.base}network-international.png` },
     { title: 'Tap Payments', id: 'tap', icon: `${environment.base}tap.png` },
-    {
-      title: 'Rak Bank',
-      id: 'rakbank',
-      icon: `${environment.base}rakbank.png`,
-    },
+    { title: 'Paytabs', id: 'paytabs', icon: `${environment.base}paytabs.png` },
     { title: 'Qi', id: 'qi', icon: `${environment.base}qi.png` },
-    {
-      title: 'Network International',
-      id: 'network-international',
-      icon: `${environment.base}network-international.png`,
-    },
-    {
-      title: 'Newtork International (Tokenized)',
-      id: 'network-international-tokenized',
-      icon: `${environment.base}network-international.png`,
-    },
+    { title: 'Razorpay', id: 'razorpay', icon: `${environment.base}razorpay.png` },
+    { title: 'Rak Bank', id: 'rakbank', icon: `${environment.base}rakbank.png` },
+    { title: 'Tabby', id: 'tabby', icon: `${environment.base}tabby.png` },
+    { title: 'Tamara', id: 'tamara', icon: `${environment.base}tamara.png` },
   ];
   displayIcon: string = '';
   modalRef?: BsModalRef;
@@ -57,7 +53,9 @@ export class PaymentSettingsComponent implements OnInit {
     rakbank: ['publicKey', 'privateKey'],
     'network-international': ['outletReference', 'apiKey', 'apiUrl'],
     'network-international-tokenized': ['outletReference', 'apiKey', 'apiUrl'],
-    qi: ['secretKey'],
+    qi: ['secretKey', 'apiUrl', 'username', 'password'],
+    razorpay: ['secretKey', 'keyId'],
+    tamara: ['apiUrl', 'publicKey', 'privateKey', 'payByOption']
   };
 
   get formControls() {
@@ -70,7 +68,7 @@ export class PaymentSettingsComponent implements OnInit {
     private ChangeDetectorRef: ChangeDetectorRef,
     private BsModalService: BsModalService,
     private AppSettingsService: AppSettingsService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.form = new FormGroup({
@@ -79,6 +77,8 @@ export class PaymentSettingsComponent implements OnInit {
       merchantCode: new FormControl(''),
       merchantId: new FormControl(''),
       secretKey: new FormControl(''),
+      accessToken: new FormControl(''),
+      keyId: new FormControl(''),
       displayName: new FormControl(''),
       displayIcon: new FormControl(null),
       displayDescription: new FormControl(''),
@@ -86,10 +86,13 @@ export class PaymentSettingsComponent implements OnInit {
       outletReference: new FormControl(''),
       publicKey: new FormControl(''),
       privateKey: new FormControl(''),
+      payByOption: new FormControl(''),
       region: new FormControl(''),
       serverKey: new FormControl(''),
       apiUrl: new FormControl(''),
       isEnabled: new FormControl(false),
+      username: new FormControl(''),
+      password: new FormControl(''),
     });
 
     this.fetchGateways();
@@ -188,9 +191,33 @@ export class PaymentSettingsComponent implements OnInit {
     this.onPaymentGatewayChange(pgId);
   }
 
+  getPgIcon(pgId: string) {
+    switch (pgId) {
+      case 'network-international':
+        return `assets/payment-icons/network.png`;
+      case 'network-international-tokenized':
+        return `assets/payment-icons/network.png`;
+      case 'tap':
+        return `assets/payment-icons/tap.jpg`;
+      case 'paytabs':
+        return `assets/payment-icons/paytabs.jpg`;
+      case 'qi':
+        return `assets/payment-icons/qi.png`;
+      case 'razorpay':
+        return `assets/payment-icons/razorpay.png`;
+      case 'rakbank':
+        return `assets/payment-icons/rakbank.png`;
+      case 'tabby':
+        return `assets/payment-icons/tabby.jpg`;
+      case 'tamara':
+        return `assets/payment-icons/tamara.png`;
+    }
+  }
+
   close() {
     this.modalRef?.hide();
     this.form.reset();
+    this.form.patchValue({ payByOption: '', isEnabled: false })
     this.displayIcon = '';
     this.isSubmitted = false;
   }
@@ -232,8 +259,12 @@ export class PaymentSettingsComponent implements OnInit {
       'displayIcon',
       'publicKey',
       'region',
+      'keyId',
       'serverKey',
-      'apiUrl'
+      'apiUrl',
+      'accessToken',
+      'privateKey',
+      'payByOption'
     ];
 
     fields.forEach((field) => {

@@ -20,7 +20,10 @@
 
         <div class="card mb-4">
             <div class="card-body">
-                <div class="fs-4 fw-bold">Payment Mode</div>
+                <div class="pb-4 mb-4 border-bottom border-secondary">
+                    <div class="fs-4 fw-bold">Payment Mode</div>
+                    <div class="mt-1 fs-6 text-muted">Configure payment modes for your store</div>
+                </div>
                 <div class="mt-3 mb-5 d-flex align-items-center justify-content-start gap-2">
                     <div class="fs-5">Online Payments </div>
                     <div>
@@ -50,9 +53,10 @@
                 <div class="fs-6">Configure payment gateways for your store</div>
                 <div class="pg-cards my-4">
                     <div class="pg-card cursor-pointer p-4 border rounded" *ngFor="let pg of pgs; let i = index"
-                        (click)="open(template, pg?.id)"
-                        [ngClass]="{'border-secondary': !paymentGatewayEnabled(pg?.id), 'border-primary': paymentGatewayEnabled(pg?.id)}">
-                        <img src="{{pg?.icon}}" alt="{{pg?.title}}" onerror="this.src = 'assets/images/default.png'">
+                        (click)="open(template, pg.id)"
+                        [ngClass]="{'border-secondary': !paymentGatewayEnabled(pg.id), 'border-primary': paymentGatewayEnabled(pg.id)}">
+                        <img [src]="getPgIcon(pg.id)" alt="{{pg?.title}}"
+                            onerror="this.src = 'assets/images/default.png'">
                         <div class="fs-6 text-center mt-2">{{pg?.title}}</div>
                     </div>
                 </div>
@@ -125,8 +129,8 @@
                 <div class="mb-3 form-group"
                     *ngIf="paymentGatewayConfig[form.get('paymentGateway')?.value]?.includes('apiUrl')">
                     <label for="apiUrl" class="fs-6 mb-3">API Url</label>
-                    <input type="text" id="apiUrl" placeholder="API Url" formControlName="apiUrl"
-                        class="form-control" [ngClass]="{
+                    <input type="text" id="apiUrl" placeholder="API Url" formControlName="apiUrl" class="form-control"
+                        [ngClass]="{
                         'is-invalid':
                         (formControls.apiUrl.touched || isSubmitted) &&
                         formControls.apiUrl.errors?.required
@@ -156,6 +160,28 @@
                 </div>
 
                 <div class="mb-3 form-group"
+                    *ngIf="paymentGatewayConfig[form.get('paymentGateway')?.value]?.includes('keyId')">
+                    <label for="keyId" class="fs-6 mb-3">Key ID</label>
+                    <input type="text" id="keyId" placeholder="Key ID" formControlName="keyId" class="form-control"
+                        [ngClass]="{
+                            'is-invalid':
+                            (formControls.keyId.touched || isSubmitted) &&
+                            formControls.keyId.errors?.required
+                          }">
+                </div>
+
+                <div class="mb-3 form-group"
+                    *ngIf="paymentGatewayConfig[form.get('paymentGateway')?.value]?.includes('accessToken')">
+                    <label for="accessToken" class="fs-6 mb-3">Access Token</label>
+                    <input type="text" id="accessToken" placeholder="Access Token" formControlName="accessToken"
+                        class="form-control" [ngClass]="{
+                        'is-invalid':
+                        (formControls.accessToken.touched || isSubmitted) &&
+                        formControls.accessToken.errors?.required
+                      }">
+                </div>
+
+                <div class="mb-3 form-group"
                     *ngIf="paymentGatewayConfig[form.get('paymentGateway')?.value]?.includes('publicKey')">
                     <label for="publicKey" class="fs-6 mb-3">Public Key</label>
                     <input type="text" id="publicKey" placeholder="Public Key" formControlName="publicKey"
@@ -181,44 +207,56 @@
                     *ngIf="paymentGatewayConfig[form.get('paymentGateway')?.value]?.includes('outletReference')">
                     <label for="outletReference" class="fs-6 mb-3">Outlet Reference</label>
                     <input type="text" id="outletReference" placeholder="Outlet Reference"
-                        formControlName="outletReference" class="form-control" [ngClass]="{
-                    'is-invalid':
-                    (formControls.outletReference.touched || isSubmitted) &&
-                    formControls.outletReference.errors?.required
-                  }">
+                        formControlName="outletReference" class="form-control"
+                        [ngClass]="{ 'is-invalid': (formControls.outletReference.touched || isSubmitted) && formControls.outletReference.errors?.required }">
+                </div>
+
+                <div class="mb-3 form-group"
+                    *ngIf="paymentGatewayConfig[form.get('paymentGateway')?.value]?.includes('username')">
+                    <label for="username" class="fs-6 mb-3">Username</label>
+                    <input type="text" id="username" placeholder="Username" formControlName="username"
+                        class="form-control" [ngClass]="{ 'is-invalid': (formControls.username.touched || isSubmitted) && formControls.username.errors?.required }">
+                </div>
+
+                <div class="mb-3 form-group"
+                    *ngIf="paymentGatewayConfig[form.get('paymentGateway')?.value]?.includes('password')">
+                    <label for="password" class="fs-6 mb-3">Password</label>
+                    <input type="text" id="password" placeholder="Password" formControlName="password"
+                        class="form-control" [ngClass]="{ 'is-invalid': (formControls.password.touched || isSubmitted) &&  formControls.password.errors?.required }">
                 </div>
 
                 <div class="mb-3 form-group"
                     *ngIf="paymentGatewayConfig[form.get('paymentGateway')?.value]?.includes('privateKey')">
                     <label for="privateKey" class="fs-6 mb-3">Private Key</label>
                     <input type="text" id="privateKey" placeholder="Private Key" formControlName="privateKey"
-                        class="form-control" [ngClass]="{
-                        'is-invalid':
-                        (formControls.privateKey.touched || isSubmitted) &&
-                        formControls.privateKey.errors?.required
-                      }">
+                        class="form-control"
+                        [ngClass]="{ 'is-invalid': (formControls.privateKey.touched || isSubmitted) && formControls.privateKey.errors?.required }">
                 </div>
 
                 <div class="mb-3 form-group"
                     *ngIf="paymentGatewayConfig[form.get('paymentGateway')?.value]?.includes('serverKey')">
                     <label for="serverKey" class="fs-6 mb-3">Server Key</label>
                     <input type="text" id="serverKey" placeholder="Server Key" formControlName="serverKey"
-                        class="form-control" [ngClass]="{
-                            'is-invalid':
-                            (formControls.serverKey.touched || isSubmitted) &&
-                            formControls.serverKey.errors?.required
-                          }">
+                        class="form-control"
+                        [ngClass]="{ 'is-invalid': (formControls.serverKey.touched || isSubmitted) && formControls.serverKey.errors?.required }">
                 </div>
 
                 <div class="mb-3 form-group"
                     *ngIf="paymentGatewayConfig[form.get('paymentGateway')?.value]?.includes('region')">
                     <label for="region" class="fs-6 mb-3">Region</label>
                     <input type="text" id="region" placeholder="Region" formControlName="region" class="form-control"
-                        [ngClass]="{
-                        'is-invalid':
-                        (formControls.region.touched || isSubmitted) &&
-                        formControls.region.errors?.required
-                      }">
+                        [ngClass]="{ 'is-invalid': (formControls.region.touched || isSubmitted) && formControls.region.errors?.required }">
+                </div>
+
+                <div class="mb-3 form-group"
+                    *ngIf="paymentGatewayConfig[form.get('paymentGateway')?.value]?.includes('payByOption')">
+                    <label for="payByOption" class="fs-6 mb-3">Pay By Option</label>
+                    <select name="" id="" formControlName="payByOption" class="form-select"
+                        [ngClass]="{ 'is-invalid': (formControls.payByOption.touched || isSubmitted) && formControls.payByOption.errors?.required }">
+                        <option value="" disabled>Select Pay By Option</option>
+                        <option value="PAY_BY_INSTALLMENT">Pay By Installment</option>
+                        <option value="PAY_NOW">Pay Now</option>
+                    </select>
                 </div>
 
                 <div class="d-flex align-items-center justify-content-end">
