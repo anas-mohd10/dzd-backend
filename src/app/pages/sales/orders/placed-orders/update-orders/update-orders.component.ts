@@ -345,6 +345,21 @@ export class UpdateOrdersComponent implements OnInit {
     return new Date(processDate).toLocaleTimeString('en-US', { hour: 'numeric', minute: 'numeric', second: 'numeric', hour12: true });
   }
 
+  getLocalizedProductName(product: any): string {
+    if (!product) return '';
+
+    // Check if product has productDetails with localizedNames
+    if (product?.productDetails?.localizedNames && this.settings?.primaryLang) {
+      const localizedName = product.productDetails.localizedNames[this.settings.primaryLang];
+      if (localizedName) {
+        return localizedName;
+      }
+    }
+
+    // Fallback to regular product name from productDetails or productId
+    return product?.productDetails?.name || product?.productId?.name || '';
+  }
+
   getOrderDetails() {
     this.isLoading = true;
     this.OrdersService.getOrderDetails({ order: this.slug }).subscribe(
@@ -477,7 +492,7 @@ export class UpdateOrdersComponent implements OnInit {
   }
 
   confirmCancel() {
-    this.isLoading =true
+    this.isLoading = true
     this.isCancelConfirmLoading = true;
     this.cancelConfirmationRef?.hide() // Close the cancel confirmation modal
     this.OrdersService.updateOrderStatus({
