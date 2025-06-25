@@ -530,10 +530,24 @@
                   <label for="thumbnail" class="fs-6 mb-3">Product Thumbnail</label>
                   <div class="row" id="thumbnail">
                     <div class="col-lg-2">
-                      <div class="ratio ratio-1x1 h-auto w-100 rounded">
-                        <app-assets [image]="'contain'" [previewDetails]="thumbnailPreview"
-                          (mediaClicked)="productThumbnailClicked($event)"></app-assets>
+                      <div class="ratio ratio-1x1 h-auto w-100 rounded position-relative"
+                        *ngIf="thumbnailPreview; else thumbnailUpload">
+                        <div class="close-icon rounded bg-danger text-white" (click)="removeThumbnail()">
+                          <svg height="18" width="18" data-slot="icon" fill="none" stroke-width="1.5"
+                            stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"
+                            aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12"></path>
+                          </svg>
+                        </div>
+                        <img [src]="base + thumbnailPreview" class="h-100 w-100 rounded object-fit-contain"
+                          alt="Product Thumbnail">
                       </div>
+                      <ng-template #thumbnailUpload>
+                        <div class="ratio ratio-1x1 h-auto w-100 rounded">
+                          <app-assets [image]="'contain'" [previewDetails]="thumbnailPreview"
+                            (mediaClicked)="productThumbnailClicked($event)"></app-assets>
+                        </div>
+                      </ng-template>
                     </div>
                   </div>
                 </div>

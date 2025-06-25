@@ -585,6 +585,12 @@ export class UpdateProductComponent implements OnInit {
 
   productThumbnailClicked(event: any) {
     this.form.get('thumbnail')?.setValue(event.path);
+    this.thumbnailPreview = event.path;
+  }
+
+  removeThumbnail() {
+    this.form.get('thumbnail')?.setValue('');
+    this.thumbnailPreview = '';
   }
 
   productVideoThumbnailClicked(event: any) {
