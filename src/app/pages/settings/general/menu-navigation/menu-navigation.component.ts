@@ -36,7 +36,9 @@ interface MenuNavigation {
 export class MenuNavigationComponent implements OnInit {
   modalRef?: BsModalRef
   copyModalRef?: BsModalRef
+  deleteModalRef?: BsModalRef
   deviceType: FormControl = new FormControl('web')
+  menuToDelete: MenuNavigation | null = null
   menuType: FormControl = new FormControl('')
   menuTypes: Array<{ label: string, value: string }> = [
     { label: "Categories", value: "categories" },
@@ -155,6 +157,54 @@ export class MenuNavigationComponent implements OnInit {
 
   closeCopy() {
     this.copyModalRef?.hide()
+  }
+
+  openDeleteConfirmation(template: TemplateRef<any>, menuNavigation: MenuNavigation) {
+    this.menuToDelete = menuNavigation
+    this.deleteModalRef = this.BsModalService.show(template, { class: 'modal-sm modal-dialog-centered', ignoreBackdropClick: false })
+  }
+
+  confirmDelete() {
+    if (this.menuToDelete) {
+      this.MenuNavigationService.deleteMenuNavigation(this.menuToDelete._id).subscribe({
+        next: (res: any) => {
+          if (res.errorCode == 0) {
+            this.closeDeleteConfirmation()
+            this.fetchMenuDocs()
+            this.HotToastService.success(res?.message)
+          } else {
+            this.HotToastService.error(res?.message)
+          }
+        }, error: (err: any) => {
+          this.HotToastService.error(err?.message)
+        }
+      })
+    }
+  }
+
+  closeDeleteConfirmation() {
+    this.deleteModalRef?.hide()
+    this.menuToDelete = null
+  }
+
+  countTotalMenuItems(menuNavigation: MenuNavigation): number {
+    let count = 1 // Count the main item itself
+    if (menuNavigation.menuItems && menuNavigation.menuItems.length > 0) {
+      menuNavigation.menuItems.forEach(item => {
+        count += this.countTotalMenuItems(item)
+      })
+    }
+    return count
+  }
+
+  getAllMenuItemsList(menuNavigation: MenuNavigation): string[] {
+    let items: string[] = [menuNavigation.title]
+    if (menuNavigation.menuItems && menuNavigation.menuItems.length > 0) {
+      menuNavigation.menuItems.forEach(item => {
+        items = items.concat(this.getAllMenuItemsList(item))
+      })
+    }
+    return items
   }
 
   ngOnInit(): void {
