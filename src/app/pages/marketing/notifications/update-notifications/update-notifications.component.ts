@@ -157,6 +157,7 @@ export class UpdateNotificationsComponent implements OnInit {
       content: new FormControl('', Validators.required),
       scheduledAt: new FormControl('', Validators.required),
       isStoreLevel: new FormControl('true'),
+      isProfileLevel: new FormControl(false),
       redirection: new FormControl(''),
       thumbnail: new FormControl(''),
     });
@@ -168,6 +169,10 @@ export class UpdateNotificationsComponent implements OnInit {
 
   removeThumbnail() {
     this.form.get('thumbnail')?.setValue('');
+  }
+
+  onProfileLevelToggled(event: { switchId: string, toggleState: boolean }) {
+    this.form.get('isProfileLevel')?.setValue(event.toggleState);
   }
 
   get formControls() {

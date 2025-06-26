@@ -24,7 +24,7 @@ export class AddNotificationsComponent implements OnInit {
   form: FormGroup;
   isSubmitted: boolean;
   isLoading: boolean = false;
-  appRoute = appRoutes;  
+  appRoute = appRoutes;
   modalRef: BsModalRef;
   page: number = 1;
   limit: number = 10;
@@ -104,7 +104,8 @@ export class AddNotificationsComponent implements OnInit {
       title: new FormControl('', Validators.required),
       content: new FormControl('', Validators.required),
       scheduledAt: new FormControl('', Validators.required),
-      isStoreLevel: new FormControl('true'),
+      isStoreLevel: new FormControl(true),
+      isProfileLevel: new FormControl(false),
       redirection: new FormControl(''),
       thumbnail: new FormControl(''),
     });
@@ -116,6 +117,10 @@ export class AddNotificationsComponent implements OnInit {
 
   removeThumbnail() {
     this.form.get('thumbnail')?.setValue('');
+  }
+
+  onProfileLevelToggled(event: { switchId: string, toggleState: boolean }) {
+    this.form.get('isProfileLevel')?.setValue(event.toggleState);
   }
 
   get formControls() {
@@ -134,7 +139,7 @@ export class AddNotificationsComponent implements OnInit {
 
     this.isLoading = true;
 
-    if(this.form.get('isStoreLevel')?.value == 'false' && this.customers.length == 0) {
+    if (this.form.get('isStoreLevel')?.value == 'false' && this.customers.length == 0) {
       this.HotToastService.error('Please select at least one customer');
       this.isLoading = false;
       return;

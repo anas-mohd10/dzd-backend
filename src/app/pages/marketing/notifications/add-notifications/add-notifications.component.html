@@ -22,6 +22,10 @@
 <form (ngSubmit)="onSubmit()" [formGroup]="form">
   <div class="card my-4">
     <div class="card-body">
+      <div class="d-flex align-items-center gap-2 mb-4">
+        <app-switch [isToggledProps]="form.get('isProfileLevel')?.value" [switchId]="'isProfileLevel'" (switchToggled)="onProfileLevelToggled($event)"></app-switch>
+        <div class="fs-6">Show this Notification in Profile</div>
+      </div>
       <div class="row">
         <div class="col-lg-4">
           <label class="fs-6 mb-3 required">Customers</label>
