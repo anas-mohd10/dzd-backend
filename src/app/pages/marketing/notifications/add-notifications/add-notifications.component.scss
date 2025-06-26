@@ -1,4 +1,36 @@
-label,
-.btn {
+.btn,
+label {
     font-weight: 400 !important;
 }
+
+//Table designs
+.table {
+    background: #ffffff;
+    font-size: 15px;
+
+    tbody {
+        tr {
+            td {
+                vertical-align: middle;
+                width: 25%;
+                overflow-x: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+                line-clamp: 1;
+                --webkit-line-clamp: 1;
+            }
+        }
+    }
+
+    thead {
+        tr {
+            th {
+                font-weight: 400 !important;
+            }
+        }
+
+        background: #E4E7F4;
+    }
+}
+
+//Table designs
