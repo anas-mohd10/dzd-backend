@@ -54,7 +54,7 @@
       </thead>
       <tbody>
         <tr *ngFor="let notification of notifications">
-          <td>{{notification?.title}}</td>
+          <td class="text-truncate">{{notification?.title}}</td>
           <td>{{formatDateAndTime(notification?.createdAt)}}</td>
           <td>{{notification?.scheduledAt ? formatDateAndTime(notification?.scheduledAt) : 'N/A'}}</td>
           <td>

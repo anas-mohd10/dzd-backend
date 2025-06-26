@@ -44,9 +44,9 @@ export class NotificationsService {
     return this.http.delete(`${url}`);
   }
 
-  latestNotifications(data: any) {
+  latestOrders() {
     const url = this.commonService.getFullUrl(this.notificationsEndpoints.latestOrders);
-    return this.http.post(`${url}`, data);
+    return this.http.get(`${url}`);
   }
 
   moduleNotifications(data: any) {
