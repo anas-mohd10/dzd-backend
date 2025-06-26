@@ -47,6 +47,7 @@
         <tr>
           <th>Title</th>
           <th>Date</th>
+          <th>Scheduled</th>
           <th>Status</th>
           <th>&nbsp;</th>
         </tr>
@@ -54,15 +55,14 @@
       <tbody>
         <tr *ngFor="let notification of notifications">
           <td>{{notification?.title}}</td>
-          <td>
-            {{formatDateAndTime(notification?.createdAt)}}
-          </td>
+          <td>{{formatDateAndTime(notification?.createdAt)}}</td>
+          <td>{{notification?.scheduledAt ? formatDateAndTime(notification?.scheduledAt) : 'N/A'}}</td>
           <td>
             {{notification?.status | titlecase}}
           </td>
           <td>
             <div class="cursor-pointer" routerLink="{{appRoute.notification.UPDATE_NOTIFICATION}}"
-              [queryParams]="{'id': notification?._id}">
+              [queryParams]="{'notificationId': notification?._id}">
               <svg height="18" width="18" data-slot="icon" fill="none" stroke-width="1.5" stroke="currentColor"
                 viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
                 <path stroke-linecap="round" stroke-linejoin="round"

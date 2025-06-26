@@ -91,6 +91,14 @@ export class AddNotificationsComponent implements OnInit {
     return this.customers.find(c => c._id == customer._id);
   }
 
+  // Utility method to convert datetime-local format to ISO string for backend
+  private formatDateForBackend(dateTimeLocal: string): string {
+    if (!dateTimeLocal) return '';
+    // datetime-local format is already in local time, so we can create a Date object directly
+    const date = new Date(dateTimeLocal);
+    return date.toISOString();
+  }
+
   ngOnInit(): void {
     this.form = new FormGroup({
       title: new FormControl('', Validators.required),
@@ -132,21 +140,26 @@ export class AddNotificationsComponent implements OnInit {
       return;
     }
 
-    this.NotificationsService.addNotification({
+    // Prepare form data with proper date formatting
+    const formData = {
       ...this.form.value,
+      scheduledAt: this.formatDateForBackend(this.form.value.scheduledAt),
       customers: this.customers,
-    }).subscribe({
+    };
+
+    this.NotificationsService.addNotification(formData).subscribe({
       next: (res: any) => {
         this.isLoading = false;
         if (res.errorCode == 0) {
           this.HotToastService.success(res?.message);
           this.Router.navigate([this.appRoute.notification.NOTIFICATION_LIST]);
-        } else if (res.errorCode == 0) {
+        } else {
           this.HotToastService.error(res?.message);
         }
       },
       error: (err: any) => {
         this.isLoading = false;
+        this.HotToastService.error(err?.error?.message);
       },
     });
   }
