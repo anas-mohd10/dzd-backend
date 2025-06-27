@@ -52,7 +52,8 @@ import { MenuNavigationComponent } from './settings/general/menu-navigation/menu
 import { SmsTemplateService } from '../includes/services/sms-template.service';
 import { SmsTemplatesComponent } from './settings/general/sms-templates/sms-templates.component';
 import { FormSettingsComponent } from './settings/general/form-settings/form-settings.component';
-
+import { AlbumsComponent } from './marketing/albums/albums.component';
+import { GalleriesComponent } from './marketing/galleries/galleries.component';
 export const Routing: Routes = [
   {
     path: 'app',
@@ -316,7 +317,15 @@ export const Routing: Routes = [
         path: 'help-center',
         loadChildren: () => import('./pages/help-center/help-center.module').then((m) => m.HelpCenterModule),
         canActivate: [AuthenticationGuard, PermissionGuard]
-      }, {
+      },
+      {
+        path: 'albums',
+        component: AlbumsComponent,
+        canActivate: [AuthenticationGuard]
+      },
+      { path: 'galleries/:albumId', component: GalleriesComponent, canActivate: [AuthenticationGuard] },
+
+      {
         path: 'privacy-policy',
         loadChildren: () => import('./pages/privacy-policy/privacy-policy.module').then((m) => m.PrivacyPolicyModule),
         canActivate: [AuthenticationGuard, PermissionGuard]

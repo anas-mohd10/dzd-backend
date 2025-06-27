@@ -51,6 +51,8 @@ const wishlist = '/wishlist'
 export const appRoutes = {
   BASE: environment.base,
   DASHBOARD: `${app}${dashboardRoute}`,
+  albums: `${app}/albums`,
+  galleries: `${app}/galleries`,
   brand: {
     ADD_BRAND: `${app}${brandRoute}/add`,
     BRAND_LIST: `${app}${brandRoute}`,
