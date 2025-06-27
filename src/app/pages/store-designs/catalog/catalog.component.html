@@ -964,6 +964,12 @@
                             (widgetBlogsChange)="widgetBlogsChange($event)"></app-blogs>
                     </div>
 
+                    <div *ngIf="widgetDetails?.widgetType == 'clickpulse-panel'" class="mt-4">
+                        <app-clickpulse-panel [tabs]="widgetDetails?.tabs || []"
+                            (handleClickpulse)="onClickPulseChange($event)">
+                        </app-clickpulse-panel>
+                    </div>
+
                     <div *ngIf="widgetDetails?.widgetType == 'insight-hub'">
                         <form [formGroup]="insightHubForm">
                             <div class="row">
