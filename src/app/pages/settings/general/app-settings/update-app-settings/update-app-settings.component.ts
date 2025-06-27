@@ -279,6 +279,7 @@ export class UpdateAppSettingsComponent implements OnInit {
         this.form.get('description')?.setValue(res?.result?.description)
         this.form.get('itemsPerPage')?.setValue(res?.result?.itemsPerPage)
         this.form.get('isOutOfStock')?.setValue(res?.result?.isOutOfStock)
+        this.form.get('isPushNotification')?.setValue(res?.result?.isPushNotification)
         this.form.get('isTax')?.setValue(res?.result?.isTax)
         this.form.get('isShippingTaxable')?.setValue(res?.result?.isShippingTaxable)
         this.form.get('isIndex')?.setValue(res?.result?.isIndex)
@@ -399,6 +400,7 @@ export class UpdateAppSettingsComponent implements OnInit {
       defaultImage: [''],
       isNotifyStock: ['false'],
       adminLogo: [''],
+      isPushNotification: ['true'],
       adminFavicon: [''],
       commaSeparation: [true],
       currencyLocation: ['before'],
@@ -563,6 +565,7 @@ export class UpdateAppSettingsComponent implements OnInit {
       mobile: this.form.get('mobile')?.value,
       isShippingTaxable: this.form.get('isShippingTaxable')?.value,
       primaryLang: this.form.get('primaryLang')?.value,
+      isPushNotification: this.form.get('isPushNotification')?.value,
       isMultiLang: this.form.get('isMultiLang')?.value,
       languages: this.form.get('languages')?.value,
       defaultImage: this.form.get('defaultImage')?.value,
