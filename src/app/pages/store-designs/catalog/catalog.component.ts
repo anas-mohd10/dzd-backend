@@ -49,6 +49,12 @@ export class CatalogComponent implements OnInit, OnDestroy {
         'The following widget can be used to show images within a particular category.The widget contains images. <strong>Magestic Mosaic - 800(w) x 244(h) - 1(Largest one) 390(w) x 244(h) - 4(Smaller ones)</strong>',
     },
     {
+      title: 'ClickPulse Panel',
+      type: 'clickpulse-panel',
+      icon: 'assets/widgets/clickpulse-panel.png',
+      description: 'Interactive panel with clickable hotspots for product showcasing.',
+    },
+    {
       title: 'Glamour Glaze',
       type: 'glamour-glaze',
       icon: 'assets/widgets/volta-lake.png',
@@ -120,7 +126,7 @@ export class CatalogComponent implements OnInit, OnDestroy {
       type: 'sale-timer',
       icon: 'assets/widgets/sale-timer.png',
       description: 'This widget is used to showcase a sale timer.',
-    },{
+    }, {
       title: 'Slider Spotlight',
       type: 'slider-spotlight',
       icon: 'assets/widgets/slider-spotlight.png',
@@ -189,7 +195,7 @@ export class CatalogComponent implements OnInit, OnDestroy {
       icon: 'assets/widgets/regal-rolls.png',
       description:
         'The following widget can be used to showcase products.The widget contains an image of the product and white descriptive box.The descriptive box contains name of the product, actual price and off price and off percentage, which are center aligned with respect to the box.',
-    },{
+    }, {
       title: 'Noble Nodes',
       type: 'noble-nodes',
       icon: 'assets/widgets/noble-nodes.png',
@@ -213,7 +219,7 @@ export class CatalogComponent implements OnInit, OnDestroy {
       icon: 'assets/widgets/smart-tiles.png',
       description:
         'The following widget can be used to showcase products.The widget contains an image of the product and white descriptive box.The descriptive box contains name of the product, actual price and off price and off percentage, which are center aligned with respect to the box.',
-    },{
+    }, {
       title: 'Testimonials',
       type: 'testimonial-cards',
       icon: 'assets/widgets/image-slider.png',
@@ -225,7 +231,7 @@ export class CatalogComponent implements OnInit, OnDestroy {
       icon: 'assets/widgets/quad-sqaure.png',
       description:
         'The following widget can be used to show images within a particular category. The widget contains images.',
-    },  {
+    }, {
       title: 'Full Banner',
       type: 'full-banner',
       icon: 'assets/widgets/text-twirl.png',
@@ -1768,9 +1774,41 @@ export class CatalogComponent implements OnInit, OnDestroy {
     });
   }
 
+  onClickPulseChange(event: any) {
+    if (this.widgetDetails?.widgetType === 'clickpulse-panel') {
+      if (!this.widgetDetails.tabs) {
+        this.widgetDetails.tabs = [];
+      }
+      this.widgetDetails.tabs = event.map((tab: any, index: number) => ({
+        ...tab,
+        tabIndex: index,
+        tabItems: tab.tabItems.map((item: any, itemIndex: number) => ({
+          ...item,
+          tabItemIndex: itemIndex,
+          hotspots: item.hotspots || []
+        }))
+      }));
 
+      const widgetPayload = {
+        ...this.widgetDetails,
+        tabs: this.widgetDetails.tabs
+      };
 
-
+      this.CatalogService.updateCatalogWidget(widgetPayload).subscribe({
+        next: (res: any) => {
+          if (res?.errorCode === 0) {
+            this.Toast.success(res?.message);
+            this.ChangeDetectorRef.markForCheck();
+          } else {
+            this.Toast.error(res?.message);
+          }
+        },
+        error: (err: any) => {
+          this.Toast.error(err?.error?.message);
+        }
+      });
+    }
+  }
 
   ngOnDestroy(): void {
   }

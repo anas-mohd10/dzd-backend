@@ -26,6 +26,7 @@ export class CreateVoucherComponent implements OnInit {
   isSubmitted: boolean = false;
   file: any;
   preview: string = '';
+  isLoading: boolean = false;
 
   constructor(
     private CustomersService: CustomersService,
@@ -146,12 +147,13 @@ export class CreateVoucherComponent implements OnInit {
       this.isSubmitted = true;
       return;
     }
-
+    this.isLoading = true;
     this.VouchersService.createVoucher({
       ...this.form.value,
       paymentStatus: 'success',
     }).subscribe({
       next: (res: any) => {
+        this.isLoading = false;
         if (res?.errorCode == 0) {
           this.Router.navigate([appRoutes.vouchers.list]);
           this.Toast.success(res.message);
@@ -160,6 +162,7 @@ export class CreateVoucherComponent implements OnInit {
         }
       },
       error: (err: any) => {
+        this.isLoading = false;
         this.Toast.error(err.error.message);
       },
     });

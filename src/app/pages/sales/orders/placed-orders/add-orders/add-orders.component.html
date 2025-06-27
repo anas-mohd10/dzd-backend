@@ -516,7 +516,10 @@
                 <div class="col-lg-6 mb-3">
                     <label for="userEmail" class="fs-6 mb-3 required">Email</label>
                     <input id="userEmail" type="text" placeholder="Email" formControlName="email" class="form-control"
-                        [ngClass]="{ 'is-invalid': (userControls.email.touched || isCustomerSubmitted) && (userControls.email.errors?.required || userControls.email.errors?.email)}">
+                        [ngClass]="{ 'is-invalid': (userControls.email.touched || isCustomerSubmitted) && (userControls.email.errors?.required || userControls.email.errors?.pattern)}">
+                    <div *ngIf="(userControls.email.touched || isCustomerSubmitted) && userControls.email.errors?.pattern" class="invalid-feedback d-block">
+                        Please enter a valid email address.
+                    </div>
                 </div>
                 <div class="col-lg-6 mb-3">
                     <label for="userCountry" class="fs-6 mb-3">Country Code</label>
