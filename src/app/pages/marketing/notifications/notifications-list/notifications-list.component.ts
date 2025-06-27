@@ -26,23 +26,14 @@ export class NotificationsListComponent implements OnInit {
 
   ngOnInit(): void {
     this.form = new FormGroup({
-      keyword: new FormControl(''),
-      isActive: new FormControl(''),
-      channel: new FormControl(''),
-      type: new FormControl(''),
       status: new FormControl(''),
     });
+
     this.getNotifications()
   }
 
   clearFilters() {
-    this.form.patchValue({
-      keyword: '',
-      isActive: '',
-      channel: '',
-      type: '',
-      status: '',
-    })
+    this.form.patchValue({ status: '' })
     this.getNotifications()
   }
 
@@ -52,20 +43,8 @@ export class NotificationsListComponent implements OnInit {
     this.getNotifications()
   }
 
-  formatTime(time: string) {
-    return new Date(time).toLocaleTimeString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true })
-  }
-
-  formatDate(date: string) {
-    return new Date(date).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' })
-  }
-
-  formatWord(word: string) {
-    if (!word){
-      return ''
-    }
-
-    return word.charAt(0).toUpperCase() + word.slice(1)
+  formatDateAndTime(date: string) {
+    return new Date(date).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' }) + ' ' + new Date(date).toLocaleTimeString('en-US', { weekday: 'short', hour: 'numeric', minute: 'numeric', hour12: true })
   }
 
   getNotifications() {

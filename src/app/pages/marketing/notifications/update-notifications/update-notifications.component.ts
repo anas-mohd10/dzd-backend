@@ -1,10 +1,20 @@
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, TemplateRef } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { HotToastService } from '@ngneat/hot-toast';
+import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
+import { debounceTime } from 'rxjs/operators';
 import { appRoutes } from 'src/app/config/routes';
 import { CustomersService } from 'src/app/includes/services/customers.service';
 import { NotificationsService } from 'src/app/includes/services/notifications.service';
+
+interface CustomerDoc {
+  name: string;
+  email: string;
+  countryCode: string;
+  _id: string;
+  mobile: string;
+}
 
 @Component({
   selector: 'app-update-notifications',
@@ -13,176 +23,179 @@ import { NotificationsService } from 'src/app/includes/services/notifications.se
 })
 export class UpdateNotificationsComponent implements OnInit {
   form: FormGroup;
-  isSubmitted: boolean = false;
-  isLoading: boolean = true;
+  isSubmitted: boolean;
+  isLoading: boolean = false;
   appRoute = appRoutes;
-  customersData: Array<any> = [];
-  customers: Array<string> = [];
-  startDate: string = new Date().toISOString().split('T')[0];
-  date = new Date();
-  formattedDate: number = this.date.setDate(this.date.getDate() + 2);
-  scheduleDate: string = new Date(this.formattedDate).toISOString().split('T')[0];
-  thumbnail: string = '';
-  notificationId: string = '';
-  notificationDetails: any;
+  modalRef: BsModalRef;
+  page: number = 1;
+  limit: number = 10;
+  totalResults: number = 0;
+  totalPages: number = 1;
+  customerDocs: Array<CustomerDoc> = [];
+  customers: Array<CustomerDoc> = [];
+  searchKeyword: FormControl = new FormControl('');
+  notificationId: string;
+  isFutureEvent: boolean = false;
 
   constructor(
-    private notificationsService: NotificationsService,
-    private customersService: CustomersService,
-    private router: Router,
-    private activatedRoute: ActivatedRoute,
-    private hotToastService: HotToastService,
-    private cdr: ChangeDetectorRef
+    private NotificationsService: NotificationsService,
+    private CustomersService: CustomersService,
+    private Router: Router,
+    private ActivatedRoute: ActivatedRoute,
+    private HotToastService: HotToastService,
+    private ChangeDetectorRef: ChangeDetectorRef,
+    private BsModalService: BsModalService
   ) {
-    // Initialize form
-    this.form = new FormGroup({
-      title: new FormControl('', Validators.required),
-      channel: new FormControl('', Validators.required),
-      content: new FormControl('', Validators.required),
-      type: new FormControl('instant'),
-      scheduledAt: new FormControl(''), // Combined date and time
-      redirection: new FormControl(''),
-      thumbnail: new FormControl(null),
-      isStoreLevel: new FormControl('true'),
-      isActive: new FormControl('true'),
+    this.searchKeyword.valueChanges.pipe(debounceTime(500)).subscribe((value) => {
+      this.getCustomers()
+    })
+  }
+
+  //Open modal
+  open(template: TemplateRef<any>) {
+    this.modalRef = this.BsModalService.show(template, { class: 'modal-lg', ignoreBackdropClick: true });
+  }
+
+  //Pagination
+  onPageTriggered(event: { pageIndex: number, pageSize: number }) {
+    this.page = event.pageIndex
+    this.limit = event.pageSize
+    this.getCustomers()
+  }
+
+  //Get customers
+  getCustomers() {
+    this.CustomersService.searchCustomers({
+      keyword: this.searchKeyword.value,
+      page: this.page,
+      isActive: true,
+      limit: this.limit
+    }).subscribe({
+      next: (res: any) => {
+        if (res?.errorCode == 0) {
+          this.customerDocs = res?.result?.data
+          this.totalResults = res?.result?.totalResults
+          this.totalPages = res?.result?.totalPages
+          this.ChangeDetectorRef.markForCheck()
+        } else { }
+      },
+      error: (err: any) => { },
     });
+  }
+
+  onSelect(customer: CustomerDoc) {
+    if (!this.isCustomerSelected(customer)) {
+      this.customers.push(customer);
+    } else {
+      this.customers = this.customers.filter(c => c._id != customer._id);
+    }
+  }
+
+  isCustomerSelected(customer: CustomerDoc) {
+    return this.customers.find(c => c._id == customer._id);
+  }
+
+  // Utility method to format date for datetime-local input
+  private formatDateForDateTimeLocal(dateString: string): string {
+    if (!dateString) return '';
+    const date = new Date(dateString);
+
+    // Get local date and time components
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    const hours = String(date.getHours()).padStart(2, '0');
+    const minutes = String(date.getMinutes()).padStart(2, '0');
+
+    // Return in datetime-local format (YYYY-MM-DDTHH:mm)
+    return `${year}-${month}-${day}T${hours}:${minutes}`;
+  }
+
+  // Utility method to convert datetime-local format to ISO string for backend
+  private formatDateForBackend(dateTimeLocal: string): string {
+    if (!dateTimeLocal) return '';
+    // datetime-local format is already in local time, so we can create a Date object directly
+    const date = new Date(dateTimeLocal);
+    return date.toISOString();
   }
 
   ngOnInit(): void {
-    this.notificationId = this.activatedRoute.snapshot.queryParams.id || '';
-    this.loadData();
-  }
+    this.notificationId = this.ActivatedRoute.snapshot.queryParams['notificationId'];
 
-  async loadData() {
-    this.isLoading = true;
-
-    try {
-      // Use Promise.all to fetch data in parallel
-      const [customersData, notificationData] = await Promise.all([
-        this.fetchCustomers(),
-        this.fetchNotificationDetails()
-      ]);
-
-      // Process customers data if successful
-      if (customersData && customersData.errorCode === 0) {
-        this.customersData = customersData.result.map((customer: any) => ({
-          ...customer,
-          title: (customer?.name ? customer?.name : '-- Incomplete Profile --') +
-                 ' ( ' + customer?.mobile + ' )'
-        }));
-      }
-
-      // Process notification details if successful
-      if (notificationData && notificationData.errorCode === 0) {
-        this.notificationDetails = notificationData.result;
-        this.populateForm(notificationData.result);
-      }
-    } catch (error) {
-      console.error('Error loading data:', error);
-      this.hotToastService.error('Failed to load data. Please try again.');
-    } finally {
-      this.isLoading = false;
-      this.cdr.markForCheck();
+    if (!this.notificationId) {
+      this.Router.navigate([this.appRoute.notification.NOTIFICATION_LIST]);
     }
-  }
 
-  fetchCustomers(): Promise<any> {
-    return new Promise((resolve, reject) => {
-      if (!this.customersService) {
-        resolve({ errorCode: 1, result: [] });
-        return;
-      }
+    this.NotificationsService.getNotificationDetails(this.notificationId).subscribe({
+      next: (res: any) => {
+        if (res.errorCode == 0 && res.result && Object.keys(res.result).length > 0) {
+          // Format the scheduledAt date for datetime-local input
+          const result = { ...res.result };
+          if (result.scheduledAt) {
+            result.scheduledAt = this.formatDateForDateTimeLocal(result.scheduledAt);
+          }
 
-      this.customersService.getActiveCustomers().subscribe({
-        next: (res: any) => resolve(res),
-        error: (err: any) => {
-          console.error('Error fetching customers:', err);
-          reject(err);
+          if (result.scheduledAt) {
+            const scheduledDate = new Date(result.scheduledAt);
+            const currentDate = new Date();
+            this.isFutureEvent = scheduledDate > currentDate;
+          }
+
+          this.form.patchValue(result);
+          this.customers = res.result.customers;
+          this.ChangeDetectorRef.markForCheck()
+        } else {
+          this.HotToastService.error(res?.message);
         }
-      });
-    });
-  }
-
-  fetchNotificationDetails(): Promise<any> {
-    return new Promise((resolve, reject) => {
-      if (!this.notificationId) {
-        resolve({ errorCode: 0, result: null });
-        return;
+      }, error: (err: any) => {
+        this.HotToastService.error(err?.error?.message);
       }
+    })
 
-      this.notificationsService.getNotificationDetails(this.notificationId).subscribe({
-        next: (res: any) => resolve(res),
-        error: (err: any) => {
-          console.error('Error fetching notification details:', err);
-          reject(err);
-        }
-      });
+    this.form = new FormGroup({
+      title: new FormControl('', Validators.required),
+      content: new FormControl('', Validators.required),
+      scheduledAt: new FormControl('', Validators.required),
+      isStoreLevel: new FormControl('true'),
+      isProfileLevel: new FormControl(false),
+      redirection: new FormControl(''),
+      thumbnail: new FormControl(''),
     });
-  }
-
-  populateForm(data: any) {
-    if (!data) return;
-
-    // Update form values
-    this.form.patchValue({
-      title: data.title,
-      channel: data.channel,
-      content: data.content,
-      type: data.type || 'instant',
-      redirection: data.redirection,
-      thumbnail: data.thumbnail?._id,
-      isStoreLevel: data.isStoreLevel.toString(),
-      isActive: data.isActive.toString(),
-    });
-
-    // Handle scheduled date and time
-    if (data.scheduledAt) {
-      // Convert UTC to local time
-      const scheduledDateTime = new Date(data.scheduledAt);
-      // Get local date and time components
-      const year = scheduledDateTime.getFullYear();
-      const month = String(scheduledDateTime.getMonth() + 1).padStart(2, '0');
-      const day = String(scheduledDateTime.getDate()).padStart(2, '0');
-      const hours = String(scheduledDateTime.getHours()).padStart(2, '0');
-      const minutes = String(scheduledDateTime.getMinutes()).padStart(2, '0');
-      // Format for datetime-local input (YYYY-MM-DDTHH:MM)
-      const localDateTime = `${year}-${month}-${day}T${hours}:${minutes}`;
-      this.form.get('scheduledAt')?.setValue(localDateTime);
-    }
-
-    // Set thumbnail if available
-    if (data.thumbnail?.path) {
-      this.thumbnail = data.thumbnail.path;
-    }
-
-    // Process customers - ensure we're working with IDs
-    if (data.customers && Array.isArray(data.customers)) {
-      // If customers are objects with _id property
-      if (data.customers.length > 0 && typeof data.customers[0] === 'object') {
-        this.customers = data.customers.map((customer: any) => customer._id);
-      } else {
-        // If customers are already IDs
-        this.customers = data.customers;
-      }
-    }
-  }
-
-  compareFn(item: any, selected: any) {
-    return item?._id === selected?._id;
   }
 
   handleThumbnail(event: any) {
-    this.form.get('thumbnail')?.setValue(event?._id);
-    this.thumbnail = event?.path;
+    this.form.get('thumbnail')?.setValue(event?.path);
   }
 
   removeThumbnail() {
-    this.form.get('thumbnail')?.setValue(null);
-    this.thumbnail = '';
+    this.form.get('thumbnail')?.setValue('');
+  }
+
+  onProfileLevelToggled(event: { switchId: string, toggleState: boolean }) {
+    this.form.get('isProfileLevel')?.setValue(event.toggleState);
   }
 
   get formControls() {
     return this.form.controls;
+  }
+
+  onDelete() {
+    if (confirm('Are you sure you want to delete this notification?')) {
+      this.NotificationsService.deleteNotification(this.notificationId).subscribe({
+        next: (res: any) => {
+          if (res.errorCode == 0) {
+            this.HotToastService.success(res?.message);
+            this.Router.navigate([this.appRoute.notification.NOTIFICATION_LIST]);
+          } else {
+            this.HotToastService.error(res?.message);
+          }
+        }, error: (err: any) => {
+          this.HotToastService.error(err?.error?.message);
+        }
+      })
+    } else {
+      this.HotToastService.error('Action cancelled');
+    }
   }
 
   onSubmit() {
@@ -191,37 +204,39 @@ export class UpdateNotificationsComponent implements OnInit {
       return;
     }
 
-    let scheduledDateTime = null;
-    if (this.form.get('type')?.value === 'scheduled' &&
-        this.form.get('scheduledDate')?.value &&
-        this.form.get('scheduledTime')?.value) {
-
-      // Create date in local timezone
-      const dateStr = this.form.get('scheduledDate')?.value;
-      const timeStr = this.form.get('scheduledTime')?.value;
-      const localDateTime = new Date(`${dateStr}T${timeStr}`);
-
-      // Convert to UTC ISO string
-      scheduledDateTime = localDateTime.toISOString();
+    if (this.isLoading) {
+      return; // Prevent multiple submissions
     }
 
-    this.notificationsService.updateNotification({
+    this.isLoading = true;
+
+    if (this.form.get('isStoreLevel')?.value == 'false' && this.customers.length == 0) {
+      this.HotToastService.error('Please select at least one customer');
+      this.isLoading = false;
+      return;
+    }
+
+    // Prepare form data with proper date formatting
+    const formData = {
       ...this.form.value,
-      scheduled: scheduledDateTime,
-      _id: this.notificationId,
+      scheduledAt: this.formatDateForBackend(this.form.value.scheduledAt),
       customers: this.customers,
-    }).subscribe({
+      _id: this.notificationId
+    };
+
+    this.NotificationsService.updateNotification(formData).subscribe({
       next: (res: any) => {
+        this.isLoading = false;
         if (res.errorCode == 0) {
-          this.hotToastService.success(res?.message);
-          this.router.navigate([this.appRoute.notification.NOTIFICATION_LIST]);
+          this.HotToastService.success(res?.message);
+          this.Router.navigate([this.appRoute.notification.NOTIFICATION_LIST]);
         } else {
-          this.hotToastService.error(res?.message || 'Failed to update notification');
+          this.HotToastService.error(res?.message);
         }
       },
       error: (err: any) => {
-        this.hotToastService.error('An error occurred while updating the notification');
-        console.error('Error updating notification:', err);
+        this.isLoading = false;
+        this.HotToastService.error(err?.error?.message);
       },
     });
   }
