@@ -100,7 +100,11 @@
       </form>
       <div class="d-flex align-items-center justify-content-end my-4">
         <a class="btn btn-secondary me-2" routerLink="{{appRoute.vouchers.list}}">Cancel</a>
-        <button class="btn btn-primary ms-2" (click)="onSubmit()">Save changes</button>
+        <button class="btn btn-primary ms-2" (click)="onSubmit()" [disabled]="isLoading">
+          <span *ngIf="isLoading" class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+          <span *ngIf="isLoading">Saving...</span>
+          <span *ngIf="!isLoading">Save changes</span>
+        </button>
       </div>
     </div>
   </div>
