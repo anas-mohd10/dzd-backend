@@ -37,7 +37,7 @@ export class AddTestimonialComponent implements OnInit {
       place: new FormControl('', Validators.required),
       message: new FormControl('', Validators.required),
       isActive: new FormControl(true),
-      thumbnail: new FormControl('',Validators.required),
+      thumbnail: new FormControl(''),
     });
   }
 
@@ -55,6 +55,7 @@ export class AddTestimonialComponent implements OnInit {
 
   onSubmit() {
     if (!this.form.valid) {
+      console.log(this.form.value)
       this.isSubmitted = true
       this.HotToastService.error('Please fill all the required fields')
       return;
