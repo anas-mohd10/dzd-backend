@@ -361,7 +361,7 @@ export class AddOrdersComponent implements OnInit {
       name: new FormControl('', Validators.required),
       countryCode: new FormControl('+971', Validators.required),
       mobile: new FormControl('', [Validators.required, Validators.pattern('^[0-9]{10}$')]),
-      email: new FormControl('', [Validators.required, Validators.email]),
+      email: new FormControl('', [Validators.required, Validators.pattern('^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$')]),
       isActive: new FormControl(true),
     });
 
