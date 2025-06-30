@@ -127,6 +127,15 @@
                 </div>
 
                 <div class="mb-3 form-group"
+                    *ngIf="paymentGatewayConfig[form.get('paymentGateway')?.value]?.includes('merchantId')">
+                    <label for="merchantId" class="fs-6 mb-3">Member ID</label>
+                    <input type="text" id="merchantId" placeholder="Member ID" formControlName="merchantId"
+                        class="form-control" [ngClass]="{
+                        'is-invalid': (formControls.merchantId.touched || isSubmitted) && formControls.merchantId.errors?.required
+                      }">
+                </div>
+
+                <div class="mb-3 form-group"
                     *ngIf="paymentGatewayConfig[form.get('paymentGateway')?.value]?.includes('apiUrl')">
                     <label for="apiUrl" class="fs-6 mb-3">API Url</label>
                     <input type="text" id="apiUrl" placeholder="API Url" formControlName="apiUrl" class="form-control"
@@ -215,14 +224,16 @@
                     *ngIf="paymentGatewayConfig[form.get('paymentGateway')?.value]?.includes('username')">
                     <label for="username" class="fs-6 mb-3">Username</label>
                     <input type="text" id="username" placeholder="Username" formControlName="username"
-                        class="form-control" [ngClass]="{ 'is-invalid': (formControls.username.touched || isSubmitted) && formControls.username.errors?.required }">
+                        class="form-control"
+                        [ngClass]="{ 'is-invalid': (formControls.username.touched || isSubmitted) && formControls.username.errors?.required }">
                 </div>
 
                 <div class="mb-3 form-group"
                     *ngIf="paymentGatewayConfig[form.get('paymentGateway')?.value]?.includes('password')">
                     <label for="password" class="fs-6 mb-3">Password</label>
                     <input type="text" id="password" placeholder="Password" formControlName="password"
-                        class="form-control" [ngClass]="{ 'is-invalid': (formControls.password.touched || isSubmitted) &&  formControls.password.errors?.required }">
+                        class="form-control"
+                        [ngClass]="{ 'is-invalid': (formControls.password.touched || isSubmitted) &&  formControls.password.errors?.required }">
                 </div>
 
                 <div class="mb-3 form-group"

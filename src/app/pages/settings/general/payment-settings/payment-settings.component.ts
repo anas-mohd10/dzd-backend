@@ -42,6 +42,7 @@ export class PaymentSettingsComponent implements OnInit {
     { title: 'Rak Bank', id: 'rakbank', icon: `${environment.base}rakbank.png` },
     { title: 'Tabby', id: 'tabby', icon: `${environment.base}tabby.png` },
     { title: 'Tamara', id: 'tamara', icon: `${environment.base}tamara.png` },
+    { title: 'Telr', id: 'telr', icon: `${environment.base}telr.png` },
   ];
   displayIcon: string = '';
   modalRef?: BsModalRef;
@@ -55,7 +56,8 @@ export class PaymentSettingsComponent implements OnInit {
     'network-international-tokenized': ['outletReference', 'apiKey', 'apiUrl'],
     qi: ['secretKey', 'apiUrl', 'username', 'password'],
     razorpay: ['secretKey', 'keyId'],
-    tamara: ['apiUrl', 'publicKey', 'privateKey', 'payByOption']
+    tamara: ['apiUrl', 'publicKey', 'privateKey', 'payByOption'],
+    telr: ['apiKey', 'merchantId']
   };
 
   get formControls() {
@@ -211,6 +213,8 @@ export class PaymentSettingsComponent implements OnInit {
         return `assets/payment-icons/tabby.jpg`;
       case 'tamara':
         return `assets/payment-icons/tamara.png`;
+      case 'telr':
+        return `assets/payment-icons/telr.png`;
     }
   }
 
