@@ -267,6 +267,10 @@ export class ReportsListComponent implements OnInit {
 
   closeDateRangeModal() {
     this.modalRef?.hide();
+  }
+
+  closeModalManually() {
+    this.modalRef?.hide();
     this.resetDateRange();
   }
 
@@ -275,6 +279,7 @@ export class ReportsListComponent implements OnInit {
     this.startDate = '';
     this.endDate = '';
     this.isCustomRange = false;
+    this.selectedOrderStatuses = [];
   }
 
   toggleDateRange(dateRange: string) {
@@ -488,11 +493,15 @@ export class ReportsListComponent implements OnInit {
   }
 
   generateProductWiseDetailedOrderReport(params: any) {
-    this.reportsService.productOrderReport(
-      params.dateRange,
-      params.startDate,
-      params.endDate
-    ).subscribe({
+    const payload = {
+      dateRange: params.dateRange,
+      startDate: params.startDate,
+      endDate: params.endDate,
+      orderStatuses: this.selectedOrderStatuses
+    };
+
+
+    this.reportsService.productOrderReport(payload).subscribe({
       next: (res: any) => {
         this.handleReportResponse(res);
       },
@@ -558,6 +567,7 @@ export class ReportsListComponent implements OnInit {
       orderStatuses: this.selectedOrderStatuses
     };
 
+
     this.reportsService.deliveryReport(
       payload.dateRange,
       payload.startDate,
@@ -566,7 +576,6 @@ export class ReportsListComponent implements OnInit {
     ).subscribe({
       next: (res: any) => {
         this.handleReportResponse(res);
-        this.selectedOrderStatuses = [];
       },
       error: (err: any) => {
         this.handleError(err);
