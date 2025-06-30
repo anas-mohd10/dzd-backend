@@ -385,6 +385,10 @@ export const Routing: Routes = [
         component: FormSettingsComponent,
         canActivate: [AuthenticationGuard, PermissionGuard]
       }, {
+        path: 'export-logs',
+        loadChildren: () => import('./settings/general/export-logs/export-logs.module').then((m) => m.ExportLogsModule),
+        canActivate: [AuthenticationGuard, PermissionGuard]
+      }, {
         path: 'replace-requests',
         loadChildren: () => import('./replace-requests/replace-requests.module').then((m) => m.ReplaceRequestsModule),
         canActivate: [AuthenticationGuard, PermissionGuard]

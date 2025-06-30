@@ -4,4 +4,7 @@ export const csvEndpoints = {
     csvImages: '/csv-images',
     downloadImportLog: '/download-importlog',
     fetchLogs: '/fetchLogs',
+    fileExports: '/file-exports',
+    fileExport: '/file-export',
+    downloadExportFile: '/download-export'
 }

@@ -403,14 +403,18 @@ export class AllProductsComponent implements OnInit {
       basicFields: this.basicFields
     }).subscribe({
       next: (res: any) => {
-        if (res?.errorCode == 0) {
+        if (res?.success && res?.errorCode == 0) {
           this.HotToastService.success(res?.message)
           this.exportModalRef?.hide()
+          // Navigate to export logs page with the exportId
+          if (res?.result?.exportId) {
+            this.Router.navigate([`${this.appRoute.bulk.export}/${res?.result?.exportId}`])
+          }
         } else {
-          this.HotToastService.error(res?.message)
+          this.HotToastService.error(res?.message || 'Export failed')
         }
       }, error: (err: any) => {
-        this.HotToastService.error(err?.error?.message)
+        this.HotToastService.error(err?.error?.message || 'Export failed')
       }
     })
   }
@@ -452,7 +456,7 @@ export class AllProductsComponent implements OnInit {
           this.HotToastService.error(err?.error?.message)
         }
       })
-    }else{
+    } else {
       this.HotToastService.error('Action cancelled')
     }
   }

@@ -1,0 +1,185 @@
+<div>
+    <div class="page-header d-flex align-items-start justify-content-between">
+        <div>
+            <div class="page-title">
+                <h1 class="fw-bold">{{ exportDetails && exportDetails.title }}</h1>
+            </div>
+            <ul class="breadcrumb">
+                <li class="breadcrumb-item fs-6">
+                    <a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a>
+                </li>
+                <li class="breadcrumb-item active fs-6">
+                    <a routerLink="{{ appRoute.bulk.export }}">Export Logs</a>
+                </li>
+                <li class="breadcrumb-item active fs-6">
+                    <a routerLink="{{ appRoute.bulk.export + '/' + exportId }}">Export Details</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="card my-4">
+        <div class="card-body fs-5">
+            <div class="row">
+                <div class="col-lg-4">
+                    <label class="fs-5 mb-1 text-muted fw-normal" for="startTime">Start Time</label>
+                    <div id="startTime">
+                        {{exportDetails && formatDate(exportDetails.startTime)}}
+                        {{exportDetails && formatTime(exportDetails.startTime)}}
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <label class="fs-5 mb-1 text-muted fw-normal" for="endTime">End Time</label>
+                    <div id="endTime">
+                        <span *ngIf="exportDetails && exportDetails.endTime">
+                            {{formatDate(exportDetails.endTime)}}
+                            {{formatTime(exportDetails.endTime)}}
+                        </span>
+                        <span *ngIf="exportDetails && !exportDetails.endTime" class="text-muted">
+                            In Progress...
+                        </span>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <label class="fs-5 mb-1 text-muted fw-normal" for="createdBy">Created By</label>
+                    <div id="createdBy">
+                        {{exportDetails && exportDetails.createdBy}}
+                    </div>
+                </div>
+            </div>
+            <div class="line-separator my-8"></div>
+            <div class="row">
+                <div class="col-lg-3">
+                    <label class="fs-5 mb-1 text-muted fw-normal" for="status">Status</label>
+                    <div id="status" class="py-1 px-3 rounded-pill" [ngClass]="{
+                            'bg-success text-white': exportDetails.status === 'completed',
+                            'bg-warning text-dark': exportDetails.status === 'completed_with_errors',
+                            'bg-info text-white': exportDetails.status === 'processing',
+                            'bg-danger text-white': exportDetails.status === 'failed',
+                            'bg-secondary text-white': exportDetails.status === 'awaiting'
+                         }">
+                        <span *ngIf="exportDetails.status === 'completed'">✅ Completed</span>
+                        <span *ngIf="exportDetails.status === 'completed_with_errors'">⚠️ Completed with Errors</span>
+                        <span *ngIf="exportDetails.status === 'processing'">🔄 Processing</span>
+                        <span *ngIf="exportDetails.status === 'failed'">❌ Failed</span>
+                        <span *ngIf="exportDetails.status === 'awaiting'">⏳ Awaiting</span>
+                    </div>
+                </div>
+                <div class="col-lg-3">
+                    <label class="fs-5 mb-1 text-muted fw-normal" for="progress">Progress</label>
+                    <div id="progress" class="bg-secondary py-1 px-3 rounded-pill">
+                        {{ exportDetails && exportDetails.percentComplete || 0 }}%
+                    </div>
+                </div>
+                <div class="col-lg-3">
+                    <label class="fs-5 mb-1 text-muted fw-normal" for="executionTime">Duration</label>
+                    <div id="executionTime">
+                        {{ exportDetails && exportDetails.executionTimeFormatted }}
+                    </div>
+                </div>
+                <div class="col-lg-3">
+                    <label class="fs-5 mb-1 text-muted fw-normal" for="emailStatus">Email Status</label>
+                    <div id="emailStatus">
+                        <span *ngIf="exportDetails && exportDetails.emailSent" class="text-success">✅ Sent</span>
+                        <span *ngIf="exportDetails && !exportDetails.emailSent" class="text-danger">❌ Failed</span>
+                        <div *ngIf="exportDetails && exportDetails.emailError" class="fs-6 text-muted">
+                            {{exportDetails.emailError}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="line-separator my-8"></div>
+            <div class="row">
+                <div class="col-lg-3">
+                    <label class="fs-5 mb-1 text-muted fw-normal" for="totalRecords">Total Records</label>
+                    <div id="totalRecords">{{ exportDetails && exportDetails.totalRecords }}</div>
+                </div>
+                <div class="col-lg-3">
+                    <label class="fs-5 mb-1 text-muted fw-normal" for="processedRecords">Processed Records</label>
+                    <div id="processedRecords">{{ exportDetails && exportDetails.processedRecords }}</div>
+                </div>
+                <div class="col-lg-3">
+                    <label class="fs-5 mb-1 text-muted fw-normal" for="exportType">Export Type</label>
+                    <div id="exportType">{{ exportDetails && exportDetails.exportType?.toUpperCase() }}</div>
+                </div>
+                <div class="col-lg-3">
+                    <label class="fs-5 mb-1 text-muted fw-normal" for="exportCondition">Export Condition</label>
+                    <div id="exportCondition">{{ exportDetails && formatStatus(exportDetails.exportCondition) }}</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ERROR SECTION -->
+    <div class="card my-4 border-warning" *ngIf="exportDetails && exportDetails.hasErrors">
+        <div class="card-body">
+            <div class="d-flex align-items-center mb-3">
+                <div class="text-warning me-2">⚠️</div>
+                <div class="fs-4 text-warning">{{exportDetails.errorCount}} Error{{exportDetails.errorCount > 1 ? 's' :
+                    ''}} Occurred</div>
+            </div>
+            <div *ngIf="exportDetails.error" class="alert alert-warning mb-3">
+                <strong>Main Error:</strong> {{exportDetails.error}}
+            </div>
+            <div *ngIf="exportDetails.errorLog && exportDetails.errorLog.length > 0">
+                <div class="fs-6 fw-bold mb-2">Error Details:</div>
+                <div class="bg-light p-3 rounded" style="max-height: 300px; overflow-y: auto;">
+                    <div *ngFor="let error of exportDetails.errorLog; let i = index" class="mb-2">
+                        <span class="badge bg-danger me-2">{{i + 1}}</span>
+                        {{error}}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card my-4"
+        *ngIf="exportDetails && exportDetails.file && (exportDetails.status === 'completed' || exportDetails.status === 'completed_with_errors')">
+        <div class="card-body">
+            <div class="row align-items-center fs-4">
+                <div class="col-lg-2 text-muted">Export File</div>
+                <div class="col-lg-10">
+                    <button class="btn btn-primary d-flex align-items-center justify-content-center gap-2"
+                        (click)="downloadExportFile()">
+                        <svg height="18" width="18" data-slot="icon" fill="none" stroke-width="1.5"
+                            stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"
+                            aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3">
+                            </path>
+                        </svg>
+                        Download Export File
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card my-4" *ngIf="exportDetails">
+        <div class="card-body">
+            <div class="text-center">
+                <div class="fs-4 text-muted mb-3">
+                    <span *ngIf="exportDetails.status === 'processing'">Export in Progress</span>
+                    <span *ngIf="exportDetails.status === 'completed'">Export Completed</span>
+                    <span *ngIf="exportDetails.status === 'completed_with_errors'">Export Completed with Errors</span>
+                    <span *ngIf="exportDetails.status === 'failed'">Export Failed</span>
+                    <span *ngIf="exportDetails.status === 'awaiting'">Export Awaiting</span>
+                </div>
+                <div class="progress">
+                    <div class="progress-bar" [class.bg-success]="exportDetails.status === 'completed'"
+                        [class.bg-warning]="exportDetails.status === 'completed_with_errors'"
+                        [class.bg-danger]="exportDetails.status === 'failed'"
+                        [class.bg-secondary]="exportDetails.status === 'awaiting'"
+                        [class.bg-info]="exportDetails.status === 'processing'" role="progressbar"
+                        [style.width.%]="exportDetails.percentComplete || 0"
+                        [attr.aria-valuenow]="exportDetails.percentComplete || 0" aria-valuemin="0" aria-valuemax="100">
+                        {{ exportDetails.percentComplete || 0 }}%
+                    </div>
+                </div>
+                <div class="mt-3 fs-6 text-muted">
+                    {{ exportDetails.processedRecords }} of {{ exportDetails.totalRecords }} records processed
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

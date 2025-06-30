@@ -209,7 +209,7 @@ const DragConfig = {
     SwiperModule,
     TabsModule.forRoot(),
     SharedModule,
-],
+  ],
   exports: [
     RouterModule,
   ],

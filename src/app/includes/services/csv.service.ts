@@ -48,12 +48,12 @@ export class CsvService {
     return this.http.post(`${url}`, query)
   }
 
-  getFileImportDetails(uploadId:string) {
+  getFileImportDetails(uploadId: string) {
     const url = this.commonService.getFullUrl(csvEndpoints.fileImport + `/${uploadId}`);
     return this.http.get(`${url}`)
   }
 
-  downloadImportLog(fileId: string){
+  downloadImportLog(fileId: string) {
     const url = this.commonService.getFullUrl(csvEndpoints.downloadImportLog + `/${fileId}`);
     return this.http.get(`${url}`)
   }
@@ -61,5 +61,24 @@ export class CsvService {
   fetchLogs(importId: string, pageIndex: number, pageSize: number) {
     const url = this.commonService.getFullUrl(csvEndpoints.fetchLogs + `/${pageIndex}/${importId}/${pageSize}`);
     return this.http.get(`${url}`)
+  }
+
+  // Export log methods
+  getFileExports(page: number, limit: number, status?: string, date?: string) {
+    const url = this.commonService.getFullUrl(csvEndpoints.fileExports);
+    const body: any = { page, limit };
+    if (status) body.status = status;
+    if (date) body.date = date;
+    return this.http.post(`${url}`, body)
+  }
+
+  getFileExportDetails(exportId: string) {
+    const url = this.commonService.getFullUrl(csvEndpoints.fileExport + `/${exportId}`);
+    return this.http.get(`${url}`)
+  }
+
+  downloadExportFile(exportId: string) {
+    const url = this.commonService.getFullUrl(csvEndpoints.downloadExportFile + `/${exportId}`);
+    return this.http.get(`${url}`, { responseType: 'blob' })
   }
 }
