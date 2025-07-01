@@ -1,0 +1,61 @@
+.btn,
+label,
+.badge {
+    font-weight: 400 !important;
+}
+
+.assets {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 10px;
+
+    img {
+        object-fit: contain;
+    }
+
+    @media (max-width: 768px) {
+        grid-template-columns: repeat(3, 1fr);
+    }
+
+    @media (max-width: 480px) {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+.carousel-item {
+    img {
+        object-fit: contain;
+    }
+}
+
+.delete-icon {
+    height: 32px;
+    width: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.galleries {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 10px;
+
+    img {
+        object-fit: contain;
+    }
+
+
+    @media (max-width: 768px) {
+        grid-template-columns: repeat(3, 1fr);
+    }
+
+    @media (max-width: 480px) {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+input[type="checkbox"] {
+    width: 22px;
+    height: 22px;
+}

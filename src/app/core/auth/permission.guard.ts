@@ -115,6 +115,12 @@ export class PermissionGuard implements CanActivate {
       case 'coupons':
         module[1] == 'add' ? path = 'add-coupons' : module[1] == 'update' ? path = 'update-coupons' : path = 'coupons'
         break
+      case 'albums':
+        module[0] == 'albums' ? path = 'albums' : null
+        break
+      case 'galleries':
+        module[0] == 'galleries' ? path = 'galleries' : null
+        break
       case 'offer':
         module[0] == 'offer' ? path = 'offer' : null
         break
