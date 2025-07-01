@@ -4,15 +4,16 @@
       <h4 class="fs-2 fw-bold pull-left">Date Range</h4>
       <p class="m-0">Select date range for {{currentReportType}} report</p>
     </div>
-    <button type="button" class="btn-close close pull-right" aria-label="Close" (click)="closeDateRangeModal()">
+    <button type="button" class="btn-close close pull-right" aria-label="Close" (click)="closeModalManually()">
       <span aria-hidden="true" class="visually-hidden">&times;</span>
     </button>
   </div>
   <div class="modal-body">
-    <div class="mb-2" *ngIf="currentReportType === 'deliveryReport'">
+    <div class="mb-2"
+      *ngIf="currentReportType === 'deliveryReport' || currentReportType === 'product-wise-detailed-order-report'">
       <label for="orderStatuses" class="fs-6 mb-2">Order Statuses</label>
-      <ng-select [items]="orderStatusList" [multiple]="true" [closeOnSelect]="false" [searchable]="false" bindLabel="label"
-        bindValue="value" placeholder="Select order statuses" [(ngModel)]="selectedOrderStatuses">
+      <ng-select [items]="orderStatusList" [multiple]="true" [closeOnSelect]="false" [searchable]="false"
+        bindLabel="label" bindValue="value" placeholder="Select order statuses" [(ngModel)]="selectedOrderStatuses">
       </ng-select>
     </div>
     <div class="mb-2 border cursor-pointer border-secondary rounded p-2" (click)="toggleDateRange('custom')"
