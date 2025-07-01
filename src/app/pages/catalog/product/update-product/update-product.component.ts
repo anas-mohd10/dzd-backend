@@ -788,7 +788,7 @@ export class UpdateProductComponent implements OnInit {
     this.addOns.forEach((addOn: any) => {
       addOn.options = addOn.options.map((option: any) => ({
         ...option,
-        product: option.product?._id,
+        product: typeof option.product == 'string' ? option.product : option.product?._id,
       }));
 
       addOn.options.forEach((option: any) => {
@@ -817,21 +817,17 @@ export class UpdateProductComponent implements OnInit {
       slug: this.form.get('slug')?.value,
       addOns: this.addOns,
       files: this.images.map((file: any) => file.path),
-      relatedProducts: this.relatedProducts
-        ? this.relatedProducts.map((product: any) => product?._id)
-        : [],
+      relatedProducts: this.relatedProducts ? this.relatedProducts.map((product: any) => product?._id) : [],
       product: {
         id: this.productDetails?.parentId,
         refid: this.productDetails?.product?.refid,
       },
-      brand: this.selectedBrand
-        ? {
-          name: this.selectedBrand.name,
-          slug: this.selectedBrand.slug,
-          thumbnail: this.selectedBrand.thumbnail,
-          cover: this.selectedBrand.cover,
-        }
-        : null,
+      brand: this.selectedBrand ? {
+        name: this.selectedBrand.name,
+        slug: this.selectedBrand.slug,
+        thumbnail: this.selectedBrand.thumbnail,
+        cover: this.selectedBrand.cover,
+      } : null,
       parentId: this.productDetails?.parentId,
       tagIcons: this.tagIcons,
       attributes: this.attributes,
@@ -853,8 +849,7 @@ export class UpdateProductComponent implements OnInit {
       localizedDetails: {
         description: {
           ...this.productDetails.localizedDetails?.description,
-          [this.settings.primaryLang]: this.form.get('details.description')
-            ?.value,
+          [this.settings.primaryLang]: this.form.get('details.description')?.value,
         },
         features: {
           ...this.productDetails.localizedDetails?.features,
@@ -862,8 +857,7 @@ export class UpdateProductComponent implements OnInit {
         },
         longDescription: {
           ...this.productDetails.localizedDetails?.longDescription,
-          [this.settings.primaryLang]: this.form.get('details.longDescription')
-            ?.value,
+          [this.settings.primaryLang]: this.form.get('details.longDescription')?.value,
         },
       },
       localizedMetaTitles: {
@@ -939,8 +933,7 @@ export class UpdateProductComponent implements OnInit {
           this.ChangeDetectorRef.markForCheck();
           this.HotToastService.error(res?.message);
         }
-      },
-      error: (err: any) => {
+      }, error: (err: any) => {
         this.isSaving = false; // Re-enable button if form is invalid
         this.HotToastService.error(err.error.message);
       },
@@ -1140,7 +1133,7 @@ export class UpdateProductComponent implements OnInit {
           this.form.get('searchKeywords')?.setValue(this.searchKeywords);
 
           // Add-Ons
-          this.addOns = res?.result?.addOns;
+          this.addOns = res?.result?.addOns || [];
 
           // Process images
           if (res?.result?.files && Array.isArray(res?.result?.files)) {

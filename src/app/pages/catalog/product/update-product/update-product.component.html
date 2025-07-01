@@ -535,10 +535,10 @@
                     </div>
                   </button>
                 </div>
-                <ng-container *ngIf="addOns.length == 0">
+                <ng-container *ngIf="addOns && addOns.length == 0">
                   <div class="fs-5 text-muted">No add-ons found</div>
                 </ng-container>
-                <ng-container *ngIf="addOns.length > 0">
+                <ng-container *ngIf="addOns && addOns.length > 0">
                   <table class="table table-bordered">
                     <thead>
                       <tr>
