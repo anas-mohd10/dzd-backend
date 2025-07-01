@@ -120,8 +120,8 @@ export class ReportsService {
 
 
 
-  productOrderReport(dateRange: string, startDate?: string, endDate?: string) {
-    const url = this.commonService.getFullUrl(reportsEndpoints.productOrderReport + `?dateRange=${dateRange}&startDate=${startDate}&endDate=${endDate}`);
-    return this.http.get(`${url}`);
+  productOrderReport(payload: any) {
+    const url = this.commonService.getFullUrl(reportsEndpoints.productOrderReport);
+    return this.http.post(`${url}`, payload);
   }
 }

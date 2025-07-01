@@ -118,7 +118,7 @@ export class UpdateAppSettingsComponent implements OnInit {
       value: "2"
     },
     {
-      label: "Oldest to Newsest",
+      label: "Oldest to Newest",
       value: "3"
     }
   ];
