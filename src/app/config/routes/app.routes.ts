@@ -319,6 +319,7 @@ export const appRoutes = {
     update: `${app}/static-pages/update`
   },
   paymentSettings: `${app}/payment-settings`,
+  erpSettings: `${app}/erp-settings`,
   shippingRules: `${app}/shipping-rules`,
   internationalisation: `${app}/internationalization`,
   smsSettings: `${app}/sms-settings`,

@@ -84,6 +84,7 @@ import { PageCoversComponent } from './pages/page-covers/page-covers.component';
 import { TooltipModule } from 'ngx-bootstrap/tooltip';
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { PaymentSettingsComponent } from './pages/settings/general/payment-settings/payment-settings.component';
+import { ErpSettingsComponent } from './pages/settings/general/erp-settings/erp-settings.component';
 import { CreateProductsComponent } from './pages/catalog/product/create-products/create-products.component';
 import { ShippingRulesComponent } from './pages/settings/general/shipping-rules/shipping-rules.component';
 import { InternationalisationComponent } from './pages/settings/general/internationalisation/internationalisation.component';
@@ -161,6 +162,7 @@ const DragConfig = {
     BulkPackingSlipsComponent,
     PageCoversComponent,
     PaymentSettingsComponent,
+    ErpSettingsComponent,
     CreateProductsComponent,
     ShippingRulesComponent,
     InternationalisationComponent,
