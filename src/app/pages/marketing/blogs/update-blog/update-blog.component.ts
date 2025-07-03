@@ -4,6 +4,7 @@ import {
   HostListener,
   OnInit,
   TemplateRef,
+  ViewChild
 } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { appRoutes } from 'src/app/config/routes';
@@ -17,6 +18,7 @@ import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import { PlatformService } from 'src/app/includes/services/platform.service';
 import { AppSettingsService } from 'src/app/includes/services/app.settings.service';
+import slugify from 'slugify';
 
 interface Media {
   title: string;
@@ -97,8 +99,11 @@ export class UpdateBlogComponent implements OnInit {
     ]
   };
   slug: string;
-  author:string = '';
+  author: string = '';
   settings: any = {};
+  newSlugValue: string = '';
+  slugConfirmationRef?: BsModalRef;
+  @ViewChild('slugConfirmationTemplate') slugConfirmationTemplate: TemplateRef<any>;
 
 
   constructor(
@@ -142,6 +147,34 @@ export class UpdateBlogComponent implements OnInit {
         }
       }
     })
+  }
+
+  generateSlug() {
+    const newSlug = slugify(this.form.get('title')?.value, {
+      lower: true,
+      strict: true,
+      remove: /[*+~.()'\"!:@]/g,
+      trim: true
+    });
+    this.openSlugConfirmation(newSlug);
+  }
+
+  openSlugConfirmation(newSlug: string) {
+    this.newSlugValue = newSlug;
+    this.slugConfirmationRef = this.BsModalService.show(this.slugConfirmationTemplate, {
+      class: 'modal-dialog-centered modal-md',
+      ignoreBackdropClick: true,
+    });
+  }
+
+  confirmSlugChange() {
+    this.form.get('slug')?.setValue(this.newSlugValue);
+    this.slugConfirmationRef?.hide();
+    this.ChangeDetectorRef.markForCheck();
+  }
+
+  cancelSlugChange() {
+    this.slugConfirmationRef?.hide();
   }
 
   getUrl(urlType: 'live' | 'draft') {
