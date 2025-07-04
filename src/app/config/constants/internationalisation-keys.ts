@@ -1,5 +1,9 @@
 export const internationalisationKeys = {
     addNewAddress: 'addNewAddress',
+    acknowledgement: 'acknowledgement',
+    acknowledgementparagraphone: 'acknowledgementParagraphOne',
+    acknowledgementparagraphtwo: 'acknowledgementParagraphTwo',
+    acknowledgementbutton: 'acknowledgementButton',
     addToCart: 'addToCart',
     amount: 'amount',
     apply: 'apply',
