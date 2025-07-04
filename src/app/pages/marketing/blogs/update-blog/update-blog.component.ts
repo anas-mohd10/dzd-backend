@@ -178,11 +178,13 @@ export class UpdateBlogComponent implements OnInit {
   }
 
   getUrl(urlType: 'live' | 'draft') {
-    const domainUrl: string = this.settings.domain.endsWith('/') ? this.settings.domain : `${this.settings.domain}/`;
-    if (urlType === 'live') {
-      return `${domainUrl}blogs/${this.blogDetails.slug}`;
-    } else {
-      return `${domainUrl}blogs/draft/${this.blogDetails.slug}`;
+    if (this.settings && this.settings.domain) {
+      const domainUrl: string = this.settings.domain.endsWith('/') ? this.settings.domain : `${this.settings.domain}/`;
+      if (urlType === 'live') {
+        return `${domainUrl}blogs/${this.blogDetails.slug}`;
+      } else {
+        return `${domainUrl}blogs/draft/${this.blogDetails.slug}`;
+      }
     }
   }
 
