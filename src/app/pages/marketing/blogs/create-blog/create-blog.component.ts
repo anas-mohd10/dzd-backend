@@ -5,6 +5,8 @@ import { BlogService } from 'src/app/includes/services/blog.service';
 import { AngularEditorConfig } from '@kolkov/angular-editor';
 import { Router } from '@angular/router';
 import { HotToastService } from '@ngneat/hot-toast';
+import { debounceTime } from 'rxjs/operators';
+import slugify from 'slugify';
 interface BlogCategory {
   _id: string;
   title: string;
@@ -26,6 +28,7 @@ export class CreateBlogComponent implements OnInit {
   isSubmitted: boolean = false;
   previews: any = { thumbnail: '', cover: '', authorThumbnail: '' };
   files: any = { thumbnail: null, cover: null, authorThumbnail: null };
+
   editorConfig: AngularEditorConfig = {
     editable: true,
     spellcheck: true,
@@ -42,32 +45,21 @@ export class CreateBlogComponent implements OnInit {
     defaultFontName: '',
     defaultFontSize: '',
     sanitize: false,
-    toolbarHiddenButtons: [
-      [
-        'fontName',
-      ]
-    ]
+    toolbarHiddenButtons: [['fontName']]
   };
+
   cover: string = '';
   thumbnail: string = '';
   categories: BlogCategory[] = [];
   slug: string = '';
   authorThumbnail: string = '';
 
-
   constructor(
     private BlogService: BlogService,
     private Router: Router,
     private Toast: HotToastService,
     private ChangeDetectorRef: ChangeDetectorRef
-  ) { }
-
-  get formControls() {
-    return this.form.controls;
-  }
-
-  ngOnInit(): void {
-    console.log('heeey')
+  ) {
     this.form = new FormGroup({
       title: new FormControl('', Validators.required),
       slug: new FormControl('', Validators.required),
@@ -86,6 +78,26 @@ export class CreateBlogComponent implements OnInit {
       thumbnail: new FormControl(null, Validators.required),
       cover: new FormControl(null),
     });
+
+    this.form.get("title")?.valueChanges.pipe(debounceTime(500)).subscribe(() => {
+      const slug: string = slugify(
+        this.form.get('title')?.value, {
+        lower: true,
+        strict: true,
+        remove: /[*+~.()'"!:@]/g,
+        trim: true
+      })
+
+      this.form.get('slug')?.setValue(slug);
+      this.ChangeDetectorRef.markForCheck()
+    })
+  }
+
+  get formControls() {
+    return this.form.controls;
+  }
+
+  ngOnInit(): void {
     this.BlogService.getCategories().subscribe({
       next: (res: any) => {
         if (res?.errorCode === 0) {
@@ -125,8 +137,8 @@ export class CreateBlogComponent implements OnInit {
         this.form.get('authorThumbnail')?.setValue(null);
         this.authorThumbnail = '';
         break;
+    }
   }
-}
 
   onSubmit() {
     if (!this.form.valid) {
