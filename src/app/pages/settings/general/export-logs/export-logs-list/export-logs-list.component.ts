@@ -39,8 +39,6 @@ export class ExportLogsListComponent implements OnInit {
         private HotToastService: HotToastService,
     ) { }
 
-
-
     formatDate(date: string) {
         return new Date(date).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' })
     }
@@ -103,4 +101,21 @@ export class ExportLogsListComponent implements OnInit {
             },
         });
     }
+
+    convertMillisecondsToMinutes(milliseconds: string) {
+        const ms = Number(milliseconds);
+
+        if (
+            typeof milliseconds === 'boolean' ||        // true/false not allowed
+            Number.isNaN(ms) ||                         // NaN
+            ms < 0 ||                                    // Negative values
+            !isFinite(ms)                               // Infinity, undefined, null
+        ) {
+            throw new Error("Input must be a finite, non-negative number representing milliseconds.");
+        }
+
+        // Convert ms to minutes and round to 2 decimal places
+        return parseFloat((ms / 60000).toFixed(2));
+    }
+
 } 

@@ -1,8 +1,73 @@
-// Export logs list styles
-.page-header {
-    margin-bottom: 1rem;
+.btn-primary,
+.btn-secondary,
+label {
+    font-weight: 400 !important;
 }
 
-.title {
-    font-weight: 500;
+.table-cell{
+    width: 120px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    line-clamp: 1;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    display: -webkit-box;
+ }
+ 
+//Table designs
+.table {
+    background: #ffffff;
+    font-size: 15px;
+
+    tbody {
+
+        tr {
+
+            td {
+                vertical-align: middle;
+            }
+        }
+    }
+
+    thead {
+
+        tr {
+
+            th {
+                font-weight: 400 !important;
+            }
+        }
+
+        background: #E4E7F4;
+    }
+
+    .checkbox {
+        height: 20px;
+        width: 20px;
+        border: 2px solid #cacaca;
+        border-radius: 4px;
+        position: relative;
+        background: #ffffff;
+        cursor: pointer;
+
+        &.checked {
+
+            &::after {
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                content: '';
+                height: 10px;
+                width: 10px;
+                background: #00BDAB;
+                border-radius: 2px;
+            }
+
+            border: 2px solid #00BDAB;
+        }
+    }
 }
+
+//Table designs
