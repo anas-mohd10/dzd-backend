@@ -60,7 +60,6 @@ export class BlogListingComponent implements OnInit {
   ngOnInit(): void {
     this.getBlogs();
     this.loadPromoBanner();
-
   }
 
   onPageTriggered(event: { pageIndex: number, pageSize: number }) {
@@ -123,17 +122,17 @@ export class BlogListingComponent implements OnInit {
 
   loadPromoBanner() {
     // spread the remaining settings from the current settings object
-    this.AppSettingsService.getGeneralSettingsbyId('1').subscribe({
+    this.AppSettingsService.getSettings().subscribe({
       next: (res: any) => {
         if (res?.errorCode === 0) {
           this.form.patchValue({ blogPromotionalBanner: res.result.blogPromotionalBanner });
-          console.dir(res, { depth: null })
           this.settings = res.result;
           this.form.patchValue({ blogPromotionalBanner: res.result.blogPromotionalBanner });
         }
       }
     });
   }
+  
   open(template: TemplateRef<any>) {
     this.modalRef = this.modalService.show(template);
   }

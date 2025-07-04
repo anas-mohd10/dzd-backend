@@ -141,26 +141,26 @@
                   <div class="my-4">
                     <angular-editor id="description" class="form-control" formControlName="description"
                       [config]="editorConfig"
-                      [ngClass]="{'is-invalid':  (formControls.description.touched || isSubmitted) && formControls.description.errors?.required}"></angular-editor>
+                      [ngClass]="{'is-invalid': (formControls.description.touched || isSubmitted) && formControls.description.errors?.required}"></angular-editor>
                   </div>
                 </tab>
                 <tab heading="SEO" id="tab2">
                   <div class="my-4">
                     <div class="form-group mb-3">
                       <label for="seoTitle" class="form-label">Title</label>
-                      <input type="text" id="seoTitle" formControlName="seoTitle" class="form-control">
+                      <input type="text" placeholder="Enter title" id="seoTitle" formControlName="seoTitle" class="form-control">
                     </div>
                     <div class="form-group mb-3">
                       <label for="seoDescription" class="form-label">Description</label>
-                      <input type="text" id="seoDescription" formControlName="seoDescription" class="form-control">
+                      <input type="text" placeholder="Enter description" id="seoDescription" formControlName="seoDescription" class="form-control">
                     </div>
                     <div class="form-group mb-3">
                       <label for="seoKeywords" class="form-label">Keywords</label>
-                      <input type="text" id="seoKeywords" formControlName="seoKeywords" class="form-control">
+                      <input type="text" placeholder="Enter keywords" id="seoKeywords" formControlName="seoKeywords" class="form-control">
                     </div>
                     <div class="form-group mb-3">
                       <label for="canonicalUrl" class="form-label">Canonical URL</label>
-                      <input type="text" id="canonicalUrl" formControlName="canonicalUrl" class="form-control">
+                      <input type="text" placeholder="Enter canonical URL" id="canonicalUrl" formControlName="canonicalUrl" class="form-control">
                     </div>
                   </div>
                 </tab>

@@ -55,7 +55,6 @@ export class TopbarComponent implements OnInit {
       next: (res: any) => {
         if (res?.errorCode == 0) {
           this.notifications = res?.result
-          console.log(this.notifications)
           this.ChangeDetectorRef.markForCheck()
         }else {}
       }, error: (err: any) => { }
