@@ -308,6 +308,7 @@ export const appRoutes = {
   timerSettings: `${app}/timer-settings`,
   bulk: {
     import: `${app}/bulk-upload`,
+    export: `${app}/export-logs`,
   },
   pageCovers: `${app}/page-covers`,
   replaceRequests: `${app}/replace-requests`,
