@@ -15,7 +15,7 @@ interface UploadDetails {
   title: string;
   startTime: string;
   endTime: string;
-  createdBy: {
+  createdBy?: {
     email: string;
     firstname: string;
     lastname: string

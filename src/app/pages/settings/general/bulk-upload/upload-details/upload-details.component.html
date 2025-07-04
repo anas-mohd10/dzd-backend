@@ -37,8 +37,9 @@
         <div class="col-lg-4">
           <label class="fs-5 mb-1 text-muted fw-normal" for="initiator">Initiator</label>
           <div id="initiator">
-            {{uploadDetails && uploadDetails.createdBy.firstname}}
-            {{uploadDetails && uploadDetails.createdBy.lastname}}</div>
+            {{uploadDetails && uploadDetails.createdBy && uploadDetails.createdBy.firstname}}
+            {{uploadDetails && uploadDetails.createdBy && uploadDetails.createdBy.lastname}}
+          </div>
         </div>
       </div>
       <div class="line-separator my-8"></div>
