@@ -69,14 +69,36 @@ export class ModuleNotificationComponent implements OnInit, OnChanges {
 
   closeModal() {
     this.modalRef?.hide();
-    this.form.patchValue({
-      channel: 'push',
-      sms: '🛍️ Time to Complete Your Shopping! 🛒 Your items are patiently waiting in the cart. Finish your purchase now and enjoy your fabulous finds.',
-      subject: 'Complete Your Shopping Today for Exclusive Deals!',
-      title: 'Finish your shopping now',
-      message:
-        'Your cart is waiting for you. Complete your shopping now to secure your favorites before they are gone',
-    });
+    // Set form values based on primary language
+    if (this.primaryLanguage === 'ar') {
+      this.form = new FormGroup({
+        channel: new FormControl('push'),
+        sms: new FormControl(
+          '🛍️ حان الوقت لإكمال التسوق! 🛒 منتجاتك في انتظارك في سلة التسوق. أكمل عملية الشراء الآن واستمتع بمشترياتك الرائعة.'
+        ),
+        subject: new FormControl(
+          'أكمل تسوقك اليوم للحصول على عروض حصرية!'
+        ),
+        title: new FormControl('🛒 سلة التسوق تنتظرج!'),
+        message: new FormControl(
+          'اختياراتج الرائعة كل الأمهات عينهم عليها، لا تخسريها! ارجعي هسه وكملي طلبج قبل نفاذ الكمية⌛'
+        ),
+      });
+    } else {
+      this.form = new FormGroup({
+        channel: new FormControl('push'),
+        sms: new FormControl(
+          '🛍️ Time to Complete Your Shopping! 🛒 Your items are patiently waiting in the cart. Finish your purchase now and enjoy your fabulous finds. '
+        ),
+        subject: new FormControl(
+          'Complete Your Shopping Today for Exclusive Deals!'
+        ),
+        title: new FormControl('Finish your shopping now'),
+        message: new FormControl(
+          'Your cart is waiting for you. Complete your shopping now to secure your favorites before they are gone'
+        ),
+      });
+    }
     this.isButtonDisabled = false;
   }
 
