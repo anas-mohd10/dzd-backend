@@ -54,7 +54,7 @@
                     </button>
                 </div>
                 <div *ngIf="tabIndex == 1">
-                    <button class="btn btn-primary" (click)="createOrder()">
+                    <button [disabled]="isCreatingOrder" class="btn btn-primary" (click)="createOrder()">
                         Create Order
                         <span>
                             <svg height="18" width="18" data-slot="icon" fill="none" stroke-width="1.5"
@@ -490,7 +490,7 @@
                 </button>
             </div>
             <div>
-                <button class="btn btn-primary" (click)="createOrder()">
+                <button [disabled]="isCreatingOrder" class="btn btn-primary" (click)="createOrder()">
                     Create Order
                     <span>
                         <svg height="18" width="18" data-slot="icon" fill="none" stroke-width="1.5"
@@ -525,7 +525,8 @@
                     <label for="userEmail" class="fs-6 mb-3 required">Email</label>
                     <input id="userEmail" type="text" placeholder="Email" formControlName="email" class="form-control"
                         [ngClass]="{ 'is-invalid': (userControls.email.touched || isCustomerSubmitted) && (userControls.email.errors?.required || userControls.email.errors?.pattern)}">
-                    <div *ngIf="(userControls.email.touched || isCustomerSubmitted) && userControls.email.errors?.pattern" class="invalid-feedback d-block">
+                    <div *ngIf="(userControls.email.touched || isCustomerSubmitted) && userControls.email.errors?.pattern"
+                        class="invalid-feedback d-block">
                         Please enter a valid email address.
                     </div>
                 </div>
