@@ -17,18 +17,60 @@
       </li>
     </ul>
   </div>
-  <ng-container *ngIf="isFutureEvent">
-    <button class="btn btn-danger" (click)="onDelete()">
-      Delete Notification
-      <i class="fa fa-times"></i>
+  <div class="d-flex align-items-center justify-content-end gap-2">
+    <button class="btn btn-secondary" (click)="open(logsTemplate, 'logs')">
+      Logs
+      <i class="fa fa-eye"></i>
     </button>
-  </ng-container>
+    <ng-container *ngIf="isFutureEvent">
+      <button class="btn btn-danger" (click)="onDelete()">
+        Delete Notification
+        <i class="fa fa-times"></i>
+      </button>
+    </ng-container>
+  </div>
 </div>
 
-<div [ngClass]="{'opacity-75 pe-none': isFutureEvent == false}">
+<div class="d-flex flex-column gap-6 my-4" [ngClass]="{'opacity-75 pe-none': isFutureEvent == false}">
+  <div class="analytics" *ngIf="notificationDoc">
+    <div class="bg-white p-4 rounded">
+      <div class="pb-2 mb-2 border-bottom border-secondary d-flex align-items-center justify-content-between">
+        <div class="fs-5 text-primary">Total Items</div>
+        <i class="fa fa-users fs-2" aria-hidden="true"></i>
+      </div>
+      <div class="fs-3 fw-bold">{{notificationDoc.totalItems}}</div>
+    </div>
+    <div class="bg-white p-4 rounded">
+      <div
+        class="fs-6 text-muted pb-2 mb-2 border-bottom border-secondary d-flex align-items-center justify-content-between">
+        <div class="fs-5 text-primary">Success Items</div>
+        <i class="fa fa-check-circle" aria-hidden="true"></i>
+      </div>
+      <div class="fs-3 fw-bold">{{notificationDoc.successItems}}</div>
+    </div>
+    <div class="bg-white p-4 rounded">
+      <div
+        class="fs-6 text-muted pb-2 mb-2 border-bottom border-secondary d-flex align-items-center justify-content-between">
+        <div class="fs-5 text-primary">Failure Items</div>
+        <i class="fa fa-times-circle" aria-hidden="true"></i>
+      </div>
+      <div class="fs-3 fw-bold">{{notificationDoc.failureItems}}</div>
+    </div>
+  </div>
   <form (ngSubmit)="onSubmit()" [formGroup]="form">
-    <div class="card my-4">
+    <div class="card">
       <div class="card-body">
+        <div class="mb-4" *ngIf="notificationDoc">
+          <div class="badge fs-5 fw-normal badge-primary" *ngIf="notificationDoc.status == 'sent'">
+            {{notificationDoc.status | titlecase}}
+          </div>
+          <div class="badge fs-5 fw-normal badge-warning" *ngIf="notificationDoc.status == 'pending'">
+            {{notificationDoc.status | titlecase}}
+          </div>
+          <div class="badge fs-5 fw-normal badge-danger" *ngIf="notificationDoc.status == 'failed'">
+            {{notificationDoc.status | titlecase}}
+          </div>
+        </div>
         <div class="d-flex align-items-center gap-2 mb-4">
           <app-switch [isToggledProps]="form.get('isProfileLevel')?.value" [switchId]="'isProfileLevel'"
             (switchToggled)="onProfileLevelToggled($event)"></app-switch>
@@ -45,8 +87,8 @@
           </div>
         </div>
         <ng-container *ngIf="form.get('isStoreLevel')?.value == 'false'">
-          <button type="button" class="btn btn-secondary" (click)="open(template)">{{customers.length == 0 ? 'Add' :
-            'Add - Remove'}} Customers</button>
+          <button type="button" class="btn btn-secondary" (click)="open(template, 'customers')">
+            {{customers.length == 0 ? 'Add' : 'Add - Remove'}} Customers</button>
         </ng-container>
 
         <ng-container *ngIf="customers && customers.length > 0">
@@ -132,10 +174,33 @@
   </form>
 </div>
 
+<ng-template #logsTemplate>
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">Logs</h4>
+    <button type="button" class="btn-close close pull-right" aria-label="Close" (click)="modalRefs.log?.hide()">
+      <span aria-hidden="true" class="visually-hidden">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <ng-container *ngFor="let logItem of logItems; let index = index">
+      <div class="d-flex flex-column gap-1" style="font-family: monospace;">
+        <div>{{index + 1}}. {{logItem.message}}</div>
+        <div>{{logItem.timestamp | date:'dd-MM-yy HH:mm:ss'}}</div>
+      </div>
+    </ng-container>
+    <ng-container *ngIf="logItems.length == 0">
+      <div>No items found</div>
+    </ng-container>
+    <app-pagination [totalResults]="logPagination.totalResults" [totalPages]="logPagination.totalPages"
+      [pageIndex]="logPagination.pageIndex" [pageSize]="logPagination.pageSize"
+      (pageTrigger)="onPageTriggered($event, 'logs')"></app-pagination>
+  </div>
+</ng-template>
+
 <ng-template #template>
   <div class="modal-header">
     <h4 class="modal-title pull-left">Customers</h4>
-    <button type="button" class="btn-close close pull-right" aria-label="Close" (click)="modalRef.hide()">
+    <button type="button" class="btn-close close pull-right" aria-label="Close" (click)="modalRefs.customer?.hide()">
       <span aria-hidden="true" class="visually-hidden">&times;</span>
     </button>
   </div>
@@ -183,7 +248,8 @@
         </tr>
       </tbody>
     </table>
-    <app-pagination [totalResults]="totalResults" [totalPages]="totalPages" [pageIndex]="page" [pageSize]="limit"
-      (pageTrigger)="onPageTriggered($event)"></app-pagination>
+    <app-pagination [totalResults]="customerPagination.totalResults" [totalPages]="customerPagination.totalPages"
+      [pageIndex]="customerPagination.pageIndex" [pageSize]="customerPagination.pageSize"
+      (pageTrigger)="onPageTriggered($event, 'customers')"></app-pagination>
   </div>
 </ng-template>

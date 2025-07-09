@@ -8,12 +8,45 @@ import { appRoutes } from 'src/app/config/routes';
 import { CustomersService } from 'src/app/includes/services/customers.service';
 import { NotificationsService } from 'src/app/includes/services/notifications.service';
 
+interface LogItem {
+  message: string
+  timestamp: string
+}
+
+interface Pagination {
+  pageIndex: number;
+  pageSize: number;
+  totalResults: number;
+  totalPages: number;
+}
+
 interface CustomerDoc {
   name: string;
   email: string;
   countryCode: string;
   _id: string;
   mobile: string;
+}
+
+interface Notification {
+  _id: string
+  totalItems: number
+  successItems: number
+  failureItems: number
+  isProfileLevel: boolean
+  thumbnail: string
+  isStoreLevel: boolean
+  isActive: boolean
+  isDelete: boolean
+  createdAt: Date
+  updatedAt: Date
+  title: string
+  content: string
+  scheduledAt: Date
+  redirection: string
+  status: string
+  customers: Array<string>
+  __v: number
 }
 
 @Component({
@@ -26,16 +59,33 @@ export class UpdateNotificationsComponent implements OnInit {
   isSubmitted: boolean;
   isLoading: boolean = false;
   appRoute = appRoutes;
-  modalRef: BsModalRef;
-  page: number = 1;
-  limit: number = 10;
-  totalResults: number = 0;
-  totalPages: number = 1;
+  notificationDoc: Notification | null
+
+  modalRefs = {
+    customer: null as BsModalRef | null,
+    log: null as BsModalRef | null
+  };
+
+  customerPagination: Pagination = {
+    pageIndex: 1,
+    pageSize: 10,
+    totalResults: 0,
+    totalPages: 1
+  };
+
+  logPagination: Pagination = {
+    pageIndex: 1,
+    pageSize: 10,
+    totalResults: 0,
+    totalPages: 1
+  };
+
   customerDocs: Array<CustomerDoc> = [];
   customers: Array<CustomerDoc> = [];
   searchKeyword: FormControl = new FormControl('');
   notificationId: string;
   isFutureEvent: boolean = false;
+  logItems: Array<LogItem> = []
 
   constructor(
     private NotificationsService: NotificationsService,
@@ -52,36 +102,70 @@ export class UpdateNotificationsComponent implements OnInit {
   }
 
   //Open modal
-  open(template: TemplateRef<any>) {
-    this.modalRef = this.BsModalService.show(template, { class: 'modal-lg', ignoreBackdropClick: true });
+  open(template: TemplateRef<any>, method: 'customers' | 'logs') {
+    const modalClass = method === 'customers' ? 'modal-lg' : 'modal-xl';
+    this.modalRefs[method === 'customers' ? 'customer' : 'log'] = this.BsModalService.show(template, {
+      class: modalClass,
+      ignoreBackdropClick: true
+    });
+
+    method === 'customers' ? this.getCustomers() : this.getLogs();
   }
 
   //Pagination
-  onPageTriggered(event: { pageIndex: number, pageSize: number }) {
-    this.page = event.pageIndex
-    this.limit = event.pageSize
-    this.getCustomers()
+  onPageTriggered(event: { pageIndex: number; pageSize: number }, method: 'customers' | 'logs') {
+    const pagination = method === 'customers' ? this.customerPagination : this.logPagination;
+    pagination.pageIndex = event.pageIndex;
+    pagination.pageSize = event.pageSize;
+
+    method === 'customers' ? this.getCustomers() : this.getLogs();
   }
+
 
   //Get customers
   getCustomers() {
+    const { pageIndex, pageSize } = this.customerPagination;
+
     this.CustomersService.searchCustomers({
       keyword: this.searchKeyword.value,
-      page: this.page,
+      page: pageIndex,
       isActive: true,
-      limit: this.limit
+      limit: pageSize
     }).subscribe({
       next: (res: any) => {
-        if (res?.errorCode == 0) {
-          this.customerDocs = res?.result?.data
-          this.totalResults = res?.result?.totalResults
-          this.totalPages = res?.result?.totalPages
-          this.ChangeDetectorRef.markForCheck()
-        } else { }
-      },
-      error: (err: any) => { },
+        if (res?.errorCode === 0) {
+          this.customerDocs = res.result?.data || [];
+          this.customerPagination.totalResults = res.result?.totalResults || 0;
+          this.customerPagination.totalPages = res.result?.totalPages || 1;
+          this.ChangeDetectorRef.markForCheck();
+        }
+      }, error: (err) => {
+        this.HotToastService.error(err?.message || 'Failed to fetch customers');
+      }
     });
   }
+
+
+  getLogs() {
+    const { pageIndex, pageSize } = this.logPagination;
+
+    this.NotificationsService.logs(this.notificationId, pageIndex, pageSize).subscribe({
+      next: (res: any) => {
+        if (res?.errorCode === 0 && res.result) {
+          this.logItems = res.result.results || [];
+          this.logPagination.totalResults = res.result.totalResults || 0;
+          this.logPagination.totalPages = res.result.totalPages || 1;
+          this.ChangeDetectorRef.markForCheck();
+        } else {
+          this.HotToastService.error("Failed to fetch logs");
+        }
+      },
+      error: (err) => {
+        this.HotToastService.error(err?.message || "Something went wrong");
+      }
+    });
+  }
+
 
   onSelect(customer: CustomerDoc) {
     if (!this.isCustomerSelected(customer)) {
@@ -130,6 +214,7 @@ export class UpdateNotificationsComponent implements OnInit {
       next: (res: any) => {
         if (res.errorCode == 0 && res.result && Object.keys(res.result).length > 0) {
           // Format the scheduledAt date for datetime-local input
+          this.notificationDoc = res.result
           const result = { ...res.result };
           if (result.scheduledAt) {
             result.scheduledAt = this.formatDateForDateTimeLocal(result.scheduledAt);

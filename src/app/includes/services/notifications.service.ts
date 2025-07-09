@@ -53,4 +53,9 @@ export class NotificationsService {
     const url = this.commonService.getFullUrl(this.notificationsEndpoints.moduleNotifications);
     return this.http.post(`${url}`, data);
   }
+
+  logs(notificationId: string, page: number, limit: number){
+    const url = this.commonService.getFullUrl(this.notificationsEndpoints.notificationLogs + `/${notificationId}?page=${page}&limit=${limit}`);
+    return this.http.get(`${url}`);
+  }
 }

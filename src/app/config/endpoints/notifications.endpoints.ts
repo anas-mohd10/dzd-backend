@@ -8,4 +8,5 @@ export const notificationsEndpoints = {
    searchNotifications: '/search-notifications',
    latest_notifications: '/latest-notifications',
    moduleNotifications: '/module-notifications',
+   notificationLogs: '/notification-logs'
 }

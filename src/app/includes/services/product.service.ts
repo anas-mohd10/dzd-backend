@@ -96,8 +96,8 @@ export class ProductService {
     return this.http.get(`${url}`);
   }
 
-  searchProducts(query: any) {
-    const url = this.commonService.getFullUrl(this.productEndpoints.search_product);
+  searchProducts(query: any, condition?: string) {
+    const url = this.commonService.getFullUrl(this.productEndpoints.search_product + (condition ? `?condition=${condition}` : ``));
     return this.http.post(`${url}`, query);
   }
 
