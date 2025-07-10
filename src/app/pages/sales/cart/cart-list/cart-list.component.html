@@ -66,6 +66,7 @@
           <th>Total</th>
           <th>Date</th>
           <th>Type</th>
+          <th>Source</th>
           <th>Action</th>
         </tr>
       </thead>
@@ -81,6 +82,7 @@
                 {{ cart?.type == "0" ? "Guest" : "Customer" }}
               </span>
             </td>
+            <td>{{cart?.source}}</td>
             <td>
               <div class="d-flex align-items-center gap-2 justify-content-start">
                 <div class="ms-1 btns-sx p-2 cursor-pointer" style="border: 1px solid #E8E8E8; border-radius: 5px;"
