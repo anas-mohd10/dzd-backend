@@ -708,6 +708,8 @@ export class UpdateOrdersComponent implements OnInit {
   }
 
   confirmBulkUpdate() {
+    this.bulkUpdateConfirmationRef?.hide() // Close the confirmation popup
+
     this.isLoading = true;
     this.isBulkUpdateLoading = true;
     this.OrdersService.updateBulkProduct({
@@ -722,7 +724,6 @@ export class UpdateOrdersComponent implements OnInit {
           this.bulkStatus = [];
           this.bulkOrderStatus.setValue('');
           this.getOrderDetails();
-          this.closeBulkUpdateConfirmation();
         } else if (res?.errorCode == 400) {
           this.failedPaymenRef = this.BsModalService.show(this.failedPayment, { class: 'modal-sm modal-dialog-centered', ignoreBackdropClick: true });
         } else {
