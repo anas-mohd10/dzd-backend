@@ -33,6 +33,7 @@ export class AddNotificationsComponent implements OnInit {
   customerDocs: Array<CustomerDoc> = [];
   customers: Array<CustomerDoc> = [];
   searchKeyword: FormControl = new FormControl('');
+  minDate: string = this.getRoundedDateTimeLocal();
 
   constructor(
     private NotificationsService: NotificationsService,
@@ -45,6 +46,16 @@ export class AddNotificationsComponent implements OnInit {
     this.searchKeyword.valueChanges.pipe(debounceTime(500)).subscribe((value) => {
       this.getCustomers()
     })
+  }
+
+  getRoundedDateTimeLocal(): string {
+    const now = new Date();
+    now.setMinutes(now.getMinutes() + 1 - (now.getMinutes() % 1)); // round to next 3 mins
+    now.setSeconds(0);
+    now.setMilliseconds(0);
+
+    const local = new Date(now.getTime() - now.getTimezoneOffset() * 60000);
+    return local.toISOString().slice(0, 16);
   }
 
   //Open modal
@@ -108,6 +119,18 @@ export class AddNotificationsComponent implements OnInit {
       isProfileLevel: new FormControl(false),
       redirection: new FormControl(''),
       thumbnail: new FormControl(''),
+    });
+
+    this.formControls.scheduledAt.valueChanges.subscribe(value => {
+      const selected = new Date(value);
+      const now = new Date();
+
+      if (selected < now) {
+        this.formControls.scheduledAt.setValue(
+          this.getRoundedDateTimeLocal(),
+          { emitEvent: false }
+        );
+      }
     });
   }
 

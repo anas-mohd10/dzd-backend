@@ -65,7 +65,7 @@
           <label class="fs-6 mb-3 required">Schedule Date & Time</label>
           <input
             [ngClass]="{ 'is-invalid': (formControls.scheduledAt.touched || isSubmitted) && formControls.scheduledAt.errors?.required}"
-            type="datetime-local" class="form-control fs-6" formControlName="scheduledAt" />
+            type="datetime-local" [min]="minDate" class="form-control fs-6" formControlName="scheduledAt" />
           <div class="invalid-feedback" *ngIf="formControls.scheduledAt.errors?.required">
             {{formControls.scheduledAt.errors?.required.message}}
           </div>
