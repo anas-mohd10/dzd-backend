@@ -104,6 +104,7 @@ import { FormLoginComponent } from './pages/settings/general/form-settings/form-
 import { AlbumsComponent } from './pages/marketing/albums/albums.component';
 import { GalleriesComponent } from './pages/marketing/galleries/galleries.component';
 import { CarouselModule } from 'ngx-bootstrap/carousel';
+import { ShippingGatewaysComponent } from './pages/settings/general/shipping-gateways/shipping-gateways.component';
 
 const DragConfig = {
   dragStartThreshold: 0,
@@ -181,6 +182,7 @@ const DragConfig = {
     FormLoginComponent,
     AlbumsComponent,
     GalleriesComponent,
+    ShippingGatewaysComponent,
   ],
   imports: [
     provideFirebaseApp(() => initializeApp(environment.firebaseConfig)),

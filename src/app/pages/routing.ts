@@ -54,6 +54,7 @@ import { SmsTemplatesComponent } from './settings/general/sms-templates/sms-temp
 import { FormSettingsComponent } from './settings/general/form-settings/form-settings.component';
 import { AlbumsComponent } from './marketing/albums/albums.component';
 import { GalleriesComponent } from './marketing/galleries/galleries.component';
+import { ShippingGatewaysComponent } from './settings/general/shipping-gateways/shipping-gateways.component';
 export const Routing: Routes = [
   {
     path: 'app',
@@ -544,6 +545,10 @@ export const Routing: Routes = [
       }, {
         path: 'shipping-settings',
         component: ShippingComponent,
+        canActivate: [AuthenticationGuard, PermissionGuard]
+      }, {
+        path: 'shipping-gateways',
+        component: ShippingGatewaysComponent,
         canActivate: [AuthenticationGuard, PermissionGuard]
       }, {
         path: 'sms-settings',

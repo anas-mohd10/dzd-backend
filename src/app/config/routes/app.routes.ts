@@ -314,6 +314,7 @@ export const appRoutes = {
   replaceRequests: `${app}/replace-requests`,
   guestCustomers: `${app}/guests`,
   shippingCharges: `${app}/shipping-charges`,
+  shippingGateways: `${app}/shipping-gateways`,
   staticPages: {
     list: `${app}/static-pages`,
     create: `${app}/static-pages/add`,

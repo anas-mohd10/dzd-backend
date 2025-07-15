@@ -36,6 +36,8 @@ export class PermissionGuard implements CanActivate {
       module[0] = module[0].split('?')[0]
     }
 
+    console.log(module[0])
+
     switch (module[0]) {
       case 'brands':
         module[1] == 'add' ? path = 'add-brand' : module[1] == 'update' ? path = 'update-brand' : path = 'brand'
@@ -255,6 +257,9 @@ export class PermissionGuard implements CanActivate {
         break
       case 'shipping-charges':
         module[0] == 'shipping-charges' ? path = 'shipping-charges' : null
+        break
+      case 'shipping-gateways':
+        module[0] == 'shipping-gateways' ? path = 'shipping-gateways' : null
         break
       case 'shipping-rules':
         module[0] == 'shipping-rules' ? path = 'shipping-rules' : null
