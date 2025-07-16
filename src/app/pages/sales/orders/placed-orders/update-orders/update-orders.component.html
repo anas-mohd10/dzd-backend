@@ -31,6 +31,12 @@
           Cancel Order
         </div>
 
+        <button class="btn btn-secondary" (click)="openShipment(shipmentOptions)"
+          *ngIf="shipmentItems.includes(order.orderStatus.toUpperCase())">
+          <i class="fa fa-truck" aria-hidden="true"></i>
+          Create Shipment
+        </button>
+
         <button class="btn btn-primary" (click)="acceptOrderPayment()"
           *ngIf="order?.paymentMethod == 'ONLINE' && order?.paymentStatus == 'PENDING'">
           Accept payment
@@ -762,3 +768,20 @@
     </div>
   </ng-template>
 </div>
+
+<ng-template #shipmentOptions>
+  <div class="modal-header">
+    <h4 class="modal-title">Choose Shipping Gateway</h4>
+    <button type="button" class="btn-close close pull-right" aria-label="Close" (click)="shippingRef?.hide(); shippingGateway = null">
+      <span aria-hidden="true" class="visually-hidden">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="d-flex align-items-center justify-content-start gap-2 p-4 rounded shadow-sm mb-4"
+      *ngFor="let shippingGatewayItem of shippingGateways">
+      <div class="checkbox" (click)="shippingGateway = shippingGatewayItem.gateway" [ngClass]="{'checked': shippingGateway == shippingGatewayItem.gateway}"></div>
+      <div class="fs-5">{{toTitleCase(shippingGatewayItem.gateway)}}</div>
+    </div>
+    <button class="btn btn-warning w-100" [disabled]="shippingGateway == null" (click)="createShipment()">Create Shipment</button>
+  </div>
+</ng-template>

@@ -19,8 +19,8 @@ export class ShippingGatwaysService {
     return this.HttpClient.put(`${url}`, data)
   }
 
-  shippingGateways() {
-    const url = this.CommonService.getFullUrl(this.endpoints.fetch);
+  shippingGateways(type?: string) {
+    const url = this.CommonService.getFullUrl(this.endpoints.fetch + `?type=${type}`);
     return this.HttpClient.get(`${url}`)
   }
 

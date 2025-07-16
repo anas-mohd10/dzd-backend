@@ -11,6 +11,8 @@ import { HotToastService } from '@ngneat/hot-toast';
 import { SwiperOptions } from 'swiper';
 import moment from 'moment-timezone';
 import * as countriesAndTimezones from 'countries-and-timezones';
+import { ShippingGatwaysService } from 'src/app/includes/services/shipping-gatways.service';
+import { ShipmentService } from 'src/app/includes/services/shipment.service';
 
 @Component({
   selector: 'app-update-orders',
@@ -48,18 +50,9 @@ export class UpdateOrdersComponent implements OnInit {
     scrollbar: { draggable: true },
     autoplay: true,
     breakpoints: {
-      320: {
-        slidesPerView: 'auto',
-        spaceBetween: 35,
-      },
-      480: {
-        slidesPerView: 'auto',
-        spaceBetween: 35,
-      },
-      640: {
-        slidesPerView: 'auto',
-        spaceBetween: 35,
-      },
+      320: { slidesPerView: 'auto', spaceBetween: 35, },
+      480: { slidesPerView: 'auto', spaceBetween: 35, },
+      640: { slidesPerView: 'auto', spaceBetween: 35, },
     },
   };
   processedProducts: Array<any> = [];
@@ -91,15 +84,7 @@ export class UpdateOrdersComponent implements OnInit {
   orderNote: FormControl = new FormControl('');
   reason: FormControl = new FormControl('');
   isNoteDetected: boolean = false;
-  months: Array<string> = ['Jan', 'Feb', 'Mar', 'Apr', 'May',
-    'Jun',
-    'Jul',
-    'Aug',
-    'Sep',
-    'Oct',
-    'Nov',
-    'Dec',
-  ];
+  months: Array<string> = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec',];
   domainUrl: string = '';
   bulkProducts: Array<any> = [];
   bulkStatus: Array<any> = [];
@@ -116,7 +101,14 @@ export class UpdateOrdersComponent implements OnInit {
   @ViewChild('failedPayment') failedPayment: any;
   failedPaymenRef?: BsModalRef;
 
+  shipmentItems: string[] = ['PLACED', 'ACCEPTED', 'PACKED']
+  shippingRef: BsModalRef | null
+  shippingGateway: string | null
+  shippingGateways: Array<any> = []
+
   constructor(
+    private ShipmentService: ShipmentService,
+    private ShippingGatwaysService: ShippingGatwaysService,
     private OrdersService: OrdersService,
     private route: ActivatedRoute,
     private router: Router,
@@ -126,6 +118,35 @@ export class UpdateOrdersComponent implements OnInit {
     private BsModalService: BsModalService,
     private HotToastService: HotToastService
   ) { }
+  // Create Shipment
+  createShipment() {
+    this.ShipmentService.createShipment({
+      orderId: this.slug,
+      gateway: this.shippingGateway
+    }).subscribe({
+      next: (resp: any) => {
+        if (resp && resp.errorCode == 0) {
+
+        } else {
+
+        }
+      }, error: (err) => {
+        this.HotToastService.error(`${(err as Error).message}`)
+      }
+    })
+  }
+
+  openShipment(template: TemplateRef<any>) {
+    this.shippingRef = this.BsModalService.show(template, { class: 'modal-sm modal-dialog-centered', ignoreBackdropClick: true })
+  }
+
+  toTitleCase(str: string): string {
+    return str
+      .replace(/-/g, ' ') // Replace all hyphens with spaces
+      .split(' ')         // Split into words
+      .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()) // Capitalize
+      .join(' ');         // Join back with spaces
+  }
 
   openRetry(template: TemplateRef<any>) {
     this.retryModelRef = this.BsModalService.show(template, {
@@ -206,6 +227,16 @@ export class UpdateOrdersComponent implements OnInit {
     this.managePage();
     this.slug = this.route.snapshot.queryParams.order || '';
     this.getOrderDetails();
+
+    this.ShippingGatwaysService.shippingGateways('enabled').subscribe({
+      next: (resp: any) => {
+        if (resp && resp.errorCode == 0) {
+          this.shippingGateways = resp.result.response
+        } else { }
+      }, error: (err) => {
+        this.HotToastService.error(`${(err as Error).message}`)
+      }
+    })
 
     this.AppSettingsService.getGeneralSettingsbyId('1').subscribe({
       next: (res: any) => {
