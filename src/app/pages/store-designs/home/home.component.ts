@@ -433,6 +433,12 @@ export class HomeComponent implements OnInit {
           this.widgetForm.get('redirection')?.setValue('/p/' + this.redirectionQuery.value);
         }
         break;
+        case 'web-links' : 
+        if (this.redirectionQuery.value) {
+          this.widgetForm.get('redirection')?.setValue(this.redirectionQuery.value);
+        }
+        break;
+  
       case 'collection':
         this.widgetForm
           .get('redirection')
