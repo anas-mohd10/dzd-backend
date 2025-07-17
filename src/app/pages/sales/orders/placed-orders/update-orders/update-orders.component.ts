@@ -466,6 +466,7 @@ export class UpdateOrdersComponent implements OnInit {
       this.openCancelConfirmation(this.cancelConfirmation)
       return
     }
+
     this.isLoading = true;
     this.productReference = productItem;
     this.OrdersService.updateOrderStatus({
@@ -495,11 +496,10 @@ export class UpdateOrdersComponent implements OnInit {
     this.isLoading = true
     this.isCancelConfirmLoading = true;
     this.cancelConfirmationRef?.hide() // Close the cancel confirmation modal
-    this.OrdersService.updateOrderStatus({
-      order: this.slug,
-      product: this.productToBeCancelled,
+    this.OrdersService.updateBulkProduct({
+      products: [{ productId: this.productToBeCancelled }],
       status: 'CANCELLED',
-    }).subscribe({
+    }, this.slug).subscribe({
       next: (res: any) => {
         if (res?.errorCode == 0) {
           this.getOrderDetails();
@@ -656,7 +656,6 @@ export class UpdateOrdersComponent implements OnInit {
   updateBulkProduct(event: any) {
     this.bulkStatusToUpdate = event?.target?.value;
     this.openBulkUpdateConfirmation(this.bulkUpdateConfirmation);
-
   }
 
   openBulkUpdateConfirmation(template: TemplateRef<any>) {

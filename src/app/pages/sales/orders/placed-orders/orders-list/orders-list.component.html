@@ -88,65 +88,60 @@
         </swiper>
       </div>
       <div class="py-5">
-        <div class="row">
-          <div class="col-lg-10">
-            <form [formGroup]="orderForm">
-              <div class="d-flex align-items-center gap-3 justify-content-between">
-                <div>
-                  <input type="date" class="form-control fs-6 text-dark" formControlName="fromDate"
-                    (change)="getOrders()" placeholder="From date">
-                </div>
-                <div>
-                  <input type="date" class="form-control fs-6 text-dark" formControlName="toDate"
-                    (change)="getOrders()">
-                </div>
-                <div>
-                  <select class="form-select fs-6 text-dark" formControlName="paymentMethod" (change)="getOrders()">
-                    <option value="" disabled>-- Payment method --</option>
-                    <option value="COD">Cash On Delivery</option>
-                    <option value="ONLINE">Online</option>
-                  </select>
-                </div>
-                <div>
-                  <select class="form-select fs-6 text-dark" formControlName="paymentStatus" (change)="getOrders()">
-                    <option value="" disabled>-- Payment status --</option>
-                    <option value="REJECTED">Rejected</option>
-                    <option value="PAID">Paid</option>
-                    <option value="PENDING">Pending</option>
-                  </select>
-                </div>
-                <div>
-                  <select class="form-select fs-6 text-dark" formControlName="source" (change)="getOrders()">
-                    <option value="" disabled>-- Source --</option>
-                    <option value="WEB">Website</option>
-                    <option value="MOBILE">Mobile</option>
-                    <option value="ADMIN">Admin</option>
-                    <option value="APP">App</option>
-                  </select>
-                </div>
-                <div>
-                  <select class="form-select fs-6 text-dark" formControlName="customerTags" (change)="getOrders()">
-                    <option value="" disabled>-- Tags --</option>
-                    <option *ngFor="let tagOption of tagOptions" [value]="tagOption">{{tagOption}}</option>
-                  </select>
-                </div>
-                <div>
-                  <input type="button" class="form-control btn-secondary p-1 fs-6 text-dark" value="Clear filters"
-                    (click)="onReload()">
-                </div>
+        <form [formGroup]="orderForm">
+          <div class="row">
+            <div class="col-lg-3 my-1">
+              <input type="date" class="form-control fs-6" formControlName="fromDate" (change)="getOrders()"
+                placeholder="From date">
+            </div>
+            <div class="col-lg-3 my-1">
+              <input type="date" class="form-control fs-6" formControlName="toDate" (change)="getOrders()">
+            </div>
+            <div class="col-lg-3 my-1">
+              <select class="form-select fs-6" formControlName="paymentMethod" (change)="getOrders()">
+                <option value="" disabled>-- Select an Method --</option>
+                <option value="COD">Cash On Delivery</option>
+                <option value="ONLINE">Online</option>
+              </select>
+            </div>
+            <div class="col-lg-3 my-1">
+              <select class="form-select fs-6" formControlName="paymentStatus" (change)="getOrders()">
+                <option value="" disabled>-- Select a Payment --</option>
+                <option value="REJECTED">Rejected</option>
+                <option value="PAID">Paid</option>
+                <option value="PENDING">Pending</option>
+              </select>
+            </div>
+            <div class="col-lg-3 my-1">
+              <select class="form-select fs-6" formControlName="source" (change)="getOrders()">
+                <option value="" disabled>-- Select an Source --</option>
+                <option value="WEB">Website</option>
+                <option value="MOBILE">Mobile</option>
+                <option value="ADMIN">Admin</option>
+                <option value="APP">App</option>
+              </select>
+            </div>
+            <div class="col-lg-3 my-1">
+              <select class="form-select fs-6" formControlName="customerTags" (change)="getOrders()">
+                <option value="" disabled>-- Select a Tag --</option>
+                <option *ngFor="let tagOption of tagOptions" [value]="tagOption">{{tagOption}}</option>
+              </select>
+            </div>
+            <div class="col-lg-3 my-1">
+              <div class="search_input">
+                <input type="text" class="fs-6 form-control" placeholder="Search orders"
+                  [formControl]="keyword">
+                <img src="assets/icons/Search.svg" alt="">
               </div>
-            </form>
-          </div>
-          <div class="col-lg-2">
-            <div class="search_input">
-              <input type="text" class="fs-6 form-control text-dark" placeholder="Search orders"
-                [formControl]="keyword">
-              <img src="assets/icons/Search.svg" alt="">
+            </div>
+            <div class="col-lg-3 my-1">
+              <input type="button" class="form-control btn-secondary p-1 fs-6" value="Clear filters"
+                (click)="onReload()">
             </div>
           </div>
-        </div>
-        <div class="d-flex mt-5 flex-wrap align-items-center justify-content-end">
-          <div class="d-flex gap-3 me-auto" *ngIf="toggledOrders.length > 0">
+        </form>
+        <div class="d-flex mt-5 flex-wrap align-items-center justify-content-end" *ngIf="toggledOrders.length > 0">
+          <div class="d-flex gap-3 me-auto">
             <button class="btn p-2 bg-white text-primary border border-primary" (click)="getInvoicesSignedUrl()">
               Bulk Invoices
               <svg height="18" width="18" data-slot="icon" fill="none" stroke-width="1.5" stroke="currentColor"
@@ -218,7 +213,9 @@
             {{formatTime(order?.createdAt)}}
           </td>
           <td>
-            <div title="{{order?.customerId ? order?.customerId?.name : order?.guestId?.name}}" class="customer-details">{{order?.customerId ? order?.customerId?.name : order?.guestId?.name}}</div>
+            <div title="{{order?.customerId ? order?.customerId?.name : order?.guestId?.name}}"
+              class="customer-details">
+              {{order?.customerId ? order?.customerId?.name : order?.guestId?.name}}</div>
             <div
               class="rounded border border-secondary customer-type p-1 my-1 d-flex align-items-center justify-content-center">
               {{order?.customerType == 'regd' ? 'Customer' : 'Guest'}}
@@ -290,7 +287,10 @@
           <td>
             <div>
               <div class="fs-5">{{order?.paymentMethod | titlecase}}</div>
-              <div title="{{formatPaymentGateway(order?.paymentGateway)}}" class="ellipsis cursor-pointer text-primary fs-5 fw-bold">{{formatPaymentGateway(order?.paymentGateway)}}</div>
+              <div title="{{formatPaymentGateway(order?.paymentGateway)}}"
+                class="ellipsis cursor-pointer text-primary fs-5 fw-bold">
+                {{formatPaymentGateway(order?.paymentGateway)}}
+              </div>
             </div>
           </td>
           <td>
@@ -302,15 +302,12 @@
           </td>
           <td>
             <div class="d-flex align-items-center justify-content-start gap-3">
-              <div
-                title="View Order Details"
+              <div title="View Order Details"
                 class="cursor-pointer rounded action-button d-flex align-items-center justify-content-center border border-secondary"
                 routerLink="{{appRoute.orders.UPDATE_ORDER_LIST}}" [queryParams]="{'order': order?._id}">
                 <img src="assets/icons/eye.svg" alt="View order details">
               </div>
-              <div
-                title="Generate Invoice"
-                (click)="getInvoiceSignedUrl(order?._id)"
+              <div title="Generate Invoice" (click)="getInvoiceSignedUrl(order?._id)"
                 class="cursor-pointer rounded d-flex align-items-center justify-content-center border border-secondary action-button">
                 <img src="assets/icons/print.svg" alt="Genarete Invoice">
               </div>

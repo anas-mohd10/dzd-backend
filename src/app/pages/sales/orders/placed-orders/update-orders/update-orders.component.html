@@ -68,12 +68,12 @@
       Please proceed with the payment to facilitat e the processing of the order request
     </div>
 
-    <div class="alert alert-danger fs-6"
+    <div class="alert alert-warning fs-6"
       *ngIf="order?.paymentMethod == 'ONLINE' && order?.payment?.isProcessing == true">
-      <div class="fs-3">Payment is being processed.</div>
+      <div class="fs-4 mb-2">Payment is being processed 🔄</div>
       <div class="fs-6">
-        New payment won't be processed until the previous payment is completed.
-        You can proceed with updating the order status but payment will be processed in the background.
+        New payment won't be processed until the previous payment is completed,
+        you can proceed with updating the order status but payment will be processed in the background
       </div>
     </div>
 
@@ -85,7 +85,8 @@
         </ng-container>
         <div class="d-flex align-items-center justify-content-start gap-2">
           <ng-container *ngIf="order.cancel.action   || order.cancel.cancelledBy">
-            <div class="fs-6 badge badge-danger fw-normal">{{order.cancel.action || order.cancel.cancelledBy | titlecase}}</div>
+            <div class="fs-6 badge badge-danger fw-normal">{{order.cancel.action || order.cancel.cancelledBy |
+              titlecase}}</div>
           </ng-container>
           <ng-container *ngIf="order.cancel.email || order.cancel.cancelledEmail">
             <div class="fs-6">{{order.cancel.email || order.cancel.cancelledEmail}}</div>
@@ -175,11 +176,11 @@
                 <tr *ngIf="order?.cancel">
                   <th class="p-2 text-muted fw-normal">Cancelled By</th>
                   <td class="p-2">
-                    <ng-container *ngIf="order?.cancel?.cancelledBy === 'CUSTOMER'">
+                    <ng-container *ngIf="order.cancel && order.cancel.action === 'customer'">
                       Customer
                     </ng-container>
-                    <ng-container *ngIf="order?.cancel?.cancelledBy === 'ADMIN'">
-                      {{ order?.cancel?.cancelledByEmail || 'Admin' }}
+                    <ng-container *ngIf="order.cancel && order.cancel.action === 'admin'">
+                      {{ order.cancel.email || 'Admin' }}
                     </ng-container>
                   </td>
                 </tr>
@@ -479,10 +480,10 @@
                   <div class="col-lg-4">
                     <div class="d-flex align-items-center justify-content-end gap-2">
                       <label for="bulkStatus" class="fs-6">Status :</label>
-                      <select id="bulkStatus" [formControl]="bulkOrderStatus" [ngClass]="{'pe-none' :
-                        ( order?.paymentMethod == 'ONLINE' && order?.paymentStatus == 'PENDING' || bulkProducts.length == 0 ) ||
-                          ( isStatusUpdating == true && order?.paymentGateway == 'network-international-tokenized' )
-                          }" class="form-select w-50 fs-6" (change)="updateBulkProduct($event)">
+                      <select id="bulkStatus" [formControl]="bulkOrderStatus"
+                        [ngClass]="{'pe-none' :
+                        ( order?.paymentMethod == 'ONLINE' && order?.paymentStatus == 'PENDING' || bulkProducts.length == 0 ) || ( isStatusUpdating == true && order?.paymentGateway == 'network-international-tokenized' ) }"
+                        class="form-select w-50 fs-6" (change)="updateBulkProduct($event)">
                         <option value="" disabled>-- Select a status --</option>
                         <option *ngFor="let status of bulkStatus" value={{status.value}}>{{status.key}}</option>
                       </select>
