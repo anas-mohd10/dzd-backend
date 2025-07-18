@@ -88,7 +88,7 @@ export class PaymentSettingsComponent implements OnInit {
       outletReference: new FormControl(''),
       publicKey: new FormControl(''),
       privateKey: new FormControl(''),
-      payByOption: new FormControl(''),
+      payByOption: new FormControl('PAY_NOW'),
       region: new FormControl(''),
       serverKey: new FormControl(''),
       apiUrl: new FormControl(''),
@@ -108,9 +108,7 @@ export class PaymentSettingsComponent implements OnInit {
   }
 
   paymentGatewayEnabled(pgId: string) {
-    let isExists = this.paymentGateways.some(
-      (paymentGateway: any) => paymentGateway.paymentGateway == pgId
-    );
+    let isExists = this.paymentGateways.some((paymentGateway: any) => paymentGateway.paymentGateway == pgId);
     return isExists;
   }
 
@@ -238,9 +236,8 @@ export class PaymentSettingsComponent implements OnInit {
           this.pgDetails = response.result;
           this.displayIcon = response.result?.displayIcon?.path;
           this.form.patchValue(this.pgDetails);
-          this.form.patchValue({
-            displayIcon: response.result?.displayIcon?._id,
-          });
+          this.form.patchValue({payByOption: this.pgDetails.payByOption || 'PAY_NOW'})
+          this.form.patchValue({ displayIcon: response.result?.displayIcon?._id });
           this.ChangeDetectorRef.markForCheck();
         } else {
           this.HotToastService.error(response.message);

@@ -127,15 +127,6 @@
                 </div>
 
                 <div class="mb-3 form-group"
-                    *ngIf="paymentGatewayConfig[form.get('paymentGateway')?.value]?.includes('merchantId')">
-                    <label for="merchantId" class="fs-6 mb-3">Member ID</label>
-                    <input type="text" id="merchantId" placeholder="Member ID" formControlName="merchantId"
-                        class="form-control" [ngClass]="{
-                        'is-invalid': (formControls.merchantId.touched || isSubmitted) && formControls.merchantId.errors?.required
-                      }">
-                </div>
-
-                <div class="mb-3 form-group"
                     *ngIf="paymentGatewayConfig[form.get('paymentGateway')?.value]?.includes('apiUrl')">
                     <label for="apiUrl" class="fs-6 mb-3">API Url</label>
                     <input type="text" id="apiUrl" placeholder="API Url" formControlName="apiUrl" class="form-control"

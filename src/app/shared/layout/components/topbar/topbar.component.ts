@@ -42,7 +42,7 @@ export class TopbarComponent implements OnInit {
   }
 
   offClickHandler($event: any) {
-    if (!this.container.nativeElement.contains($event.target)) {
+    if (this.container && !this.container.nativeElement.contains($event.target)) {
       this.isShowClicked = false
       document.querySelector('.notificationContainer')?.classList.remove('showContainer')
     }
