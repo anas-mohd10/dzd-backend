@@ -29,6 +29,7 @@ export class UpdateBrandComponent implements OnInit {
   thumbnail: string;
   cover: string;
   mobileCover: string;
+  brandCategories: Array<{ brandCategoryImages: string[],title:String }> = [];
   @ViewChild('deleteConfirmation') deleteConfirmation: TemplateRef<any>;
 
   constructor(
@@ -78,6 +79,7 @@ export class UpdateBrandComponent implements OnInit {
           this.thumbnail = res?.result?.thumbnail;
           this.cover = res?.result?.cover;
           this.mobileCover = res?.result?.mobileCover;
+          this.brandCategories = res?.result?.BrandCategory || [];
         }
       }, error: (err: any) => { }
     });
@@ -121,7 +123,8 @@ export class UpdateBrandComponent implements OnInit {
 
     this.brandService.updateBrand({
       _id: this.brandDetails._id,
-      ...this.form.value
+      ...this.form.value,
+      BrandCategory: this.brandCategories
     }).subscribe({
       next: (res: any) => {
         if (res?.errorCode == 0) {
@@ -173,5 +176,21 @@ export class UpdateBrandComponent implements OnInit {
           this.HotToastService.error(err?.error?.message);
         }
       });
+  }
+
+  // Add image to a category
+  addBrandCategoryImage(categoryIndex: number, event: any) {
+    const imgPath = event.path;
+    if (!this.brandCategories[categoryIndex].brandCategoryImages.includes(imgPath)) {
+      this.brandCategories[categoryIndex].brandCategoryImages.push(imgPath);
+    }
+    this.ChangeDetectorRef.markForCheck();
+  }
+
+  // Remove image from a category
+  removeBrandCategoryImage(categoryIndex: number, imgPath: string) {
+    this.brandCategories[categoryIndex].brandCategoryImages =
+      this.brandCategories[categoryIndex].brandCategoryImages.filter(img => img !== imgPath);
+    this.ChangeDetectorRef.markForCheck();
   }
 }

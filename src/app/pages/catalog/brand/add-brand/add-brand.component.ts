@@ -20,11 +20,15 @@ export class AddBrandComponent implements OnInit {
   cover: string = '';
   mobileCover: string = '';
   thumbnail: string = '';
+  brandCategories: Array<{ brandCategoryImages: string[], title: string }> = [
+    { brandCategoryImages: [], title: '' }
+  ];
 
   constructor(
     private Router: Router,
     private BrandService: BrandService,
-    private HotToastService: HotToastService
+    private HotToastService: HotToastService,
+    private ChangeDetectorRef: ChangeDetectorRef
   ) { }
 
   get formControls() {
@@ -67,6 +71,32 @@ export class AddBrandComponent implements OnInit {
     }
   }
 
+  // Add image to a category
+  addBrandCategoryImage(categoryIndex: number, event: any) {
+    const imgPath = event.path;
+    if (!this.brandCategories[categoryIndex].brandCategoryImages.includes(imgPath)) {
+      this.brandCategories[categoryIndex].brandCategoryImages.push(imgPath);
+    }
+    this.ChangeDetectorRef.markForCheck();
+  }
+
+  // Remove image from a category
+  removeBrandCategoryImage(categoryIndex: number, imgPath: string) {
+    this.brandCategories[categoryIndex].brandCategoryImages =
+      this.brandCategories[categoryIndex].brandCategoryImages.filter(img => img !== imgPath);
+    this.ChangeDetectorRef.markForCheck();
+  }
+
+  addBrandCategory() {
+    this.brandCategories.push({ brandCategoryImages: [], title: '' });
+  }
+
+  removeBrandCategory(index: number) {
+    if (this.brandCategories.length > 1) {
+      this.brandCategories.splice(index, 1);
+    }
+  }
+
   initForm() {
     this.form = new FormGroup({
       name: new FormControl('', Validators.required),
@@ -87,8 +117,12 @@ export class AddBrandComponent implements OnInit {
     if (!this.form.valid) {
       return;
     }
-
-    this.BrandService.addBrand(this.form.value).subscribe({
+    // Attach BrandCategory to payload
+    const payload = {
+      ...this.form.value,
+      BrandCategory: this.brandCategories
+    };
+    this.BrandService.addBrand(payload).subscribe({
       next: (res: any) => {
         if (res.errorCode == 0) {
           this.HotToastService.success(res?.message);
