@@ -171,13 +171,7 @@
           <!-- Previous template code remains the same until the brand categories section -->
 
           <div *ngFor="let category of brandCategories; let i = index" class="mb-4">
-            <div class="form-group mb-3">
-              <label class="fs-6 mb-3">Brand Category {{ i + 1 }} Title</label>
-              <input type="text" class="form-control fs-6" [value]="category.title"
-                (input)="updateCategoryTitle(i, $event)" placeholder="Enter category title" />
-            </div>
-
-            <label class="fs-6 mb-2">Brand Category {{ i + 1 }} Images</label>
+            <label class="fs-6 mb-2">Brand Category Images</label>
             <div class="row" id="brand-category-images-{{i}}">
               <!-- Existing Images -->
               <div class="col-lg-3 mb-3" *ngFor="let img of category.brandCategoryImages; let j = index">
@@ -191,7 +185,7 @@
                         <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12"></path>
                       </svg>
                     </div>
-                    <img [src]="img.url" class="rounded-top object-fit-cover h-100 w-100" />
+                    <img src="{{base}}{{img.url}}" class="rounded-top object-fit-cover h-100 w-100" />
                   </div>
                   <div class="card-body p-2">
                     <input type="text" class="form-control form-control-sm" [value]="img.title"

@@ -81,7 +81,8 @@ export class AddBrandComponent implements OnInit {
 
   // Add image to a category
   addBrandCategoryImage(categoryIndex: number, event: any) {
-    const imgPath = event.url;
+    console.log('BrandCategoryImage event:', event);
+    const imgPath = event.path || event.url;
     if (!this.brandCategories[categoryIndex].brandCategoryImages.some(img => img.url === imgPath)) {
       this.brandCategories[categoryIndex].brandCategoryImages.push({
         url: imgPath,

@@ -12,6 +12,7 @@
   import { BrandService } from '../../../../includes/services/brand.service';
   import { HotToastService } from '@ngneat/hot-toast';
   import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+  import { environment } from 'src/environments/environment';
 
   @Component({
     selector: 'app-update-brand',
@@ -22,6 +23,7 @@
     form: FormGroup;
     task = PageTasks.ADD;
     editMode = false;
+    base: string = environment.base;
     appRoute = appRoutes;
     brandDetails: any;
     slug: string;
