@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { appRoutes } from '../../../../config/routes';
 import { BrandService } from '../../../../includes/services/brand.service';
 import { HotToastService } from '@ngneat/hot-toast';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-add-brand',
@@ -20,8 +21,15 @@ export class AddBrandComponent implements OnInit {
   cover: string = '';
   mobileCover: string = '';
   thumbnail: string = '';
-  brandCategories: Array<{ brandCategoryImages: string[], title: string }> = [
-    { brandCategoryImages: [], title: '' }
+  base: string = environment.base;
+  brandCategories: Array<{
+    title: string,
+    brandCategoryImages: Array<{
+      url: string,
+      title: string
+    }>
+  }> = [
+    { title: '', brandCategoryImages: [] }
   ];
 
   constructor(
@@ -73,18 +81,30 @@ export class AddBrandComponent implements OnInit {
 
   // Add image to a category
   addBrandCategoryImage(categoryIndex: number, event: any) {
-    const imgPath = event.path;
-    if (!this.brandCategories[categoryIndex].brandCategoryImages.includes(imgPath)) {
-      this.brandCategories[categoryIndex].brandCategoryImages.push(imgPath);
+    const imgPath = event.url;
+    if (!this.brandCategories[categoryIndex].brandCategoryImages.some(img => img.url === imgPath)) {
+      this.brandCategories[categoryIndex].brandCategoryImages.push({
+        url: imgPath,
+        title: ''
+      });
     }
-    this.ChangeDetectorRef.markForCheck();
   }
 
   // Remove image from a category
-  removeBrandCategoryImage(categoryIndex: number, imgPath: string) {
+  removeBrandCategoryImage(categoryIndex: number, imgUrl: string) {
     this.brandCategories[categoryIndex].brandCategoryImages =
-      this.brandCategories[categoryIndex].brandCategoryImages.filter(img => img !== imgPath);
-    this.ChangeDetectorRef.markForCheck();
+      this.brandCategories[categoryIndex].brandCategoryImages.filter(img => img.url !== imgUrl);
+  }
+
+  updateImageTitle(categoryIndex: number, imageIndex: number, event: Event) {
+    const title = (event.target as HTMLInputElement).value;
+    this.brandCategories[categoryIndex].brandCategoryImages[imageIndex].title = title;
+  }
+
+  // Update category title
+  updateCategoryTitle(categoryIndex: number, event: Event) {
+    const title = (event.target as HTMLInputElement).value;
+    this.brandCategories[categoryIndex].title = title;
   }
 
   addBrandCategory() {
