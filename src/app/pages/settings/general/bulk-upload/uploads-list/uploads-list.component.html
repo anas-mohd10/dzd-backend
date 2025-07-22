@@ -29,6 +29,10 @@
     <div class="card-body">
       <div class="row justify-content-end">
         <div class="col-lg-3">
+          <label for="status" class="fs-6 fw-normal">Created By</label>
+          <input type="search" placeholder="Search by Created By..." class="form-control fs-6" [formControl]="createdBy" (ngModelChange)="fetchFileImports()">
+        </div>
+        <div class="col-lg-3">
           <div class="form-group">
             <label for="status" class="fs-6 fw-normal">Status</label>
             <select [formControl]="status" id="status" class="form-select" (change)="fetchFileImports()">
