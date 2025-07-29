@@ -27,7 +27,7 @@ export class ShippingGatewaysComponent implements OnInit {
   activeDocId: string | null
   modalRef: BsModalRef | null;
   shippingGatewayConfig: any = {
-    aramex: ['apiUrl', 'username', 'password', 'accountNumber', 'accountPin', 'accountEntity', 'accountCountryCode', 'source'],
+    aramex: ['apiUrl', 'username', 'password', 'accountNumber', 'accountPin', 'accountEntity', 'accountCountryCode', 'source', 'version'],
   };
   gateways: Array<any> = []
 
@@ -72,6 +72,7 @@ export class ShippingGatewaysComponent implements OnInit {
       accountEntity: new FormControl(''),
       accountCountryCode: new FormControl(''),
       source: new FormControl(''),
+      version: new FormControl('')
     })
 
     Promise.all([
@@ -126,7 +127,7 @@ export class ShippingGatewaysComponent implements OnInit {
       }
     })
 
-    const fields = ['apiUrl', 'username', 'password', 'accountNumber', 'accountPin', 'accountEntity', 'accountCountryCode', 'source']
+    const fields = ['apiUrl', 'username', 'password', 'accountNumber', 'accountPin', 'accountEntity', 'accountCountryCode', 'source', 'version']
 
     fields.forEach((field) => {
       let pgConfig = this.shippingGatewayConfig[docId] || [];

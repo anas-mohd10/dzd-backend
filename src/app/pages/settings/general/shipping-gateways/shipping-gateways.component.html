@@ -116,6 +116,11 @@
                         formControlName="accountCountryCode" class="form-control"
                         [ngClass]="{ 'is-invalid': (formControls.accountCountryCode.touched || isSubmitted) && formControls.accountCountryCode.errors?.required }">
                 </div>
+                <div class="col-lg-6 form-group my-3" *ngIf="shippingGatewayConfig[activeDocId]?.includes('version')">
+                    <label for="version" class="fs-6 mb-3">Version</label>
+                    <input type="text" id="version" placeholder="version" formControlName="version" class="form-control"
+                        [ngClass]="{ 'is-invalid': (formControls.version.touched || isSubmitted) && formControls.version.errors?.required }">
+                </div>
                 <div class="col-lg-6 form-group my-3" *ngIf="shippingGatewayConfig[activeDocId]?.includes('source')">
                     <label for="source" class="fs-6 mb-3">Source</label>
                     <input type="text" id="source" placeholder="Source" formControlName="source" class="form-control"
