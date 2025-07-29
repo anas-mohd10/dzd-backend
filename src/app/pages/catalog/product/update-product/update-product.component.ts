@@ -662,9 +662,7 @@ export class UpdateProductComponent implements OnInit {
       const formattedSlug = this.formatSlugForSave(currentSlug);
       this.form.get('slug')?.setValue(formattedSlug);
     }
-  
-    // ... rest of your existing saveChanges code stays exactly the same ...
-    this.ChangeDetectorRef.markForCheck();
+      this.ChangeDetectorRef.markForCheck();
   
     if (
       this.productDetails?.price?.offer == this.form.get('price')?.value?.offer
@@ -917,28 +915,79 @@ export class UpdateProductComponent implements OnInit {
     return this.form.controls;
   }
 
+  // generateSlug() {
+  //   const name = this.form.get('name')?.value || '';
+  //   const slug = name
+  //     .toLowerCase() // Convert to lowercase
+  //     .replace(/[^a-z0-9\s-]/g, '') // Remove special characters except spaces and hyphens
+  //     .trim() // Remove extra spaces at start and end
+  //     .replace(/[\s-]+/g, '-') // Replace any combination of spaces and hyphens with single hyphen
+  //     .replace(/^-+|-+$/g, ''); // Remove hyphens from start and end
+  
+  //   const newSlug = `${slug}-${this.productDetails?.sku}`;
+    
+  //   // For manual generation, show confirmation
+  //   this.openSlugConfirmation(newSlug);
+  // }
+
   generateSlug() {
     const name = this.form.get('name')?.value || '';
-    const slug = name
-      .toLowerCase() // Convert to lowercase
-      .replace(/[^a-z0-9\s-]/g, '') // Remove special characters except spaces and hyphens
-      .trim() // Remove extra spaces at start and end
-      .replace(/[\s-]+/g, '-') // Replace any combination of spaces and hyphens with single hyphen
-      .replace(/^-+|-+$/g, ''); // Remove hyphens from start and end
-  
+    
+    // First normalize the string (convert to lowercase and normalize Unicode characters)
+    let slug = name.toLowerCase().normalize('NFKD');
+    
+    // Replace spaces with hyphens
+    slug = slug.replace(/\s+/g, '-');
+    
+    // Remove all characters that are not:
+    // - Arabic letters (0600-06FF)
+    // - English letters (a-z)
+    // - Numbers (0-9)
+    // - Hyphens
+    slug = slug.replace(/[^\u0600-\u06FFa-z0-9-]/g, '');
+    
+    // Replace multiple hyphens with single hyphen
+    slug = slug.replace(/-+/g, '-');
+    
+    // Trim hyphens from start and end
+    slug = slug.replace(/^-+|-+$/g, '');
+    
     const newSlug = `${slug}-${this.productDetails?.sku}`;
     
     // For manual generation, show confirmation
     this.openSlugConfirmation(newSlug);
   }
 
+
+  // private formatSlugForSave(value: string): string {
+  //   return value
+  //     .toLowerCase() // Convert to lowercase
+  //     .replace(/[^a-z0-9\s-]/g, '') // Allow only letters, numbers, spaces, and hyphens
+  //     .trim() // Remove extra spaces at start and end
+  //     .replace(/[\s-]+/g, '-') // Replace any combination of spaces and hyphens with single hyphen
+  //     .replace(/^-+|-+$/g, ''); // Remove hyphens from start and end
+  // }
+
+
   private formatSlugForSave(value: string): string {
-    return value
-      .toLowerCase() // Convert to lowercase
-      .replace(/[^a-z0-9\s-]/g, '') // Allow only letters, numbers, spaces, and hyphens
-      .trim() // Remove extra spaces at start and end
-      .replace(/[\s-]+/g, '-') // Replace any combination of spaces and hyphens with single hyphen
-      .replace(/^-+|-+$/g, ''); // Remove hyphens from start and end
+    // First normalize the string (convert to lowercase and normalize Unicode characters)
+    let slug = value.toLowerCase().normalize('NFKD');
+    
+    // Replace spaces with hyphens
+    slug = slug.replace(/\s+/g, '-');
+    
+    // Remove all characters that are not:
+    // - Arabic letters (0600-06FF)
+    // - English letters (a-z)
+    // - Numbers (0-9)
+    // - Hyphens
+    slug = slug.replace(/[^\u0600-\u06FFa-z0-9-]/g, '');
+    
+    // Replace multiple hyphens with single hyphen
+    slug = slug.replace(/-+/g, '-');
+    
+    // Trim hyphens from start and end
+    return slug.replace(/^-+|-+$/g, '');
   }
 
   openSlugConfirmation(newSlug: string) {
