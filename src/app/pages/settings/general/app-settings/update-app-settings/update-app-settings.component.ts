@@ -48,7 +48,6 @@ export class UpdateAppSettingsComponent implements OnInit {
   currencies: Array<any> = [
     { label: 'INR', value: 'INR' },
     { label: 'Rupee', value: '₹' },
-    { label: 'DIR', value: 'DIR' },
     { label: 'USD', value: 'USD' },
     { label: 'EUR', value: 'EUR' },
     { label: 'AED', value: 'AED' },
