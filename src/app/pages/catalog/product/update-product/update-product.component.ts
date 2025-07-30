@@ -656,6 +656,25 @@ export class UpdateProductComponent implements OnInit {
   saveChanges() {
     this.ChangeDetectorRef.markForCheck();
 
+
+    const currentSlug = this.form.get('slug')?.value;
+    if (currentSlug) {
+      const formattedSlug = this.formatSlugForSave(currentSlug);
+      this.form.get('slug')?.setValue(formattedSlug);
+    }
+      this.ChangeDetectorRef.markForCheck();
+  
+    if (
+      this.productDetails?.price?.offer == this.form.get('price')?.value?.offer
+    ) {
+    } else {
+      this.form.get('price')?.setValue({
+        mrp: this.form.get('price')?.value?.mrp,
+        offer: this.form.get('price')?.value?.offer,
+        selling: this.form.get('price')?.value?.offer,
+      });
+    }
+
     if (
       this.productDetails?.price?.offer == this.form.get('price')?.value?.offer
     ) {
@@ -895,19 +914,34 @@ export class UpdateProductComponent implements OnInit {
   get formControls() {
     return this.form.controls;
   }
-
   generateSlug() {
-    const name = this.form.get('name')?.value || ''; // Get the form value for 'name'
-    const slug = name
-      .toLowerCase() // Convert to lowercase
-      .replace(/[^a-z0-9\s]/g, '') // Remove special characters (optional)
-      .trim() // Remove any extra spaces at the start and end
-      .replace(/\s+/g, '-'); // Replace spaces with '-'
-
+    const name = this.form.get('name')?.value || '';
+    let slug = name.toLowerCase().normalize('NFKD');
+    slug = slug.replace(/\s+/g, '-');
+    slug = slug.replace(/[^\u0600-\u06FFa-z0-9-]/g, '');
+    // Replace multiple hyphens with single hyphen
+    slug = slug.replace(/-+/g, '-');
+    
+    // Trim hyphens from start and end
+    slug = slug.replace(/^-+|-+$/g, '');
+    
     const newSlug = `${slug}-${this.productDetails?.sku}`;
-
-    // Show confirmation dialog
+    
+    // For manual generation, show confirmation
     this.openSlugConfirmation(newSlug);
+  }
+
+  private formatSlugForSave(value: string): string {
+    let slug = value.toLowerCase().normalize('NFKD');
+    
+    // Replace spaces with hyphens
+    slug = slug.replace(/\s+/g, '-');
+    
+    slug = slug.replace(/[^\u0600-\u06FFa-z0-9-]/g, '');   
+    // Replace multiple hyphens with single hyphen
+    slug = slug.replace(/-+/g, '-');   
+    // Trim hyphens from start and end
+    return slug.replace(/^-+|-+$/g, '');
   }
 
   openSlugConfirmation(newSlug: string) {

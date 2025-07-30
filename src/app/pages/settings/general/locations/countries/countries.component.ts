@@ -22,6 +22,7 @@ interface dbCountry {
   _id: string;
   name: string;
   code: string;
+  phoneCode:string;
 }
 
 @Component({
@@ -115,6 +116,7 @@ export class CountriesComponent implements OnInit {
     this.form = new FormGroup({
       code: new FormControl('', [Validators.required]),
       name: new FormControl('', [Validators.required]),
+      phoneCode:new FormControl('',[Validators.required])
     })
 
     for (let _key of Object.keys(countries.getNames(this.platformString, { select: "official" }))) {
