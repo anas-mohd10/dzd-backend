@@ -43,7 +43,7 @@
               <div class="fs-4">Your store is not live</div>
             </div>
           </div>
-          <div class="my-2">
+          <div class="my-2" *ngIf="data && data.isDeveloperAccess && data.isDeveloperAccess == true">
             <div class="fs-6 text-muted">
               You can publish or unpublish your project here
             </div>

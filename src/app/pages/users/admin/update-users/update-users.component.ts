@@ -6,6 +6,7 @@ import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { PageTasks } from 'src/app/config/constants';
 import { appRoutes } from 'src/app/config/routes';
 import { AdminUsersService } from 'src/app/includes/services/admin.users.service';
+import { AuthService } from 'src/app/includes/services/auth.service';
 import { RolesService } from 'src/app/includes/services/roles.service';
 @Component({
   selector: 'app-update-users',
@@ -30,11 +31,13 @@ export class UpdateUsersComponent implements OnInit {
   isBasicEditable: boolean = false
   isDuplicate: boolean = false
   modalRef?: BsModalRef
+  isDeveloperAccess: boolean = false
 
   constructor(
     private AdminUsersService: AdminUsersService,
     private RolesService: RolesService,
     private FormBuilder: FormBuilder,
+    private AuthService: AuthService,
     private route: ActivatedRoute,
     private router: Router,
     private HotToastService: HotToastService,
@@ -69,8 +72,18 @@ export class UpdateUsersComponent implements OnInit {
       countryCode: ['', Validators.required],
       mobile: ['', [ Validators.pattern("^[0-9]{9}$")]],
       role: ['', Validators.required],
-      isActive: ['true', Validators.required],
+      isDeveloperAccess: ['false'],
+      isActive: ['true'],
     });
+
+    this.AuthService.me().subscribe({
+      next: (res: any) => {
+        if (res?.errorCode == 0) {
+          this.isDeveloperAccess = res?.result?.isDeveloperAccess
+          this.ChangeDetectorRef.markForCheck()
+        } else { }
+      }, error: (err: any) => { }
+    })
 
     this.adminId = this.route.snapshot.queryParams.adminId || ''
 
@@ -133,13 +146,12 @@ export class UpdateUsersComponent implements OnInit {
         if (!this.form.get('mobile')?.valid) {
           return
         }
-
-        let mobilePayload = {
+        
+        this.AdminUsersService.updateAdminMobile({
           countryCode: this.form.get('countryCode')?.value,
           mobile: this.form.get('mobile')?.value,
-          refid: this.adminDetails.refid
-        }
-        this.AdminUsersService.updateAdminMobile(mobilePayload).subscribe({
+          _id: this.adminId
+        }).subscribe({
           next: (res: any) => {
             if (res?.errorCode == 0) {
               this.isMobileEditable = false
