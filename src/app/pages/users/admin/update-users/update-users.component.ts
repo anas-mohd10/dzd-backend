@@ -222,25 +222,26 @@ export class UpdateUsersComponent implements OnInit {
 
   updateAdmin() {
     if (!this.form.valid) {
+      this.HotToastService.error('Please fill all the required fields')
       this.isSubmitted = true
       return;
     }
 
     this.AdminUsersService.updateAdminDetails({
-      username: this.form.get('username')?.value,
-      firstname: this.form.get('firstname')?.value,
-      lastname: this.form.get('lastname')?.value,
-      isActive: this.form.get('isActive')?.value,
+      ...this.form.value,
       refid: this.adminDetails.refid,
       _id: this.adminDetails._id,
       slug: this.adminDetails.slug,
-      role: this.form.get('role')?.value
-    }).subscribe((res: any) => {
-      if (res.errorCode != 0) {
-        this.HotToastService.error(res?.message);
-      } else if (res.errorCode == 0) {
-        this.HotToastService.success('adminId user added successfully');
-        this.router.navigate([this.appRoute.admin.ADMIN_USERS]);
+    }).subscribe({
+      next: (res: any) => {
+        if (res && res.errorCode == 0) {
+          this.HotToastService.success(res.message);
+          this.router.navigate([this.appRoute.admin.ADMIN_USERS]);
+        } else {
+          this.HotToastService.error(res?.message);
+        }
+      }, error: (err) => {
+        this.HotToastService.error(`${(err as Error).message}`)
       }
     })
   }
