@@ -237,7 +237,7 @@ export class UpdateAppSettingsComponent implements OnInit {
   }
 
   getSettings() {
-    this.AppSettingsService.getGeneralSettingsbyId(this.refid).subscribe((res: any) => {
+    this.AppSettingsService.getSettings().subscribe((res: any) => {
       if (res?.errorCode == 0) {
         this.data = res?.result
         this.logo = res?.result?.logo

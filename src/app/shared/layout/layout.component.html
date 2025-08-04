@@ -1,4 +1,4 @@
-<ng-container *ngIf="isReady">
+<ng-container *ngIf="isReady && checkStoreLive() == true">
   <div class="d-flex flex-column flex-root">
     <div class="page d-flex flex-row flex-column-fluid">
       <app-aside *ngIf="asideDisplay" id="kt_aside" data-kt-drawer="true" data-kt-drawer-name="aside"
@@ -17,4 +17,10 @@
     </div>
   </div>
   <app-scripts-init></app-scripts-init>
+</ng-container>
+
+<ng-container *ngIf="checkStoreLive() == false">
+  <div style="height: 100vh; width: 100%;" class="d-flex flex-column align-items-center justify-content-center gap-8">
+    <img src="/assets/icons/closed.png" alt="closed" class="img-fluid" style="width: 200px;">
+  </div>
 </ng-container>

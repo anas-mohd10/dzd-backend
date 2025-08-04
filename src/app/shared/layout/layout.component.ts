@@ -11,6 +11,17 @@ import { LayoutInitService } from './core/layout-init.service';
 import { environment } from 'src/environments/environment';
 import { AppSettingsService } from '../../includes/services/app.settings.service';
 
+interface Settings {
+  logo: string,
+  darkLogo: string,
+  adminLogo: string,
+  defaultImage: string,
+  favicon: string,
+  adminFavicon: string,
+  isDeveloperAccess: boolean,
+  isStoreLive: boolean
+}
+
 @Component({
   selector: 'app-layout',
   templateUrl: './layout.component.html',
@@ -46,6 +57,8 @@ export class LayoutComponent implements OnInit, AfterViewInit {
   @ViewChild('ktHeaderMobile', { static: true }) ktHeaderMobile: ElementRef;
   @ViewChild('ktHeader', { static: true }) ktHeader: ElementRef;
 
+  settings: Settings | null = null;
+
   constructor(
     private initService: LayoutInitService,
     private layout: LayoutService,
@@ -57,21 +70,21 @@ export class LayoutComponent implements OnInit, AfterViewInit {
   isReady: boolean = false;
 
   ngOnInit(): void {
-    this.AppSettingsService.getGeneralSettingsbyId("1").subscribe((res: any) => {
+    this.AppSettingsService.getSettings().subscribe((res: any) => {
       localStorage.setItem('primaryLanguage', res.result.primaryLang)
       environment.base = res.result.baseS3Url;
       this.isReady = true
+      this.settings = res.result;
       this.ChangeDetectorRef.markForCheck()
     })
 
-    
     // build view by layout config settings
     this.asideDisplay = this.layout.getProp('aside.display') as boolean;
     this.toolbarDisplay = this.layout.getProp('toolbar.display') as boolean;
     this.contentContainerClasses = this.layout.getStringCSSClasses('contentContainer');
     this.asideCSSClasses = this.layout.getStringCSSClasses('aside');
     this.headerCSSClasses = this.layout.getStringCSSClasses('header');
-    this.headerHTMLAttributes = this.layout.getHTMLAttributes('headerMenu');    
+    this.headerHTMLAttributes = this.layout.getHTMLAttributes('headerMenu');
   }
 
   ngAfterViewInit(): void {
@@ -80,6 +93,21 @@ export class LayoutComponent implements OnInit, AfterViewInit {
         if (this.headerHTMLAttributes.hasOwnProperty(key)) {
           this.ktHeader.nativeElement.attributes[key] =
             this.headerHTMLAttributes[key];
+        }
+      }
+    }
+  }
+
+  // Check if the store is live
+  checkStoreLive() {
+    if (this.settings) {
+      if (this.settings.isStoreLive == true) {
+        return true;
+      } else if (this.settings.isStoreLive == false) {
+        if (this.settings.isDeveloperAccess == true) {
+          return true;
+        } else {
+          return false;
         }
       }
     }

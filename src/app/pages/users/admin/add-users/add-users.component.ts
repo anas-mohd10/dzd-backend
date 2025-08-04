@@ -5,6 +5,7 @@ import { HotToastService } from '@ngneat/hot-toast';
 import { PageTasks } from 'src/app/config/constants';
 import { appRoutes } from 'src/app/config/routes';
 import { AdminUsersService } from 'src/app/includes/services/admin.users.service';
+import { AuthService } from 'src/app/includes/services/auth.service';
 import { RolesService } from 'src/app/includes/services/roles.service';
 
 @Component({
@@ -21,12 +22,14 @@ export class AddUsersComponent implements OnInit {
   rolesData: any;
   isAdminExists: boolean = false;
   showPassword: boolean = false
+  isDeveloperAccess: boolean = false
 
   constructor(
     private AdminUsersService: AdminUsersService,
     private RolesService: RolesService,
     private FormBuilder: FormBuilder,
     private Router: Router,
+    private AuthService: AuthService,
     private HotToastService: HotToastService,
     private ChangeDetectorRef: ChangeDetectorRef
   ) { }
@@ -40,8 +43,18 @@ export class AddUsersComponent implements OnInit {
       mobile: ['', [Validators.pattern("^[0-9]{9}$")]],
       role: [''],
       password: ['', Validators.required],
+      isDeveloperAccess: ['false'],
       isActive: ['true',],
     });
+
+    this.AuthService.me().subscribe({
+      next: (res: any) => {
+        if (res?.errorCode == 0) {
+          this.isDeveloperAccess = res?.result?.isDeveloperAccess
+          this.ChangeDetectorRef.markForCheck()
+        } else { }
+      }, error: (err: any) => { }
+    })
 
     this.RolesService.getActiveRoles().subscribe({
       next: (res: any) => {

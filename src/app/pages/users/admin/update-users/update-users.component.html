@@ -59,6 +59,17 @@
               </select>
             </div>
           </div>
+          <div class="col-lg-6 mb-3" *ngIf="isDeveloperAccess">
+            <div class="form-group">
+              <label class="fs-6 mb-3 required">Developer Access</label>
+              <select class="form-select mb-3" formControlName="isDeveloperAccess"
+                [ngClass]="{ 'is-invalid': (formControls.isDeveloperAccess.touched || isSubmitted) && formControls.isDeveloperAccess.errors?.required }">
+                <option value="" disabled>-- Select an option --</option>
+                <option value="true">Yes</option>
+                <option value="false">No</option>
+              </select>
+            </div>
+          </div>
           <div class="col-lg-6 mb-3">
             <div class="form-group" [ngClass]="{'disabled-group': !isBasicEditable}">
               <label class="fs-6 mb-3">Status</label>
