@@ -166,6 +166,12 @@ export class HomeComponent implements OnInit {
     { key: 'None', value: 'none' },
   ];
 
+  titleTypeOptions: Array<{ key: string, value: string }> = [
+    { key: 'Left', value: 'left' },
+    { key: 'Center', value: 'center' },
+    { key: 'Right', value: 'right' },
+  ];
+
   // Clickpulse
   handleClickpulse(event: any) {
     this.tabs = event;
@@ -849,6 +855,10 @@ export class HomeComponent implements OnInit {
       refid: this.widgetDetails?.refid,
     };
 
+    if (this.form.get('titleType')?.value) {
+      widgetPayload['titleType'] = this.form.get('titleType')?.value;
+    }
+
     if (this.widgetImageTypes.includes(this.widgetDetails?.widgetType)) {
       let widgetImages = [];
       for (let widgetImage of this.widgetImages) {
@@ -869,6 +879,7 @@ export class HomeComponent implements OnInit {
     } else if (this.widgetDetails?.widgetType == 'sale-timer') {
       widgetPayload = {
         visibility: this.form.get('visibility')?.value,
+        titleType: this.form.get('titleType')?.value,
         refid: this.widgetDetails?.refid,
         widgetType: this.widgetDetails?.widgetType,
         ...this.saleForm.value,
@@ -883,6 +894,7 @@ export class HomeComponent implements OnInit {
     } else if (this.widgetProductTypes.includes(this.widgetDetails.widgetType)) {
       widgetPayload = {
         visibility: this.form.get('visibility')?.value,
+        titleType: this.form.get('titleType')?.value,
         refid: this.widgetDetails?.refid,
         ...this.form.value,
         widgetType: this.widgetDetails?.widgetType,
@@ -937,6 +949,7 @@ export class HomeComponent implements OnInit {
           this.form.reset();
           this.widgetForm.patchValue({
             title: '',
+            titleType: '',
             redirection: '',
             redirectionType: '',
             buttonText: '',
@@ -1134,7 +1147,7 @@ export class HomeComponent implements OnInit {
 
     this.keyPointForm = new FormGroup({
       title: new FormControl('', Validators.required),
-      description: new FormControl('', Validators.required),
+      description: new FormControl(''),
       icon: new FormControl(''),
     })
 
@@ -1144,6 +1157,7 @@ export class HomeComponent implements OnInit {
       visibility: new FormControl('all'),
       buttonVisibility: new FormControl(),
       title: new FormControl(''),
+      titleType: new FormControl('left'),
       titleImage: new FormControl(null),
       description: new FormControl(''),
       html: new FormControl(''),
@@ -1244,6 +1258,7 @@ export class HomeComponent implements OnInit {
 
     this.widgetForm = new FormGroup({
       title: new FormControl(''),
+      titleType: new FormControl(''),
       description: new FormControl(''),
       button: new FormControl(''),
       redirection: new FormControl(''),
