@@ -950,7 +950,7 @@ export class UpdateProductComponent implements OnInit {
     return this.form.controls;
   }
   generateSlug() {
-    const name = this.form.get('name')?.value || '';
+    const name = this.productDetails.name || '';
     let slug = name.toLowerCase().normalize('NFKD');
     slug = slug.replace(/\s+/g, '-');
     slug = slug.replace(/[^\u0600-\u06FFa-z0-9-]/g, '');
