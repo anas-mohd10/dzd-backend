@@ -105,9 +105,9 @@ export class UpdateProductComponent implements OnInit {
   brandDetails: any;
   previewDetails: any;
   @ViewChild('staticTabs', { static: false }) staticTabs?: TabsetComponent;
-  searchKeywords: Array<any> = [];
+  searchKeywords: Array<string> = [];
   searchKeyword: FormControl = new FormControl('');
-  relatedProducts: Array<any> = [];
+  relatedProducts: Array<{ name: string, thumbnail: string, sku: string, _id: string }> = [];
   categories: Array<any> = [];
   selectedCategories: Array<string> = [];
   primaryCategory: FormControl = new FormControl('', Validators.required);
@@ -180,7 +180,11 @@ export class UpdateProductComponent implements OnInit {
 
   slugConfirmationRef?: BsModalRef;
   newSlugValue: string = '';
-  @ViewChild('slugConfirmationTemplate') slugConfirmationTemplate: TemplateRef<any>;
+  @ViewChild('slugConfirmation') slugConfirmationTemplate: TemplateRef<any>;
+
+  relatedProductsRef: BsModalRef | null = null
+  relatedProductsKeyword: FormControl = new FormControl('');
+  relatedProductItems: Array<{ name: string, sku: string, thumbnail: string, _id: string }> = [];
 
   constructor(
     private ActivatedRoute: ActivatedRoute,
@@ -197,6 +201,57 @@ export class UpdateProductComponent implements OnInit {
     this.addOnsKeyword.valueChanges.pipe(debounceTime(500)).subscribe(() => {
       this.searchProducts();
     });
+
+    this.relatedProductsKeyword.valueChanges.pipe(debounceTime(500)).subscribe(() => {
+      if (!this.relatedProductsKeyword.value) {
+        this.addOnSearchResults = [];
+      }
+
+      if (!this.relatedProductsKeyword.valid) {
+        return;
+      }
+
+      this.ProductService.searchProducts({
+        name: this.relatedProductsKeyword.value,
+        page: 1,
+        limit: 40,
+      }).subscribe({
+        next: (res: any) => {
+          if (res && res.errorCode == 0) {
+            this.relatedProductItems = res.result.data;
+            this.ChangeDetectorRef.markForCheck();
+          } else { }
+        },
+        error: (err: any) => { },
+      });
+    })
+  }
+
+  openRltdProducts(template: TemplateRef<any>) {
+    this.relatedProductsRef = this.BsModalService.show(template, {
+      class: 'modal-dialog-centered modal-lg',
+      ignoreBackdropClick: true,
+    });
+  }
+
+  closeRltdProducts() {
+    this.relatedProductsKeyword.setValue('')
+    this.relatedProductsRef?.hide()
+  }
+
+  updateRltdProducts(productDoc: { name: string, thumbnail: string, sku: string, _id: string }) {
+    const isExists: boolean = this.relatedProducts.some((relatedProduct) => relatedProduct._id == productDoc._id)
+    if (isExists) {
+      this.relatedProducts = this.relatedProducts.filter((relatedProduct) => relatedProduct._id !== productDoc._id)
+      this.HotToastService.info('Product removed')
+    } else {
+      this.relatedProducts.push(productDoc)
+      this.HotToastService.info('Product added')
+    }
+  }
+
+  isRltProductExists(productId: string): boolean {
+    return this.relatedProducts.some((relatedProduct) => relatedProduct._id == productId)
   }
 
   openHistory(template: TemplateRef<any>) {
@@ -632,24 +687,6 @@ export class UpdateProductComponent implements OnInit {
       });
     }
   }
-  // toggleProductCategory(categoryEvent: any, type: string) {
-  //   if (type == 'add') {
-  //     this.defaultCategories.forEach((defaultCategory: any) => {
-  //       if (defaultCategory.slug == categoryEvent.target.value) {
-  //         let isExists: boolean = this.categories.some((item: any) => item?.slug == defaultCategory.slug);
-  //         if (isExists) {
-  //           this.HotToastService.info('Category already added')
-  //         } else {
-  //           this.categories.push(defaultCategory);
-  //         }
-  //       }
-  //     })
-  //   } else {
-  //     this.categories = this.categories.filter((item: any) => item.slug != categoryEvent);
-  //   }
-
-  //   this.productCategory.setValue('');
-  // }
 
   toggleAddOnItems() { }
 
@@ -662,8 +699,8 @@ export class UpdateProductComponent implements OnInit {
       const formattedSlug = this.formatSlugForSave(currentSlug);
       this.form.get('slug')?.setValue(formattedSlug);
     }
-      this.ChangeDetectorRef.markForCheck();
-  
+    this.ChangeDetectorRef.markForCheck();
+
     if (
       this.productDetails?.price?.offer == this.form.get('price')?.value?.offer
     ) {
@@ -894,9 +931,7 @@ export class UpdateProductComponent implements OnInit {
       }
       this.form.get('searchKeywords')?.setValue(this.searchKeywords);
     } else {
-      this.searchKeywords = this.searchKeywords.filter(
-        (item: any) => item != event
-      );
+      this.searchKeywords = this.searchKeywords.filter((item: any) => item != event);
       this.form.get('searchKeywords')?.setValue(this.searchKeywords);
     }
   }
@@ -921,25 +956,25 @@ export class UpdateProductComponent implements OnInit {
     slug = slug.replace(/[^\u0600-\u06FFa-z0-9-]/g, '');
     // Replace multiple hyphens with single hyphen
     slug = slug.replace(/-+/g, '-');
-    
+
     // Trim hyphens from start and end
     slug = slug.replace(/^-+|-+$/g, '');
-    
+
     const newSlug = `${slug}-${this.productDetails?.sku}`;
-    
+
     // For manual generation, show confirmation
     this.openSlugConfirmation(newSlug);
   }
 
   private formatSlugForSave(value: string): string {
     let slug = value.toLowerCase().normalize('NFKD');
-    
+
     // Replace spaces with hyphens
     slug = slug.replace(/\s+/g, '-');
-    
-    slug = slug.replace(/[^\u0600-\u06FFa-z0-9-]/g, '');   
+
+    slug = slug.replace(/[^\u0600-\u06FFa-z0-9-]/g, '');
     // Replace multiple hyphens with single hyphen
-    slug = slug.replace(/-+/g, '-');   
+    slug = slug.replace(/-+/g, '-');
     // Trim hyphens from start and end
     return slug.replace(/^-+|-+$/g, '');
   }
@@ -947,17 +982,17 @@ export class UpdateProductComponent implements OnInit {
   openSlugConfirmation(newSlug: string) {
     this.newSlugValue = newSlug;
     this.slugConfirmationRef = this.BsModalService.show(this.slugConfirmationTemplate, {
-      class: 'modal-dialog-centered modal-md',
+      class: 'modal-sm',
       ignoreBackdropClick: true,
     });
   }
 
-  confirmSlugChange() {
+  confirmSlug() {
     this.form.patchValue({ slug: this.newSlugValue });
     this.slugConfirmationRef?.hide();
   }
 
-  cancelSlugChange() {
+  cancelSlug() {
     this.slugConfirmationRef?.hide();
   }
 
@@ -965,9 +1000,9 @@ export class UpdateProductComponent implements OnInit {
     this.storeFieldForm.get('isVisible')?.setValue(event.toggleState);
   }
 
-  ngOnInit(): void {
-    this.base = environment.base;
 
+  // Fetch items
+  fetchBrands() {
     this.BrandService.getActiveBrands().subscribe({
       next: (res: any) => {
         if (
@@ -992,8 +1027,23 @@ export class UpdateProductComponent implements OnInit {
         console.error('Error fetching brands:', err);
       },
     });
+  }
 
-    this.AppSettingsService.getGeneralSettingsbyId('1').subscribe({
+  fetchCategories() {
+    this.categoryService.getActiveCategory().subscribe({
+      next: (res: any) => {
+        if (res?.errorCode == 0) {
+          this.defaultCategories = res?.result;
+          this.ChangeDetectorRef.markForCheck();
+        } else {
+        }
+      },
+      error: (err: any) => { },
+    });
+  }
+
+  fetchSettings() {
+    this.AppSettingsService.getSettings().subscribe({
       next: (res: any) => {
         if (res?.errorCode == 0) {
           this.settings = res?.result;
@@ -1013,6 +1063,29 @@ export class UpdateProductComponent implements OnInit {
         console.error('Error loading settings:', err);
       },
     });
+  }
+
+  fetchTax() {
+    this.taxClassService.getTaxClasses().subscribe({
+      next: (res: any) => {
+        if (res?.errorCode == 0) {
+          this.taxClassDetails = res?.result;
+        } else {
+        }
+      },
+      error: (err: any) => { },
+    });
+  }
+
+  ngOnInit(): void {
+    this.base = environment.base;
+
+    Promise.all([
+      this.fetchBrands(),
+      this.fetchCategories(),
+      this.fetchSettings(),
+      this.fetchTax()
+    ])
 
     this.addOnOptionForm = new FormGroup({
       product: new FormControl('', Validators.required),
@@ -1214,39 +1287,8 @@ export class UpdateProductComponent implements OnInit {
       mpn: new FormControl(''),
       isCompareEnabled: new FormControl('false'),
     });
-
-    this.categoryService.getActiveCategory().subscribe({
-      next: (res: any) => {
-        if (res?.errorCode == 0) {
-          this.defaultCategories = res?.result;
-          this.ChangeDetectorRef.markForCheck();
-        } else {
-        }
-      },
-      error: (err: any) => { },
-    });
-
-    this.ProductService.getActiveProduct().subscribe({
-      next: (res: any) => {
-        if (res?.errorCode == 0) {
-          this.activeRelatedProducts = res?.result;
-          this.ChangeDetectorRef.markForCheck();
-        } else {
-        }
-      },
-      error: (err: any) => { },
-    });
-
-    this.taxClassService.getTaxClasses().subscribe({
-      next: (res: any) => {
-        if (res?.errorCode == 0) {
-          this.taxClassDetails = res?.result;
-        } else {
-        }
-      },
-      error: (err: any) => { },
-    });
   }
+
   updateFormWithLocalizedContent() {
     if (!this.productDetails || !this.settings || !this.settings.primaryLang) {
       console.warn('Cannot update form with localized content, missing data:', {
