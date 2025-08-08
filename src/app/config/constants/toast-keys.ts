@@ -33,5 +33,9 @@ export const toastKeys = {
     placeOrder: 'placeOrder',
     notifyMe: 'notifyMe',
     limitedStock: 'limitedStock',
-    forgottenPasswordToast : 'forgottenPasswordToast'
+    forgottenPasswordToast : 'forgottenPasswordToast',
+    invalidUser:'invalidUser',
+    incorrectPassword:'incorrectPassword',
+    registerdEmail:'registerdEmail',
+    registerdPhoneNumber:'registerdPhoneNumber'
 }
