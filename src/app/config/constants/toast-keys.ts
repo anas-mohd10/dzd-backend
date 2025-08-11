@@ -23,12 +23,11 @@ export const toastKeys = {
     removeFromCart: 'removeFromCart',
     availableInLimitedQuantity: 'availableInLimitedQuantity',
     updateCart: 'updateCart',
-    clearCart: 'clearCart',
-    addProductToWishlist: 'addProductToWishlist',
-    removeProductFromWishlist: 'removeProductFromWishlist',
+    clearCart: 'clearCart',    
     updateWishlist: 'updateWishlist',
-    clearWishlist: 'clearWishlist',
-    addProductToCompare: 'addProductToCompare',
+    addProductToWishlist:  'addProductToWishlist',
+    removeProductFromWishlist: 'removeProductFromWishlist',   
+     addProductToCompare: 'addProductToCompare',
     removeProductFromCompare: 'removeProductFromCompare',
     placeOrder: 'placeOrder',
     notifyMe: 'notifyMe',
@@ -38,4 +37,6 @@ export const toastKeys = {
     incorrectPassword:'incorrectPassword',
     registerdEmail:'registerdEmail',
     registerdPhoneNumber:'registerdPhoneNumber',
+    subscribedSuccessfully:'subscribedSuccessfully',
+    alreadySubscribed:'alreadySubscribed'
 }
