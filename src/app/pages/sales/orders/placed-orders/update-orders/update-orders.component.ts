@@ -101,7 +101,7 @@ export class UpdateOrdersComponent implements OnInit {
   @ViewChild('failedPayment') failedPayment: any;
   failedPaymenRef?: BsModalRef;
 
-  shipmentItems: string[] = ['PLACED', 'ACCEPTED', 'PACKED']
+  shipmentItems: string[] = ['PLACED', 'ACCEPTED']
   shippingRef: BsModalRef | null
   shippingGateway: string | null
   shippingGateways: Array<any> = []
@@ -126,9 +126,27 @@ export class UpdateOrdersComponent implements OnInit {
     }).subscribe({
       next: (resp: any) => {
         if (resp && resp.errorCode == 0) {
-
+          this.shippingRef?.hide()
+          this.HotToastService.success(resp.message)
+          this.getOrderDetails()
+          this.ChangeDetectorRef.markForCheck()
         } else {
+          this.HotToastService.error(resp.message)
+        }
+      }, error: (err) => {
+        this.HotToastService.error(`${(err as Error).message}`)
+      }
+    })
+  }
 
+  downdloadShipmentLabel() {
+    this.ShipmentService.getShipmentLabel(this.slug).subscribe({
+      next: (resp: any) => {
+        if (resp && resp.errorCode == 0) {
+          const labelUrl: string = resp.result.url
+          window.open(labelUrl, '_blank')
+        } else {
+          this.HotToastService.error(resp.message)
         }
       }, error: (err) => {
         this.HotToastService.error(`${(err as Error).message}`)

@@ -126,6 +126,47 @@
                     <input type="text" id="source" placeholder="Source" formControlName="source" class="form-control"
                         [ngClass]="{ 'is-invalid': (formControls.source.touched || isSubmitted) && formControls.source.errors?.required }">
                 </div>
+                <div class="col-lg-6 form-group my-3"
+                    *ngIf="shippingGatewayConfig[activeDocId]?.includes('productGroup')">
+                    <label for="productGroup" class="fs-6 mb-3">Product Group</label>
+                    <input type="text" id="productGroup" placeholder="Product Group" formControlName="productGroup"
+                        class="form-control"
+                        [ngClass]="{ 'is-invalid': (formControls.productGroup.touched || isSubmitted) && formControls.productGroup.errors?.required }">
+                </div>
+                <div class="col-lg-6 form-group my-3"
+                    *ngIf="shippingGatewayConfig[activeDocId]?.includes('productType')">
+                    <label for="productType" class="fs-6 mb-3">Product Type</label>
+                    <input type="text" id="productType" placeholder="Product Type" formControlName="productType"
+                        class="form-control"
+                        [ngClass]="{ 'is-invalid': (formControls.productType.touched || isSubmitted) && formControls.productType.errors?.required }">
+                </div>
+                <div class="col-lg-6 form-group my-3"
+                    *ngIf="shippingGatewayConfig[activeDocId]?.includes('paymentType')">
+                    <label for="paymentType" class="fs-6 mb-3">Payment Type</label>
+                    <input type="text" id="paymentType" placeholder="Payment Type" formControlName="paymentType"
+                        class="form-control"
+                        [ngClass]="{ 'is-invalid': (formControls.paymentType.touched || isSubmitted) && formControls.paymentType.errors?.required }">
+                </div>
+                <div class="col-lg-6 form-group my-3"
+                    *ngIf="shippingGatewayConfig[activeDocId]?.includes('paymentOptions')">
+                    <label for="paymentOptions" class="fs-6 mb-3">Payment Options</label>
+                    <input type="text" id="paymentOptions" placeholder="Payment Options" formControlName="paymentOptions"
+                        class="form-control"
+                        [ngClass]="{ 'is-invalid': (formControls.paymentOptions.touched || isSubmitted) && formControls.paymentOptions.errors?.required }">
+                </div>
+                <div class="col-lg-6 form-group my-3"
+                    *ngIf="shippingGatewayConfig[activeDocId]?.includes('exporterType')">
+                    <label for="exporterType" class="fs-6 mb-3">Exporter Type</label>
+                    <input type="text" id="exporterType" placeholder="Exporter Type" formControlName="exporterType"
+                        class="form-control"
+                        [ngClass]="{ 'is-invalid': (formControls.exporterType.touched || isSubmitted) && formControls.exporterType.errors?.required }">
+                </div>
+                <div class="col-lg-6 form-group my-3" *ngIf="shippingGatewayConfig[activeDocId]?.includes('services')">
+                    <label for="services" class="fs-6 mb-3">Services</label>
+                    <input type="text" id="services" placeholder="Services" formControlName="services"
+                        class="form-control"
+                        [ngClass]="{ 'is-invalid': (formControls.services.touched || isSubmitted) && formControls.services.errors?.required }">
+                </div>
             </div>
             <div class="d-flex justify-content-end gap-4">
                 <button type="submit" class="btn btn-primary">Save Changes</button>

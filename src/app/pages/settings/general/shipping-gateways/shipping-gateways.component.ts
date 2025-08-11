@@ -27,7 +27,23 @@ export class ShippingGatewaysComponent implements OnInit {
   activeDocId: string | null
   modalRef: BsModalRef | null;
   shippingGatewayConfig: any = {
-    aramex: ['apiUrl', 'username', 'password', 'accountNumber', 'accountPin', 'accountEntity', 'accountCountryCode', 'source', 'version'],
+    aramex: [
+      'apiUrl',
+      'username',
+      'password',
+      'accountNumber',
+      'accountPin',
+      'accountEntity',
+      'accountCountryCode',
+      'source',
+      'version',
+      'productGroup',
+      'productType',
+      'paymentType',
+      'paymentOptions',
+      'exporterType',
+      'services'
+    ],
   };
   gateways: Array<any> = []
 
@@ -72,7 +88,13 @@ export class ShippingGatewaysComponent implements OnInit {
       accountEntity: new FormControl(''),
       accountCountryCode: new FormControl(''),
       source: new FormControl(''),
-      version: new FormControl('')
+      version: new FormControl(''),
+      productGroup: new FormControl(''),
+      productType: new FormControl(''),
+      paymentOptions: new FormControl(''),
+      paymentType: new FormControl(''),
+      exporterType: new FormControl(''),
+      services: new FormControl('')
     })
 
     Promise.all([
@@ -127,7 +149,23 @@ export class ShippingGatewaysComponent implements OnInit {
       }
     })
 
-    const fields = ['apiUrl', 'username', 'password', 'accountNumber', 'accountPin', 'accountEntity', 'accountCountryCode', 'source', 'version']
+    const fields = [
+      'apiUrl',
+      'username',
+      'password',
+      'accountNumber',
+      'accountPin',
+      'accountEntity',
+      'accountCountryCode',
+      'source',
+      'version',
+      'productGroup',
+      'productType',
+      'paymentType',
+      'paymentOptions',
+      'exporterType',
+      'services'
+    ]
 
     fields.forEach((field) => {
       let pgConfig = this.shippingGatewayConfig[docId] || [];

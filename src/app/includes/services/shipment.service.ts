@@ -18,4 +18,9 @@ export class ShipmentService {
     const url = this.CommonService.getFullUrl(this.endpoints.create);
     return this.HttpClient.post(`${url}`, doc)
   }
+
+  getShipmentLabel(orderId: string){
+    const url = this.CommonService.getFullUrl(this.endpoints.label + `/${orderId}`);
+    return this.HttpClient.get(`${url}`)
+  }
 }
