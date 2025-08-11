@@ -33,11 +33,13 @@
             Cancel Order
           </div>
 
-          <button class="btn btn-secondary" (click)="openShipment(shipmentOptions)"
-            *ngIf="shipmentItems.includes(order.orderStatus.toUpperCase())">
-            <i class="fa fa-truck" aria-hidden="true"></i>
-            Create Shipment
-          </button>
+          <ng-container *ngIf="order">
+            <button class="btn btn-secondary" (click)="openShipment(shipmentOptions)"
+              *ngIf="shipmentItems.includes(order.orderStatus.toUpperCase())">
+              <i class="fa fa-truck" aria-hidden="true"></i>
+              Create Shipment
+            </button>
+          </ng-container>
 
           <button class="btn btn-primary" (click)="acceptOrderPayment()"
             *ngIf="order?.paymentMethod == 'ONLINE' && order?.paymentStatus == 'PENDING'">

@@ -134,7 +134,7 @@ export class UpdateOrdersComponent implements OnInit {
           this.HotToastService.error(resp.message)
         }
       }, error: (err) => {
-        this.HotToastService.error(`${(err as Error).message}`)
+        this.HotToastService.error(`Internal Server Error`)
       }
     })
   }
@@ -149,7 +149,7 @@ export class UpdateOrdersComponent implements OnInit {
           this.HotToastService.error(resp.message)
         }
       }, error: (err) => {
-        this.HotToastService.error(`${(err as Error).message}`)
+        this.HotToastService.error(`Internal Server Error`)
       }
     })
   }
