@@ -187,13 +187,13 @@
                       {{order?.customerType == 'regd' ? 'Customer' : 'Guest'}}
                     </td>
                   </tr>
-                  <tr>
+                  <tr *ngIf="order && order.isLabelCreated == true">
                     <th class="p-2 text-muted fw-normal">Shipping Gateway</th>
                     <td class="p-2">
                       {{order.shippingGateway | titlecase}}
                     </td>
                   </tr>
-                  <tr>
+                  <tr *ngIf="order && order.isLabelCreated == true">
                     <th class="p-2 text-muted fw-normal">AWB No.</th>
                     <td class="p-2">
                       {{order.awbNumber}}
