@@ -150,13 +150,13 @@
                       {{order?.paymentMethod}}
                     </td>
                   </tr>
-                  <tr>
+                  <tr *ngIf="order && order.paymentMethod == 'ONLINE'">
                     <th class="p-2 text-muted fw-normal">Gateway</th>
                     <td class="p-2">
                       {{formatPaymentGateway(order?.paymentGateway)}}
                     </td>
                   </tr>
-                  <tr>
+                  <tr *ngIf="order && order.paymentMethod == 'ONLINE'">
                     <th class="p-2 text-muted fw-normal">Gateway Status</th>
                     <td class="p-2">
                       <div class="{{formatPaymentStatus(order?.gatewayStatus)}} p-1 rounded">
@@ -188,6 +188,18 @@
                     </td>
                   </tr>
                   <tr>
+                    <th class="p-2 text-muted fw-normal">Shipping Gateway</th>
+                    <td class="p-2">
+                      {{order.shippingGateway | titlecase}}
+                    </td>
+                  </tr>
+                  <tr>
+                    <th class="p-2 text-muted fw-normal">AWB No.</th>
+                    <td class="p-2">
+                      {{order.awbNumber}}
+                    </td>
+                  </tr>
+                  <tr>
                     <th class="p-2 text-muted fw-normal">Order Total</th>
                     <td class="p-2">
                       {{settings?.currency}} {{order?.total}}
@@ -199,8 +211,7 @@
                       {{order?.deliveryType == '1' ? 'Click and collect' : 'Home delivery' }}
                     </td>
                   </tr>
-                  <!-- Add new row for cancellation details -->
-                  <tr *ngIf="order?.cancel">
+                  <tr *ngIf="order && order.cancel && order.orderStatus == 'CANCELLED'">
                     <th class="p-2 text-muted fw-normal">Cancelled By</th>
                     <td class="p-2">
                       <ng-container *ngIf="order.cancel && order.cancel.action === 'customer'">
