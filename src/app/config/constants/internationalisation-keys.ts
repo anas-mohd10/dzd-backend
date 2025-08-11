@@ -417,5 +417,14 @@ export const internationalisationKeys = {
     homeDashboard: 'homeDashboard',
     homeAddress: 'homeAddress',
     myVouchers: 'myVouchers',
-    someItemsUnavailable:'someItemsUnavailable'
+    someItemsUnavailable:'someItemsUnavailable',
+    noTransactions:'noTransactions',
+    redeemVoucher:'redeemVoucher',
+    enterVoucherCode:'enterVoucherCode',
+    redeem:'redeem',
+    confirmDeleteAddress:'confirmDeleteAddress',
+    confirmDeletemessage:'confirmDeletemessage',
+    updateAddress:'updateAddress',
+    failedToCopyURL:'failedToCopyURL',
+    referralcodeCopied:'referralcodeCopied',
 }

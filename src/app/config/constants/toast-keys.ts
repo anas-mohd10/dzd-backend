@@ -37,5 +37,5 @@ export const toastKeys = {
     invalidUser:'invalidUser',
     incorrectPassword:'incorrectPassword',
     registerdEmail:'registerdEmail',
-    registerdPhoneNumber:'registerdPhoneNumber'
+    registerdPhoneNumber:'registerdPhoneNumber',
 }
