@@ -42,6 +42,7 @@ export class PaymentSettingsComponent implements OnInit {
     { title: 'Rak Bank', id: 'rakbank', icon: `${environment.base}rakbank.png` },
     { title: 'Tabby', id: 'tabby', icon: `${environment.base}tabby.png` },
     { title: 'Tamara', id: 'tamara', icon: `${environment.base}tamara.png` },
+    { title: 'Telr', id: 'telr', icon: `${environment.base}telr.png` },
   ];
   displayIcon: string = '';
   modalRef?: BsModalRef;
@@ -55,7 +56,8 @@ export class PaymentSettingsComponent implements OnInit {
     'network-international-tokenized': ['outletReference', 'apiKey', 'apiUrl'],
     qi: ['secretKey', 'apiUrl', 'username', 'password'],
     razorpay: ['secretKey', 'keyId'],
-    tamara: ['apiUrl', 'publicKey', 'privateKey', 'payByOption']
+    tamara: ['apiUrl', 'publicKey', 'privateKey', 'payByOption'],
+    telr: ['apiKey', 'merchantId']
   };
 
   get formControls() {
@@ -86,7 +88,7 @@ export class PaymentSettingsComponent implements OnInit {
       outletReference: new FormControl(''),
       publicKey: new FormControl(''),
       privateKey: new FormControl(''),
-      payByOption: new FormControl(''),
+      payByOption: new FormControl('PAY_NOW'),
       region: new FormControl(''),
       serverKey: new FormControl(''),
       apiUrl: new FormControl(''),
@@ -106,9 +108,7 @@ export class PaymentSettingsComponent implements OnInit {
   }
 
   paymentGatewayEnabled(pgId: string) {
-    let isExists = this.paymentGateways.some(
-      (paymentGateway: any) => paymentGateway.paymentGateway == pgId
-    );
+    let isExists = this.paymentGateways.some((paymentGateway: any) => paymentGateway.paymentGateway == pgId);
     return isExists;
   }
 
@@ -211,6 +211,8 @@ export class PaymentSettingsComponent implements OnInit {
         return `assets/payment-icons/tabby.jpg`;
       case 'tamara':
         return `assets/payment-icons/tamara.png`;
+      case 'telr':
+        return `assets/payment-icons/telr.png`;
     }
   }
 
@@ -234,9 +236,8 @@ export class PaymentSettingsComponent implements OnInit {
           this.pgDetails = response.result;
           this.displayIcon = response.result?.displayIcon?.path;
           this.form.patchValue(this.pgDetails);
-          this.form.patchValue({
-            displayIcon: response.result?.displayIcon?._id,
-          });
+          this.form.patchValue({payByOption: this.pgDetails.payByOption || 'PAY_NOW'})
+          this.form.patchValue({ displayIcon: response.result?.displayIcon?._id });
           this.ChangeDetectorRef.markForCheck();
         } else {
           this.HotToastService.error(response.message);

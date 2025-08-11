@@ -4,6 +4,7 @@ import { BlogService } from 'src/app/includes/services/blog.service';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { AppSettingsService } from 'src/app/includes/services/app.settings.service';
+import { HotToastService } from '@ngneat/hot-toast';
 
 interface Blog {
   _id: string;
@@ -43,8 +44,8 @@ export class BlogListingComponent implements OnInit {
     blogPromotionalBanner: new FormControl('')
   });
 
-
   constructor(
+    private HotToastService: HotToastService,
     private ChangeDetectorRef: ChangeDetectorRef,
     private BlogService: BlogService,
     private modalService: BsModalService,
@@ -102,7 +103,6 @@ export class BlogListingComponent implements OnInit {
   }
 
   handleCategoryThumbnail(media: any) {
-    console.log(media);
     this.categoryThumbnail = media.path;
     this.categoryForm.patchValue({ thumbnail: media._id });
   }
@@ -113,26 +113,28 @@ export class BlogListingComponent implements OnInit {
         next: (res: any) => {
           if (res?.errorCode === 0) {
             this.modalRef.hide();
-            // Show success message
-          }
+          } else { }
+        }, error: (err: any) => {
+          this.HotToastService.error(`${(err as Error).message}`)
         }
       });
     }
   }
 
   loadPromoBanner() {
-    // spread the remaining settings from the current settings object
     this.AppSettingsService.getSettings().subscribe({
       next: (res: any) => {
         if (res?.errorCode === 0) {
           this.form.patchValue({ blogPromotionalBanner: res.result.blogPromotionalBanner });
           this.settings = res.result;
-          this.form.patchValue({ blogPromotionalBanner: res.result.blogPromotionalBanner });
-        }
+          this.ChangeDetectorRef.markForCheck()
+        } else { }
+      }, error: (err: any) => {
+        this.HotToastService.error(`${(err as Error).message}`)
       }
     });
   }
-  
+
   open(template: TemplateRef<any>) {
     this.modalRef = this.modalService.show(template);
   }
@@ -146,24 +148,26 @@ export class BlogListingComponent implements OnInit {
     this.settings.blogPromotionalBanner = media.path;
   }
 
-
   removePromoBanner() {
     this.form.get('blogPromotionalBanner')?.setValue('');
     this.settings.blogPromotionalBanner = null;
   }
 
   savePromo() {
-    const updatedSettings = {
-      ...this.settings,
+    this.AppSettingsService.updateSettings({
       blogPromotionalBanner: this.form.value.blogPromotionalBanner
-    };
-
-    this.AppSettingsService.updateGeneralSettings(updatedSettings).subscribe({
+    }).subscribe({
       next: (res: any) => {
         if (res?.errorCode === 0) {
           this.modalRef.hide();
-          this.settings = updatedSettings; // Update local settings
+          this.HotToastService.success(res.message)
+          this.ChangeDetectorRef.markForCheck()
+          this.loadPromoBanner()
+        } else {
+          this.HotToastService.error(res.message)
         }
+      }, error: (err: any) => {
+        this.HotToastService.error(`${(err as Error).message}`)
       }
     });
   }

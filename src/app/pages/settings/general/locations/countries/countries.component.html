@@ -26,6 +26,7 @@
                 <tr>
                     <th>Name</th>
                     <th>Code</th>
+                    <th>Phone Code</th>
                     <th>&nbsp;</th>
                 </tr>
             </thead>
@@ -33,6 +34,7 @@
                 <tr *ngFor="let country of dbCountries">
                     <td>{{ country.name }}</td>
                     <td>{{ country.code }}</td>
+                    <td>{{country.phoneCode}}</td>
                     <td>
                         <div class="d-flex align-items-center justify-content-start gap-2">
                             <button routerLink="{{appRoute.states + '/' + country._id}}"

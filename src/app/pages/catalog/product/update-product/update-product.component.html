@@ -176,35 +176,6 @@
                           </div>
                         </ng-container>
                       </div>
-
-                      <div class="mb-3 form-group">
-                        <label for="relatedProducts" class="fs-6 mb-3">Related Products</label>
-                        <select id="relatedProducts" [formControl]="relatedProduct" class="form-select"
-                          (change)="onProductsTriggered()">
-                          <option value="" disabled>-- Select an option--</option>
-                          <option *ngFor="let activeRelatedProduct of activeRelatedProducts"
-                            value="{{activeRelatedProduct?._id}}">{{activeRelatedProduct.name}}
-                          </option>
-                        </select>
-                        <ng-container *ngIf="relatedProducts && relatedProducts.length > 0">
-                          <div class="mt-2 d-flex flex-wrap align-items-center gap-2 justify-content-start">
-                            <ng-container *ngFor="let product of relatedProducts; let i = index">
-                              <div
-                                class="bg-secondary d-flex align-items-center justify-content-center gap-2 p-2 rounded">
-                                {{product.name}}
-                                <div (click)="onProductsTriggered(product)">
-                                  <svg data-slot="icon" height="16" width="16" fill="none" stroke-width="1.5"
-                                    stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"
-                                    aria-hidden="true">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12">
-                                    </path>
-                                  </svg>
-                                </div>
-                              </div>
-                            </ng-container>
-                          </div>
-                        </ng-container>
-                      </div>
                     </div>
                   </div>
                   <div class="col-lg-3">
@@ -328,6 +299,36 @@
                     </div>
                   </div>
                 </div>
+                <div class="my-8 form-group">
+                  <div class="d-flex align-items-end justify-content-between">
+                    <label for="relatedProducts" class="fs-6 mb-3">Related Products</label>
+                    <button class="btn btn-primary px-4 py-2" (click)="openRltdProducts(rltdProducts)">
+                      Add Products
+                      <i class="fa fa-plus"></i>
+                    </button>
+                  </div>
+                  <ng-container *ngIf="relatedProducts && relatedProducts.length > 0">
+                    <div class="mt-4 d-flex flex-wrap align-items-center gap-2 justify-content-start">
+                      <ng-container *ngFor="let product of relatedProducts; let i = index">
+                        <div class="bg-secondary d-flex align-items-center justify-content-center gap-2 p-2 rounded">
+                          {{product.name}}
+                          <div (click)="updateRltdProducts(product)">
+                            <svg data-slot="icon" height="16" width="16" fill="none" stroke-width="1.5"
+                              stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"
+                              aria-hidden="true">
+                              <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12">
+                              </path>
+                            </svg>
+                          </div>
+                        </div>
+                      </ng-container>
+                    </div>
+                  </ng-container>
+                  <ng-container *ngIf="relatedProducts && relatedProducts.length == 0">
+                    <div class="text-muted">No related products</div>
+                  </ng-container>
+                </div>
+
                 <div class="row" formGroupName="details">
                   <div class="mb-3 form-group">
                     <label class="fs-6 mb-3">Description</label>
@@ -857,24 +858,54 @@
   </div>
 </ng-template>
 
-<ng-template #slugConfirmationTemplate>
+<ng-template #slugConfirmation>
+  <div class="modal-body">
+    <p class="fs-5 text-muted">Are you sure you want to update the slug?</p>
+    <div class="d-flex align-items-center justify-content-between gap-2">
+      <button type="button" class="btn btn-danger w-50 p-2" (click)="confirmSlug()">Yes</button>
+      <button type="button" class="btn btn-primary w-50 p-2" (click)="cancelSlug()">No</button>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #rltdProducts>
   <div class="modal-header">
-    <h4 class="modal-title pull-left">Confirm Slug Change</h4>
-    <button type="button" class="btn-close close pull-right" aria-label="Close" (click)="cancelSlugChange()">
+    <h4 class="modal-title pull-left">Related Products</h4>
+    <button type="button" class="btn-close close pull-right" aria-label="Close" (click)="closeRltdProducts()">
       <span aria-hidden="true" class="visually-hidden">&times;</span>
     </button>
   </div>
   <div class="modal-body">
-    <div class="p-3">
-      <p class="fs-5 mb-3">Are you sure you want to update the slug?</p>
-      <!-- <div class="bg-light p-3 rounded mb-4 border">
-        <code class="fs-6">{{newSlugValue}}</code>
-      </div> -->
-      <p class="text-muted mb-4">This change will only be applied when you save the product.</p>
-      <div class="d-flex justify-content-end gap-3">
-        <button class="btn btn-secondary" (click)="cancelSlugChange()">No</button>
-        <button class="btn btn-primary" (click)="confirmSlugChange()">Yes</button>
-      </div>
-    </div>
+    <input type="text" class="form-control" placeholder="Search related products"
+      [formControl]="relatedProductsKeyword">
+
+    <ng-container *ngIf="relatedProductItems.length > 0">
+      <table class="table my-3">
+        <thead>
+          <th class="p-2">&nbsp;</th>
+          <th class="p-2">Name</th>
+          <th class="p-2">SKU</th>
+          <th class="p-2">&nbsp;</th>
+        </thead>
+        <tbody>
+          <tr *ngFor="let relatedProductItem of relatedProductItems">
+            <td>
+              <img src="{{base}}{{relatedProductItem.thumbnail}}" onerror="this.src = 'assets/images/default.png'"
+                alt="{{relatedProductItem.name}}" height="40" width="40" class="rounded border border-secondary" />
+            </td>
+            <td>{{relatedProductItem.name}}</td>
+            <td>{{relatedProductItem.sku}}</td>
+            <td>
+              <button class="btn p-1 w-100" [ngClass]="{
+                  'btn-secondary': isRltProductExists(relatedProductItem._id) == false,
+                  'btn-danger': isRltProductExists(relatedProductItem._id) == true
+                  }" (click)="updateRltdProducts(relatedProductItem)">
+                {{isRltProductExists(relatedProductItem._id) ? 'Remove' : 'Select'}}
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </ng-container>
   </div>
 </ng-template>

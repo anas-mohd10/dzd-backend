@@ -1128,6 +1128,12 @@ export class CatalogComponent implements OnInit, OnDestroy {
           .get('redirection')
           ?.setValue('/p/' + this.redirectionQuery.value);
         break;
+        case 'web-links' : 
+        if (this.redirectionQuery.value) {
+          this.widgetForm.get('redirection')?.setValue(this.redirectionQuery.value);
+        }
+        break;
+  
       case 'collection':
         this.widgetForm
           .get('redirection')
