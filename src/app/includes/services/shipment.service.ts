@@ -19,6 +19,11 @@ export class ShipmentService {
     return this.HttpClient.post(`${url}`, doc)
   }
 
+  trackShipment(orderId: string){
+    const url = this.CommonService.getFullUrl(this.endpoints.track + `/${orderId}`);
+    return this.HttpClient.get(`${url}`)
+  }
+
   getShipmentLabel(orderId: string){
     const url = this.CommonService.getFullUrl(this.endpoints.label + `/${orderId}`);
     return this.HttpClient.get(`${url}`)

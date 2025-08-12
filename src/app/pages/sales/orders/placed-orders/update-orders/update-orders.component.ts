@@ -419,31 +419,15 @@ export class UpdateOrdersComponent implements OnInit {
           this.productCount = this.order.products.length;
           this.form.get('paymentStatus')?.setValue(this.order?.paymentStatus);
           this.orderNote?.setValue('');
-          this.form
-            .get('orderId')
-            ?.setValue(
-              this.order?.payment?.reference?.payment ||
-              this.order?.payment?.authorizationId
-            );
+          this.form.get('orderId')?.setValue(this.order?.payment?.reference?.payment || this.order?.payment?.authorizationId);
+
           this.form.get('paymentMessage')?.setValue(this.order?.paymentMessage);
-          this.form
-            .get('transactionTime')
-            ?.setValue(this.order?.transactionTime);
-          this.form
-            .get('paymentId')
-            ?.setValue(this.order?.payment?.referenceId);
-          this.orderStatus =
-            res.result.orderStatus.charAt(0).toUpperCase() +
-            res.result.orderStatus.slice(1).toLowerCase();
-          this.orderStatusList.includes(res.result.orderStatus)
-            ? (this.isCancelEligible = false)
-            : (this.isCancelEligible = true);
-          this.invoiceStatusList.includes(res.result.orderStatus)
-            ? (this.isInvoiceAvailable = false)
-            : (this.isInvoiceAvailable = true);
-          this.invoiceStatusList.includes(res.result.orderStatus)
-            ? (this.isPackingSlipAvailable = false)
-            : (this.isPackingSlipAvailable = true);
+          this.form.get('transactionTime')?.setValue(this.order?.transactionTime);
+          this.form.get('paymentId')?.setValue(this.order?.payment?.referenceId);
+          this.orderStatus = res.result.orderStatus.charAt(0).toUpperCase() + res.result.orderStatus.slice(1).toLowerCase();
+          this.orderStatusList.includes(res.result.orderStatus) ? (this.isCancelEligible = false) : (this.isCancelEligible = true);
+          this.invoiceStatusList.includes(res.result.orderStatus) ? (this.isInvoiceAvailable = false) : (this.isInvoiceAvailable = true);
+          this.invoiceStatusList.includes(res.result.orderStatus) ? (this.isPackingSlipAvailable = false) : (this.isPackingSlipAvailable = true);
 
           if (this.order.orderStatus == 'CANCELLED') {
             this.isCancelled = true;
@@ -451,16 +435,29 @@ export class UpdateOrdersComponent implements OnInit {
 
           for (let product of this.order?.products) {
             for (let history of product?.history) {
-              history.status =
-                history.status.charAt(0).toUpperCase() +
-                history.status.slice(1).toLowerCase();
+              history.status = history.status.charAt(0).toUpperCase() + history.status.slice(1).toLowerCase();
             }
+
             let history = [...product?.history];
-            if (product?.dateExpected)
-              product.dateExpected = new Date(
-                product?.dateExpected
-              ).toLocaleString();
+            if (product?.dateExpected) {
+              product.dateExpected = new Date(product?.dateExpected).toLocaleString();
+            }
             product.currentStatus = history.pop();
+          }
+
+          // Track shipment
+          if (this.order && this.order.isLabelCreated) {
+            this.ShipmentService.trackShipment(this.slug).subscribe({
+              next: (resp: any) => {
+                if (resp && resp.errorCode == 0) {
+                  console.log(resp)
+                } else {
+                  this.HotToastService.error(resp.message)
+                }
+              }, error: (err) => {
+                this.HotToastService.error(`Internal Server Error`)
+              }
+            })
           }
 
           this.ChangeDetectorRef.markForCheck();
