@@ -18,8 +18,14 @@ export class CustomMailersComponent implements OnInit {
         { title: 'Reset Password', type: 'reset-password' },
         { title: 'Welcome Customer', type: 'welcome-customer' }
       ]
-    },
-    {
+    }, {
+      title: 'Users',
+      type: 'users',
+      description: 'Email templates related to user related items',
+      mailers: [
+        { title: 'Manage Wallet', type: 'manage-wallet' }
+      ]
+    }, {
       title: 'Orders',
       type: 'orders',
       description: 'Email templates for order management and updates',
@@ -30,8 +36,7 @@ export class CustomMailersComponent implements OnInit {
         { title: 'Order Cancelled', type: 'order-cancelled' },
         { title: 'Admin Order Notification', type: 'admin-place-order-notification' }
       ]
-    },
-    {
+    }, {
       title: 'Newsletter',
       type: 'newsletters',
       description: 'Email templates for newsletter management',
@@ -41,8 +46,7 @@ export class CustomMailersComponent implements OnInit {
         { title: 'Newsletter Verification', type: 'newsletter-verification' },
         { title: 'Newsletter Notification', type: 'newsletter-notification' }
       ]
-    },
-    {
+    }, {
       title: 'Cart & Wishlist',
       type: 'cart-wishlist',
       description: 'Email templates for abandoned cart and wishlist reminders',
@@ -50,8 +54,7 @@ export class CustomMailersComponent implements OnInit {
         { title: 'Abandoned Cart', type: 'abandoned-cart' },
         { title: 'Abandoned Wishlist', type: 'abandoned-wishlist' }
       ]
-    },
-    {
+    }, {
       title: 'Returns & Replacements',
       type: 'returns',
       description: 'Email templates for handling product returns and replacements',
@@ -60,8 +63,7 @@ export class CustomMailersComponent implements OnInit {
         { title: 'Replace Initiated', type: 'replace-initiated' },
         { title: 'Replace Rejected', type: 'replace-rejected' }
       ]
-    },
-    {
+    }, {
       title: 'Support & Enquiries',
       type: 'support',
       description: 'Email templates for customer support and enquiries',
@@ -70,8 +72,7 @@ export class CustomMailersComponent implements OnInit {
         { title: 'Enquiry Submission', type: 'enquiry-submission' },
         { title: 'Enquiry Thank You', type: 'enquiry-thanking' }
       ]
-    },
-    {
+    }, {
       title: 'Vouchers & Promotions',
       type: 'vouchers',
       description: 'Email templates for vouchers and promotional content',
@@ -79,8 +80,7 @@ export class CustomMailersComponent implements OnInit {
         { title: 'Voucher Confirmation', type: 'voucher-confirmation' },
         { title: 'Voucher Gift', type: 'voucher-gift' }
       ]
-    },
-    {
+    }, {
       title: 'Administrative',
       type: 'administrative',
       description: 'Email templates for administrative purposes',
