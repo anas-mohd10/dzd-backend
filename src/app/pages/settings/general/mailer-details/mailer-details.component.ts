@@ -17,6 +17,22 @@ export class MailerDetailsComponent implements OnInit {
   isSubmitted: boolean = false;
   mailerType: string;
   modalRef?: BsModalRef
+  editorOptions = {
+    theme: 'vs-dark',
+    language: 'html',
+    automaticLayout: true,
+    minimap: {
+      enabled: true
+    },
+    scrollBeyondLastLine: false,
+    lineNumbers: 'on',
+    roundedSelection: true,
+    fontSize: 13,
+    wordWrap: 'on',
+    folding: true,
+    formatOnPaste: true,
+    formatOnType: true,
+  };
   mailers: Array<any> = [
     {
       title: 'Authentication',
@@ -26,6 +42,13 @@ export class MailerDetailsComponent implements OnInit {
         { title: 'OTP Verification', type: 'send-otp' },
         { title: 'Reset Password', type: 'reset-password' },
         { title: 'Welcome Customer', type: 'welcome-customer' }
+      ]
+    }, {
+      title: 'Users',
+      type: 'users',
+      description: 'Email templates related to user related items',
+      mailers: [
+        { title: 'Manage Wallet', type: 'manage-wallet' }
       ]
     }, {
       title: 'Orders',
@@ -41,7 +64,7 @@ export class MailerDetailsComponent implements OnInit {
         { title: 'Order Cancelled', type: 'order-cancelled' },
         { title: 'Order Failed', type: 'order-failed' },
         { title: 'Product Cancelled', type: 'order-product-cancelled' },
-        { title: 'Admin Order Notification', type: 'admin-place-order-notification' }
+        { title: 'Admin Order Notification', type: 'admin-place-order-notification' },
       ]
     }, {
       title: 'Newsletter',
