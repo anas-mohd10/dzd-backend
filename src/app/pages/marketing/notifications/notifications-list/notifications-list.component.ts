@@ -18,6 +18,7 @@ export class NotificationsListComponent implements OnInit {
   limit: number = 20
   totalResults: number = 0
   totalPages: number = 1
+  Math = Math // Make Math available in template
 
   constructor(
     private NotificationsService: NotificationsService,
@@ -27,13 +28,22 @@ export class NotificationsListComponent implements OnInit {
   ngOnInit(): void {
     this.form = new FormGroup({
       status: new FormControl(''),
+      notificationType: new FormControl('manual'), // Default to manual notifications
     });
 
     this.getNotifications()
   }
 
   clearFilters() {
-    this.form.patchValue({ status: '' })
+    this.form.patchValue({ 
+      status: '',
+      notificationType: 'manual'
+    })
+    this.getNotifications()
+  }
+
+  onNotificationTypeChange() {
+    this.page = 1 // Reset to first page when filter changes
     this.getNotifications()
   }
 
@@ -47,12 +57,35 @@ export class NotificationsListComponent implements OnInit {
     return new Date(date).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' }) + ' ' + new Date(date).toLocaleTimeString('en-US', { weekday: 'short', hour: 'numeric', minute: 'numeric', hour12: true })
   }
 
+
+
   getNotifications() {
-    this.NotificationsService.searchNotifications({
+    const notificationType = this.form.get('notificationType')?.value;
+    let isManual: boolean | undefined;
+    
+    // Set isManual based on notification type selection
+    if (notificationType === 'manual') {
+      isManual = true;
+    } else if (notificationType === 'system') {
+      isManual = false;
+    }
+    // If 'all' is selected, don't set isManual (undefined) to get all notifications
+    
+    const searchParams: any = {
       ...this.form.value,
       limit: this.limit,
       page: this.page
-    }).subscribe({
+    };
+    
+    // Only add isManual if it's defined
+    if (isManual !== undefined) {
+      searchParams.isManual = isManual;
+    }
+    
+    // Remove notificationType from search params as it's not needed by API
+    delete searchParams.notificationType;
+    
+    this.NotificationsService.searchNotifications(searchParams).subscribe({
       next: (res: any) => {
         if (res?.errorCode == 0) {
           this.notifications = res?.result?.data

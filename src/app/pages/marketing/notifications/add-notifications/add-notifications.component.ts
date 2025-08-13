@@ -173,6 +173,7 @@ export class AddNotificationsComponent implements OnInit {
       ...this.form.value,
       scheduledAt: this.formatDateForBackend(this.form.value.scheduledAt),
       customers: this.customers,
+      isManual: true, // Mark as manual notification
     };
 
     this.NotificationsService.addNotification(formData).subscribe({
