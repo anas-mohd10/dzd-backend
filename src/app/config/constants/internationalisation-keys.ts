@@ -427,4 +427,7 @@ export const internationalisationKeys = {
     updateAddress:'updateAddress',
     failedToCopyURL:'failedToCopyURL',
     referralcodeCopied:'referralcodeCopied',
+    removeWalletDiscount:'removeWalletDiscount',
+    addWalletDiscount:'addWalletDiscount',
+    walletUsedMessage:'walletUsedMessage'
 }
