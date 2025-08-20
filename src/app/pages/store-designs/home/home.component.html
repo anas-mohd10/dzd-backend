@@ -222,6 +222,16 @@
                                                             class="form-control" formControlName="title" id="title">
                                                         <label for="title">Title</label>
                                                     </div>
+                                                    <div class="form-group">
+                                                        <label for="titleType" class="fs-5 mb-3">Type</label>
+                                                        <select formControlName="titleType" class="form-control">
+                                                            <option value="">Select Title Type</option>
+                                                            <option *ngFor="let option of titleTypeOptions" [value]="option.value">
+                                                              {{option.key}}
+                                                            </option>
+                                                          </select>
+                                                    </div>
+
                                                 </div>
                                                 <div class="col-lg-2">
                                                     <div class="ratio ratio-1x1">
@@ -817,7 +827,7 @@
                                             </div>
                                             <div class="form-group w-100">
                                                 <label for="keyPointDescription"
-                                                    class="fs-6 required mb-1">Description</label>
+                                                    class="fs-6 mb-1">Description</label>
                                                 <input type="text" name="keyPointDescription"
                                                     formControlName="description" class="form-control">
                                             </div>
