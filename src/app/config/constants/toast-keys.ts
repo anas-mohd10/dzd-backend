@@ -38,5 +38,6 @@ export const toastKeys = {
     registerdEmail:'registerdEmail',
     registerdPhoneNumber:'registerdPhoneNumber',
     subscribedSuccessfully:'subscribedSuccessfully',
-    alreadySubscribed:'alreadySubscribed'
+    alreadySubscribed:'alreadySubscribed',
+    inactiveUser:'inactiveUser'
 }
