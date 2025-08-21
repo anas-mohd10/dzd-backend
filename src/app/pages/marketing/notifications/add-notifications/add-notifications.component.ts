@@ -1,5 +1,5 @@
 import { ChangeDetectorRef, Component, OnInit, TemplateRef } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, FormControl, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { HotToastService } from '@ngneat/hot-toast';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
@@ -33,7 +33,7 @@ export class AddNotificationsComponent implements OnInit {
   customerDocs: Array<CustomerDoc> = [];
   customers: Array<CustomerDoc> = [];
   searchKeyword: FormControl = new FormControl('');
-  minDate: string = this.getRoundedDateTimeLocal();
+  minDate: string;
 
   constructor(
     private NotificationsService: NotificationsService,
@@ -46,16 +46,6 @@ export class AddNotificationsComponent implements OnInit {
     this.searchKeyword.valueChanges.pipe(debounceTime(500)).subscribe((value) => {
       this.getCustomers()
     })
-  }
-
-  getRoundedDateTimeLocal(): string {
-    const now = new Date();
-    now.setMinutes(now.getMinutes() + 1 - (now.getMinutes() % 1)); // round to next 3 mins
-    now.setSeconds(0);
-    now.setMilliseconds(0);
-
-    const local = new Date(now.getTime() - now.getTimezoneOffset() * 60000);
-    return local.toISOString().slice(0, 16);
   }
 
   //Open modal
@@ -110,28 +100,43 @@ export class AddNotificationsComponent implements OnInit {
     return date.toISOString();
   }
 
+  /**
+   * Custom validator to ensure the selected date is in the future
+   */
+  private futureDateValidator(): ValidatorFn {
+    return (control: AbstractControl): ValidationErrors | null => {
+      console.log('Validating date:', control.value, 'Current time:', new Date());
+      if (!control.value) {
+        return null;
+      }
+
+      const selectedDate = new Date(control.value);
+      const now = new Date();
+      
+      if (selectedDate <= now) {
+        return { futureDate: { message: 'Please select a future date and time' } };
+      }
+
+      return null;
+    };
+  }
+
   ngOnInit(): void {
     this.form = new FormGroup({
       title: new FormControl('', Validators.required),
       content: new FormControl('', Validators.required),
-      scheduledAt: new FormControl('', Validators.required),
+      scheduledAt: new FormControl('', [Validators.required, this.futureDateValidator()]),
       isStoreLevel: new FormControl(true),
       isProfileLevel: new FormControl(false),
       redirection: new FormControl(''),
       thumbnail: new FormControl(''),
     });
 
-    this.formControls.scheduledAt.valueChanges.subscribe(value => {
-      const selected = new Date(value);
-      const now = new Date();
-
-      if (selected < now) {
-        this.formControls.scheduledAt.setValue(
-          this.getRoundedDateTimeLocal(),
-          { emitEvent: false }
-        );
-      }
-    });
+    // Set minimum date to current time
+    const now = new Date();
+    now.setSeconds(0, 0); // Set seconds and milliseconds to 0
+    const localDate = new Date(now.getTime() - now.getTimezoneOffset() * 60000);
+    this.minDate = localDate.toISOString().slice(0, 16);
   }
 
   handleThumbnail(event: any) {
