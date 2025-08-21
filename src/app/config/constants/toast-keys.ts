@@ -39,6 +39,7 @@ export const toastKeys = {
     registerdPhoneNumber:'registerdPhoneNumber',
     subscribedSuccessfully:'subscribedSuccessfully',
     alreadySubscribed:'alreadySubscribed',
+    inactiveUser:'inactiveUser',
     noWalletBalance:'noWalletBalance',
     youHave:'youHave',
     availableinWallet:'availableinWallet'
