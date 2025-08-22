@@ -280,7 +280,13 @@
                         *ngIf="order?.customer?.tags && order?.customer?.tags.length > 0">
                         <span *ngFor="let tag of order?.customer?.tags"
                           class="badge rounded-pill bg-primary px-2 py-1 fs-6">{{tag}}</span>
-                      </span>
+                        {{order?.customerDetails?.name || order?.customerId?.name || order?.guestId?.name ||
+                        order?.customer?.name}}
+                        <span class="d-inline-flex flex-wrap gap-1 ms-2"
+                          *ngIf="order?.customer?.tags && order?.customer?.tags.length > 0">
+                          <span *ngFor="let tag of order?.customer?.tags"
+                            class="badge rounded-pill bg-primary px-2 py-1 fs-6">{{tag}}</span>
+                        </span>
                     </td>
                   </tr>
                   <tr>
@@ -491,26 +497,50 @@
                   </div>
                 </div>
                 <ng-container *ngFor="let product of order?.products; let i = index">
+                  <div class="mb-8 fs-5" *ngIf="product?.isAddOn == true">
+                    <span>
+                      <svg height="18" width="18" data-slot="icon" fill="none" stroke-width="1.5" stroke="currentColor"
+                        viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                          d="M9.879 7.519c1.171-1.025 3.071-1.025 4.242 0 1.172 1.025 1.172 2.687 0 3.712-.203.179-.43.326-.67.442-.745.361-1.45.999-1.45 1.827v.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9 5.25h.008v.008H12v-.008Z">
+                        </path>
+                      </svg>
+                    </span>
+                    This product was purchased as an add-on product with <a
+                      [routerLink]="appRoute.product.UPDATE_PRODUCT"
+                      [queryParams]="{'product': product?.productRef?.slug}" target="_blank"
+                      class="text-success">{{product?.productRef?.name}}</a>
+                  </div>
                   <div class="row mb-8 pb-8 border-secondary"
                     [ngClass]="{'pe-none opacity-50': product?.currentStatus?.status == 'Cancelled', 'border-bottom': i < order?.products?.length - 1}">
                     <div class="col-lg-1">
-                      <div class="checkbox"
-                        [ngClass]="{
+                      <div class="checkbox" [ngClass]="{
                           'checked': bulkProducts.includes(product),
-                          'pe-none' : (order?.paymentMethod == 'ONLINE' && order?.paymentStatus == 'PENDING') || ( isStatusUpdating == true && order?.paymentGateway == 'network-international-tokenized' )}"
-                        (click)="toggleBulkProduct(product)"> </div>
+                          'pe-none' :
+                          (order?.paymentMethod == 'ONLINE' && order?.paymentStatus == 'PENDING') ||
+                          ( isStatusUpdating == true && order?.paymentGateway == 'network-international-tokenized' ) ||
+                          (product?.isAddOn == true)
+                          }" (click)="toggleBulkProduct(product)"> </div>
                     </div>
                     <div class="col-lg-11">
                       <div class="d-flex flex-wrap align-items-start justify-content-between">
                         <div class="w-50 d-flex fs-6 gap-3 align-items-start justify-content-start">
-                          <div class="productThumbnail">
+                          <a [routerLink]="appRoute.product.UPDATE_PRODUCT"
+                            [queryParams]="{'product': product?.productDetails?.slug}" class="productThumbnail">
                             <img class="border border-secondary rounded"
                               src="{{base}}{{product?.productDetails?.thumbnail}}"
                               alt="{{product?.productDetails?.name || product?.productId?.name}}"
                               onerror="this.src =  'assets/images/default.png'">
-                          </div>
+                          </a>
                           <div>
-                            <div>{{getLocalizedProductName(product)}}</div>
+                            <div class="mb-2">
+                              {{product?.productDetails?.name || product?.productId?.name}}
+                              <ng-container *ngIf="product?.isAddOn && product?.isAddOn == true">
+                                <span class="fs-6 fw-normal badge badge-success">
+                                  {{settings?.addOnLabel}}
+                                </span>
+                              </ng-container>
+                            </div>
                             <div class="d-flex align-items-center justify-content-start gap-2"
                               *ngIf="product?.productId?.attributes?.length > 0">
                               <div *ngFor="let attribute of product?.productId?.attributes">
@@ -538,6 +568,11 @@
                           <div class="mb-2 d-flex fs-6 align-items-center justify-content-start">
                             <div class="w-25">Price:</div>
                             <div class="fw-bold">{{settings?.currency}} {{product?.pricePerUnit}}</div>
+                          </div>
+                          <div *ngIf="product?.isAddOn && product?.isAddOn == true"
+                            class="mb-2 d-flex fs-6 align-items-center justify-content-start">
+                            <div class="w-25">Add On Price:</div>
+                            <div class="fw-bold">{{settings?.currency}} {{product?.addOnUnitPrice}}</div>
                           </div>
                           <div class="mb-2 d-flex fs-6 align-items-center justify-content-start">
                             <div class="w-25">Total:</div>

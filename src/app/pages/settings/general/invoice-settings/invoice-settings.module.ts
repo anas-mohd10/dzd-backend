@@ -6,7 +6,7 @@ import { InvoiceListComponent } from './invoice-list/invoice-list.component';
 import { DataTablesModule } from 'angular-datatables';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ToastrModule } from 'ngx-toastr';
-
+import { MonacoEditorModule } from 'ngx-monaco-editor';
 
 @NgModule({
   declarations: [
@@ -17,6 +17,7 @@ import { ToastrModule } from 'ngx-toastr';
     InvoiceSettingsRoutingModule,
     DataTablesModule,
     FormsModule,
+    MonacoEditorModule.forRoot(),
     ReactiveFormsModule,
     ToastrModule.forRoot({
       positionClass: 'toast-bottom-right',

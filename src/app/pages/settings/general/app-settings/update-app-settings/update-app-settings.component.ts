@@ -230,6 +230,16 @@ export class UpdateAppSettingsComponent implements OnInit {
     this.primary = '#00BDAB'
     this.secondary = '#aaaaaa'
     this.form.get('primary')?.setValue('#00BDAB')
+
+    // Add scroll handling for #addOnSettings
+    if (window.location.hash === '#addOnSettings') {
+      setTimeout(() => {
+        const addOnSettingsElement = document.getElementById('addOnSettings');
+        if (addOnSettingsElement) {
+          addOnSettingsElement.scrollIntoView({ behavior: 'smooth' });
+        }
+      }, 500); // Delay to ensure content is loaded
+    }
   }
 
   get formControls() {
@@ -277,6 +287,9 @@ export class UpdateAppSettingsComponent implements OnInit {
         this.form.get('defaultImage')?.setValue(res?.result?.defaultImage)
         this.defaultImage = res?.result?.defaultImage
         this.form.get('description')?.setValue(res?.result?.description)
+        this.form.get('addOnLabel')?.setValue(res?.result?.addOnLabel)
+        this.form.get('isAddOnLabelEnabled')?.setValue(res?.result?.isAddOnLabelEnabled)
+        this.form.get('isAddOnEnabled')?.setValue(res?.result?.isAddOnEnabled)
         this.form.get('itemsPerPage')?.setValue(res?.result?.itemsPerPage)
         this.form.get('isOutOfStock')?.setValue(res?.result?.isOutOfStock)
         this.form.get('isPushNotification')?.setValue(res?.result?.isPushNotification)
@@ -391,6 +404,9 @@ export class UpdateAppSettingsComponent implements OnInit {
       languages: [[]],
       packingSlip: [''],
       isOutOfStock: ['false'],
+      addOnLabel:['Add On'],
+      isAddOnLabelEnabled:['false'],
+      isAddOnEnabled: ['false'],
       isTax: ['false'],
       isShippingTaxable: ['false'], // Add this new control
       isIndex: ['false'],
@@ -440,7 +456,9 @@ export class UpdateAppSettingsComponent implements OnInit {
     }
   }
 
-
+  toggleAddOnItems(event: { toggleState: boolean, switchId: string }) {
+    this.form.get(event.switchId)?.setValue(event.toggleState)
+  }
 
   declineDiscard() {
     this.discardModalRef?.hide()
@@ -569,6 +587,9 @@ export class UpdateAppSettingsComponent implements OnInit {
       isMultiLang: this.form.get('isMultiLang')?.value,
       languages: this.form.get('languages')?.value,
       defaultImage: this.form.get('defaultImage')?.value,
+      isAddOnLabelEnabled: this.form.get('isAddOnLabelEnabled')?.value,
+      addOnLabel: this.form.get('addOnLabel')?.value,
+      isAddOnEnabled: this.form.get('isAddOnEnabled')?.value,
       name: this.form.get('name')?.value,
       adminLogo: this.form.get('adminLogo')?.value,
       adminFavicon: this.form.get('adminFavicon')?.value,

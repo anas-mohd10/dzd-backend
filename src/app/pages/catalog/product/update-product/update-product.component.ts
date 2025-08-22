@@ -21,7 +21,7 @@ import { debounceTime } from 'rxjs/operators';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { BrandService } from 'src/app/includes/services/brand.service';
 import { moveItemInArray } from '@angular/cdk/drag-drop';
-import { CdkDragDrop } from '@angular/cdk/drag-drop';
+import { CdkDragDrop  } from '@angular/cdk/drag-drop';
 
 interface StoreField {
   title: string;
@@ -31,17 +31,35 @@ interface StoreField {
 }
 
 interface AddOnOption {
-  product: string;
+  _id: string;
+  name: string;
+  product: Product;
   description: string;
   price: number;
+  isEditable: boolean;
+  discountMethod: string;
+  discountAmount: number;
 }
 
 interface AddOns {
+  _id: string;
   title: string;
   description: string;
   isRequired: boolean;
   addOnType: string;
   options: AddOnOption[];
+}
+
+interface Product {
+  name: string;
+  sku: string;
+  thumbnail: string;
+  overview: string;
+  price: {
+    mrp: number;
+    selling: number;
+  };
+  _id: string;
 }
 
 @Component({
@@ -151,7 +169,18 @@ export class UpdateProductComponent implements OnInit {
   siblingsRef?: BsModalRef;
   @ViewChild('siblingsTemplate') siblingsTemplateModal: TemplateRef<any>;
   isSkipUpdate: FormControl = new FormControl(false);
+
+
+  historyRef?: BsModalRef;
+  historyPageIndex: number = 1;
+  historyPageSize: number = 5;
+  historyLists: Array<any> = [];
+  totalResults: number = 0;
+  totalPages: number = 1;
+
+  // Add-Ons starts here
   addOnsRef?: BsModalRef;
+  manageAddOnsRef?: BsModalRef;
   addOnsKeyword: FormControl = new FormControl('', Validators.required);
   addOnSearchResults: Array<any> = [];
   addOnProducts: Array<any> = [];
@@ -162,17 +191,22 @@ export class UpdateProductComponent implements OnInit {
     { key: 'Radio', value: 'radio' },
     { key: 'Checkbox', value: 'checkbox' },
   ];
+  isProductSelected: boolean = false;
+  addOnDoc: Product | null;
+  addOnTabIndex: number = 0;
   isOptionSubmitted: boolean = false;
+  isItemSubmitted: boolean = false;
   addOnOptions: AddOnOption[] = [];
   addOns: AddOns[] = [];
-  isAddOnForm: boolean = false;
-  isAddOnEditable: boolean = false;
-  historyRef?: BsModalRef;
-  historyPageIndex: number = 1;
-  historyPageSize: number = 5;
-  historyLists: Array<any> = [];
-  totalResults: number = 0;
-  totalPages: number = 1;
+  addOnPageIndex: number = 1;
+  addOnPageSize: number = 10;
+  totalAddOnResults: number = 0;
+  totalAddOnPages: number = 1;
+  isEditAddOnOption: boolean = false;
+  editAddOnOptionIndex: number = 0;
+  isEditAddOn: boolean = false;
+  editAddOnIndex: number = 0;
+  // Add-Ons ends here
   storeFieldIndex: number | null;
 
   slugHistoryRef?: BsModalRef;
@@ -333,6 +367,8 @@ export class UpdateProductComponent implements OnInit {
     });
   }
 
+  // Add-Ons starts here
+  // This function is used to search for products
   searchProducts() {
     if (!this.addOnsKeyword.value) {
       this.addOnSearchResults = [];
@@ -344,12 +380,14 @@ export class UpdateProductComponent implements OnInit {
 
     this.ProductService.searchProducts({
       name: this.addOnsKeyword.value,
-      page: 1,
-      limit: 40,
+      page: this.addOnPageIndex,
+      limit: this.addOnPageSize
     }).subscribe({
       next: (res: any) => {
         if (res?.errorCode == 0) {
           this.addOnSearchResults = res?.result?.data;
+          this.totalAddOnResults = res?.result?.totalResults;
+          this.totalAddOnPages = res?.result?.totalPages;
           this.ChangeDetectorRef.markForCheck();
         } else {
         }
@@ -358,104 +396,222 @@ export class UpdateProductComponent implements OnInit {
     });
   }
 
-  openAddOns(template: TemplateRef<any>) {
-    this.addOnsRef = this.BsModalService.show(template, {
-      class: 'modal-lg modal-dialog-centered',
-    });
+  // This function is used to trigger the add-on page
+  addOnPageTrigger(event: { pageIndex: number; pageSize: number }) {
+    this.addOnPageIndex = event.pageIndex;
+    this.addOnPageSize = event.pageSize;
+    this.searchProducts();
   }
 
-  closeAddOns() {
-    this.addOnsRef?.hide();
+  // This function is used to toggle the add-on product
+  toggleAddOnProduct(product: Product, type: 'add' | 'remove') {
+    const isExists: boolean = this.addOnProducts.some(item => item?._id == product?._id);
+    if (isExists) {
+      this.addOnProducts = this.addOnProducts.filter(item => item?._id != product?._id);
+    } else {
+      this.addOnProducts.push(product);
+    }
+
+    if (type == 'add') {
+      this.isProductSelected = true;
+      this.addOnTabIndex = 1;
+      this.addOnDoc = product;
+      this.addOnOptionForm.patchValue({
+        name: product.name,
+        product: product._id,
+        description: product.overview,
+        price: product.price.selling,
+      })
+    }
+
+    this.ChangeDetectorRef.markForCheck();
   }
 
+  // This function is used to get the add-on option controls
   get addOnOptionControls() {
     return this.addOnOptionForm.controls;
   }
 
+  // This function is used to reset the add-on variables
+  resetVars() {
+    this.addOnTabIndex = 0;
+    this.editAddOnOptionIndex = 0;
+    this.addOnProducts = [];
+    this.addOnOptionForm.reset();
+    this.addOnOptionForm.patchValue({ 'isEditable': false, discountMethod: 'amount' });
+    this.addOnsKeyword.setValue('');
+    this.isEditAddOnOption = false;
+    this.isOptionSubmitted = false;
+    this.isProductSelected = false;
+    this.addOnDoc = null;
+  }
+
+  // This function is used to handle the discount method
+  handleDiscountMethod() {
+    if (this.addOnOptionForm.value.discountMethod == 'amount') {
+      this.addOnOptionForm.get('discountAmount')?.removeValidators([Validators.required, Validators.pattern(/^\d+(\.\d{1,2})?$/)]);
+      this.addOnOptionForm.get('discountAmount')?.updateValueAndValidity();
+      this.addOnOptionForm.patchValue({ discountAmount: 0, price: this.addOnDoc?.price.selling })
+    } else {
+      // Add validation for the discount amount
+      let validators = [Validators.required, Validators.pattern(/^\d+(\.\d{1,2})?$/)];
+      if (this.addOnDoc && this.addOnOptionForm.value.discountMethod == 'flat') {
+        validators.push(Validators.max(this.addOnDoc?.price?.selling));
+      }
+
+      if (this.addOnOptionForm.value.discountMethod == 'percentage') {
+        validators.push(Validators.max(100));
+      }
+
+      this.addOnOptionForm.get('discountAmount')?.setValidators(validators);
+      this.addOnOptionForm.get('discountAmount')?.updateValueAndValidity();
+      this.addOnOptionForm.patchValue({ price: 0, discountAmount: 0 })
+    }
+  }
+
+  // This function is used to handle the discount amount
+  handleDiscountAmount() {
+    if (this.addOnOptionForm.value.discountMethod == 'flat') {
+      if (this.addOnDoc && this.addOnOptionForm.value.discountAmount > this.addOnDoc?.price?.selling) {
+        this.addOnOptionForm.get('discountAmount')?.setErrors({ pattern: true });
+        this.HotToastService.error('Discount amount cannot be greater than the price');
+      }
+    } else if (this.addOnOptionForm.value.discountMethod == 'percentage') {
+      if (this.addOnDoc && this.addOnOptionForm.value.discountAmount > 100) {
+        this.addOnOptionForm.get('discountAmount')?.setErrors({ pattern: true });
+        this.HotToastService.error('Discount amount cannot be greater than 100');
+      }
+    }
+  }
+
+  // This function is used to get the add-on option price
+  getAddOnOptionPrice() {
+    if (!this.addOnDoc) {
+      return 0;
+    }
+
+    if (this.addOnOptionForm.value.discountMethod == 'flat') {
+      return this.addOnDoc?.price.selling - this.addOnOptionForm.value.discountAmount;
+    }
+
+    if (this.addOnOptionForm.value.discountMethod == 'percentage') {
+      return this.addOnDoc?.price.selling - (this.addOnDoc?.price.selling * this.addOnOptionForm.value.discountAmount / 100);
+    }
+  }
+
+  // This function is used to add the add-on option to the addOnOptions array
   addAddOnOption() {
     if (!this.addOnOptionForm.valid) {
       this.isOptionSubmitted = true;
+      this.HotToastService.error('Please fill all the fields');
       return;
     }
 
-    this.addOnOptions.push(this.addOnOptionForm.value);
-    this.isOptionSubmitted = false;
-    this.HotToastService.success('Option added successfully');
-    this.addOnOptionForm.reset();
-    this.addOnOptionForm.patchValue({
-      product: '',
-      description: '',
-      price: '',
-    });
+    console.log(this.addOnOptionForm.value);
+
+    if (this.isEditAddOnOption) {
+      this.addOnOptions[this.editAddOnOptionIndex] = { ...this.addOnOptionForm.value, product: this.addOnDoc };
+    } else {
+      this.addOnOptions.push({ ...this.addOnOptionForm.value, product: this.addOnDoc });
+    }
+
+    this.HotToastService.success(`Option ${this.isEditAddOnOption ? 'updated' : 'added'} successfully`);
+    this.resetVars()
+    this.ChangeDetectorRef.markForCheck();
   }
 
+  // This function is used to edit the add-on option
+  editAddOnOption(index: number) {
+    console.log(this.addOnOptions[index]);
+    this.addOnOptionForm.patchValue(this.addOnOptions[index]);
+    this.addOnTabIndex = 1;
+    this.isProductSelected = true;
+    this.addOnDoc = this.addOnOptions[index].product;
+    this.isEditAddOnOption = true;
+    this.editAddOnOptionIndex = index;
+    this.ChangeDetectorRef.markForCheck();
+  }
+
+  // This function is used to remove the add-on option from the addOnOptions array
   removeAddOnOption(index: number) {
-    this.HotToastService.error('Option removed successfully');
     this.addOnOptions.splice(index, 1);
+    this.ChangeDetectorRef.markForCheck();
   }
 
-  removeAddOn(index: number) {
-    this.HotToastService.error('AddOn removed successfully');
-    this.addOns.splice(index, 1);
-  }
-
-  editAddOn(index: number) {
-    this.addOnForm.patchValue(this.addOns[index]);
-    this.addOnOptions = this.addOns[index].options;
-    this.isAddOnForm = true;
-    this.isAddOnEditable = true;
-  }
-
-  closeAddOnItems() {
+  // This function is used to cancel the add-on item
+  cancelAddOnItem() {
     this.addOnForm.reset();
-    this.addOnForm.patchValue({
-      title: '',
-      description: '',
-      isRequired: false,
-      addOnType: 'select',
-    });
-    this.isAddOnForm = false;
+    this.addOnForm.patchValue({ isRequired: false, addOnType: 'select' });
+    this.manageAddOnsRef?.hide();
     this.addOnOptions = [];
-    this.addOnOptionForm.reset();
-    this.addOnOptionForm.patchValue({
-      product: '',
-      description: '',
-      price: '',
-    });
+    this.isItemSubmitted = false;
+    this.resetVars();
+    this.ChangeDetectorRef.markForCheck();
   }
 
-  addAddOnItems() {
+  // This function is used to add the add-on to the addOns array
+  addAddOnItem() {
     if (!this.addOnForm.valid) {
+      this.isItemSubmitted = true;
+      this.HotToastService.error('Please fill all the fields');
       return;
     }
 
-    const addOn: AddOns = {
-      ...this.addOnForm.value,
-      options: this.addOnOptions,
-    };
+    if (this.addOnOptions.length == 0) {
+      this.HotToastService.error('Please add at least one option');
+      return;
+    }
 
-    this.addOns.push(addOn);
-    this.HotToastService.success('AddOn added successfully');
-    this.addOnForm.reset();
-    this.addOnForm.patchValue({
-      title: '',
-      description: '',
-      isRequired: false,
-      addOnType: 'select',
-    });
-    this.isAddOnForm = false;
-    this.addOnOptions = [];
-    this.addOnOptionForm.reset();
-    this.addOnOptionForm.patchValue({
-      product: '',
-      description: '',
-      price: '',
-    });
+    this.addOnForm.patchValue({ options: this.addOnOptions })
+
+    if (this.isEditAddOn) {
+      this.addOns[this.editAddOnIndex] = this.addOnForm.value;
+    } else {
+      this.addOns.push(this.addOnForm.value);
+    }
+
+    this.HotToastService.success(`Add-On ${this.isEditAddOn ? 'updated' : 'added'} successfully`);
+    this.cancelAddOnItem();
   }
 
-  toggleAddOnSwitch(event: { switchId: string; toggleState: boolean }) {
-    this.addOnForm.get('isRequired')?.setValue(event.toggleState);
+  // This function is used to remove the add-on from the addOns array
+  removeAddOn(index: number) {
+    this.addOns.splice(index, 1);
+    this.ChangeDetectorRef.markForCheck();
   }
+
+  // This function is used to open the manage add-on modal
+  openManageAddOns(template: TemplateRef<any>, type: 'add' | 'edit', index: number | null) {
+    this.manageAddOnsRef = this.BsModalService.show(template, { class: 'modal-dialog-centered modal-xl', ignoreBackdropClick: true });
+    if (type == 'edit' && index !== null) {
+      this.addOnForm.patchValue({ ...this.addOns[index] })
+      this.addOnOptions = this.addOns[index].options;
+      this.isEditAddOn = true;
+      this.editAddOnIndex = index;
+    }
+  }
+
+  // This function is used to get the add-on form controls
+  get addOnFormControls() {
+    return this.addOnForm.controls;
+  }
+
+  // This function is used to get the add-on option form controls
+  get addOnOptionFormControls() {
+    return this.addOnOptionForm.controls;
+  }
+
+  // This function is used to trigger the add-on switch
+  onTriggerAddOns(event: { toggleState: boolean, switchId: string }, type: string) {
+    if (type == 'isRequired') {
+      this.addOnForm.get('isRequired')?.setValue(event.toggleState);
+    }
+
+    if (type == 'isEditable') {
+      this.addOnOptionForm.get('isEditable')?.setValue(event.toggleState);
+    }
+  }
+  // Add-Ons ends here
 
   onBrandChange(event: any) {
     if (event) {
@@ -738,6 +894,31 @@ export class UpdateProductComponent implements OnInit {
     // Set flag to disable the button
     this.isSaving = true;
 
+    this.addOns.forEach((addOn: any) => {
+      addOn.options = addOn.options.map((option: any) => ({
+        ...option,
+        product: typeof option.product == 'string' ? option.product : option.product?._id,
+      }));
+
+      addOn.options.forEach((option: any) => {
+        if (option._id) {
+          return option
+        } else {
+          // Remove the _id from the option object
+          delete option._id
+          return option
+        }
+      });
+
+      if (addOn._id) {
+        return addOn
+      } else {
+        // Remove the _id from the addOn object
+        delete addOn._id
+        return addOn
+      }
+    });
+
     this.ProductService.updateProduct(this.productDetails.slug, {
       ...this.form.value,
       _id: this.productDetails?._id,
@@ -745,21 +926,17 @@ export class UpdateProductComponent implements OnInit {
       slug: this.form.get('slug')?.value,
       addOns: this.addOns,
       files: this.images.map((file: any) => file.path),
-      relatedProducts: this.relatedProducts
-        ? this.relatedProducts.map((product: any) => product?._id)
-        : [],
+      relatedProducts: this.relatedProducts ? this.relatedProducts.map((product: any) => product?._id) : [],
       product: {
         id: this.productDetails?.parentId,
         refid: this.productDetails?.product?.refid,
       },
-      brand: this.selectedBrand
-        ? {
-          name: this.selectedBrand.name,
-          slug: this.selectedBrand.slug,
-          thumbnail: this.selectedBrand.thumbnail,
-          cover: this.selectedBrand.cover,
-        }
-        : null,
+      brand: this.selectedBrand ? {
+        name: this.selectedBrand.name,
+        slug: this.selectedBrand.slug,
+        thumbnail: this.selectedBrand.thumbnail,
+        cover: this.selectedBrand.cover,
+      } : null,
       parentId: this.productDetails?.parentId,
       tagIcons: this.tagIcons,
       attributes: this.attributes,
@@ -781,8 +958,7 @@ export class UpdateProductComponent implements OnInit {
       localizedDetails: {
         description: {
           ...this.productDetails.localizedDetails?.description,
-          [this.settings.primaryLang]: this.form.get('details.description')
-            ?.value,
+          [this.settings.primaryLang]: this.form.get('details.description')?.value,
         },
         features: {
           ...this.productDetails.localizedDetails?.features,
@@ -790,8 +966,7 @@ export class UpdateProductComponent implements OnInit {
         },
         longDescription: {
           ...this.productDetails.localizedDetails?.longDescription,
-          [this.settings.primaryLang]: this.form.get('details.longDescription')
-            ?.value,
+          [this.settings.primaryLang]: this.form.get('details.longDescription')?.value,
         },
       },
       localizedMetaTitles: {
@@ -867,8 +1042,7 @@ export class UpdateProductComponent implements OnInit {
           this.ChangeDetectorRef.markForCheck();
           this.HotToastService.error(res?.message);
         }
-      },
-      error: (err: any) => {
+      }, error: (err: any) => {
         this.isSaving = false; // Re-enable button if form is invalid
         this.HotToastService.error(err.error.message);
       },
@@ -1049,6 +1223,8 @@ export class UpdateProductComponent implements OnInit {
           this.settings = res?.result;
           this.languages = res?.result?.languages;
 
+          this.settings.domain = this.settings.domain.endsWith('/') ? this.settings.domain : `${this.settings.domain}/`;
+
           // If product details are already loaded, update the form with correct localization
           if (this.productDetails) {
             this.updateFormWithLocalizedContent();
@@ -1088,12 +1264,18 @@ export class UpdateProductComponent implements OnInit {
     ])
 
     this.addOnOptionForm = new FormGroup({
+      name: new FormControl('', Validators.required),
+      _id: new FormControl(''),
       product: new FormControl('', Validators.required),
-      price: new FormControl('', Validators.required),
+      price: new FormControl(0, [Validators.pattern('^\\d+(\\.\\d+)?$')]),
       description: new FormControl(''),
+      discountMethod: new FormControl('amount'),
+      discountAmount: new FormControl(0),
+      isEditable: new FormControl(false),
     });
 
     this.addOnForm = new FormGroup({
+      _id: new FormControl(''),
       title: new FormControl('', Validators.required),
       description: new FormControl(''),
       isRequired: new FormControl(false),
@@ -1135,6 +1317,9 @@ export class UpdateProductComponent implements OnInit {
           // Check if searchKeywords exist and are not empty
           this.searchKeywords = (res?.result?.searchKeywords || []).filter(Boolean);
           this.form.get('searchKeywords')?.setValue(this.searchKeywords);
+
+          // Add-Ons
+          this.addOns = res?.result?.addOns || [];
 
           // Process images
           if (res?.result?.files && Array.isArray(res?.result?.files)) {
@@ -1287,6 +1472,60 @@ export class UpdateProductComponent implements OnInit {
       mpn: new FormControl(''),
       isCompareEnabled: new FormControl('false'),
     });
+
+    this.categoryService.getActiveCategory().subscribe({
+      next: (res: any) => {
+        if (res?.errorCode == 0) {
+          this.defaultCategories = res?.result;
+          this.ChangeDetectorRef.markForCheck();
+        } else {
+        }
+      },
+      error: (err: any) => { },
+    });
+
+    this.ProductService.getActiveProduct().subscribe({
+      next: (res: any) => {
+        if (res?.errorCode == 0) {
+          this.activeRelatedProducts = res?.result;
+          this.ChangeDetectorRef.markForCheck();
+        } else {
+        }
+      },
+      error: (err: any) => { },
+    });
+
+    this.taxClassService.getTaxClasses().subscribe({
+      next: (res: any) => {
+        if (res?.errorCode == 0) {
+          this.taxClassDetails = res?.result;
+        } else {
+        }
+      },
+      error: (err: any) => { },
+    });
+  }
+
+  generateMetaTitle() {
+    const name = this.form.get('name')?.value || '';
+    const metaTitle = `${name} - ${this.settings.name}`;
+    this.form.patchValue({ metaTitle });
+  }
+
+  validateMetaDetails(type: 'metaTitle' | 'metaDescription') {
+    const metaDoc = this.form.get(type)?.value;
+    switch (type) {
+      case 'metaTitle':
+        if (metaDoc.length < 50 || metaDoc.length > 60) {
+          return 'It is ideal to keep the meta title between 50 and 60 characters';
+        }
+        break;
+      case 'metaDescription':
+        if (metaDoc.length < 100 || metaDoc.length > 150) {
+          return 'It is ideal to keep the meta description between 100 and 150 characters';
+        }
+        break;
+    }
   }
 
   updateFormWithLocalizedContent() {
@@ -1457,7 +1696,6 @@ export class UpdateProductComponent implements OnInit {
   }
 
   handleAttributeImage(event: any) {
-    console.log('Image event:', event);
     if (event && event.path) {
       this.attributeForm.patchValue({
         value: event.path,
