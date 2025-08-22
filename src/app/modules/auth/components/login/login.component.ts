@@ -49,6 +49,8 @@ export class LoginComponent implements OnInit, OnDestroy {
     private authService: AuthService,
     private ActivatedRoute: ActivatedRoute,
     private Router: Router,
+    private ChangeDetectorRef: ChangeDetectorRef,
+    private AppSettingsService: AppSettingsService,
     private AdminUsersService: AdminUsersService,
     private BsModalService: BsModalService,
     private ChangeDetectorRef: ChangeDetectorRef,
