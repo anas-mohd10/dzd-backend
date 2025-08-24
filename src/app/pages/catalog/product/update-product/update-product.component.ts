@@ -918,8 +918,7 @@ export class UpdateProductComponent implements OnInit {
         return addOn
       }
     });
-
-    this.ProductService.updateProduct(this.productDetails.slug, {
+    const payload ={
       ...this.form.value,
       _id: this.productDetails?._id,
       prodid: this.productDetails?.prodid,
@@ -1000,7 +999,11 @@ export class UpdateProductComponent implements OnInit {
         cover: category.cover,
       })),
       productTags: this.tagsForm.value,
-    }).subscribe({
+    }
+
+    delete payload.name
+
+    this.ProductService.updateProduct(this.productDetails.slug, payload).subscribe({
       next: (res: any) => {
         if (res?.errorCode == 0) {
           this.Router.navigate(['/app/product']);
