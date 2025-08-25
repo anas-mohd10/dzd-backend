@@ -70,7 +70,7 @@
             <td>{{ cart?.customer?.name }}</td>
             <td>{{ cart?.products }}</td>
             <td>{{ cart?.total }}</td>
-            <td>{{ cart?.date }}</td>
+            <td>{{ cart?.date | date: 'dd-MM-yyyy HH:mm:ss' }}</td>
             <td>
               <span class="guest fs-6" [ngClass]="{ customer: cart?.type == '1' }">
                 {{ cart?.type == "0" ? "Guest" : "Customer" }}
