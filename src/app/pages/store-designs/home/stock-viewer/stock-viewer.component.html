@@ -1,0 +1,112 @@
+<div class="d-flex justify-content-between align-items-start gap-10">
+    <div class="w-25">
+        <div>
+            <div class="mb-2 pb-2 border-bottom border-secondary">
+                <div class="fs-4">Categories</div>
+                <div class="text-muted">Select categories to display</div>
+            </div>
+            <input type="text" class="form-control" placeholder="Search categories" [formControl]="searchKeyword">
+        </div>
+        <div *ngIf="searchResults && searchResults.data">
+            <div class="my-4 d-flex flex-column gap-1 categorySearchResults" *ngIf="searchResults.data.length">
+                <div *ngFor="let category of searchResults.data">
+                    <div class="d-flex align-items-center justify-content-between gap-2">
+                        <div class="form-check">
+                            <input type="checkbox" (change)="onCategoryChange($event, category)"
+                                class="form-check-input" [checked]="isCategoryChecked(category._id)"
+                                [value]="category._id">
+                        </div>
+                        <div class="flex-grow-1">
+                            <div class="fs-6 text-truncate">{{ category.name }}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div *ngIf="!searchResults.data.length">
+                <div class="text-center fs-6">
+                    No results found
+                </div>
+            </div>
+        </div>
+        <div *ngIf="!searchResults">
+            <div class="fs-6 my-2 text-muted">
+                No results found
+            </div>
+        </div>
+    </div>
+    <div class="w-75">
+        <div *ngIf="widgetImages.length && isEditMode == false">
+            <div class="mb-2 pb-2 border-bottom border-secondary">
+                <div class="fs-4">Stock Viewer</div>
+                <div class="text-muted">Drag and drop to reorder</div>
+            </div>
+            <div class="example-list" cdkDropList cdkDropListOrientation="vertical"
+                (cdkDropListDropped)="dropItems($event)">
+                <div class="d-flex cursor-pointer align-items-center justify-content-between gap-2 mb-2 p-2 border border-secondary rounded"
+                    *ngFor="let item of widgetImages; let index = index" cdkDrag>
+                    <div>
+                        <img src="{{baseUrl}}{{item.thumbnail}}" alt="{{item.title}}" height="40" width="40"
+                            class="border border-secondary rounded" onerror="this.src='assets/images/default.png'">
+                    </div>
+                    <div class="flex-grow-1">
+                        <div class="fs-5">{{item.title}}</div>
+                    </div>
+                    <div class="d-flex gap-2">
+                        <button class="btn btn-danger p-1" (click)="removeItem(index)">Remove <i
+                                class="fa fa-times"></i></button>
+                        <button class="btn btn-secondary p-1" (click)="editItem(index)">Edit <i
+                                class="fa fa-eye"></i></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div *ngIf="isEditMode">
+            <div
+                class="d-flex justify-content-between align-items-center gap-2 mb-2 pb-2 border-bottom border-secondary">
+                <div class="d-flex justify-content-start align-items-center gap-2">
+                    <div class="cursor-pointer" (click)="cancelEdit()">
+                        <i class="fa fa-arrow-left"></i>
+                    </div>
+                    <div>
+                        <div class="fs-4">Edit Stock Viewer</div>
+                        <div class="text-muted">Update the stock viewer details</div>
+                    </div>
+                </div>
+                <div class="d-flex gap-2">
+                    <button class="btn btn-primary py-1 px-2" (click)="saveChanges()">Save <i
+                            class="fa fa-save"></i></button>
+                    <button class="btn btn-secondary py-1 px-2" (click)="cancelEdit()">Cancel <i
+                            class="fa fa-times"></i></button>
+                </div>
+            </div>
+            <form [formGroup]="form">
+                <div class="d-flex align-items-start gap-4">
+                    <div class="w-75 d-flex flex-column gap-4">
+                        <div class="form-group">
+                            <label for="title" class="form-label">Title</label>
+                            <input type="text" class="form-control" placeholder="Enter title" id="title"
+                                formControlName="title">
+                        </div>
+                        <div class="form-group">
+                            <label for="redirection" class="form-label">Redirection</label>
+                            <input type="text" class="form-control pe-none opacity-50" placeholder="Enter redirection"
+                                id="redirection" value="{{storeDomain}}{{form.value.redirection}}">
+                        </div>
+                    </div>
+                    <div class="w-25">
+                        <label for="thumbnail" class="form-label">Thumbnail</label>
+                        <div class="ratio ratio-1x1">
+                            <app-assets (mediaClicked)="onHandleMedia($event)"
+                                [previewDetails]="form.value.thumbnail"></app-assets>
+                        </div>
+                        <div class="d-flex justify-content-end" *ngIf="form.value.thumbnail">
+                            <button class="btn btn-link py-0 text-danger my-1" (click)="form.value.thumbnail = ''">
+                                Remove
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
