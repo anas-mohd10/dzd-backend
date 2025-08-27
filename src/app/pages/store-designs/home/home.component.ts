@@ -35,7 +35,12 @@ interface WidgetProps {
   icon: string;
   description: string;
 }
-
+interface WidgetItem {
+  title: string
+  redirection: string
+  categoryId: string
+  thumbnail: string
+}
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
