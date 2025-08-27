@@ -539,7 +539,10 @@ export class HomeComponent implements OnInit {
 
           if (this.widgetDetails?.widgetType == 'blogs') {
             this.widgetBlogs = this.widgetDetails?.blogs;
+          }else if (this.widgetDetails?.widgetType == 'stock-viewer') {
+            this.widgetImages = this.widgetDetails?.widgetImages;
           }
+
           if (this.widgetDetails?.widgetType == 'testimonial-cards') {
             this.widgetTestimonials = this.widgetDetails?.testimonials;
           }
@@ -909,7 +912,14 @@ export class HomeComponent implements OnInit {
           ? this.widgetCategory.value
           : null,
       };
+    }else if (this.widgetDetails?.widgetType == 'stock-viewer') {
+      let widgetImages = [];
+      for (let widgetImage of this.widgetImages) {
+        widgetImages.push({ ...widgetImage, media: widgetImage?.url?._id });
+      }
+      widgetPayload['widgetImages'] = widgetImages;
     }
+
 
     type == 'styles' ? (widgetPayload['styles'] = this.designForm.value) : null;
 
@@ -1519,4 +1529,9 @@ export class HomeComponent implements OnInit {
     this.deleteVideoLinkRef?.hide();
     this.deleteVideoLinkIndex = null;
   }
+  widgetItemsChange(widgetItems: Array<WidgetItem>) {
+    this.widgetImages = widgetItems;
+    this.ChangeDetectorRef.markForCheck();
+  }
+
 }
