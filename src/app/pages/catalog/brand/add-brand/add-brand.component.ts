@@ -26,7 +26,8 @@ export class AddBrandComponent implements OnInit {
     title: string,
     brandCategoryImages: Array<{
       url: string,
-      title: string
+      title: string,
+      redirection:String,
     }>
   }> = [
     { title: '', brandCategoryImages: [] }
@@ -86,7 +87,8 @@ export class AddBrandComponent implements OnInit {
     if (!this.brandCategories[categoryIndex].brandCategoryImages.some(img => img.url === imgPath)) {
       this.brandCategories[categoryIndex].brandCategoryImages.push({
         url: imgPath,
-        title: ''
+        title: '',
+        redirection:''
       });
     }
   }
@@ -100,6 +102,11 @@ export class AddBrandComponent implements OnInit {
   updateImageTitle(categoryIndex: number, imageIndex: number, event: Event) {
     const title = (event.target as HTMLInputElement).value;
     this.brandCategories[categoryIndex].brandCategoryImages[imageIndex].title = title;
+  }
+
+  updateImageRedirection(categoryIndex: number, imageIndex: number, event: Event) {
+    const redirection = (event.target as HTMLInputElement).value;
+    this.brandCategories[categoryIndex].brandCategoryImages[imageIndex].redirection = redirection;
   }
 
   // Update category title
