@@ -151,6 +151,10 @@
                   <input type="text" class="form-control form-control-sm" [value]="img.title"
                     (input)="updateImageTitle(i, j, $event)" placeholder="Image title" />
                 </div>
+                <div class="card-body p-2">
+                  <input type="text" class="form-control form-control-sm" [value]="img.redirection"
+                    (input)="updateImageRedirection(i, j, $event)" placeholder="Image Redirection" />
+                </div>
               </div>
             </div>
 

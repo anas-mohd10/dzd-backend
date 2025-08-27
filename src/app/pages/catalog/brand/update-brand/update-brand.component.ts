@@ -35,7 +35,8 @@
       title: string,
       brandCategoryImages: Array<{ 
         url: string, 
-        title: string 
+        title: string ,
+        redirection:String,
       }> 
     }> = [];
     @ViewChild('deleteConfirmation') deleteConfirmation: TemplateRef<any>;
@@ -93,7 +94,8 @@
               title: category.title || '',
               brandCategoryImages: (category.brandCategoryImages || []).map((img: any) => ({
                 url: typeof img === 'string' ? img : img.url,
-                title: typeof img === 'string' ? '' : img.title || ''
+                title: typeof img === 'string' ? '' : img.title || '',
+                redirection:typeof img === 'string' ? '' : img.redirection || ''
               }))
             })) || [];
           }
@@ -200,7 +202,8 @@
       if (!this.brandCategories[categoryIndex].brandCategoryImages.some(img => img.url === imgPath)) {
         this.brandCategories[categoryIndex].brandCategoryImages.push({
           url: imgPath,
-          title: ''
+          title: '',
+          redirection:''
         });
       }
       this.ChangeDetectorRef.markForCheck();
@@ -216,6 +219,10 @@
     updateImageTitle(categoryIndex: number, imageIndex: number, event: Event) {
       const title = (event.target as HTMLInputElement).value;
       this.brandCategories[categoryIndex].brandCategoryImages[imageIndex].title = title;
+    }
+    updateImageRedirection(categoryIndex: number, imageIndex: number, event: Event) {
+      const redirection = (event.target as HTMLInputElement).value;
+      this.brandCategories[categoryIndex].brandCategoryImages[imageIndex].redirection = redirection;
     }
   
     // New method to update category title
