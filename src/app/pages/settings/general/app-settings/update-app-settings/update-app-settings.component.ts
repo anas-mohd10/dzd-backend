@@ -314,6 +314,7 @@ export class UpdateAppSettingsComponent implements OnInit {
         this.form.get('verifyNumberWithTwilio')?.setValue(res?.result?.verifyNumberWithTwilio)
         this.form.get('deliverSlotBufferTime')?.setValue(res?.result?.deliverSlotBufferTime || 60);
         this.form.get('isVoucherEnabled')?.setValue(res?.result?.isVoucherEnabled)
+        this.form.get('isPlpPagination')?.setValue(res?.result?.isPlpPagination);
         this.form.get('isBillingAddressEnabled')?.setValue(res?.result?.isBillingAddressEnabled)
 
         this.form.get('commaSeparation')?.setValue(
@@ -435,6 +436,7 @@ export class UpdateAppSettingsComponent implements OnInit {
       verifyNumberWithTwilio: ['false'],
       isVoucherEnabled: ['false'],
       isBillingAddressEnabled: ['false'],
+      isPlpPagination: ['false'],
     })
   }
 
@@ -613,6 +615,7 @@ export class UpdateAppSettingsComponent implements OnInit {
       decimalValues: Number(this.form.get('decimalValues')?.value),
       verifyNumberWithTwilio: this.form.get('verifyNumberWithTwilio')?.value,
       isVoucherEnabled: this.form.get('isVoucherEnabled')?.value,
+      isPlpPagination: this.form.get('isPlpPagination')?.value,
       isBillingAddressEnabled: this.form.get('isBillingAddressEnabled')?.value,
       buttons: {
         cart: this.form.get('cartButton')?.value,

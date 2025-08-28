@@ -191,5 +191,12 @@ export const widgets: Array<WidgetProps> = [
         type: 'clickpulse-panel',
         icon: 'assets/widgets/clickpulse-panel.png',
         description: 'The following widget can be used to show limited set of medias with title and description. The widget contains images.',
+    },
+    {
+        title: 'Stock Viewer',
+        type: 'stock-viewer',
+        icon: 'assets/widgets/stock-viewer.png',
+        description: 'The following widget can be used to show categories and number of products in each category.',
     }
+
 ];

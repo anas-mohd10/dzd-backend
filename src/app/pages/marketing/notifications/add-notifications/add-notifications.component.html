@@ -23,7 +23,8 @@
   <div class="card my-4">
     <div class="card-body">
       <div class="d-flex align-items-center gap-2 mb-4">
-        <app-switch [isToggledProps]="form.get('isProfileLevel')?.value" [switchId]="'isProfileLevel'" (switchToggled)="onProfileLevelToggled($event)"></app-switch>
+        <app-switch [isToggledProps]="form.get('isProfileLevel')?.value" [switchId]="'isProfileLevel'"
+          (switchToggled)="onProfileLevelToggled($event)"></app-switch>
         <div class="fs-6">Show this Notification in Profile</div>
       </div>
       <div class="row">
@@ -37,7 +38,8 @@
         </div>
       </div>
       <ng-container *ngIf="form.get('isStoreLevel')?.value == 'false'">
-        <button type="button" class="btn btn-secondary" (click)="open(template)">{{customers.length == 0 ? 'Add' : 'Add - Remove'}} Customers</button>
+        <button type="button" class="btn btn-secondary" (click)="open(template)">{{customers.length == 0 ? 'Add' : 'Add
+          - Remove'}} Customers</button>
       </ng-container>
 
       <ng-container *ngIf="customers && customers.length > 0">
@@ -66,8 +68,14 @@
           <input
             [ngClass]="{ 'is-invalid': (formControls.scheduledAt.touched || isSubmitted) && formControls.scheduledAt.errors?.required}"
             type="datetime-local" [min]="minDate" class="form-control fs-6" formControlName="scheduledAt" />
-          <div class="invalid-feedback" *ngIf="formControls.scheduledAt.errors?.required">
-            {{formControls.scheduledAt.errors?.required.message}}
+
+          <div class="alert alert-danger mt-2 p-2"
+            *ngIf="(formControls.scheduledAt.touched || isSubmitted) && formControls.scheduledAt.errors?.required">
+            Schedule date and time is required
+          </div>
+          <div class="alert alert-danger mt-2 p-2"
+            *ngIf="(formControls.scheduledAt.touched || isSubmitted) && formControls.scheduledAt.errors?.futureDate">
+            {{formControls.scheduledAt.errors?.futureDate.message}}
           </div>
         </div>
       </div>
@@ -89,23 +97,25 @@
             </div>
           </div>
         </div>
+      </div>
+      <div class="d-flex flex-column gap-2">
+        <div class="form-group">
+          <label class="fs-6 mb-3 required">Title</label>
+          <input type="text" class="form-control fs-6" formControlName="title" placeholder="New Offer Just for You!"
+            [ngClass]="{ 'is-invalid': (formControls.title.touched || isSubmitted) && formControls.title.errors?.required}" />
         </div>
-        <div class="d-flex flex-column gap-2">
-          <div class="form-group">
-            <label class="fs-6 mb-3 required">Title</label>
-            <input type="text" class="form-control fs-6" formControlName="title" placeholder="New Offer Just for You!"
-              [ngClass]="{ 'is-invalid': (formControls.title.touched || isSubmitted) && formControls.title.errors?.required}" />
-          </div>
-          <div class="form-group">
-            <label class="fs-6 mb-3 required">Message</label>
-            <textarea class=" form-control fs-6" formControlName="content" style="resize: none" id="content" rows="2" placeholder="Get 10% off on your first order!"
-              [ngClass]="{'is-invalid':(formControls.content.touched || isSubmitted) && formControls.content.errors?.required}"></textarea>
-          </div>
-          <div class="form-group">
-            <label class="fs-6 mb-3">Redirection</label>
-            <input type="text" class="form-control fs-6 mb-2" placeholder="/products/grocery?origin=India&priceFrom=100" formControlName="redirection" />
-          </div>
+        <div class="form-group">
+          <label class="fs-6 mb-3 required">Message</label>
+          <textarea class=" form-control fs-6" formControlName="content" style="resize: none" id="content" rows="2"
+            placeholder="Get 10% off on your first order!"
+            [ngClass]="{'is-invalid':(formControls.content.touched || isSubmitted) && formControls.content.errors?.required}"></textarea>
         </div>
+        <div class="form-group">
+          <label class="fs-6 mb-3">Redirection</label>
+          <input type="text" class="form-control fs-6 mb-2" placeholder="/products/grocery?origin=India&priceFrom=100"
+            formControlName="redirection" />
+        </div>
+      </div>
     </div>
   </div>
 
