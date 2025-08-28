@@ -33,13 +33,19 @@
           More Options
           <span class="caret"></span>
         </button>
-        <ul id="dropdown-basic" *dropdownMenu class="dropdown-menu w-100" role="menu" aria-labelledby="button-basic">
+        <ul id="dropdown-basic" *dropdownMenu class="dropdown-menu w-100 d-flex flex-column gap-2" role="menu"
+          aria-labelledby="button-basic">
           <li role="menuitem">
-            <a class="dropdown-item fs-6 cursor-pointer" (click)="openImport(importTemplate)">
+            <a class="dropdown-item fs-6 cursor-pointer" (click)="openImport(importTemplate, 'product')">
               Import Products
             </a>
           </li>
-          <li class="divider dropdown-divider"></li>
+          <li role="menuitem">
+            <a class="dropdown-item fs-6 cursor-pointer" (click)="openImport(importAddOnTemplate, 'addOn')">
+              Import Add Ons
+            </a>
+          </li>
+          <li class="divider dropdown-divider my-0"></li>
           <li role="menuitem">
             <a class="dropdown-item fs-6 cursor-pointer" (click)="openExport(exportTemplate)">
               Export Products
@@ -390,7 +396,7 @@
             <div class="text-muted my-1 fs-5">Supported Formats: <span class="text-primary">.csv, .xlsx</span></div>
             <div class="text-muted fs-5">Maximum File Size: <span class="text-primary">15MB</span></div>
           </div>
-          <input type="file" [formControl]="fileImport" class="form-control h-100 w-100" (change)="fileChange($event)"
+          <input type="file" [formControl]="fileImport" class="form-control h-100 w-100" (change)="fileChange($event, 'product')"
             accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel">
         </div>
       </div>
@@ -404,7 +410,7 @@
               <div class="fs-5 text-muted">{{fileSize(importFile?.size / 1024 / 1024)}}</div>
             </div>
             <div>
-              <a (click)="removeFile()" class="cursor-pointer">
+              <a (click)="removeFile('product')" class="cursor-pointer">
                 <svg height="20" width="20" data-slot="icon" fill="none" stroke-width="1.5" stroke="currentColor"
                   viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
                   <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12"></path>
@@ -416,6 +422,61 @@
       </div>
 
       <button class="w-100 btn btn-primary" (click)="importProducts()">
+        Import
+      </button>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #importAddOnTemplate>
+  <div class="modal-body">
+    <div class="d-flex align-items-start flex-column gap-4 mb-4">
+      <div>
+        <div class="fs-2 fw-bold">Upload Files</div>
+        <p class="text-muted fs-5 mt-1">Supported formats: .csv, .xlsx</p>
+      </div>
+      <div id="importFile" class="position-relative h-100 w-100 py-4">
+        <div
+          class="position-absolute bg-white border border-secondary rounded h-100 w-100 top-0 d-flex flex-column align-items-start justify-content-center start-0 pe-none  p-4">
+          <div class="fs-4 mb-2 d-flex align-items-center justify-content-center gap-2">
+            <i class="fas fa-file"></i>
+            <div>Upload Your File Here</div>
+          </div>
+          <div class="text-muted fs-5">Maximum File Size: <span class="text-primary">15MB</span></div>
+        </div>
+        <input type="file" [formControl]="addOnFileImport" class="form-control h-100 w-100" (change)="fileChange($event, 'addOn')"
+          accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel">
+      </div>
+      <div>
+        <div class="fs-5 d-flex align-items-center gap-2">
+          <div>Download</div>
+          <div class="text-primary cursor-pointer" (click)="downloadAddOnSampleFile()">Sample File</div>
+        </div>
+      </div>
+    </div>
+
+    <div *ngIf="importAddOnFile && importAddOnFile?.name">
+      <div class="py-4 mb-4 border-top border-bottom border-secondary">
+        <div class="d-flex align-items-center justify-content-between">
+          <div>
+            <div class="fs-5">{{importAddOnFile?.name}}</div>
+            <div class="fs-5 text-muted">Size : {{fileSize(importAddOnFile?.size / 1024 / 1024)}}</div>
+          </div>
+          <div>
+            <a (click)="removeFile('addOn')" class="cursor-pointer">
+              <i class="fas fa-close"></i>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="d-flex align-items-center gap-2">
+      <button class="btn btn-secondary w-100"
+        (click)="importAddOnModalRef?.hide(); importAddOnFile = null; importAddOnDetails = null">
+        Cancel
+      </button>
+      <button class="w-100 btn btn-primary" (click)="importAddOnProducts()">
         Import
       </button>
     </div>

@@ -43,14 +43,16 @@
 
             <div class="form-group mb-3">
                <label class="fs-6 mb-3 required">Invoice Template</label>
-               <textarea type="text" class="form-control fs-6" rows="20" formControlName="invoiceTemplate"
-                  [ngClass]="{'is-invalid':(formControls.invoiceTemplate.touched || isSubmitted) && formControls.invoiceTemplate.errors?.required}"></textarea>
+               <ngx-monaco-editor style="height: 500px;" [options]="editorOptions" formControlName="invoiceTemplate"
+                  [ngClass]="{'is-invalid': (formControls.invoiceTemplate.touched || isSubmitted) && formControls.invoiceTemplate.errors?.required}">
+               </ngx-monaco-editor>
             </div>
 
             <div class="form-group mb-3">
                <label class="fs-6 mb-3 required">Packing Slip Template</label>
-               <textarea type="text" class="form-control fs-6" rows="20" formControlName="packingSlipTemplate"
-                  [ngClass]="{'is-invalid':(formControls.packingSlipTemplate.touched || isSubmitted) && formControls.packingSlipTemplate.errors?.required}"></textarea>
+               <ngx-monaco-editor style="height: 500px;" [options]="editorOptions" formControlName="packingSlipTemplate"
+                  [ngClass]="{'is-invalid': (formControls.packingSlipTemplate.touched || isSubmitted) && formControls.packingSlipTemplate.errors?.required}">
+               </ngx-monaco-editor>
             </div>
          </form>
       </div>

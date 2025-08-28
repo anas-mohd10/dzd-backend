@@ -22,7 +22,7 @@ interface dbCountry {
   _id: string;
   name: string;
   code: string;
-  phoneCode:string;
+  phoneCode: string;
 }
 
 @Component({
@@ -100,23 +100,42 @@ export class CountriesComponent implements OnInit {
     })
   }
 
+  // changeCountry(event: any) {
+  //   const countryDetails: any = this.countries.find((country: any) => country.name == event.target.value)
+  //   this.form.patchValue({
+  //     code: countryDetails.code
+  //   })
+  // }
+
   changeCountry(event: any) {
     const countryDetails: any = this.countries.find((country: any) => country.name == event.target.value)
     this.form.patchValue({
       code: countryDetails.code
+      // phoneCode field will remain empty for manual entry
     })
   }
 
   close() {
     this.modalRef?.hide()
-    this.form.patchValue({ code: '', name: '' })
+    this.form.patchValue({ code: '', name: '', phoneCode: '' })
+  }
+  
+  formatPhoneCode(phoneCode: string): string {
+    if (!phoneCode) return '';
+
+    // If it already starts with '+', return as is
+    if (phoneCode.startsWith('+')) {
+      return phoneCode;
+    }
+
+    return '+' + phoneCode;
   }
 
   ngOnInit(): void {
     this.form = new FormGroup({
       code: new FormControl('', [Validators.required]),
       name: new FormControl('', [Validators.required]),
-      phoneCode:new FormControl('',[Validators.required])
+      phoneCode: new FormControl('',[Validators.required])
     })
 
     for (let _key of Object.keys(countries.getNames(this.platformString, { select: "official" }))) {

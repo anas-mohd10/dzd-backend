@@ -413,6 +413,14 @@
               </select>
             </div>
             <div class="col-lg-4 form-group mb-3">
+              <label class="fs-6 mb-3">Enable Plp Pagination</label>
+              <select class="form-select mb-3" formControlName="isPlpPagination">
+                <option value="" disabled>-- Select an option --</option>
+                <option value="false">No</option>
+                <option value="true">Yes</option>
+              </select>
+            </div>
+            <div class="col-lg-4 form-group mb-3">
               <label class="fs-6 mb-3">Is Billing Address Enabled</label>
               <select class="form-select mb-3" formControlName="isBillingAddressEnabled">
                 <option value="" disabled>-- Select an option --</option>
@@ -574,6 +582,31 @@
                 </option>
               </ng-container>
             </select>
+          </div>
+        </div>
+      </div>
+
+      <div class="card my-4" id="addOnSettings">
+        <div class="card-body">
+          <div class="fs-3 fw-bold mb-2">Add On Settings</div>
+          <p class="text-muted">Edit the add on settings of your store</p>
+          <div class="d-flex flex-column gap-4">
+            <div>
+              <label class="fs-5 mb-3">Enable Add On</label>
+              <app-switch (switchToggled)="toggleAddOnItems($event)"
+                [isToggledProps]="form.get('isAddOnEnabled')?.value" [switchId]="'isAddOnEnabled'"></app-switch>
+            </div>
+            <ng-container *ngIf="form.get('isAddOnEnabled')?.value == true">
+              <div>
+                <label class="fs-5 mb-3">Display Label</label>
+                <app-switch (switchToggled)="toggleAddOnItems($event)"
+                  [isToggledProps]="form.get('isAddOnLabelEnabled')?.value" [switchId]="'isAddOnLabelEnabled'"></app-switch>
+              </div>
+              <div>
+                <label class="fs-5 mb-3">Label</label>
+                <input type="text" class="form-control fs-6" formControlName="addOnLabel" />
+              </div>
+            </ng-container>
           </div>
         </div>
       </div>

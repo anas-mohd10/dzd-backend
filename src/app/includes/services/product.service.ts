@@ -41,6 +41,11 @@ export class ProductService {
     return this.http.post(`${url}`, file);
   }
 
+  importAddOnProducts(file: any) {
+    const url = this.commonService.getFullUrl(this.productEndpoints.importAddOnProducts);
+    return this.http.post(`${url}`, file);
+  }
+
   manageChildProducts(productId: string, payload: any) {
     const url = this.commonService.getFullUrl(this.productEndpoints.manageChildProducts + `/${productId}`);
     return this.http.post(`${url}`, payload);

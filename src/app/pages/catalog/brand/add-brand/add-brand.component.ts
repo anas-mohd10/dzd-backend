@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { appRoutes } from '../../../../config/routes';
 import { BrandService } from '../../../../includes/services/brand.service';
 import { HotToastService } from '@ngneat/hot-toast';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-add-brand',
@@ -20,11 +21,23 @@ export class AddBrandComponent implements OnInit {
   cover: string = '';
   mobileCover: string = '';
   thumbnail: string = '';
+  base: string = environment.base;
+  brandCategories: Array<{
+    title: string,
+    brandCategoryImages: Array<{
+      url: string,
+      title: string,
+      redirection:String,
+    }>
+  }> = [
+    { title: '', brandCategoryImages: [] }
+  ];
 
   constructor(
     private Router: Router,
     private BrandService: BrandService,
-    private HotToastService: HotToastService
+    private HotToastService: HotToastService,
+    private ChangeDetectorRef: ChangeDetectorRef
   ) { }
 
   get formControls() {
@@ -67,6 +80,51 @@ export class AddBrandComponent implements OnInit {
     }
   }
 
+  // Add image to a category
+  addBrandCategoryImage(categoryIndex: number, event: any) {
+    console.log('BrandCategoryImage event:', event);
+    const imgPath = event.path || event.url;
+    if (!this.brandCategories[categoryIndex].brandCategoryImages.some(img => img.url === imgPath)) {
+      this.brandCategories[categoryIndex].brandCategoryImages.push({
+        url: imgPath,
+        title: '',
+        redirection:''
+      });
+    }
+  }
+
+  // Remove image from a category
+  removeBrandCategoryImage(categoryIndex: number, imgUrl: string) {
+    this.brandCategories[categoryIndex].brandCategoryImages =
+      this.brandCategories[categoryIndex].brandCategoryImages.filter(img => img.url !== imgUrl);
+  }
+
+  updateImageTitle(categoryIndex: number, imageIndex: number, event: Event) {
+    const title = (event.target as HTMLInputElement).value;
+    this.brandCategories[categoryIndex].brandCategoryImages[imageIndex].title = title;
+  }
+
+  updateImageRedirection(categoryIndex: number, imageIndex: number, event: Event) {
+    const redirection = (event.target as HTMLInputElement).value;
+    this.brandCategories[categoryIndex].brandCategoryImages[imageIndex].redirection = redirection;
+  }
+
+  // Update category title
+  updateCategoryTitle(categoryIndex: number, event: Event) {
+    const title = (event.target as HTMLInputElement).value;
+    this.brandCategories[categoryIndex].title = title;
+  }
+
+  addBrandCategory() {
+    this.brandCategories.push({ brandCategoryImages: [], title: '' });
+  }
+
+  removeBrandCategory(index: number) {
+    if (this.brandCategories.length > 1) {
+      this.brandCategories.splice(index, 1);
+    }
+  }
+
   initForm() {
     this.form = new FormGroup({
       name: new FormControl('', Validators.required),
@@ -87,8 +145,12 @@ export class AddBrandComponent implements OnInit {
     if (!this.form.valid) {
       return;
     }
-
-    this.BrandService.addBrand(this.form.value).subscribe({
+    // Attach BrandCategory to payload
+    const payload = {
+      ...this.form.value,
+      BrandCategory: this.brandCategories
+    };
+    this.BrandService.addBrand(payload).subscribe({
       next: (res: any) => {
         if (res.errorCode == 0) {
           this.HotToastService.success(res?.message);

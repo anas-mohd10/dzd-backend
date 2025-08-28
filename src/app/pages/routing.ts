@@ -53,7 +53,8 @@ import { SmsTemplateService } from '../includes/services/sms-template.service';
 import { SmsTemplatesComponent } from './settings/general/sms-templates/sms-templates.component';
 import { FormSettingsComponent } from './settings/general/form-settings/form-settings.component';
 import { AlbumsComponent } from './marketing/albums/albums.component';
-import { GalleriesComponent } from './marketing/galleries/galleries.component';
+import { GalleriesComponent } from './marketing/galleries/galleries.component';import { CurrencySettingsComponent } from './settings/general/currency-settings/currency-settings.component';
+
 export const Routing: Routes = [
   {
     path: 'app',
@@ -460,6 +461,10 @@ export const Routing: Routes = [
       }, {
         path: 'enquiries',
         component: EnquiresComponent,
+        canActivate: [AuthenticationGuard, PermissionGuard]
+      }, {
+        path: 'currency-settings',
+        component: CurrencySettingsComponent,
         canActivate: [AuthenticationGuard, PermissionGuard]
       }, {
         path: 'pickup-locations',

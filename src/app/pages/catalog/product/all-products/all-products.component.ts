@@ -81,10 +81,14 @@ export class AllProductsComponent implements OnInit {
   domainUrl: string = ''
   exportModalRef?: BsModalRef;
   importModalRef?: BsModalRef;
+  importAddOnModalRef?: BsModalRef;
   importFile: any;
   importDetails: any
+  importAddOnFile: any;
+  importAddOnDetails: any
 
   fileImport: FormControl = new FormControl()
+  addOnFileImport: FormControl = new FormControl()
   exportType: FormControl = new FormControl('csv')
   exportCondition: FormControl = new FormControl('basic')
   availableBasicFields: Array<{ name: string, value: string }> = [
@@ -126,38 +130,67 @@ export class AllProductsComponent implements OnInit {
     });
   }
 
-  openImport(template: TemplateRef<any>) {
-    this.importModalRef = this.BsModalService.show(template, {
-      class: 'modal-dialog-centered',
-      ignoreBackdropClick: true,
-    });
+  openImport(template: TemplateRef<any>, type: 'product' | 'addOn') {
+    if (type == 'product') {
+      this.importModalRef = this.BsModalService.show(template, {
+        class: 'modal-dialog-centered',
+        ignoreBackdropClick: true,
+      });
+    } else {
+      this.importAddOnModalRef = this.BsModalService.show(template, {
+        class: 'modal-dialog-centered',
+        ignoreBackdropClick: true,
+      });
+    }
   }
 
-  fileChange(event: any) {
-    this.importFile = event.target.files[0]
-    this.fileImport.setValue(this.importFile)
-    // Check if the file size is less than 15MB
-    if (this.importFile.size > 15 * 1024 * 1024) {
-      this.HotToastService.error('File size should be less than 15MB')
-      this.importFile = null
-      this.fileImport.setValue(null)
+  fileChange(event: any, type: 'product' | 'addOn') {
+    const file = event.target.files[0];
+
+    if (!file) return;
+
+    const isFileTooLarge = file.size > 15 * 1024 * 1024;
+    if (isFileTooLarge) {
+      this.HotToastService.error('File size should be less than 15MB');
+      this.setFileAndControl(type, null);
+    } else {
+      this.setFileAndControl(type, file);
     }
-    this.ChangeDetectorRef.markForCheck()
+
+    this.ChangeDetectorRef.markForCheck();
+  }
+
+  private setFileAndControl(type: 'product' | 'addOn', file: File | null) {
+    if (type === 'product') {
+      this.importFile = file;
+      this.fileImport.setValue(file);
+    } else {
+      this.importAddOnFile = file;
+      this.addOnFileImport.setValue(file);
+    }
   }
 
   fileSize(file: any) {
     // Convert bytes to MB
     // If the file size is less than 1MB, return the file size in bytes
     if (file < 1 * 1024 * 1024) {
+      if (file < 1) {
+        return '< 1 MB'
+      }
       return file.toFixed(2) + ' bytes'
     } else {
       return (file / 1024 / 1024).toFixed(2) + ' MB'
     }
   }
 
-  removeFile() {
-    this.fileImport.setValue(null)
-    this.importFile = null
+  removeFile(type: 'product' | 'addOn') {
+    if (type == 'product') {
+      this.fileImport.setValue(null)
+      this.importFile = null
+    } else {
+      this.addOnFileImport.setValue(null)
+      this.importAddOnFile = null
+    }
     this.ChangeDetectorRef.markForCheck()
   }
 
@@ -171,6 +204,26 @@ export class AllProductsComponent implements OnInit {
           this.HotToastService.success(res?.message)
           this.importModalRef?.hide()
           this.importFile = null
+          this.Router.navigate([`${appRoutes.bulk.import}/${res?.result?.importId}`])
+          this.ChangeDetectorRef.markForCheck()
+        } else {
+          this.HotToastService.error(res?.message)
+        }
+      }, error: (err: any) => { }
+    })
+  }
+
+  importAddOnProducts() {
+    const formData = new FormData();
+    formData.append('file', this.importAddOnFile);
+    this.ProductService.importAddOnProducts(formData).subscribe({
+      next: (res: any) => {
+        if (res?.errorCode == 0) {
+          this.importAddOnDetails = res?.result
+          this.HotToastService.success(res?.message)
+          this.importAddOnModalRef?.hide()
+          this.addOnFileImport.setValue(null)
+          this.importAddOnFile = null
           this.Router.navigate([`${appRoutes.bulk.import}/${res?.result?.importId}`])
           this.ChangeDetectorRef.markForCheck()
         } else {
@@ -481,5 +534,25 @@ export class AllProductsComponent implements OnInit {
           console.error('Download failed:', error);
         }
       );
+  }
+
+  downloadAddOnSampleFile() {
+    this.isDownloading = true;
+    const filePath: string = `/admin/assets/files/addOnProducts.csv`
+    this.HttpClient
+      .get(filePath, { responseType: 'blob' })
+      .subscribe((response: Blob) => {
+        const url = window.URL.createObjectURL(response);
+        const link = document.createElement('a');
+        link.href = url;
+        const filename = filePath.split('/').pop() || 'download.csv';
+        link.setAttribute('download', filename);
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        window.URL.revokeObjectURL(url);
+      }, error => {
+        console.error('Download failed:', error);
+      });
   }
 }
