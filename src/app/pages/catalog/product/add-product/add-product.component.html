@@ -587,20 +587,136 @@
             </form>
           </tab>
 
+          <tab heading="Add Ons">
+            <div class="d-flex justify-content-between align-items-center pb-4 border-bottom border-secondary my-8">
+              <div class="fs-4">Add-Ons</div>
+              <button class="btn btn-secondary d-flex align-items-center justify-content-center gap-2"
+                (click)="openManageAddOns(manageAddOnsTemplate, 'add', null)">
+                <div>Manage Add Ons</div>
+                <div>
+                  <svg height="16" width="16" data-slot="icon" fill="none" stroke-width="1.5" stroke="currentColor"
+                    viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"></path>
+                  </svg>
+                </div>
+              </button>
+            </div>
+            <ng-container *ngIf="addOns.length == 0">
+              <div class="fs-5 text-muted">No add-ons found</div>
+            </ng-container>
+            <ng-container *ngIf="addOns.length > 0">
+              <table class="table table-bordered">
+                <thead>
+                  <tr>
+                    <th width="20%" class="p-2">Title</th>
+                    <th width="20%" class="p-2">Description</th>
+                    <th width="20%" class="p-2">Is Required</th>
+                    <th width="20%" class="p-2">Add-On Type</th>
+                    <th width="20%" class="p-2">&nbsp;</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let addOn of addOns; let index = index">
+                    <td>
+                      <div class="addOnName">
+                        {{addOn.title}}
+                      </div>
+                    </td>
+                    <td>
+                      <div class="addOnOptionDetails">
+                        {{addOn.description}}
+                      </div>
+                    </td>
+                    <td>{{addOn.isRequired ? 'Yes' : 'No'}}</td>
+                    <td>{{addOn.addOnType | titlecase}}</td>
+                    <td>
+                      <div class="d-flex align-items-center justify-content-center gap-2">
+                        <button class="btn btn-secondary py-1 px-2 w-50"
+                          (click)="openManageAddOns(manageAddOnsTemplate, 'edit', index)">
+                          Edit
+                        </button>
+                        <button class="btn btn-danger py-1 px-2 w-50" (click)="removeAddOn(index)">
+                          Remove
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </ng-container>
+          </tab>
+
           <tab heading="SEO Details">
             <form [formGroup]="form">
               <div class="my-6">
                 <div class="form-group mb-3">
-                  <label for="metaTitle" class="fs-6 mb-3">Meta title</label>
-                  <input type="text" formControlName="metaTitle" class="form-control">
+                  <div>
+                    <label for="metaTitle"
+                      class="fs-6 mb-3 d-flex justify-content-start gap-2 align-items-center link-underline-secondary cursor-pointer">
+                      <div>Title -</div>
+                      <div (click)="generateMetaTitle()" class="text-primary">Auto Generate</div>
+                    </label>
+                    <div id="metaTitle">
+                      <p class="text-muted">
+                        This should be between 50 and 60 characters. For help in writing quality meta titles,
+                        <a href="https://developers.google.com/search/docs/appearance/title-link#page-titles">
+                          Learn more
+                        </a>
+                      </p>
+                      <input type="text" formControlName="metaTitle" class="form-control">
+                    </div>
+                  </div>
+                  <div *ngIf="validateMetaDetails('metaTitle')"
+                    class="mt-2 text-danger bg-danger bg-opacity-10 p-2 rounded fw-normal d-flex align-items-center gap-2">
+                    <div>
+                      <svg height="16" width="16" data-slot="icon" fill="none" stroke-width="1.5" stroke="currentColor"
+                        viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                          d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126ZM12 15.75h.007v.008H12v-.008Z">
+                        </path>
+                      </svg>
+                    </div>
+                    <div>{{validateMetaDetails('metaTitle')}}</div>
+                  </div>
                 </div>
                 <div class="form-group mb-3">
-                  <label for="metaDescription" class="fs-6 mb-3">Meta description</label>
-                  <input type="text" formControlName="metaDescription" class="form-control">
+                  <div>
+                    <label for="metaDescription" class="fs-6 mb-3">Description</label>
+                    <div id="metaTitle">
+                      <p class="text-muted">
+                        This should be between 100 and 150 characters. For help in writing quality meta descriptions,
+                        <a href="https://developers.google.com/search/docs/appearance/snippet#meta-descriptions">
+                          Learn more
+                        </a>
+                      </p>
+                      <input type="text" formControlName="metaDescription" class="form-control">
+                    </div>
+                  </div>
+                  <div *ngIf="validateMetaDetails('metaDescription')"
+                    class="mt-2 text-danger bg-danger bg-opacity-10 p-2 rounded fw-normal d-flex align-items-center gap-2">
+                    <div>
+                      <svg height="16" width="16" data-slot="icon" fill="none" stroke-width="1.5" stroke="currentColor"
+                        viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                          d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126ZM12 15.75h.007v.008H12v-.008Z">
+                        </path>
+                      </svg>
+                    </div>
+                    <div>{{validateMetaDetails('metaDescription')}}</div>
+                  </div>
                 </div>
                 <div class="form-group mb-3">
-                  <label for="metaKeywords" class="fs-6 mb-3">Meta keywords</label>
+                  <label for="metaKeywords" class="fs-6 mb-3">Keywords</label>
                   <input type="text" formControlName="metaKeywords" class="form-control">
+                </div>
+                <div>
+                  <p class="fs-5 mb-0">Preview</p>
+                  <p class="text-muted">Exact result listings may vary based on content and search relevancy.</p>
+                  <div class="bg-secondary bg-opacity-50 p-4 rounded">
+                    <div>{{settings.domain}}p/{{form.get('slug')?.value}}</div>
+                    <div class="fs-4 fw-bold my-1">{{form.get('metaTitle')?.value}}</div>
+                    <div>{{form.get('metaDescription')?.value}}</div>
+                  </div>
                 </div>
               </div>
               <div class="d-flex align-items-center justify-content-center gap-2">
@@ -696,5 +812,218 @@
         </div>
       </button>
     </div>
+  </div>
+</ng-template>
+
+<ng-template #manageAddOnsTemplate>
+  <div class="modal-header">
+    <h4 class="modal-title fw-bold pull-left">Manage Add-Ons</h4>
+    <button type="button" class="btn-close close pull-right" aria-label="Close" (click)="cancelAddOnItem()">
+      <span aria-hidden="true" class="visually-hidden">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <ng-container *ngIf="addOnTabIndex == 0">
+      <form [formGroup]="addOnForm">
+        <div class="form-group">
+          <label for="addOnTitle" class="fs-6 mb-3">Add-On Title</label>
+          <input type="text" id="addOnTitle" class="form-control" formControlName="title"
+            [ngClass]="{'is-invalid': addOnFormControls.title.errors?.required && (addOnFormControls.title.touched || isItemSubmitted)}">
+        </div>
+        <div class="form-group my-3">
+          <label for="addOnDescription" class="fs-6 mb-3">Add-On Description</label>
+          <textarea id="addOnDescription" class="form-control" formControlName="description"></textarea>
+        </div>
+        <div class="row align-items-center">
+          <div class="form-group col-lg-3">
+            <label for="addOnIsRequired" class="fs-6 mb-3">Is Required</label>
+            <app-switch [switchId]="addOnFormControls.isRequired.value"
+              [isToggledProps]="addOnFormControls.isRequired.value"
+              (switchToggled)="onTriggerAddOns($event, 'isRequired')"></app-switch>
+          </div>
+          <div class="form-group my-3 col-lg-9">
+            <label for="addOnType" class="fs-6 mb-3">Add-On Type</label>
+            <select id="addOnType" class="form-select" formControlName="addOnType">
+              <option value="" disabled>-- Select an option --</option>
+              <option *ngFor="let addOnType of addOnTypes" [value]="addOnType.value">{{addOnType.key}}</option>
+            </select>
+          </div>
+        </div>
+        <div class="my-3">
+          <div class="py-3 border-top border-secondary d-flex align-items-center justify-content-between">
+            <div class="fs-3 fw-bold">Add-On Options</div>
+            <button class="btn btn-secondary" (click)="addOnTabIndex = 1">
+              Add Option
+              <span>
+                <svg height="16" width="16" data-slot="icon" fill="none" stroke-width="1.5" stroke="currentColor"
+                  viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"></path>
+                </svg>
+              </span>
+            </button>
+          </div>
+
+          <table class="table table-bordered">
+            <thead>
+              <th class="p-2">Product</th>
+              <th class="p-2">Discount Method</th>
+              <th class="p-2">Discount Amount</th>
+              <th class="p-2">Is Editable</th>
+              <th class="p-2">Price</th>
+              <th class="p-2">&nbsp;</th>
+            </thead>
+            <tbody>
+              <tr *ngFor="let addOnOption of addOnOptions; let index = index">
+                <td>
+                  <div class="addOnOptionTitle">{{addOnOption.name}}</div>
+                </td>
+                <td>
+                  <div>{{addOnOption.discountMethod | titlecase}}</div>
+                </td>
+                <td>{{addOnOption.discountAmount}}</td>
+                <td>
+                  <div>{{addOnOption.isEditable ? 'Yes' : 'No'}}</div>
+                </td>
+                <td>{{addOnOption.price}}</td>
+                <td>
+                  <div class="d-flex align-items-center justify-content-end gap-2">
+                    <button class="btn btn-secondary p-2 w-50" (click)="editAddOnOption(index)">Edit</button>
+                    <button class="btn btn-danger p-2 w-50" (click)="removeAddOnOption(index)">Delete</button>
+                  </div>
+                </td>
+              </tr>
+              <tr *ngIf="addOnOptions.length == 0">
+                <td colspan="6">
+                  No items found
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </form>
+      <div class="my-4 d-flex gap-2 align-items-center justify-content-end">
+        <button class="btn btn-secondary" (click)="cancelAddOnItem()">Cancel</button>
+        <button class="btn btn-primary" (click)="addAddOnItem()">Save changes</button>
+      </div>
+    </ng-container>
+    <ng-container *ngIf="addOnTabIndex == 1">
+      <div class="cursor-pointer d-flex align-items-center fs-5" (click)="resetVars()">
+        <span>
+          <svg height="16" width="16" data-slot="icon" fill="none" stroke-width="1.5" stroke="currentColor"
+            viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5"></path>
+          </svg>
+        </span>
+        Cancel
+      </div>
+
+      <ng-container>
+        <ng-container *ngIf="isProductSelected == false">
+          <div class="form-group my-3">
+            <input type="text" placeholder="Search Products" class="form-control" [formControl]="addOnsKeyword">
+          </div>
+          <table class="table table-bordered">
+            <thead>
+              <th class="p-2">Name</th>
+              <th class="p-2">SKU</th>
+              <th class="p-2">Price</th>
+              <th class="p-2">&nbsp;</th>
+            </thead>
+            <tbody>
+              <tr *ngFor="let addOnSearchResult of addOnSearchResults">
+                <td>
+                  <div class="d-flex align-items-center justify-content-start gap-2">
+                    <img src="{{base}}{{addOnSearchResult.thumbnail}}" alt="{{addOnSearchResult.name}}"
+                      onerror="this.src = 'assets/images/default.png'" class="rounded border border-secondary"
+                      height="40" width="40">
+                    <div class="addOnProductName">{{addOnSearchResult.name}}</div>
+                  </div>
+                </td>
+                <td>{{addOnSearchResult.sku}}</td>
+                <td>
+                  <div>{{settings.currency}} {{addOnSearchResult.price.selling}}</div>
+                </td>
+                <td>
+                  <button class="btn btn-secondary p-2" (click)="toggleAddOnProduct(addOnSearchResult, 'add')">
+                    Add Product
+                  </button>
+                </td>
+              </tr>
+              <tr *ngIf="addOnSearchResults.length == 0">
+                <td colspan="4">
+                  No items found
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <app-pagination [totalResults]="totalAddOnResults" [totalPages]="totalAddOnPages" [pageIndex]="addOnPageIndex"
+            [pageSize]="addOnPageSize" (pageTrigger)="addOnPageTrigger($event)"></app-pagination>
+        </ng-container>
+
+        <ng-container *ngIf="isProductSelected == true">
+          <form [formGroup]="addOnOptionForm" (ngSubmit)="addAddOnOption()">
+            <div class="form-group my-3">
+              <label for="addOnOptionProduct" class="fs-6 mb-3">Product</label>
+              <input type="text" placeholder="Enter Product" id="addOnOptionProduct" class="form-control"
+                formControlName="name"
+                [ngClass]="{'is-invalid': (addOnOptionFormControls.name.errors?.required) && (addOnOptionFormControls.name.touched || isOptionSubmitted)} ">
+            </div>
+            <div class="form-group">
+              <label for="addOnOptionDescription" class="fs-6 mb-3">Description</label>
+              <textarea id="addOnOptionDescription" placeholder="Description" class="form-control"
+                formControlName="description"></textarea>
+            </div>
+            <div class="form-group my-3">
+              <label for="discountMethod" class="fs-6 mb-3">Discount Method</label>
+              <select id="discountMethod" class="form-select" (change)="handleDiscountMethod()"
+                formControlName="discountMethod">
+                <option value="" disabled>-- Select an option --</option>
+                <option value="amount">Amount Discount</option>
+                <option value="percentage">Percentage Discount</option>
+                <option value="flat">Flat Discount</option>
+              </select>
+            </div>
+            <div class="form-group my-3" *ngIf="['flat', 'percentage'].includes(addOnOptionForm.value.discountMethod)">
+              <label for="discountAmount" class="fs-6 mb-3">Discount</label>
+              <input type="text" placeholder="Enter Discount" id="discountAmount" class="form-control"
+                formControlName="discountAmount" />
+            </div>
+            <div class="form-group my-3" *ngIf="addOnOptionForm.value.discountMethod == 'amount'">
+              <label for="addOnOptionPrice" class="fs-6 mb-3">Price</label>
+              <input type="text" placeholder="Price" id="addOnOptionPrice" class="form-control" formControlName="price"
+                [ngClass]="{'is-invalid': (addOnOptionFormControls.price.errors?.required || addOnOptionFormControls.price.errors?.pattern) && (addOnOptionFormControls.price.touched || isOptionSubmitted)}">
+            </div>
+            <ng-container *ngIf="['flat', 'percentage'].includes(addOnOptionForm.value.discountMethod) && addOnDoc">
+              <div class="fs-5 mb-3">
+                <span>
+                  <svg height="24" width="24" data-slot="icon" fill="none" stroke-width="1.5" stroke="currentColor"
+                    viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                      d="m11.25 11.25.041-.02a.75.75 0 0 1 1.063.852l-.708 2.836a.75.75 0 0 0 1.063.853l.041-.021M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9-3.75h.008v.008H12V8.25Z">
+                    </path>
+                  </svg>
+                </span> Customer can purchase this add-on option for {{settings.currency}} {{getAddOnOptionPrice()}}
+                which is {{addOnOptionForm.value.discountMethod == 'flat' ? 'a flat discount' : 'a percentage
+                discount'}} of the current product price {{settings.currency}} {{addOnDoc.price.selling}}.
+              </div>
+            </ng-container>
+            <div>
+              <div class="mb-3">
+                <div class="fs-5 mb-1">Is Editable</div>
+                <p class="fs-6 text-muted">
+                  This will allow the customer to update the quantity of the product from the cart.
+                </p>
+              </div>
+              <app-switch [switchId]="'isEditable'" [isToggledProps]="addOnOptionFormControls.isEditable.value"
+                (switchToggled)="onTriggerAddOns($event, 'isEditable')"></app-switch>
+            </div>
+            <div class="my-4 d-flex gap-2 align-items-center justify-content-end">
+              <button type="submit" class="btn btn-primary">Save changes</button>
+            </div>
+          </form>
+        </ng-container>
+
+      </ng-container>
+    </ng-container>
   </div>
 </ng-template>

@@ -95,6 +95,7 @@ export class PaymentSettingsComponent implements OnInit {
       isEnabled: new FormControl(false),
       username: new FormControl(''),
       password: new FormControl(''),
+      defaultPayment: new FormControl(false),
     });
 
     this.fetchGateways();
@@ -110,6 +111,22 @@ export class PaymentSettingsComponent implements OnInit {
   paymentGatewayEnabled(pgId: string) {
     let isExists = this.paymentGateways.some((paymentGateway: any) => paymentGateway.paymentGateway == pgId);
     return isExists;
+  }
+
+
+  onDefaultCheckboxChange(event: any) {
+    const isChecked = event.target.checked;
+
+    if (isChecked) {
+      // If setting as default, unset any other default payment gateway
+      this.unsetOtherDefaultGateways();
+    }
+  }
+
+  unsetOtherDefaultGateways() {
+    // This will be called when the backend updates other gateways
+    // The actual unsetting should happen on the backend when saving
+    console.log('Setting this gateway as default, others will be unset');
   }
 
   fetchGateways() {
@@ -219,7 +236,7 @@ export class PaymentSettingsComponent implements OnInit {
   close() {
     this.modalRef?.hide();
     this.form.reset();
-    this.form.patchValue({ payByOption: '', isEnabled: false })
+    this.form.patchValue({ payByOption: '', isEnabled: false, isDefault: false })
     this.displayIcon = '';
     this.isSubmitted = false;
   }
@@ -235,9 +252,20 @@ export class PaymentSettingsComponent implements OnInit {
         if (response.errorCode == 0) {
           this.pgDetails = response.result;
           this.displayIcon = response.result?.displayIcon?.path;
-          this.form.patchValue(this.pgDetails);
-          this.form.patchValue({payByOption: this.pgDetails.payByOption || 'PAY_NOW'})
-          this.form.patchValue({ displayIcon: response.result?.displayIcon?._id });
+          // Safe way to patch values
+          const formValues: any = {
+            ...response.result,
+            payByOption: response.result?.payByOption || 'PAY_NOW',
+            defaultPayment: response.result?.defaultPayment || false
+          };
+
+          this.form.patchValue(formValues);
+
+          // Handle displayIcon separately if needed
+          if (response.result?.displayIcon?._id) {
+            this.form.patchValue({ displayIcon: response.result.displayIcon._id });
+          }
+
           this.ChangeDetectorRef.markForCheck();
         } else {
           this.HotToastService.error(response.message);
@@ -285,6 +313,17 @@ export class PaymentSettingsComponent implements OnInit {
       return;
     }
 
+
+    const formData = {
+      _id: this.pgDetails?._id,
+      ...this.form.value,
+    };
+
+    // If setting as default, ensure we have the current payment gateway ID
+    if (formData.defaultPayment) {
+      formData.paymentGateway = this.form.get('paymentGateway')?.value;
+    }
+
     this.PaymentDetailsService.manage({
       _id: this.pgDetails?._id,
       ...this.form.value,
@@ -302,5 +341,18 @@ export class PaymentSettingsComponent implements OnInit {
         this.HotToastService.error(err.error.message);
       },
     });
+  }
+
+  updateDefaultGatewayUI(defaultGatewayId: string) {
+    // Update the paymentGateways array to reflect the new default
+    this.paymentGateways = this.paymentGateways.map(gateway => ({
+      ...gateway,
+      defaultPayment: gateway.paymentGateway === defaultGatewayId
+    }));
+  }
+
+  isDefaultGateway(pgId: string): boolean {
+    const gateway = this.paymentGateways.find((pg: any) => pg.paymentGateway === pgId);
+    return gateway ? gateway.defaultPayment : false;
   }
 }

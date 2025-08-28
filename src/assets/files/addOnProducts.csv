@@ -1,0 +1,7 @@
+title,description,isRequired,addOnType,optionName,product,optionDescription,discountMethod,discountAmount,price,isEditable
+Size,Choose your size,true,radio,9910041,ADD120,Small portion,amount,0,0,true
+Size,Choose your size,true,radio,9910860,ADD120,Medium portion,amount,10,10,true
+Size,Choose your size,true,radio,9913247,ADD120,Large portion,amount,20,20,true
+Toppings,Select toppings,false,checkbox,9910040,101,Extra cheese,flat,15,15,false
+Toppings,Select toppings,false,checkbox,9910791,101,Green olives,flat,10,10,false
+Toppings,Select toppings,false,checkbox,9910793,101,Spicy jalapeno,flat,10,10,false

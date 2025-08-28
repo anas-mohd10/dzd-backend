@@ -1,33 +1,27 @@
-<div class="brand-page-container">
-  <div class="page-header">
-    <div class="page-title">
-      <h1 class="fw-bold">Cart</h1>
-    </div>
-    <div class="row align-items-center">
-      <div class="col d-flex flex-row justify-content-between">
-        <ul class="breadcrumb">
-          <li class="breadcrumb-item fs-6">
-            <a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a>
-          </li>
-          <li class="breadcrumb-item active fs-6">
-            <a routerLink="{{ appRoute.cart.CART_LIST }}">Cart</a>
-          </li>
-          <div class="d-flex gap-2 export-div">
-            <div class="ms-auto">
-              <button class="btn bg-white text-primary border border-primary me-1 " (click)="exportCart()">
-                Export Cart
-                <svg height="18" width="18" fill="none" stroke-width="1.5" stroke="currentColor" viewBox="0 0 24 24"
-                  xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                  <path stroke-linecap="round" stroke-linejoin="round"
-                    d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5m-13.5-9L12 3m0 0 4.5 4.5M12 3v13.5">
-                  </path>
-                </svg>
-              </button>
-            </div>
-          </div>
-        </ul>
+<div>
+  <div class="page-header d-flex align-items-start justify-content-between">
+    <div>
+      <div class="page-title">
+        <h1 class="fw-bold">Cart</h1>
       </div>
+      <ul class="breadcrumb">
+        <li class="breadcrumb-item fs-6">
+          <a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a>
+        </li>
+        <li class="breadcrumb-item active fs-6">
+          <a routerLink="{{ appRoute.cart.CART_LIST }}">Cart</a>
+        </li>
+      </ul>
     </div>
+    <button class="btn bg-white text-primary border border-primary me-1 " (click)="exportCart()">
+      Export Cart
+      <svg height="18" width="18" fill="none" stroke-width="1.5" stroke="currentColor" viewBox="0 0 24 24"
+        xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <path stroke-linecap="round" stroke-linejoin="round"
+          d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5m-13.5-9L12 3m0 0 4.5 4.5M12 3v13.5">
+        </path>
+      </svg>
+    </button>
   </div>
 
   <div class="card my-4">

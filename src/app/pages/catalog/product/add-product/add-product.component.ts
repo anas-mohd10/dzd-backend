@@ -22,12 +22,45 @@ import { TabsetComponent } from 'ngx-bootstrap/tabs';
 import { BrandService } from 'src/app/includes/services/brand.service';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { moveItemInArray } from '@angular/cdk/drag-drop';
-import { CdkDragDrop } from '@angular/cdk/drag-drop';
+import { CdkDragDrop  } from '@angular/cdk/drag-drop';
+import { debounceTime } from 'rxjs/operators';
 
 interface StoreField {
   title: string;
   description: string;
   isVisible: boolean;
+}
+
+interface AddOnOption {
+  _id: string;
+  name: string;
+  product: Product;
+  description: string;
+  price: number;
+  isEditable: boolean;
+  discountMethod: string;
+  discountAmount: number;
+}
+
+interface AddOns {
+  _id: string;
+  title: string;
+  description: string;
+  isRequired: boolean;
+  addOnType: string;
+  options: AddOnOption[];
+}
+
+interface Product {
+  name: string;
+  sku: string;
+  thumbnail: string;
+  overview: string;
+  price: {
+    mrp: number;
+    selling: number;
+  };
+  _id: string;
 }
 
 @Component({
@@ -134,6 +167,36 @@ export class AddProductComponent implements OnInit {
   tagIcons: Array<string> = [];
   storeFieldIndex: number | null;
 
+  // Add-Ons starts here
+  addOnsRef?: BsModalRef;
+  manageAddOnsRef?: BsModalRef;
+  addOnsKeyword: FormControl = new FormControl('', Validators.required);
+  addOnSearchResults: Array<any> = [];
+  addOnProducts: Array<any> = [];
+  addOnForm: FormGroup = new FormGroup({});
+  addOnOptionForm: FormGroup = new FormGroup({});
+  addOnTypes: Array<{ key: string; value: string }> = [
+    { key: 'Select', value: 'select' },
+    { key: 'Radio', value: 'radio' },
+    { key: 'Checkbox', value: 'checkbox' },
+  ];
+  isProductSelected: boolean = false;
+  addOnDoc: Product | null;
+  addOnTabIndex: number = 0;
+  isOptionSubmitted: boolean = false;
+  isItemSubmitted: boolean = false;
+  addOnOptions: AddOnOption[] = [];
+  addOns: AddOns[] = [];
+  addOnPageIndex: number = 1;
+  addOnPageSize: number = 10;
+  totalAddOnResults: number = 0;
+  totalAddOnPages: number = 1;
+  isEditAddOnOption: boolean = false;
+  editAddOnOptionIndex: number = 0;
+  isEditAddOn: boolean = false;
+  editAddOnIndex: number = 0;
+  // Add-Ons ends here
+
   constructor(
     private ActivatedRoute: ActivatedRoute,
     private Router: Router,
@@ -147,7 +210,254 @@ export class AddProductComponent implements OnInit {
     private HotToastService: HotToastService,
     private AppSettingsService: AppSettingsService,
     private BsModalService: BsModalService
-  ) { }
+  ) {
+    this.addOnsKeyword.valueChanges.pipe(debounceTime(500)).subscribe(() => {
+      this.searchProducts();
+    });
+  }
+
+  // Add-Ons starts here
+  // This function is used to search for products
+  searchProducts() {
+    if (!this.addOnsKeyword.value) {
+      this.addOnSearchResults = [];
+    }
+
+    if (!this.addOnsKeyword.valid) {
+      return;
+    }
+
+    this.ProductService.searchProducts({
+      name: this.addOnsKeyword.value,
+      page: this.addOnPageIndex,
+      limit: this.addOnPageSize
+    }).subscribe({
+      next: (res: any) => {
+        if (res?.errorCode == 0) {
+          this.addOnSearchResults = res?.result?.data;
+          this.totalAddOnResults = res?.result?.totalResults;
+          this.totalAddOnPages = res?.result?.totalPages;
+          this.ChangeDetectorRef.markForCheck();
+        } else {
+        }
+      },
+      error: (err: any) => { },
+    });
+  }
+
+  // This function is used to trigger the add-on page
+  addOnPageTrigger(event: { pageIndex: number; pageSize: number }) {
+    this.addOnPageIndex = event.pageIndex;
+    this.addOnPageSize = event.pageSize;
+    this.searchProducts();
+  }
+
+  // This function is used to toggle the add-on product
+  toggleAddOnProduct(product: Product, type: 'add' | 'remove') {
+    const isExists: boolean = this.addOnProducts.some(item => item?._id == product?._id);
+    if (isExists) {
+      this.addOnProducts = this.addOnProducts.filter(item => item?._id != product?._id);
+    } else {
+      this.addOnProducts.push(product);
+    }
+
+    if (type == 'add') {
+      this.isProductSelected = true;
+      this.addOnTabIndex = 1;
+      this.addOnDoc = product;
+      this.addOnOptionForm.patchValue({
+        name: product.name,
+        product: product._id,
+        description: product.overview,
+        price: product.price.selling,
+      })
+    }
+
+    this.ChangeDetectorRef.markForCheck();
+  }
+
+  // This function is used to get the add-on option controls
+  get addOnOptionControls() {
+    return this.addOnOptionForm.controls;
+  }
+
+  // This function is used to reset the add-on variables
+  resetVars() {
+    this.addOnTabIndex = 0;
+    this.editAddOnOptionIndex = 0;
+    this.addOnProducts = [];
+    this.addOnOptionForm.reset();
+    this.addOnOptionForm.patchValue({ 'isEditable': false, discountMethod: 'amount' });
+    this.addOnsKeyword.setValue('');
+    this.isEditAddOnOption = false;
+    this.isOptionSubmitted = false;
+    this.isProductSelected = false;
+    this.addOnDoc = null;
+  }
+
+  // This function is used to handle the discount method
+  handleDiscountMethod() {
+    if (this.addOnOptionForm.value.discountMethod == 'amount') {
+      this.addOnOptionForm.get('discountAmount')?.removeValidators([Validators.required, Validators.pattern(/^\d+(\.\d{1,2})?$/)]);
+      this.addOnOptionForm.get('discountAmount')?.updateValueAndValidity();
+      this.addOnOptionForm.patchValue({ discountAmount: 0, price: this.addOnDoc?.price.selling })
+    } else {
+      // Add validation for the discount amount
+      let validators = [Validators.required, Validators.pattern(/^\d+(\.\d{1,2})?$/)];
+      if (this.addOnDoc && this.addOnOptionForm.value.discountMethod == 'flat') {
+        validators.push(Validators.max(this.addOnDoc?.price?.selling));
+      }
+
+      if (this.addOnOptionForm.value.discountMethod == 'percentage') {
+        validators.push(Validators.max(100));
+      }
+
+      this.addOnOptionForm.get('discountAmount')?.setValidators(validators);
+      this.addOnOptionForm.get('discountAmount')?.updateValueAndValidity();
+      this.addOnOptionForm.patchValue({ price: 0, discountAmount: 0 })
+    }
+  }
+
+  // This function is used to handle the discount amount
+  handleDiscountAmount() {
+    if (this.addOnOptionForm.value.discountMethod == 'flat') {
+      if (this.addOnDoc && this.addOnOptionForm.value.discountAmount > this.addOnDoc?.price?.selling) {
+        this.addOnOptionForm.get('discountAmount')?.setErrors({ pattern: true });
+        this.HotToastService.error('Discount amount cannot be greater than the price');
+      }
+    } else if (this.addOnOptionForm.value.discountMethod == 'percentage') {
+      if (this.addOnDoc && this.addOnOptionForm.value.discountAmount > 100) {
+        this.addOnOptionForm.get('discountAmount')?.setErrors({ pattern: true });
+        this.HotToastService.error('Discount amount cannot be greater than 100');
+      }
+    }
+  }
+
+  // This function is used to get the add-on option price
+  getAddOnOptionPrice() {
+    if (!this.addOnDoc) {
+      return 0;
+    }
+
+    if (this.addOnOptionForm.value.discountMethod == 'flat') {
+      return this.addOnDoc?.price.selling - this.addOnOptionForm.value.discountAmount;
+    }
+
+    if (this.addOnOptionForm.value.discountMethod == 'percentage') {
+      return this.addOnDoc?.price.selling - (this.addOnDoc?.price.selling * this.addOnOptionForm.value.discountAmount / 100);
+    }
+  }
+
+  // This function is used to add the add-on option to the addOnOptions array
+  addAddOnOption() {
+    if (!this.addOnOptionForm.valid) {
+      this.isOptionSubmitted = true;
+      this.HotToastService.error('Please fill all the fields');
+      return;
+    }
+
+    if (this.isEditAddOnOption) {
+      this.addOnOptions[this.editAddOnOptionIndex] = { ...this.addOnOptionForm.value, product: this.addOnDoc };
+    } else {
+      this.addOnOptions.push({ ...this.addOnOptionForm.value, product: this.addOnDoc });
+    }
+
+    this.HotToastService.success(`Option ${this.isEditAddOnOption ? 'updated' : 'added'} successfully`);
+    this.resetVars()
+    this.ChangeDetectorRef.markForCheck();
+  }
+
+  // This function is used to edit the add-on option
+  editAddOnOption(index: number) {
+    this.addOnOptionForm.patchValue(this.addOnOptions[index]);
+    this.addOnTabIndex = 1;
+    this.isProductSelected = true;
+    this.addOnDoc = this.addOnOptions[index].product;
+    this.isEditAddOnOption = true;
+    this.editAddOnOptionIndex = index;
+    this.ChangeDetectorRef.markForCheck();
+  }
+
+  // This function is used to remove the add-on option from the addOnOptions array
+  removeAddOnOption(index: number) {
+    this.addOnOptions.splice(index, 1);
+    this.ChangeDetectorRef.markForCheck();
+  }
+
+  // This function is used to cancel the add-on item
+  cancelAddOnItem() {
+    this.addOnForm.reset();
+    this.addOnForm.patchValue({ isRequired: false, addOnType: 'select' });
+    this.manageAddOnsRef?.hide();
+    this.addOnOptions = [];
+    this.isItemSubmitted = false;
+    this.resetVars();
+    this.ChangeDetectorRef.markForCheck();
+  }
+
+  // This function is used to add the add-on to the addOns array
+  addAddOnItem() {
+    if (!this.addOnForm.valid) {
+      this.isItemSubmitted = true;
+      this.HotToastService.error('Please fill all the fields');
+      return;
+    }
+
+    if (this.addOnOptions.length == 0) {
+      this.HotToastService.error('Please add at least one option');
+      return;
+    }
+
+    this.addOnForm.patchValue({ options: this.addOnOptions })
+
+    if (this.isEditAddOn) {
+      this.addOns[this.editAddOnIndex] = this.addOnForm.value;
+    } else {
+      this.addOns.push(this.addOnForm.value);
+    }
+
+    this.HotToastService.success(`Add-On ${this.isEditAddOn ? 'updated' : 'added'} successfully`);
+    this.cancelAddOnItem();
+  }
+
+  // This function is used to remove the add-on from the addOns array
+  removeAddOn(index: number) {
+    this.addOns.splice(index, 1);
+    this.ChangeDetectorRef.markForCheck();
+  }
+
+  // This function is used to open the manage add-on modal
+  openManageAddOns(template: TemplateRef<any>, type: 'add' | 'edit', index: number | null) {
+    this.manageAddOnsRef = this.BsModalService.show(template, { class: 'modal-dialog-centered modal-xl', ignoreBackdropClick: true });
+    if (type == 'edit' && index !== null) {
+      this.addOnForm.patchValue({ ...this.addOns[index] })
+      this.addOnOptions = this.addOns[index].options;
+      this.isEditAddOn = true;
+      this.editAddOnIndex = index;
+    }
+  }
+
+  // This function is used to get the add-on form controls
+  get addOnFormControls() {
+    return this.addOnForm.controls;
+  }
+
+  // This function is used to get the add-on option form controls
+  get addOnOptionFormControls() {
+    return this.addOnOptionForm.controls;
+  }
+
+  // This function is used to trigger the add-on switch
+  onTriggerAddOns(event: { toggleState: boolean, switchId: string }, type: string) {
+    if (type == 'isRequired') {
+      this.addOnForm.get('isRequired')?.setValue(event.toggleState);
+    }
+
+    if (type == 'isEditable') {
+      this.addOnOptionForm.get('isEditable')?.setValue(event.toggleState);
+    }
+  }
+  // Add-Ons ends here
 
   get parentControls() {
     return this.parentForm.controls;
@@ -485,13 +795,37 @@ export class AddProductComponent implements OnInit {
     // First set flag to disable the button
     this.isSaving = true;
 
+    this.addOns.forEach((addOn: any) => {
+      addOn.options = addOn.options.map((option: any) => ({
+        ...option,
+        product: option.product?._id,
+      }));
+
+      addOn.options.forEach((option: any) => {
+        if (option._id) {
+          return option
+        } else {
+          // Remove the _id from the option object
+          delete option._id
+          return option
+        }
+      });
+
+      if (addOn._id) {
+        return addOn
+      } else {
+        // Remove the _id from the addOn object
+        delete addOn._id
+        return addOn
+      }
+    });
+
     let payload = {
       ...this.form.value,
       icons: this.icons.map((icon: any) => icon.path),
+      addOns: this.addOns,
       productTags: this.tagsForm.value,
-      relatedProducts: this.relatedProducts
-        ? this.relatedProducts.map((product: any) => product?._id)
-        : [],
+      relatedProducts: this.relatedProducts ? this.relatedProducts.map((product: any) => product?._id) : [],
       product: { id: this.parentDetails?._id, refid: this.parentDetails?._id },
       attributes: this.attributes,
       tagIcons: this.tagIcons,
@@ -619,14 +953,54 @@ export class AddProductComponent implements OnInit {
     }
   }
 
-  searchProducts() { }
-
   get formControls() {
     return this.form.controls;
   }
 
+  generateMetaTitle() {
+    const name = this.form.get('name')?.value || '';
+    const metaTitle = `${name} - ${this.settings.name}`;
+    this.form.patchValue({ metaTitle });
+  }
+
+  validateMetaDetails(type: 'metaTitle' | 'metaDescription') {
+    const metaDoc = this.form.get(type)?.value;
+    switch (type) {
+      case 'metaTitle':
+        if (metaDoc.length < 50 || metaDoc.length > 60) {
+          return 'It is ideal to keep the meta title between 50 and 60 characters';
+        }
+        break;
+      case 'metaDescription':
+        if (metaDoc.length < 100 || metaDoc.length > 150) {
+          return 'It is ideal to keep the meta description between 100 and 150 characters';
+        }
+        break;
+    }
+  }
+
   ngOnInit(): void {
     this.base = environment.base;
+
+    this.addOnOptionForm = new FormGroup({
+      name: new FormControl('', Validators.required),
+      _id: new FormControl(''),
+      product: new FormControl('', Validators.required),
+      price: new FormControl(0, [Validators.pattern('^\\d+(\\.\\d+)?$')]),
+      description: new FormControl(''),
+      discountMethod: new FormControl('amount'),
+      discountAmount: new FormControl(0),
+      isEditable: new FormControl(false),
+    });
+
+    this.addOnForm = new FormGroup({
+      _id: new FormControl(''),
+      title: new FormControl('', Validators.required),
+      description: new FormControl(''),
+      isRequired: new FormControl(false),
+      addOnType: new FormControl('select'),
+      options: new FormControl([]),
+    });
 
     this.attributeForm = new FormGroup({
       type: new FormControl('text'),

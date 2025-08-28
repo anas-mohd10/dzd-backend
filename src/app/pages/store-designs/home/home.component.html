@@ -840,6 +840,11 @@
                             </div>
                         </div>
                     </div>
+                    
+                    <div *ngIf="widgetDetails?.widgetType == 'stock-viewer'">
+                        <app-stock-viewer [widgetImages]="widgetImages"
+                            (widgetItemsChange)="widgetItemsChange($event)"></app-stock-viewer>
+                    </div>
 
                     <div *ngIf="widgetDetails?.widgetType == 'insight-hub'">
                         <form [formGroup]="insightHubForm">

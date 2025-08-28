@@ -24,6 +24,8 @@ import { NgSelectModule } from '@ng-select/ng-select';
 import { ClickpulsePanelComponent } from './home/clickpulse-panel/clickpulse-panel.component';
 import { ImageHotspotsComponent } from './home/image-hotspots/image-hotspots.component';
 import { BlogsComponent } from './home/blogs/blogs.component';
+import { StockViewerComponent } from './home/stock-viewer/stock-viewer.component';
+
 
 @NgModule({
   declarations: [
@@ -37,7 +39,8 @@ import { BlogsComponent } from './home/blogs/blogs.component';
     ProductListingComponent,
     ClickpulsePanelComponent,
     ImageHotspotsComponent,
-    BlogsComponent
+    BlogsComponent,
+    StockViewerComponent
   ],
   imports: [
     CommonModule,

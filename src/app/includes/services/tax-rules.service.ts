@@ -24,8 +24,8 @@ export class TaxRulesService {
     return this.http.get(`${url}`);
   }
 
-  searchRules(data: any) {
-    const url = this.commonService.getFullUrl(this.taxRulesEndpoints.searchRules);
+  searchRules(data: any) {    
+    const url = this.commonService.getFullUrl(`${this.taxRulesEndpoints.getRules}/search`);
     return this.http.post(`${url}`, data);
   }
 
