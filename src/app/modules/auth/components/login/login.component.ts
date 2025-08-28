@@ -53,9 +53,7 @@ export class LoginComponent implements OnInit, OnDestroy {
     private AppSettingsService: AppSettingsService,
     private AdminUsersService: AdminUsersService,
     private BsModalService: BsModalService,
-    private ChangeDetectorRef: ChangeDetectorRef,
-    private HotToastService: HotToastService,
-    private AppSettingsService: AppSettingsService
+    private HotToastService: HotToastService
   ) { }
 
   ngOnInit(): void {
