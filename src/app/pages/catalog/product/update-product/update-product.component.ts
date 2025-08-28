@@ -588,12 +588,25 @@ export class UpdateProductComponent implements OnInit {
   // This function is used to open the manage add-on modal
   openManageAddOns(template: TemplateRef<any>, type: 'add' | 'edit', index: number | null) {
     this.manageAddOnsRef = this.BsModalService.show(template, { class: 'modal-dialog-centered modal-xl', ignoreBackdropClick: true });
+    
     if (type == 'edit' && index !== null) {
-      this.addOnForm.patchValue({ ...this.addOns[index] })
+      // Edit mode: populate form with existing data
+      this.addOnForm.patchValue({ ...this.addOns[index] });
       this.addOnOptions = this.addOns[index].options;
       this.isEditAddOn = true;
       this.editAddOnIndex = index;
+    } else {
+      // Add mode: reset all form data and flags
+      this.addOnForm.reset();
+      this.addOnForm.patchValue({ isRequired: false, addOnType: 'select' });
+      this.addOnOptions = [];
+      this.isEditAddOn = false;
+      this.editAddOnIndex = 0;
+      this.isItemSubmitted = false;
+      this.resetVars();
     }
+    
+    this.ChangeDetectorRef.markForCheck();
   }
 
   // This function is used to get the add-on form controls
