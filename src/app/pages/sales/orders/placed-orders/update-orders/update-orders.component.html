@@ -280,14 +280,7 @@
                         *ngIf="order?.customer?.tags && order?.customer?.tags.length > 0">
                         <span *ngFor="let tag of order?.customer?.tags"
                           class="badge rounded-pill bg-primary px-2 py-1 fs-6">{{tag}}</span>
-                        {{order?.customerDetails?.name || order?.customerId?.name || order?.guestId?.name ||
-                        order?.customer?.name}}
-                        <span class="d-inline-flex flex-wrap gap-1 ms-2"
-                          *ngIf="order?.customer?.tags && order?.customer?.tags.length > 0">
-                          <span *ngFor="let tag of order?.customer?.tags"
-                            class="badge rounded-pill bg-primary px-2 py-1 fs-6">{{tag}}</span>
-                        </span>
-                        </span>
+                      </span>
                     </td>
                   </tr>
                   <tr>

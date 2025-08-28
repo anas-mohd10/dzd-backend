@@ -501,13 +501,13 @@ export class UpdateProductComponent implements OnInit {
 
   // This function is used to add the add-on option to the addOnOptions array
   addAddOnOption() {
-    if (!this.addOnOptionForm.valid) {
-      this.isOptionSubmitted = true;
-      this.HotToastService.error('Please fill all the fields');
-      return;
-    }
+    // if (!this.addOnOptionForm.valid) {
+    //   this.isOptionSubmitted = true;
+    //   this.HotToastService.error('Please fill all the fields');
+    //   return;
+    // }
 
-    console.log(this.addOnOptionForm.value);
+    // console.log(this.addOnOptionForm.value);
 
     if (this.isEditAddOnOption) {
       this.addOnOptions[this.editAddOnOptionIndex] = { ...this.addOnOptionForm.value, product: this.addOnDoc };
@@ -551,9 +551,14 @@ export class UpdateProductComponent implements OnInit {
 
   // This function is used to add the add-on to the addOns array
   addAddOnItem() {
-    if (!this.addOnForm.valid) {
+    // Force validation update
+    this.addOnForm.updateValueAndValidity();
+
+    // Check specific required fields instead of overall form validity
+    const titleControl = this.addOnForm.get('title');
+    if (!titleControl?.value || titleControl?.invalid) {
       this.isItemSubmitted = true;
-      this.HotToastService.error('Please fill all the fields');
+      this.HotToastService.error('Please fill the title field');
       return;
     }
 
