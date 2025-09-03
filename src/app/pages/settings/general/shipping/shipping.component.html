@@ -11,13 +11,15 @@
                 </li>
             </ul>
         </div>
-        <button *ngIf="form.get('cost')?.value == 'city'" class="btn btn-primary d-flex align-items-center justify-content-center gap-1" color="primary" routerLink="{{ appRoute.shippingCharges }}">
-            Shipping charges
-            <svg height="18" width="18" data-slot="icon" fill="none" stroke-width="1.5" stroke="currentColor"
-                viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                <path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5"></path>
-            </svg>
-        </button>
+        <div class="d-flex align-items-center justify-content-end gap-4">
+            <button class="btn btn-secondary" routerLink="{{ appRoute.shippingGateways }}">
+                Shipping Gateways
+            </button>
+            <button *ngIf="form.get('cost')?.value == 'city'" class="btn btn-primary"
+                routerLink="{{ appRoute.shippingCharges }}">
+                Shipping Charges
+            </button>
+        </div>
     </div>
 
     <div class="my-4">
@@ -74,6 +76,48 @@
                     </div>
                 </ng-container>
             </div>
+        </div>
+    </div>
+
+    <div class="card my-4">
+        <div class="card-body">
+            <div class="d-flex align-items-center justify-content-start gap-4">
+                <div for="isShippingGateway" class="fs-5">Shipping Gateway?</div>
+                <app-switch [isToggledProps]="isShippingGateway.value" [switchId]="'isShippingGateway'"
+                    (switchToggled)="toggleSwitch($event)"></app-switch>
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-body">
+            <form (ngSubmit)="saveAddressForm()" [formGroup]="addressForm">
+                <div class="d-flex align-items-center justify-content-between mb-4 pb-4 border-bottom border-secondary">
+                    <div class="d-flex flex-column gap-2">
+                        <div class="fs-3 fw-bold">Address Details</div>
+                        <div class="fs-6 text-muted">This address will be used in shipping gateway</div>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Save Changes</button>
+                </div>
+                <div class="row">
+                    <div class="form-group col-lg-6 my-2" *ngFor="let addressField of addressFields">
+                        <label for="{{addressField.key}}" class="fs-6 mb-2"
+                            [ngClass]="{'required': addressField.isRequired == true}">{{addressField.value}}</label>
+                        <input type="text" class="form-control" placeholder="{{addressField.placeholder}}"
+                            formControlName="{{addressField.key}}"
+                            [ngClass]="{'is-invalid': addressFormControls[addressField.key].touched && addressFormControls[addressField.key].errors?.required}">
+                    </div>
+                    <div class="form-group col-lg-6 my-2">
+                        <label for="countryCode" class="fs-6 mb-2 required">Country</label>
+                        <select
+                            [ngClass]="{'is-invalid': addressFormControls.countryCode.touched && addressFormControls.countryCode.errors?.required}"
+                            class="form-select" id="countryCode" formControlName="countryCode">
+                            <option value="" disabled>-- Select an option --</option>
+                            <option *ngFor="let country of countries" value="{{country.code}}">{{country.name}}</option>
+                        </select>
+                    </div>
+                </div>
+            </form>
         </div>
     </div>
 </div>

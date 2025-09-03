@@ -104,6 +104,7 @@ import { FormLoginComponent } from './pages/settings/general/form-settings/form-
 import { AlbumsComponent } from './pages/marketing/albums/albums.component';
 import { GalleriesComponent } from './pages/marketing/galleries/galleries.component';
 import { CarouselModule } from 'ngx-bootstrap/carousel';
+import { ShippingGatewaysComponent } from './pages/settings/general/shipping-gateways/shipping-gateways.component';
 import { CurrencySettingsComponent } from './pages/settings/general/currency-settings/currency-settings.component';
 
 const DragConfig = {
@@ -182,6 +183,7 @@ const DragConfig = {
     FormLoginComponent,
     AlbumsComponent,
     GalleriesComponent,
+    ShippingGatewaysComponent,
     CurrencySettingsComponent,
   ],
   imports: [
