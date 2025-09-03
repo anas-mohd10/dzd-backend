@@ -1537,12 +1537,12 @@ export class UpdateProductComponent implements OnInit {
     const metaDoc = this.form.get(type)?.value;
     switch (type) {
       case 'metaTitle':
-        if (metaDoc.length < 50 || metaDoc.length > 60) {
+        if (metaDoc?.length < 50 || metaDoc?.length > 60) {
           return 'It is ideal to keep the meta title between 50 and 60 characters';
         }
         break;
       case 'metaDescription':
-        if (metaDoc.length < 100 || metaDoc.length > 150) {
+        if (metaDoc?.length < 100 || metaDoc?.length > 150) {
           return 'It is ideal to keep the meta description between 100 and 150 characters';
         }
         break;
