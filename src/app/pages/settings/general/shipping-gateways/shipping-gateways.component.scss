@@ -1,0 +1,10 @@
+label,
+.btn {
+    font-weight: 400 !important;
+}
+
+.shipping-gateways{
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 8px;
+}
