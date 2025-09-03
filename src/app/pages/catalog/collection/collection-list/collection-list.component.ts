@@ -3,7 +3,7 @@ import { appRoutes } from 'src/app/config/routes';
 import { CollectionService } from 'src/app/includes/services/collection.service';
 import { environment } from 'src/environments/environment';
 import { FormControl, FormGroup } from '@angular/forms';
-import { ToastrService } from 'ngx-toastr';
+import { HotToastService } from '@ngneat/hot-toast';
 
 @Component({
   selector: 'app-collection-list',
@@ -27,7 +27,7 @@ export class CollectionListComponent implements OnInit {
   constructor(
     private CollectionService: CollectionService,
     private ChangeDetectorRef: ChangeDetectorRef,
-    private ToastrService: ToastrService
+    private HotToastService: HotToastService
   ) { }
 
   ngOnInit(): void {
@@ -35,12 +35,15 @@ export class CollectionListComponent implements OnInit {
     this.getCollections()
   }
 
-  formatDate(date: string) {
-    return new Date(date).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' })
-  }
-
-  formatTime(time: string) {
-    return new Date(time).toLocaleTimeString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true })
+  formatDateString(date: string) {
+    return new Date(date).toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'short',
+      day: 'numeric',
+      hour: 'numeric',
+      minute: 'numeric',
+      hour12: true
+    })
   }
 
   clearFilters() {
@@ -69,20 +72,20 @@ export class CollectionListComponent implements OnInit {
           this.totalPages = res?.result?.totalPages
           this.ChangeDetectorRef.markForCheck()
         } else {
-          this.ToastrService.error(res.message)
+          this.HotToastService.error(res.message)
         }
       }, error: (err: any) => {
-        this.ToastrService.error(err.message)
+        this.HotToastService.error(err.message)
       }
     })
   }
 
   exportCollections() {
     if (this.isExporting) return;
-    
+
     this.isExporting = true;
-    this.ToastrService.info('Preparing collections export...');
-    
+    this.HotToastService.info('Preparing collections export...');
+
     this.CollectionService.exportCollections().subscribe({
       next: (res: any) => {
         this.isExporting = false;
@@ -95,15 +98,15 @@ export class CollectionListComponent implements OnInit {
           document.body.appendChild(link);
           link.click();
           document.body.removeChild(link);
-          
-          this.ToastrService.success('Collections exported successfully');
+
+          this.HotToastService.success('Collections exported successfully');
         } else {
-          this.ToastrService.error(res.message || 'Failed to export collections');
+          this.HotToastService.error(res.message || 'Failed to export collections');
         }
       },
       error: (err: any) => {
         this.isExporting = false;
-        this.ToastrService.error(err.message || 'Failed to export collections');
+        this.HotToastService.error(err.message || 'Failed to export collections');
       }
     });
   }
