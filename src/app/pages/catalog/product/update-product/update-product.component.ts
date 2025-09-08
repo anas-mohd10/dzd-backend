@@ -29,6 +29,10 @@ interface StoreField {
   isFilter: boolean;
   isVisible: boolean;
 }
+interface BusinessField {
+  title: string;
+  description: string;
+}
 
 interface AddOnOption {
   _id: string;
@@ -113,6 +117,8 @@ export class UpdateProductComponent implements OnInit {
   brands: Array<any> = [];
   selectedBrand: any = null;
   brandsMap: any = {};
+  businessFields: BusinessField[] = [];
+
 
   productCategories: Array<any> = [];
   images: Array<any> = [];
@@ -260,6 +266,16 @@ export class UpdateProductComponent implements OnInit {
       });
     })
   }
+  addBusinessField(): void {
+    this.businessFields.push({
+      title: '',
+      description: '',
+    });
+  }
+  removeBusinessField(index: number): void {
+    this.businessFields.splice(index, 1);
+  }
+
 
   openRltdProducts(template: TemplateRef<any>) {
     this.relatedProductsRef = this.BsModalService.show(template, {
@@ -958,6 +974,7 @@ export class UpdateProductComponent implements OnInit {
       tagIcons: this.tagIcons,
       attributes: this.attributes,
       storeFrontFields: this.storeFields,
+      businessFields: this.businessFields,
       productIcons: this.icons,
       isSkipUpdate: this.isSkipUpdate.value,
       localizedNames: {
@@ -1378,6 +1395,7 @@ export class UpdateProductComponent implements OnInit {
 
           // Set other details
           this.storeFields = res?.result?.storeFrontFields;
+          this.businessFields = res?.result?.businessFields || [];
           this.tagIcons = res?.result?.tagIcons ? res?.result?.tagIcons : [];
           this.categories = res?.result?.categories || [];
           this.selectedCategories = this.categories.map((cat) => cat.slug);
