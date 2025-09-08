@@ -29,6 +29,10 @@ interface StoreField {
   isFilter: boolean;
   isVisible: boolean;
 }
+interface BusinessField {
+  title: string;
+  description: string;
+}
 
 interface AddOnOption {
   _id: string;
@@ -113,6 +117,8 @@ export class UpdateProductComponent implements OnInit {
   brands: Array<any> = [];
   selectedBrand: any = null;
   brandsMap: any = {};
+  businessFields: BusinessField[] = [];
+
 
   productCategories: Array<any> = [];
   images: Array<any> = [];
@@ -262,6 +268,16 @@ export class UpdateProductComponent implements OnInit {
       });
     })
   }
+  addBusinessField(): void {
+    this.businessFields.push({
+      title: '',
+      description: '',
+    });
+  }
+  removeBusinessField(index: number): void {
+    this.businessFields.splice(index, 1);
+  }
+
 
   openRltdProducts(template: TemplateRef<any>) {
     this.relatedProductsRef = this.BsModalService.show(template, {
@@ -970,6 +986,7 @@ export class UpdateProductComponent implements OnInit {
       tagIcons: this.tagIcons,
       attributes: this.attributes,
       storeFrontFields: this.storeFields,
+      businessFields: this.businessFields,
       productIcons: this.icons,
       isSkipUpdate: this.isSkipUpdate.value,
       localizedNames: {
@@ -1390,6 +1407,7 @@ export class UpdateProductComponent implements OnInit {
 
           // Set other details
           this.storeFields = res?.result?.storeFrontFields;
+          this.businessFields = res?.result?.businessFields || [];
           this.tagIcons = res?.result?.tagIcons ? res?.result?.tagIcons : [];
           this.categories = res?.result?.categories || [];
           this.selectedCategories = this.categories.map((cat) => cat.slug);
@@ -1549,12 +1567,12 @@ export class UpdateProductComponent implements OnInit {
     const metaDoc = this.form.get(type)?.value;
     switch (type) {
       case 'metaTitle':
-        if (metaDoc.length < 50 || metaDoc.length > 60) {
+        if (metaDoc?.length < 50 || metaDoc?.length > 60) {
           return 'It is ideal to keep the meta title between 50 and 60 characters';
         }
         break;
       case 'metaDescription':
-        if (metaDoc.length < 100 || metaDoc.length > 150) {
+        if (metaDoc?.length < 100 || metaDoc?.length > 150) {
           return 'It is ideal to keep the meta description between 100 and 150 characters';
         }
         break;

@@ -55,6 +55,7 @@ import { FormSettingsComponent } from './settings/general/form-settings/form-set
 import { AlbumsComponent } from './marketing/albums/albums.component';
 import { GalleriesComponent } from './marketing/galleries/galleries.component';import { CurrencySettingsComponent } from './settings/general/currency-settings/currency-settings.component';
 
+import { ShippingGatewaysComponent } from './settings/general/shipping-gateways/shipping-gateways.component';
 export const Routing: Routes = [
   {
     path: 'app',
@@ -549,6 +550,10 @@ export const Routing: Routes = [
       }, {
         path: 'shipping-settings',
         component: ShippingComponent,
+        canActivate: [AuthenticationGuard, PermissionGuard]
+      }, {
+        path: 'shipping-gateways',
+        component: ShippingGatewaysComponent,
         canActivate: [AuthenticationGuard, PermissionGuard]
       }, {
         path: 'sms-settings',

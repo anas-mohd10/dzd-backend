@@ -1,0 +1,176 @@
+<div class="page-header d-flex align-items-start justify-content-between">
+    <div class="page-title">
+        <h1 class="fw-bold">Shipping Gateways</h1>
+        <ul class="breadcrumb gap-1">
+            <li class="breadcrumb-item fs-6">
+                <a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a>
+            </li>
+            <li class="breadcrumb-item fs-6">
+                <a routerLink="{{ appRoute.shippingSettings }}">Shipping Settings</a>
+            </li>
+            <li class="breadcrumb-item active fs-6">
+                <a routerLink="{{ appRoute.shippingGateways }}">Shipping Gateways</a>
+            </li>
+        </ul>
+    </div>
+</div>
+
+<ng-container *ngIf="isShippingGateway == false">
+    <div class="bg-white p-4 my-4 rounded d-flex flex-column align-items-center justify-content-center">
+        <div class="d-flex align-items-center justify-content-center gap-2">
+            <div class="p-2 rounded text-warning bg-warning bg-opacity-25">
+                <svg height="20" width="20" data-slot="icon" fill="none" stroke-width="1.5" stroke="currentColor"
+                    viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                        d="M13.5 10.5V6.75a4.5 4.5 0 1 1 9 0v3.75M3.75 21.75h10.5a2.25 2.25 0 0 0 2.25-2.25v-6.75a2.25 2.25 0 0 0-2.25-2.25H3.75a2.25 2.25 0 0 0-2.25 2.25v6.75a2.25 2.25 0 0 0 2.25 2.25Z">
+                    </path>
+                </svg>
+            </div>
+            <div class="fs-6">You have not enabled the Shipping Gateways</div>
+            <a class="border border-primary p-2 rounded" routerLink="{{appRoute.shippingSettings}}">
+                Go Back to Enable
+            </a>
+        </div>
+    </div>
+</ng-container>
+
+<div class="card my-4">
+    <div class="card-body">
+        <div class="shipping-gateways">
+            <div *ngFor="let shippingGateway of shippingGateways"
+                class="h-auto h-100 cursor-pointer rounded bg-white p-4 border border-secondary"
+                (click)="open(details, shippingGateway.keyId)">
+                <img class="h-auto ratio ratio-1x1 h-100 object-fit-cover"
+                    src="{{'assets/shipping-gateways/' + shippingGateway.keyId + '.png'}}"
+                    alt="{{shippingGateway.title}}">
+                <div class="text-center fs-5">{{shippingGateway.title}}</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<ng-template #details>
+    <div class="modal-header">
+        <h4 class="modal-title">{{activeDocId | titlecase}} Shipping Gateway</h4>
+        <button type="button" class="btn-close close pull-right" aria-label="Close" (click)="close()">
+            <span aria-hidden="true" class="visually-hidden">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <form [formGroup]="form" (ngSubmit)="saveChanges()">
+            <div class="d-flex flex-column gap-3">
+                <div>
+                    <label class="fs-5 mb-3" for="isEnabled">Is Enabled?</label>
+                    <app-switch id="isEnabled" [switchId]="'isEnabled'" [isToggledProps]="form.value.isEnabled"
+                        (switchToggled)="toggleSwitch('isEnabled', $event)"></app-switch>
+                </div>
+                <div>
+                    <label class="fs-5 mb-3" for="isDefault">Is Default?</label>
+                    <app-switch id="isDefault" [switchId]="'isDefault'" [isToggledProps]="form.value.isDefault"
+                        (switchToggled)="toggleSwitch('isDefault', $event)"></app-switch>
+                </div>
+            </div>
+            <div class="row" *ngIf="activeDocId">
+                <div class="col-lg-6 form-group my-3" *ngIf="shippingGatewayConfig[activeDocId]?.includes('apiUrl')">
+                    <label for="apiUrl" class="fs-6 mb-3">API Url</label>
+                    <input type="text" id="apiUrl" placeholder="API Url" formControlName="apiUrl" class="form-control"
+                        [ngClass]="{ 'is-invalid': (formControls.apiUrl.touched || isSubmitted) && formControls.apiUrl.errors?.required }">
+                </div>
+                <div class="col-lg-6 form-group my-3" *ngIf="shippingGatewayConfig[activeDocId]?.includes('username')">
+                    <label for="username" class="fs-6 mb-3">Username</label>
+                    <input type="text" id="username" placeholder="Username" formControlName="username"
+                        class="form-control"
+                        [ngClass]="{ 'is-invalid': (formControls.username.touched || isSubmitted) && formControls.username.errors?.required }">
+                </div>
+                <div class="col-lg-6 form-group my-3" *ngIf="shippingGatewayConfig[activeDocId]?.includes('password')">
+                    <label for="password" class="fs-6 mb-3">Password</label>
+                    <input type="text" id="password" placeholder="Password" formControlName="password"
+                        class="form-control"
+                        [ngClass]="{ 'is-invalid': (formControls.password.touched || isSubmitted) && formControls.password.errors?.required }">
+                </div>
+                <div class="col-lg-6 form-group my-3"
+                    *ngIf="shippingGatewayConfig[activeDocId]?.includes('accountNumber')">
+                    <label for="accountNumber" class="fs-6 mb-3">Account Number</label>
+                    <input type="text" id="accountNumber" placeholder="Account Number" formControlName="accountNumber"
+                        class="form-control"
+                        [ngClass]="{ 'is-invalid': (formControls.accountNumber.touched || isSubmitted) && formControls.accountNumber.errors?.required }">
+                </div>
+                <div class="col-lg-6 form-group my-3"
+                    *ngIf="shippingGatewayConfig[activeDocId]?.includes('accountPin')">
+                    <label for="accountPin" class="fs-6 mb-3">Account Pin</label>
+                    <input type="text" id="accountPin" placeholder="Account Pin" formControlName="accountPin"
+                        class="form-control"
+                        [ngClass]="{ 'is-invalid': (formControls.accountPin.touched || isSubmitted) && formControls.accountPin.errors?.required }">
+                </div>
+                <div class="col-lg-6 form-group my-3"
+                    *ngIf="shippingGatewayConfig[activeDocId]?.includes('accountEntity')">
+                    <label for="accountEntity" class="fs-6 mb-3">Account Entity</label>
+                    <input type="text" id="accountEntity" placeholder="Account Entity" formControlName="accountEntity"
+                        class="form-control"
+                        [ngClass]="{ 'is-invalid': (formControls.accountEntity.touched || isSubmitted) && formControls.accountEntity.errors?.required }">
+                </div>
+                <div class="col-lg-6 form-group my-3"
+                    *ngIf="shippingGatewayConfig[activeDocId]?.includes('accountCountryCode')">
+                    <label for="accountCountryCode" class="fs-6 mb-3">Account Country Code</label>
+                    <input type="text" id="accountCountryCode" placeholder="Account Country Code"
+                        formControlName="accountCountryCode" class="form-control"
+                        [ngClass]="{ 'is-invalid': (formControls.accountCountryCode.touched || isSubmitted) && formControls.accountCountryCode.errors?.required }">
+                </div>
+                <div class="col-lg-6 form-group my-3" *ngIf="shippingGatewayConfig[activeDocId]?.includes('version')">
+                    <label for="version" class="fs-6 mb-3">Version</label>
+                    <input type="text" id="version" placeholder="version" formControlName="version" class="form-control"
+                        [ngClass]="{ 'is-invalid': (formControls.version.touched || isSubmitted) && formControls.version.errors?.required }">
+                </div>
+                <div class="col-lg-6 form-group my-3" *ngIf="shippingGatewayConfig[activeDocId]?.includes('source')">
+                    <label for="source" class="fs-6 mb-3">Source</label>
+                    <input type="text" id="source" placeholder="Source" formControlName="source" class="form-control"
+                        [ngClass]="{ 'is-invalid': (formControls.source.touched || isSubmitted) && formControls.source.errors?.required }">
+                </div>
+                <div class="col-lg-6 form-group my-3"
+                    *ngIf="shippingGatewayConfig[activeDocId]?.includes('productGroup')">
+                    <label for="productGroup" class="fs-6 mb-3">Product Group</label>
+                    <input type="text" id="productGroup" placeholder="Product Group" formControlName="productGroup"
+                        class="form-control"
+                        [ngClass]="{ 'is-invalid': (formControls.productGroup.touched || isSubmitted) && formControls.productGroup.errors?.required }">
+                </div>
+                <div class="col-lg-6 form-group my-3"
+                    *ngIf="shippingGatewayConfig[activeDocId]?.includes('productType')">
+                    <label for="productType" class="fs-6 mb-3">Product Type</label>
+                    <input type="text" id="productType" placeholder="Product Type" formControlName="productType"
+                        class="form-control"
+                        [ngClass]="{ 'is-invalid': (formControls.productType.touched || isSubmitted) && formControls.productType.errors?.required }">
+                </div>
+                <div class="col-lg-6 form-group my-3"
+                    *ngIf="shippingGatewayConfig[activeDocId]?.includes('paymentType')">
+                    <label for="paymentType" class="fs-6 mb-3">Payment Type</label>
+                    <input type="text" id="paymentType" placeholder="Payment Type" formControlName="paymentType"
+                        class="form-control"
+                        [ngClass]="{ 'is-invalid': (formControls.paymentType.touched || isSubmitted) && formControls.paymentType.errors?.required }">
+                </div>
+                <div class="col-lg-6 form-group my-3"
+                    *ngIf="shippingGatewayConfig[activeDocId]?.includes('paymentOptions')">
+                    <label for="paymentOptions" class="fs-6 mb-3">Payment Options</label>
+                    <input type="text" id="paymentOptions" placeholder="Payment Options" formControlName="paymentOptions"
+                        class="form-control"
+                        [ngClass]="{ 'is-invalid': (formControls.paymentOptions.touched || isSubmitted) && formControls.paymentOptions.errors?.required }">
+                </div>
+                <div class="col-lg-6 form-group my-3"
+                    *ngIf="shippingGatewayConfig[activeDocId]?.includes('exporterType')">
+                    <label for="exporterType" class="fs-6 mb-3">Exporter Type</label>
+                    <input type="text" id="exporterType" placeholder="Exporter Type" formControlName="exporterType"
+                        class="form-control"
+                        [ngClass]="{ 'is-invalid': (formControls.exporterType.touched || isSubmitted) && formControls.exporterType.errors?.required }">
+                </div>
+                <div class="col-lg-6 form-group my-3" *ngIf="shippingGatewayConfig[activeDocId]?.includes('services')">
+                    <label for="services" class="fs-6 mb-3">Services</label>
+                    <input type="text" id="services" placeholder="Services" formControlName="services"
+                        class="form-control"
+                        [ngClass]="{ 'is-invalid': (formControls.services.touched || isSubmitted) && formControls.services.errors?.required }">
+                </div>
+            </div>
+            <div class="d-flex justify-content-end gap-4">
+                <button type="submit" class="btn btn-primary">Save Changes</button>
+            </div>
+        </form>
+    </div>
+</ng-template>

@@ -74,7 +74,15 @@ export class CartListComponent implements OnInit {
     this.getCarts();
   }
   exportCart(): void {
-    const requestBody = { userId: this.customer, startDate: this.fromDate.value, endDate: this.toDate.value };
+    // Get timezone from browser
+    const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+    
+    const requestBody = { 
+      userId: this.customer, 
+      startDate: this.fromDate.value, 
+      endDate: this.toDate.value,
+      timezone: timezone // Send browser timezone
+    };
 
     this.cartService.exportCart(requestBody).subscribe({
       next: () => {
