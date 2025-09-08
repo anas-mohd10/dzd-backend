@@ -325,13 +325,13 @@
                                                         {{state.name}}</option>
                                                 </select>
                                             </div>
-                                            <div class="col-lg-4 form-group" *ngIf="checkVisibleField('city')"
-                                                [ngClass]="{'pe-none opacity-50': cities.length == 0}">
+                                            <div class="col-lg-4 form-group" *ngIf="checkVisibleField('city')">
                                                 <label for="city" class="fs-6 mb-3"
                                                     [ngClass]="{'required': checkRequiredField('city')}">{{getFieldTitle('city')}}</label>
                                                 <select class="form-select" formControlName="city"
                                                     [ngClass]="{'is-invalid': addressValidationFunction('city') }">
                                                     <option value="" disabled>-- Select an option --</option>
+                                                    <option *ngIf="cities.length === 0" value="-">Not Applicable</option>
                                                     <option *ngFor="let city of cities" [value]="city.name">
                                                         {{city.name}}</option>
                                                 </select>

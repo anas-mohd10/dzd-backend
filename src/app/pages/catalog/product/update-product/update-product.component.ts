@@ -177,6 +177,7 @@ export class UpdateProductComponent implements OnInit {
   historyLists: Array<any> = [];
   totalResults: number = 0;
   totalPages: number = 1;
+  isLoadingHistory: boolean = false;
 
   // Add-Ons starts here
   addOnsRef?: BsModalRef;
@@ -211,6 +212,7 @@ export class UpdateProductComponent implements OnInit {
 
   slugHistoryRef?: BsModalRef;
   @ViewChild('slugHistoryTemplate') slugHistoryTemplateModal: TemplateRef<any>;
+  isLoadingSlugHistory: boolean = false;
 
   slugConfirmationRef?: BsModalRef;
   newSlugValue: string = '';
@@ -304,6 +306,9 @@ export class UpdateProductComponent implements OnInit {
   }
 
   fetchHistory() {
+    this.isLoadingHistory = true;
+    this.ChangeDetectorRef.markForCheck();
+    
     this.ProductService.getProductHistory(
       this.productDetails._id,
       this.historyPageIndex,
@@ -314,11 +319,17 @@ export class UpdateProductComponent implements OnInit {
           this.historyLists = res?.result?.results;
           this.totalResults = res?.result?.totalResults;
           this.totalPages = res?.result?.totalPages;
-          this.ChangeDetectorRef.markForCheck();
         } else {
+          this.HotToastService.error(res?.message || 'Failed to load history');
         }
       },
-      error: (err: any) => { },
+      error: (err: any) => {
+        this.HotToastService.error(err?.message || 'Failed to load history');
+      },
+      complete: () => {
+        this.isLoadingHistory = false;
+        this.ChangeDetectorRef.markForCheck();
+      }
     });
   }
 
@@ -336,6 +347,7 @@ export class UpdateProductComponent implements OnInit {
       class: 'modal-dialog-centered modal-md',
       ignoreBackdropClick: true,
     });
+    this.fetchHistory();
   }
 
   closeSlugHistory() {
@@ -1574,9 +1586,9 @@ export class UpdateProductComponent implements OnInit {
         longDescription: this.productDetails.localizedDetails?.longDescription?.[primaryLang] ||
           this.productDetails.details?.longDescription,
       },
-      metaTitle: this.productDetails.localizedMetaTitles?.[primaryLang] || this.productDetails.metaTitle,
-      metaDescription: this.productDetails.localizedMetaDescriptions?.[primaryLang] || this.productDetails.metaDescription,
-      metaKeywords: this.productDetails.localizedMetaKeywords?.[primaryLang] || this.productDetails.metaKeywords,
+      metaTitle: this.productDetails.localizedMetaTitles?.[primaryLang] || this.productDetails.metaTitle || '',
+      metaDescription: this.productDetails.localizedMetaDescriptions?.[primaryLang] || this.productDetails.metaDescription || '',
+      metaKeywords: this.productDetails.localizedMetaKeywords?.[primaryLang] || this.productDetails.metaKeywords || '',
     });
 
   }

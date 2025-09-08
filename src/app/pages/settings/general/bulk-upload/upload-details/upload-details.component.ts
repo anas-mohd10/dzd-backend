@@ -87,10 +87,15 @@ export class UploadDetailsComponent implements OnInit {
           this.totalResults = res.result.totalResults;
           this.totalPages = res.result.totalPages;
           this.ChangeDetectorRef.markForCheck();
-        } else {
         }
-      }, error: (err: any) => { },
+      }, error: (err: any) => {
+        console.error('Error fetching logs:', err);
+      },
     })
+  }
+
+  reloadLogs() {
+    this.fetchLogs();
   }
 
   getMinutes(seconds: number) {
