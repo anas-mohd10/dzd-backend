@@ -1268,6 +1268,7 @@ export class NavigationMenuComponent implements OnInit {
         catid: category?.catid,
         slug: category?.slug,
         name: category?.name,
+        isFooter: true,
         isMegaMenu: true,
       }).subscribe((res: any) => {
         if (res?.errorCode == 0) {
@@ -1296,6 +1297,7 @@ export class NavigationMenuComponent implements OnInit {
       catid: category?.catid,
       slug: category?.slug,
       name: category?.name,
+      isFooter: true,
       isMegaMenu: false,
     }).subscribe((res: any) => {
       if (res?.errorCode == 0) {
@@ -1315,6 +1317,7 @@ export class NavigationMenuComponent implements OnInit {
       catid: category?.catid,
       slug: category?.slug,
       name: category?.name,
+      isFooter: true,
       isMegaMenu: isMegaMenu,
     }).subscribe((res: any) => {
       if (res?.errorCode == 0) {
