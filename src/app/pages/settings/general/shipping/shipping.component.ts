@@ -121,7 +121,7 @@ export class ShippingComponent implements OnInit {
 
   saveAddressForm() {
     if (!this.addressForm.valid) {
-      this.HotToastService.error('Please fill all the required fields')
+      // this.HotToastService.error('Please fill all the required fields')
       return
     }
 
