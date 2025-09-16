@@ -43,7 +43,7 @@
               <div class="fs-4">Your store is not live</div>
             </div>
           </div>
-          <div class="my-2">
+          <div class="my-2" *ngIf="data && data.isDeveloperAccess && data.isDeveloperAccess == true">
             <div class="fs-6 text-muted">
               You can publish or unpublish your project here
             </div>
@@ -173,13 +173,15 @@
             <div class="col-lg-2">
               <div class="fs-5 mb-2 required">Admin Logo</div>
               <div class="h-auto ratio ratio-1x1 w-100">
-                <app-assets (mediaClicked)="handleAdminMedia($event, 'logo')" [previewDetails]="form.value.adminLogo"></app-assets>
+                <app-assets (mediaClicked)="handleAdminMedia($event, 'logo')"
+                  [previewDetails]="form.value.adminLogo"></app-assets>
               </div>
             </div>
             <div class="col-lg-2">
               <div class="fs-5 mb-2 required">Admin Favicon</div>
               <div class="h-auto ratio ratio-1x1 w-100">
-                <app-assets (mediaClicked)="handleAdminMedia($event, 'favicon')" [previewDetails]="form.value.adminFavicon"></app-assets>
+                <app-assets (mediaClicked)="handleAdminMedia($event, 'favicon')"
+                  [previewDetails]="form.value.adminFavicon"></app-assets>
               </div>
             </div>
           </div>
@@ -411,6 +413,14 @@
               </select>
             </div>
             <div class="col-lg-4 form-group mb-3">
+              <label class="fs-6 mb-3">Enable Plp Pagination</label>
+              <select class="form-select mb-3" formControlName="isPlpPagination">
+                <option value="" disabled>-- Select an option --</option>
+                <option value="false">No</option>
+                <option value="true">Yes</option>
+              </select>
+            </div>
+            <div class="col-lg-4 form-group mb-3">
               <label class="fs-6 mb-3">Is Billing Address Enabled</label>
               <select class="form-select mb-3" formControlName="isBillingAddressEnabled">
                 <option value="" disabled>-- Select an option --</option>
@@ -489,8 +499,7 @@
         </div>
       </div>
 
-
-      <div class="card my-4">
+      <div class="card">
         <div class="card-body">
           <label class="fs-5 mb-3">How do you want to display the offer percentage?</label>
           <select class="form-select mb-3" formControlName="offerCriteria">
@@ -498,6 +507,18 @@
             <option *ngFor="let option of priceOptions" [value]="option.value">
               {{option.label}}
             </option>
+          </select>
+        </div>
+      </div>
+
+      <div class="card my-4">
+        <div class="card-body">
+          <label class="fs-5">Push Notification</label>
+          <p class="text-muted mt-1 mb-2 mx-0 fs-6">Enable or disable push notifications for your store</p>
+          <select class="form-select mb-3" formControlName="isPushNotification">
+            <option value="" disabled>-- Select an option --</option>
+            <option value="false">No</option>
+            <option value="true">Yes</option>
           </select>
         </div>
       </div>
@@ -561,6 +582,31 @@
                 </option>
               </ng-container>
             </select>
+          </div>
+        </div>
+      </div>
+
+      <div class="card my-4" id="addOnSettings">
+        <div class="card-body">
+          <div class="fs-3 fw-bold mb-2">Add On Settings</div>
+          <p class="text-muted">Edit the add on settings of your store</p>
+          <div class="d-flex flex-column gap-4">
+            <div>
+              <label class="fs-5 mb-3">Enable Add On</label>
+              <app-switch (switchToggled)="toggleAddOnItems($event)"
+                [isToggledProps]="form.get('isAddOnEnabled')?.value" [switchId]="'isAddOnEnabled'"></app-switch>
+            </div>
+            <ng-container *ngIf="form.get('isAddOnEnabled')?.value == true">
+              <div>
+                <label class="fs-5 mb-3">Display Label</label>
+                <app-switch (switchToggled)="toggleAddOnItems($event)"
+                  [isToggledProps]="form.get('isAddOnLabelEnabled')?.value" [switchId]="'isAddOnLabelEnabled'"></app-switch>
+              </div>
+              <div>
+                <label class="fs-5 mb-3">Label</label>
+                <input type="text" class="form-control fs-6" formControlName="addOnLabel" />
+              </div>
+            </ng-container>
           </div>
         </div>
       </div>

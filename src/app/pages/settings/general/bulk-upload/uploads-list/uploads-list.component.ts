@@ -58,6 +58,7 @@ export class UploadsListComponent implements OnInit {
   ];
   isSubmitting: boolean = false;
   createdAt: string;
+  createdBy: FormControl = new FormControl('');
   baseUrl = `${environment.apiUrl}/${csvEndpoints.downloadImportLog}/`;
 
   // Map of sample CSV files for each import type
@@ -305,10 +306,18 @@ export class UploadsListComponent implements OnInit {
       limit: this.limit,
       status: this.status.value,
       date: this.createdAt,
+      createdBy: this.createdBy.value
     }).subscribe({
       next: (res: any) => {
         if (res?.errorCode == 0) {
-          this.fileImports = res?.result?.data;
+          let data = res.result.data || res.result;
+          // Filter by createdBy (case-insensitive, partial match)
+          const search = this.createdBy.value?.toLowerCase();
+          if (search) {
+            data = data.filter((item: any) => item.createdBy?.toLowerCase().includes(search));
+          }
+          // Sort by createdBy (A-Z)
+          this.fileImports = data.sort((a: any, b: any) => a.createdBy.localeCompare(b.createdBy));
           this.isLastPage = res?.result?.isLastPage;
           this.totalPages = res?.result?.totalPages;
           this.totalResults = res?.result?.totalResults;

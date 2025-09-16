@@ -41,6 +41,11 @@ export class ProductService {
     return this.http.post(`${url}`, file);
   }
 
+  importAddOnProducts(file: any) {
+    const url = this.commonService.getFullUrl(this.productEndpoints.importAddOnProducts);
+    return this.http.post(`${url}`, file);
+  }
+
   manageChildProducts(productId: string, payload: any) {
     const url = this.commonService.getFullUrl(this.productEndpoints.manageChildProducts + `/${productId}`);
     return this.http.post(`${url}`, payload);
@@ -96,8 +101,8 @@ export class ProductService {
     return this.http.get(`${url}`);
   }
 
-  searchProducts(query: any) {
-    const url = this.commonService.getFullUrl(this.productEndpoints.search_product);
+  searchProducts(query: any, condition?: string) {
+    const url = this.commonService.getFullUrl(this.productEndpoints.search_product + (condition ? `?condition=${condition}` : ``));
     return this.http.post(`${url}`, query);
   }
 

@@ -54,7 +54,7 @@
                     </button>
                 </div>
                 <div *ngIf="tabIndex == 1">
-                    <button class="btn btn-primary" (click)="createOrder()">
+                    <button [disabled]="isCreatingOrder" class="btn btn-primary" (click)="createOrder()">
                         Create Order
                         <span>
                             <svg height="18" width="18" data-slot="icon" fill="none" stroke-width="1.5"
@@ -101,8 +101,16 @@
                     </thead>
                     <tbody>
                         <tr *ngFor="let customer of customerItems">
-                            <td>{{customer.name}}</td>
-                            <td>{{customer.email}}</td>
+                            <td>
+                                <div title="{{customer.name}}" class="text-truncate">
+                                    {{customer.name}}
+                                </div>
+                            </td>
+                            <td>
+                                <div title="{{customer.email}}" class="text-truncate">
+                                    {{customer.email}}
+                                </div>
+                            </td>
                             <td>{{customer.countryCode}} {{customer.mobile}}</td>
                             <td>
                                 <button
@@ -317,13 +325,13 @@
                                                         {{state.name}}</option>
                                                 </select>
                                             </div>
-                                            <div class="col-lg-4 form-group" *ngIf="checkVisibleField('city')"
-                                                [ngClass]="{'pe-none opacity-50': cities.length == 0}">
+                                            <div class="col-lg-4 form-group" *ngIf="checkVisibleField('city')">
                                                 <label for="city" class="fs-6 mb-3"
                                                     [ngClass]="{'required': checkRequiredField('city')}">{{getFieldTitle('city')}}</label>
                                                 <select class="form-select" formControlName="city"
                                                     [ngClass]="{'is-invalid': addressValidationFunction('city') }">
                                                     <option value="" disabled>-- Select an option --</option>
+                                                    <option *ngIf="cities.length === 0" value="-">Not Applicable</option>
                                                     <option *ngFor="let city of cities" [value]="city.name">
                                                         {{city.name}}</option>
                                                 </select>
@@ -482,7 +490,7 @@
                 </button>
             </div>
             <div>
-                <button class="btn btn-primary" (click)="createOrder()">
+                <button [disabled]="isCreatingOrder" class="btn btn-primary" (click)="createOrder()">
                     Create Order
                     <span>
                         <svg height="18" width="18" data-slot="icon" fill="none" stroke-width="1.5"
@@ -516,7 +524,11 @@
                 <div class="col-lg-6 mb-3">
                     <label for="userEmail" class="fs-6 mb-3 required">Email</label>
                     <input id="userEmail" type="text" placeholder="Email" formControlName="email" class="form-control"
-                        [ngClass]="{ 'is-invalid': (userControls.email.touched || isCustomerSubmitted) && (userControls.email.errors?.required || userControls.email.errors?.email)}">
+                        [ngClass]="{ 'is-invalid': (userControls.email.touched || isCustomerSubmitted) && (userControls.email.errors?.required || userControls.email.errors?.pattern)}">
+                    <div *ngIf="(userControls.email.touched || isCustomerSubmitted) && userControls.email.errors?.pattern"
+                        class="invalid-feedback d-block">
+                        Please enter a valid email address.
+                    </div>
                 </div>
                 <div class="col-lg-6 mb-3">
                     <label for="userCountry" class="fs-6 mb-3">Country Code</label>

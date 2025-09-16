@@ -17,18 +17,13 @@ export class TaxClassesService {
   }
 
   getTaxClasses() {
-    const url = this.commonService.getFullUrl(this.taxClassesEndpoints.getActiveClass);
+    const url = this.commonService.getFullUrl(`${this.taxClassesEndpoints.getClass}/active`);
     return this.http.get(`${url}`);
   }
 
   searchClass(data: any) {
-    const url = this.commonService.getFullUrl(this.taxClassesEndpoints.searchClass);
-    return this.http.post(`${url}`, data);
-  }
-
-  getClassDetails(tax: any) {
-    const url = this.commonService.getFullUrl(this.taxClassesEndpoints.getClassDetails + `/${tax}`);
-    return this.http.get(`${url}`);
+    const url = this.commonService.getFullUrl(`${this.taxClassesEndpoints.getClass}/search`)
+    return this.http.post(`${url}`,data)
   }
 
   updateClass(data: any) {
@@ -38,6 +33,10 @@ export class TaxClassesService {
 
   deleteClass(tax: any) {
     const url = this.commonService.getFullUrl(this.taxClassesEndpoints.deleteClass + `/${tax}`);
+    return this.http.delete(`${url}`);
+  }
+  getClassDetails(tax: any){
+    const url = this.commonService.getFullUrl(this.taxClassesEndpoints.getClass + `/${tax}`);
     return this.http.delete(`${url}`);
   }
 }

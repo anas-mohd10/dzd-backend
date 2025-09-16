@@ -35,7 +35,12 @@ interface WidgetProps {
   icon: string;
   description: string;
 }
-
+interface WidgetItem {
+  title: string
+  redirection: string
+  categoryId: string
+  thumbnail: string
+}
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
@@ -164,6 +169,12 @@ export class HomeComponent implements OnInit {
     { key: 'Slide In Right', value: 'slide-in-right' },
     { key: 'Slide In Up', value: 'slide-in-up' },
     { key: 'None', value: 'none' },
+  ];
+
+  titleTypeOptions: Array<{ key: string, value: string }> = [
+    { key: 'Left', value: 'left' },
+    { key: 'Center', value: 'center' },
+    { key: 'Right', value: 'right' },
   ];
 
   // Clickpulse
@@ -433,6 +444,12 @@ export class HomeComponent implements OnInit {
           this.widgetForm.get('redirection')?.setValue('/p/' + this.redirectionQuery.value);
         }
         break;
+        case 'web-links' : 
+        if (this.redirectionQuery.value) {
+          this.widgetForm.get('redirection')?.setValue(this.redirectionQuery.value);
+        }
+        break;
+  
       case 'collection':
         this.widgetForm
           .get('redirection')
@@ -527,7 +544,10 @@ export class HomeComponent implements OnInit {
 
           if (this.widgetDetails?.widgetType == 'blogs') {
             this.widgetBlogs = this.widgetDetails?.blogs;
+          }else if (this.widgetDetails?.widgetType == 'stock-viewer') {
+            this.widgetImages = this.widgetDetails?.widgetImages;
           }
+
           if (this.widgetDetails?.widgetType == 'testimonial-cards') {
             this.widgetTestimonials = this.widgetDetails?.testimonials;
           }
@@ -843,6 +863,10 @@ export class HomeComponent implements OnInit {
       refid: this.widgetDetails?.refid,
     };
 
+    if (this.form.get('titleType')?.value) {
+      widgetPayload['titleType'] = this.form.get('titleType')?.value;
+    }
+
     if (this.widgetImageTypes.includes(this.widgetDetails?.widgetType)) {
       let widgetImages = [];
       for (let widgetImage of this.widgetImages) {
@@ -863,6 +887,7 @@ export class HomeComponent implements OnInit {
     } else if (this.widgetDetails?.widgetType == 'sale-timer') {
       widgetPayload = {
         visibility: this.form.get('visibility')?.value,
+        titleType: this.form.get('titleType')?.value,
         refid: this.widgetDetails?.refid,
         widgetType: this.widgetDetails?.widgetType,
         ...this.saleForm.value,
@@ -877,6 +902,7 @@ export class HomeComponent implements OnInit {
     } else if (this.widgetProductTypes.includes(this.widgetDetails.widgetType)) {
       widgetPayload = {
         visibility: this.form.get('visibility')?.value,
+        titleType: this.form.get('titleType')?.value,
         refid: this.widgetDetails?.refid,
         ...this.form.value,
         widgetType: this.widgetDetails?.widgetType,
@@ -891,7 +917,14 @@ export class HomeComponent implements OnInit {
           ? this.widgetCategory.value
           : null,
       };
+    }else if (this.widgetDetails?.widgetType == 'stock-viewer') {
+      let widgetImages = [];
+      for (let widgetImage of this.widgetImages) {
+        widgetImages.push({ ...widgetImage, media: widgetImage?.url?._id });
+      }
+      widgetPayload['widgetImages'] = widgetImages;
     }
+
 
     type == 'styles' ? (widgetPayload['styles'] = this.designForm.value) : null;
 
@@ -931,6 +964,7 @@ export class HomeComponent implements OnInit {
           this.form.reset();
           this.widgetForm.patchValue({
             title: '',
+            titleType: '',
             redirection: '',
             redirectionType: '',
             buttonText: '',
@@ -1128,7 +1162,7 @@ export class HomeComponent implements OnInit {
 
     this.keyPointForm = new FormGroup({
       title: new FormControl('', Validators.required),
-      description: new FormControl('', Validators.required),
+      description: new FormControl(''),
       icon: new FormControl(''),
     })
 
@@ -1138,6 +1172,7 @@ export class HomeComponent implements OnInit {
       visibility: new FormControl('all'),
       buttonVisibility: new FormControl(),
       title: new FormControl(''),
+      titleType: new FormControl('left'),
       titleImage: new FormControl(null),
       description: new FormControl(''),
       html: new FormControl(''),
@@ -1238,6 +1273,7 @@ export class HomeComponent implements OnInit {
 
     this.widgetForm = new FormGroup({
       title: new FormControl(''),
+      titleType: new FormControl(''),
       description: new FormControl(''),
       button: new FormControl(''),
       redirection: new FormControl(''),
@@ -1498,4 +1534,9 @@ export class HomeComponent implements OnInit {
     this.deleteVideoLinkRef?.hide();
     this.deleteVideoLinkIndex = null;
   }
+  widgetItemsChange(widgetItems: Array<WidgetItem>) {
+    this.widgetImages = widgetItems;
+    this.ChangeDetectorRef.markForCheck();
+  }
+
 }

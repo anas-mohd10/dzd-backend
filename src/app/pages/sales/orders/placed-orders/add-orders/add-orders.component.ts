@@ -169,6 +169,8 @@ export class AddOrdersComponent implements OnInit {
   addressFields: ImportedFieldMap[] = addressFieldsMap
   addressFieldsMap: { [key: string]: ImportedFieldMap } = {}
 
+  isCreatingOrder: boolean = false
+
   @HostListener('window:scroll', ['$event'])
   onScroll() {
     const element = document.querySelector('.sticky-card');
@@ -322,7 +324,7 @@ export class AddOrdersComponent implements OnInit {
               let defaultValue: string | undefined = ""
               if (field.fieldMap == "countryCode") {
                 defaultValue = this.settings?.countryCode || "+971"
-              }else if(field.fieldMap == "type"){
+              } else if (field.fieldMap == "type") {
                 defaultValue = "Home"
               }
               this.addressForm.addControl(field.fieldMap, new FormControl(defaultValue, isRequired));
@@ -361,7 +363,7 @@ export class AddOrdersComponent implements OnInit {
       name: new FormControl('', Validators.required),
       countryCode: new FormControl('+971', Validators.required),
       mobile: new FormControl('', [Validators.required, Validators.pattern('^[0-9]{10}$')]),
-      email: new FormControl('', [Validators.required, Validators.email]),
+      email: new FormControl('', [Validators.required, Validators.pattern('^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$')]),
       isActive: new FormControl(true),
     });
 
@@ -460,7 +462,7 @@ export class AddOrdersComponent implements OnInit {
   updateAddressMobilePattern(newPattern: string) {
     const mobileControl = this.addressForm.get('mobile');
     const isRequired = this.addressFieldsMap['mobile']?.isRequired;
-    
+
     if (isRequired) {
       // If field is required, always apply validation
       const newValidators = [Validators.required];
@@ -476,7 +478,7 @@ export class AddOrdersComponent implements OnInit {
         return Validators.pattern(newPattern)(control);
       });
     }
-    
+
     mobileControl?.updateValueAndValidity();
   }
 
@@ -766,7 +768,7 @@ export class AddOrdersComponent implements OnInit {
       name: this.productQuery.value,
       isActive: 'true',
       isArchive: 'false',
-    }).subscribe({
+    }, 'manual-order').subscribe({
       next: (res: any) => {
         if (res?.errorCode == 0) {
           this.products = res?.result?.data;
@@ -1095,6 +1097,7 @@ export class AddOrdersComponent implements OnInit {
   }
 
   createOrder() {
+    this.isCreatingOrder = true
     this.orderForm.get('pickUpLocation')?.setValue(this.orderForm.get('pickUpLocation')?.value ? this.orderForm.get('pickUpLocation')?.value : null);
     this.orderForm.get('customerId')?.setValue(this.customerDetails?._id);
     this.orderForm.get('products')?.setValue(this.cartItems);
@@ -1102,18 +1105,24 @@ export class AddOrdersComponent implements OnInit {
     if (!this.addressForm.valid) {
       this.ToastrService.error('Please fill all the address fields');
       this.isAddressSubmitted = true;
+      this.isCreatingOrder = false
+      this.ChangeDetectorRef.markForCheck()
       return;
     }
 
     if (this.cartItems.length == 0) {
       this.ToastrService.error('Please add at least one product to the cart');
       this.isSubmitted = true;
+      this.isCreatingOrder = false
+      this.ChangeDetectorRef.markForCheck()
       return;
     }
 
     if (!this.orderForm.valid) {
       this.ToastrService.error('Please fill all the required fields');
       this.isSubmitted = true;
+      this.isCreatingOrder = false
+      this.ChangeDetectorRef.markForCheck()
       return;
     }
 
@@ -1141,12 +1150,17 @@ export class AddOrdersComponent implements OnInit {
     }).subscribe({
       next: (res: any) => {
         if (res?.errorCode == 0) {
+          this.isCreatingOrder = false
           this.Router.navigate([this.appRoute.orders.ORDERS_LIST]);
           this.ToastrService.success(res.message);
         } else {
+          this.isCreatingOrder = false
+          this.ChangeDetectorRef.markForCheck()
           this.ToastrService.error(res.message);
         }
       }, error: (err: any) => {
+        this.isCreatingOrder = false
+        this.ChangeDetectorRef.markForCheck()
         this.ToastrService.error(err?.error?.message);
       },
     });

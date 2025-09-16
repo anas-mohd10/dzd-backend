@@ -96,6 +96,10 @@ export class UpdateCollectionComponent implements OnInit {
       name: new FormControl('', Validators.required),
       description: new FormControl(''),
       products: new FormControl('', Validators.required),
+      slug: new FormControl('', [
+        Validators.required,
+        Validators.pattern(/^[a-z0-9]+(?:-[a-z0-9]+)*$/)
+      ]),
       isActive: new FormControl(true),
       thumbnail: new FormControl(null),
       icons: new FormControl([]),
@@ -211,6 +215,7 @@ export class UpdateCollectionComponent implements OnInit {
   }
 
   onSubmit() {
+    this.isSubmitted = true;
     this.form.get('_id')?.setValue(this._id);
     this.selectedProducts = [];
     if (!this.isAutoCompleteEnabled) {
@@ -225,11 +230,10 @@ export class UpdateCollectionComponent implements OnInit {
 
     if (!this.form.valid) {
       this.HotToastService.error('Please fill all the required fields');
-      this.isSubmitted = true;
       return;
     }
 
-    this.CollectionService.updateCollection({...this.form.value}).subscribe({
+    this.CollectionService.updateCollection({ ...this.form.value }).subscribe({
       next: (res: any) => {
         if (res?.errorCode == 0) {
           this.Router.navigate([this.appRoute.collection.COLLECTION_LIST]);
@@ -261,7 +265,7 @@ export class UpdateCollectionComponent implements OnInit {
   }
 
   updateProductOrders() {
-    this.productDetails.forEach((product, index) => {  product.order = index + 1; });
+    this.productDetails.forEach((product, index) => { product.order = index + 1; });
     this.selectedProducts = this.productDetails.map(product => ({ product: product._id, order: product.order }));
     this.hasUnsavedOrderChanges = true;
     this.form.get('products')?.setValue(this.selectedProducts);
@@ -275,35 +279,18 @@ export class UpdateCollectionComponent implements OnInit {
     this.updateProductOrders();
   }
 
-  // Add this method to the UpdateCollectionComponent class
-
   exportCollection() {
-    if (!this.collectionSlug) {
-      this.HotToastService.error('Collection not found');
-      return;
-    }
-
-    this.HotToastService.info('Preparing collection export...');
-
+    this.HotToastService.info('Starting collection export');
     this.CollectionService.exportSingleCollection(this.collectionSlug).subscribe({
       next: (res: any) => {
-        if (res?.errorCode == 0 && res?.result?.url) {
-          // Create a temporary link and trigger download
-          const link = document.createElement('a');
-          link.href = res.result.url;
-          link.target = '_blank';
-          link.download = `collection-${this.collectionSlug}.csv`;
-          document.body.appendChild(link);
-          link.click();
-          document.body.removeChild(link);
-
-          this.HotToastService.success('Collection exported successfully');
+        if (res && res.errorCode == 0 && res.result) {
+          this.Router.navigate([`/app/export-logs/${res.result.exportId}`])
+          this.HotToastService.success(res.message);
         } else {
-          this.HotToastService.error(res.message || 'Failed to export collection');
+          this.HotToastService.error('Failed to export collection');
         }
-      },
-      error: (err: any) => {
-        this.HotToastService.error(err.message || 'Failed to export collection');
+      }, error: (err: any) => {
+        this.HotToastService.error('Failed to export collection');
       }
     });
   }

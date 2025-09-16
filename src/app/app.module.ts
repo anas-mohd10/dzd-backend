@@ -101,6 +101,11 @@ import { MenuNavigationComponent } from './pages/settings/general/menu-navigatio
 import { FormSettingsComponent } from './pages/settings/general/form-settings/form-settings.component';
 import { FormAddressComponent } from './pages/settings/general/form-settings/form-address/form-address.component';
 import { FormLoginComponent } from './pages/settings/general/form-settings/form-login/form-login.component';
+import { AlbumsComponent } from './pages/marketing/albums/albums.component';
+import { GalleriesComponent } from './pages/marketing/galleries/galleries.component';
+import { CarouselModule } from 'ngx-bootstrap/carousel';
+import { ShippingGatewaysComponent } from './pages/settings/general/shipping-gateways/shipping-gateways.component';
+import { CurrencySettingsComponent } from './pages/settings/general/currency-settings/currency-settings.component';
 
 const DragConfig = {
   dragStartThreshold: 0,
@@ -176,6 +181,10 @@ const DragConfig = {
     FormSettingsComponent,
     FormAddressComponent,
     FormLoginComponent,
+    AlbumsComponent,
+    GalleriesComponent,
+    ShippingGatewaysComponent,
+    CurrencySettingsComponent,
   ],
   imports: [
     provideFirebaseApp(() => initializeApp(environment.firebaseConfig)),
@@ -209,6 +218,7 @@ const DragConfig = {
     SwiperModule,
     TabsModule.forRoot(),
     SharedModule,
+    CarouselModule.forRoot(),
 ],
   exports: [
     RouterModule,

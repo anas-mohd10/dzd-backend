@@ -7,649 +7,737 @@
       <div class="mt-2 fs-5">Order is being Processed</div>
     </div>
   </div>
-  <div class="page-header d-flex flex-row justify-content-between">
+
+  <div class="d-flex flex-column gap-4">
+    <div class="d-flex align-items-center justify-content-between">
+      <div>
+        <div class="page-title">
+          <h1 class="fw-bold">Update Order</h1>
+        </div>
+        <ul class="breadcrumb">
+          <li class="breadcrumb-item fs-6">
+            <a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a>
+          </li>
+          <li class="breadcrumb-item fs-6">
+            <a routerLink="{{ appRoute.orders.ORDERS_LIST }}">Orders</a>
+          </li>
+          <li class="breadcrumb-item active fs-6">
+            <a routerLink="{{ appRoute.orders.UPDATE_ORDER_LIST }}" [queryParams]="{'order': slug}">Update Order</a>
+          </li>
+        </ul>
+      </div>
+      <div>
+        <div class="d-flex align-items-center justify-content-end gap-3">
+          <div *ngIf="isCancelEligible" class="btn border bg-white text-danger border-danger"
+            (click)="open(confirmation)">
+            Cancel Order
+          </div>
+
+          <ng-container *ngIf="order">
+            <button class="btn btn-secondary" (click)="openShipment(shipmentOptions)"
+              *ngIf="shipmentItems.includes(order.orderStatus.toUpperCase())">
+              <i class="fa fa-truck" aria-hidden="true"></i>
+              Create Shipment
+            </button>
+          </ng-container>
+
+          <button class="btn btn-primary" (click)="acceptOrderPayment()"
+            *ngIf="order?.paymentMethod == 'ONLINE' && order?.paymentStatus == 'PENDING'">
+            Accept payment
+            <svg height="18" width="18" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+              stroke-width="1.5" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
+            </svg>
+          </button>
+
+          <a class="btn border bg-white text-primary border-primary" *ngIf="isPackingSlipAvailable"
+            (click)="getPackingSlipSignedUrl(slug)">
+            <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24" fill="currentColor">
+              <path d="M0 0h24v24H0V0z" fill="none" />
+              <path
+                d="M19.5 8H17V6c0-1.1-.9-2-2-2H3c-1.1 0-2 .9-2 2v9c0 1.1.9 2 2 2 0 1.66 1.34 3 3 3s3-1.34 3-3h6c0 1.66 1.34 3 3 3s3-1.34 3-3h1c.55 0 1-.45 1-1v-3.33c0-.43-.14-.85-.4-1.2L20.3 8.4c-.19-.25-.49-.4-.8-.4zM6 18c-.55 0-1-.45-1-1s.45-1 1-1 1 .45 1 1-.45 1-1 1zm13.5-8.5l1.96 2.5H17V9.5h2.5zM18 18c-.55 0-1-.45-1-1s.45-1 1-1 1 .45 1 1-.45 1-1 1z" />
+            </svg>
+            Packing Slip
+          </a>
+
+          <button class="btn btn-primary" (click)="getInvoiceSignedUrl(slug)">
+            <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24" fill="currentColor">
+              <path d="M0 0h24v24H0V0z" fill="none" />
+              <path
+                d="M19 8H5c-1.66 0-3 1.34-3 3v4c0 1.1.9 2 2 2h2v2c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2v-2h2c1.1 0 2-.9 2-2v-4c0-1.66-1.34-3-3-3zm-4 11H9c-.55 0-1-.45-1-1v-4h8v4c0 .55-.45 1-1 1zm4-7c-.55 0-1-.45-1-1s.45-1 1-1 1 .45 1 1-.45 1-1 1zm-2-9H7c-.55 0-1 .45-1 1v2c0 .55.45 1 1 1h10c.55 0 1-.45 1-1V4c0-.55-.45-1-1-1z" />
+            </svg>
+            Generate Invoice
+          </button>
+        </div>
+      </div>
+    </div>
+
     <div>
-      <div class="page-title">
-        <h1 class="fw-bold">Update Order</h1>
-      </div>
-      <ul class="breadcrumb">
-        <li class="breadcrumb-item fs-6">
-          <a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a>
-        </li>
-        <li class="breadcrumb-item fs-6">
-          <a routerLink="{{ appRoute.orders.ORDERS_LIST }}">Orders</a>
-        </li>
-        <li class="breadcrumb-item active fs-6">
-          <a routerLink="{{ appRoute.orders.UPDATE_ORDER_LIST }}" [queryParams]="{'order': slug}">Update Order</a>
-        </li>
-      </ul>
-    </div>
-    <div>
-      <div class="d-flex align-items-center justify-content-end gap-3">
-        <div *ngIf="isCancelEligible" class="btn border bg-white text-danger border-danger"
-          (click)="open(confirmation)">
-          Cancel Order
-        </div>
-
-        <button class="btn btn-primary" (click)="acceptOrderPayment()"
-          *ngIf="order?.paymentMethod == 'ONLINE' && order?.paymentStatus == 'PENDING'">
-          Accept payment
-          <svg height="18" width="18" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-            stroke-width="1.5" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
-          </svg>
-        </button>
-
-        <a class="btn border bg-white text-primary border-primary" *ngIf="isPackingSlipAvailable"
-          (click)="getPackingSlipSignedUrl(slug)">
-          <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24" fill="currentColor">
-            <path d="M0 0h24v24H0V0z" fill="none" />
-            <path
-              d="M19.5 8H17V6c0-1.1-.9-2-2-2H3c-1.1 0-2 .9-2 2v9c0 1.1.9 2 2 2 0 1.66 1.34 3 3 3s3-1.34 3-3h6c0 1.66 1.34 3 3 3s3-1.34 3-3h1c.55 0 1-.45 1-1v-3.33c0-.43-.14-.85-.4-1.2L20.3 8.4c-.19-.25-.49-.4-.8-.4zM6 18c-.55 0-1-.45-1-1s.45-1 1-1 1 .45 1 1-.45 1-1 1zm13.5-8.5l1.96 2.5H17V9.5h2.5zM18 18c-.55 0-1-.45-1-1s.45-1 1-1 1 .45 1 1-.45 1-1 1z" />
-          </svg>
-          Packing Slip
-        </a>
-
-        <button class="btn btn-primary" (click)="getInvoiceSignedUrl(slug)">
-          <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24" fill="currentColor">
-            <path d="M0 0h24v24H0V0z" fill="none" />
-            <path
-              d="M19 8H5c-1.66 0-3 1.34-3 3v4c0 1.1.9 2 2 2h2v2c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2v-2h2c1.1 0 2-.9 2-2v-4c0-1.66-1.34-3-3-3zm-4 11H9c-.55 0-1-.45-1-1v-4h8v4c0 .55-.45 1-1 1zm4-7c-.55 0-1-.45-1-1s.45-1 1-1 1 .45 1 1-.45 1-1 1zm-2-9H7c-.55 0-1 .45-1 1v2c0 .55.45 1 1 1h10c.55 0 1-.45 1-1V4c0-.55-.45-1-1-1z" />
-          </svg>
-          Generate Invoice
-        </button>
-      </div>
-    </div>
-  </div>
-
-  <div class="position-relative mt-4">
-    <div class="alert alert-warning fs-6"
-      *ngIf="order?.paymentMethod == 'ONLINE' && !isCancelled && order?.paymentStatus == 'PENDING'">
-      Please proceed with the payment to facilitat e the processing of the order request
-    </div>
-
-    <div class="alert alert-danger fs-6"
-      *ngIf="order?.paymentMethod == 'ONLINE' && order?.payment?.isProcessing == true">
-      <div class="fs-3">Payment is being processed.</div>
-      <div class="fs-6">
-        New payment won't be processed until the previous payment is completed.
-        You can proceed with updating the order status but payment will be processed in the background.
-      </div>
-    </div>
-
-    <div *ngIf="isCancelled">
-      <div class="alert mb-4 alert-danger">
-        <div class="fs-3 fw-bold">{{orderNumber}} Order has been cancelled</div>
-        <div class="my-3" *ngIf="order?.cancel?.reason">
-          <div class="fs-6">Reason for cancellation :</div>
-          <div class="fs-5">{{order?.cancel?.reason}}</div>
-        </div>
-        <div class="fs-6" *ngIf="order?.cancel?.date">
-          Cancelled on
-          {{getLocaleDateFormat(order?.cancel?.date)}}
-          {{getLocaleTimeFormat(order?.cancel?.date)}}
+      <div class="card" [ngClass]="{'opacity-50 pointer-events-none':isCancelled }"
+        *ngIf="order && order.isLabelCreated == true">
+        <div class="card-body">
+          <div class="fs-5 text-muted fw-normal">
+            <span>
+              <i class="fa fa-truck text-primary" aria-hidden="true"></i>
+            </span>
+            Shipment has been created via {{order.shippingGateway | titlecase}}.
+            <span class="text-primary cursor-pointer" (click)="downdloadShipmentLabel()">
+              Download Here
+            </span>
+          </div>
         </div>
       </div>
     </div>
 
-    <div class="row">
-      <div class="col-lg-6 mb-3">
-        <div class="card h-100">
-          <div class="card-body">
-            <div class="fs-3 fw-bold">
-              Order Details ({{orderNumber}})
-              <span class="ms-2 alert alert-success fs-6 fw-normal p-1 m-0">
-                {{orderStatus}}
-              </span>
-            </div>
-            <div class="mt-4">
-              <table class="table table-bordered fs-5">
-                <tr>
-                  <th class="p-2 text-muted fw-normal">Date</th>
-                  <td class="p-2">
-                    {{getLocaleDateFormat(order?.orderDate)}},
-                    {{getLocaleTimeFormat(order?.orderDate)}}
-                  </td>
-                </tr>
-                <tr>
-                  <th class="p-2 text-muted fw-normal">Method</th>
-                  <td class="p-2">
-                    {{order?.paymentMethod}}
-                  </td>
-                </tr>
-                <tr>
-                  <th class="p-2 text-muted fw-normal">Gateway</th>
-                  <td class="p-2">
-                    {{formatPaymentGateway(order?.paymentGateway)}}
-                  </td>
-                </tr>
-                <tr>
-                  <th class="p-2 text-muted fw-normal">Gateway Status</th>
-                  <td class="p-2">
-                    <div class="{{formatPaymentStatus(order?.gatewayStatus)}} p-1 rounded">
-                      {{formatPaymentStatus(order?.gatewayStatus)}}</div>
-                  </td>
-                </tr>
-                <tr>
-                  <th class="p-2 text-muted fw-normal">Status</th>
-                  <td class="p-2">
-                    {{order?.paymentStatus}}
-                  </td>
-                </tr>
-                <tr>
-                  <th class="p-2 text-muted fw-normal">Invoice Reference</th>
-                  <td class="p-2">
-                    {{order?.invoiceNo}}
-                  </td>
-                </tr>
-                <tr>
-                  <th class="p-2 text-muted fw-normal">Source</th>
-                  <td class="p-2">
-                    {{formatWords(order?.source)}}
-                  </td>
-                </tr>
-                <tr>
-                  <th class="p-2 text-muted fw-normal">Customer Type</th>
-                  <td class="p-2">
-                    {{order?.customerType == 'regd' ? 'Customer' : 'Guest'}}
-                  </td>
-                </tr>
-                <tr>
-                  <th class="p-2 text-muted fw-normal">Order Total</th>
-                  <td class="p-2">
-                    {{settings?.currency}} {{order?.total}}
-                  </td>
-                </tr>
-                <tr>
-                  <th class="p-2 text-muted fw-normal">Delivery</th>
-                  <td class="p-2">
-                    {{order?.deliveryType == '1' ? 'Click and collect' : 'Home delivery' }}
-                  </td>
-                </tr>
-                <!-- Add new row for cancellation details -->
-                <tr *ngIf="order?.cancel">
-                  <th class="p-2 text-muted fw-normal">Cancelled By</th>
-                  <td class="p-2">
-                    <ng-container *ngIf="order?.cancel?.cancelledBy === 'CUSTOMER'">
-                      Customer
-                    </ng-container>
-                    <ng-container *ngIf="order?.cancel?.cancelledBy === 'ADMIN'">
-                      {{ order?.cancel?.cancelledByEmail || 'Admin' }}
-                    </ng-container>
-                  </td>
-                </tr>
-              </table>
-              <div class="mt-4" *ngIf="order?.coupon">
-                <div class="alert alert-success mb-0 d-flex align-items-center justify-content-start gap-2">
-                  <div class="text-success">
-                    <svg height="18" width="18" data-slot="icon" fill="none" stroke-width="1.5" stroke="currentColor"
-                      viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                      <path stroke-linecap="round" stroke-linejoin="round"
-                        d="M9 12.75 11.25 15 15 9.75M21 12c0 1.268-.63 2.39-1.593 3.068a3.745 3.745 0 0 1-1.043 3.296 3.745 3.745 0 0 1-3.296 1.043A3.745 3.745 0 0 1 12 21c-1.268 0-2.39-.63-3.068-1.593a3.746 3.746 0 0 1-3.296-1.043 3.745 3.745 0 0 1-1.043-3.296A3.745 3.745 0 0 1 3 12c0-1.268.63-2.39 1.593-3.068a3.745 3.745 0 0 1 1.043-3.296 3.746 3.746 0 0 1 3.296-1.043A3.746 3.746 0 0 1 12 3c1.268 0 2.39.63 3.068 1.593a3.746 3.746 0 0 1 3.296 1.043 3.746 3.746 0 0 1 1.043 3.296A3.745 3.745 0 0 1 21 12Z">
-                      </path>
-                    </svg>
-                  </div>
-                  <div class="fs-5"><span class="cursor-pointer" routerLink="{{appRoute.coupons.UPDATE_COUPONS_LIST}}"
-                      [queryParams]="{'coupon': order?.coupon?.refid}">{{order?.coupon?.code}}</span> applied
-                    successfully
-                  </div>
-                </div>
-              </div>
-            </div>
+    <div class="position-relative">
+      <div class="alert alert-warning fs-6"
+        *ngIf="order?.paymentMethod == 'ONLINE' && !isCancelled && order?.paymentStatus == 'PENDING'">
+        Please proceed with the payment to facilitat e the processing of the order request
+      </div>
+
+      <div class="alert alert-warning fs-6"
+        *ngIf="order?.paymentMethod == 'ONLINE' && order?.payment?.isProcessing == true">
+        <div class="fs-4 mb-2">Payment is being processed 🔄</div>
+        <div class="fs-6">
+          New payment won't be processed until the previous payment is completed,
+          you can proceed with updating the order status but payment will be processed in the background
+        </div>
+      </div>
+
+      <div *ngIf="isCancelled && order.cancel">
+        <div class="alert mb-4 d-flex flex-column gap-2 alert-danger">
+          <div class="fs-3 fw-bold">{{orderNumber}} Order has been cancelled</div>
+          <ng-container *ngIf="order.cancel.reason">
+            <div class="fs-6">{{order.cancel.reason}}</div>
+          </ng-container>
+          <div class="d-flex align-items-center justify-content-start gap-2">
+            <ng-container *ngIf="order.cancel.action   || order.cancel.cancelledBy">
+              <div class="fs-6 badge badge-danger fw-normal">{{order.cancel.action || order.cancel.cancelledBy |
+                titlecase}}</div>
+            </ng-container>
+            <ng-container *ngIf="order.cancel.email || order.cancel.cancelledEmail">
+              <div class="fs-6">{{order.cancel.email || order.cancel.cancelledEmail}}</div>
+            </ng-container>
+          </div>
+          <div class="fs-6">
+            Cancelled on {{order.cancel.date | date:'dd-MM-yy HH:mm:ss'}}
           </div>
         </div>
       </div>
 
-      <div class="col-lg-6 mb-3">
-        <div class="card h-100">
-          <div class="card-body">
-            <div class="fs-3 fw-bold">
-              Order Summary
-            </div>
-            <div class="mt-4">
-              <table class="table table-bordered fs-5">
-                <tr>
-                  <th class="p-2 text-muted fw-normal">Price Without Tax</th>
-                  <td>{{settings?.currency}} {{order?.priceBeforeTax}}</td>
-                </tr>
-                <tr>
-                  <th class="p-2 text-muted fw-normal">Tax</th>
-                  <td>{{settings?.currency}} {{order?.tax}}</td>
-                </tr>
-                <tr>
-                  <th class="p-2 text-muted fw-normal">Shipping Charge</th>
-                  <td>{{settings?.currency}} {{order?.shippingCost}}</td>
-                </tr>
-                <tr *ngIf="+order?.codCost > 0">
-                  <th class="p-2 text-muted fw-normal">COD</th>
-                  <td>{{settings?.currency}} {{order?.codCost}}</td>
-                </tr>
-                <tr *ngIf="+order?.additionalCharge > 0">
-                  <th class="p-2 text-muted fw-normal">Additional Charge</th>
-                  <td>{{settings?.currency}} {{order?.additionalCharge}}</td>
-                </tr>
-                <tr>
-                  <th class="p-2 text-muted fw-normal">Savings</th>
-                  <td class="text-success">- {{settings?.currency}} {{order?.discount}}</td>
-                </tr>
-                <tr *ngIf="+order?.couponDiscount > 0">
-                  <th class="p-2 text-muted fw-normal">Coupon Discount</th>
-                  <td class="text-success">- {{settings?.currency}} {{order?.couponDiscount}}</td>
-                </tr>
-                <tr *ngIf="+order?.credit?.amount > 0">
-                  <th class="p-2 text-muted fw-normal">Credit</th>
-                  <td class="text-success">{{settings?.currency}} {{order?.credit?.amount}}</td>
-                </tr>
-                <tr>
-                  <th class="p-2 text-muted fw-normal">Amount Pending</th>
-                  <td>{{settings?.currency}} {{order?.amountPending}}</td>
-                </tr>
-                <tr>
-                  <th class="p-2 text-muted fw-normal">Cancelled Items</th>
-                  <td class="text-danger">- {{settings?.currency}} {{order?.cancelledAmount}}</td>
-                </tr>
-                <tr class="fs-4 fw-bold">
-                  <th class="p-2 text-muted fw-normal">Total</th>
-                  <td>{{settings?.currency}} {{order?.total}}</td>
-                </tr>
-              </table>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="col-lg-6 mb-3">
-        <div class="d-flex gap-3 h-100 justify-content-between flex-column">
-          <div class="card">
-            <div class="card-body">
-              <div class="fs-3 fw-bold">Customer Address</div>
-              <div class="mt-4">
-                <table class="table table-bordered fs-5">
-                  <tr>
-                    <th class="p-2 text-muted fw-normal">Name</th>
-                    <td class="p-2">
-                      {{order?.customerDetails?.name || order?.customerId?.name || order?.guestId?.name ||
-                      order?.customer?.name}}
-                      <span class="d-inline-flex flex-wrap gap-1 ms-2"
-                        *ngIf="order?.customer?.tags && order?.customer?.tags.length > 0">
-                        <span *ngFor="let tag of order?.customer?.tags"
-                          class="badge rounded-pill bg-primary px-2 py-1 fs-6">{{tag}}</span>
-                      </span>
-                    </td>
-                  </tr>
-                  <tr>
-                    <th class="p-2 text-muted fw-normal">Mobile</th>
-                    <td class="p-2">{{order?.customerDetails?.mobile || order?.address?.mobile ||
-                      order?.guestId?.mobile}}</td>
-                  </tr>
-                  <tr>
-                    <th class="p-2 text-muted fw-normal">Email</th>
-                    <td class="p-2">
-                      {{order?.customerDetails?.email || order?.customerId?.email || order?.guestId?.email}}</td>
-                  </tr>
-                  <ng-container *ngIf="order?.deliveryType == '0'">
-                    <tr>
-                      <th class="p-2 text-muted fw-normal">Address</th>
-                      <td class="p-2">
-                        {{order?.address?.firstlane}}
-                        <ng-container *ngIf="order?.address?.secondlane">, {{order?.address?.secondlane}}</ng-container>
-                        <ng-container *ngIf="order?.address?.area">, {{order?.address?.area}}</ng-container>
-                        <ng-container *ngIf="order?.address?.landmark">, {{order?.address?.landmark}}</ng-container>
-                        <ng-container *ngIf="order?.address?.city">, {{order?.address?.city}}</ng-container>
-                        <ng-container *ngIf="order?.address?.state">, {{order?.address?.state}}</ng-container>
-                        <ng-container *ngIf="order?.address?.mobile">, {{order?.address?.country}}</ng-container>
-                        <ng-container *ngIf="order?.address?.pincode">, {{order?.address?.pincode}}</ng-container>
-                        <ng-container *ngIf="order?.address?.mobile">, {{order?.address?.mobile}}</ng-container>
-                      </td>
-                    </tr>
-                    <tr>
-                      <th class="p-2 text-muted fw-normal">Location</th>
-                      <td class="p-2">
-                        <ng-container
-                          *ngIf="order?.address?.coordinates?.latitude && order?.address?.coordinates?.longitude">
-                          <div class="d-flex justify-content-between">
-                            <a href="https://www.google.com/maps/search/?api=1&query={{order?.address?.coordinates?.latitude}},{{order?.address?.coordinates?.longitude}}"
-                              target="_blank" class="text-gray-600 text-hover-primary me-2">
-                              Open Location in Map
-                            </a>
-                            <!-- Copy Button -->
-                            <button class="btn btn-light btn-sm d-inline-flex align-items-center gap-1"
-                              (click)="copyCoordinates()">
-                              <svg width="12px" height="12px" viewBox="0 0 24 24" fill="none"
-                                xmlns="http://www.w3.org/2000/svg">
-                                <path
-                                  d="M16 4C16.93 4 17.395 4 17.7765 4.10222C18.8117 4.37962 19.6204 5.18827 19.8978 6.22354C20 6.60504 20 7.07003 20 8V17.2C20 18.8802 20 19.7202 19.673 20.362C19.3854 20.9265 18.9265 21.3854 18.362 21.673C17.7202 22 16.8802 22 15.2 22H8.8C7.11984 22 6.27976 22 5.63803 21.673C5.07354 21.3854 4.6146 20.9265 4.32698 20.362C4 19.7202 4 18.8802 4 17.2V8C4 7.07003 4 6.60504 4.10222 6.22354C4.37962 5.18827 5.18827 4.37962 6.22354 4.10222C6.60504 4 7.07003 4 8 4M9.6 6H14.4C14.9601 6 15.2401 6 15.454 5.89101C15.6422 5.79513 15.7951 5.64215 15.891 5.45399C16 5.24008 16 4.96005 16 4.4V3.6C16 3.03995 16 2.75992 15.891 2.54601C15.7951 2.35785 15.6422 2.20487 15.454 2.10899C15.2401 2 14.9601 2 14.4 2H9.6C9.03995 2 8.75992 2 8.54601 2.10899C8.35785 2.20487 8.20487 2.35785 8.10899 2.54601C8 2.75992 8 3.03995 8 3.6V4.4C8 4.96005 8 5.24008 8.10899 5.45399C8.20487 5.64215 8.35785 5.79513 8.54601 5.89101C8.75992 6 9.03995 6 9.6 6Z"
-                                  stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                  stroke-linejoin="round" />
-                              </svg>
-                            </button>
-                          </div>
-                        </ng-container>
-                      </td>
-                    </tr>
-                    <tr>
-                      <th class="p-2 text-muted fw-normal">Coordinates</th>
-                      <td class="p-2">
-                        {{order?.address?.coordinates?.latitude || '-'}}
-                        {{order?.address?.coordinates?.longitude}}
-                      </td>
-                    </tr>
-                  </ng-container>
-                </table>
-              </div>
-            </div>
-          </div>
-          <div class="card">
-            <div class="card-body">
-              <div class="fs-3 fw-bold">Shipping Address</div>
-              <div class="mt-4">
-                <table class="table table-bordered fs-5">
-                  <tr>
-                    <th class="p-2 text-muted fw-normal">Name</th>
-                    <td class="p-2">{{order?.address?.name || order?.customerDetails?.name || order?.guestId?.name}}
-                    </td>
-                  </tr>
-                  <tr>
-                    <th class="p-2 text-muted fw-normal">Mobile</th>
-                    <td class="p-2">{{ order?.customerDetails?.mobile || order?.address?.mobile ||
-                      order?.guestId?.mobile}}</td>
-                  </tr>
-                  <tr>
-                    <th class="p-2 text-muted fw-normal">Email</th>
-                    <td class="p-2">{{order?.customerId?.email || order?.customerDetails?.email ||
-                      order?.guestId?.email}}</td>
-                  </tr>
-                  <ng-container *ngIf="order?.deliveryType == '0'">
-                    <tr>
-                      <th class="p-2 text-muted fw-normal">Address</th>
-                      <td class="p-2">
-                        {{order?.address?.firstlane}}
-                        <ng-container *ngIf="order?.address?.secondlane">, {{order?.address?.secondlane}}</ng-container>
-                        <ng-container *ngIf="order?.address?.area">, {{order?.address?.area}}</ng-container>
-                        <ng-container *ngIf="order?.address?.landmark">, {{order?.address?.landmark}}</ng-container>
-                        <ng-container *ngIf="order?.address?.city">, {{order?.address?.city}}</ng-container>
-                        <ng-container *ngIf="order?.address?.state">, {{order?.address?.state}}</ng-container>
-                        <ng-container *ngIf="order?.address?.mobile">, {{order?.address?.country}}</ng-container>
-                        <ng-container *ngIf="order?.address?.pincode">, {{order?.address?.pincode}}</ng-container>
-                        <ng-container *ngIf="order?.address?.mobile">, {{order?.address?.mobile}}</ng-container>
-                      </td>
-                    </tr>
-                    <tr>
-                      <th class="p-2 text-muted fw-normal">Location</th>
-                      <td class="p-2">{{order?.address?.formattedAddress || '-'}}</td>
-                    </tr>
-                    <tr>
-                      <th class="p-2 text-muted fw-normal">Coordinates</th>
-                      <td class="p-2">
-                        {{order?.address?.coordinates?.latitude || '-'}}
-                        {{order?.address?.coordinates?.longitude}}
-                      </td>
-                    </tr>
-                  </ng-container>
-                </table>
-              </div>
-            </div>
-          </div>
-          <div class="card" *ngIf="settings && settings.isPickUp == true">
-            <div class="card-body">
-              <div class="fs-3 fw-bold">Branch Details</div>
-              <div class="mt-4">
-                <table class="table table-bordered fs-5">
-                  <tr>
-                    <th class="p-2">Date</th>
-                    <td class="p-2">{{order?.deliveryDate && getLocaleDateFormat(order?.deliveryDate)}}</td>
-                  </tr>
-                  <tr>
-                    <th class="p-2">Store</th>
-                    <td class="p-2">
-                      {{ order?.clickPoint ? order?.clickPoint?.address?.city :
-                      order?.pickUpLocation ? order?.pickUpLocation?.name : '-'}}
-                    </td>
-                  </tr>
-                  <tr>
-                    <th class="p-2">Delivery slot</th>
-                    <td class="p-2">
-                      {{order?.deliverySlot ? order?.deliverySlot?.from + ' to ' + order?.deliverySlot?.to : '-'}}
-                    </td>
-                  </tr>
-                </table>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="col-lg-6 mb-3">
-        <div class="d-flex gap-3 flex-column h-100 justify-content-between">
-          <div class="card h-50">
-            <div class="card-body d-flex flex-column">
-              <div class="d-flex justify-content-between align-items-center mb-4">
-                <div class="fs-3 fw-bold mb-3">Order Notes</div>
-                <div>
-                  <button class="btn btn-secondary p-2" (click)="openNotes(notesTemplate)">View Notes</button>
-                </div>
-              </div>
-
-              <div class="form-group" [ngClass]="{'pe-none opacity-75': isCancelled}">
-                <textarea [formControl]="orderNote" (click)="isNoteDetected = true" (keyup.enter)="saveNote()" rows="5"
-                  class="form-control"></textarea>
-              </div>
-              <div class="d-flex justify-content-end mt-2">
-                <button class="btn btn-primary" (click)="saveNote()" *ngIf="isNoteDetected"
-                  [disabled]="!orderNote.value">
-                  Save Note
-                </button>
-              </div>
-            </div>
-          </div>
-          <div class="card h-50">
-            <div class="card-body">
-              <div class="fs-3 fw-bold mb-3">Shipping Notes</div>
-              <div class="form-group">
-                <textarea [value]="order?.shippingNote" readonly="true" rows="5" draggable="false"
-                  class="form-control"></textarea>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div [ngClass]="{'cancelledWrapper': isCancelled}">
-        <div>
-          <div class="card">
+      <div class="row">
+        <div class="col-lg-6 mb-3">
+          <div class="card h-100">
             <div class="card-body">
               <div class="fs-3 fw-bold">
-                Product Details
+                Order Details ({{orderNumber}})
+                <span class="ms-2 alert alert-success fs-6 fw-normal p-1 m-0">
+                  {{orderStatus}}
+                </span>
               </div>
-              <div class="products my-2">
-                <div class="row mb-4">
-                  <div class="col-lg-1 d-flex align-items-center">
-                    <div class="checkbox"
-                      [ngClass]="{
-                      'checked': bulkProducts.length == order?.products?.length,
-                      'pe-none' : (order?.paymentMethod == 'ONLINE' && order?.paymentStatus == 'PENDING') || ( isStatusUpdating == true && order?.paymentGateway == 'network-international-tokenized' )}"
-                      (click)="toggleBulkProduct()"></div>
-                  </div>
-                  <div class="col-lg-7"> </div>
-                  <div class="col-lg-4">
-                    <div class="d-flex align-items-center justify-content-end gap-2">
-                      <label for="bulkStatus" class="fs-6">Status :</label>
-                      <select id="bulkStatus" [formControl]="bulkOrderStatus" [ngClass]="{'pe-none' :
-                        ( order?.paymentMethod == 'ONLINE' && order?.paymentStatus == 'PENDING' || bulkProducts.length == 0 ) ||
-                          ( isStatusUpdating == true && order?.paymentGateway == 'network-international-tokenized' )
-                          }" class="form-select w-50 fs-6" (change)="updateBulkProduct($event)">
-                        <option value="" disabled>-- Select a status --</option>
-                        <option *ngFor="let status of bulkStatus" value={{status.value}}>{{status.key}}</option>
-                      </select>
+              <div class="mt-4">
+                <table class="table table-bordered fs-5">
+                  <tr>
+                    <th class="p-2 text-muted fw-normal">Date</th>
+                    <td class="p-2">
+                      {{getLocaleDateFormat(order?.orderDate)}},
+                      {{getLocaleTimeFormat(order?.orderDate)}}
+                    </td>
+                  </tr>
+                  <tr>
+                    <th class="p-2 text-muted fw-normal">Method</th>
+                    <td class="p-2">
+                      {{order?.paymentMethod}}
+                    </td>
+                  </tr>
+                  <tr *ngIf="order && order.paymentMethod == 'ONLINE'">
+                    <th class="p-2 text-muted fw-normal">Gateway</th>
+                    <td class="p-2">
+                      {{formatPaymentGateway(order?.paymentGateway)}}
+                    </td>
+                  </tr>
+                  <tr *ngIf="order && order.paymentMethod == 'ONLINE'">
+                    <th class="p-2 text-muted fw-normal">Gateway Status</th>
+                    <td class="p-2">
+                      <div class="{{formatPaymentStatus(order?.gatewayStatus)}} p-1 rounded">
+                        {{formatPaymentStatus(order?.gatewayStatus)}}</div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <th class="p-2 text-muted fw-normal">Status</th>
+                    <td class="p-2">
+                      {{order?.paymentStatus}}
+                    </td>
+                  </tr>
+                  <tr>
+                    <th class="p-2 text-muted fw-normal">Invoice Reference</th>
+                    <td class="p-2">
+                      {{order?.invoiceNo}}
+                    </td>
+                  </tr>
+                  <tr>
+                    <th class="p-2 text-muted fw-normal">Source</th>
+                    <td class="p-2">
+                      {{formatWords(order?.source)}}
+                    </td>
+                  </tr>
+                  <tr>
+                    <th class="p-2 text-muted fw-normal">Customer Type</th>
+                    <td class="p-2">
+                      {{order?.customerType == 'regd' ? 'Customer' : 'Guest'}}
+                    </td>
+                  </tr>
+                  <tr *ngIf="order && order.isLabelCreated == true">
+                    <th class="p-2 text-muted fw-normal">Shipping Gateway</th>
+                    <td class="p-2">
+                      {{order.shippingGateway | titlecase}}
+                    </td>
+                  </tr>
+                  <tr *ngIf="order && order.isLabelCreated == true">
+                    <th class="p-2 text-muted fw-normal">AWB No.</th>
+                    <td class="p-2">
+                      {{order.awbNumber}}
+                    </td>
+                  </tr>
+                  <tr>
+                    <th class="p-2 text-muted fw-normal">Order Total</th>
+                    <td class="p-2">
+                      {{settings?.currency}} {{order?.total}}
+                    </td>
+                  </tr>
+                  <tr>
+                    <th class="p-2 text-muted fw-normal">Delivery</th>
+                    <td class="p-2">
+                      {{order?.deliveryType == '1' ? 'Click and collect' : 'Home delivery' }}
+                    </td>
+                  </tr>
+                  <tr *ngIf="order && order.cancel && order.orderStatus == 'CANCELLED'">
+                    <th class="p-2 text-muted fw-normal">Cancelled By</th>
+                    <td class="p-2">
+                      <ng-container *ngIf="order.cancel && order.cancel.action === 'customer'">
+                        Customer
+                      </ng-container>
+                      <ng-container *ngIf="order.cancel && order.cancel.action === 'admin'">
+                        {{ order.cancel.email || 'Admin' }}
+                      </ng-container>
+                    </td>
+                  </tr>
+                </table>
+                <div class="mt-4" *ngIf="order?.coupon">
+                  <div class="alert alert-success mb-0 d-flex align-items-center justify-content-start gap-2">
+                    <div class="text-success">
+                      <svg height="18" width="18" data-slot="icon" fill="none" stroke-width="1.5" stroke="currentColor"
+                        viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                          d="M9 12.75 11.25 15 15 9.75M21 12c0 1.268-.63 2.39-1.593 3.068a3.745 3.745 0 0 1-1.043 3.296 3.745 3.745 0 0 1-3.296 1.043A3.745 3.745 0 0 1 12 21c-1.268 0-2.39-.63-3.068-1.593a3.746 3.746 0 0 1-3.296-1.043 3.745 3.745 0 0 1-1.043-3.296A3.745 3.745 0 0 1 3 12c0-1.268.63-2.39 1.593-3.068a3.745 3.745 0 0 1 1.043-3.296 3.746 3.746 0 0 1 3.296-1.043A3.746 3.746 0 0 1 12 3c1.268 0 2.39.63 3.068 1.593a3.746 3.746 0 0 1 3.296 1.043 3.746 3.746 0 0 1 1.043 3.296A3.745 3.745 0 0 1 21 12Z">
+                        </path>
+                      </svg>
+                    </div>
+                    <div class="fs-5"><span class="cursor-pointer" routerLink="{{appRoute.coupons.UPDATE_COUPONS_LIST}}"
+                        [queryParams]="{'coupon': order?.coupon?.refid}">{{order?.coupon?.code}}</span> applied
+                      successfully
                     </div>
                   </div>
                 </div>
-                <ng-container *ngFor="let product of order?.products; let i = index">
-                  <div class="row mb-8 pb-8 border-secondary"
-                    [ngClass]="{'pe-none opacity-50': product?.currentStatus?.status == 'Cancelled', 'border-bottom': i < order?.products?.length - 1}">
-                    <div class="col-lg-1">
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-lg-6 mb-3">
+          <div class="card h-100">
+            <div class="card-body">
+              <div class="fs-3 fw-bold">
+                Order Summary
+              </div>
+              <div class="mt-4">
+                <table class="table table-bordered fs-5">
+                  <tr>
+                    <th class="p-2 text-muted fw-normal">Price Without Tax</th>
+                    <td>{{settings?.currency}} {{order?.priceBeforeTax}}</td>
+                  </tr>
+                  <tr>
+                    <th class="p-2 text-muted fw-normal">Tax</th>
+                    <td>{{settings?.currency}} {{order?.tax}}</td>
+                  </tr>
+                  <tr>
+                    <th class="p-2 text-muted fw-normal">Shipping Charge</th>
+                    <td>{{settings?.currency}} {{order?.shippingCost}}</td>
+                  </tr>
+                  <tr *ngIf="+order?.codCost > 0">
+                    <th class="p-2 text-muted fw-normal">COD</th>
+                    <td>{{settings?.currency}} {{order?.codCost}}</td>
+                  </tr>
+                  <tr *ngIf="+order?.additionalCharge > 0">
+                    <th class="p-2 text-muted fw-normal">Additional Charge</th>
+                    <td>{{settings?.currency}} {{order?.additionalCharge}}</td>
+                  </tr>
+                  <tr>
+                    <th class="p-2 text-muted fw-normal">Savings</th>
+                    <td class="text-success">- {{settings?.currency}} {{order?.discount}}</td>
+                  </tr>
+                  <tr *ngIf="+order?.couponDiscount > 0">
+                    <th class="p-2 text-muted fw-normal">Coupon Discount</th>
+                    <td class="text-success">- {{settings?.currency}} {{order?.couponDiscount}}</td>
+                  </tr>
+                  <tr *ngIf="+order?.credit?.amount > 0">
+                    <th class="p-2 text-muted fw-normal">Credit</th>
+                    <td class="text-success">{{settings?.currency}} {{order?.credit?.amount}}</td>
+                  </tr>
+                  <tr>
+                    <th class="p-2 text-muted fw-normal">Amount Pending</th>
+                    <td>{{settings?.currency}} {{order?.amountPending}}</td>
+                  </tr>
+                  <tr>
+                    <th class="p-2 text-muted fw-normal">Cancelled Items</th>
+                    <td class="text-danger">- {{settings?.currency}} {{order?.cancelledAmount}}</td>
+                  </tr>
+                  <tr class="fs-4 fw-bold">
+                    <th class="p-2 text-muted fw-normal">Total</th>
+                    <td>{{settings?.currency}} {{order?.total}}</td>
+                  </tr>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-lg-6 mb-3">
+          <div class="d-flex gap-3 h-100 justify-content-between flex-column">
+            <div class="card">
+              <div class="card-body">
+                <div class="fs-3 fw-bold">Customer Address</div>
+                <div class="mt-4">
+                  <table class="table table-bordered fs-5">
+                    <tr>
+                      <th class="p-2 text-muted fw-normal">Name</th>
+                      <td class="p-2">
+                        {{order?.customerDetails?.name || order?.customerId?.name || order?.guestId?.name ||
+                        order?.customer?.name}}
+                        <span class="d-inline-flex flex-wrap gap-1 ms-2"
+                          *ngIf="order?.customer?.tags && order?.customer?.tags.length > 0">
+                          <span *ngFor="let tag of order?.customer?.tags"
+                            class="badge rounded-pill bg-primary px-2 py-1 fs-6">{{tag}}</span>
+                        </span>
+                      </td>
+                    </tr>
+                    <tr>
+                      <th class="p-2 text-muted fw-normal">Mobile</th>
+                      <td class="p-2">{{order?.customerDetails?.mobile || order?.address?.mobile ||
+                        order?.guestId?.mobile}}</td>
+                    </tr>
+                    <tr>
+                      <th class="p-2 text-muted fw-normal">Email</th>
+                      <td class="p-2">
+                        {{order?.customerDetails?.email || order?.customerId?.email || order?.guestId?.email}}</td>
+                    </tr>
+                    <ng-container *ngIf="order?.deliveryType == '0'">
+                      <tr>
+                        <th class="p-2 text-muted fw-normal">Address</th>
+                        <td class="p-2">
+                          {{order?.address?.firstlane}}
+                          <ng-container *ngIf="order?.address?.secondlane">,
+                            {{order?.address?.secondlane}}</ng-container>
+                          <ng-container *ngIf="order?.address?.area">, {{order?.address?.area}}</ng-container>
+                          <ng-container *ngIf="order?.address?.landmark">, {{order?.address?.landmark}}</ng-container>
+                          <ng-container *ngIf="order?.address?.city">, {{order?.address?.city}}</ng-container>
+                          <ng-container *ngIf="order?.address?.state">, {{order?.address?.state}}</ng-container>
+                          <ng-container *ngIf="order?.address?.mobile">, {{order?.address?.country}}</ng-container>
+                          <ng-container *ngIf="order?.address?.pincode">, {{order?.address?.pincode}}</ng-container>
+                          <ng-container *ngIf="order?.address?.mobile">, {{order?.address?.mobile}}</ng-container>
+                        </td>
+                      </tr>
+                      <tr>
+                        <th class="p-2 text-muted fw-normal">Location</th>
+                        <td class="p-2">
+                          <ng-container
+                            *ngIf="order?.address?.coordinates?.latitude && order?.address?.coordinates?.longitude">
+                            <div class="d-flex justify-content-between">
+                              <a href="https://www.google.com/maps/search/?api=1&query={{order?.address?.coordinates?.latitude}},{{order?.address?.coordinates?.longitude}}"
+                                target="_blank" class="text-gray-600 text-hover-primary me-2">
+                                Open Location in Map
+                              </a>
+                              <!-- Copy Button -->
+                              <button class="btn btn-light btn-sm d-inline-flex align-items-center gap-1"
+                                (click)="copyCoordinates()">
+                                <svg width="12px" height="12px" viewBox="0 0 24 24" fill="none"
+                                  xmlns="http://www.w3.org/2000/svg">
+                                  <path
+                                    d="M16 4C16.93 4 17.395 4 17.7765 4.10222C18.8117 4.37962 19.6204 5.18827 19.8978 6.22354C20 6.60504 20 7.07003 20 8V17.2C20 18.8802 20 19.7202 19.673 20.362C19.3854 20.9265 18.9265 21.3854 18.362 21.673C17.7202 22 16.8802 22 15.2 22H8.8C7.11984 22 6.27976 22 5.63803 21.673C5.07354 21.3854 4.6146 20.9265 4.32698 20.362C4 19.7202 4 18.8802 4 17.2V8C4 7.07003 4 6.60504 4.10222 6.22354C4.37962 5.18827 5.18827 4.37962 6.22354 4.10222C6.60504 4 7.07003 4 8 4M9.6 6H14.4C14.9601 6 15.2401 6 15.454 5.89101C15.6422 5.79513 15.7951 5.64215 15.891 5.45399C16 5.24008 16 4.96005 16 4.4V3.6C16 3.03995 16 2.75992 15.891 2.54601C15.7951 2.35785 15.6422 2.20487 15.454 2.10899C15.2401 2 14.9601 2 14.4 2H9.6C9.03995 2 8.75992 2 8.54601 2.10899C8.35785 2.20487 8.20487 2.35785 8.10899 2.54601C8 2.75992 8 3.03995 8 3.6V4.4C8 4.96005 8 5.24008 8.10899 5.45399C8.20487 5.64215 8.35785 5.79513 8.54601 5.89101C8.75992 6 9.03995 6 9.6 6Z"
+                                    stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round" />
+                                </svg>
+                              </button>
+                            </div>
+                          </ng-container>
+                        </td>
+                      </tr>
+                      <tr>
+                        <th class="p-2 text-muted fw-normal">Coordinates</th>
+                        <td class="p-2">
+                          {{order?.address?.coordinates?.latitude || '-'}}
+                          {{order?.address?.coordinates?.longitude}}
+                        </td>
+                      </tr>
+                    </ng-container>
+                  </table>
+                </div>
+              </div>
+            </div>
+            <div class="card">
+              <div class="card-body">
+                <div class="fs-3 fw-bold">Shipping Address</div>
+                <div class="mt-4">
+                  <table class="table table-bordered fs-5">
+                    <tr>
+                      <th class="p-2 text-muted fw-normal">Name</th>
+                      <td class="p-2">{{order?.address?.name || order?.customerDetails?.name || order?.guestId?.name}}
+                      </td>
+                    </tr>
+                    <tr>
+                      <th class="p-2 text-muted fw-normal">Mobile</th>
+                      <td class="p-2">{{ order?.customerDetails?.mobile || order?.address?.mobile ||
+                        order?.guestId?.mobile}}</td>
+                    </tr>
+                    <tr>
+                      <th class="p-2 text-muted fw-normal">Email</th>
+                      <td class="p-2">{{order?.customerId?.email || order?.customerDetails?.email ||
+                        order?.guestId?.email}}</td>
+                    </tr>
+                    <ng-container *ngIf="order?.deliveryType == '0'">
+                      <tr>
+                        <th class="p-2 text-muted fw-normal">Address</th>
+                        <td class="p-2">
+                          {{order?.address?.firstlane}}
+                          <ng-container *ngIf="order?.address?.secondlane">,
+                            {{order?.address?.secondlane}}</ng-container>
+                          <ng-container *ngIf="order?.address?.area">, {{order?.address?.area}}</ng-container>
+                          <ng-container *ngIf="order?.address?.landmark">, {{order?.address?.landmark}}</ng-container>
+                          <ng-container *ngIf="order?.address?.city">, {{order?.address?.city}}</ng-container>
+                          <ng-container *ngIf="order?.address?.state">, {{order?.address?.state}}</ng-container>
+                          <ng-container *ngIf="order?.address?.mobile">, {{order?.address?.country}}</ng-container>
+                          <ng-container *ngIf="order?.address?.pincode">, {{order?.address?.pincode}}</ng-container>
+                          <ng-container *ngIf="order?.address?.mobile">, {{order?.address?.mobile}}</ng-container>
+                        </td>
+                      </tr>
+                      <tr>
+                        <th class="p-2 text-muted fw-normal">Location</th>
+                        <td class="p-2">{{order?.address?.formattedAddress || '-'}}</td>
+                      </tr>
+                      <tr>
+                        <th class="p-2 text-muted fw-normal">Coordinates</th>
+                        <td class="p-2">
+                          {{order?.address?.coordinates?.latitude || '-'}}
+                          {{order?.address?.coordinates?.longitude}}
+                        </td>
+                      </tr>
+                    </ng-container>
+                  </table>
+                </div>
+              </div>
+            </div>
+            <div class="card" *ngIf="settings && settings.isPickUp == true">
+              <div class="card-body">
+                <div class="fs-3 fw-bold">Branch Details</div>
+                <div class="mt-4">
+                  <table class="table table-bordered fs-5">
+                    <tr>
+                      <th class="p-2">Date</th>
+                      <td class="p-2">{{order?.deliveryDate && getLocaleDateFormat(order?.deliveryDate)}}</td>
+                    </tr>
+                    <tr>
+                      <th class="p-2">Store</th>
+                      <td class="p-2">
+                        {{ order?.clickPoint ? order?.clickPoint?.address?.city :
+                        order?.pickUpLocation ? order?.pickUpLocation?.name : '-'}}
+                      </td>
+                    </tr>
+                    <tr>
+                      <th class="p-2">Delivery slot</th>
+                      <td class="p-2">
+                        {{order?.deliverySlot ? order?.deliverySlot?.from + ' to ' + order?.deliverySlot?.to : '-'}}
+                      </td>
+                    </tr>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-lg-6 mb-3">
+          <div class="d-flex gap-3 flex-column h-100 justify-content-between">
+            <div class="card h-50">
+              <div class="card-body d-flex flex-column">
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                  <div class="fs-3 fw-bold mb-3">Order Notes</div>
+                  <div>
+                    <button class="btn btn-secondary p-2" (click)="openNotes(notesTemplate)">View Notes</button>
+                  </div>
+                </div>
+
+                <div class="form-group" [ngClass]="{'pe-none opacity-75': isCancelled}">
+                  <textarea [formControl]="orderNote" (click)="isNoteDetected = true" (keyup.enter)="saveNote()"
+                    rows="5" class="form-control"></textarea>
+                </div>
+                <div class="d-flex justify-content-end mt-2">
+                  <button class="btn btn-primary" (click)="saveNote()" *ngIf="isNoteDetected"
+                    [disabled]="!orderNote.value">
+                    Save Note
+                  </button>
+                </div>
+              </div>
+            </div>
+            <div class="card h-50">
+              <div class="card-body">
+                <div class="fs-3 fw-bold mb-3">Shipping Notes</div>
+                <div class="form-group">
+                  <textarea [value]="order?.shippingNote" readonly="true" rows="5" draggable="false"
+                    class="form-control"></textarea>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div [ngClass]="{'cancelledWrapper': isCancelled}">
+          <div>
+            <div class="card">
+              <div class="card-body">
+                <div class="fs-3 fw-bold">
+                  Product Details
+                </div>
+                <div class="products my-2">
+                  <div class="row mb-4">
+                    <div class="col-lg-1 d-flex align-items-center">
                       <div class="checkbox"
                         [ngClass]="{
-                          'checked': bulkProducts.includes(product),
-                          'pe-none' : (order?.paymentMethod == 'ONLINE' && order?.paymentStatus == 'PENDING') || ( isStatusUpdating == true && order?.paymentGateway == 'network-international-tokenized' )}"
-                        (click)="toggleBulkProduct(product)"> </div>
+                      'checked': bulkProducts.length == order?.products?.length,
+                      'pe-none' : (order?.paymentMethod == 'ONLINE' && order?.paymentStatus == 'PENDING') || ( isStatusUpdating == true && order?.paymentGateway == 'network-international-tokenized' )}"
+                        (click)="toggleBulkProduct()"></div>
                     </div>
-                    <div class="col-lg-11">
-                      <div class="d-flex flex-wrap align-items-start justify-content-between">
-                        <div class="w-50 d-flex fs-6 gap-3 align-items-start justify-content-start">
-                          <div class="productThumbnail">
-                            <img class="border border-secondary rounded"
-                              src="{{base}}{{product?.productDetails?.thumbnail}}"
-                              alt="{{product?.productDetails?.name || product?.productId?.name}}"
-                              onerror="this.src =  'assets/images/default.png'">
-                          </div>
-                          <div>
-                            <div>{{product?.productDetails?.name || product?.productId?.name}}</div>
-                            <div class="d-flex align-items-center justify-content-start gap-2"
-                              *ngIf="product?.productId?.attributes?.length > 0">
-                              <div *ngFor="let attribute of product?.productId?.attributes">
-                                {{attribute?.title}} : {{attribute?.value}}
+                    <div class="col-lg-7"> </div>
+                    <div class="col-lg-4">
+                      <div class="d-flex align-items-center justify-content-end gap-2">
+                        <label for="bulkStatus" class="fs-6">Status :</label>
+                        <select id="bulkStatus" [formControl]="bulkOrderStatus"
+                          [ngClass]="{'pe-none' :
+                        ( order?.paymentMethod == 'ONLINE' && order?.paymentStatus == 'PENDING' || bulkProducts.length == 0 ) || ( isStatusUpdating == true && order?.paymentGateway == 'network-international-tokenized' ) }"
+                          class="form-select w-50 fs-6" (change)="updateBulkProduct($event)">
+                          <option value="" disabled>-- Select a status --</option>
+                          <option *ngFor="let status of bulkStatus" value={{status.value}}>{{status.key}}</option>
+                        </select>
+                      </div>
+                    </div>
+                  </div>
+                  <ng-container *ngFor="let product of order?.products; let i = index">
+                    <div class="row mb-8 pb-8 border-secondary"
+                      [ngClass]="{'pe-none opacity-50': product?.currentStatus?.status == 'Cancelled', 'border-bottom': i < order?.products?.length - 1}">
+                      <div class="col-lg-1">
+                        <div class="checkbox" [ngClass]="{
+                          'checked': bulkProducts.includes(product),
+                          'pe-none' :
+                          (order?.paymentMethod == 'ONLINE' && order?.paymentStatus == 'PENDING') ||
+                          ( isStatusUpdating == true && order?.paymentGateway == 'network-international-tokenized' ) ||
+                            (product?.isAddOn == true)
+                          }" (click)="toggleBulkProduct(product)"> </div>
+                      </div>
+                      <div class="col-lg-11">
+                        <div class="d-flex flex-wrap align-items-start justify-content-between">
+                          <div class="w-50 d-flex fs-6 gap-3 align-items-start justify-content-start">
+                            <a [routerLink]="appRoute.product.UPDATE_PRODUCT"
+                              [queryParams]="{'product': product?.productDetails?.slug}" class="productThumbnail">
+                              <img class="border border-secondary rounded"
+                                src="{{base}}{{product?.productDetails?.thumbnail}}"
+                                alt="{{product?.productDetails?.name || product?.productId?.name}}"
+                                onerror="this.src =  'assets/images/default.png'">
+                            </a>
+                            <div>
+                              <div class="mb-2">
+                                {{product?.productDetails?.name || product?.productId?.name}}
+                                <ng-container *ngIf="product?.isAddOn && product?.isAddOn == true">
+                                  <span class="fs-6 fw-normal badge badge-success">
+                                    {{settings?.addOnLabel}}
+                                  </span>
+                                </ng-container>
+                              </div>
+                              <div class="d-flex align-items-center justify-content-start gap-2"
+                                *ngIf="product?.productId?.attributes?.length > 0">
+                                <div *ngFor="let attribute of product?.productId?.attributes">
+                                  {{attribute?.title}} : {{attribute?.value}}
+                                </div>
+                              </div>
+                              <div class="my-1 w-max">
+                                <div class="p-2 rounded productStatusAlert">
+                                  {{product?.currentStatus?.status}},
+                                  {{getLocaleDateFormat(product?.currentStatus?.date)}}
+                                  {{getLocaleTimeFormat(product?.currentStatus?.date)}}
+                                </div>
                               </div>
                             </div>
-                            <div class="my-1 w-max">
-                              <div class="p-2 rounded productStatusAlert">
-                                {{product?.currentStatus?.status}},
-                                {{getLocaleDateFormat(product?.currentStatus?.date)}}
-                                {{getLocaleTimeFormat(product?.currentStatus?.date)}}
-                              </div>
+                          </div>
+                          <div class="w-50">
+                            <div class="mb-2 d-flex align-items-center fs-6 justify-content-start">
+                              <div class="w-25">SKU:</div>
+                              <div class="fw-bold">{{product?.productDetails?.sku || product?.productId?.sku}}</div>
                             </div>
-                          </div>
-                        </div>
-                        <div class="w-50">
-                          <div class="mb-2 d-flex align-items-center fs-6 justify-content-start">
-                            <div class="w-25">SKU:</div>
-                            <div class="fw-bold">{{product?.productDetails?.sku || product?.productId?.sku}}</div>
-                          </div>
-                          <div class="mb-2 d-flex fs-6 align-items-center justify-content-start">
-                            <div class="w-25">Qty:</div>
-                            <div class="fw-bold">{{product?.quantity}}</div>
-                          </div>
-                          <div class="mb-2 d-flex fs-6 align-items-center justify-content-start">
-                            <div class="w-25">Price:</div>
-                            <div class="fw-bold">{{settings?.currency}} {{product?.pricePerUnit}}</div>
-                          </div>
-                          <div class="mb-2 d-flex fs-6 align-items-center justify-content-start">
-                            <div class="w-25">Total:</div>
-                            <div class="fw-bold">{{settings?.currency}} {{product?.total}}</div>
-                          </div>
-                          <div class="mb-2 d-flex fs-6 align-items-center justify-content-start">
-                            <div class="w-25">Status:</div>
-                            <div class="w-75" [ngClass]="{'pe-none' :
+                            <div class="mb-2 d-flex fs-6 align-items-center justify-content-start">
+                              <div class="w-25">Qty:</div>
+                              <div class="fw-bold">{{product?.quantity}}</div>
+                            </div>
+                            <div class="mb-2 d-flex fs-6 align-items-center justify-content-start">
+                              <div class="w-25">Price:</div>
+                              <div class="fw-bold">{{settings?.currency}} {{product?.pricePerUnit}}</div>
+                            </div>
+                            <div *ngIf="product?.isAddOn && product?.isAddOn == true"
+                              class="mb-2 d-flex fs-6 align-items-center justify-content-start">
+                              <div class="w-25">Add On Price:</div>
+                              <div class="fw-bold">{{settings?.currency}} {{product?.addOnUnitPrice}}</div>
+                            </div>
+                            <div class="mb-2 d-flex fs-6 align-items-center justify-content-start">
+                              <div class="w-25">Total:</div>
+                              <div class="fw-bold">{{settings?.currency}} {{product?.total}}</div>
+                            </div>
+                            <div class="mb-2 d-flex fs-6 align-items-center justify-content-start">
+                              <div class="w-25">Status:</div>
+                              <div class="w-75" [ngClass]="{'pe-none' :
                               ( order?.paymentMethod == 'ONLINE' && order?.paymentStatus == 'PENDING' ) ||
                               ( isStatusUpdating == true && order?.paymentGateway == 'network-international-tokenized' ) ||
                               ( product?.currentStatus?.status == 'Delivered' ) }">
-                              <select class="form-select w-50 p-2" [formControl]="productOrderStatus"
-                                (change)="updateOrderStatus($event, product?.productId)">
-                                <option value="" disabled>-- Select a option --</option>
-                                <option value="CANCELLED">Cancelled</option>
-                                <option value="FAILED">Failed</option>
-                              </select>
+                                <select class="form-select w-50 p-2" [formControl]="productOrderStatus"
+                                  (change)="updateOrderStatus($event, product?.productId)">
+                                  <option value="" disabled>-- Select a option --</option>
+                                  <option value="CANCELLED">Cancelled</option>
+                                  <option value="FAILED">Failed</option>
+                                </select>
+                              </div>
                             </div>
                           </div>
-                        </div>
-                        <div class="w-100 mt-4">
-                          <div class="historySwiper">
-                            <swiper [config]="swiperConfig">
-                              <ng-container *ngFor="let history of product?.history; let i = index">
-                                <ng-template swiperSlide>
-                                  <div class="order-tracking completed">
-                                    <span class="is-complete"></span>
-                                    <p>
-                                      {{history?.status}}
-                                      <br>
-                                      <span>{{getLocaleDateFormat(history?.date)}}</span>
-                                      <br>
-                                      <span>{{getLocaleTimeFormat(history?.date)}}</span>
-                                    </p>
-                                  </div>
-                                </ng-template>
-                              </ng-container>
-                            </swiper>
+                          <div class="w-100 mt-4">
+                            <div class="historySwiper">
+                              <swiper [config]="swiperConfig">
+                                <ng-container *ngFor="let history of product?.history; let i = index">
+                                  <ng-template swiperSlide>
+                                    <div class="order-tracking completed">
+                                      <span class="is-complete"></span>
+                                      <p>
+                                        {{history?.status}}
+                                        <br>
+                                        <span>{{getLocaleDateFormat(history?.date)}}</span>
+                                        <br>
+                                        <span>{{getLocaleTimeFormat(history?.date)}}</span>
+                                      </p>
+                                    </div>
+                                  </ng-template>
+                                </ng-container>
+                              </swiper>
+                            </div>
                           </div>
                         </div>
                       </div>
                     </div>
-                  </div>
-                </ng-container>
+                  </ng-container>
+                </div>
               </div>
             </div>
-          </div>
 
-          <div class="card mt-3"
-            *ngIf="order && order.paymentMethod == 'ONLINE' && order?.paymentGateway != 'network-international-tokenized'">
-            <div class="card-body">
-              <div class="fs-3 mb-2 fw-bold">
-                Payment Details
-              </div>
-              <form [formGroup]="form">
-                <div class="row">
-                  <div class="col-lg-6 mb-3">
-                    <div class="form-group">
-                      <label for="orderId" class="form-label mb-3">Payment Order</label>
-                      <input type="text" placeholder="Order ID" class="form-control" formControlName="orderId">
+            <div class="card mt-3"
+              *ngIf="order && order.paymentMethod == 'ONLINE' && order?.paymentGateway != 'network-international-tokenized'">
+              <div class="card-body">
+                <div class="d-flex flex-column gap-3">
+                  <div>
+                    <div class="mb-2 pb-2 border-bottom border-secondary">
+                      <div class="fs-3 fw-bold">Payment Details</div>
+                      <div class="text-muted mt-1 fs-6 fw-normal">Details of the payment made for this order</div>
                     </div>
+                    <form [formGroup]="form">
+                      <div class="row">
+                        <div class="col-lg-6 mb-3">
+                          <div class="form-group">
+                            <label for="orderId" class="form-label mb-3">Payment Order</label>
+                            <input type="text" placeholder="Order ID" class="form-control" formControlName="orderId">
+                          </div>
+                        </div>
+                        <div class="col-lg-6 mb-3">
+                          <div class="form-group">
+                            <label for="orderId" class="form-label mb-3">Transaction Reference</label>
+                            <input type="text" placeholder="Transaction Reference ID" class="form-control"
+                              formControlName="paymentId">
+                          </div>
+                        </div>
+                        <div class="form-group mb-3">
+                          <label for="orderId" class="form-label mb-3">Payment Message</label>
+                          <input type="text" placeholder="Payment Message" class="form-control"
+                            formControlName="paymentMessage">
+                        </div>
+                        <div class="mb-3" *ngIf="form.get('transactionTime')?.value">
+                          <label for="transactionTime" class="form-label mb-3">Transaction Time</label>
+                          <input type="text" id="transactionTime" readonly class="form-control"
+                            value="{{formatDateString(form.get('transactionTime')?.value)}}">
+                        </div>
+                      </div>
+                    </form>
                   </div>
-                  <div class="col-lg-6 mb-3">
-                    <div class="form-group">
-                      <label for="orderId" class="form-label mb-3">Transaction Reference</label>
-                      <input type="text" placeholder="Transaction Reference ID" class="form-control"
-                        formControlName="paymentId">
+                  <div *ngIf="order && order.payment && order.payment.activities && order.payment.activities.length">
+                    <div class="mb-2 pb-2 border-bottom border-secondary">
+                      <div class="fs-3 fw-bold">Payment Activities</div>
+                      <div class="text-muted mt-1 fs-6 fw-normal">List of payment activities for this order</div>
                     </div>
-                  </div>
-                  <div class="form-group mb-3">
-                    <label for="orderId" class="form-label mb-3">Payment Message</label>
-                    <input type="text" placeholder="Payment Message" class="form-control"
-                      formControlName="paymentMessage">
-                  </div>
-                  <div class="mb-3" *ngIf="form.get('transactionTime')?.value">
-                    <label for="transactionTime" class="form-label mb-3">Transaction Time</label>
-                    <input type="text" id="transactionTime" readonly class="form-control"
-                      value="{{getLocalDate(form.get('transactionTime')?.value)}}">
+                    <div class="d-flex align-items-start gap-4 my-4"
+                      *ngFor="let activity of order.payment.activities; let index = index">
+                      <div class="fs-5">{{index + 1}}.</div>
+                      <div class="d-flex flex-column gap-2">
+                        <div class="d-flex align-items-center justify-content-start gap-2">
+                          <code class="px-0 mx-0">{{activity.id}}</code>
+                          <div>{{activity.status}}</div>
+                        </div>
+                        <div class="d-flex align-items-end justify-content-start gap-2">
+                          <div class="fs-6 text-muted fw-normal">{{activity.currency}}</div>
+                          <div class="fs-3 fw-normal">{{activity.amount | number:'1.2-2'}}</div>
+                        </div>
+                        <div class="fs-6">{{formatDateString(activity.created)}}</div>
+                      </div>
+                    </div>
                   </div>
                 </div>
-              </form>
+              </div>
             </div>
-          </div>
 
-          <div class="card mt-3"
-            *ngIf="order && order.paymentMethod == 'ONLINE' && order.paymentGateway == 'network-international-tokenized'">
-            <div class="card-body">
-              <div class="fs-3 mb-2 fw-bold">Payment Events</div>
-              <div class="my-8" *ngFor="let tokenizedItem of order?.tokenizedDetails; let i = index">
+            <div class="card mt-3"
+              *ngIf="order && order.paymentMethod == 'ONLINE' && order.paymentGateway == 'network-international-tokenized'">
+              <div class="card-body">
+                <div class="fs-3 mb-2 fw-bold">Payment Events</div>
+                <div class="my-8" *ngFor="let tokenizedItem of order?.tokenizedDetails; let i = index">
 
-                <table class="table table-bordered fs-5 paymentEvents">
-                  <tr>
-                    <th class="p-2 text-muted fw-normal">Date</th>
-                    <td>
-                      {{ getLocaleDateFormat(tokenizedItem?.updateDateTime) }}
-                      {{ getLocaleTimeFormat(tokenizedItem?.updateDateTime) }}
-                    </td>
-                  </tr>
-                  <tr>
-                    <th class="p-2 text-muted fw-normal">Response</th>
-                    <td>{{tokenizedItem.authResponse?.resultMessage || '-'}}</td>
-                  </tr>
-                  <tr>
-                    <th class="p-2 text-muted fw-normal">Reference</th>
-                    <td>{{tokenizedItem?.orderReference}}</td>
-                  </tr>
-                  <tr>
-                    <th class="p-2 text-muted fw-normal">Status</th>
-                    <td>
-                      <div class="{{formatPaymentStatus(tokenizedItem?.state)}} rounded p-1">
-                        {{formatPaymentStatus(tokenizedItem?.state)}}</div>
-                    </td>
-                  </tr>
-                  <tr>
-                    <th class="p-2 text-muted fw-normal">Amount</th>
-                    <td>{{tokenizedItem?.amount?.currencyCode}} {{tokenizedItem?.amount?.value / 100}}</td>
-                  </tr>
-                </table>
+                  <table class="table table-bordered fs-5 paymentEvents">
+                    <tr>
+                      <th class="p-2 text-muted fw-normal">Date</th>
+                      <td>
+                        {{ getLocaleDateFormat(tokenizedItem?.updateDateTime) }}
+                        {{ getLocaleTimeFormat(tokenizedItem?.updateDateTime) }}
+                      </td>
+                    </tr>
+                    <tr>
+                      <th class="p-2 text-muted fw-normal">Response</th>
+                      <td>{{tokenizedItem.authResponse?.resultMessage || '-'}}</td>
+                    </tr>
+                    <tr>
+                      <th class="p-2 text-muted fw-normal">Reference</th>
+                      <td>{{tokenizedItem?.orderReference}}</td>
+                    </tr>
+                    <tr>
+                      <th class="p-2 text-muted fw-normal">Status</th>
+                      <td>
+                        <div class="{{formatPaymentStatus(tokenizedItem?.state)}} rounded p-1">
+                          {{formatPaymentStatus(tokenizedItem?.state)}}</div>
+                      </td>
+                    </tr>
+                    <tr>
+                      <th class="p-2 text-muted fw-normal">Amount</th>
+                      <td>{{tokenizedItem?.amount?.currencyCode}} {{tokenizedItem?.amount?.value / 100}}</td>
+                    </tr>
+                  </table>
+                </div>
               </div>
             </div>
           </div>
@@ -662,7 +750,7 @@
     <div class="modal-body">
       <div class="fs-5 mb-6">Do you want to cancel this order?</div>
       <div class="form-group mb-4 mt-4" *ngIf="!productToBeCancelled">
-        <textarea type="text" cols="30" rows="5" autocomplete="off" [formControl]="reason"
+        <textarea type="text" cols="30" rows="3" autocomplete="off" [formControl]="reason"
           placeholder="Type reason for cancellation" class="form-control">
           </textarea>
       </div>
@@ -736,3 +824,23 @@
     </div>
   </ng-template>
 </div>
+
+<ng-template #shipmentOptions>
+  <div class="modal-header">
+    <h4 class="modal-title">Choose Shipping Gateway</h4>
+    <button type="button" class="btn-close close pull-right" aria-label="Close"
+      (click)="shippingRef?.hide(); shippingGateway = null">
+      <span aria-hidden="true" class="visually-hidden">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="d-flex align-items-center justify-content-start gap-2 p-4 rounded shadow-sm mb-4"
+      *ngFor="let shippingGatewayItem of shippingGateways">
+      <div class="checkbox" (click)="shippingGateway = shippingGatewayItem.gateway"
+        [ngClass]="{'checked': shippingGateway == shippingGatewayItem.gateway}"></div>
+      <div class="fs-5">{{toTitleCase(shippingGatewayItem.gateway)}}</div>
+    </div>
+    <button class="btn btn-warning w-100" [disabled]="shippingGateway == null" (click)="createShipment()">Create
+      Shipment</button>
+  </div>
+</ng-template>

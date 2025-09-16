@@ -7,10 +7,10 @@ import { debounceTime } from 'rxjs/operators';
 import { cloneDeep } from 'lodash';
 
 interface Hotspot {
-  x: number;
-  y: number;
+  xCoords: number;
+  yCoords: number;
+  productId: string;
   label: string;
-  product: string;
 }
 
 interface ShowHotspots {
@@ -56,7 +56,7 @@ export class ClickpulsePanelComponent implements OnInit, OnChanges {
     isCoordsEnabled: 'no',
     tabItemIndex: 0,
     contentItem: '',
-    hotspots: [],
+    hotspots: [] as Hotspot[],
   }
 
   constructor(
@@ -223,7 +223,7 @@ export class ClickpulsePanelComponent implements OnInit, OnChanges {
     }
   }
 
-  handleHotspots(event: any) {
+  handleHotspots(event: Hotspot[]) {
     if (this.inViewTab && this.inViewTab.tabIndex !== undefined && this.inViewTabItem && this.inViewTabItem.tabItemIndex !== undefined) {
       this.tabs[this.inViewTab.tabIndex].tabItems[this.inViewTabItem.tabItemIndex].hotspots = event;
       this.handleClickpulse.emit(this.tabs);

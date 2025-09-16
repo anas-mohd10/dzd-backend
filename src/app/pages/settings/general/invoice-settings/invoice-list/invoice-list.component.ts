@@ -28,6 +28,23 @@ export class InvoiceListComponent implements OnInit {
   isSubmitted: boolean;
   currentData: InvoiceProps;
 
+  editorOptions = {
+    theme: 'vs-dark',
+    language: 'html',
+    automaticLayout: true,
+    minimap: {
+      enabled: true
+    },
+    scrollBeyondLastLine: false,
+    lineNumbers: 'on',
+    roundedSelection: true,
+    fontSize: 14,
+    wordWrap: 'on',
+    folding: true,
+    formatOnPaste: true,
+    formatOnType: true,
+  };
+
   constructor(
     private formBuilder: FormBuilder,
     private router: Router,

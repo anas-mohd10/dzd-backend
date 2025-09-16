@@ -54,22 +54,46 @@
       <thead>
         <th class="p-2">Name</th>
         <th class="p-2">Type</th>
-        <th class="p-2">Offer Value</th>
+        <th class="p-2">Value</th>
         <th class="p-2">Start Date</th>
         <th class="p-2">End Date</th>
         <th class="p-2">Status</th>
+        <th class="p-2">Created At</th>
+        <th class="p-2">Updated At</th>
         <th class="p-2">Action</th>
       </thead>
       <tbody>
         <tr *ngFor="let offer of offers">
-          <td>{{ offer?.title }}</td>
+          <td>
+            <div title="{{ offer?.title }}" class="table-cell">
+              {{ offer?.title }}
+            </div>
+          </td>
           <td>{{ formatWord(offer?.type) }}</td>
           <td>{{ offer?.value }}</td>
-          <td>{{ formatDate(offer?.startDate) }}</td>
-          <td>{{ formatDate(offer?.endDate) }}</td>
+          <td>
+            <div title="{{ offer?.startDate | date:'dd-MM-yy HH:mm:ss' }}" class="table-cell">
+              {{ offer?.startDate | date:'dd-MM-yy HH:mm:ss' }}
+            </div>
+          </td>
+          <td>
+            <div title="{{ offer?.endDate | date:'dd-MM-yy HH:mm:ss' }}" class="table-cell">
+              {{ offer?.endDate | date:'dd-MM-yy HH:mm:ss' }}
+            </div>
+          </td>
           <td>
             <app-switch (switchToggled)="switchToggled($event)" [switchId]="offer.slug"
               [isToggledProps]="offer.isActive"></app-switch>
+          </td>
+          <td>
+            <div title="{{ offer?.createdAt | date:'dd-MM-yy HH:mm:ss' }}" class="table-cell">
+              {{ offer?.createdAt | date:'dd-MM-yy HH:mm:ss' }}
+            </div>
+          </td>
+          <td>
+            <div title="{{ offer?.updatedAt | date:'dd-MM-yy HH:mm:ss' }}" class="table-cell">
+              {{ offer?.updatedAt | date:'dd-MM-yy HH:mm:ss' }}
+            </div>
           </td>
           <td>
             <div class="d-flex gap-2">

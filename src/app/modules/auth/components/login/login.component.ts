@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit, TemplateRef } from '@angular/core';
+import { ChangeDetectorRef, Component, OnDestroy, OnInit, TemplateRef } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { appRoutes, authRoute } from '../../../../config/routes';
@@ -8,6 +8,16 @@ import { localstorageVariables } from 'src/app/config/localStorageVariable';
 import { AdminUsersService } from 'src/app/includes/services/admin.users.service';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { HotToastService } from '@ngneat/hot-toast';
+import { AppSettingsService } from 'src/app/includes/services/app.settings.service';
+
+interface Settings {
+  logo: string
+  darkLogo: string
+  adminLogo: string
+  adminFavicon: string
+  favicon: string,
+  title: string,
+}
 
 @Component({
   selector: 'app-login',
@@ -32,12 +42,15 @@ export class LoginComponent implements OnInit, OnDestroy {
   email: FormControl = new FormControl('', [Validators.required, Validators.email]);
   isValidated: boolean = false;
   isPassword: boolean = true;
+  settings: Settings | null;
 
   constructor(
     private formBuilder: FormBuilder,
     private authService: AuthService,
     private ActivatedRoute: ActivatedRoute,
     private Router: Router,
+    private ChangeDetectorRef: ChangeDetectorRef,
+    private AppSettingsService: AppSettingsService,
     private AdminUsersService: AdminUsersService,
     private BsModalService: BsModalService,
     private HotToastService: HotToastService
@@ -46,6 +59,15 @@ export class LoginComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.initForm();
     this.redirectUrl = this.ActivatedRoute.snapshot.queryParams?.redirectUrl || this.appRoute.DASHBOARD;
+
+    this.AppSettingsService.getSettings().subscribe({
+      next: (res: any) => {
+        if (res.errorCode == 0) {
+          this.settings = res.result;
+          this.ChangeDetectorRef.markForCheck()
+        } else { }
+      }, error: (err: any) => { }
+    })
   }
 
   initForm() {

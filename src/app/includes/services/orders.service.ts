@@ -130,8 +130,8 @@ export class OrdersService {
     return this.http.put(`${url}`, data)
   }
 
-  cancelOrderDetails(data: any) {
-    const url = this.commonService.getFullUrl(this.orderEndpoints.cancelOrderDetails);
+  cancelOrderDetails(data: any, orderId?: string) {
+    const url = this.commonService.getFullUrl(this.orderEndpoints.cancelOrder + `/${orderId}`);
     return this.http.put(`${url}`, data)
   }
 
@@ -155,8 +155,8 @@ export class OrdersService {
     return this.http.post(`${url}`, data)
   }
 
-  updateBulkProduct(data: any) {
-    const url = this.commonService.getFullUrl(this.orderEndpoints.updateBulkProduct);
+  updateBulkProduct(data: any, orderId?: string) {
+    const url = this.commonService.getFullUrl(this.orderEndpoints.updateOrderDoc + `/${orderId}`);
     return this.http.put(`${url}`, data)
   }
 

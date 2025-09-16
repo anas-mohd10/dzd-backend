@@ -1,9 +1,12 @@
 export const notificationsEndpoints = {
-   add_notification: '/add-notification',
-   get_notifications: '/notifications',
-   get_notification_details: '/notification-details',
-   update_notification: '/update-notification',
-   search_notifications: '/search-notifications',
+   addNotification: '/add-notification',
+   getNotifications: '/notifications',
+   getNotificationDetails: '/notification-details',
+   updateNotification: '/update-notification',
+   deleteNotification: '/delete-notification',
+   latestOrders: '/latest-orders',
+   searchNotifications: '/search-notifications',
    latest_notifications: '/latest-notifications',
    moduleNotifications: '/module-notifications',
+   notificationLogs: '/notification-logs'
 }

@@ -22,32 +22,28 @@
     <div class="my-4 card">
         <div class="card-body">
             <div>
-                <label for="cover" class="form-label">Cover</label>
-                <div id="cover" class="cover rounded w-100 mb-3 position-relative"
-                    [ngClass]="{
-                    'border border-danger':  (formControls.cover.touched || isSubmitted) && formControls.cover.errors?.required}">
-                    <app-assets [previewDetails]="cover" (mediaClicked)="handleCover($event)"
-                        [image]="'cover'"></app-assets>
-                    <div *ngIf="cover">
-                        <div class="position-absolute bottom-0 end-0 m-4">
-                            <button class="btn btn-danger" (click)="onRemove('cover')">Remove</button>
-                        </div>
+                <div class="cover w-100 rounded position-relative mb-3"
+                    [ngClass]="{'border border-danger':  (formControls.cover.touched || isSubmitted) && formControls.cover.errors?.required}">
+                    <app-assets (mediaClicked)="handleCover($event)" [image]="'cover'"
+                        [previewDetails]="previews?.cover"></app-assets>
+                    <div class="position-absolute bottom-0 end-0 m-4" *ngIf="previews?.cover">
+                        <button class="btn btn-danger" (click)="onRemove('cover')">Remove</button>
                     </div>
                 </div>
             </div>
             <form [formGroup]="form">
                 <div class="row">
                     <div class="col-lg-3">
-                        <div>
+                        <div class="mb-3">
                             <label for="thumbnail" class="form-label required">Thumbnail</label>
-                            <div id="thumbnail" class="ratio ratio-1x1 h-auto w-100 rounded mb-3"
-                                [ngClass]="{
-                                'border border-danger':  (formControls.thumbnail.touched || isSubmitted) && formControls.thumbnail.errors?.required}">
-                                <app-assets [previewDetails]="thumbnail"
-                                    (mediaClicked)="handleThumbnail($event)"></app-assets>
-                            </div>
-                            <div *ngIf="thumbnail">
-                                <button class="btn mt-2 btn-danger w-100"
+                            <div class="position-relative">
+                                <div class="ratio ratio-1x1 h-auto w-100 rounded"
+                                    [ngClass]="{ 'border border-danger': (formControls.thumbnail.touched || isSubmitted) && formControls.thumbnail.errors?.required}">
+                                    <app-assets (mediaClicked)="handleThumbnail($event)"
+                                        [previewDetails]="previews?.thumbnail"></app-assets>
+                                </div>
+                                <button *ngIf="previews?.thumbnail"
+                                    class="position-absolute bottom-0 end-0 m-2 p-2 btn btn-danger"
                                     (click)="onRemove('thumbnail')">Remove</button>
                             </div>
                         </div>
@@ -55,7 +51,7 @@
                             <label for="category" class="form-label required">Category</label>
                             <select id="category" formControlName="category" class="form-select"
                                 [ngClass]="{'is-invalid': (formControls.category.touched || isSubmitted) && formControls.category.errors?.required}">
-                                <option value="">Select Category</option>
+                                <option value="" disabled>-- Select an option --</option>
                                 <option *ngFor="let category of categories" [value]="category._id">
                                     {{category.title}}
                                 </option>
@@ -70,91 +66,95 @@
                             </select>
                         </div>
                         <div class="form-group mb-3">
-                            <label for="isFeatured" class="form-label">Featured</label>
-                            <select formControlName="isFeatured" class="form-select" id="isFeatured">
+                            <label for="isDraft" class="form-label">Draft</label>
+                            <select formControlName="isDraft" class="form-select" id="isDraft">
                                 <option value="" disabled>-- Select an option--</option>
                                 <option value="true">Yes</option>
                                 <option value="false">No</option>
                             </select>
                         </div>
-                        <div class="form-group mb-3">
-                            <label for="author">
-                                Author
-                            </label>
-                            <input type="text" id="author" formControlName="author" class="form-control"
-                                [ngClass]="{
-                                'is-invalid':  (formControls.author.touched || isSubmitted) && formControls.author.errors?.required}">
-                        </div>
-                        <div>
-                            <label for="authorThumbnail" class="form-label required">Author Image</label>
-                            <div id="authorThumbnail" class="ratio ratio-1x1 h-auto w-100 rounded mb-3"
-                                [ngClass]="{
-                                'border border-danger':  (formControls.authorThumbnail.touched || isSubmitted) && formControls.authorThumbnail.errors?.required}">
-                                <app-assets [previewDetails]="authorThumbnail"
-                                    (mediaClicked)="handleAuthorThumbnail($event)"></app-assets>
-                            </div>
-                            <div *ngIf="authorThumbnail">
-                                <button class="btn mt-2 btn-danger w-100"
-                                    (click)="onRemove('authorThumbnail')">Remove</button>
-                            </div>
-                        </div>
                     </div>
                     <div class="col-lg-9">
                         <div class="form-group mb-3">
                             <label for="title" class="form-label required">Title</label>
-                            <input type="text" id="title" formControlName="title" class="form-control"
-                                [ngClass]="{
-                                'is-invalid':  (formControls.title.touched || isSubmitted) && formControls.title.errors?.required}">
+                            <input type="text" id="title" formControlName="title" class="form-control" placeholder="Enter Title"
+                                [ngClass]="{'is-invalid': (formControls.title.touched || isSubmitted) && formControls.title.errors?.required}">
                         </div>
-                        <!-- slug -->
                         <div class="form-group mb-3">
                             <label for="slug" class="form-label">Slug</label>
-                            <input type="text" id="slug" formControlName="slug" class="form-control"
-                                [ngClass]="{
-                                'is-invalid':  (formControls.slug.touched || isSubmitted) && formControls.slug.errors?.required}">
+                            <input type="text" id="slug" formControlName="slug" class="form-control" placeholder="Enter Slug"
+                                [ngClass]="{'is-invalid': (formControls.slug.touched || isSubmitted) && formControls.slug.errors?.required}">
                         </div>
                         <div class="form-group mb-3">
                             <label for="overview" class="form-label">Overview</label>
-                            <textarea id="overview" formControlName="overview" class="form-control" rows="3"
-                                [ngClass]="{
-                                'is-invalid':  (formControls.overview.touched || isSubmitted) && formControls.overview.errors?.required}"
-                                placeholder="Brief overview of the blog post"></textarea>
+                            <textarea id="overview" formControlName="overview" class="form-control" rows="2"
+                                [ngClass]="{'is-invalid': (formControls.overview.touched || isSubmitted) && formControls.overview.errors?.required}"
+                                placeholder="Enter Overview"></textarea>
                         </div>
-                        <div class="form-group mb-3">
-                            <label for="description" class="form-label required">Description</label>
-                            <angular-editor id="description" class="form-control" formControlName="description"
-                                [config]="editorConfig"
-                                [ngClass]="{
-                                    'is-invalid':  (formControls.description.touched || isSubmitted) && formControls.description.errors?.required}"></angular-editor>
-                        </div>
-                        <div>
-                            <div class="fw-bold fs-2 mb-6">SEO details</div>
-                            <div class="form-group mb-3">
-                                <label for="seoTitle" class="form-label">Title</label>
-                                <input type="text" id="seoTitle" formControlName="seoTitle" class="form-control">
-                            </div>
-                            <div class="form-group mb-3">
-                                <label for="seoDescription" class="form-label">Description</label>
-                                <input type="text" id="seoDescription" formControlName="seoDescription"
-                                    class="form-control">
-                            </div>
-                            <div class="form-group mb-3">
-                                <label for="seoKeywords" class="form-label">Keywords</label>
-                                <input type="text" id="seoKeywords" formControlName="seoKeywords" class="form-control">
-                            </div>
-                            <div class="form-group mb-3">
-                                <label for="canonicalUrl" class="form-label">Canonical URL</label>
-                                <input type="text" id="canonicalUrl" formControlName="canonicalUrl"
-                                    class="form-control">
-                            </div>
+                        <div class="my-6">
+                            <tabset>
+                                <tab heading="Description" id="tab1">
+                                    <div class="my-4">
+                                        <angular-editor id="description" class="form-control"
+                                            formControlName="description" [config]="editorConfig"
+                                            [ngClass]="{'is-invalid':  (formControls.description.touched || isSubmitted) && formControls.description.errors?.required}"></angular-editor>
+                                    </div>
+                                </tab>
+                                <tab heading="SEO" id="tab2">
+                                    <div class="my-4">
+                                        <div class="form-group mb-3">
+                                            <label for="seoTitle" class="form-label">Title</label>
+                                            <input type="text" id="seoTitle" formControlName="seoTitle"
+                                                class="form-control">
+                                        </div>
+                                        <div class="form-group mb-3">
+                                            <label for="seoDescription" class="form-label">Description</label>
+                                            <input type="text" id="seoDescription" formControlName="seoDescription"
+                                                class="form-control">
+                                        </div>
+                                        <div class="form-group mb-3">
+                                            <label for="seoKeywords" class="form-label">Keywords</label>
+                                            <input type="text" id="seoKeywords" formControlName="seoKeywords"
+                                                class="form-control">
+                                        </div>
+                                        <div class="form-group mb-3">
+                                            <label for="canonicalUrl" class="form-label">Canonical URL</label>
+                                            <input type="text" id="canonicalUrl" formControlName="canonicalUrl"
+                                                class="form-control">
+                                        </div>
+                                    </div>
+                                </tab>
+                                <tab heading="Author" id="tab4">
+                                    <div class="my-4 d-flex gap-3">
+                                        <div class="w-75 form-group mb-3">
+                                            <input type="text" placeholder="Author" id="author" formControlName="author"
+                                                class="form-control"
+                                                [ngClass]="{
+                                'is-invalid': (formControls.author.touched || isSubmitted) && formControls.author.errors?.required}">
+                                        </div>
+                                        <div class="w-25 form-group mb-3">
+                                            <div class="position-relative">
+                                                <div id="authorThumbnail"
+                                                    class="ratio ratio-1x1 h-auto w-100 rounded mb-3">
+                                                    <app-assets [previewDetails]="previews?.authorThumbnail"
+                                                        (mediaClicked)="handleAuthorThumbnail($event)"></app-assets>
+                                                </div>
+                                                <button *ngIf="previews?.authorThumbnail"
+                                                    class="position-absolute bottom-0 end-0 m-2 p-2 btn btn-danger"
+                                                    (click)="onRemove('authorThumbnail')">Remove</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </tab>
+                            </tabset>
                         </div>
                     </div>
                 </div>
-                <div class="d-flex align-items-center justify-content-end my-4">
-                    <a class="btn btn-secondary me-2" routerLink="{{appRoute.blogs.list}}">Cancel</a>
-                    <button class="btn btn-primary ms-2" (click)="onSubmit()">Save changes</button>
-                </div>
             </form>
         </div>
+    </div>
+    <div class="d-flex align-items-center justify-content-end gap-2">
+        <a class="btn btn-secondary" routerLink="{{appRoute.blogs.list}}">Cancel</a>
+        <button class="btn btn-primary" (click)="onSubmit()">Save changes</button>
     </div>
 </div>

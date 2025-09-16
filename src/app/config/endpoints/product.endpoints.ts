@@ -18,6 +18,7 @@ export const productEndpoints = {
     productHistory: '/productHistory',
     exportProducts: '/exportProducts',
     importProducts: '/importProducts',
+    importAddOnProducts: '/importAddOnProducts',
     thumbnail_images: '/products/thumbnail-images',
     product_images: '/products/product-images',
     search_products: '/search-products',

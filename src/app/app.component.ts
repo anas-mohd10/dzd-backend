@@ -48,7 +48,7 @@ export class AppComponent implements OnInit {
     this.listen()
 
     this.AppSettingsService.getSettings().subscribe((res: any) => {
-      if (res?.errorCode == 0) {
+      if (res && res.errorCode == 0) {
         const favicon = document.querySelector('link[rel="icon"]');
         if (favicon) {
           favicon.setAttribute('href', `${res?.result?.baseS3Url}${res?.result?.adminFavicon}`);
@@ -94,8 +94,8 @@ export class AppComponent implements OnInit {
       this.notification = payload.notification;
       this.ChangeDetectorRef.markForCheck()
 
-       // Automatically reset `isNotificationTriggered` after 10 seconds
-       setTimeout(() => {
+      // Automatically reset `isNotificationTriggered` after 10 seconds
+      setTimeout(() => {
         this.isNotificationTriggered = false;
         this.ChangeDetectorRef.markForCheck();
       }, 10000); // 10 seconds in milliseconds

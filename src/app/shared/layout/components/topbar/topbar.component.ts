@@ -1,10 +1,8 @@
 import { ChangeDetectorRef, Component, Input, OnInit, TemplateRef, ViewChild } from '@angular/core';
-import { Router } from '@angular/router'; // Add this import
+import { Router } from '@angular/router';
 import { appRoutes } from 'src/app/config/routes';
 import { NotificationsService } from 'src/app/includes/services/notifications.service';
 import { LayoutService } from '../../core/layout.service';
-import { AppSettingsService } from 'src/app/includes/services/app.settings.service';
-import { environment } from 'src/environments/environment';
 import { AuthService } from 'src/app/includes/services/auth.service';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 
@@ -29,7 +27,7 @@ export class TopbarComponent implements OnInit {
   pages: any = [1, 2, 3]
   userData: any = this.AuthService.getCurrentUser()
   currentPage: any = this.pages[0]
-  notifications: any = []
+  notifications: Array<Notification> = []
   @Input('settings') settings: any
 
   constructor(
@@ -44,7 +42,7 @@ export class TopbarComponent implements OnInit {
   }
 
   offClickHandler($event: any) {
-    if (!this.container.nativeElement.contains($event.target)) {
+    if (this.container && !this.container.nativeElement.contains($event.target)) {
       this.isShowClicked = false
       document.querySelector('.notificationContainer')?.classList.remove('showContainer')
     }
@@ -53,14 +51,13 @@ export class TopbarComponent implements OnInit {
   ngOnInit(): void {
     this.headerLeft = this.layout.getProp('header.left') as string;
 
-    this.NotificationsService.latestNotifications({ page: this.currentPage }).subscribe((res: any) => {
-      if (res?.errorCode == 0) {
-        this.notifications = res?.result
-        if (this.notifications.length <= 5) this.pages = [1]
-        if (this.notifications.length <= 10 && this.notifications.length > 5) this.pages = [1, 2]
-        if (this.notifications.length <= 15 && this.notifications.length > 10) this.pages = [1, 2, 3]
-        this.ChangeDetectorRef.markForCheck()
-      }
+    this.NotificationsService.latestOrders().subscribe({
+      next: (res: any) => {
+        if (res?.errorCode == 0) {
+          this.notifications = res?.result
+          this.ChangeDetectorRef.markForCheck()
+        }else {}
+      }, error: (err: any) => { }
     })
   }
 
@@ -85,25 +82,7 @@ export class TopbarComponent implements OnInit {
     this.modalRef?.hide();
   }
 
-
   navigateToAccount(): void {
     this.router.navigate(['/app/my-account']);
-  }
-
-  toggleNotifications() {
-    this.isShowClicked = !this.isShowClicked
-  }
-
-  fetchNotifications(page: any) {
-    this.currentPage = page
-    this.NotificationsService.latestNotifications({ page: this.currentPage }).subscribe((res: any) => {
-      if (res?.errorCode == 0) {
-        this.notifications = res?.result
-        if (this.notifications.length >= 5) this.pages = [1]
-        if (this.notifications.length >= 10) this.pages = [1, 2]
-        if (this.notifications.length >= 15) this.pages = [1, 2, 3]
-        this.ChangeDetectorRef.markForCheck()
-      }
-    })
   }
 }

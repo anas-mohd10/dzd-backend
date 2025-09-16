@@ -2,3 +2,15 @@ label,
 .btn {
     font-weight: 400 !important;
 }
+
+.analytics {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+
+    @media screen and (max-width: 1024px) {
+        .analytics {
+            grid-template-columns: 1fr;
+        }
+    }
+}

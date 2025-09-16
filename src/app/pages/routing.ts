@@ -52,7 +52,10 @@ import { MenuNavigationComponent } from './settings/general/menu-navigation/menu
 import { SmsTemplateService } from '../includes/services/sms-template.service';
 import { SmsTemplatesComponent } from './settings/general/sms-templates/sms-templates.component';
 import { FormSettingsComponent } from './settings/general/form-settings/form-settings.component';
+import { AlbumsComponent } from './marketing/albums/albums.component';
+import { GalleriesComponent } from './marketing/galleries/galleries.component';import { CurrencySettingsComponent } from './settings/general/currency-settings/currency-settings.component';
 
+import { ShippingGatewaysComponent } from './settings/general/shipping-gateways/shipping-gateways.component';
 export const Routing: Routes = [
   {
 
@@ -322,7 +325,15 @@ export const Routing: Routes = [
         path: 'help-center',
         loadChildren: () => import('./pages/help-center/help-center.module').then((m) => m.HelpCenterModule),
         canActivate: [AuthenticationGuard, PermissionGuard]
-      }, {
+      },
+      {
+        path: 'albums',
+        component: AlbumsComponent,
+        canActivate: [AuthenticationGuard]
+      },
+      { path: 'galleries/:albumId', component: GalleriesComponent, canActivate: [AuthenticationGuard] },
+
+      {
         path: 'privacy-policy',
         loadChildren: () => import('./pages/privacy-policy/privacy-policy.module').then((m) => m.PrivacyPolicyModule),
         canActivate: [AuthenticationGuard, PermissionGuard]
@@ -391,6 +402,10 @@ export const Routing: Routes = [
         component: FormSettingsComponent,
         canActivate: [AuthenticationGuard, PermissionGuard]
       }, {
+        path: 'export-logs',
+        loadChildren: () => import('./settings/general/export-logs/export-logs.module').then((m) => m.ExportLogsModule),
+        canActivate: [AuthenticationGuard, PermissionGuard]
+      }, {
         path: 'replace-requests',
         loadChildren: () => import('./replace-requests/replace-requests.module').then((m) => m.ReplaceRequestsModule),
         canActivate: [AuthenticationGuard, PermissionGuard]
@@ -453,6 +468,10 @@ export const Routing: Routes = [
       }, {
         path: 'enquiries',
         component: EnquiresComponent,
+        canActivate: [AuthenticationGuard, PermissionGuard]
+      }, {
+        path: 'currency-settings',
+        component: CurrencySettingsComponent,
         canActivate: [AuthenticationGuard, PermissionGuard]
       }, {
         path: 'pickup-locations',
@@ -537,6 +556,10 @@ export const Routing: Routes = [
       }, {
         path: 'shipping-settings',
         component: ShippingComponent,
+        canActivate: [AuthenticationGuard, PermissionGuard]
+      }, {
+        path: 'shipping-gateways',
+        component: ShippingGatewaysComponent,
         canActivate: [AuthenticationGuard, PermissionGuard]
       }, {
         path: 'sms-settings',

@@ -9,6 +9,10 @@ import { AppSettingsService } from 'src/app/includes/services/app.settings.servi
 import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
 import { HotToastService } from '@ngneat/hot-toast';
 import { SwiperOptions } from 'swiper';
+import moment from 'moment-timezone';
+import * as countriesAndTimezones from 'countries-and-timezones';
+import { ShippingGatwaysService } from 'src/app/includes/services/shipping-gatways.service';
+import { ShipmentService } from 'src/app/includes/services/shipment.service';
 
 @Component({
   selector: 'app-update-orders',
@@ -46,18 +50,9 @@ export class UpdateOrdersComponent implements OnInit {
     scrollbar: { draggable: true },
     autoplay: true,
     breakpoints: {
-      320: {
-        slidesPerView: 'auto',
-        spaceBetween: 35,
-      },
-      480: {
-        slidesPerView: 'auto',
-        spaceBetween: 35,
-      },
-      640: {
-        slidesPerView: 'auto',
-        spaceBetween: 35,
-      },
+      320: { slidesPerView: 'auto', spaceBetween: 35, },
+      480: { slidesPerView: 'auto', spaceBetween: 35, },
+      640: { slidesPerView: 'auto', spaceBetween: 35, },
     },
   };
   processedProducts: Array<any> = [];
@@ -89,15 +84,7 @@ export class UpdateOrdersComponent implements OnInit {
   orderNote: FormControl = new FormControl('');
   reason: FormControl = new FormControl('');
   isNoteDetected: boolean = false;
-  months: Array<string> = ['Jan', 'Feb', 'Mar', 'Apr', 'May',
-    'Jun',
-    'Jul',
-    'Aug',
-    'Sep',
-    'Oct',
-    'Nov',
-    'Dec',
-  ];
+  months: Array<string> = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec',];
   domainUrl: string = '';
   bulkProducts: Array<any> = [];
   bulkStatus: Array<any> = [];
@@ -114,7 +101,14 @@ export class UpdateOrdersComponent implements OnInit {
   @ViewChild('failedPayment') failedPayment: any;
   failedPaymenRef?: BsModalRef;
 
+  shipmentItems: string[] = ['PLACED', 'ACCEPTED']
+  shippingRef: BsModalRef | null
+  shippingGateway: string | null
+  shippingGateways: Array<any> = []
+
   constructor(
+    private ShipmentService: ShipmentService,
+    private ShippingGatwaysService: ShippingGatwaysService,
     private OrdersService: OrdersService,
     private route: ActivatedRoute,
     private router: Router,
@@ -124,6 +118,53 @@ export class UpdateOrdersComponent implements OnInit {
     private BsModalService: BsModalService,
     private HotToastService: HotToastService
   ) { }
+  // Create Shipment
+  createShipment() {
+    this.ShipmentService.createShipment({
+      orderId: this.slug,
+      gateway: this.shippingGateway
+    }).subscribe({
+      next: (resp: any) => {
+        if (resp && resp.errorCode == 0) {
+          this.shippingRef?.hide()
+          this.HotToastService.success(resp.message)
+          this.getOrderDetails()
+          this.ChangeDetectorRef.markForCheck()
+        } else {
+          this.HotToastService.error(resp.message)
+        }
+      }, error: (err) => {
+        this.HotToastService.error(`Internal Server Error`)
+      }
+    })
+  }
+
+  downdloadShipmentLabel() {
+    this.ShipmentService.getShipmentLabel(this.slug).subscribe({
+      next: (resp: any) => {
+        if (resp && resp.errorCode == 0) {
+          const labelUrl: string = resp.result.url
+          window.open(labelUrl, '_blank')
+        } else {
+          this.HotToastService.error(resp.message)
+        }
+      }, error: (err) => {
+        this.HotToastService.error(`Internal Server Error`)
+      }
+    })
+  }
+
+  openShipment(template: TemplateRef<any>) {
+    this.shippingRef = this.BsModalService.show(template, { class: 'modal-sm modal-dialog-centered', ignoreBackdropClick: true })
+  }
+
+  toTitleCase(str: string): string {
+    return str
+      .replace(/-/g, ' ') // Replace all hyphens with spaces
+      .split(' ')         // Split into words
+      .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()) // Capitalize
+      .join(' ');         // Join back with spaces
+  }
 
   openRetry(template: TemplateRef<any>) {
     this.retryModelRef = this.BsModalService.show(template, {
@@ -204,6 +245,16 @@ export class UpdateOrdersComponent implements OnInit {
     this.managePage();
     this.slug = this.route.snapshot.queryParams.order || '';
     this.getOrderDetails();
+
+    this.ShippingGatwaysService.shippingGateways('enabled').subscribe({
+      next: (resp: any) => {
+        if (resp && resp.errorCode == 0) {
+          this.shippingGateways = resp.result.response
+        } else { }
+      }, error: (err) => {
+        this.HotToastService.error(`${(err as Error).message}`)
+      }
+    })
 
     this.AppSettingsService.getGeneralSettingsbyId('1').subscribe({
       next: (res: any) => {
@@ -331,8 +382,31 @@ export class UpdateOrdersComponent implements OnInit {
     return new Date(processDate).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric', weekday: 'short' });
   }
 
+  formatDateString(date: string) {
+    const countryCode: string = this.settings.country.toUpperCase() === 'UAE' ? 'AE' : this.settings.country.toUpperCase();
+    const country = countriesAndTimezones.getCountry(countryCode);
+    const timezone = country?.timezones[0] || 'UTC';
+    const now = moment(date).tz(timezone).format('YYYY-MM-DD HH:mm:ss');
+    return `${now} (${timezone})`;
+  }
+
   getLocaleTimeFormat(processDate: any) {
     return new Date(processDate).toLocaleTimeString('en-US', { hour: 'numeric', minute: 'numeric', second: 'numeric', hour12: true });
+  }
+
+  getLocalizedProductName(product: any): string {
+    if (!product) return '';
+
+    // Check if product has productDetails with localizedNames
+    if (product?.productDetails?.localizedNames && this.settings?.primaryLang) {
+      const localizedName = product.productDetails.localizedNames[this.settings.primaryLang];
+      if (localizedName) {
+        return localizedName;
+      }
+    }
+
+    // Fallback to regular product name from productDetails or productId
+    return product?.productDetails?.name || product?.productId?.name || '';
   }
 
   getOrderDetails() {
@@ -345,31 +419,15 @@ export class UpdateOrdersComponent implements OnInit {
           this.productCount = this.order.products.length;
           this.form.get('paymentStatus')?.setValue(this.order?.paymentStatus);
           this.orderNote?.setValue('');
-          this.form
-            .get('orderId')
-            ?.setValue(
-              this.order?.payment?.reference?.payment ||
-              this.order?.payment?.authorizationId
-            );
+          this.form.get('orderId')?.setValue(this.order?.payment?.reference?.payment || this.order?.payment?.authorizationId);
+
           this.form.get('paymentMessage')?.setValue(this.order?.paymentMessage);
-          this.form
-            .get('transactionTime')
-            ?.setValue(this.order?.transactionTime);
-          this.form
-            .get('paymentId')
-            ?.setValue(this.order?.payment?.referenceId);
-          this.orderStatus =
-            res.result.orderStatus.charAt(0).toUpperCase() +
-            res.result.orderStatus.slice(1).toLowerCase();
-          this.orderStatusList.includes(res.result.orderStatus)
-            ? (this.isCancelEligible = false)
-            : (this.isCancelEligible = true);
-          this.invoiceStatusList.includes(res.result.orderStatus)
-            ? (this.isInvoiceAvailable = false)
-            : (this.isInvoiceAvailable = true);
-          this.invoiceStatusList.includes(res.result.orderStatus)
-            ? (this.isPackingSlipAvailable = false)
-            : (this.isPackingSlipAvailable = true);
+          this.form.get('transactionTime')?.setValue(this.order?.transactionTime);
+          this.form.get('paymentId')?.setValue(this.order?.payment?.referenceId);
+          this.orderStatus = res.result.orderStatus.charAt(0).toUpperCase() + res.result.orderStatus.slice(1).toLowerCase();
+          this.orderStatusList.includes(res.result.orderStatus) ? (this.isCancelEligible = false) : (this.isCancelEligible = true);
+          this.invoiceStatusList.includes(res.result.orderStatus) ? (this.isInvoiceAvailable = false) : (this.isInvoiceAvailable = true);
+          this.invoiceStatusList.includes(res.result.orderStatus) ? (this.isPackingSlipAvailable = false) : (this.isPackingSlipAvailable = true);
 
           if (this.order.orderStatus == 'CANCELLED') {
             this.isCancelled = true;
@@ -377,16 +435,29 @@ export class UpdateOrdersComponent implements OnInit {
 
           for (let product of this.order?.products) {
             for (let history of product?.history) {
-              history.status =
-                history.status.charAt(0).toUpperCase() +
-                history.status.slice(1).toLowerCase();
+              history.status = history.status.charAt(0).toUpperCase() + history.status.slice(1).toLowerCase();
             }
+
             let history = [...product?.history];
-            if (product?.dateExpected)
-              product.dateExpected = new Date(
-                product?.dateExpected
-              ).toLocaleString();
+            if (product?.dateExpected) {
+              product.dateExpected = new Date(product?.dateExpected).toLocaleString();
+            }
             product.currentStatus = history.pop();
+          }
+
+          // Track shipment
+          if (this.order && this.order.isLabelCreated) {
+            this.ShipmentService.trackShipment(this.slug).subscribe({
+              next: (resp: any) => {
+                if (resp && resp.errorCode == 0) {
+                  console.log(resp)
+                } else {
+                  this.HotToastService.error(resp.message)
+                }
+              }, error: (err) => {
+                this.HotToastService.error(`Internal Server Error`)
+              }
+            })
           }
 
           this.ChangeDetectorRef.markForCheck();
@@ -441,6 +512,7 @@ export class UpdateOrdersComponent implements OnInit {
       this.openCancelConfirmation(this.cancelConfirmation)
       return
     }
+
     this.isLoading = true;
     this.productReference = productItem;
     this.OrdersService.updateOrderStatus({
@@ -467,14 +539,13 @@ export class UpdateOrdersComponent implements OnInit {
   }
 
   confirmCancel() {
-    this.isLoading =true
+    this.isLoading = true
     this.isCancelConfirmLoading = true;
     this.cancelConfirmationRef?.hide() // Close the cancel confirmation modal
-    this.OrdersService.updateOrderStatus({
-      order: this.slug,
-      product: this.productToBeCancelled,
+    this.OrdersService.updateBulkProduct({
+      products: [{ productId: this.productToBeCancelled }],
       status: 'CANCELLED',
-    }).subscribe({
+    }, this.slug).subscribe({
       next: (res: any) => {
         if (res?.errorCode == 0) {
           this.getOrderDetails();
@@ -596,7 +667,14 @@ export class UpdateOrdersComponent implements OnInit {
     if (product) {
       const index = this.bulkProducts.indexOf(product);
       if (index > -1) {
+        const addOnProducts = this.order.products.filter((p: any) => p.isAddOn == true && p.productRef._id == product.productId)
         this.bulkProducts.splice(index, 1);
+        addOnProducts.forEach((addOnProduct: any) => {
+          const addOnIndex = this.bulkProducts.indexOf(addOnProduct);
+          if (addOnIndex > -1) {
+            this.bulkProducts.splice(addOnIndex, 1);
+          }
+        })
       } else {
         this.bulkProducts.push(product);
       }
@@ -610,7 +688,25 @@ export class UpdateOrdersComponent implements OnInit {
         : (this.bulkProducts = [...this.order?.products]);
     //Check the last status of the product, if cancelled then don't allow to change the status
 
+    // Push the add-on product of the parent product when the status of the parent product is changed
+    this.bulkProducts.forEach(product => {
+      if (product.isAddOn == false) {
+        const addOnProducts = this.order.products.filter((p: any) => p.isAddOn == true && p.productRef._id == product.productId)
+        // Check if the add-on product is already in the bulk products
+        addOnProducts.forEach((addOnProduct: any) => {
+          if (!this.bulkProducts.some((p: any) => p.productId == addOnProduct.productId)) {
+            this.bulkProducts.push(addOnProduct)
+          }
+        })
+      }
+    })
+
     this.bulkProducts.length > 0 ? this.toggleBulkStatus() : null;
+  }
+
+  getAddOnProducts(product: string) {
+    const addOnProducts = this.order.products.filter((p: any) => p.isAddOn == true && p.productRef._id == product)
+    return addOnProducts
   }
 
   toggleBulkStatus() {
@@ -631,7 +727,6 @@ export class UpdateOrdersComponent implements OnInit {
   updateBulkProduct(event: any) {
     this.bulkStatusToUpdate = event?.target?.value;
     this.openBulkUpdateConfirmation(this.bulkUpdateConfirmation);
-
   }
 
   openBulkUpdateConfirmation(template: TemplateRef<any>) {
@@ -656,7 +751,7 @@ export class UpdateOrdersComponent implements OnInit {
       isForce: true,
       status: this.bulkStatusToUpdate,
       products: this.bulkProducts,
-    }).subscribe({
+    }, this.slug).subscribe({
       next: (res: any) => {
         if (res?.errorCode == 0) {
           this.HotToastService.success(res?.message);
@@ -683,13 +778,15 @@ export class UpdateOrdersComponent implements OnInit {
   }
 
   confirmBulkUpdate() {
+    this.bulkUpdateConfirmationRef?.hide() // Close the confirmation popup
+
     this.isLoading = true;
     this.isBulkUpdateLoading = true;
     this.OrdersService.updateBulkProduct({
       order: this.order?._id,
       status: this.bulkStatusToUpdate,
       products: this.bulkProducts,
-    }).subscribe({
+    }, this.slug).subscribe({
       next: (res: any) => {
         if (res?.errorCode == 0) {
           this.HotToastService.success(res?.message);
@@ -697,7 +794,6 @@ export class UpdateOrdersComponent implements OnInit {
           this.bulkStatus = [];
           this.bulkOrderStatus.setValue('');
           this.getOrderDetails();
-          this.closeBulkUpdateConfirmation();
         } else if (res?.errorCode == 400) {
           this.failedPaymenRef = this.BsModalService.show(this.failedPayment, { class: 'modal-sm modal-dialog-centered', ignoreBackdropClick: true });
         } else {
@@ -747,7 +843,7 @@ export class UpdateOrdersComponent implements OnInit {
 
   open(template: TemplateRef<any>) {
     this.modalRef = this.BsModalService.show(template, {
-      class: 'modal-dialog-centered',
+      class: 'modal-sm modal-dialog-centered',
       ignoreBackdropClick: true,
     });
   }
@@ -757,7 +853,7 @@ export class UpdateOrdersComponent implements OnInit {
     this.OrdersService.cancelOrderDetails({
       order: this.slug,
       reason: this.reason.value,
-    }).subscribe({
+    }, this.slug).subscribe({
       next: (res: any) => {
         if (res?.errorCode == 0) {
           this.getOrderDetails();
@@ -767,9 +863,8 @@ export class UpdateOrdersComponent implements OnInit {
         } else {
           this.HotToastService.error(res?.message);
         }
-      },
-      error: (err: any) => {
-        this.HotToastService.error(err?.message);
+      }, error: (err: any) => {
+        this.HotToastService.error(err?.error?.message);
       },
     }).add(() => {
       this.isConfirmLoading = false;  // Re-enable buttons for general confirmation modal

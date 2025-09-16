@@ -49,4 +49,9 @@ export class AuthService {
         const url = this.commonService.getFullUrl(this.adminUsersEndpoints.authorize + `?type=${data}`);
         return this.http.get(url);
     }
+
+    me() {
+        const url = this.commonService.getFullUrl(this.authEndpoints.me);
+        return this.http.get(url);
+    }
 }

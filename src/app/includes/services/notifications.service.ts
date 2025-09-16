@@ -15,37 +15,47 @@ export class NotificationsService {
   ) { }
 
   addNotification(data: any) {
-    const url = this.commonService.getFullUrl(this.notificationsEndpoints.add_notification);
+    const url = this.commonService.getFullUrl(this.notificationsEndpoints.addNotification);
     return this.http.post(`${url}`, data);
   }
 
   getNotifications() {
-    const url = this.commonService.getFullUrl(this.notificationsEndpoints.get_notifications);
+    const url = this.commonService.getFullUrl(this.notificationsEndpoints.getNotifications);
     return this.http.get(`${url}`);
   }
 
-  getNotificationDetails(data: any) {
-    const url = this.commonService.getFullUrl(this.notificationsEndpoints.get_notification_details + `/${data}`);
+  getNotificationDetails(notificationId: string) {
+    const url = this.commonService.getFullUrl(this.notificationsEndpoints.getNotificationDetails + `/${notificationId}`);
     return this.http.get(`${url}`);
   }
 
   searchNotifications(query: any) {
-    const url = this.commonService.getFullUrl(this.notificationsEndpoints.search_notifications);
+    const url = this.commonService.getFullUrl(this.notificationsEndpoints.searchNotifications);
     return this.http.post(`${url}`, query);
   }
 
   updateNotification(data: any) {
-    const url = this.commonService.getFullUrl(this.notificationsEndpoints.update_notification);
+    const url = this.commonService.getFullUrl(this.notificationsEndpoints.updateNotification);
     return this.http.put(`${url}`, data);
   }
 
-  latestNotifications(data: any) {
-    const url = this.commonService.getFullUrl(this.notificationsEndpoints.latest_notifications);
-    return this.http.post(`${url}`, data);
+  deleteNotification(notificationId: string) {
+    const url = this.commonService.getFullUrl(this.notificationsEndpoints.deleteNotification + `/${notificationId}`);
+    return this.http.delete(`${url}`);
+  }
+
+  latestOrders() {
+    const url = this.commonService.getFullUrl(this.notificationsEndpoints.latestOrders);
+    return this.http.get(`${url}`);
   }
 
   moduleNotifications(data: any) {
     const url = this.commonService.getFullUrl(this.notificationsEndpoints.moduleNotifications);
     return this.http.post(`${url}`, data);
+  }
+
+  logs(notificationId: string, page: number, limit: number){
+    const url = this.commonService.getFullUrl(this.notificationsEndpoints.notificationLogs + `/${notificationId}?page=${page}&limit=${limit}`);
+    return this.http.get(`${url}`);
   }
 }

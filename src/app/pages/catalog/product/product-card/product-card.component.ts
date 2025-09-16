@@ -5,6 +5,7 @@ import {
   TemplateRef,
   ElementRef,
   HostListener,
+  ViewChild,
 } from '@angular/core';
 import {
   FormBuilder,
@@ -52,9 +53,11 @@ export class ProductCardComponent implements OnInit {
 
   modalRef?: BsModalRef;
   productRef?: BsModalRef;
+  childProductsRef?: BsModalRef;
   productDetails: any = {};
   base: string = environment.base;
   settings: any = {};
+  childProductsToDelete: Array<any> = [];
 
   taxes: Array<any> = [];
   brands: Array<any> = [];
@@ -85,6 +88,8 @@ export class ProductCardComponent implements OnInit {
   parentStatus: FormControl = new FormControl('');
   checkedProducts: Array<string> = [];
 
+  @ViewChild('childProductsModal') childProductsModal: TemplateRef<any>;
+
   constructor(
     private ProductService: ProductService,
     private ChangeDetectorRef: ChangeDetectorRef,
@@ -99,7 +104,7 @@ export class ProductCardComponent implements OnInit {
     private BrandService: BrandService,
     private ElementRef: ElementRef,
     private HotToastService: HotToastService
-  ) {}
+  ) { }
 
   get editFormControls() {
     return this.editForm.controls;
@@ -164,23 +169,27 @@ export class ProductCardComponent implements OnInit {
   }
 
   deleteProducts() {
-    this.ProductHeadService.deleteProducts({
-      products: this.checkedProducts,
-    }).subscribe({
-      next: (res: any) => {
-        if (res?.errorCode == 0) {
-          this.HotToastService.success(res?.message);
-          this.page = 1;
-          this.checkedProducts = [];
-          this.getProductHeads();
-        } else {
-          this.HotToastService.error(res?.message);
-        }
-      },
-      error: (err: any) => {
-        this.HotToastService.error(err?.error?.message);
-      },
-    });
+    if (confirm('Are you sure you want to delete these products?')) {
+      this.ProductHeadService.deleteProducts({
+        products: this.checkedProducts,
+      }).subscribe({
+        next: (res: any) => {
+          if (res?.errorCode == 0) {
+            this.HotToastService.success(res?.message);
+            this.page = 1;
+            this.checkedProducts = [];
+            this.getProductHeads();
+          } else {
+            this.HotToastService.error(res?.message);
+          }
+        },
+        error: (err: any) => {
+          this.HotToastService.error(err?.error?.message);
+        },
+      });
+    } else {
+      this.HotToastService.error('Action cancelled')
+    }
   }
 
   updateChildProduct(event: { switchId: string; toggleState: boolean }) {
@@ -203,20 +212,30 @@ export class ProductCardComponent implements OnInit {
   }
 
   deleteProduct() {
-    this.ProductHeadService.deleteProductHead(this.headDetails?._id).subscribe({
-      next: (res: any) => {
-        if (res?.errorCode == 0) {
-          this.ToastrService.success(res?.message);
-          this.close();
-          this.getProductHeads();
-        } else {
+    if (confirm('Are you sure you want to delete this product?')) {
+      this.ProductHeadService.deleteProductHead(this.headDetails?._id).subscribe({
+        next: (res: any) => {
+          if (res?.errorCode == 0) {
+            this.ToastrService.success(res?.message);
+            this.close();
+            this.getProductHeads();
+          } else if (res?.errorCode == 1 && res?.result?.products) {
+          this.childProductsToDelete = res?.result?.products;
           this.ToastrService.error(res?.message);
-        }
-      },
-      error: (err: any) => {
-        this.ToastrService.error(err?.error?.message);
-      },
-    });
+          setTimeout(() => {
+            this.openChildProductsModal(this.childProductsModal);
+          }, 100);
+        } else {
+            this.ToastrService.error(res?.message);
+          }
+        },
+        error: (err: any) => {
+          this.ToastrService.error(err?.error?.message);
+        },
+      });
+    } else {
+      this.HotToastService.error('Action cancelled');
+    }
   }
 
   ngOnInit(): void {
@@ -580,6 +599,39 @@ export class ProductCardComponent implements OnInit {
       },
       error: (err: any) => {
         this.HotToastService.error(err?.error?.message);
+      },
+    });
+  }
+
+  openChildProductsModal(template: TemplateRef<any>) {
+    this.childProductsRef = this.BsModalService.show(template, {
+      class: 'modal-lg modal-dialog-centered',
+      ignoreBackdropClick: true,
+    });
+  }
+
+  closeChildProductsModal() {
+    this.childProductsRef?.hide();
+    this.childProductsToDelete = [];
+  }
+
+  copyToClipboard(text: string) {
+    navigator.clipboard.writeText(text).then(() => {
+      this.HotToastService.success('SKU copied to clipboard');
+    });
+  }
+
+  navigateToProduct(sku: string, slug?: string) {
+    // Close all modals
+    this.closeChildProductsModal();
+    this.close();
+    this.closeProducts();
+
+    // Navigate to the product update page with the product slug and callback
+    this.Router.navigate(['/app/product/update'], {
+      queryParams: {
+        product: slug || sku,
+        callback: '/app/product-head'
       },
     });
   }

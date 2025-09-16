@@ -140,6 +140,16 @@ export class OrdersListComponent implements OnInit {
       })
   }
 
+  formatPaymentGateway(paymentGateway: string) {
+    if (!paymentGateway) {
+      return ''
+    }
+
+    return paymentGateway.replace(/-/g, ' ').replace(/\w\S*/g, function (txt) {
+      return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+    });
+  }
+
   //format case
   formatCase(orderData: string) {
     if (orderData) {
@@ -533,11 +543,11 @@ export class OrdersListComponent implements OnInit {
         this.totalPages = res?.result?.totalPages;
         this.page = res?.result?.page;
 
-          this.tagOptions = res?.result?.filter?.tags?.options;
+        this.tagOptions = res?.result?.filter?.tags?.options;
 
         this.isLoading = true;
         this.ChangeDetectorRef.markForCheck();
-    
+
 
       }
     });

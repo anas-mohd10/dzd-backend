@@ -1,0 +1,121 @@
+<div>
+  <div class="page-header d-flex align-items-start justify-content-between">
+    <div>
+      <div class="page-title">
+        <h1 class="fw-bold">Albums</h1>
+      </div>
+      <ul class="breadcrumb">
+        <li class="breadcrumb-item fs-6">
+          <a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a>
+        </li>
+        <li class="breadcrumb-item active fs-6">
+          <a routerLink="{{ appRoute.albums }}">Albums</a>
+        </li>
+      </ul>
+    </div>
+    <div>
+      <button class="btn btn-primary" [disabled]="!settings.isGalleryEnabled" (click)="open(template)">Create
+        Album</button>
+    </div>
+  </div>
+  <div class="my-4">
+    <div class="card">
+      <div class="card-body">
+        <div class="d-flex align-items-center justify-content-start gap-2">
+          <div class="d-flex align-items-center gap-2">
+            <label for="gallery-switch" class="fs-5">Gallery</label>
+            <div id="gallery-switch">
+              <app-switch [isToggledProps]="settings.isGalleryEnabled" [switchId]="'isGalleryEnabled'"
+                (switchToggled)="settingsToggled($event)"></app-switch>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card my-4">
+      <div class="card-body">
+        <div class="d-flex align-items-center justify-content-start gap-2">
+          <label for="shuffled-gallery-switch" class="fs-5">Shuffled Gallery</label>
+          <div id="shuffled-gallery-switch" [ngClass]="{'opacity-50 pe-none': !settings.isGalleryEnabled}">
+            <app-switch [isToggledProps]="settings.isShuffledGallery" [switchId]="'isShuffledGallery'"
+              (switchToggled)="settingsToggled($event)"></app-switch>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div>
+    <table class="table table-bordered">
+      <thead>
+        <th class="p-2">Title</th>
+        <th class="p-2">Status</th>
+        <th class="p-2">Actions</th>
+      </thead>
+      <tbody>
+        <tr *ngFor="let album of albums; let i = index">
+          <td> {{ album.title }} </td>
+          <td>
+            <app-switch [isToggledProps]="album.isActive" [switchId]="album._id"
+              (switchToggled)="onSwitchToggled($event)"></app-switch>
+          </td>
+          <td>
+            <div class="d-flex align-items-center gap-2">
+              <button class="btn btn-secondary px-2 py-1" (click)="open(template, 'update', album._id)">Edit</button>
+              <button class="btn btn-danger px-2 py-1" (click)="confirmation(delete, album._id)">Delete</button>
+              <a class="btn btn-secondary px-2 py-1" routerLink="{{ appRoute.galleries + '/' + album._id }}">View
+                Gallery</a>
+            </div>
+          </td>
+        </tr>
+        <tr *ngIf="albums && albums.length == 0">
+          <td colspan="3" class="text-center">
+            <app-no-results></app-no-results>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="my-4">
+      <app-pagination [totalPages]="totalPages" [totalResults]="totalResults" [pageIndex]="pageIndex"
+        [pageSize]="pageSize" (pageTrigger)="onPageTriggered($event)"></app-pagination>
+    </div>
+  </div>
+</div>
+
+<ng-template #template>
+  <div class="modal-header">
+    <h5 class="modal-title">Album</h5>
+    <button type="button" class="btn-close" aria-label="Close" (click)="close()"></button>
+  </div>
+  <div class="modal-body">
+    <form [formGroup]="form" (ngSubmit)="saveChanges()">
+      <div class="form-group">
+        <label for="thumbnail" class="fs-6 mb-3">Thumbnail</label>
+        <div id="thumbnail" class="ratio ratio-1x1">
+          <app-assets [previewDetails]="form.value.thumbnail" (mediaClicked)="onMediaTriggered($event)"></app-assets>
+        </div>
+      </div>
+      <div class="form-group my-3">
+        <label for="title" class="fs-6 mb-3">Title</label>
+        <input type="text" class="form-control" formControlName="title"
+          [ngClass]="{'is-invalid': (formControls.title.touched || isSubmitted) && formControls.title.errors?.required}">
+      </div>
+      <div class="form-group">
+        <label for="description" class="fs-6 mb-3">Description</label>
+        <input class="form-control" formControlName="description" />
+      </div>
+      <div class="d-flex align-items-center justify-content-end mt-3">
+        <button type="submit" class="btn btn-primary">Save Changes</button>
+      </div>
+    </form>
+  </div>
+</ng-template>
+
+<ng-template #delete>
+  <div class="modal-body text-center">
+    <p>Do you want to confirm?</p>
+    <div class="d-flex align-items-center justify-content-center gap-3">
+      <button type="button" class="btn btn-default w-50" (click)="confirm()">Yes</button>
+      <button type="button" class="btn btn-primary w-50" (click)="decline()">No</button>
+    </div>
+  </div>
+</ng-template>

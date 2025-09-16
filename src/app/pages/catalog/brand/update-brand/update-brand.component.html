@@ -23,7 +23,7 @@
         Restore brand
       </button>
       <button type="button" (click)="onDelete()" class="btn btn-danger">
-        Delete bran
+        Delete brand
       </button>
     </div>
     <ng-template #deleteConfirmation let-c="close" let-d="dismiss">
@@ -95,6 +95,23 @@
                   </div>
 
                   <div class="form-group mb-3">
+                    <label class="required fs-6 mb-3">Slug</label>
+                    <input type="text" class="form-control fs-6" formControlName="slug" [ngClass]="{
+                        'is-invalid': 
+                        (formControls.slug.touched || isSubmitted) && 
+                        (formControls.slug.errors?.required || formControls.slug.errors?.pattern)
+                      }" />
+                    <div *ngIf="(formControls.slug.touched || isSubmitted) && formControls.slug.errors?.required"
+                      class="invalid-feedback">
+                      Slug is required.
+                    </div>
+                    <div *ngIf="(formControls.slug.touched || isSubmitted) && formControls.slug.errors?.pattern"
+                      class="invalid-feedback">
+                      Slug must contain only lowercase letters, numbers, and hyphens (no spaces or special characters).
+                    </div>
+                  </div>
+
+                  <div class="form-group mb-3">
                     <label class="fs-6 mb-3">Description</label>
                     <textarea type="text" class="form-control fs-6" formControlName="description"></textarea>
                   </div>
@@ -146,6 +163,45 @@
                       </select>
                     </div>
                   </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Previous template code remains the same until the brand categories section -->
+
+          <div *ngFor="let category of brandCategories; let i = index" class="mb-4">
+            <label class="fs-6 mb-2">Brand Category Images</label>
+            <div class="row" id="brand-category-images-{{i}}">
+              <!-- Existing Images -->
+              <div class="col-lg-3 mb-3" *ngFor="let img of category.brandCategoryImages; let j = index">
+                <div class="card h-100">
+                  <div class="ratio border ratio-1x1 h-auto w-100 rounded-top position-relative">
+                    <div class="close-icon rounded bg-danger text-white"
+                      style="position: absolute; top: 2px; right: 2px; cursor: pointer; z-index: 2; width: 22px; height: 22px; display: flex; align-items: center; justify-content: center; padding: 0;"
+                      (click)="removeBrandCategoryImage(i, img.url)">
+                      <svg height="18" width="18" fill="none" stroke-width="1.5" stroke="currentColor"
+                        viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12"></path>
+                      </svg>
+                    </div>
+                    <img src="{{base}}{{img.url}}" class="rounded-top object-fit-cover h-100 w-100" />
+                  </div>
+                  <div class="card-body p-2">
+                    <input type="text" class="form-control form-control-sm" [value]="img.title"
+                      (input)="updateImageTitle(i, j, $event)" placeholder="Image title" />
+                  </div>
+                  <div class="card-body p-2">
+                    <input type="text" class="form-control form-control-sm" [value]="img.redirection"
+                      (input)="updateImageRedirection(i, j, $event)" placeholder="Image Redirection" />
+                  </div>
+                </div>
+              </div>
+
+              <!-- Add New Image -->
+              <div class="col-lg-3 mb-3">
+                <div class="ratio ratio-1x1 h-auto w-100 rounded">
+                  <app-assets (mediaClicked)="addBrandCategoryImage(i, $event)" [previewEnabled]="false"></app-assets>
                 </div>
               </div>
             </div>

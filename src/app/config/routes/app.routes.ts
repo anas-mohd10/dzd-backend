@@ -52,6 +52,8 @@ const wishlist = '/wishlist'
 export const appRoutes = {
   BASE: environment.base,
   DASHBOARD: `${app}${dashboardRoute}`,
+  albums: `${app}/albums`,
+  galleries: `${app}/galleries`,
   brand: {
     ADD_BRAND: `${app}${brandRoute}/add`,
     BRAND_LIST: `${app}${brandRoute}`,
@@ -312,11 +314,13 @@ export const appRoutes = {
   timerSettings: `${app}/timer-settings`,
   bulk: {
     import: `${app}/bulk-upload`,
+    export: `${app}/export-logs`,
   },
   pageCovers: `${app}/page-covers`,
   replaceRequests: `${app}/replace-requests`,
   guestCustomers: `${app}/guests`,
   shippingCharges: `${app}/shipping-charges`,
+  shippingGateways: `${app}/shipping-gateways`,
   staticPages: {
     list: `${app}/static-pages`,
     create: `${app}/static-pages/add`,
@@ -339,6 +343,7 @@ export const appRoutes = {
   appKeys: `${app}/app-keys`,
   toasts: `${app}/toasts`,
   formSettings: `${app}/form-settings`,
+  currencySettings: `${app}/currency-settings`,
   pickupLocations: {
     list: `${app}/pickup-locations`,
     create: `${app}/pickup-locations/add`,

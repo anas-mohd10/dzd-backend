@@ -809,16 +809,22 @@
                                 <div class="col-lg-7">
                                     <form [formGroup]="widgetForm">
                                         <div>
-                                            <a target="_blank"
-                                                href="{{getDomain(settings?.domain)}}{{widgetImagePreview.redirection}}">
+                                            <a target="_blank" href="{{ widgetImagePreview?.redirectionType === 'web-links' 
+            ? widgetImagePreview.redirection 
+            : getDomain(settings?.domain) + widgetImagePreview.redirection }}">
                                                 <svg height="18" width="18" data-slot="icon" fill="none"
                                                     stroke-width="1.5" stroke="currentColor" viewBox="0 0 24 24"
                                                     xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
                                                     <path stroke-linecap="round" stroke-linejoin="round"
                                                         d="m18.375 12.739-7.693 7.693a4.5 4.5 0 0 1-6.364-6.364l10.94-10.94A3 3 0 1 1 19.5 7.372L8.552 18.32m.009-.01-.01.01m5.699-9.941-7.81 7.81a1.5 1.5 0 0 0 2.112 2.13">
                                                     </path>
-                                                </svg> {{getDomain(settings?.domain)}}{{widgetImagePreview.redirection}}
+                                                </svg>
+
+                                                {{ widgetImagePreview?.redirectionType === 'web-links'
+                                                ? widgetImagePreview.redirection
+                                                : getDomain(settings?.domain) + widgetImagePreview.redirection }}
                                             </a>
+
                                         </div>
                                         <div class="mt-2 d-flex align-items-center justify-content-end">
                                             <div class="d-flex align-items-center justify-content-end gap-2">
@@ -859,6 +865,7 @@
                                                     <option *ngFor="let redirectionItem of redirectionItems"
                                                         value="{{redirectionItem?.value}}">{{redirectionItem?.key}}
                                                     </option>
+                                                    
                                                 </select>
                                             </div>
                                         </div>
@@ -867,7 +874,7 @@
                                                 <label for="redirectionSearch" class="form-label">Redirection</label>
                                                 <input *ngIf="widgetForm.get('redirectionType')?.value == 'web-links'"
                                                     type="text" id="redirectionSearch" placeholder="Enter web URL"
-                                                    class="form-control" [formControl]="redirectionQuery">
+                                                    class="form-control" formControlName="redirection">
                                                 <input
                                                     *ngIf="widgetForm.get('redirectionType')?.value == 'search-filters'"
                                                     type="text" id="redirectionSearch" placeholder="Search redirections"
@@ -962,6 +969,12 @@
                     <div *ngIf="widgetDetails?.widgetType == 'blogs'">
                         <app-blogs [widgetBlogItems]="widgetBlogs"
                             (widgetBlogsChange)="widgetBlogsChange($event)"></app-blogs>
+                    </div>
+
+                    <div *ngIf="widgetDetails?.widgetType == 'clickpulse-panel'" class="mt-4">
+                        <app-clickpulse-panel [tabs]="widgetDetails?.tabs || []"
+                            (handleClickpulse)="onClickPulseChange($event)">
+                        </app-clickpulse-panel>
                     </div>
 
                     <div *ngIf="widgetDetails?.widgetType == 'insight-hub'">
@@ -1168,6 +1181,64 @@
                                 </div>
                             </div>
                         </form>
+                    </div>
+
+                    <div *ngIf="widgetDetails?.widgetType == 'key-points-grid'">
+                        <div class="row">
+                            <div class="col-lg-4">
+                                <div class="fs-3 fw-bold mb-4">Items</div>
+                                <div class="position-relative my-3" *ngFor="let keyPoint of keyPoints; let i = index">
+                                    <div class="d-flex align-items-center justify-content-start gap-2">
+                                        <img height="80" width="80" class="rounded border border-secondary"
+                                            src="{{base}}{{keyPoint.icon}}" alt="keyPoint"
+                                            onerror="this.src = 'assets/images/default.png'">
+                                        <div>
+                                            <div class="fs-5">{{keyPoint.title}}</div>
+                                            <div class="text-muted">{{keyPoint.description}}</div>
+                                            <button class="btn btn-danger p-1 mt-2" (click)="removeKeyPoints(i)">
+                                                Remove
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-8">
+                                <div class="fs-3 fw-bold mb-4">Add Items</div>
+                                <form [formGroup]="keyPointForm">
+                                    <div class="row">
+                                        <div class="col-lg-3 position-relative">
+                                            <div class="ratio ratio-1x1">
+                                                <app-assets (mediaClicked)="handleKeyPointThumbnail($event)"
+                                                    [previewDetails]="keyPointThumbnail">
+                                                </app-assets>
+                                            </div>
+                                            <button *ngIf="keyPointThumbnail"
+                                                class="btn btn-danger p-1 position-absolute mb-2 bottom-0 start-50 translate-middle-x"
+                                                (click)="removeKeyPointThumbnail()">
+                                                Remove
+                                            </button>
+                                        </div>
+                                        <div
+                                            class="col-lg-9 d-flex flex-column align-items-center justify-content-between">
+                                            <div class="form-group w-100">
+                                                <label for="keyPointTitle" class="fs-6 required mb-1">Title</label>
+                                                <input type="text" class="form-control" id="keyPointTitle"
+                                                    formControlName="title">
+                                            </div>
+                                            <div class="form-group w-100">
+                                                <label for="keyPointDescription"
+                                                    class="fs-6 required mb-1">Description</label>
+                                                <input type="text" name="keyPointDescription"
+                                                    formControlName="description" class="form-control">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="d-flex align-items-center justify-content-end mt-4">
+                                        <button class="btn btn-secondary" (click)="saveKeyPoints()">Continue</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
                     </div>
 
                     <div

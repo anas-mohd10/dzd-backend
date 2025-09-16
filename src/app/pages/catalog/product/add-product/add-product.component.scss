@@ -3,6 +3,59 @@ label,
   font-weight: normal !important;
 }
 
+.addOnProductName{
+  width: 240px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  line-clamp: 1;
+}
+
+.addOnName{
+  width: 120px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  line-clamp: 1;
+}
+
+.addOnOptionDetails{
+  width: 240px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  line-clamp: 1;
+}
+
+//Table designs
+.table {
+  background: #ffffff;
+  font-size: 15px;
+
+  tbody {
+
+    tr {
+
+      td {
+        vertical-align: middle;
+      }
+    }
+  }
+
+  thead {
+
+    tr {
+
+      th {
+        font-weight: 400 !important;
+      }
+    }
+
+    background: #E4E7F4;
+  }
+}
+//Table designs
+
 .icons{
   display: grid;
   grid-template-columns: repeat(8, 1fr);
