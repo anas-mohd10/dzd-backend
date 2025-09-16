@@ -58,6 +58,7 @@ import { GalleriesComponent } from './marketing/galleries/galleries.component';i
 import { ShippingGatewaysComponent } from './settings/general/shipping-gateways/shipping-gateways.component';
 export const Routing: Routes = [
   {
+
     path: 'app',
     children: [
       {
@@ -254,6 +255,11 @@ export const Routing: Routes = [
         path: 'invoice-settings',
         loadChildren: () => import('./settings/general/invoice-settings/invoice-settings.module').then((m) => m.InvoiceSettingsModule),
         canActivate: [AuthenticationGuard, PermissionGuard]
+      },
+      {
+        path: 'erp-settings',
+        loadChildren: () => import('./settings/general/erp-settings/erp-settings.module').then((m) => m.ErpSettingsModule),
+        canActivate: [AuthenticationGuard]
       }, {
         path: 'create-products',
         component: CreateProductsComponent,
