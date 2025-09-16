@@ -156,11 +156,11 @@ export const appRoutes = {
     ADD_INVOICE_SETTINGS: `${app}${invoiceSettingRoute}/add`,
     UPDATE_INVOICE_SETTINGS: `${app}${invoiceSettingRoute}/update`
   },
-  erpSettings: {
-    ERP_SETTINGS_LIST: `${app}${erpSettingRoute}`,
-    ADD_ERP_SETTINGS: `${app}${erpSettingRoute}/add`,
-    UPDATE_ERP_SETTINGS: `${app}${erpSettingRoute}/update`
-  },
+  // erpSettings: {
+  //   ERP_SETTINGS_LIST: `${app}${erpSettingRoute}`,
+  //   ADD_ERP_SETTINGS: `${app}${erpSettingRoute}/add`,
+  //   UPDATE_ERP_SETTINGS: `${app}${erpSettingRoute}/update`
+  // },
   banner: {
     BANNER_LIST: `${app}${bannerRoute}`,
     ADD_BANNER: `${app}${bannerRoute}/add`,

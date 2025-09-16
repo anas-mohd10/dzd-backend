@@ -257,11 +257,7 @@ export const Routing: Routes = [
         loadChildren: () => import('./settings/general/invoice-settings/invoice-settings.module').then((m) => m.InvoiceSettingsModule),
         canActivate: [AuthenticationGuard, PermissionGuard]
       },
-      {
-        path: 'erp-settings',
-        loadChildren: () => import('./settings/general/erp-settings/erp-settings.module').then((m) => m.ErpSettingsModule),
-        canActivate: [AuthenticationGuard]
-      }, {
+     {
         path: 'create-products',
         component: CreateProductsComponent,
         canActivate: [AuthenticationGuard]
