@@ -23,9 +23,7 @@ export const orderEndpoints = {
    updateOrderStatus: '/update-status',
    // cancelOrderDetails: '/cancel-order-details',
    cancelOrder: '/cancelOrder',
-   updateOrderProducts: '/update-order-products',
    orderCounts: '/order-counts',
-   updateProductPayement: '/update-product-payment',
    manageTags: '/manage-tags',
    invoiceDetails: '/invoice-details',
    exportOrderTabs: '/export-order-tabs',
@@ -35,5 +33,4 @@ export const orderEndpoints = {
    customerOrders: '/customerOrders',
    bulkAcceptOrders: '/bulkAcceptOrders',
    bulkUpdateOrders: '/bulkUpdateOrders',
-   retryPayment: '/retryPayment'
 };

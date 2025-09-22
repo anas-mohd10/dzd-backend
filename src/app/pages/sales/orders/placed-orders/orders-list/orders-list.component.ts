@@ -120,7 +120,6 @@ export class OrdersListComponent implements OnInit {
   acceptedOrders: Array<string> = ['ACCEPTED']
   cancelledOrders: Array<string> = ['CANCELLED', 'PENDING', 'FAILED']
   tagOptions: string[] = []
-  domainUrl: string = ''
   settings: any;
 
   constructor(
@@ -260,7 +259,6 @@ export class OrdersListComponent implements OnInit {
           this.settings = res?.result;
           this.invoiceUrl = res?.result?.domainUrl + '/api/v1/w/admin/auth/generate-invoices/';
           this.packingSlipUrl = res?.result?.domainUrl + '/api/v1/w/admin/auth/generate-packingslips/';
-          this.domainUrl = res?.result?.domainUrl + '/api/v1/w/admin/auth/generate-invoice/';
           this.ChangeDetectorRef.markForCheck();
         }
       },

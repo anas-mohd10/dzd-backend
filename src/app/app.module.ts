@@ -32,8 +32,6 @@ import { TimeslotsComponent } from './pages/settings/general/timeslots/timeslots
 import { EnquiresComponent } from './pages/sales/enquires/enquires.component';
 import { CommonModule } from '@angular/common';
 import { SwiperModule } from 'swiper/angular';
-import { GenerateInvoiceComponent } from './pages/generate-invoice/generate-invoice.component';
-import { PackingSlipComponent } from './pages/packing-slip/packing-slip.component';
 import { CDK_DRAG_CONFIG } from '@angular/cdk/drag-drop';
 import { NgApexchartsModule } from "ng-apexcharts";
 import { DynamicScriptsComponent } from './pages/settings/general/dynamic-scripts/dynamic-scripts.component';
@@ -76,8 +74,6 @@ import { MailerDetailsComponent } from './pages/settings/general/mailer-details/
 import { SmsTemplatesComponent } from './pages/settings/general/sms-templates/sms-templates.component';
 import { GuestsComponent } from './pages/users/guests/guests.component';
 import { ShippingChargeComponent } from './pages/settings/general/shipping-charge/shipping-charge.component';
-import { BulkInvoicesComponent } from './pages/bulk-invoices/bulk-invoices.component';
-import { BulkPackingSlipsComponent } from './pages/bulk-packing-slips/bulk-packing-slips.component';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { AccordionModule } from 'ngx-bootstrap/accordion';
 import { PageCoversComponent } from './pages/page-covers/page-covers.component';
@@ -129,8 +125,6 @@ const DragConfig = {
     SeoDetailsComponent,
     TimeslotsComponent,
     EnquiresComponent,
-    GenerateInvoiceComponent,
-    PackingSlipComponent,
     DynamicScriptsComponent,
     AnalyticsComponent,
     FeedsComponent,
@@ -159,8 +153,6 @@ const DragConfig = {
     MailerDetailsComponent,
     GuestsComponent,
     ShippingChargeComponent,
-    BulkInvoicesComponent,
-    BulkPackingSlipsComponent,
     PageCoversComponent,
     PaymentSettingsComponent,
     CreateProductsComponent,
