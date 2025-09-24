@@ -34,6 +34,7 @@ import { GuestsComponent } from './users/guests/guests.component';
 import { ShippingChargeComponent } from './settings/general/shipping-charge/shipping-charge.component';
 import { PageCoversComponent } from './page-covers/page-covers.component';
 import { PaymentSettingsComponent } from './settings/general/payment-settings/payment-settings.component';
+import { ErpSettingsComponent } from './settings/general/erp-settings/erp-settings.component';
 import { CreateProductsComponent } from './catalog/product/create-products/create-products.component';
 import { ShippingRulesComponent } from './settings/general/shipping-rules/shipping-rules.component';
 import { InternationalisationComponent } from './settings/general/internationalisation/internationalisation.component';
@@ -58,6 +59,7 @@ import { GalleriesComponent } from './marketing/galleries/galleries.component';i
 import { ShippingGatewaysComponent } from './settings/general/shipping-gateways/shipping-gateways.component';
 export const Routing: Routes = [
   {
+
     path: 'app',
     children: [
       {
@@ -254,7 +256,8 @@ export const Routing: Routes = [
         path: 'invoice-settings',
         loadChildren: () => import('./settings/general/invoice-settings/invoice-settings.module').then((m) => m.InvoiceSettingsModule),
         canActivate: [AuthenticationGuard, PermissionGuard]
-      }, {
+      },
+     {
         path: 'create-products',
         component: CreateProductsComponent,
         canActivate: [AuthenticationGuard]
@@ -367,6 +370,10 @@ export const Routing: Routes = [
         path: 'payment-settings',
         component: PaymentSettingsComponent,
         canActivate: [AuthenticationGuard, PermissionGuard]
+      }, {
+        path: 'erp-settings',
+        component: ErpSettingsComponent,
+        canActivate: [AuthenticationGuard]
       }, {
         path: 'order-settings',
         component: OrderSettingsComponent,

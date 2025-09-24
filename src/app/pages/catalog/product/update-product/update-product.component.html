@@ -515,7 +515,7 @@
 
               <div class="d-flex align-items-center justify-content-center gap-2">
                 <button class="btn border border-primary bg-white text-primary" (click)="toggleTab(1)">Back</button>
-                <button class="btn btn-primary" (click)="toggleTab(3)">Continue</button>
+                <button class="btn btn-primary" (click)="toggleTab(4)">Continue</button>
               </div>
             </tab>
             <tab heading="Product Medias">
@@ -526,6 +526,7 @@
                     <div id="videoThumbnail">
                       <div class="ratio ratio-1x1 h-auto w-100 rounded">
                         <app-assets [image]="'contain'" [previewDetails]="videoThumbnailPreview"
+                          [lazyLoad]="true" [visibilityTrigger]="activeTabIndex === 1"
                           (mediaClicked)="productVideoThumbnailClicked($event)"></app-assets>
                       </div>
                     </div>
@@ -543,6 +544,7 @@
                     throughout all the PDP design.</p>
                   <div class="ratio position-relative" style="--bs-aspect-ratio: 25%;">
                     <app-assets id="productBanner" [previewDetails]="productBannerDetails"
+                      [lazyLoad]="true" [visibilityTrigger]="activeTabIndex === 1"
                       (mediaClicked)="handleProductBanner($event)">
                     </app-assets>
                     <div class="position-absolute m-2 top-0 end-0" *ngIf="productBannerDetails">
@@ -557,7 +559,8 @@
                     <div class="col-lg-2">
                       <div class="ratio ratio-1x1 h-auto w-100 rounded">
                         <app-assets (mediaClicked)="productMediaClicked($event)" [image]="'cover'" [multiSelect]="true"
-                          [previewEnabled]="false" [selectedItems]="images"></app-assets>
+                          [previewEnabled]="false" [selectedItems]="images"
+                          [lazyLoad]="true" [visibilityTrigger]="activeTabIndex === 1"></app-assets>
                       </div>
                     </div>
                     <ng-container *ngFor="let image of images">
@@ -595,6 +598,7 @@
                       <ng-template #thumbnailUpload>
                         <div class="ratio ratio-1x1 h-auto w-100 rounded">
                           <app-assets [image]="'contain'" [previewDetails]="thumbnailPreview"
+                            [lazyLoad]="true" [visibilityTrigger]="activeTabIndex === 1"
                             (mediaClicked)="productThumbnailClicked($event)"></app-assets>
                         </div>
                       </ng-template>
@@ -619,7 +623,8 @@
                     </div>
                     <div class="col-lg-2">
                       <div class="ratio ratio-1x1 h-auto w-100 rounded">
-                        <app-assets (mediaClicked)="productIconClicked($event)" [previewEnabled]="false">
+                        <app-assets (mediaClicked)="productIconClicked($event)" [previewEnabled]="false"
+                          [lazyLoad]="true" [visibilityTrigger]="activeTabIndex === 1">
                         </app-assets>
                       </div>
                     </div>
@@ -642,7 +647,8 @@
                     </div>
                     <div class="col-lg-2">
                       <div class="ratio ratio-1x1 h-auto w-100 rounded">
-                        <app-assets (mediaClicked)="handleTagIcons($event)" [previewEnabled]="false">
+                        <app-assets (mediaClicked)="handleTagIcons($event)" [previewEnabled]="false"
+                          [lazyLoad]="true" [visibilityTrigger]="activeTabIndex === 1">
                         </app-assets>
                       </div>
                     </div>
@@ -652,7 +658,7 @@
 
               <div class="d-flex align-items-center justify-content-center gap-2">
                 <button class="btn border border-primary bg-white text-primary" (click)="toggleTab(2)">Back</button>
-                <button class="btn btn-primary" (click)="toggleTab(4)">Continue</button>
+                <button class="btn btn-primary" (click)="toggleTab(5)">Continue</button>
               </div>
             </tab>
             <tab heading="Add Ons">
@@ -722,7 +728,13 @@
                     Enable Add Ons here
                   </a>
                 </div>
+
+               
               </ng-container>
+              <div class="d-flex align-items-center justify-content-center gap-2">
+                <button class="btn border border-primary bg-white text-primary" (click)="toggleTab(2)">Back</button>
+                <button class="btn btn-primary" (click)="toggleTab(6)">Continue</button>
+              </div>
             </tab>
             <tab heading="SEO Details">
               <div class="my-6">
@@ -913,7 +925,8 @@
             <div class="row">
               <div class="col-lg-12 d-flex justify-content-end">
                 <div class="ratio ratio-1x1 h-auto w-25 rounded">
-                  <app-assets (mediaClicked)="handleAttributeImage($event)" [image]="'cover'" [previewEnabled]="false">
+                  <app-assets (mediaClicked)="handleAttributeImage($event)" [image]="'cover'" [previewEnabled]="false"
+                    [lazyLoad]="false">
                   </app-assets>
                 </div>
               </div>

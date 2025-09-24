@@ -215,7 +215,7 @@ export class CountriesComponent implements OnInit {
   }
 
   downloadSampleFile() {
-    const filePath: string = `../../../../../../assets/files/locations.csv`
+    const filePath: string = `../../../../../../admin/assets/files/locations.csv`
     this.HttpClient.get(filePath, { responseType: 'blob' })
       .subscribe(
         (response: Blob) => {

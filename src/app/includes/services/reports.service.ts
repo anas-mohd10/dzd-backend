@@ -96,6 +96,18 @@ export class ReportsService {
     return this.http.get(`${url}`);
   }
 
+  generateCouponUsageReport(params: any) {
+    const url = this.commonService.getFullUrl(reportsEndpoints.couponUsageReport);
+    const queryParams = { ...params };
+    if (queryParams.brands && Array.isArray(queryParams.brands)) {
+      queryParams.brands = queryParams.brands.join(',');
+    }
+    if (queryParams.categories && Array.isArray(queryParams.categories)) {
+      queryParams.categories = queryParams.categories.join(',');
+    }
+    return this.http.get(url, { params: queryParams, responseType: 'blob' as 'json' });
+  }
+
   productWiseDetailedOrderReport(query: any) {
     const url = this.commonService.getFullUrl(this.productReportEndpoints.productWiseDetailedOrderReport);
     return this.http.post(`${url}`, query);

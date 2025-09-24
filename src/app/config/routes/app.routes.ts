@@ -21,6 +21,7 @@ const couponRoute = '/coupons'
 const contactRoute = '/contacts'
 const socialMediaRoute = "/social-media"
 const invoiceSettingRoute = "/invoice-settings"
+const erpSettingRoute = "/erp-settings"
 const productReportRoute = "/product-report"
 const customerReportRoute = "/customer-report"
 const orderReportRoute = "/order-report"
@@ -155,6 +156,11 @@ export const appRoutes = {
     ADD_INVOICE_SETTINGS: `${app}${invoiceSettingRoute}/add`,
     UPDATE_INVOICE_SETTINGS: `${app}${invoiceSettingRoute}/update`
   },
+  // erpSettings: {
+  //   ERP_SETTINGS_LIST: `${app}${erpSettingRoute}`,
+  //   ADD_ERP_SETTINGS: `${app}${erpSettingRoute}/add`,
+  //   UPDATE_ERP_SETTINGS: `${app}${erpSettingRoute}/update`
+  // },
   banner: {
     BANNER_LIST: `${app}${bannerRoute}`,
     ADD_BANNER: `${app}${bannerRoute}/add`,
@@ -321,6 +327,7 @@ export const appRoutes = {
     update: `${app}/static-pages/update`
   },
   paymentSettings: `${app}/payment-settings`,
+  erpSettings: `${app}/erp-settings`,
   shippingRules: `${app}/shipping-rules`,
   internationalisation: `${app}/internationalization`,
   smsSettings: `${app}/sms-settings`,
