@@ -25,18 +25,23 @@ interface Media {
   templateUrl: './assets.component.html',
   styleUrls: ['./assets.component.scss']
 })
-export class AssetsComponent implements OnInit, OnChanges {
+export class AssetsComponent implements OnInit {
   modalRef?: BsModalRef
   page: number = 1;
   limit: number = 30
   totalPages: number = 1
   totalResults: number = 0
   medias: Array<any> = []
+  isLoadingMedias: boolean = false; // Add loading state
+  hasLoadedMedias: boolean = false; // Track if media has been loaded
+  
   @Input('previewDetails') previewDetails?: string;
   @Input('aspectRatio') aspectRatio: string;
   @Input('previewEnabled') previewEnabled?: boolean;
   @Input('image') image?: any;
   @Input('multiSelect') multiSelect: boolean = false; 
+  @Input('lazyLoad') lazyLoad: boolean = true; // Enable lazy loading by default
+  @Input('visibilityTrigger') visibilityTrigger?: boolean; // For conditional loading based on tab/section
   @Input('selectedItems') set selectedItems(items: Array<any>) {
     // Clear current selections
     this.selectedMedias.clear();
@@ -86,6 +91,7 @@ export class AssetsComponent implements OnInit, OnChanges {
   ) { }
 
   ngOnChanges(changes: SimpleChanges): void {
+    // Handle preview logic
     switch (this.previewEnabled) {
       case true:
         this.previewDetails ? this.preview = { path: this.previewDetails } : this.preview = null
@@ -97,11 +103,23 @@ export class AssetsComponent implements OnInit, OnChanges {
         this.previewDetails ? this.preview = { path: this.previewDetails } : this.preview = null
         break
     }
+    
+    // Handle visibility trigger changes for conditional loading
+    if (changes['visibilityTrigger'] && this.visibilityTrigger && this.lazyLoad && !this.hasLoadedMedias) {
+      this.getMedias();
+    }
+    
     this.ChangeDetectorRef.markForCheck()
   }
 
   ngOnInit(): void {
-    this.getMedias()
+    // Remove automatic media loading from ngOnInit for lazy loading
+    // Only load media if lazy loading is disabled
+    if (!this.lazyLoad) {
+      this.getMedias();
+    }
+    
+    // Handle preview logic
     switch (this.previewEnabled) {
       case true:
         this.previewDetails ? this.preview = { path: this.previewDetails } : this.preview = null
@@ -121,6 +139,12 @@ export class AssetsComponent implements OnInit, OnChanges {
       this.selectedMedias.clear();
       this.selectedPaths.clear();
     }
+    
+    // Lazy load media only when modal opens and hasn't been loaded yet
+    if (this.lazyLoad && !this.hasLoadedMedias && !this.isLoadingMedias) {
+      this.getMedias();
+    }
+    
     this.modalRef = this.BsModalService.show(template, { class: 'modal-xl modal-dialog-centered', ignoreBackdropClick: true })
   }
 
@@ -174,6 +198,7 @@ export class AssetsComponent implements OnInit, OnChanges {
       reader.readAsDataURL(file);
     }
   }
+  
   addMedias() {
     let formdata = new FormData();
     console.log('Files to upload:', this.files); // Log all files being uploaded
@@ -206,19 +231,42 @@ export class AssetsComponent implements OnInit, OnChanges {
     });
   }
 
+  // Method to manually trigger media loading for conditional scenarios
+  loadMediasIfVisible(): void {
+    if (!this.hasLoadedMedias && !this.isLoadingMedias) {
+      this.getMedias();
+    }
+  }
 
   getMedias() {
+    // Prevent multiple simultaneous calls
+    if (this.isLoadingMedias) {
+      return;
+    }
+    
+    this.isLoadingMedias = true;
     this.MediaService.getMedias({ keyword: this.keyword.value, page: this.page, limit: this.limit }).subscribe({
       next: (res: any) => {
         if (res?.errorCode == 0) {
           this.medias = res?.result?.data;
           this.totalPages = res?.result?.totalPages;
           this.totalResults = res?.result?.totalResults;
+          this.hasLoadedMedias = true; // Mark as loaded
           this.ChangeDetectorRef.markForCheck();
         }
+      },
+      error: (err: any) => {
+        console.error('Error loading media:', err);
+        this.Toast.error('Failed to load media');
+      },
+      complete: () => {
+        this.isLoadingMedias = false;
+        this.ChangeDetectorRef.markForCheck();
       }
     })
   }
+
+
 
   // Check if a media item is selected by ID or path
   isMediaSelected(media: Media): boolean {
@@ -274,7 +322,6 @@ export class AssetsComponent implements OnInit, OnChanges {
     
     this.ChangeDetectorRef.markForCheck();
   }
-
 
    // Check if the file is an image
    isImageFile(path: string): boolean {

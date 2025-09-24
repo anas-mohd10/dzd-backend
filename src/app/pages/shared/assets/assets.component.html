@@ -2,17 +2,6 @@
   class="position-relative cursor-pointer h-100 w-100"
   (click)="open(template)"
 >
-  <!-- <img
-    *ngIf="preview"
-    src="{{ base }}{{ preview?.path }}"
-    alt="{{ preview?.title }}"
-    class="bg-white top-0 start-0 position-absolute border border-secondary w-100 h-100 rounded"
-    [ngClass]="{
-      'object-fit-cover': image == 'cover',
-      'object-fit-contain': !image
-    }"
-  /> -->
-
   <!-- Image Preview -->
   <img
     *ngIf="preview && (preview.type === 'image' || isImageFile(preview?.path))"
@@ -40,9 +29,6 @@
     preload="metadata"
    
   >
-  <!-- (error)="setDefaultImage($event)"
-  (error)="setDefaultVideoPreview($event)" -->
-    <!-- <source src="{{ preview.url }}" type="video/mp4" /> -->
     <source
       src="{{ base }}{{ preview.url }}"
       type="video/{{ getFileExtension(preview.path) }}"
@@ -107,7 +93,18 @@
           />
         </div>
 
-        <div class="my-4">
+        <!-- Loading State -->
+        <div *ngIf="isLoadingMedias" class="my-4 text-center">
+          <div class="d-flex align-items-center justify-content-center">
+            <div class="spinner-border text-primary me-3" role="status">
+              <span class="visually-hidden">Loading...</span>
+            </div>
+            <span class="text-muted">Loading media assets...</span>
+          </div>
+        </div>
+
+        <!-- Media Grid -->
+        <div class="my-4" *ngIf="!isLoadingMedias">
           <div class="assets">
             <ng-container *ngFor="let media of medias; let i = index">
               <div
@@ -139,11 +136,6 @@
                     ></path>
                   </svg>
                 </div>
-                <!-- <img
-                  src="{{ base }}{{ media?.path }}"
-                  alt="{{ media?.title }}"
-                  onerror="this.src = 'assets/images/default.png'"
-                /> -->
 
                 <img
                   *ngIf="isImageFile(media.path)"
@@ -176,11 +168,14 @@
             </ng-container>
           </div>
 
-          <div *ngIf="medias.length == 0">
+          <!-- No Results State -->
+          <div *ngIf="medias.length == 0 && hasLoadedMedias && !isLoadingMedias">
             <app-no-results></app-no-results>
           </div>
 
+          <!-- Pagination -->
           <app-pagination
+            *ngIf="medias.length > 0"
             (pageTrigger)="onPageTriggered($event)"
             [totalResults]="totalResults"
             [totalPages]="totalPages"
@@ -250,7 +245,6 @@
                       ></path>
                     </svg>
                   </div>
-                  <!-- <img src="{{ preview.url }}" alt="{{ preview.title }}" /> -->
 
                   <img
                     *ngIf="!preview.type || preview.type === 'image'"

@@ -129,6 +129,7 @@ export class UpdateProductComponent implements OnInit {
   brandDetails: any;
   previewDetails: any;
   @ViewChild('staticTabs', { static: false }) staticTabs?: TabsetComponent;
+  activeTabIndex: number = 0; // Track active tab for conditional loading
   searchKeywords: Array<string> = [];
   searchKeyword: FormControl = new FormControl('');
   relatedProducts: Array<{ name: string, thumbnail: string, sku: string, _id: string }> = [];
@@ -1137,7 +1138,22 @@ export class UpdateProductComponent implements OnInit {
   toggleTab(index: number) {
     if (this.staticTabs?.tabs[index]) {
       this.staticTabs.tabs[index].active = true;
+      this.activeTabIndex = index;
+      
+      // Trigger conditional loading for assets components when "Product Medias" tab (index 1) is activated
+      if (index === 1) {
+        this.triggerMediasTabLoading();
+      }
     }
+  }
+
+  // Method to trigger loading for assets components in the Product Medias tab
+  private triggerMediasTabLoading(): void {
+    // Use setTimeout to ensure the tab content is rendered before triggering loading
+    setTimeout(() => {
+      // This will be handled by the template using the activeTabIndex property
+      this.ChangeDetectorRef.detectChanges();
+    }, 100);
   }
 
   toggleSearchKeywords(event: any, type: string) {
