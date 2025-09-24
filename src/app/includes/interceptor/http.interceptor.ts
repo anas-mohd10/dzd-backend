@@ -19,6 +19,7 @@ export class HttpInterceptor implements HttpInterceptor {
     let timezone: string = Intl.DateTimeFormat().resolvedOptions().timeZone; //Get the timezone
 
     request = request.clone({
+      withCredentials: false,
       setHeaders: {
         Timezone: timezone,
         Authorization: `Bearer ${token}`,
