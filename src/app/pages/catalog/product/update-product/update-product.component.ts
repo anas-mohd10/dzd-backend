@@ -325,7 +325,7 @@ export class UpdateProductComponent implements OnInit {
   fetchHistory() {
     this.isLoadingHistory = true;
     this.ChangeDetectorRef.markForCheck();
-    
+
     this.ProductService.getProductHistory(
       this.productDetails._id,
       this.historyPageIndex,
@@ -617,7 +617,7 @@ export class UpdateProductComponent implements OnInit {
   // This function is used to open the manage add-on modal
   openManageAddOns(template: TemplateRef<any>, type: 'add' | 'edit', index: number | null) {
     this.manageAddOnsRef = this.BsModalService.show(template, { class: 'modal-dialog-centered modal-xl', ignoreBackdropClick: true });
-    
+
     if (type == 'edit' && index !== null) {
       // Edit mode: populate form with existing data
       this.addOnForm.patchValue({ ...this.addOns[index] });
@@ -634,7 +634,7 @@ export class UpdateProductComponent implements OnInit {
       this.isItemSubmitted = false;
       this.resetVars();
     }
-    
+
     this.ChangeDetectorRef.markForCheck();
   }
 
@@ -941,28 +941,40 @@ export class UpdateProductComponent implements OnInit {
     // Set flag to disable the button
     this.isSaving = true;
 
+    // Filter out any invalid addOns (non-objects or null values)
+    this.addOns = this.addOns.filter((addOn: any) => typeof addOn === 'object' && addOn !== null);
+
     this.addOns.forEach((addOn: any) => {
-      addOn.options = addOn.options.map((option: any) => ({
-        ...option,
-        product: typeof option.product == 'string' ? option.product : option.product?._id,
-      }));
+      // Ensure addOn is an object before processing
+      if (typeof addOn === 'object' && addOn !== null) {
+        // Ensure addOn.options is an array before processing
+        if (Array.isArray(addOn.options)) {
+          addOn.options = addOn.options.map((option: any) => ({
+            ...option,
+            product: typeof option.product == 'string' ? option.product : option.product?._id,
+          }));
 
-      addOn.options.forEach((option: any) => {
-        if (option._id) {
-          return option
+          addOn.options.forEach((option: any) => {
+            if (option._id) {
+              return option
+            } else {
+              // Remove the _id from the option object
+              delete option._id
+              return option
+            }
+          });
         } else {
-          // Remove the _id from the option object
-          delete option._id
-          return option
+          // Initialize as empty array if options is not an array
+          addOn.options = [];
         }
-      });
 
-      if (addOn._id) {
-        return addOn
-      } else {
-        // Remove the _id from the addOn object
-        delete addOn._id
-        return addOn
+        if (addOn._id) {
+          return addOn
+        } else {
+          // Remove the _id from the addOn object
+          delete addOn._id
+          return addOn
+        }
       }
     });
     const payload ={
@@ -1139,7 +1151,7 @@ export class UpdateProductComponent implements OnInit {
     if (this.staticTabs?.tabs[index]) {
       this.staticTabs.tabs[index].active = true;
       this.activeTabIndex = index;
-      
+
       // Trigger conditional loading for assets components when "Product Medias" tab (index 1) is activated
       if (index === 1) {
         this.triggerMediasTabLoading();
