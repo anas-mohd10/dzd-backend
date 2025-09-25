@@ -34,7 +34,7 @@
                 <tr *ngFor="let country of dbCountries">
                     <td>{{ country.name }}</td>
                     <td>{{ country.code }}</td>
-                    <td>{{"+"}}{{country.phoneCode}}</td>
+                    <td>{{country.phoneCode}}</td>
                     <td>
                         <div class="d-flex align-items-center justify-content-start gap-2">
                             <button routerLink="{{appRoute.states + '/' + country._id}}"
@@ -93,7 +93,7 @@
 
             <div class="form-group my-4">
                 <label for="phoneCode" class="fs-6 mb-3">Phone Code</label>
-                <input type="text" class="form-control" formControlName="phoneCode" placeholder="Enter Phone Code (e.g., 91 for +91)">
+                <input type="text" class="form-control" formControlName="phoneCode" placeholder="Enter Phone Code">
             </div>
             <div class="d-flex align-items-center justify-content-end gap-2">
                 <button class="btn btn-secondary" (click)="close()">Cancel</button>

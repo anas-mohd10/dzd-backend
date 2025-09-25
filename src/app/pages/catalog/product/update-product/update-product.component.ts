@@ -480,7 +480,7 @@ export class UpdateProductComponent implements OnInit {
     if (this.addOnOptionForm.value.discountMethod == 'amount') {
       this.addOnOptionForm.get('discountAmount')?.removeValidators([Validators.required, Validators.pattern(/^\d+(\.\d{1,2})?$/)]);
       this.addOnOptionForm.get('discountAmount')?.updateValueAndValidity();
-      this.addOnOptionForm.patchValue({ discountAmount: 0, price: this.addOnDoc?.price.selling })
+      this.addOnOptionForm.patchValue({ discountAmount: 0, price: this.addOnDoc?.price?.selling })
     } else {
       // Add validation for the discount amount
       let validators = [Validators.required, Validators.pattern(/^\d+(\.\d{1,2})?$/)];
@@ -591,7 +591,7 @@ export class UpdateProductComponent implements OnInit {
       return;
     }
 
-    if (this.addOnOptions.length == 0) {
+    if (this.addOnOptions?.length == 0) {
       this.HotToastService.error('Please add at least one option');
       return;
     }
@@ -838,7 +838,7 @@ export class UpdateProductComponent implements OnInit {
 
 
   removeProductMedia(image: any) {
-    this.images = this.images.filter((item: any) => item?._id != image?._id);
+    this.images = this.images?.filter((item: any) => item?._id != image?._id);
   }
 
   productThumbnailClicked(event: any) {
@@ -1151,7 +1151,6 @@ export class UpdateProductComponent implements OnInit {
     if (this.staticTabs?.tabs[index]) {
       this.staticTabs.tabs[index].active = true;
       this.activeTabIndex = index;
-
       // Trigger conditional loading for assets components when "Product Medias" tab (index 1) is activated
       if (index === 1) {
         this.triggerMediasTabLoading();
@@ -1202,7 +1201,7 @@ export class UpdateProductComponent implements OnInit {
     return this.form.controls;
   }
   generateSlug() {
-    const name = this.productDetails.name || '';
+    const name = this.productDetails?.name || '';
     let slug = name.toLowerCase().normalize('NFKD');
     slug = slug.replace(/\s+/g, '-');
     slug = slug.replace(/[^\u0600-\u06FFa-z0-9-]/g, '');
@@ -1301,7 +1300,7 @@ export class UpdateProductComponent implements OnInit {
           this.settings = res?.result;
           this.languages = res?.result?.languages;
 
-          this.settings.domain = this.settings.domain.endsWith('/') ? this.settings.domain : `${this.settings.domain}/`;
+          this.settings.domain = this.settings?.domain?.endsWith('/') ? this.settings?.domain : `${this.settings?.domain}/`;
 
           // If product details are already loaded, update the form with correct localization
           if (this.productDetails) {

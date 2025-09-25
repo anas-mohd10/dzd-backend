@@ -12,6 +12,8 @@ import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { reportsEndpoints } from 'src/app/config/endpoints';
 import { appRoutes } from 'src/app/config/routes';
 import { ProductService } from 'src/app/includes/services/product.service';
+import { BrandService } from 'src/app/includes/services/brand.service';
+import { CategoryService } from 'src/app/includes/services/category.service';
 import { ReportsService } from 'src/app/includes/services/reports.service';
 import { environment } from 'src/environments/environment';
 
@@ -37,6 +39,10 @@ export class ReportsListComponent implements OnInit {
   endDate: string = '';
   currentReportType: string = '';
   selectedOrderStatuses: string[] = [];
+  brands: any[] = [];
+  categories: any[] = [];
+  selectedBrands: any[] = [];
+  selectedCategories: any[] = [];
   orderStatusList: Array<any> = [
     { label: 'Placed', value: 'PLACED' },
     { label: 'Accepted', value: 'ACCEPTED' },
@@ -113,6 +119,11 @@ export class ReportsListComponent implements OnInit {
       title: 'Delivery Report',
       description: 'Get the data of customers with delivery details',
       type: 'deliveryReport',
+    },
+    {
+      title: 'Coupon Usage Report',
+      description: 'Get a report on coupon usage with various filters.',
+      type: 'coupon-usage-report',
     }
 
   ];
@@ -151,10 +162,15 @@ export class ReportsListComponent implements OnInit {
     private router: Router,
     private productService: ProductService,
     private modalService: BsModalService,
-    private toastService: HotToastService
+    private toastService: HotToastService,
+    private brandService: BrandService,
+    private categoryService: CategoryService
   ) { }
 
-  ngOnInit(): void { }
+  ngOnInit(): void {
+    this.fetchBrands();
+    this.fetchCategories();
+  }
 
 
   generateOtherReports(type: string) {
@@ -254,6 +270,18 @@ export class ReportsListComponent implements OnInit {
     }
   }
 
+  fetchBrands(){
+    this.brandService.getBrands(1, 1000).subscribe((res: any) => {
+      this.brands = res.data.results;
+    })
+  }
+
+  fetchCategories(){
+    this.categoryService.getCategories({}, 'active').subscribe((res: any) => {
+      this.categories = res.data.results;
+    })
+  }
+
 
 
   openDateRangeModal(reportType: string, template: TemplateRef<any>) {
@@ -280,6 +308,8 @@ export class ReportsListComponent implements OnInit {
     this.endDate = '';
     this.isCustomRange = false;
     this.selectedOrderStatuses = [];
+    this.selectedBrands = [];
+    this.selectedCategories = [];
   }
 
   toggleDateRange(dateRange: string) {
@@ -382,12 +412,31 @@ export class ReportsListComponent implements OnInit {
       case 'orders-time':
         this.generateOrdersTimeReport(params);
         break;
+      case 'coupon-usage-report':
+        this.generateCouponUsageReport(params);
+        break;
       default:
         this.generateReport(this.currentReportType, params);
         break;
     }
   }
 
+
+  generateCouponUsageReport(params: any) {
+    const payload = {
+      ...params,
+      brands: this.selectedBrands,
+      categories: this.selectedCategories
+    };
+    this.reportsService.generateCouponUsageReport(payload).subscribe({
+        next: (res: any) => {
+          this.toastService.success(res.message);
+        },
+        error: (err: any) => {
+          this.toastService.error(err?.error?.message);
+        },
+      });
+  }
 
   handleReportResponse(res: any) {
     if (res.errorCode === 0) {
