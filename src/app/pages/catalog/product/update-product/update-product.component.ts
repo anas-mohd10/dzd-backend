@@ -893,224 +893,219 @@ export class UpdateProductComponent implements OnInit {
 
   toggleAddOnItems() { }
 
-  saveChanges() {
+saveChanges() {
+  this.ChangeDetectorRef.markForCheck();
+
+  // ✅ Normalize slug
+  const currentSlug = this.form.get('slug')?.value;
+  if (currentSlug) {
+    this.form.get('slug')?.setValue(this.formatSlugForSave(currentSlug), { emitEvent: false });
+  }
+
+  // ✅ Ensure selling price sync if offer changes
+  const formPrice = this.form.get('price')?.value;
+  const productOffer = this.productDetails?.price?.offer;
+  if (formPrice?.offer !== productOffer) {
+    this.form.get('price')?.setValue(
+      { ...formPrice, selling: formPrice.offer },
+      { emitEvent: false }
+    );
+  }
+
+  // ✅ Validate categories
+  if (!this.categories?.length) {
+    this.HotToastService.error('Please add at least one category');
+    return;
+  }
+
+  // ✅ Validate form
+  if (!this.form.valid) {
+    this.isSubmitted = true;
+    this.isSaving = false;
     this.ChangeDetectorRef.markForCheck();
+    return;
+  }
 
+  // ✅ Disable save button
+  this.isSaving = true;
 
-    const currentSlug = this.form.get('slug')?.value;
-    if (currentSlug) {
-      const formattedSlug = this.formatSlugForSave(currentSlug);
-      this.form.get('slug')?.setValue(formattedSlug);
-    }
-    this.ChangeDetectorRef.markForCheck();
+  // ✅ Sanitize addOns
+// Sanitize addOns
+this.addOns = (this.addOns || [])
+  // ✅ Filter out invalid addOns (non-objects or null values)
+  .filter((addOn: any) => typeof addOn === 'object' && addOn !== null)
+  // ✅ Process each addOn
+  .map((addOn: any) => {
+    const sanitizedAddOn = { ...addOn };
 
-    if (
-      this.productDetails?.price?.offer == this.form.get('price')?.value?.offer
-    ) {
-    } else {
-      this.form.get('price')?.setValue({
-        mrp: this.form.get('price')?.value?.mrp,
-        offer: this.form.get('price')?.value?.offer,
-        selling: this.form.get('price')?.value?.offer,
-      });
-    }
-
-    if (
-      this.productDetails?.price?.offer == this.form.get('price')?.value?.offer
-    ) {
-    } else {
-      this.form.get('price')?.setValue({
-        mrp: this.form.get('price')?.value?.mrp,
-        offer: this.form.get('price')?.value?.offer,
-        selling: this.form.get('price')?.value?.offer,
-      });
-    }
-
-    if (this.categories && this.categories.length == 0) {
-      this.HotToastService.error('Please add at least one category');
-      return;
-    }
-
-    if (!this.form.valid) {
-      this.isSubmitted = true;
-      this.isSaving = false; // Re-enable button if form is invalid
-      this.ChangeDetectorRef.markForCheck();
-      return;
-    }
-
-    // Set flag to disable the button
-    this.isSaving = true;
-
-    // Filter out any invalid addOns (non-objects or null values)
-    this.addOns = this.addOns.filter((addOn: any) => typeof addOn === 'object' && addOn !== null);
-
-    this.addOns.forEach((addOn: any) => {
-      // Ensure addOn is an object before processing
-      if (typeof addOn === 'object' && addOn !== null) {
-        // Ensure addOn.options is an array before processing
-        if (Array.isArray(addOn.options)) {
-          addOn.options = addOn.options.map((option: any) => ({
+    // Ensure options is an array
+    sanitizedAddOn.options = Array.isArray(addOn.options)
+      ? addOn.options.map((option: any) => {
+          const sanitizedOption = {
             ...option,
-            product: typeof option.product == 'string' ? option.product : option.product?._id,
-          }));
+            product:
+              typeof option.product === 'string'
+                ? option.product
+                : option.product?._id,
+          };
 
-          addOn.options.forEach((option: any) => {
-            if (option._id) {
-              return option
-            } else {
-              // Remove the _id from the option object
-              delete option._id
-              return option
-            }
-          });
-        } else {
-          // Initialize as empty array if options is not an array
-          addOn.options = [];
-        }
+          // Remove _id if not present
+          if (!sanitizedOption._id) {
+            delete sanitizedOption._id;
+          }
 
-        if (addOn._id) {
-          return addOn
-        } else {
-          // Remove the _id from the addOn object
-          delete addOn._id
-          return addOn
-        }
-      }
-    });
-    const payload ={
-      ...this.form.value,
-      _id: this.productDetails?._id,
-      prodid: this.productDetails?.prodid,
-      slug: this.form.get('slug')?.value,
-      addOns: this.addOns,
-      files: this.images.map((file: any) => file.path),
-      relatedProducts: this.relatedProducts ? this.relatedProducts.map((product: any) => product?._id) : [],
-      product: {
-        id: this.productDetails?.parentId,
-        refid: this.productDetails?.product?.refid,
-      },
-      brand: this.selectedBrand ? {
-        name: this.selectedBrand.name,
-        slug: this.selectedBrand.slug,
-        thumbnail: this.selectedBrand.thumbnail,
-        cover: this.selectedBrand.cover,
-      } : null,
-      parentId: this.productDetails?.parentId,
-      tagIcons: this.tagIcons,
-      attributes: this.attributes,
-      storeFrontFields: this.storeFields,
-      businessFields: this.businessFields,
-      productIcons: this.icons,
-      isSkipUpdate: this.isSkipUpdate.value,
-      localizedNames: {
-        ...this.productDetails.localizedNames,
-        [this.settings.primaryLang]: this.form.get('name')?.value,
-      },
-      localizedOverview: {
-        ...this.productDetails.localizedOverview,
-        [this.settings.primaryLang]: this.form.get('overview')?.value,
-      },
-      localizedOrigin: {
-        ...this.productDetails.localizedOrigin,
-        [this.settings.primaryLang]: this.form.get('origin')?.value,
-      },
-      localizedDetails: {
-        description: {
-          ...this.productDetails.localizedDetails?.description,
-          [this.settings.primaryLang]: this.form.get('details.description')?.value,
-        },
-        features: {
-          ...this.productDetails.localizedDetails?.features,
-          [this.settings.primaryLang]: this.form.get('details.features')?.value,
-        },
-        longDescription: {
-          ...this.productDetails.localizedDetails?.longDescription,
-          [this.settings.primaryLang]: this.form.get('details.longDescription')?.value,
-        },
-      },
-      localizedMetaTitles: {
-        ...this.productDetails.localizedMetaTitles,
-        [this.settings.primaryLang]: this.form.get('metaTitle')?.value,
-      },
-      localizedMetaDescriptions: {
-        ...this.productDetails.localizedMetaDescriptions,
-        [this.settings.primaryLang]: this.form.get('metaDescription')?.value,
-      },
-      localizedMetaKeywords: {
-        ...this.productDetails.localizedMetaKeywords,
-        [this.settings.primaryLang]: this.form.get('metaKeywords')?.value,
-      },
-      category: {
-        id: this.categories.map((category: any) => category?._id),
-        refid: this.categories.map((category: any) => category?.catid),
-      },
-      primaryCategory: this.primaryCategory.value ? {
-        name: this.primaryCategory.value.name,
-        slug: this.primaryCategory.value.slug,
-        thumbnail: this.primaryCategory.value.thumbnail,
-        cover: this.primaryCategory.value.cover,
-        hierarchies: this.primaryCategory.value.hierarchies,
-      } : null,
-      categories: this.categories.filter(category => category != null).map((category: any) => ({
-        name: category.name,
-        slug: category.slug,
-        hierarchies: category.hierarchies,
-        thumbnail: category.thumbnail,
-        cover: category.cover,
-      })),
-      productTags: this.tagsForm.value,
+          return sanitizedOption;
+        })
+      : [];
+
+    // Remove _id if not present
+    if (!sanitizedAddOn._id) {
+      delete sanitizedAddOn._id;
     }
 
-    delete payload.name
+    return sanitizedAddOn;
+  });
 
-    this.ProductService.updateProduct(this.productDetails.slug, payload).subscribe({
-      next: (res: any) => {
-        if (res?.errorCode == 0) {
-          this.Router.navigate(['/app/product']);
-          this.siblingsRef?.hide();
-          this.HotToastService.success(res?.message);
-          // No need to reset isSaving since we're navigating away
-        } else if (res.errorCode == 2) {
-          // Re-enable the button in this case
-          this.isSaving = false;
-          this.ChangeDetectorRef.markForCheck();
 
-          this.siblingsRef = this.BsModalService.show(
-            this.siblingsTemplateModal,
-            {
-              class: 'modal-dialog-centered modal-lg',
-              ignoreBackdropClick: true,
-            }
-          );
 
-          this.ProductService.getProducts({
+  // ✅ Build payload (spread only once to avoid overwriting)
+  const payload: any = {
+    ...this.form.value,
+    _id: this.productDetails?._id,
+    prodid: this.productDetails?.prodid,
+    slug: this.form.get('slug')?.value,
+    addOns: this.addOns,
+    files: this.images.map(file => file.path),
+    relatedProducts: this.relatedProducts?.map(p => p?._id) || [],
+    product: {
+      id: this.productDetails?.parentId,
+      refid: this.productDetails?.product?.refid,
+    },
+    brand: this.selectedBrand
+      ? {
+          name: this.selectedBrand.name,
+          slug: this.selectedBrand.slug,
+          thumbnail: this.selectedBrand.thumbnail,
+          cover: this.selectedBrand.cover,
+        }
+      : null,
+    parentId: this.productDetails?.parentId,
+    tagIcons: this.tagIcons,
+    attributes: this.attributes,
+    storeFrontFields: this.storeFields,
+    businessFields: this.businessFields,
+    productIcons: this.icons,
+    isSkipUpdate: this.isSkipUpdate.value,
+    // ✅ Localized fields (merged carefully)
+    localizedNames: {
+      ...this.productDetails.localizedNames,
+      [this.settings.primaryLang]: this.form.get('name')?.value,
+    },
+    localizedOverview: {
+      ...this.productDetails.localizedOverview,
+      [this.settings.primaryLang]: this.form.get('overview')?.value,
+    },
+    localizedOrigin: {
+      ...this.productDetails.localizedOrigin,
+      [this.settings.primaryLang]: this.form.get('origin')?.value,
+    },
+    localizedDetails: {
+      description: {
+        ...this.productDetails.localizedDetails?.description,
+        [this.settings.primaryLang]: this.form.get('details.description')?.value,
+      },
+      features: {
+        ...this.productDetails.localizedDetails?.features,
+        [this.settings.primaryLang]: this.form.get('details.features')?.value,
+      },
+      longDescription: {
+        ...this.productDetails.localizedDetails?.longDescription,
+        [this.settings.primaryLang]: this.form.get('details.longDescription')?.value,
+      },
+    },
+    localizedMetaTitles: {
+      ...this.productDetails.localizedMetaTitles,
+      [this.settings.primaryLang]: this.form.get('metaTitle')?.value,
+    },
+    localizedMetaDescriptions: {
+      ...this.productDetails.localizedMetaDescriptions,
+      [this.settings.primaryLang]: this.form.get('metaDescription')?.value,
+    },
+    localizedMetaKeywords: {
+      ...this.productDetails.localizedMetaKeywords,
+      [this.settings.primaryLang]: this.form.get('metaKeywords')?.value,
+    },
+    // ✅ Categories
+    category: {
+      id: this.categories.map(c => c?._id),
+      refid: this.categories.map(c => c?.catid),
+    },
+    primaryCategory: this.primaryCategory.value
+      ? {
+          ...this.primaryCategory.value,
+        }
+      : null,
+    categories: this.categories
+      .filter(Boolean)
+      .map(c => ({
+        name: c.name,
+        slug: c.slug,
+        hierarchies: c.hierarchies,
+        thumbnail: c.thumbnail,
+        cover: c.cover,
+      })),
+    productTags: this.tagsForm.value,
+  };
+
+  // ✅ Remove redundant field
+  delete payload.name;
+
+  // ✅ API call
+  this.ProductService.updateProduct(this.productDetails.slug, payload).subscribe({
+    next: (res: any) => {
+      if (res?.errorCode === 0) {
+        this.isSaving = false;
+        this.Router.navigate(['/app/product']);
+        this.siblingsRef?.hide();
+        this.HotToastService.success(res?.message);
+      } else if (res.errorCode === 2) {
+        this.isSaving = false;
+        this.ChangeDetectorRef.markForCheck();
+
+        this.siblingsRef = this.BsModalService.show(this.siblingsTemplateModal, {
+          class: 'modal-dialog-centered modal-lg',
+          ignoreBackdropClick: true,
+        });
+
+        this.ProductService
+          .getProducts({
             parentId: this.productDetails.parentId,
             productId: this.productDetails?._id,
-          }).subscribe({
+          })
+          .subscribe({
             next: (res: any) => {
-              if (res?.errorCode == 0) {
+              if (res?.errorCode === 0) {
                 this.siblings = res?.result;
                 this.ChangeDetectorRef.markForCheck();
               } else {
                 this.HotToastService.error(res?.message);
               }
             },
-            error: (err: any) => {
-              this.HotToastService.error(err?.message);
-            },
+            error: err => this.HotToastService.error(err?.message),
           });
-        } else {
-          // Re-enable the button on error
-          this.isSaving = false;
-          this.ChangeDetectorRef.markForCheck();
-          this.HotToastService.error(res?.message);
-        }
-      }, error: (err: any) => {
-        this.isSaving = false; // Re-enable button if form is invalid
-        this.HotToastService.error(err.error.message);
-      },
-    });
-  }
+      } else {
+        this.isSaving = false;
+        this.ChangeDetectorRef.markForCheck();
+        this.HotToastService.error(res?.message);
+      }
+    },
+    error: (err: any) => {
+      this.isSaving = false;
+      this.HotToastService.error(err?.message);
+    },
+  });
+}
+
 
   skipUpdate() {
     this.isSkipUpdate.setValue(true);
