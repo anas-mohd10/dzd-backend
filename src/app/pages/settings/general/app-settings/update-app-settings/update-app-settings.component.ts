@@ -316,6 +316,7 @@ export class UpdateAppSettingsComponent implements OnInit {
         this.form.get('isVoucherEnabled')?.setValue(res?.result?.isVoucherEnabled)
         this.form.get('isPlpPagination')?.setValue(res?.result?.isPlpPagination);
         this.form.get('isBillingAddressEnabled')?.setValue(res?.result?.isBillingAddressEnabled)
+        this.form.get('clarityAppId')?.setValue(res?.result?.clarityAppId)
 
         this.form.get('commaSeparation')?.setValue(
           res?.result?.commaSeparation ?? true  // Use nullish coalescing for default
@@ -437,6 +438,7 @@ export class UpdateAppSettingsComponent implements OnInit {
       isVoucherEnabled: ['false'],
       isBillingAddressEnabled: ['false'],
       isPlpPagination: ['false'],
+      clarityAppId: ['']
     })
   }
 
@@ -617,6 +619,7 @@ export class UpdateAppSettingsComponent implements OnInit {
       isVoucherEnabled: this.form.get('isVoucherEnabled')?.value,
       isPlpPagination: this.form.get('isPlpPagination')?.value,
       isBillingAddressEnabled: this.form.get('isBillingAddressEnabled')?.value,
+      clarityAppId:this.form.get('clarityAppId')?.value,
       buttons: {
         cart: this.form.get('cartButton')?.value,
         stock: this.form.get('stockButton')?.value,
