@@ -38,9 +38,9 @@ export class UploadsListComponent implements OnInit {
     { title: 'Category', type: 'category' },
     { title: 'Brand', type: 'brand' },
     { title: 'User', type: 'user' },
-    // { title: 'Blogs', type: 'blog' },
     { title: 'Collection', type: 'collection' },
-    { title: 'Orders', type: 'order' },
+    // { title: 'Blogs', type: 'blog' },
+    // { title: 'Orders', type: 'order' },
     // { title: 'Subscribers', type: 'subscriber' },
   ];
   fileData: any;
@@ -153,20 +153,20 @@ export class UploadsListComponent implements OnInit {
             },
           });
           break;
-        case 'order':
-          this.OrdersService.bulkFileUpload(formdata).subscribe({
-            next: (res: any) => {
-              if (res?.errorCode == 0) {
-                this.onSuccess(res?.message);
-              } else {
-                this.HotToastService.error(res?.message);
-              }
-            },
-            error: (err: any) => {
-              this.HotToastService.error(err?.error?.message);
-            },
-          });
-          break;
+        // case 'order':
+        //   this.OrdersService.bulkFileUpload(formdata).subscribe({
+        //     next: (res: any) => {
+        //       if (res?.errorCode == 0) {
+        //         this.onSuccess(res?.message);
+        //       } else {
+        //         this.HotToastService.error(res?.message);
+        //       }
+        //     },
+        //     error: (err: any) => {
+        //       this.HotToastService.error(err?.error?.message);
+        //     },
+        //   });
+        //   break;
         case 'brand':
           this.BrandService.bulkFileUpload(formdata).subscribe({
             next: (res: any) => {

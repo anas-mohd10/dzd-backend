@@ -96,6 +96,9 @@ export class PaymentSettingsComponent implements OnInit {
       username: new FormControl(''),
       password: new FormControl(''),
       defaultPayment: new FormControl(false),
+      minAmount: new FormControl(0, [Validators.min(0)]),
+      maxAmount: new FormControl(0, [Validators.min(0)]),
+      isLimitEnabled: new FormControl(false),
     });
 
     this.fetchGateways();
@@ -236,7 +239,14 @@ export class PaymentSettingsComponent implements OnInit {
   close() {
     this.modalRef?.hide();
     this.form.reset();
-    this.form.patchValue({ payByOption: '', isEnabled: false, isDefault: false })
+    this.form.patchValue({ 
+      payByOption: '', 
+      isEnabled: false, 
+      isDefault: false,
+      minAmount: 0,
+      maxAmount: 0,
+      isLimitEnabled: false
+    })
     this.displayIcon = '';
     this.isSubmitted = false;
   }
@@ -256,7 +266,10 @@ export class PaymentSettingsComponent implements OnInit {
           const formValues: any = {
             ...response.result,
             payByOption: response.result?.payByOption || 'PAY_NOW',
-            defaultPayment: response.result?.defaultPayment || false
+            defaultPayment: response.result?.defaultPayment || false,
+            minAmount: response.result?.minAmount || 0,
+            maxAmount: response.result?.maxAmount || 0,
+            isLimitEnabled: response.result?.isLimitEnabled || false
           };
 
           this.form.patchValue(formValues);

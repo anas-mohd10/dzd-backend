@@ -525,8 +525,8 @@
                     <label for="videoThumbnail" class="fs-6 mb-3">Video Thumbnail</label>
                     <div id="videoThumbnail">
                       <div class="ratio ratio-1x1 h-auto w-100 rounded">
-                        <app-assets [image]="'contain'" [previewDetails]="videoThumbnailPreview"
-                          [lazyLoad]="true" [visibilityTrigger]="activeTabIndex === 1"
+                        <app-assets [image]="'contain'" [previewDetails]="videoThumbnailPreview" [lazyLoad]="true"
+                          [visibilityTrigger]="activeTabIndex === 1"
                           (mediaClicked)="productVideoThumbnailClicked($event)"></app-assets>
                       </div>
                     </div>
@@ -543,9 +543,8 @@
                     The banner for product details can be added from the banner images section, which will be common
                     throughout all the PDP design.</p>
                   <div class="ratio position-relative" style="--bs-aspect-ratio: 25%;">
-                    <app-assets id="productBanner" [previewDetails]="productBannerDetails"
-                      [lazyLoad]="true" [visibilityTrigger]="activeTabIndex === 1"
-                      (mediaClicked)="handleProductBanner($event)">
+                    <app-assets id="productBanner" [previewDetails]="productBannerDetails" [lazyLoad]="true"
+                      [visibilityTrigger]="activeTabIndex === 1" (mediaClicked)="handleProductBanner($event)">
                     </app-assets>
                     <div class="position-absolute m-2 top-0 end-0" *ngIf="productBannerDetails">
                       <button class="btn btn-danger p-2" (click)="removeProductBanner()">Remove banner</button>
@@ -559,8 +558,8 @@
                     <div class="col-lg-2">
                       <div class="ratio ratio-1x1 h-auto w-100 rounded">
                         <app-assets (mediaClicked)="productMediaClicked($event)" [image]="'cover'" [multiSelect]="true"
-                          [previewEnabled]="false" [selectedItems]="images"
-                          [lazyLoad]="true" [visibilityTrigger]="activeTabIndex === 1"></app-assets>
+                          [previewEnabled]="false" [selectedItems]="images" [lazyLoad]="true"
+                          [visibilityTrigger]="activeTabIndex === 1"></app-assets>
                       </div>
                     </div>
                     <ng-container *ngFor="let image of images">
@@ -597,8 +596,8 @@
                       </div>
                       <ng-template #thumbnailUpload>
                         <div class="ratio ratio-1x1 h-auto w-100 rounded">
-                          <app-assets [image]="'contain'" [previewDetails]="thumbnailPreview"
-                            [lazyLoad]="true" [visibilityTrigger]="activeTabIndex === 1"
+                          <app-assets [image]="'contain'" [previewDetails]="thumbnailPreview" [lazyLoad]="true"
+                            [visibilityTrigger]="activeTabIndex === 1"
                             (mediaClicked)="productThumbnailClicked($event)"></app-assets>
                         </div>
                       </ng-template>
@@ -647,8 +646,8 @@
                     </div>
                     <div class="col-lg-2">
                       <div class="ratio ratio-1x1 h-auto w-100 rounded">
-                        <app-assets (mediaClicked)="handleTagIcons($event)" [previewEnabled]="false"
-                          [lazyLoad]="true" [visibilityTrigger]="activeTabIndex === 1">
+                        <app-assets (mediaClicked)="handleTagIcons($event)" [previewEnabled]="false" [lazyLoad]="true"
+                          [visibilityTrigger]="activeTabIndex === 1">
                         </app-assets>
                       </div>
                     </div>
@@ -729,7 +728,7 @@
                   </a>
                 </div>
 
-               
+
               </ng-container>
               <div class="d-flex align-items-center justify-content-center gap-2">
                 <button class="btn border border-primary bg-white text-primary" (click)="toggleTab(2)">Back</button>
