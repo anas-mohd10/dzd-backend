@@ -433,5 +433,9 @@ export const internationalisationKeys = {
     referralcodeCopied:'referralcodeCopied',
     removeWalletDiscount:'removeWalletDiscount',
     addWalletDiscount:'addWalletDiscount',
-    walletUsedMessage:'walletUsedMessage'
+    walletUsedMessage:'walletUsedMessage',
+    firstLane:'firstLane',
+    firstLaneIsRequired:'firstLaneIsRequired',
+    area:'area',
+    areaIsRequired:'areaIsRequired'
 }
