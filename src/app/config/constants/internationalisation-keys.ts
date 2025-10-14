@@ -455,5 +455,8 @@ export const internationalisationKeys = {
     searchArea:'searchArea',
     noAreaFound:'noAreaFound',
     setAsDefault:'setAsDefault',
-    saveAddress:'saveAddress'
+    saveAddress:'saveAddress',
+    apartmentVilla:'apartmentVilla',
+    apartmentVillaIsRequired:'apartmentVillaIsRequired',
+    officeIsRequired:'officeIsRequired'
 }
