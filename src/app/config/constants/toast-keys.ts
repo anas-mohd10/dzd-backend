@@ -42,5 +42,22 @@ export const toastKeys = {
     inactiveUser:'inactiveUser',
     noWalletBalance:'noWalletBalance',
     youHave:'youHave',
-    availableinWallet:'availableinWallet'
+    availableinWallet:'availableinWallet',
+    
+    // Cart Page Messages
+    couponAppliedSuccess: 'couponAppliedSuccess',
+    couponNotFound: 'couponNotFound',
+    couponExpired: 'couponExpired',
+    couponNotValidForLimit: 'couponNotValidForLimit',
+    
+    // Wallet Messages
+    walletUpdated: 'walletUpdated',
+    
+    // Order Status Messages
+    orderDelivered: 'orderDelivered',
+    orderDeliveredSuccess: 'orderDeliveredSuccess',
+    orderShipped: 'orderShipped',
+    orderShippedSuccess: 'orderShippedSuccess',
+    orderPacked: 'orderPacked',
+    orderPackedSuccess: 'orderPackedSuccess'
 }
