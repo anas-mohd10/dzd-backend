@@ -43,6 +43,10 @@ export const toastKeys = {
     noWalletBalance:'noWalletBalance',
     youHave:'youHave',
     availableinWallet:'availableinWallet',
+    youHaveUsed:'youHaveUsed',
+    fromWallet:'fromWallet',
+    minimumPurchaseRequired:'minimumPurchaseRequired',
+    toUseWalletBalance:'toUseWalletBalance',
     
     // Cart Page Messages
     couponAppliedSuccess: 'couponAppliedSuccess',
