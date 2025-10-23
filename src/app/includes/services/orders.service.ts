@@ -21,10 +21,6 @@ export class OrdersService {
     return this.http.post(`${url}`, data)
   }
 
-  retryPayment(orderId: string) {
-    const url = this.commonService.getFullUrl(this.orderEndpoints.retryPayment);
-    return this.http.put(`${url}/${orderId}`, {})
-  }
 
   getInvoiceSignedUrl(orderId: string) {
     const url = this.commonService.getFullUrl(this.orderEndpoints.getInvoiceSignedUrl + `/${orderId}`);
@@ -135,20 +131,12 @@ export class OrdersService {
     return this.http.put(`${url}`, data)
   }
 
-  updateOrderProducts(data: any) {
-    const url = this.commonService.getFullUrl(this.orderEndpoints.updateOrderProducts);
-    return this.http.put(`${url}`, data)
-  }
 
   getOrderCounts(data: any) {
     const url = this.commonService.getFullUrl(this.orderEndpoints.orderCounts);
     return this.http.post(`${url}`, data)
   }
 
-  updateProductPayment(data: any) {
-    const url = this.commonService.getFullUrl(this.orderEndpoints.updateProductPayement);
-    return this.http.put(`${url}`, data)
-  }
 
   manageTags(data: any, type: string) {
     const url = this.commonService.getFullUrl(this.orderEndpoints.manageTags + '?type=' + type);
