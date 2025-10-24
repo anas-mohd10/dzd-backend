@@ -5,5 +5,4 @@ export const invoiceSettingsEndpoints = {
    
    generate_shipping_details: '/generate-shipping-bill',
    generate_products: '/generate-products',
-   generateInvoice: '/generate-invoice'
 }
