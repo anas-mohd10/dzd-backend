@@ -1,11 +1,7 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { GenerateInvoiceComponent } from './pages/generate-invoice/generate-invoice.component';
-import { PackingSlipComponent } from './pages/packing-slip/packing-slip.component';
 import { AccessDeniedComponent } from './modules/errors/access-denied/access-denied.component';
 import { SupportEmailVerificationComponent } from './pages/support-email-verification/support-email-verification.component';
-import { BulkInvoicesComponent } from './pages/bulk-invoices/bulk-invoices.component';
-import { BulkPackingSlipsComponent } from './pages/bulk-packing-slips/bulk-packing-slips.component';
 
 export const routes: Routes = [
   {
@@ -20,10 +16,6 @@ export const routes: Routes = [
     path: '',
     loadChildren: () => import('./shared/layout/layout.module').then((m) => m.LayoutModule),
   },
-  { path: 'generate-invoice', component: GenerateInvoiceComponent },
-  { path: 'packing-slip', component: PackingSlipComponent },
-  { path: 'bulk-invoices', component: BulkInvoicesComponent },
-  { path: 'bulk-packing-slips', component: BulkPackingSlipsComponent },
   { path: 'support-email/:token', component: SupportEmailVerificationComponent },
   { path: 'access-denied', component: AccessDeniedComponent },
   { path: "designs", loadChildren: () => import("./pages/store-designs/store-designs.module").then(m => m.StoreDesignsModule) },

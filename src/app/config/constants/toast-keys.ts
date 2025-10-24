@@ -42,5 +42,39 @@ export const toastKeys = {
     inactiveUser:'inactiveUser',
     noWalletBalance:'noWalletBalance',
     youHave:'youHave',
-    availableinWallet:'availableinWallet'
+    availableinWallet:'availableinWallet',
+    youHaveUsed:'youHaveUsed',
+    fromWallet:'fromWallet',
+    minimumPurchaseRequired:'minimumPurchaseRequired',
+    toUseWalletBalance:'toUseWalletBalance',
+    
+    // Cart Page Messages
+    couponAppliedSuccess: 'couponAppliedSuccess',
+    couponNotFound: 'couponNotFound',
+    couponExpired: 'couponExpired',
+    couponNotValidForLimit: 'couponNotValidForLimit',
+    alreadyInCart: 'alreadyInCart',
+    itemAddedToCart: 'itemAddedToCart',
+    emptyCart: 'emptyCart',
+    cartUpdated: 'cartUpdated',
+    couponNotValid: 'couponNotValid',
+    couponRemovedSuccess: 'couponRemovedSuccess',
+    minimumPurchaseNotMet: 'minimumPurchaseNotMet',
+    couponsRetrieved: 'couponsRetrieved',
+    couponLimitedStock: 'couponLimitedStock',
+    couponCodeRequired: 'couponCodeRequired',
+    couponNotAllowed: 'couponNotAllowed',
+    couponUsageLimitExceeded: 'couponUsageLimitExceeded',
+    noApplicableProducts: 'noApplicableProducts',
+    
+    // Wallet Messages
+    walletUpdated: 'walletUpdated',
+    
+    // Order Status Messages
+    orderDelivered: 'orderDelivered',
+    orderDeliveredSuccess: 'orderDeliveredSuccess',
+    orderShipped: 'orderShipped',
+    orderShippedSuccess: 'orderShippedSuccess',
+    orderPacked: 'orderPacked',
+    orderPackedSuccess: 'orderPackedSuccess'
 }

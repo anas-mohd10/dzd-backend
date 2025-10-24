@@ -92,7 +92,7 @@
     <div class="position-relative">
       <div class="alert alert-warning fs-6"
         *ngIf="order?.paymentMethod == 'ONLINE' && !isCancelled && order?.paymentStatus == 'PENDING'">
-        Please proceed with the payment to facilitat e the processing of the order request
+        Please proceed with the payment to facilitate the processing of the order request
       </div>
 
       <div class="alert alert-warning fs-6"
@@ -782,14 +782,6 @@
     </div>
   </ng-template>
 
-  <ng-template #retryConfirmation>
-    <div class="modal-body text-center">
-      <p class="fs-5">Are you sure you want to retry payment?</p>
-      <button type="button" class="btn btn-default p-2" [disabled]="isRetryClicked"
-        (click)="confirmRetry()">Yes</button>
-      <button type="button" class="btn btn-primary p-2" [disabled]="isRetryClicked" (click)="declineRetry()">No</button>
-    </div>
-  </ng-template>
 
   <ng-template #cancelConfirmation>
     <div class="modal-body">
