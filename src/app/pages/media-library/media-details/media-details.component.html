@@ -106,6 +106,16 @@
                   (change)="saveDetails()"></textarea>
               </div>
             </div>
+            </div>
+            
+            <app-media-delete-confirmation
+              *ngIf="showDeleteModal"
+              [mediaDetails]="mediaDetails"
+              [relatedProducts]="relatedProducts"
+              [isRelatedFromCheck]="true"
+              (confirmDelete)="onConfirmDelete()"
+              (cancelDelete)="onCancelDelete()">
+            </app-media-delete-confirmation>
             <div class="mt-6 d-flex align-items-center justify-content-between">
               <button class="btn btn-primary me-1" (click)="updateDetails()">Update</button>
               <button class="btn btn-secondary me-1" (click)="downloadImage(mediaDownload)">Download file</button>
