@@ -28,6 +28,8 @@ export class MediaDetailsComponent implements OnInit {
   mediaDownload: string;
   router:any
   mediaPath: string = ''
+  showDeleteModal: boolean = false;
+  relatedProducts: any[] = [];
 
   constructor(
     private MediaService: MediaService,
@@ -149,8 +151,33 @@ export class MediaDetailsComponent implements OnInit {
   }
 
   deleteMedia() {
+    this.MediaService.checkMediaRelation(this.mediaQuery).subscribe({
+      next: (res: any) => {
+        if (res?.errorCode == 0) {
+          if (res?.result?.isRelated) {
+            this.relatedProducts = res?.result?.products || [];
+            this.showDeleteModal = true;
+            this.ChangeDetectorRef.markForCheck();
+          } else {
+            this.performDelete(false);
+          }
+        } else if (res?.errorCode == 409) {
+          this.relatedProducts = res?.result?.relatedProductsInfo?.[0]?.products || [];
+          this.showDeleteModal = true;
+          this.ChangeDetectorRef.markForCheck();
+        } else {
+          this.Toast.error(res?.message);
+        }
+      }, error: (err: any) => {
+        this.Toast.error(err?.error?.message || 'Failed to check media relation');
+      }
+    });
+  }
+
+  performDelete(forceDelete: boolean) {
     this.MediaService.deleteMedias({
-      files: [{ path: this.mediaPath, slug: this.mediaDetails.slug }]
+      files: [{ path: this.mediaPath, slug: this.mediaDetails.slug }],
+      forceDelete: forceDelete
     }).subscribe({
       next: (res: any) => {
         if (res?.errorCode == 0) {
@@ -163,7 +190,17 @@ export class MediaDetailsComponent implements OnInit {
       }, error: (err: any) => {
         this.Toast.error(err?.error?.message)
       }
-    })
+    });
+  }
+
+  onConfirmDelete() {
+    this.showDeleteModal = false;
+    this.performDelete(true);
+  }
+
+  onCancelDelete() {
+    this.showDeleteModal = false;
+    this.ChangeDetectorRef.markForCheck();
   }
 
   isImageFile(path: string): boolean {
