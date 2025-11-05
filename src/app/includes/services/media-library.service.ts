@@ -43,4 +43,9 @@ export class MediaService {
     const url = this.commonService.getFullUrl(this.endpoints.addMedias);
     return this.http.post(`${url}`, data)
   }
+
+  checkMediaRelation(mediaSlug: string) {
+    const url = this.commonService.getFullUrl(this.endpoints.checkMediaRelation + `/${mediaSlug}`);
+    return this.http.get(`${url}`)
+  }
 }
