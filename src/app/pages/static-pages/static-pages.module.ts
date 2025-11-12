@@ -8,6 +8,7 @@ import { UpdatePagesComponent } from './update-pages/update-pages.component';
 import { SharedModule } from '../shared/shared.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MonacoEditorModule } from 'ngx-monaco-editor';
+import { ModalModule } from 'ngx-bootstrap/modal';
 
 @NgModule({
   declarations: [
@@ -21,6 +22,7 @@ import { MonacoEditorModule } from 'ngx-monaco-editor';
     ReactiveFormsModule,
     FormsModule,
     MonacoEditorModule.forRoot(),
+    ModalModule.forRoot(),
     StaticPagesRoutingModule
   ]
 })
