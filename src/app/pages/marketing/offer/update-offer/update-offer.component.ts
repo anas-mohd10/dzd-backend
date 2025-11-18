@@ -146,6 +146,10 @@ export class UpdateOfferComponent implements OnInit {
     this.base = environment.base;
     this.offerId = this.route.snapshot.params.offerId || '';
     this.initForm();
+    
+    this.form.get('isActive')?.valueChanges.subscribe(value => {
+    });
+    
     // 1. Offer details
     this.offerService.getOfferDetails(this.offerId).subscribe({
       next: (res: any) => {
@@ -161,7 +165,7 @@ export class UpdateOfferComponent implements OnInit {
           this.form.patchValue({
             title: this.offerDetails.title,
             description: this.offerDetails.description,
-            isActive: this.offerDetails.isActive,
+            isActive: this.offerDetails.isActive === true,
             type: this.offerDetails.type,
             value: this.offerDetails.value,
             offerType: this.offerDetails.offerType,
@@ -170,7 +174,7 @@ export class UpdateOfferComponent implements OnInit {
             startTime: formattedStartTime,
             endDate: formattedEndDate,
             endTime: formattedEndTime,
-          })
+          });       
           this.products = this.offerDetails.products
             ? this.offerDetails.products
             : [];
@@ -217,8 +221,8 @@ export class UpdateOfferComponent implements OnInit {
       type: ['percentage'],
       offerType: ['complete'],
       value: ['', [Validators.required, Validators.pattern('^[0-9]+$')]],
-      isActive: ['true'],
-      isDelete: ['false'],
+      isActive: [true], 
+      isDelete: [false], 
     });
 
     this.form.get('startDate')?.setValue(this.fromDate);
@@ -397,22 +401,28 @@ export class UpdateOfferComponent implements OnInit {
       this.parents = [];
     }
 
-    this.offerService
-      .updateOffer({
-        ...this.form.value,
-        startDate: startDateTime,
-        endDate: endDateTime,
-        offerType:
-          this.form.get('offerType')?.value == 'complete'
-            ? 'complete'
-            : 'partial',
-        categories: this.categories.length > 0 ? this.categories?.map((item: any) => item._id) : null,
-        products: this.products.length > 0 ? this.products?.map((item: any) => item._id) : null,
-        collections: this.collections.length > 0 ? this.collections?.map((item: any) => item._id) : null,
-        brands: this.brands.length > 0 ? this.brands?.map((item: any) => item._id) : null,
-        parents: this.parents.length > 0 ? this.parents?.map((item: any) => item._id) : null,
-        slug: this.offerId,
-      })
+    const formValue = this.form.value;
+    const updateData: any = {
+      ...formValue,
+      startDate: startDateTime,
+      endDate: endDateTime,
+      offerType:
+        this.form.get('offerType')?.value == 'complete'
+          ? 'complete'
+          : 'partial',
+      categories: this.categories.length > 0 ? this.categories?.map((item: any) => item._id) : null,
+      products: this.products.length > 0 ? this.products?.map((item: any) => item._id) : null,
+      collections: this.collections.length > 0 ? this.collections?.map((item: any) => item._id) : null,
+      brands: this.brands.length > 0 ? this.brands?.map((item: any) => item._id) : null,
+      parents: this.parents.length > 0 ? this.parents?.map((item: any) => item._id) : null,
+      slug: this.offerId,
+    };
+    
+    if (formValue.isActive === true) {
+      updateData.isForced = true;
+    }
+    
+    this.offerService.updateOffer(updateData)
       .subscribe((res: any) => {
         if (res.errorCode != 0) {
           this.HotToastService.error(res?.message);
