@@ -174,9 +174,9 @@
             <div class="form-group mb-3">
               <label class="fs-6 mb-3">Active Offer?</label>
               <select class="form-select mb-3 fs-6" formControlName="isActive">
-                <option value="" disabled> -- Select an option --</option>
-                <option value="true">Yes</option>
-                <option value="false">No</option>
+                <option [ngValue]="null" disabled> -- Select an option --</option>
+                <option [ngValue]="true">Yes</option>
+                <option [ngValue]="false">No</option>
               </select>
             </div>
           </div>

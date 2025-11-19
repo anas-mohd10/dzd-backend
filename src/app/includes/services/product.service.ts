@@ -1,7 +1,9 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { CommonService } from './common.service';
 import { productEndpoints } from '../../config/endpoints';
+import { Observable, throwError, timer } from 'rxjs';
+import { retryWhen, mergeMap, catchError } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root',
@@ -10,6 +12,62 @@ export class ProductService {
   productEndpoints = productEndpoints;
 
   constructor(private http: HttpClient, private commonService: CommonService) { }
+
+  /**
+   * Reusable retry helper function for HTTP requests
+   * Implements exponential backoff retry logic for specific error codes
+   * 
+   * @param maxRetryAttempts - Maximum number of retry attempts (default: 3)
+   * @param retryableErrorCodes - Array of HTTP status codes to retry (default: [502])
+   * @param scalingDuration - Base delay in milliseconds for exponential backoff (default: 1000ms)
+   * @returns RxJS operator function for retry logic
+   */
+  private retryWithExponentialBackoff(
+    maxRetryAttempts: number = 3,
+    retryableErrorCodes: number[] = [502],
+    scalingDuration: number = 1000
+  ) {
+    return (source: Observable<any>) =>
+      source.pipe(
+        retryWhen((errors) =>
+          errors.pipe(
+            mergeMap((error: HttpErrorResponse, retryIndex) => {
+              const attemptNumber = retryIndex + 1;
+              
+              // Only retry if the error code is in the retryable list and we haven't exceeded max attempts
+              if (retryableErrorCodes.includes(error.status) && attemptNumber <= maxRetryAttempts) {
+                // Calculate exponential backoff delay: 1s, 2s, 3s for attempts 1, 2, 3
+                const delay = scalingDuration * attemptNumber;
+                
+                console.log(`Retrying update request due to ${error.status} error (attempt ${attemptNumber} of ${maxRetryAttempts})`);
+                
+                // Return timer observable that delays the retry
+                return timer(delay);
+              } else {
+                // For non-retryable errors or when max attempts exceeded, propagate the error
+                return throwError(() => error);
+              }
+            })
+          )
+        ),
+        // Catch any final errors after retries are exhausted
+        catchError((error: HttpErrorResponse) => {
+          // If it's still a 502 after all retries, show user-friendly message
+          if (error.status === 502) {
+            console.error('Product update failed after maximum retry attempts');
+            // Return a formatted error response that the component can handle
+            return throwError(() => ({
+              errorCode: -1,
+              message: 'Product update failed. Please try again.',
+              status: error.status,
+              statusText: error.statusText
+            }));
+          }
+          // For other errors, propagate as-is
+          return throwError(() => error);
+        })
+      );
+  }
 
   addProduct(data: any) {
     const url = this.commonService.getFullUrl(this.productEndpoints.add_product);
@@ -131,9 +189,25 @@ export class ProductService {
     return this.http.post(`${url}`, query);
   }
 
-  updateProduct(slug: any, data: any) {
+  /**
+   * Update product with robust retry mechanism for handling temporary failures
+   * 
+   * Implements exponential backoff retry logic specifically for HTTP 502 (Bad Gateway) errors
+   * - Retries up to 3 times with delays of 1s, 2s, 3s respectively
+   * - Immediately propagates other error types without retry attempts
+   * - Provides user-friendly error messages after all retries are exhausted
+   * 
+   * @param slug - Product slug identifier
+   * @param data - Product update payload
+   * @returns Observable with retry logic applied
+   */
+  updateProduct(slug: any, data: any): Observable<any> {
     const url = this.commonService.getFullUrl(this.productEndpoints.update_product + "?slug=" + slug);
-    return this.http.put(`${url}`, data);
+    
+    // Apply retry logic to the HTTP PUT request
+    return this.http.put(`${url}`, data).pipe(
+      this.retryWithExponentialBackoff(3, [502], 1000)
+    );
   }
 
   updateProductStatus(productDoc: { _id: string, isActive: boolean }) {
