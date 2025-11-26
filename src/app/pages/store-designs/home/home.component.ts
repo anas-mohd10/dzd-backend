@@ -444,12 +444,12 @@ export class HomeComponent implements OnInit {
           this.widgetForm.get('redirection')?.setValue('/p/' + this.redirectionQuery.value);
         }
         break;
-        case 'web-links' : 
+      case 'web-links':
         if (this.redirectionQuery.value) {
           this.widgetForm.get('redirection')?.setValue(this.redirectionQuery.value);
         }
         break;
-  
+
       case 'collection':
         this.widgetForm
           .get('redirection')
@@ -544,7 +544,7 @@ export class HomeComponent implements OnInit {
 
           if (this.widgetDetails?.widgetType == 'blogs') {
             this.widgetBlogs = this.widgetDetails?.blogs;
-          }else if (this.widgetDetails?.widgetType == 'stock-viewer') {
+          } else if (this.widgetDetails?.widgetType == 'stock-viewer') {
             this.widgetImages = this.widgetDetails?.widgetImages;
           }
 
@@ -917,7 +917,7 @@ export class HomeComponent implements OnInit {
           ? this.widgetCategory.value
           : null,
       };
-    }else if (this.widgetDetails?.widgetType == 'stock-viewer') {
+    } else if (this.widgetDetails?.widgetType == 'stock-viewer') {
       let widgetImages = [];
       for (let widgetImage of this.widgetImages) {
         widgetImages.push({ ...widgetImage, media: widgetImage?.url?._id });
@@ -1130,16 +1130,23 @@ export class HomeComponent implements OnInit {
 
   ngOnInit(): void {
     this.homeWidgets = this.widgets;
-    this.widgets = this.widgets.sort((a: any, b: any) => {
+    // Separate custom widgets from regular widgets
+    const customWidgets = this.widgets.filter((w: any) => w.type.startsWith('custom-'));
+    const regularWidgets = this.widgets.filter((w: any) => !w.type.startsWith('custom-'));
+
+    // Sort only regular widgets alphabetically
+    regularWidgets.sort((a: any, b: any) => {
       if (a.title < b.title) {
         return -1;
       }
       if (a.title > b.title) {
         return 1;
       }
-
       return 0;
     });
+
+    // Combine: sorted regular widgets first, then custom widgets at the end
+    this.widgets = [...regularWidgets, ...customWidgets];
 
     this.hyperlinkheroForm = new FormGroup({
       hyperlinkTitle: new FormControl(''),

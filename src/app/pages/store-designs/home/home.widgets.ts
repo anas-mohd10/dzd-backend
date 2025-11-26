@@ -197,6 +197,66 @@ export const widgets: Array<WidgetProps> = [
         type: 'stock-viewer',
         icon: 'assets/widgets/stock-viewer.png',
         description: 'The following widget can be used to show categories and number of products in each category.',
+    },
+    {
+        title: 'Custom 1',
+        type: 'custom-1',
+        icon: 'assets/widgets/custom-1.jpg',
+        description: '<svg height="16" width="16" style="display: inline; margin-right: 4px; vertical-align: text-bottom;" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="#0d6efd"><circle cx="12" cy="12" r="10" stroke-width="1.5"/><path stroke-linecap="round" stroke-linejoin="round" d="M12 16v-4m0-4h.01"/></svg><em>Only available for certain projects.</em><br><br>Custom widget 1 - A customizable widget for displaying content with personalized layouts and styles.',
+    },
+    {
+        title: 'Custom 2',
+        type: 'custom-2',
+        icon: 'assets/widgets/custom-2.jpg',
+        description: '<svg height="16" width="16" style="display: inline; margin-right: 4px; vertical-align: text-bottom;" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="#0d6efd"><circle cx="12" cy="12" r="10" stroke-width="1.5"/><path stroke-linecap="round" stroke-linejoin="round" d="M12 16v-4m0-4h.01"/></svg><em>Only available for certain projects.</em><br><br>Custom widget 2 - A flexible widget that can be adapted for various display purposes.',
+    },
+    {
+        title: 'Custom 3',
+        type: 'custom-3',
+        icon: 'assets/widgets/custom-3.jpg',
+        description: '<svg height="16" width="16" style="display: inline; margin-right: 4px; vertical-align: text-bottom;" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="#0d6efd"><circle cx="12" cy="12" r="10" stroke-width="1.5"/><path stroke-linecap="round" stroke-linejoin="round" d="M12 16v-4m0-4h.01"/></svg><em>Only available for certain projects.</em><br><br>Custom widget 3 - A versatile widget for showcasing custom content and media.',
+    },
+    {
+        title: 'Custom 4',
+        type: 'custom-4',
+        icon: 'assets/widgets/custom-4.jpg',
+        description: '<svg height="16" width="16" style="display: inline; margin-right: 4px; vertical-align: text-bottom;" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="#0d6efd"><circle cx="12" cy="12" r="10" stroke-width="1.5"/><path stroke-linecap="round" stroke-linejoin="round" d="M12 16v-4m0-4h.01"/></svg><em>Only available for certain projects.</em><br><br>Custom widget 4 - A configurable widget designed for unique presentation needs.',
+    },
+    {
+        title: 'Custom 5',
+        type: 'custom-5',
+        icon: 'assets/widgets/custom-5.jpg',
+        description: '<svg height="16" width="16" style="display: inline; margin-right: 4px; vertical-align: text-bottom;" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="#0d6efd"><circle cx="12" cy="12" r="10" stroke-width="1.5"/><path stroke-linecap="round" stroke-linejoin="round" d="M12 16v-4m0-4h.01"/></svg><em>Only available for certain projects.</em><br><br>Custom widget 5 - A customizable display widget with advanced styling options.',
+    },
+    {
+        title: 'Custom 6',
+        type: 'custom-6',
+        icon: 'assets/widgets/custom-6.jpg',
+        description: '<svg height="16" width="16" style="display: inline; margin-right: 4px; vertical-align: text-bottom;" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="#0d6efd"><circle cx="12" cy="12" r="10" stroke-width="1.5"/><path stroke-linecap="round" stroke-linejoin="round" d="M12 16v-4m0-4h.01"/></svg><em>Only available for certain projects.</em><br><br>Custom widget 6 - A flexible layout widget for personalized content presentation.',
+    },
+    {
+        title: 'Custom 7',
+        type: 'custom-7',
+        icon: 'assets/widgets/custom-7.jpg',
+        description: '<svg height="16" width="16" style="display: inline; margin-right: 4px; vertical-align: text-bottom;" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="#0d6efd"><circle cx="12" cy="12" r="10" stroke-width="1.5"/><path stroke-linecap="round" stroke-linejoin="round" d="M12 16v-4m0-4h.01"/></svg><em>Only available for certain projects.</em><br><br>Custom widget 7 - A dynamic widget for creating custom display sections.',
+    },
+    {
+        title: 'Custom 8',
+        type: 'custom-8',
+        icon: 'assets/widgets/custom-8.jpg',
+        description: '<svg height="16" width="16" style="display: inline; margin-right: 4px; vertical-align: text-bottom;" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="#0d6efd"><circle cx="12" cy="12" r="10" stroke-width="1.5"/><path stroke-linecap="round" stroke-linejoin="round" d="M12 16v-4m0-4h.01"/></svg><em>Only available for certain projects.</em><br><br>Custom widget 8 - An adaptable widget with customizable features and layouts.',
+    },
+    {
+        title: 'Custom 9',
+        type: 'custom-9',
+        icon: 'assets/widgets/custom-9.jpg',
+        description: '<svg height="16" width="16" style="display: inline; margin-right: 4px; vertical-align: text-bottom;" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="#0d6efd"><circle cx="12" cy="12" r="10" stroke-width="1.5"/><path stroke-linecap="round" stroke-linejoin="round" d="M12 16v-4m0-4h.01"/></svg><em>Only available for certain projects.</em><br><br>Custom widget 9 - A versatile widget for displaying tailored content arrangements.',
+    },
+    {
+        title: 'Custom 10',
+        type: 'custom-10',
+        icon: 'assets/widgets/custom-10.jpg',
+        description: '<svg height="16" width="16" style="display: inline; margin-right: 4px; vertical-align: text-bottom;" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="#0d6efd"><circle cx="12" cy="12" r="10" stroke-width="1.5"/><path stroke-linecap="round" stroke-linejoin="round" d="M12 16v-4m0-4h.01"/></svg><em>Only available for certain projects.</em><br><br>Custom widget 10 - A configurable widget for custom content display and organization.',
     }
 
 ];

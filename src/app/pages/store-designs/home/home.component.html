@@ -226,10 +226,11 @@
                                                         <label for="titleType" class="fs-5 mb-3">Type</label>
                                                         <select formControlName="titleType" class="form-control">
                                                             <option value="">Select Title Type</option>
-                                                            <option *ngFor="let option of titleTypeOptions" [value]="option.value">
-                                                              {{option.key}}
+                                                            <option *ngFor="let option of titleTypeOptions"
+                                                                [value]="option.value">
+                                                                {{option.key}}
                                                             </option>
-                                                          </select>
+                                                        </select>
                                                     </div>
 
                                                 </div>
@@ -826,8 +827,7 @@
                                                     formControlName="title">
                                             </div>
                                             <div class="form-group w-100">
-                                                <label for="keyPointDescription"
-                                                    class="fs-6 mb-1">Description</label>
+                                                <label for="keyPointDescription" class="fs-6 mb-1">Description</label>
                                                 <input type="text" name="keyPointDescription"
                                                     formControlName="description" class="form-control">
                                             </div>
@@ -840,7 +840,7 @@
                             </div>
                         </div>
                     </div>
-                    
+
                     <div *ngIf="widgetDetails?.widgetType == 'stock-viewer'">
                         <app-stock-viewer [widgetImages]="widgetImages"
                             (widgetItemsChange)="widgetItemsChange($event)"></app-stock-viewer>
