@@ -34,6 +34,16 @@ export const widgetImageTypes: Array<string> = [
     'full-banner',
     'modern-carousel',
     'key-points-grid',
+    'custom-1',
+    'custom-2',
+    'custom-3',
+    'custom-4',
+    'custom-5',
+    'custom-6',
+    'custom-7',
+    'custom-8',
+    'custom-9',
+    'custom-10',
 ];
 
 export const redirectionItems: Array<{ key: string, value: string }> = [
