@@ -286,6 +286,13 @@ export const appRoutes = {
     update: `${app}/blogs/update-blog`,
     categories: `${app}/blogs/blog-categories`
   },
+  projects: {
+    list: `${app}/projects`,
+    create: `${app}/projects/create-project`,
+    update: `${app}/projects/update-project`,
+    categories: `${app}/projects/project-categories`
+  },
+
   catalogs: {
     list: `${app}/catalogs`,
     create: `${app}/catalogs/create-catalog`,
