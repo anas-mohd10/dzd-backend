@@ -1,0 +1,160 @@
+<div>
+    <div class="page-header">
+        <div class="page-title">
+            <h1 class="fw-bold">Create project</h1>
+        </div>
+        <div class="row align-items-center">
+            <div class="col d-flex align-items-start justify-content-between">
+                <ul class="breadcrumb">
+                    <li class="breadcrumb-item fs-6">
+                        <a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a>
+                    </li>
+                    <li class="breadcrumb-item fs-6">
+                        <a routerLink="{{ appRoute.projects.list }}">Projects</a>
+                    </li>
+                    <li class="breadcrumb-item active fs-6">
+                        <a routerLink="{{ appRoute.projects.create }}">Create project</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="my-4 card">
+        <div class="card-body">
+            <div>
+                <div class="cover w-100 rounded position-relative mb-3"
+                    [ngClass]="{'border border-danger':  (formControls.cover.touched || isSubmitted) && formControls.cover.errors?.required}">
+                    <app-assets (mediaClicked)="handleCover($event)" [image]="'cover'"
+                        [previewDetails]="previews?.cover"></app-assets>
+                    <div class="position-absolute bottom-0 end-0 m-4" *ngIf="previews?.cover">
+                        <button class="btn btn-danger" (click)="onRemove('cover')">Remove</button>
+                    </div>
+                </div>
+            </div>
+            <form [formGroup]="form">
+                <div class="row">
+                    <div class="col-lg-3">
+                        <div class="mb-3">
+                            <label for="thumbnail" class="form-label required">Thumbnail</label>
+                            <div class="position-relative">
+                                <div class="ratio ratio-1x1 h-auto w-100 rounded"
+                                    [ngClass]="{ 'border border-danger': (formControls.thumbnail.touched || isSubmitted) && formControls.thumbnail.errors?.required}">
+                                    <app-assets (mediaClicked)="handleThumbnail($event)"
+                                        [previewDetails]="previews?.thumbnail"></app-assets>
+                                </div>
+                                <button *ngIf="previews?.thumbnail"
+                                    class="position-absolute bottom-0 end-0 m-2 p-2 btn btn-danger"
+                                    (click)="onRemove('thumbnail')">Remove</button>
+                            </div>
+                        </div>
+                        <div class="form-group mb-3">
+                            <label for="category" class="form-label required">Category</label>
+                            <select id="category" formControlName="category" class="form-select"
+                                [ngClass]="{'is-invalid': (formControls.category.touched || isSubmitted) && formControls.category.errors?.required}">
+                                <option value="" disabled>-- Select an option --</option>
+                                <option *ngFor="let category of categories" [value]="category._id">
+                                    {{category.title}}
+                                </option>
+                            </select>
+                        </div>
+                        <div class="form-group mb-3">
+                            <label for="isActive" class="form-label">Status</label>
+                            <select formControlName="isActive" class="form-select" id="isActive">
+                                <option value="" disabled>-- Select an option--</option>
+                                <option value="true">Active</option>
+                                <option value="false">Inactive</option>
+                            </select>
+                        </div>
+                        <div class="form-group mb-3">
+                            <label for="isDraft" class="form-label">Draft</label>
+                            <select formControlName="isDraft" class="form-select" id="isDraft">
+                                <option value="" disabled>-- Select an option--</option>
+                                <option value="true">Yes</option>
+                                <option value="false">No</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-lg-9">
+                        <div class="form-group mb-3">
+                            <label for="title" class="form-label required">Title</label>
+                            <input type="text" id="title" formControlName="title" class="form-control" placeholder="Enter Title"
+                                [ngClass]="{'is-invalid': (formControls.title.touched || isSubmitted) && formControls.title.errors?.required}">
+                        </div>
+                        <div class="form-group mb-3">
+                            <label for="slug" class="form-label">Slug</label>
+                            <input type="text" id="slug" formControlName="slug" class="form-control" placeholder="Enter Slug"
+                                [ngClass]="{'is-invalid': (formControls.slug.touched || isSubmitted) && formControls.slug.errors?.required}">
+                        </div>
+                        <div class="form-group mb-3">
+                            <label for="overview" class="form-label">Overview</label>
+                            <textarea id="overview" formControlName="overview" class="form-control" rows="2"
+                                [ngClass]="{'is-invalid': (formControls.overview.touched || isSubmitted) && formControls.overview.errors?.required}"
+                                placeholder="Enter Overview"></textarea>
+                        </div>
+                        <div class="my-6">
+                            <tabset>
+                                <tab heading="Description" id="tab1">
+                                    <div class="my-4">
+                                        <angular-editor id="description" class="form-control"
+                                            formControlName="description" [config]="editorConfig"
+                                            [ngClass]="{'is-invalid':  (formControls.description.touched || isSubmitted) && formControls.description.errors?.required}"></angular-editor>
+                                    </div>
+                                </tab>
+                                <tab heading="SEO" id="tab2">
+                                    <div class="my-4">
+                                        <div class="form-group mb-3">
+                                            <label for="seoTitle" class="form-label">Title</label>
+                                            <input type="text" id="seoTitle" formControlName="seoTitle"
+                                                class="form-control">
+                                        </div>
+                                        <div class="form-group mb-3">
+                                            <label for="seoDescription" class="form-label">Description</label>
+                                            <input type="text" id="seoDescription" formControlName="seoDescription"
+                                                class="form-control">
+                                        </div>
+                                        <div class="form-group mb-3">
+                                            <label for="seoKeywords" class="form-label">Keywords</label>
+                                            <input type="text" id="seoKeywords" formControlName="seoKeywords"
+                                                class="form-control">
+                                        </div>
+                                        <div class="form-group mb-3">
+                                            <label for="canonicalUrl" class="form-label">Canonical URL</label>
+                                            <input type="text" id="canonicalUrl" formControlName="canonicalUrl"
+                                                class="form-control">
+                                        </div>
+                                    </div>
+                                </tab>
+                                <tab heading="Author" id="tab4">
+                                    <div class="my-4 d-flex gap-3">
+                                        <div class="w-75 form-group mb-3">
+                                            <input type="text" placeholder="Author" id="author" formControlName="author"
+                                                class="form-control"
+                                                [ngClass]="{
+                                'is-invalid': (formControls.author.touched || isSubmitted) && formControls.author.errors?.required}">
+                                        </div>
+                                        <div class="w-25 form-group mb-3">
+                                            <div class="position-relative">
+                                                <div id="authorThumbnail"
+                                                    class="ratio ratio-1x1 h-auto w-100 rounded mb-3">
+                                                    <app-assets [previewDetails]="previews?.authorThumbnail"
+                                                        (mediaClicked)="handleAuthorThumbnail($event)"></app-assets>
+                                                </div>
+                                                <button *ngIf="previews?.authorThumbnail"
+                                                    class="position-absolute bottom-0 end-0 m-2 p-2 btn btn-danger"
+                                                    (click)="onRemove('authorThumbnail')">Remove</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </tab>
+                            </tabset>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="d-flex align-items-center justify-content-end gap-2">
+        <a class="btn btn-secondary" routerLink="{{appRoute.projects.list}}">Cancel</a>
+        <button class="btn btn-primary" (click)="onSubmit()">Save changes</button>
+    </div>
+</div>

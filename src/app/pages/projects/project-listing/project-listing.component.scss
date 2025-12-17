@@ -1,0 +1,52 @@
+$hover: #e3e3e3;
+$grey: #888888;
+$white: #ffffff;
+$boxShadow: rgba(0, 0, 0, 0.1);
+$inactiveState: #ce1626;
+$activeState: #00BDAB;
+$primaryBackground: #20BDAB40;
+$activeBackground: #00BDAB20;
+$border: #cccccc;
+$background: #e5e5e5;
+$error: #F1416C;
+
+label,
+.btn {
+  font-weight: normal !important;
+}
+
+.projects {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 1.5625rem;
+
+  .project {
+    cursor: pointer;
+    overflow: hidden;
+
+    img {
+      height: auto;
+      width: 100%;
+      aspect-ratio: 1;
+      object-fit: cover;
+    }
+
+    .title {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      display: -webkit-box;
+      -webkit-line-clamp: 1;
+      line-clamp: 1;
+      -webkit-box-orient: vertical;
+    }
+  }
+}
+
+.one-liner{
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  line-clamp: 1;
+  -webkit-box-orient: vertical;
+}
