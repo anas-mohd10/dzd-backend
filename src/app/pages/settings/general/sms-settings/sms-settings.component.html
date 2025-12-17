@@ -65,6 +65,11 @@
   <div class="modal-body">
     <form [formGroup]="form" (ngSubmit)="onSubmit()">
       <div class="form-group mb-3"
+        *ngIf="smsGatewayConfig[form.get('smsGateway')?.value || activeSmsGateway?.id]?.includes('apiKey')">
+        <label for="apiKey" class="fs-6 mb-3 required">API Key</label>
+        <input type="text" id="apiKey" formControlName="apiKey" class="form-control">
+      </div>
+      <div class="form-group mb-3"
         *ngIf="smsGatewayConfig[form.get('smsGateway')?.value || activeSmsGateway?.id]?.includes('username')">
         <label for="username" class="fs-6 mb-3 required">Username</label>
         <input type="text" id="username" formControlName="username" class="form-control">
