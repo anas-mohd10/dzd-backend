@@ -1128,12 +1128,12 @@ export class CatalogComponent implements OnInit, OnDestroy {
           .get('redirection')
           ?.setValue('/p/' + this.redirectionQuery.value);
         break;
-        case 'web-links' : 
+      case 'web-links':
         if (this.redirectionQuery.value) {
           this.widgetForm.get('redirection')?.setValue(this.redirectionQuery.value);
         }
         break;
-  
+
       case 'collection':
         this.widgetForm
           .get('redirection')
@@ -1255,6 +1255,7 @@ export class CatalogComponent implements OnInit, OnDestroy {
   }
 
   addCatalogWidget(widget: WidgetProps) {
+    if (!widget) return;
     this.CatalogService.addCatalogWidget({
       index: this.widgetItems?.length || 0,
       widgetName: widget.title,

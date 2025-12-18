@@ -1,0 +1,275 @@
+<div>
+  <div class="page-header d-flex align-items-center justify-content-between">
+    <div>
+      <div class="page-title">
+        <h1 class="fw-bold">Update Project</h1>
+      </div>
+      <ul class="breadcrumb">
+        <li class="breadcrumb-item fs-6">
+          <a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a>
+        </li>
+        <li class="breadcrumb-item fs-6">
+          <a routerLink="{{ appRoute.projects.list }}">Projects</a>
+        </li>
+        <li class="breadcrumb-item active fs-6">
+          <a routerLink="{{ appRoute.projects.update + '/' + projectQuery }}">Update project</a>
+        </li>
+      </ul>
+    </div>
+
+    <div class="d-flex align-items-center gap-2">
+      <a *ngIf="projectDetails?.isDraft == false" class="btn btn-secondary" href="{{getUrl('live')}}" target="_blank">
+        Live Preview
+        <i class="fa fa-eye"></i>
+      </a>
+      <a *ngIf="projectDetails?.isDraft == true" class="btn btn-secondary" href="{{getUrl('draft')}}" target="_blank">
+        Draft Preview
+        <i class="fa fa-eye"></i>
+      </a>
+      <button class="btn btn-danger" (click)="open(template)">Delete</button>
+    </div>
+  </div>
+  <div class="my-4 card">
+    <div class="card-body">
+      <div class="d-flex align-items-center gap-6 pb-4 mb-4 border-bottom border-secondary">
+        <div class="fs-5 text-muted">
+          Last Modified : <span class="text-dark">{{projectDetails?.updatedAt | date:'dd MMM yyyy HH:mm'}}</span>
+        </div>
+        <div class="fs-5 text-muted">
+          Created : <span class="text-dark">{{projectDetails?.createdAt | date:'dd MMM yyyy HH:mm'}}</span>
+        </div>
+        <div *ngIf="projectDetails?.isDraft == false"
+          class="p-2 rounded bg-success bg-opacity-25 d-flex align-items-center gap-2">
+          <i class="fa fa-check-circle text-success"></i>
+          <div class="fs-5">Published</div>
+        </div>
+        <div *ngIf="projectDetails?.isDraft == true"
+          class="p-2 rounded bg-warning bg-opacity-25 d-flex align-items-center gap-2">
+          <i class="fa fa-clock-o text-warning"></i>
+          <div class="fs-5">Draft</div>
+        </div>
+      </div>
+
+      <div>
+        <div class="cover w-100 rounded position-relative mb-3"
+          [ngClass]="{'border border-danger':  (formControls.cover.touched || isSubmitted) && formControls.cover.errors?.required}">
+          <app-assets (mediaClicked)="handleCover($event)" [image]="'cover'"
+            [previewDetails]="previews?.cover"></app-assets>
+          <div class="position-absolute bottom-0 end-0 m-4" *ngIf="previews?.cover">
+            <button class="btn btn-danger" (click)="onRemove('cover')">Remove</button>
+          </div>
+        </div>
+      </div>
+      <form [formGroup]="form">
+        <div class="row">
+          <div class="col-lg-3">
+            <div class="mb-3">
+              <label for="thumbnail" class="form-label required">Thumbnail</label>
+              <div class="position-relative">
+                <div class="ratio ratio-1x1 h-auto w-100 rounded"
+                  [ngClass]="{ 'border border-danger': (formControls.thumbnail.touched || isSubmitted) && formControls.thumbnail.errors?.required}">
+                  <app-assets (mediaClicked)="handleThumbnail($event)"
+                    [previewDetails]="previews?.thumbnail"></app-assets>
+                </div>
+                <button *ngIf="previews?.thumbnail" class="position-absolute bottom-0 end-0 m-2 p-2 btn btn-danger"
+                  (click)="onRemove('thumbnail')">Remove</button>
+              </div>
+            </div>
+            <div class="form-group mb-3">
+              <label for="category" class="form-label required">Category</label>
+              <select id="category" formControlName="category" class="form-select"
+                [ngClass]="{'is-invalid': (formControls.category.touched || isSubmitted) && formControls.category.errors?.required}">
+                <option value="" disabled>-- Select an option --</option>
+                <option *ngFor="let category of categories" [value]="category._id">
+                  {{category.title}}
+                </option>
+              </select>
+            </div>
+            <div class="form-group mb-3">
+              <label for="isActive" class="form-label">Status</label>
+              <select formControlName="isActive" class="form-select" id="isActive">
+                <option value="" disabled>-- Select an option--</option>
+                <option value="true">Active</option>
+                <option value="false">Inactive</option>
+              </select>
+            </div>
+            <div class="form-group mb-3">
+              <label for="isDraft" class="form-label">Draft</label>
+              <select formControlName="isDraft" class="form-select" id="isDraft">
+                <option value="" disabled>-- Select an option--</option>
+                <option value="true">Yes</option>
+                <option value="false">No</option>
+              </select>
+            </div>
+          </div>
+          <div class="col-lg-9">
+            <div class="form-group mb-3">
+              <label for="title" class="form-label required">Title</label>
+              <input type="text" id="title" formControlName="title" class="form-control"
+                [ngClass]="{'is-invalid': (formControls.title.touched || isSubmitted) && formControls.title.errors?.required}">
+            </div>
+            <div class="form-group mb-3 position-relative">
+              <label for="slug" class="form-label">Slug</label>
+
+              <!-- Input Field -->
+              <div class="d-flex align-items-center position-relative">
+                <input type="text" id="slug" formControlName="slug" class="form-control pe-5"
+                  [ngClass]="{'is-invalid': (formControls.slug.touched || isSubmitted) && formControls.slug.errors?.required}">
+                <span class="position-absolute top-50 end-0 translate-middle-y mx-2" style="cursor:pointer; z-index:2;"
+                  (click)="generateSlug()">
+                  <!-- SVG Icon -->
+                  <svg height="20" width="20" fill="none" stroke-width="1.5" stroke="currentColor" viewBox="0 0 24 24"
+                    xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                      d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0 3.181 3.183a8.25 8.25 0 0 0 13.803-3.7M4.031 9.865a8.25 8.25 0 0 1 13.803-3.7l3.181 3.182m0-4.991v4.99">
+                    </path>
+                  </svg>
+                </span>
+              </div>
+            </div>
+
+
+            <div class="form-group mb-3">
+              <label for="overview" class="form-label">Overview</label>
+              <textarea id="overview" formControlName="overview" class="form-control" rows="2"
+                [ngClass]="{'is-invalid': (formControls.overview.touched || isSubmitted) && formControls.overview.errors?.required}"
+                placeholder="Enter overview"></textarea>
+            </div>
+            <div class="my-6">
+              <tabset>
+                <tab heading="Description" id="tab1">
+                  <div class="my-4">
+                    <angular-editor id="description" class="form-control" formControlName="description"
+                      [config]="editorConfig"
+                      [ngClass]="{'is-invalid': (formControls.description.touched || isSubmitted) && formControls.description.errors?.required}"></angular-editor>
+                  </div>
+                </tab>
+                <tab heading="SEO" id="tab2">
+                  <div class="my-4">
+                    <div class="form-group mb-3">
+                      <label for="seoTitle" class="form-label">Title</label>
+                      <input type="text" placeholder="Enter title" id="seoTitle" formControlName="seoTitle" class="form-control">
+                    </div>
+                    <div class="form-group mb-3">
+                      <label for="seoDescription" class="form-label">Description</label>
+                      <input type="text" placeholder="Enter description" id="seoDescription" formControlName="seoDescription" class="form-control">
+                    </div>
+                    <div class="form-group mb-3">
+                      <label for="seoKeywords" class="form-label">Keywords</label>
+                      <input type="text" placeholder="Enter keywords" id="seoKeywords" formControlName="seoKeywords" class="form-control">
+                    </div>
+                    <div class="form-group mb-3">
+                      <label for="canonicalUrl" class="form-label">Canonical URL</label>
+                      <input type="text" placeholder="Enter canonical URL" id="canonicalUrl" formControlName="canonicalUrl" class="form-control">
+                    </div>
+                  </div>
+                </tab>
+                <tab heading="Products" id="tab3">
+                  <div class="my-4">
+                    <div class="d-flex flex-wrap gap-2 mb-3" *ngIf="selectedProducts && selectedProducts.length > 0">
+                      <div *ngFor="let product of selectedProducts"
+                        class="border border-secondary bg-secondary px-3 py-1 rounded-pill d-flex align-items-center">
+                        <div class="d-flex align-items-center gap-3">
+                          <div class="fs-6">{{product?.name}} </div>
+                          <div class="text-muted">{{product?.sku}}</div>
+                          <div>
+                            <span (click)="removeProduct(product)">
+                              <svg height="16" width="16" data-slot="icon" fill="none" stroke-width="1.5"
+                                stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"
+                                aria-hidden="true">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12"></path>
+                              </svg>
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="position-relative product-search-container">
+                      <input type="text" class="form-control" [formControl]="searchControl"
+                        placeholder="Search products..." (focus)="showDropdown = true">
+                      <div *ngIf="showDropdown && searchResults.length > 0"
+                        class="position-absolute top-100 start-0 w-100 bg-white border rounded-3 shadow-sm mt-1 z-3">
+                        <div class="p-2">
+                          <div *ngFor="let product of searchResults"
+                            class="d-flex align-items-center justify-content-between p-2 cursor-pointer hover-bg-light rounded"
+                            (click)="selectProduct(product)">
+                            <div class="d-flex align-items-center gap-2">
+                              <img [src]="base + product.thumbnail" class="rounded border" width="40" height="40"
+                                [alt]="product.name" onerror="this.src='assets/images/default.png'">
+                              <div>
+                                <div class="fw-bold">{{product.name}}</div>
+                                <div class="text-muted small">SKU: {{product.sku}}</div>
+                              </div>
+                            </div>
+                            <div class="d-flex align-items-center gap-2">
+                              <span class="text-success">₹{{product.price?.selling}}</span>
+                              <span class="badge" [ngClass]="product.stock > 0 ? 'bg-success' : 'bg-danger'">
+                                {{product.stock > 0 ? 'In Stock' : 'Out of Stock'}}
+                              </span>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </tab>
+                <tab heading="Author" id="tab4">
+                  <div class="my-4 d-flex gap-3">
+                    <div class="w-75 form-group mb-3">
+                      <input type="text" placeholder="Author" id="author" formControlName="author" class="form-control"
+                        [ngClass]="{
+                        'is-invalid': (formControls.author.touched || isSubmitted) && formControls.author.errors?.required}">
+                    </div>
+                    <div class="w-25 form-group mb-3">
+                      <div class="position-relative">
+                        <div id="authorThumbnail" class="ratio ratio-1x1 h-auto w-100 rounded mb-3">
+                          <app-assets [previewDetails]="previews?.authorThumbnail"
+                            (mediaClicked)="handleAuthorThumbnail($event)"></app-assets>
+                        </div>
+                        <button *ngIf="previews?.authorThumbnail"
+                          class="position-absolute bottom-0 end-0 m-2 p-2 btn btn-danger"
+                          (click)="onRemove('authorThumbnail')">Remove</button>
+                      </div>
+                    </div>
+                  </div>
+                </tab>
+              </tabset>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+  <div class="d-flex align-items-center justify-content-end gap-2">
+    <a class="btn btn-secondary" routerLink="{{appRoute.projects.list}}">Cancel</a>
+    <button class="btn btn-primary" (click)="onSubmit()">Save changes</button>
+  </div>
+</div>
+
+<ng-template #template>
+  <div class="modal-body text-center">
+    <div class="fs-5 mb-6">Do you want to delete this project?</div>
+    <button type="button" class="btn btn-default" (click)="confirm()">Yes</button>
+    <button type="button" class="btn btn-primary" (click)="modalRef.hide()">No</button>
+  </div>
+</ng-template>
+
+<ng-template #slugConfirmationTemplate>
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">Confirm Slug Change</h4>
+    <button type="button" class="btn-close close pull-right" aria-label="Close" (click)="cancelSlugChange()">
+      <span aria-hidden="true" class="visually-hidden">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="p-3">
+      <p class="fs-5 mb-3">Are you sure you want to update the slug?</p>
+      <p class="text-muted mb-4">This change will only be applied when you save the project.</p>
+      <div class="d-flex justify-content-end gap-3">
+        <button class="btn btn-secondary" (click)="cancelSlugChange()">No</button>
+        <button class="btn btn-primary" (click)="confirmSlugChange()">Yes</button>
+      </div>
+    </div>
+  </div>
+</ng-template>

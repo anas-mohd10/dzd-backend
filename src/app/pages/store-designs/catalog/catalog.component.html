@@ -362,7 +362,7 @@
                 <div class="modal-widgets" *ngIf="homeWidgets.length > 0">
                     <ng-container *ngFor="let widget of homeWidgets; let i = index">
                         <div class="modal-widget h-100 p-4 rounded border w-100" (click)="focusWidget(widget)"
-                            [ngClass]="{'border-primary shadow-sm': focusedWidget.type == widget.type, 'border-secondary border-dotted': focusedWidget.type != widget.type}">
+                            [ngClass]="{'border-primary shadow-sm': focusedWidget?.type == widget?.type, 'border-secondary border-dotted': focusedWidget?.type != widget?.type}">
                             <img class="h-auto w-100 ratio ratio-1x1" src="{{widget?.icon}}" alt="{{widget?.title}}">
                             <div class="text-center mt-2 fs-6">{{widget?.title}}</div>
                         </div>
@@ -372,7 +372,7 @@
                     <app-no-results></app-no-results>
                 </div>
             </div>
-            <div class="col-lg-5">
+            <div class="col-lg-5" *ngIf="focusedWidget">
                 <div class="d-flex align-items-center justify-content-between">
                     <div class="fw-bold fs-4">{{focusedWidget.title}}</div>
                     <div>
@@ -865,7 +865,7 @@
                                                     <option *ngFor="let redirectionItem of redirectionItems"
                                                         value="{{redirectionItem?.value}}">{{redirectionItem?.key}}
                                                     </option>
-                                                    
+
                                                 </select>
                                             </div>
                                         </div>

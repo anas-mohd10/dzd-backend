@@ -32,6 +32,11 @@ export class SmsSettingsComponent implements OnInit {
       id: 'etisalat',
       logo: `${environment.base}etisalat-logo.png`,
     },
+    {
+      title: 'MySMSApp',
+      id: 'mysmsapp',
+      logo: `${environment.base}mysmsapp-logo.png`,
+    },
   ];
   selectedSmsGateway: any;
   activeSmsGateway?: any;
@@ -48,6 +53,7 @@ export class SmsSettingsComponent implements OnInit {
       'port',
     ],
     twilio: ['username', 'password', 'usages', 'fromNumber'],
+    mysmsapp: ['apiKey', 'senderId', 'usages'],
   };
   usageItems: Array<any> = [
     { title: 'Registration', value: 'registration' },
@@ -73,7 +79,7 @@ export class SmsSettingsComponent implements OnInit {
     private ChangeDetectorRef: ChangeDetectorRef,
     private BsModalService: BsModalService,
     private AppSettingsService: AppSettingsService
-  ) {}
+  ) { }
 
   toggleUsageItem(usage: any) {
     let usages = this.form.get('usages')?.value || [];
@@ -117,7 +123,7 @@ export class SmsSettingsComponent implements OnInit {
         } else {
         }
       },
-      error: (err: any) => {},
+      error: (err: any) => { },
     });
   }
 
@@ -153,7 +159,7 @@ export class SmsSettingsComponent implements OnInit {
         } else {
         }
       },
-      (error: any) => {}
+      (error: any) => { }
     );
   }
 
@@ -235,7 +241,7 @@ export class SmsSettingsComponent implements OnInit {
           fields.forEach((field) => {
             let smsConfig =
               this.smsGatewayConfig[
-                res?.result?.smsGateway || this.activeSmsGateway?.id
+              res?.result?.smsGateway || this.activeSmsGateway?.id
               ] || [];
             if (smsConfig?.includes(field)) {
               this.form.get(field)?.setValidators([Validators.required]);
@@ -247,7 +253,7 @@ export class SmsSettingsComponent implements OnInit {
         } else {
         }
       },
-      (error: any) => {}
+      (error: any) => { }
     );
   }
 }
