@@ -1,30 +1,38 @@
-<div [ngClass]="headerContainerCssClasses" class="d-flex align-items-stretch justify-content-between">
-  <ng-container *ngIf="asideDisplay">
-    <div class="d-flex align-items-center d-lg-none ms-n3 me-1" title="Show aside menu">
-      <div class="btn btn-icon btn-active-light-primary w-30px h-30px w-md-40px h-md-40px" id="kt_aside_mobile_toggle">
-        <span [inlineSVG]="'./assets/media/icons/duotune/abstract/abs015.svg'" class="svg-icon svg-icon-1"></span>
-      </div>
-    </div>
-  </ng-container>
-  <div class="d-none d-lg-flex align-items-center flex-grow-1 flex-lg-grow-0">
-    <a routerLink="{{appRoute.DASHBOARD}}">
-      <img *ngIf="settings && !settings.adminLogo" alt="StoreDada" height="28" class="w-auto"
-        src="assets/images/storedada.jpg" />
-      <img *ngIf="settings && settings.adminLogo" alt="{{settings.name || ''}}" height="28" class="w-auto"
-        src="{{baseUrl}}{{settings.adminLogo}}" />
-    </a>
+<div class="d-flex flex-column w-100">
+  <div class="bg-danger text-white text-center p-2 d-block w-100" *ngIf="settings && settings.isPaymentDue">
+    <b class="fs-6 fw-bolder">⚠︎ Urgent: Payment overdue.</b> Please clear the outstanding amount immediately to avoid
+    service disruption.
   </div>
-  <div class="d-flex align-items-stretch justify-content-between flex-lg-grow-1">
-    <div class="d-flex align-items-stretch" id="kt_header_nav">
-      <div class="header-menu align-items-stretch" data-kt-drawer="true" data-kt-drawer-name="header-menu"
-        data-kt-drawer-activate="{default: true, lg: false}" data-kt-drawer-overlay="true"
-        data-kt-drawer-width="{default:'200px', '300px': '250px'}" data-kt-drawer-direction="end"
-        data-kt-drawer-toggle="#kt_header_menu_mobile_toggle" data-kt-swapper="true" data-kt-swapper-mode="prepend"
-        data-kt-swapper-parent="{default: '#kt_body', lg: '#kt_header_nav'}">
+  <div [ngClass]="headerContainerCssClasses" class="d-flex align-items-stretch justify-content-between"
+    style="height: 80px">
+    <ng-container *ngIf="asideDisplay">
+      <div class="d-flex align-items-center d-lg-none ms-n3 me-1" title="Show aside menu">
+        <div class="btn btn-icon btn-active-light-primary w-30px h-30px w-md-40px h-md-40px"
+          id="kt_aside_mobile_toggle">
+          <span [inlineSVG]="'./assets/media/icons/duotune/abstract/abs015.svg'" class="svg-icon svg-icon-1"></span>
+        </div>
       </div>
+    </ng-container>
+    <div class="d-none d-lg-flex align-items-center flex-grow-1 flex-lg-grow-0">
+      <a routerLink="{{appRoute.DASHBOARD}}">
+        <img *ngIf="settings && !settings.adminLogo" alt="StoreDada" height="28" class="w-auto"
+          src="assets/images/storedada.jpg" />
+        <img *ngIf="settings && settings.adminLogo" alt="{{settings.name || ''}}" height="28" class="w-auto"
+          src="{{baseUrl}}{{settings.adminLogo}}" />
+      </a>
     </div>
-    <div class="d-flex align-items-stretch flex-shrink-0">
-      <app-topbar [settings]="settings" class="d-flex align-items-stretch flex-shrink-0"></app-topbar>
+    <div class="d-flex align-items-stretch justify-content-between flex-lg-grow-1">
+      <div class="d-flex align-items-stretch" id="kt_header_nav">
+        <div class="header-menu align-items-stretch" data-kt-drawer="true" data-kt-drawer-name="header-menu"
+          data-kt-drawer-activate="{default: true, lg: false}" data-kt-drawer-overlay="true"
+          data-kt-drawer-width="{default:'200px', '300px': '250px'}" data-kt-drawer-direction="end"
+          data-kt-drawer-toggle="#kt_header_menu_mobile_toggle" data-kt-swapper="true" data-kt-swapper-mode="prepend"
+          data-kt-swapper-parent="{default: '#kt_body', lg: '#kt_header_nav'}">
+        </div>
+      </div>
+      <div class="d-flex align-items-stretch flex-shrink-0">
+        <app-topbar [settings]="settings" class="d-flex align-items-stretch flex-shrink-0"></app-topbar>
+      </div>
     </div>
   </div>
 </div>

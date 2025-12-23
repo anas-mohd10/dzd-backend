@@ -1,4 +1,5 @@
 <ng-container *ngIf="isReady && checkStoreLive() == true">
+
   <div class="d-flex flex-column flex-root">
     <div class="page d-flex flex-row flex-column-fluid">
       <app-aside *ngIf="asideDisplay" id="kt_aside" data-kt-drawer="true" data-kt-drawer-name="aside"
@@ -7,7 +8,7 @@
         data-kt-drawer-toggle="#kt_aside_mobile_toggle" class="aside" [ngClass]="asideCSSClasses"></app-aside>
       <div class="wrapper d-flex flex-column flex-row-fluid " id="kt_wrapper">
         <app-header id="kt_header" [ngClass]="headerCSSClasses" class="header align-items-stretch"
-          #ktHeader></app-header>
+          style="height: auto !important; z-index: 100 !important;" #ktHeader></app-header>
         <div id="kt_content" class="content d-flex flex-column flex-column-fluid">
           <div class="post d-flex flex-column-fluid" id="kt_post">
             <app-content id="kt_content_container" [ngClass]="contentContainerClasses"></app-content>
