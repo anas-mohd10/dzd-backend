@@ -313,7 +313,8 @@ export class UpdateAppSettingsComponent implements OnInit {
         this.form.get('defaultMobileBanner')?.setValue(res?.result?.defaultMobileBanner)
         this.form.get('verifyNumberWithTwilio')?.setValue(res?.result?.verifyNumberWithTwilio)
         this.form.get('deliverSlotBufferTime')?.setValue(res?.result?.deliverSlotBufferTime || 60);
-        this.form.get('isVoucherEnabled')?.setValue(res?.result?.isVoucherEnabled)
+        this.form.get('isVoucherEnabled')?.setValue(res?.result?.isVoucherEnabled);
+        this.form.get('isRelatedProductsCart')?.setValue(res?.result?.isRelatedProductsCart);
         this.form.get('isPlpPagination')?.setValue(res?.result?.isPlpPagination);
         this.form.get('isBillingAddressEnabled')?.setValue(res?.result?.isBillingAddressEnabled)
         this.form.get('clarityAppId')?.setValue(res?.result?.clarityAppId)
@@ -436,6 +437,7 @@ export class UpdateAppSettingsComponent implements OnInit {
       deliverSlotBufferTime: [60],
       verifyNumberWithTwilio: ['false'],
       isVoucherEnabled: ['false'],
+      isRelatedProductsCart:['false'],
       isBillingAddressEnabled: ['false'],
       isPlpPagination: ['false'],
       clarityAppId: ['']
@@ -617,6 +619,7 @@ export class UpdateAppSettingsComponent implements OnInit {
       decimalValues: Number(this.form.get('decimalValues')?.value),
       verifyNumberWithTwilio: this.form.get('verifyNumberWithTwilio')?.value,
       isVoucherEnabled: this.form.get('isVoucherEnabled')?.value,
+      isRelatedProductsCart: this.form.get('isRelatedProductsCart')?.value,
       isPlpPagination: this.form.get('isPlpPagination')?.value,
       isBillingAddressEnabled: this.form.get('isBillingAddressEnabled')?.value,
       clarityAppId:this.form.get('clarityAppId')?.value,
