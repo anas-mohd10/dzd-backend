@@ -3,9 +3,9 @@ export const environment = {
   appVersion: 'v8.0.35',
   USERDATA_KEY: 'authf649fc9a5f55',
   isMockEnabled: true,
-  apiUrl: 'https://clas-01-dev.dev.storedada.net/api/v1/w/admin/auth',
-  baseUrl: 'https://clas-01-dev.dev.storedada.net/api/v1/w/',
-  appBaserl: 'https://clas-01-dev.dev.storedada.net/api/v1/a/',
+  apiUrl: 'http://localhost:3000/api/v1/w/admin/auth',
+  baseUrl: 'http://localhost:3000/api/v1/w/',
+  appBaserl: 'http://localhost:3000/api/v1/a/',
   base: 'https://storedada-development.s3.ap-south-1.amazonaws.com/',
   loginUrl: 'api',
   firebaseConfig: {
