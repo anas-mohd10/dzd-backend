@@ -54,7 +54,7 @@ import { SmsTemplateService } from '../includes/services/sms-template.service';
 import { SmsTemplatesComponent } from './settings/general/sms-templates/sms-templates.component';
 import { FormSettingsComponent } from './settings/general/form-settings/form-settings.component';
 import { AlbumsComponent } from './marketing/albums/albums.component';
-import { GalleriesComponent } from './marketing/galleries/galleries.component';import { CurrencySettingsComponent } from './settings/general/currency-settings/currency-settings.component';
+import { GalleriesComponent } from './marketing/galleries/galleries.component'; import { CurrencySettingsComponent } from './settings/general/currency-settings/currency-settings.component';
 
 import { ShippingGatewaysComponent } from './settings/general/shipping-gateways/shipping-gateways.component';
 export const Routing: Routes = [
@@ -257,7 +257,7 @@ export const Routing: Routes = [
         loadChildren: () => import('./settings/general/invoice-settings/invoice-settings.module').then((m) => m.InvoiceSettingsModule),
         canActivate: [AuthenticationGuard, PermissionGuard]
       },
-     {
+      {
         path: 'create-products',
         component: CreateProductsComponent,
         canActivate: [AuthenticationGuard]
@@ -288,6 +288,10 @@ export const Routing: Routes = [
       }, {
         path: 'blogs',
         loadChildren: () => import('./marketing/blogs/blogs.module').then((m) => m.BlogsModule),
+        canActivate: [AuthenticationGuard, PermissionGuard]
+      }, {
+        path: 'projects',
+        loadChildren: () => import('./projects/projects.module').then((m) => m.ProjectsModule),
         canActivate: [AuthenticationGuard, PermissionGuard]
       },
       {

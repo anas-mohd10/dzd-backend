@@ -1,0 +1,111 @@
+<div>
+  <div class="page-header d-flex align-items-start justify-content-between">
+    <div>
+      <div class="page-title">
+        <h1 class="fw-bold">Projects ({{totalResults}})</h1>
+      </div>
+      <ul class="breadcrumb">
+        <li class="breadcrumb-item fs-6">
+          <a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a>
+        </li>
+        <li class="breadcrumb-item active fs-6">
+          <a routerLink="{{ appRoute.projects.list }}">Projects</a>
+        </li>
+      </ul>
+    </div>
+    <div class="d-flex gap-2">
+      <button class="btn btn-secondary" (click)="open(promoModal)">
+        Promotional Banner
+      </button>
+      <button class="btn btn-secondary" routerLink="{{ appRoute.projects.categories }}">
+        View categories
+      </button>
+      <button class="btn btn-primary" routerLink="{{ appRoute.projects.create }}">
+        Create project
+      </button>
+    </div>
+  </div>
+
+  <div class="card my-4">
+    <div class="card-body">
+      <div class="row justify-content-between align-items-end">
+        <div class="col-lg-4">
+          <input type="search" placeholder="Search projects here" [formControl]="keyword" class="form-control"
+            (ngModelChange)="getProjects()">
+        </div>
+        <div class="col-lg-3">
+          <label for="isActive" class="mb-3 fs-6">Status</label>
+          <select id="isActive" class="form-control" (change)="getProjects()" [formControl]="isActive">
+            <option value="" disabled>-- Select an Option --</option>
+            <option value="true">Active</option>
+            <option value="false">Inactive</option>
+          </select>
+        </div>
+        <div class="col-lg-3">
+          <label for="date" class="mb-3 fs-6">Date</label>
+          <input id="date" name="date" type="text" placeholder="-- Select a Date --" class="form-control" bsDatepicker
+            [bsConfig]="{ isAnimated: true, dateInputFormat: 'DD-MM-YYYY', containerClass: 'theme-green' }"
+            [(ngModel)]="date" (ngModelChange)="getProjects()">
+        </div>
+        <div class="col-lg-2">
+          <input type="button" value="Clear filters" class="btn btn-secondary w-100" (click)="clear()">
+        </div>
+      </div>
+      <div class="projects my-6" *ngIf="projects.length > 0">
+        <ng-container *ngFor="let project of projects">
+          <a class="project" routerLink="{{appRoute.projects.update + '/' + project._id}}">
+            <div class="position-relative">
+              <div *ngIf="project?.isDraft == true" class="position-absolute top-0 start-0 m-2">
+                <span class="bg-secondary px-2 py-1 text-dark rounded shadow">Draft</span>
+              </div>
+              <img src="{{project?.thumbnail}}" alt="{{project?.title}}" class="rounded"
+                onerror="this.src = 'assets/images/default.png'">
+              <div class="position-absolute bottom-0 end-0 m-2 text-dark bg-secondary px-2 py-1 rounded one-liner">
+                {{project?.category?.title || project?.category}}</div>
+            </div>
+            <div class="mt-4">
+              <div class="fs-5 title">{{project?.title}}</div>
+              <div class="text-muted fs-6">{{project?.createdAt}}</div>
+            </div>
+          </a>
+
+        </ng-container>
+      </div>
+
+      <div *ngIf="projects.length == 0">
+        <app-no-results></app-no-results>
+      </div>
+
+      <app-pagination [totalResults]="totalResults" [totalPages]="totalPages" [pageIndex]="pageIndex"
+        [pageSize]="pageSize" (pageTrigger)="onPageTriggered($event)"></app-pagination>
+    </div>
+  </div>
+</div>
+
+<ng-template #promoModal>
+  <div class="modal-header">
+    <h4 class="modal-title">Promotional Banner</h4>
+    <button type="button" class="btn-close" (click)="close()"></button>
+  </div>
+  <div class="modal-body">
+    <form [formGroup]="form" (ngSubmit)="savePromo()">
+      <div class="mb-3">
+        <div class="form-group">
+          <label class="fs-6 mb-3">Promo Banner</label>
+          <div class="ratio ratio-1x1 position-relative">
+            <app-assets (mediaClicked)="handleThumbnail($event)"
+              [previewDetails]="form.value.projectPromotionalBanner"></app-assets>
+            <div *ngIf="form.value.projectPromotionalBanner" class="position-absolute top-0 start-0">
+              <button type="button" class="p-1 btn btn-danger m-2" (click)="removePromoBanner()">Remove</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="d-flex justify-content-end">
+        <button type="submit" class="btn btn-primary">
+          Save changes
+        </button>
+      </div>
+    </form>
+  </div>
+</ng-template>
