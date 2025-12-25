@@ -1,7 +1,8 @@
 <div class="d-flex flex-column w-100">
   <div class="bg-danger text-white text-center p-2 d-block w-100" *ngIf="settings && settings.isPaymentDue">
-    <b class="fs-6 fw-bolder">⚠︎ Urgent: Payment overdue.</b> Please clear the outstanding amount immediately to avoid
-    service disruption.
+    &#9888; Your payment is currently overdue. Please note that some <b>platform features will be disabled on 27th
+      December</b>,
+    and <b>full service access will be interrupted on 31st December</b> if the outstanding amount is not cleared.
   </div>
   <div [ngClass]="headerContainerCssClasses" class="d-flex align-items-stretch justify-content-between"
     style="height: 80px">
