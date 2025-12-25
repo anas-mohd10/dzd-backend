@@ -19,7 +19,8 @@ interface Settings {
   favicon: string,
   adminFavicon: string,
   isDeveloperAccess: boolean,
-  isStoreLive: boolean
+  isStoreLive: boolean,
+  isPaymentDue?: boolean
 }
 
 @Component({
