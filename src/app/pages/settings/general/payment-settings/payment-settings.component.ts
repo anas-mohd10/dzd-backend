@@ -43,6 +43,7 @@ export class PaymentSettingsComponent implements OnInit {
     { title: 'Tabby', id: 'tabby', icon: `${environment.base}tabby.png` },
     { title: 'Tamara', id: 'tamara', icon: `${environment.base}tamara.png` },
     { title: 'Telr', id: 'telr', icon: `${environment.base}telr.png` },
+    { title: 'Easebuzz', id: 'easebuzz', icon: `${environment.base}easebuzz.png` },
   ];
   displayIcon: string = '';
   modalRef?: BsModalRef;
@@ -57,7 +58,8 @@ export class PaymentSettingsComponent implements OnInit {
     qi: ['secretKey', 'apiUrl', 'username', 'password'],
     razorpay: ['secretKey', 'keyId'],
     tamara: ['apiUrl', 'publicKey', 'privateKey', 'payByOption'],
-    telr: ['apiKey', 'merchantId']
+    telr: ['apiKey', 'merchantId'],
+    easebuzz: ['keyId', 'secretKey', 'region'] // keyId -> key, secretKey -> salt, region -> env
   };
 
   get formControls() {
@@ -233,15 +235,17 @@ export class PaymentSettingsComponent implements OnInit {
         return `assets/payment-icons/tamara.png`;
       case 'telr':
         return `assets/payment-icons/telr.png`;
+      case 'easebuzz':
+        return `assets/payment-icons/easebuzz.png`;
     }
   }
 
   close() {
     this.modalRef?.hide();
     this.form.reset();
-    this.form.patchValue({ 
-      payByOption: '', 
-      isEnabled: false, 
+    this.form.patchValue({
+      payByOption: '',
+      isEnabled: false,
       isDefault: false,
       minAmount: 0,
       maxAmount: 0,
