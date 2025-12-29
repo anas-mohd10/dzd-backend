@@ -1,13 +1,14 @@
 import { Injectable } from '@angular/core';
-import { HttpEvent, HttpHandler, HttpRequest } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { HttpEvent, HttpHandler, HttpRequest, HttpInterceptor as NgHttpInterceptor, HttpErrorResponse } from '@angular/common/http';
+import { Observable, throwError } from 'rxjs';
+import { catchError } from 'rxjs/operators';
 import { AuthService } from '../services/auth.service';
 import { localstorageVariables } from 'src/app/config/localStorageVariable';
 
 @Injectable()
-export class HttpInterceptor implements HttpInterceptor {
+export class HttpInterceptor implements NgHttpInterceptor {
 
-  constructor() { }
+  constructor(private authService: AuthService) { }
 
   intercept(
     request: HttpRequest<unknown>,
@@ -25,6 +26,13 @@ export class HttpInterceptor implements HttpInterceptor {
         Authorization: `Bearer ${token}`,
       }
     });
-    return next.handle(request)
+    return next.handle(request).pipe(
+      catchError((error: HttpErrorResponse) => {
+        if (error.status === 401) {
+          this.authService.logout();
+        }
+        return throwError(error);
+      })
+    );
   }
 }
