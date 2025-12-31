@@ -74,9 +74,10 @@ export class AppComponent implements OnInit {
     const secondaryColor = isLocalhost ? '#B3907A' : '#00BDAB';
     const backgroundColor = isLocalhost ? '#f4eee542' : '#F0F8F7';
 
-    document.documentElement.style.setProperty('--brand-primary', primaryColor);
-    document.documentElement.style.setProperty('--brand-secondary', secondaryColor);
-    document.documentElement.style.setProperty('--app-bg-color', backgroundColor);
+    document.documentElement.style.setProperty('--brand-primary', "#2A3234");
+    document.documentElement.style.setProperty('--brand-secondary', "#B3907A");
+    document.documentElement.style.setProperty('--app-bg-color', "#f4eee542");
+    console.log("colour settt")
   }
 
   // Request permission for notifications
