@@ -68,7 +68,8 @@ export class AppComponent implements OnInit {
    */
   private applyThemeBasedOnUrl(): void {
     const hostname = window.location.hostname;
-    const isLocalhost = hostname.includes('clas-01') || hostname.includes('localhost') || hostname.includes('classy');
+    const isLocalhost = true
+    // const isLocalhost = hostname.includes('clas-01') || hostname.includes('localhost') || hostname.includes('classy');
     const primaryColor = isLocalhost ? '#2A3234' : '#00BDAB';
     const secondaryColor = isLocalhost ? '#B3907A' : '#00BDAB';
     const backgroundColor = isLocalhost ? '#f4eee542' : '#F0F8F7';
