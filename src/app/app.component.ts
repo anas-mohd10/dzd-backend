@@ -68,16 +68,14 @@ export class AppComponent implements OnInit {
    */
   private applyThemeBasedOnUrl(): void {
     const hostname = window.location.hostname;
-    const isLocalhost = true
-    // const isLocalhost = hostname.includes('clas-01') || hostname.includes('localhost') || hostname.includes('classy');
+    const isLocalhost = hostname.includes('clas-01') || hostname.includes('localhost') || hostname.includes('classy');
     const primaryColor = isLocalhost ? '#2A3234' : '#00BDAB';
     const secondaryColor = isLocalhost ? '#B3907A' : '#00BDAB';
     const backgroundColor = isLocalhost ? '#f4eee542' : '#F0F8F7';
 
-    document.documentElement.style.setProperty('--brand-primary', "#2A3234");
-    document.documentElement.style.setProperty('--brand-secondary', "#B3907A");
-    document.documentElement.style.setProperty('--app-bg-color', "#f4eee542");
-    console.log("colour settt")
+    document.documentElement.style.setProperty('--brand-primary', primaryColor);
+    document.documentElement.style.setProperty('--brand-secondary', secondaryColor);
+    document.documentElement.style.setProperty('--app-bg-color', backgroundColor);
   }
 
   // Request permission for notifications
