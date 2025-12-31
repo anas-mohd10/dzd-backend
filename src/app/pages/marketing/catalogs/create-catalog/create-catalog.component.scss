@@ -3,9 +3,9 @@ $grey: #888888;
 $white: #ffffff;
 $boxShadow: #0000001a;
 $inactiveState: #ce1626;
-$activeState: #00BDAB;
-$primaryBackground: #20BDAB40;
-$activeBackground: #00BDAB20;
+$activeState: var(--brand-primary, #00BDAB);
+$primaryBackground: var(--brand-primary-light, #20BDAB)40;
+$activeBackground: var(--brand-primary, #00BDAB)20;
 $border: #cccccc;
 $background: #e5e5e5;
 $error: #F1416C;
@@ -159,13 +159,13 @@ $error: #F1416C;
     border: 1px solid #ececec;
 
     &.active-widget {
-      border: 1px solid #00BDAB;
-      color: #00BDAB;
-      background: #00BDAB05;
+      border: 1px solid var(--brand-primary, #00BDAB);
+      color: var(--brand-primary, #00BDAB);
+      background: var(--brand-primary, #00BDAB)05;
     }
 
     &:hover {
-      color: #00BDAB;
+      color: var(--brand-primary, #00BDAB);
     }
   }
 }

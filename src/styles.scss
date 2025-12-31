@@ -3,11 +3,97 @@
 @import "~@ng-select/ng-select/themes/default.theme.css";
 @import 'swiper/scss/autoplay';
 
+// CRITICAL: Override all button primary states to use CSS variables for runtime theming
+.btn-check:checked+.btn.btn-primary,
+.btn-check:active+.btn.btn-primary,
+.btn.btn-primary:focus:not(.btn-active),
+.btn.btn-primary:hover:not(.btn-active),
+.btn.btn-primary:active:not(.btn-active),
+.btn.btn-primary.active,
+.btn.btn-primary.show,
+.show>.btn.btn-primary {
+  color: #FFFFFF !important;
+  border-color: var(--brand-secondary, #00BDAB) !important;
+  background-color: var(--brand-secondary, #00BDAB) !important;
+}
+
+// Base primary button state
+.btn.btn-primary {
+  color: #FFFFFF !important;
+  border-color: var(--brand-primary, #00BDAB) !important;
+  background-color: var(--brand-primary, #00BDAB) !important;
+}
+
+
+// Priority imports that use CSS custom properties for dynamic theming
 .nav-pills .nav-link.active,
 .nav-pills .show>.nav-link {
-  background: #00BDAB !important;
+  background: var(--brand-primary, var(--brand-primary, #00BDAB)) !important;
   color: #FFFFFF !important;
 }
+
+// Override all primary buttons to use CSS custom property for runtime theming
+.btn-primary,
+.btn.btn-primary {
+  background-color: var(--brand-primary, #00BDAB) !important;
+  border-color: var(--brand-primary, #00BDAB) !important;
+
+  &:hover,
+  &:focus,
+  &:active,
+  &.active {
+    background-color: var(--brand-primary, #00BDAB) !important;
+    border-color: var(--brand-primary, #00BDAB) !important;
+    opacity: 0.9;
+  }
+}
+
+// Override outline primary buttons
+.btn-outline-primary {
+  color: var(--brand-primary, #00BDAB) !important;
+  border-color: var(--brand-primary, #00BDAB) !important;
+
+  &:hover {
+    background-color: var(--brand-primary, #00BDAB) !important;
+    border-color: var(--brand-primary, #00BDAB) !important;
+    color: #ffffff !important;
+  }
+}
+
+// Override text-primary class
+.text-primary {
+  color: var(--brand-primary, #00BDAB) !important;
+}
+
+// Override links with primary color
+a.text-primary {
+  color: var(--brand-primary, #00BDAB) !important;
+
+  &:hover,
+  &:focus {
+    color: var(--brand-primary, #00BDAB) !important;
+    opacity: 0.8;
+  }
+}
+
+// Override menu link hover states - only change title color, not icon
+.menu-link:hover,
+.menu-link.without-sub:hover {
+  .menu-title {
+    color: var(--brand-secondary, #00BDAB) !important;
+  }
+}
+
+// Override default anchor tag colors globally
+a {
+  color: var(--brand-primary, #00BDAB) !important;
+
+  &:hover {
+    color: var(--brand-primary, #00BDAB) !important;
+    opacity: 0.8;
+  }
+}
+
 
 .nav-item {
   .nav-link {
@@ -176,7 +262,7 @@ input[type="number"] {
 }
 
 .menu-state-title-primary .menu-item .menu-link.active {
-  background: #00BDAB !important;
+  background: var(--brand-primary, var(--brand-primary, #00BDAB)) !important;
 }
 
 .angular-editor-textarea {
@@ -381,16 +467,16 @@ table.dataTable.no-footer {
 }
 
 .btn-add {
-  background: #00BDAB !important;
+  background: var(--brand-primary, var(--brand-primary, #00BDAB)) !important;
   color: #ffffff !important;
   padding: 10px 20px !important;
   outline: none !important;
   border: none !important;
 
   &:hover {
-    border: 1px solid #00BDAB !important;
+    border: 1px solid var(--brand-primary, var(--brand-primary, #00BDAB)) !important;
     background: #ffffff !important;
-    color: #00BDAB !important;
+    color: var(--brand-primary, var(--brand-primary, #00BDAB)) !important;
     padding: 9px 20px !important;
   }
 }
@@ -519,7 +605,7 @@ a.page-link.page-link-disabled {
 }
 
 .pagination-container .page-item .page-active {
-  background: #00BDAB;
+  background: var(--brand-primary, var(--brand-primary, #00BDAB));
   color: #ffffff;
   border: none;
 }
@@ -619,14 +705,14 @@ a.page-link.page-link-disabled {
 }
 
 .show-less-btn {
-  background: #00BDAB;
+  background: var(--brand-primary, var(--brand-primary, #00BDAB));
   color: #ffffff;
   border: none;
 }
 
 .show-more-btn:hover {
-  border: 1px solid #00BDAB;
-  background: rgba(0, 189, 171, 0.1);
+  border: 1px solid var(--brand-primary, #00BDAB);
+  background: rgba(var(--brand-primary-rgb, 0, 189, 171), 0.1);
 }
 
 .show-less-false {
@@ -862,7 +948,7 @@ label {
   height: 100%;
   width: 100%;
   pointer-events: none;
-  border: 1px dashed #00BDAB;
+  border: 1px dashed var(--brand-primary, #00BDAB);
   border-radius: 10px;
   display: flex;
   align-items: center;
@@ -872,7 +958,7 @@ label {
 .active-text-view {
   height: 25px;
   width: 80px;
-  background: #20BDAB;
+  background: var(--brand-primary-light, #20BDAB);
   display: flex;
   align-items: center;
   justify-content: center;

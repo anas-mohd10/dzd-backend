@@ -1,8 +1,8 @@
 $white: #ffffff;
 $boxShadow: rgba(0, 0, 0, 0.1);
 $inactiveState: #ce1626;
-$activeState: #00BDAB;
-$activeBackground: #00BDAB20;
+$activeState: var(--brand-primary, #00BDAB);
+$activeBackground: var(--brand-primary, #00BDAB)20;
 $border: #cccccc;
 
 label,

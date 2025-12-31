@@ -1,4 +1,6 @@
-.switch-box{
+@import "../../../../../assets/sass/branding";
+
+.switch-box {
     height: 1.5rem;
     width: 2.3125rem;
     border-radius: 3.125rem;
@@ -6,11 +8,11 @@
     position: relative;
     transition: 0.3s all ease-in-out;
 
-    &.on-state{
-        background: #00BDAB;
+    &.on-state {
+        background: var(--brand-primary, var(--brand-primary, #00BDAB));
     }
 
-    .switch-off{
+    .switch-off {
         position: absolute;
         height: 1.25rem;
         width: 1.25rem;
@@ -21,7 +23,7 @@
         background: #ffffff;
     }
 
-    .switch-on{
+    .switch-on {
         position: absolute;
         height: 1.25rem;
         width: 1.25rem;

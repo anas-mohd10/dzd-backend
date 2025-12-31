@@ -72,7 +72,7 @@ export class MonthStatsComponent implements OnInit {
           this.month = res?.result?.details?.month
           this.totalRevenue = res?.result?.details?.total
           this.chartOptions = {
-            series: [{ name: "Revenue", data: this.values, color: '#00BDAB' }],
+            series: [{ name: "Revenue", data: this.values, color: getComputedStyle(document.documentElement).getPropertyValue('--brand-primary').trim() || '#00BDAB' }],
             chart: {
               type: "area",
               height: 350,

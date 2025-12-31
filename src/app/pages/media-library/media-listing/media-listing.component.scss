@@ -67,7 +67,7 @@
             place-items: center;
             z-index: 10;
             .checked {
-                background: #20BDAB;
+                background: var(--brand-primary-light, #20BDAB);
                 height: 1rem;
                 width: 1rem;
                 border-radius: 0.1875rem;

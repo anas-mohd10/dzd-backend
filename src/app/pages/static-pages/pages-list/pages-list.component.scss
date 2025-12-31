@@ -1,3 +1,5 @@
+@import "../../../../../assets/sass/branding";
+
 .btn-primary,
 .btn-secondary,
 label {
@@ -50,11 +52,11 @@ label {
             content: '';
             height: 10px;
             width: 10px;
-            background: #00BDAB;
+            background: var(--brand-primary, var(--brand-primary, #00BDAB));
             border-radius: 2px;
          }
 
-         border: 2px solid #00BDAB;
+         border: 2px solid $brand-primary;
       }
    }
 }

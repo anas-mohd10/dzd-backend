@@ -304,7 +304,7 @@ export class DashboardComponent implements OnInit {
               this.dayValues.push(dayItem?.revenue)
             }
             this.chartOptions = {
-              series: [{ name: "Revenue", data: this.dayValues, color: '#00BDAB' }],
+              series: [{ name: "Revenue", data: this.dayValues, color: getComputedStyle(document.documentElement).getPropertyValue('--brand-primary').trim() || '#00BDAB' }],
               chart: {
                 type: "area",
                 height: 350,

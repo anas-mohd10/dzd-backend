@@ -7,7 +7,7 @@
     padding: 10px;
     background: #ffffff;
     min-height: 100px;
-    color: #00BDAB;
+    color: var(--brand-primary, #00BDAB);
     border: 1px solid #eeeeee;
     cursor: pointer;
   }
@@ -51,7 +51,7 @@ label {
     padding: 10px;
     background: #ffffff;
     min-height: 100px;
-    color: #00BDAB;
+    color: var(--brand-primary, #00BDAB);
     border: 1px solid #eeeeee;
     cursor: pointer;
   }

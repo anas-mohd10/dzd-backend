@@ -1,11 +1,12 @@
+@import "../../../../assets/sass/branding";
 $hover: #e3e3e3;
 $grey: #888888;
 $white: #ffffff;
 $boxShadow: rgba(0, 0, 0, 0.1);
 $inactiveState: #ce1626;
-$activeState: #00BDAB;
-$primaryBackground: #20BDAB40;
-$activeBackground: #00BDAB20;
+$activeState: $brand-primary;
+$primaryBackground: var(--brand-primary-light, #20BDAB)40;
+$activeBackground: rgba($brand-primary, 0.125);
 $border: #cccccc;
 $background: #e5e5e5;
 $error: #F1416C;
@@ -42,7 +43,7 @@ label,
   }
 }
 
-.one-liner{
+.one-liner {
   overflow: hidden;
   text-overflow: ellipsis;
   display: -webkit-box;

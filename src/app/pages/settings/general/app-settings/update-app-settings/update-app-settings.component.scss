@@ -19,7 +19,7 @@
         border: 1px solid #ededed;
 
         &.selected {
-            border: 1px solid #00BDAB;
+            border: 1px solid var(--brand-primary, #00BDAB);
         }
     }
 

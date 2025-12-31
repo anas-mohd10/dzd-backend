@@ -1,23 +1,25 @@
+@import "../../../../../../assets/sass/branding";
 $white: #ffffff;
 $boxShadow: rgba(0, 0, 0, 0.1);
 $inactiveState: #ce1626;
-$activeState: #00BDAB;
-$primary: #00BDAB;
-$activeBackground: #00BDAB20;
+$activeState: $brand-primary;
+$primary: $brand-primary;
+$activeBackground: rgba($brand-primary, 0.125);
 $border: #E4E6EF;
 $grey: #888888;
 
-.text-truncate{
+.text-truncate {
   width: 200px;
 }
 
 textarea {
   resize: none;
 }
-table{
 
-  input{
-    width: 96px;    
+table {
+
+  input {
+    width: 96px;
   }
 }
 
@@ -132,11 +134,11 @@ label {
     font-size: 14px;
 
     &:hover {
-      background: #00BDAB15;
+      background: rgba($brand-primary, 0.08);
     }
 
     &.active {
-      background: #00BDAB;
+      background: var(--brand-primary, var(--brand-primary, #00BDAB));
       color: #ffffff;
     }
   }
@@ -200,8 +202,8 @@ label {
   }
 
   &.active {
-    background: #00BDAB15;
-    border: 1px solid #00BDAB;
+    background: rgba($brand-primary, 0.08);
+    border: 1px solid var(--brand-primary, var(--brand-primary, #00BDAB));
   }
 }
 
@@ -240,8 +242,8 @@ label {
       }
 
       &.active {
-        background: #00BDAB15;
-        border: 1px solid #00BDAB;
+        background: rgba($brand-primary, 0.08);
+        border: 1px solid var(--brand-primary, var(--brand-primary, #00BDAB));
       }
     }
   }

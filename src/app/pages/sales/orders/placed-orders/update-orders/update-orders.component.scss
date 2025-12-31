@@ -1,4 +1,6 @@
-label,
+@import "../../../../../../../assets/sass/branding";
+$hover: #e3e3e3;
+
 .btn {
     font-weight: 400 !important;
 }
@@ -12,6 +14,7 @@ label,
     width: 100%;
     background: #f2f2f2;
 }
+
 .loader-overlay {
     position: fixed;
     top: 0;
@@ -23,15 +26,16 @@ label,
     display: flex;
     justify-content: center;
     align-items: center;
-  }
-  
-  .loader-content {
+}
+
+.loader-content {
     text-align: center;
     background: white;
     padding: 2rem;
     border-radius: 8px;
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
-  }
+}
+
 .modal-body {
     .btn {
         width: 120px;
@@ -53,7 +57,7 @@ label,
     top: 0;
     font-size: 13px;
     background: #fff;
-    color: #00BDAB;
+    color: var(--brand-primary, #00BDAB);
     border-radius: 3px;
     padding: 5px 8px;
     box-shadow: 0 10px 10px rgba(0, 0, 0, 0.1);
@@ -220,11 +224,11 @@ textarea {
             content: '';
             height: 10px;
             width: 10px;
-            background: #00BDAB;
+            background: var(--brand-primary, #00BDAB);
             border-radius: 2px;
         }
 
-        border: 1px solid #00BDAB;
+        border: 1px solid var(--brand-primary, #00BDAB);
     }
 }
 
@@ -275,9 +279,9 @@ $grey: #888888;
 $white: #ffffff;
 $boxShadow: rgba(0, 0, 0, 0.1);
 $inactiveState: #ce1626;
-$activeState: #00BDAB;
-$primaryBackground: #20BDAB40;
-$activeBackground: #00BDAB20;
+$activeState: var(--brand-primary, #00BDAB);
+$primaryBackground: var(--brand-primary-light, #20BDAB)40;
+$activeBackground: var(--brand-primary, #00BDAB)20;
 $border: #cccccc;
 $background: #e5e5e5;
 $error: #F1416C;
@@ -406,7 +410,7 @@ $white: #ffffff;
 
     .productStatus {
         background: #f8fffe;
-        color: #00BDAB;
+        color: var(--brand-primary, #00BDAB);
         width: max-content;
     }
 
@@ -438,7 +442,7 @@ $white: #ffffff;
     &.checked {
 
         &::after {
-            background: #00BDAB;
+            background: var(--brand-primary, #00BDAB);
         }
     }
 }

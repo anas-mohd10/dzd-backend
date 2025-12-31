@@ -5,8 +5,16 @@
 // Mode
 $mode: default;
 
+// Set default theme colors (will be overridden by JavaScript based on URL)
+:root {
+    --brand-primary: #00BDAB;
+    --brand-secondary: #00BDAB;
+    --app-bg-color: #F0F8F7;
+}
+
 // Initialize
 @import "init";
+
 
 // Components
 @import "./core/components/components";
@@ -26,3 +34,25 @@ $mode: default;
 @import 'swiper/scss';
 @import 'swiper/scss/navigation';
 @import 'swiper/scss/pagination';
+
+// Global CSS override for dynamic theming
+// This ensures all uses of $brand-primary can be overridden at runtime via JavaScript
+* {
+
+    // Override any background colors that use $brand-primary
+    &[style*="background: #{$brand-primary}"],
+    &[style*="background-color: #{$brand-primary}"] {
+        background-color: var(--brand-primary) !important;
+    }
+
+    // Override any text colors that use $brand-primary  
+    &[style*="color: #{$brand-primary}"] {
+        color: var(--brand-primary) !important;
+    }
+
+    // Override any border colors that use $brand-primary
+    &[style*="border-color: #{$brand-primary}"],
+    &[style*="border: 1px solid #{$brand-primary}"] {
+        border-color: var(--brand-primary) !important;
+    }
+}

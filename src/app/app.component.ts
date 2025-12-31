@@ -44,6 +44,9 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit() {
+    // Apply theme based on URL (localhost vs production)
+    this.applyThemeBasedOnUrl();
+
     this.requestPermission();
     this.listen()
 
@@ -56,6 +59,23 @@ export class AppComponent implements OnInit {
         this.ChangeDetectorRef.markForCheck()
       }
     })
+  }
+
+  /**
+   * Apply theme color based on URL
+   * localhost -> #2A3234 (dark gray) primary, #B3907A (tan) secondary
+   * production -> #00BDAB (teal) primary, #00BDAB (teal) secondary
+   */
+  private applyThemeBasedOnUrl(): void {
+    const hostname = window.location.hostname;
+    const isLocalhost = hostname.includes('clas-01') || hostname.includes('localhost') || hostname.includes('classy');
+    const primaryColor = isLocalhost ? '#2A3234' : '#00BDAB';
+    const secondaryColor = isLocalhost ? '#B3907A' : '#00BDAB';
+    const backgroundColor = isLocalhost ? '#f4eee542' : '#F0F8F7';
+
+    document.documentElement.style.setProperty('--brand-primary', primaryColor);
+    document.documentElement.style.setProperty('--brand-secondary', secondaryColor);
+    document.documentElement.style.setProperty('--app-bg-color', backgroundColor);
   }
 
   // Request permission for notifications

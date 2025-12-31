@@ -74,11 +74,11 @@ input[type=button],
             content: '';
             height: 10px;
             width: 10px;
-            background: #00BDAB;
+            background: var(--brand-primary, #00BDAB);
             border-radius: 2px;
          }
 
-         border: 2px solid #00BDAB;
+         border: 2px solid var(--brand-primary, #00BDAB);
       }
    }
 }

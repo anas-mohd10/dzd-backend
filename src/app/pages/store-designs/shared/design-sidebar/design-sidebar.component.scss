@@ -39,7 +39,7 @@
                     color: #666666;
 
                     &.active{
-                        background: #00BDAB;
+                        background: var(--brand-primary, #00BDAB);
                         color: #ffffff;
                     }
                 }

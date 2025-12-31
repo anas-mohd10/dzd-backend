@@ -1,11 +1,12 @@
+@import "../../../../../assets/sass/branding";
 $hover: #e3e3e3;
 $grey: #888888;
 $white: #ffffff;
 $boxShadow: rgba(0, 0, 0, 0.04);
 $inactiveState: #ce1626;
-$activeState: #00BDAB;
-$primaryBackground: #20BDAB05;
-$activeBackground: #00BDAB20;
+$activeState: $brand-primary;
+$primaryBackground: var(--brand-primary-light, #20BDAB)05;
+$activeBackground: rgba($brand-primary, 0.125);
 $border: #cccccc;
 $background: #e5e5e5;
 $error: #F1416C;
@@ -17,24 +18,24 @@ $error: #F1416C;
 
    tbody {
 
-       tr {
+      tr {
 
-           td {
-               vertical-align: middle;
-           }
-       }
+         td {
+            vertical-align: middle;
+         }
+      }
    }
 
    thead {
 
-       tr {
+      tr {
 
-           th {
-               font-weight: 400 !important;
-           }
-       }
+         th {
+            font-weight: 400 !important;
+         }
+      }
 
-       background: #E4E7F4;
+      background: #E4E7F4;
    }
 }
 
@@ -42,17 +43,17 @@ $error: #F1416C;
 .accepted-orders {
    background: #2f6fe5;
    color: #ffffff;
- }
- 
- .success-orders {
+}
+
+.success-orders {
    background: #2b9e68;
    color: #ffffff
- }
- 
- .cancelled-orders {
+}
+
+.cancelled-orders {
    background: #bb2b2b;
    color: #ffffff;
- }
+}
 
 .md-local {
    background-color: #009688;
@@ -68,7 +69,7 @@ $error: #F1416C;
    color: #960000;
 }
 
-.type{
+.type {
    width: max-content;
 }
 
@@ -86,7 +87,7 @@ input[type=button],
 }
 
 .addressWrapper {
-   
+
    .addressCards {
       display: grid;
       grid-template-columns: repeat(3, 1fr);

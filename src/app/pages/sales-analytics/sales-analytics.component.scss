@@ -1,3 +1,5 @@
+@import "../../../assets/sass/branding";
+
 .form-label,
 .btn-secondary,
 .btn-primary {
@@ -20,36 +22,35 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            background: #00BDAB;
+            background: var(--brand-primary, var(--brand-primary, #00BDAB));
         }
     }
 }
 
 .table-responsive {
 
-    .common_thead {
-        background: #20BDAB;
+    background: var(--brand-primary-light, #20BDAB);
 
-        th {
-            font-weight: 600;
-            font-size: 14px;
-            line-height: 15px;
-            text-transform: capitalize;
-            color: #FFFFFF;
-        }
+    th {
+        font-weight: 600;
+        font-size: 14px;
+        line-height: 15px;
+        text-transform: capitalize;
+        color: #FFFFFF;
     }
+}
 
+tr {
+    border-bottom: 1px solid #E8E8E8;
+}
+
+tbody {
     tr {
-        border-bottom: 1px solid #E8E8E8;
-    }
-
-    tbody {
-        tr {
-            td {
-                img {
-                    cursor: pointer;
-                }
+        td {
+            img {
+                cursor: pointer;
             }
         }
     }
+}
 }

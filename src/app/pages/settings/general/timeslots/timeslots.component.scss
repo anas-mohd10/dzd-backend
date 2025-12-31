@@ -1,7 +1,7 @@
 $white: #ffffff;
 $boxShadow: rgba(0, 0, 0, 0.05);
 $inactiveState: #ce1626;
-$activeState: #00BDAB;
+$activeState: var(--brand-primary, #00BDAB);
 
 .timeSlotsContainer {
     .buttonContainer {

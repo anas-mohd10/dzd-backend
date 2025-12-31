@@ -3,9 +3,9 @@ $grey: #888888;
 $white: #ffffff;
 $boxShadow: rgba(0, 0, 0, 0.1);
 $inactiveState: #ce1626;
-$activeState: #00BDAB;
-$primaryBackground: #20BDAB40;
-$activeBackground: #00BDAB20;
+$activeState: var(--brand-primary, #00BDAB);
+$primaryBackground: var(--brand-primary-light, #20BDAB)40;
+$activeBackground: var(--brand-primary, #00BDAB)20;
 $border: #ebebeb;
 $background: #f1f1f1;
 $error: #F1416C;
@@ -105,7 +105,7 @@ label,
         border: 1px solid $background;
 
         &.selected {
-            background: #00BDAB20;
+            background: var(--brand-primary, #00BDAB)20;
             color: $activeState;
             border: 1px solid $activeState;
         }
@@ -143,7 +143,7 @@ label,
 
     .subcategory {
         &.selected {
-            background: #00BDAB20;
+            background: var(--brand-primary, #00BDAB)20;
             border: 1px solid $activeState;
         }
     }
@@ -194,7 +194,7 @@ label,
         }
 
         &.selected {
-            background: #00BDAB20;
+            background: var(--brand-primary, #00BDAB)20;
             color: $activeState;
             border: 1px solid $activeState;
         }

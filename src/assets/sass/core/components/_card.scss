@@ -338,7 +338,7 @@
                 font-weight: 700;
                 font-size: 24px;
                 line-height: 22px;
-                color: #00BDAB;
+                color: var(--brand-primary, #00BDAB);
             }
             h5 {
                 font-weight: 500;
@@ -350,7 +350,7 @@
         }
         .view-Details {
             a {
-                color: #00BDAB;
+                color: var(--brand-primary, #00BDAB);
                 text-align: center;
                 font-size: 15px;
                 font-weight: 500;

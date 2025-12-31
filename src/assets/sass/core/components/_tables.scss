@@ -163,7 +163,7 @@
 }
 
 .thead {
-    background-color: #20BDAB;
+    background-color: var(--brand-primary-light, #20BDAB);
 
 	th {
 		color: white !important;
