@@ -1109,6 +1109,7 @@ export class AddProductComponent implements OnInit {
         description: new FormControl(''),
         features: new FormControl(''),
         longDescription: new FormControl(''),
+        productDescription: new FormControl(''),
       }),
       metaTitle: new FormControl(''),
       metaDescription: new FormControl(''),
