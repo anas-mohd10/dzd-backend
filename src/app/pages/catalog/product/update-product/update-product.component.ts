@@ -173,6 +173,7 @@ export class UpdateProductComponent implements OnInit {
   productBannerDetails: string = '';
   languages: Array<string> = [];
   tagIcons: Array<string> = [];
+  specificationImages: Array<string> = [];
   siblingsRef?: BsModalRef;
   @ViewChild('siblingsTemplate') siblingsTemplateModal: TemplateRef<any>;
   isSkipUpdate: FormControl = new FormControl(false);
@@ -992,6 +993,7 @@ export class UpdateProductComponent implements OnInit {
         : null,
       parentId: this.productDetails?.parentId,
       tagIcons: this.tagIcons,
+      specificationImages: this.specificationImages,
       attributes: this.attributes,
       storeFrontFields: this.storeFields,
       businessFields: this.businessFields,
@@ -1023,6 +1025,10 @@ export class UpdateProductComponent implements OnInit {
           ...this.productDetails.localizedDetails?.longDescription,
           [this.settings.primaryLang]: this.form.get('details.longDescription')?.value,
         },
+        productDescription:{
+          ...this.productDetails.localizedDetails?.productDescription,
+          [this.settings.primaryLang]: this.form.get('details.productDescription')?.value,
+        }
       },
       localizedMetaTitles: {
         ...this.productDetails.localizedMetaTitles,
@@ -1434,6 +1440,7 @@ export class UpdateProductComponent implements OnInit {
           this.storeFields = res?.result?.storeFrontFields;
           this.businessFields = res?.result?.businessFields || [];
           this.tagIcons = res?.result?.tagIcons ? res?.result?.tagIcons : [];
+          this.specificationImages = res?.result?.specificationImages ? res?.result?.specificationImages : []
           this.categories = res?.result?.categories || [];
           this.selectedCategories = this.categories.map((cat) => cat.slug);
           this.parentDetails = res?.result?.product?.id;
@@ -1532,6 +1539,7 @@ export class UpdateProductComponent implements OnInit {
         description: new FormControl(''),
         features: new FormControl(''),
         longDescription: new FormControl(''),
+        productDescription: new FormControl(''),
       }),
       metaTitle: new FormControl(''),
       metaDescription: new FormControl(''),
@@ -1628,6 +1636,8 @@ export class UpdateProductComponent implements OnInit {
           this.productDetails.details?.features,
         longDescription: this.productDetails.localizedDetails?.longDescription?.[primaryLang] ||
           this.productDetails.details?.longDescription,
+        productDescription: this.productDetails.localizedDetails?.productDescription?.[primaryLang] ||
+          this.productDetails.details?.productDescription,
       },
       metaTitle: this.productDetails.localizedMetaTitles?.[primaryLang] || this.productDetails.metaTitle || '',
       metaDescription: this.productDetails.localizedMetaDescriptions?.[primaryLang] || this.productDetails.metaDescription || '',
@@ -1757,6 +1767,35 @@ export class UpdateProductComponent implements OnInit {
   removeTagIcons(icon: any) {
     this.tagIcons = this.tagIcons.filter(item => item !== icon);
     this.HotToastService.info('Tag removed from product');
+
+    // Force change detection
+    if (this.ChangeDetectorRef) {
+      this.ChangeDetectorRef.markForCheck();
+    }
+  }
+
+  // Change from handlespecificIcon to handleSpecificationIcon
+  handleSpecificationIcon(event: any) {
+    const tagPath = event.path;
+
+    if (this.specificationImages.includes(tagPath)) {
+      this.specificationImages = this.specificationImages.filter(item => item !== tagPath);
+      this.HotToastService.info('Specification image removed');
+    } else {
+      this.specificationImages.push(tagPath);
+      this.HotToastService.success('Specification image added');
+    }
+
+    // Force change detection
+    if (this.ChangeDetectorRef) {
+      this.ChangeDetectorRef.markForCheck();
+    }
+  }
+
+  // Also update the corresponding remove method name if you want consistency
+  removeSpecificationIcon(icon: any) {
+    this.specificationImages = this.specificationImages.filter(item => item !== icon);
+    this.HotToastService.info('Specification image removed');
 
     // Force change detection
     if (this.ChangeDetectorRef) {

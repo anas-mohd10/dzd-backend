@@ -346,9 +346,14 @@
                     <angular-editor class="form-control fs-6 about-textarea" formControlName="longDescription"
                       [config]="editorConfig"></angular-editor>
                   </div>
-                  <div class="form-group">
+                  <div class="mb-3 form-group">
                     <label class="fs-6 mb-3">Features</label>
                     <angular-editor class="form-control fs-6 about-textarea" formControlName="features"
+                      [config]="editorConfig"></angular-editor>
+                  </div>
+                  <div class="form-group">
+                    <label class="fs-6 mb-3">Product Description</label>
+                    <angular-editor class="form-control fs-6 about-textarea" formControlName="productDescription"
                       [config]="editorConfig"></angular-editor>
                   </div>
                 </div>
@@ -648,6 +653,32 @@
                       <div class="ratio ratio-1x1 h-auto w-100 rounded">
                         <app-assets (mediaClicked)="handleTagIcons($event)" [previewEnabled]="false" [lazyLoad]="true"
                           [visibilityTrigger]="activeTabIndex === 1">
+                        </app-assets>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="mb-3">
+                  <label for="tags" class="fs-6 mb-3">Specification Images</label>
+                  <div class="row" id="specificationImages">
+                    <!-- ✅ Change tagIcons to specificationImages -->
+                    <div class="col-lg-2" *ngFor="let icon of specificationImages">
+                      <div class="ratio border ratio-1x1 h-auto w-100 rounded position-relative">
+                        <div class="close-icon rounded bg-danger text-white" (click)="removeSpecificationIcon(icon)">
+                          <svg height="18" width="18" data-slot="icon" fill="none" stroke-width="1.5"
+                            stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"
+                            aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12"></path>
+                          </svg>
+                        </div>
+                        <img src="{{base}}{{icon}}" class="rounded" class="h-100 w-100">
+                      </div>
+                    </div>
+                    <div class="col-lg-2">
+                      <div class="ratio ratio-1x1 h-auto w-100 rounded">
+                        <!-- ✅ Also fix the typo in method name -->
+                        <app-assets (mediaClicked)="handleSpecificationIcon($event)" [previewEnabled]="false"
+                          [lazyLoad]="true" [visibilityTrigger]="activeTabIndex === 1">
                         </app-assets>
                       </div>
                     </div>

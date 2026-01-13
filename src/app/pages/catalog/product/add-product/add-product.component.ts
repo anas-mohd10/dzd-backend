@@ -22,7 +22,7 @@ import { TabsetComponent } from 'ngx-bootstrap/tabs';
 import { BrandService } from 'src/app/includes/services/brand.service';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { moveItemInArray } from '@angular/cdk/drag-drop';
-import { CdkDragDrop  } from '@angular/cdk/drag-drop';
+import { CdkDragDrop } from '@angular/cdk/drag-drop';
 import { debounceTime } from 'rxjs/operators';
 
 interface StoreField {
@@ -165,6 +165,7 @@ export class AddProductComponent implements OnInit {
   ];
   languages: Array<string> = [];
   tagIcons: Array<string> = [];
+  specificationImages: Array<string> = [];
   storeFieldIndex: number | null;
 
   // Add-Ons starts here
@@ -829,6 +830,7 @@ export class AddProductComponent implements OnInit {
       product: { id: this.parentDetails?._id, refid: this.parentDetails?._id },
       attributes: this.attributes,
       tagIcons: this.tagIcons,
+      specificationImages: this.specificationImages,
       localizedNames: {
         [this.settings.primaryLang]: this.form.get('name')?.value,
       },
@@ -1107,6 +1109,7 @@ export class AddProductComponent implements OnInit {
         description: new FormControl(''),
         features: new FormControl(''),
         longDescription: new FormControl(''),
+        productDescription: new FormControl(''),
       }),
       metaTitle: new FormControl(''),
       metaDescription: new FormControl(''),
@@ -1285,7 +1288,26 @@ export class AddProductComponent implements OnInit {
   removeTagIcons(icon: any) {
     this.tagIcons = this.tagIcons.filter((item: any) => item != icon);
   }
+  handleSpecificationIcon(event: any) {
+    const tagPath = event.path;
+    
+    if (this.specificationImages.includes(tagPath)) {
+      this.specificationImages = this.specificationImages.filter(item => item !== tagPath);
+      this.HotToastService.info('Specification image removed from product');
+    } else {
+      this.specificationImages.push(tagPath);
+      this.HotToastService.success('Specification image added to product');
+    }
+    
+    // Force change detection
+    if (this.ChangeDetectorRef) {
+      this.ChangeDetectorRef.markForCheck();
+    }
+  }
 
+  removeSpecificationIcon(icon: any) {
+    this.specificationImages = this.specificationImages.filter((item: any) => item != icon);
+  }
   handleAttributeImage(event: any) {
     console.log('Image event:', event);
     if (event && event.path) {
