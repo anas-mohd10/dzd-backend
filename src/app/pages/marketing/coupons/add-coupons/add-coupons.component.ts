@@ -123,7 +123,7 @@ export class AddCouponsComponent implements OnInit {
 
   onRemoveSelected(item: any) {
     const criteriaType = this.form.get('criteriaType')?.value;
-    
+
     switch (criteriaType) {
       case 'products':
         this.products = this.products.filter((product: any) => product._id !== item._id);
@@ -142,7 +142,7 @@ export class AddCouponsComponent implements OnInit {
         this.dropdownInputs = this.brands;
         break;
     }
-  
+
     this.HotToastService.info("Item removed successfully");
     this.ChangeDetectorRef.markForCheck();
   }
@@ -217,8 +217,11 @@ export class AddCouponsComponent implements OnInit {
 
     const payload = this.createPayload();
     if (payload) {
+      if (this.isLoading) return;
+      this.isLoading = true;
       this.couponsService.addCoupon(payload).subscribe({
         next: (res: any) => {
+          this.isLoading = false;
           if (res.success) {
             this.HotToastService.success(res?.message);
             this.router.navigate([this.appRoute.coupons.COUPONS_LIST]);
@@ -227,6 +230,7 @@ export class AddCouponsComponent implements OnInit {
           }
         },
         error: (err: any) => {
+          this.isLoading = false;
           this.HotToastService.error(err?.message || 'Failed to add coupon');
         }
       });
@@ -254,10 +258,10 @@ export class AddCouponsComponent implements OnInit {
         minimumType: this.form.get('minimumType')?.value,
         value: this.form.get('value')?.value,
         type: this.form.get('type')?.value,
-        categories: this.categories ? this.categories?.map((category:any) => category?._id) : [],
-        products: this.products ? this.products?.map((product:any) => product?._id) : [],
-        collections: this.collections ? this.collections?.map((collection:any) => collection?._id) : [],
-        brands: this.brands ? this.brands?.map((brand:any) => brand?._id) : [],
+        categories: this.categories ? this.categories?.map((category: any) => category?._id) : [],
+        products: this.products ? this.products?.map((product: any) => product?._id) : [],
+        collections: this.collections ? this.collections?.map((collection: any) => collection?._id) : [],
+        brands: this.brands ? this.brands?.map((brand: any) => brand?._id) : [],
         details: {
           type: this.form.get('couponType')?.value,
           value: this.form.get('couponValue')?.value,
