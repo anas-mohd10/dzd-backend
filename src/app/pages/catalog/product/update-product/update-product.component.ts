@@ -1025,6 +1025,10 @@ export class UpdateProductComponent implements OnInit {
           ...this.productDetails.localizedDetails?.longDescription,
           [this.settings.primaryLang]: this.form.get('details.longDescription')?.value,
         },
+        productDescription:{
+          ...this.productDetails.localizedDetails?.productDescription,
+          [this.settings.primaryLang]: this.form.get('details.productDescription')?.value,
+        }
       },
       localizedMetaTitles: {
         ...this.productDetails.localizedMetaTitles,
@@ -1535,6 +1539,7 @@ export class UpdateProductComponent implements OnInit {
         description: new FormControl(''),
         features: new FormControl(''),
         longDescription: new FormControl(''),
+        productDescription: new FormControl(''),
       }),
       metaTitle: new FormControl(''),
       metaDescription: new FormControl(''),
@@ -1631,6 +1636,8 @@ export class UpdateProductComponent implements OnInit {
           this.productDetails.details?.features,
         longDescription: this.productDetails.localizedDetails?.longDescription?.[primaryLang] ||
           this.productDetails.details?.longDescription,
+        productDescription: this.productDetails.localizedDetails?.productDescription?.[primaryLang] ||
+          this.productDetails.details?.productDescription,
       },
       metaTitle: this.productDetails.localizedMetaTitles?.[primaryLang] || this.productDetails.metaTitle || '',
       metaDescription: this.productDetails.localizedMetaDescriptions?.[primaryLang] || this.productDetails.metaDescription || '',
