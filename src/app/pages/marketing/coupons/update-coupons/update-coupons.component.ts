@@ -120,6 +120,7 @@ export class UpdateCouponsComponent implements OnInit {
       maxRedemptionValue: ['', [Validators.pattern("^[0-9]*$")]],
       totalUsageRemaining: ['', [Validators.pattern("^[0-9]*$")]],
       platformType: ['both'],
+      isNewUser: ['false'],
     });
   }
 
@@ -203,6 +204,7 @@ export class UpdateCouponsComponent implements OnInit {
 
       this.form.get('isMaxRedemptionEnabled')?.setValue(this.couponDetails.maxRedemptionAmount?.isEnabled ? 'true' : 'false');
       this.form.get('maxRedemptionValue')?.setValue(this.couponDetails.maxRedemptionAmount?.value || '');
+      this.form.get('isNewUser')?.setValue(this.couponDetails.isNewUser ? 'true' : 'false');
     })
   }
 
@@ -338,6 +340,7 @@ export class UpdateCouponsComponent implements OnInit {
         value: this.form.get('maxRedemptionValue')?.value || null
       },
       platformType: this.form.get('platformType')?.value,
+      isNewUser: this.form.get('isNewUser')?.value === 'true'
     };
 
     // Submit the payload

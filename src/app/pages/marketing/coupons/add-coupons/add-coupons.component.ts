@@ -89,6 +89,7 @@ export class AddCouponsComponent implements OnInit {
       isMaxRedemptionEnabled: new FormControl('false'),
       maxRedemptionValue: new FormControl('', [Validators.pattern("^[0-9]*$")]),
       platformType: new FormControl('both', Validators.required),
+      isNewUser: new FormControl('false'),
     });
 
     this.form.get('fromDate')?.setValue(this.fromDate)
@@ -285,11 +286,11 @@ export class AddCouponsComponent implements OnInit {
           value: this.form.get('maxRedemptionValue')?.value || null
         },
         platformType: this.form.get('platformType')?.value,
+        isNewUser: this.form.get('isNewUser')?.value === 'true'
       }
 
       return data;
     }
     return null;
   }
-
-} // end of class
+}

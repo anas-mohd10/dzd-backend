@@ -4,6 +4,7 @@ import { ActivatedRoute } from '@angular/router';
 import { PageTasks } from 'src/app/config/constants';
 import { appRoutes } from 'src/app/config/routes';
 import { AppSettingsService } from 'src/app/includes/services/app.settings.service';
+import { CouponsService } from 'src/app/includes/services/coupons.service';
 import { AngularEditorConfig } from '@kolkov/angular-editor';
 import { HotToastService } from '@ngneat/hot-toast';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
@@ -149,7 +150,9 @@ export class UpdateAppSettingsComponent implements OnInit {
     private HotToastService: HotToastService,
     private BsModalService: BsModalService,
     private BsModalRef: BsModalRef,
-    private HttpClient: HttpClient
+
+    private HttpClient: HttpClient,
+    private CouponsService: CouponsService
   ) { }
 
   toggleLanguages(language: { lang: string, langCode: string, regionCodes: string[] }) {
@@ -222,10 +225,13 @@ export class UpdateAppSettingsComponent implements OnInit {
     return isExists
   }
 
+  couponsList: any[] = [];
+
   ngOnInit(): void {
     this.initform();
     this.refid = this.ActivatedRoute.snapshot.queryParams.id || '1';
     this.getSettings();
+    this.getCoupons();
 
     this.primary = '#00BDAB'
     this.secondary = '#aaaaaa'
@@ -244,6 +250,14 @@ export class UpdateAppSettingsComponent implements OnInit {
 
   get formControls() {
     return this.form.controls
+  }
+
+  getCoupons() {
+    this.CouponsService.getCoupons({ isNewUser: true }).subscribe((res: any) => {
+      if (res?.errorCode == 0) {
+        this.couponsList = res?.result || [];
+      }
+    });
   }
 
   getSettings() {
@@ -318,6 +332,7 @@ export class UpdateAppSettingsComponent implements OnInit {
         this.form.get('isRelatedProductsCart')?.setValue(res?.result?.isRelatedProductsCart);
         this.form.get('isPlpPagination')?.setValue(res?.result?.isPlpPagination);
         this.form.get('isBillingAddressEnabled')?.setValue(res?.result?.isBillingAddressEnabled)
+        this.form.get('newUserCoupon')?.setValue(res?.result?.newUserCoupon)
         this.form.get('clarityAppId')?.setValue(res?.result?.clarityAppId)
 
         this.form.get('commaSeparation')?.setValue(
@@ -408,8 +423,8 @@ export class UpdateAppSettingsComponent implements OnInit {
       languages: [[]],
       packingSlip: [''],
       isOutOfStock: ['false'],
-      addOnLabel:['Add On'],
-      isAddOnLabelEnabled:['false'],
+      addOnLabel: ['Add On'],
+      isAddOnLabelEnabled: ['false'],
       isAddOnEnabled: ['false'],
       isTax: ['false'],
       isShippingTaxable: ['false'], // Add this new control
@@ -424,7 +439,7 @@ export class UpdateAppSettingsComponent implements OnInit {
       adminFavicon: [''],
       commaSeparation: [true],
       currencyLocation: ['before'],
-      decimalValues: [  ],
+      decimalValues: [],
       cartButton: ['Add to Cart', Validators.required],
       stockButton: ['Out of Stock', Validators.required],
       notifyButton: ['Notify Me', Validators.required],
@@ -438,10 +453,11 @@ export class UpdateAppSettingsComponent implements OnInit {
       deliverSlotBufferTime: [60],
       verifyNumberWithTwilio: ['false'],
       isVoucherEnabled: ['false'],
-      isSocialLoginiOSEnabled:['false'],
-      isRelatedProductsCart:['false'],
+      isSocialLoginiOSEnabled: ['false'],
+      isRelatedProductsCart: ['false'],
       isBillingAddressEnabled: ['false'],
       isPlpPagination: ['false'],
+      newUserCoupon: [''],
       clarityAppId: ['']
     })
   }
@@ -511,7 +527,7 @@ export class UpdateAppSettingsComponent implements OnInit {
         this.form.get('logo')?.setValue('');
         this.logo = '';
         break;
-        case 'darkLogo':
+      case 'darkLogo':
         this.form.get('darkLogo')?.setValue('');
         this.darkLogo = '';
         break;
@@ -621,11 +637,12 @@ export class UpdateAppSettingsComponent implements OnInit {
       decimalValues: Number(this.form.get('decimalValues')?.value),
       verifyNumberWithTwilio: this.form.get('verifyNumberWithTwilio')?.value,
       isVoucherEnabled: this.form.get('isVoucherEnabled')?.value,
-      isSocialLoginiOSEnabled:this.form.get('isSocialLoginiOSEnabled')?.value,
+      isSocialLoginiOSEnabled: this.form.get('isSocialLoginiOSEnabled')?.value,
       isRelatedProductsCart: this.form.get('isRelatedProductsCart')?.value,
       isPlpPagination: this.form.get('isPlpPagination')?.value,
       isBillingAddressEnabled: this.form.get('isBillingAddressEnabled')?.value,
-      clarityAppId:this.form.get('clarityAppId')?.value,
+      newUserCoupon: this.form.get('newUserCoupon')?.value,
+      clarityAppId: this.form.get('clarityAppId')?.value,
       buttons: {
         cart: this.form.get('cartButton')?.value,
         stock: this.form.get('stockButton')?.value,
