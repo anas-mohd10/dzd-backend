@@ -1,0 +1,140 @@
+<div>
+
+    <div class="page-header d-flex align-items-start justify-content-between">
+        <div>
+            <div class="page-title">
+                <h1 class="fw-bold">Email Gateways</h1>
+            </div>
+            <ul class="breadcrumb">
+                <li class="breadcrumb-item fs-6">
+                    <a routerLink="{{ appRoute.DASHBOARD }}">Dashboard</a>
+                </li>
+                <li class="breadcrumb-item active fs-6">
+                    Email Gateways
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="my-4">
+        <div class="card">
+            <div class="card-body">
+                <div class="fs-6">Configure email gateways for bulk mailing and notifications</div>
+                <div class="pg-cards my-4">
+                    <!-- Iterate over available gateways -->
+                    <div class="pg-card cursor-pointer p-4 border rounded" *ngFor="let gw of availableGateways"
+                        (click)="open(template, gw.id)"
+                        [ngClass]="{'border-secondary': !isGatewayEnabled(gw.id), 'border-primary': isGatewayEnabled(gw.id)}">
+                        <img [src]="gw.icon" alt="{{gw.title}}" class="h-40px mb-3"
+                            onerror="this.src = 'assets/media/svg/files/blank-image.svg'">
+                        <div class="fs-6 text-center mt-2 font-bold">{{gw.title}}</div>
+                        <span *ngIf="isDefaultGateway(gw.id)" class="badge bg-primary mt-2">Default</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <ng-template #template>
+        <div class="modal-header">
+            <h4 class="fs-2 fw-bold pull-left">{{activeGatewayDetails?.title}} Configuration</h4>
+            <div class="d-flex align-items-center justify-content-end gap-5">
+                <div class="d-flex align-items-center justify-content-between gap-2">
+                    <label for="gatewayEnabled" class="fs-5">Enabled</label>
+                    <app-switch id="gatewayEnabled" [switchId]="''" [isToggledProps]="form.get('isEnabled')?.value"
+                        (switchToggled)="onSwitchTriggered($event)"></app-switch>
+                </div>
+                <button type="button" class="btn-close close pull-right" aria-label="Close" (click)="close()">
+                    <span aria-hidden="true" class="visually-hidden">&times;</span>
+                </button>
+            </div>
+        </div>
+        <div class="modal-body">
+            <form [formGroup]="form" (ngSubmit)="onSubmit()">
+
+                <!-- Common Fields -->
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                         <div class="form-group mb-3">
+                            <label for="displayName" class="fs-6 mb-2">Display Name</label>
+                            <input type="text" id="displayName" placeholder="e.g. My Mailchimp"
+                                formControlName="displayName" class="form-control">
+                        </div>
+                    </div>
+                     <div class="col-md-6">
+                         <div class="form-check mt-8">
+                            <input type="checkbox" id="isDefault" formControlName="isDefault" class="form-check-input">
+                            <label for="isDefault" class="form-check-label fs-6">Set as Default</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <div class="form-group mb-3">
+                            <label for="fromName" class="fs-6 mb-2">From Name</label>
+                            <input type="text" id="fromName" placeholder="Sender Name" formControlName="fromName"
+                                class="form-control">
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group mb-3">
+                            <label for="fromEmail" class="fs-6 mb-2">From Email</label>
+                            <input type="email" id="fromEmail" placeholder="sender@example.com" formControlName="fromEmail"
+                                class="form-control" [ngClass]="{ 'is-invalid': (formControls.fromEmail.touched || isSubmitted) && formControls.fromEmail.errors?.email }">
+                        </div>
+                    </div>
+                </div>
+
+                <hr class="my-4 text-muted">
+
+                <!-- Dynamic Fields based on Gateway Type -->
+
+                <!-- Mailchimp Fields -->
+                <ng-container *ngIf="form.get('gatewayName')?.value === 'mailchimp'">
+                    <div class="mb-3 form-group">
+                        <label for="apiKey" class="fs-6 mb-2 required">API Key</label>
+                        <input type="text" id="apiKey" placeholder="Mailchimp API Key" formControlName="apiKey"
+                            class="form-control" [ngClass]="{ 'is-invalid': (formControls.apiKey.touched || isSubmitted) && formControls.apiKey.errors?.required }">
+                    </div>
+                    <div class="mb-3 form-group">
+                        <label for="serverPrefix" class="fs-6 mb-2 required">Server Prefix</label>
+                        <input type="text" id="serverPrefix" placeholder="e.g. us19 (found in API Key URL)" formControlName="serverPrefix"
+                            class="form-control" [ngClass]="{ 'is-invalid': (formControls.serverPrefix.touched || isSubmitted) && formControls.serverPrefix.errors?.required }">
+                        <small class="text-muted">The server prefix is the part of the URL after login, e.g., https://<b>us19</b>.admin.mailchimp.com/</small>
+                    </div>
+                </ng-container>
+
+                <!-- Klaviyo Fields -->
+                <ng-container *ngIf="form.get('gatewayName')?.value === 'klaviyo'">
+                    <div class="mb-3 form-group">
+                        <label for="publicApiKey" class="fs-6 mb-2 required">Public API Key</label>
+                        <input type="text" id="publicApiKey" placeholder="Public API Key" formControlName="publicApiKey"
+                            class="form-control" [ngClass]="{ 'is-invalid': (formControls.publicApiKey.touched || isSubmitted) && formControls.publicApiKey.errors?.required }">
+                    </div>
+                    <div class="mb-3 form-group">
+                        <label for="privateApiKey" class="fs-6 mb-2 required">Private API Key</label>
+                        <input type="text" id="privateApiKey" placeholder="Private API Key" formControlName="privateApiKey"
+                            class="form-control" [ngClass]="{ 'is-invalid': (formControls.privateApiKey.touched || isSubmitted) && formControls.privateApiKey.errors?.required }">
+                    </div>
+                </ng-container>
+
+                <!-- SendGrid Fields -->
+                <ng-container *ngIf="form.get('gatewayName')?.value === 'sendgrid'">
+                     <div class="mb-3 form-group">
+                        <label for="apiKey" class="fs-6 mb-2 required">API Key</label>
+                        <input type="text" id="apiKey" placeholder="SendGrid API Key" formControlName="apiKey"
+                            class="form-control" [ngClass]="{ 'is-invalid': (formControls.apiKey.touched || isSubmitted) && formControls.apiKey.errors?.required }">
+                    </div>
+                </ng-container>
+
+                <div class="d-flex align-items-center justify-content-end mt-4">
+                    <button type="button" class="btn btn-light me-2" (click)="close()">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Save Changes</button>
+                </div>
+
+            </form>
+        </div>
+    </ng-template>
+
+</div>

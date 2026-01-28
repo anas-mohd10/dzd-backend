@@ -320,6 +320,7 @@ export const appRoutes = {
   bulk: {
     import: `${app}/bulk-upload`,
     export: `${app}/export-logs`,
+    mail: `${app}/bulk-mail`,
   },
   pageCovers: `${app}/page-covers`,
   replaceRequests: `${app}/replace-requests`,
@@ -355,4 +356,5 @@ export const appRoutes = {
     create: `${app}/pickup-locations/add`,
     update: `${app}/pickup-locations/update`
   },
+  emailGateways: `${app}/email-gateways`,
 }

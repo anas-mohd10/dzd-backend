@@ -57,6 +57,8 @@ import { AlbumsComponent } from './marketing/albums/albums.component';
 import { GalleriesComponent } from './marketing/galleries/galleries.component'; import { CurrencySettingsComponent } from './settings/general/currency-settings/currency-settings.component';
 
 import { ShippingGatewaysComponent } from './settings/general/shipping-gateways/shipping-gateways.component';
+import { EmailGatewaysComponent } from './settings/general/email-gateways/email-gateways.component';
+import { BulkMailComponent } from './marketing/bulk-mail/bulk-mail.component';
 export const Routing: Routes = [
   {
 
@@ -162,6 +164,11 @@ export const Routing: Routes = [
           {
             path: 'update-offer',
             loadChildren: () => import('./marketing/offer/update-offer/update-offer.module').then((m) => m.UpdateOfferModule),
+            canActivate: [PermissionGuard]
+          },
+          {
+            path: 'bulk-mail',
+            component: BulkMailComponent,
             canActivate: [PermissionGuard]
           },
         ],
@@ -569,6 +576,11 @@ export const Routing: Routes = [
       }, {
         path: 'sms-settings',
         component: SmsSettingsComponent,
+        canActivate: [AuthenticationGuard, PermissionGuard]
+      },
+      {
+        path: 'email-gateways',
+        component: EmailGatewaysComponent,
         canActivate: [AuthenticationGuard, PermissionGuard]
       },
       {
