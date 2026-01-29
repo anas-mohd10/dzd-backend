@@ -121,6 +121,7 @@ export class OrdersListComponent implements OnInit {
   cancelledOrders: Array<string> = ['CANCELLED', 'PENDING', 'FAILED']
   tagOptions: string[] = []
   settings: any;
+  showCityColumn: boolean = false;
 
   constructor(
     private OrdersService: OrdersService,
@@ -533,6 +534,9 @@ export class OrdersListComponent implements OnInit {
     this.OrdersService.listOrders(payload).subscribe((res: any) => {
       if (res?.errorCode == 0) {
         this.orders = res?.result?.orders;
+        this.showCityColumn = Array.isArray(this.orders) && this.orders.some((order: any) =>
+          order?.address?.country === 'Iraq' || order?.address?.country === 'العراق'
+        );
         this.totalOrders = res?.result?.total_orders;
         this.averageSales = res?.result?.average_sales;
         this.totalRevenues = res?.result?.total_revenue;
