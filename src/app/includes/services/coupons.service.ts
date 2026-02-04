@@ -24,9 +24,9 @@ export class CouponsService {
     return this.http.post(`${url}`, data);
   }
 
-  getCoupons() {
+  getCoupons(params: any = {}) {
     const url = this.commonService.getFullUrl(this.couponsEndpoints.get_coupon);
-    return this.http.get(`${url}`);
+    return this.http.get(`${url}`, { params });
   }
 
   getActiveCoupons() {

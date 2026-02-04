@@ -188,6 +188,7 @@
         <th>Order</th>
         <th>Date</th>
         <th>Customer</th>
+        <th *ngIf="showCityColumn">City</th>
         <th *ngIf="settings && (settings.isPickUp == true || settings.isDeliverySlots == true)">
           {{settings && settings.isPickUp == true ? 'Store' : 'Delivery Slot'}}
         </th>
@@ -215,12 +216,19 @@
           <td>
             <div title="{{order?.customerId ? order?.customerId?.name : order?.guestId?.name}}"
               class="customer-details">
-              {{order?.customerId ? order?.customerId?.name : order?.guestId?.name}}</div>
-            <div
-              class="rounded border border-secondary customer-type p-1 my-1 d-flex align-items-center justify-content-center">
-              {{order?.customerType == 'regd' ? 'Customer' : 'Guest'}}
-            </div>
-          </td>
+              {{order?.customerId ? order?.customerId?.name : order?.guestId?.name}} </div>
+              <div
+                class="rounded border border-secondary customer-type p-1 my-1 d-flex align-items-center justify-content-center">
+                {{order?.customerType == 'regd' ? 'Customer' : 'Guest'}} 
+              </div>
+            </td>
+            <td *ngIf="showCityColumn">
+              <span *ngIf="order?.address?.country === 'العراق' || order?.address?.country === 'Iraq'">
+                {{ order?.address?.state }}
+                <span *ngIf="order?.address?.city">,{{ order?.address?.city }}</span>
+              </span>
+            </td>
+            
           <td *ngIf="settings && (settings.isPickUp == true || settings.isDeliverySlots == true)">
             <div *ngIf="order && order?.pickUpLocation">
               <div class="cursor-pointer" tooltip="{{order?.pickUpLocation?.address}}">
