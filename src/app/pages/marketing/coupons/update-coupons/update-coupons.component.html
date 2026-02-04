@@ -79,6 +79,16 @@
             </select>
           </div>
           <div class="form-group col-lg-6 mb-3">
+            <label class="fs-6 mb-3">New User Only?</label>
+            <select class="form-select" formControlName="isNewUser">
+              <option value="true">Yes</option>
+              <option value="false">No</option>
+            </select>
+            <small class="form-text text-muted">
+              If Yes, this coupon will be valid only for a user's first order.
+            </small>
+          </div>
+          <div class="form-group col-lg-6 mb-3">
             <label class="fs-6 mb-3">Max Count of Coupon Usage</label>
             <select class="form-select mb-3" formControlName="couponType"
               (change)="form.get('couponType')?.value == 'unlimited' ? form.get('couponValue')?.setValue(10) : null">
@@ -217,24 +227,24 @@
 
     <div class="card">
       <div class="card-body">
-      <div class="row">
-        <div class="form-group col-lg-6 mb-3">
-          <label class="fs-6 mb-3">From Date</label>
-          <div class="d-flex gap-2">
-            <input type="date" class="form-control fs-6" [min]="fromDate" formControlName="fromDate"
-              [ngClass]="{'is-invalid': (formControls.fromDate.touched || isSubmitted) &&  formControls.fromDate.errors?.required}" />
-            <input type="time" class="form-control fs-6" formControlName="fromTime" />
+        <div class="row">
+          <div class="form-group col-lg-6 mb-3">
+            <label class="fs-6 mb-3">From Date</label>
+            <div class="d-flex gap-2">
+              <input type="date" class="form-control fs-6" [min]="fromDate" formControlName="fromDate"
+                [ngClass]="{'is-invalid': (formControls.fromDate.touched || isSubmitted) &&  formControls.fromDate.errors?.required}" />
+              <input type="time" class="form-control fs-6" formControlName="fromTime" />
+            </div>
+          </div>
+          <div class="form-group col-lg-6 mb-3">
+            <label class="fs-6 mb-3">Last Date</label>
+            <div class="d-flex gap-2">
+              <input type="date" [min]="fromDate" class="form-control fs-6" formControlName="lastDate"
+                [ngClass]="{ 'is-invalid': (formControls.lastDate.touched || isSubmitted) && formControls.lastDate.errors?.required }" />
+              <input type="time" class="form-control fs-6" formControlName="lastTime" />
+            </div>
           </div>
         </div>
-        <div class="form-group col-lg-6 mb-3">
-          <label class="fs-6 mb-3">Last Date</label>
-          <div class="d-flex gap-2">
-            <input type="date" [min]="fromDate" class="form-control fs-6" formControlName="lastDate"
-              [ngClass]="{ 'is-invalid': (formControls.lastDate.touched || isSubmitted) && formControls.lastDate.errors?.required }" />
-            <input type="time" class="form-control fs-6" formControlName="lastTime" />
-          </div>
-        </div>
-      </div>
       </div>
     </div>
 

@@ -660,4 +660,73 @@ export class UpdateOrdersComponent implements OnInit {
       }
     })
   }
+
+  toggleEdit(product: any) {
+    if (product.isEditing) {
+      this.saveQuantity(product);
+    } else {
+      product.isEditing = true;
+      product.newQuantity = product.quantity;
+    }
+  }
+
+  cancelEdit(product: any) {
+    product.isEditing = false;
+    product.newQuantity = null;
+  }
+
+  saveQuantity(product: any) {
+    if (!product.newQuantity || product.newQuantity <= 0) {
+      this.HotToastService.error("Invalid quantity");
+      return;
+    }
+
+    // Only proceed if quantity actually changed
+    if (product.newQuantity == product.quantity) {
+      this.cancelEdit(product);
+      return;
+    }
+
+    this.isLoading = true;
+    // Get current status to avoid changing it (history logic checks exists)
+    // Use the latest status from history or fallback to order status
+    let currentStatus = this.orderStatus;
+    // Maps display status back to internal status enum if needed, but existing code uses uppercase/lowercase mix.
+    // Backend expects specific enum probably. History stores UPPERCASE usually?
+    // In getOrderDetails (frontend ts):
+    // history.status = history.status.charAt(0).toUpperCase() + history.status.slice(1).toLowerCase();
+    // So currentStatus might be "Placed". Backend compares with "PLACED"?
+    // The backend `updateOrderFromWebhook` handles status check.
+    // Let's rely on what `bulkStatusToUpdate` would use, or just use the order status.
+    // Actually, backend `updateOrderFromWebhook` takes `status` arg.
+    // Use the product's last status if available.
+
+    // However, if I send "PLACED" and existing is "Placed" (different case), it might dup.
+    // Valid statuses: ['PLACED', 'ACCEPTED', 'PACKED', 'SHIPPED', 'OUT FOR DELIVERY', 'DELIVERED', 'CANCELLED', 'RETURNED', 'REFUNDED', 'COLLECTED']
+    // Frontend `this.orderStatus` is Title Case.
+    // I should convert to UPPERCASE for safety?
+    const statusToSend = this.order.orderStatus; // This is usually from DB directly before formatting?
+    // Frontend ts line 315: this.orderStatus = res.result.orderStatus.charAt(0).toUpperCase() ...
+    // So `this.order.orderStatus` is likely the original value.
+
+    this.OrdersService.updateBulkProduct({
+      order: this.order?._id,
+      status: statusToSend,
+      products: [{ productId: product.productId._id || product.productId, quantity: product.newQuantity }]
+    }, this.slug).subscribe({
+      next: (res: any) => {
+        if (res?.errorCode == 0) {
+          this.HotToastService.success(res?.message);
+          this.getOrderDetails(); // Refresh
+        } else {
+          this.HotToastService.error(res?.message);
+        }
+        this.isLoading = false;
+      },
+      error: (err: any) => {
+        this.HotToastService.error(err?.error?.message);
+        this.isLoading = false;
+      }
+    });
+  }
 }

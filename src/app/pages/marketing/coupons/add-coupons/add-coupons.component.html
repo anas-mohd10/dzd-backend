@@ -87,6 +87,16 @@
             </select>
           </div>
           <div class="form-group col-lg-6 mb-3">
+            <label class="fs-6 mb-3">New User Only?</label>
+            <select class="form-select" formControlName="isNewUser">
+              <option value="true">Yes</option>
+              <option value="false">No</option>
+            </select>
+            <small class="form-text text-muted">
+              If Yes, this coupon will be valid only for a user's first order.
+            </small>
+          </div>
+          <div class="form-group col-lg-6 mb-3">
             <label class="fs-6 mb-3">Max Count of Coupon Usage</label>
             <select class="form-select mb-3" formControlName="couponType"
               (change)="form.get('couponType')?.value == 'unlimited' ? form.get('couponValue')?.setValue(10) : null">

@@ -103,6 +103,8 @@ import { GalleriesComponent } from './pages/marketing/galleries/galleries.compon
 import { CarouselModule } from 'ngx-bootstrap/carousel';
 import { ShippingGatewaysComponent } from './pages/settings/general/shipping-gateways/shipping-gateways.component';
 import { CurrencySettingsComponent } from './pages/settings/general/currency-settings/currency-settings.component';
+import { EmailGatewaysComponent } from './pages/settings/general/email-gateways/email-gateways.component';
+import { BulkMailComponent } from './pages/marketing/bulk-mail/bulk-mail.component';
 
 const DragConfig = {
   dragStartThreshold: 0,
@@ -179,6 +181,8 @@ const DragConfig = {
     GalleriesComponent,
     ShippingGatewaysComponent,
     CurrencySettingsComponent,
+    EmailGatewaysComponent,
+    BulkMailComponent,
   ],
   imports: [
     provideFirebaseApp(() => initializeApp(environment.firebaseConfig)),
@@ -213,7 +217,7 @@ const DragConfig = {
     TabsModule.forRoot(),
     SharedModule,
     CarouselModule.forRoot(),
-],
+  ],
   exports: [
     RouterModule,
   ],
