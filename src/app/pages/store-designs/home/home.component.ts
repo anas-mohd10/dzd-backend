@@ -16,6 +16,8 @@ import { StaticPageService } from 'src/app/includes/services/static-page.service
 import { BrandService } from 'src/app/includes/services/brand.service';
 import { CatalogService } from 'src/app/includes/services/catalog.service';
 import { widgets } from './home.widgets';
+import { defaultWidgets } from 'src/app/config/constants/default-widgets';
+
 import {
   ClickPulsePanel,
   cmsPages,
@@ -1120,19 +1122,47 @@ export class HomeComponent implements OnInit {
   }
   //hyperlink hero
 
+  // searchWidgets(event: any) {
+  //   this.homeWidgets = this.widgets.filter((widget: any) =>
+  //     widget.title
+  //       .toLowerCase()
+  //       .startsWith(this.homeWidgetKeyword?.value.toLowerCase())
+  //   );
+  // }
+
   searchWidgets(event: any) {
-    this.homeWidgets = this.widgets.filter((widget: any) =>
+    let filteredWidgets = this.widgets.filter((widget: any) =>
       widget.title
         .toLowerCase()
         .startsWith(this.homeWidgetKeyword?.value.toLowerCase())
     );
+    
+    // Apply mme-01 filter if applicable
+    if (environment.clientId === 'mme-01') {
+      filteredWidgets = filteredWidgets.filter(widget => 
+        defaultWidgets.includes(widget.type)
+      );
+    }
+    
+    this.homeWidgets = filteredWidgets;
   }
 
   ngOnInit(): void {
+    console.log(environment, "defaultWidgets");
     this.homeWidgets = this.widgets;
+
+    if (environment.clientId === 'mme-01') {
+      this.homeWidgets = this.homeWidgets.filter(widget => 
+        defaultWidgets.includes(widget.type)
+      );
+    }
+
+    const customWidgets = this.homeWidgets.filter((w: any) => w.type.startsWith('custom-'));
+    const regularWidgets = this.homeWidgets.filter((w: any) => !w.type.startsWith('custom-'));
+
     // Separate custom widgets from regular widgets
-    const customWidgets = this.widgets.filter((w: any) => w.type.startsWith('custom-'));
-    const regularWidgets = this.widgets.filter((w: any) => !w.type.startsWith('custom-'));
+    // const customWidgets = this.widgets.filter((w: any) => w.type.startsWith('custom-'));
+    // const regularWidgets = this.widgets.filter((w: any) => !w.type.startsWith('custom-'));
 
     // Sort only regular widgets alphabetically
     regularWidgets.sort((a: any, b: any) => {
