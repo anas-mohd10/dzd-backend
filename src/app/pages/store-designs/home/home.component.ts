@@ -1138,11 +1138,11 @@ export class HomeComponent implements OnInit {
     );
     
     // Apply mme-01 filter if applicable
-    if (environment.clientId === 'mme-01') {
-      filteredWidgets = filteredWidgets.filter(widget => 
-        defaultWidgets.includes(widget.type)
-      );
-    }
+    // if (environment.clientId === 'mme-01') {
+    //   filteredWidgets = filteredWidgets.filter(widget => 
+    //     defaultWidgets.includes(widget.type)
+    //   );
+    // }
     
     this.homeWidgets = filteredWidgets;
   }
@@ -1151,11 +1151,11 @@ export class HomeComponent implements OnInit {
     console.log(environment, "defaultWidgets");
     this.homeWidgets = this.widgets;
 
-    if (environment.clientId === 'mme-01') {
-      this.homeWidgets = this.homeWidgets.filter(widget => 
-        defaultWidgets.includes(widget.type)
-      );
-    }
+    // if (environment.clientId === 'mme-01') {
+    //   this.homeWidgets = this.homeWidgets.filter(widget => 
+    //     defaultWidgets.includes(widget.type)
+    //   );
+    // }
 
     const customWidgets = this.homeWidgets.filter((w: any) => w.type.startsWith('custom-'));
     const regularWidgets = this.homeWidgets.filter((w: any) => !w.type.startsWith('custom-'));

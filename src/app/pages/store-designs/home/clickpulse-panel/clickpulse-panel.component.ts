@@ -184,7 +184,7 @@ export class ClickpulsePanelComponent implements OnInit, OnChanges {
   }
 
   removeTabItem(index: number) {
-    if (this.inViewTab && this.inViewTab.tabIndex) {
+    if (this.inViewTab && this.inViewTab.tabIndex !== undefined) {
       this.tabs[this.inViewTab.tabIndex].tabItems.splice(index, 1);
       this.HotToastService.success('Tab item removed successfully');
       this.handleClickpulse.emit(this.tabs);
