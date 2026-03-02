@@ -313,7 +313,7 @@
                                     <div class="accordion-body">
                                         <div class="mb-2">
                                             <div class="form-group mb-3"
-                                                *ngIf="!['products', 'aurora-slider', 'aurora-grid', 'motion-canvas']?.includes(widgetDetails?.widgetType)">
+                                                *ngIf="!['aurora-slider', 'aurora-grid', 'motion-canvas']?.includes(widgetDetails?.widgetType)">
                                                 <label for="widgetView" class="form-label">View</label>
                                                 <select formControlName="view" id="widgetView" class="form-select">
                                                     <option value="" disabled>-- Select an option --</option>
@@ -322,7 +322,16 @@
                                                     </option>
                                                 </select>
                                             </div>
-
+                                            <div class="form-group col-lg-6 mb-3"
+                                                *ngIf="!['aurora-slider', 'aurora-grid', 'motion-canvas']?.includes(widgetDetails?.widgetType)">
+                                                <label for="directions" class="fs-5 mb-3">Directions</label>
+                                                <select id="directions" class="form-select" formControlName="directions">
+                                                    <option value="" disabled>-- Select an option --</option>
+                                                    <option *ngFor="let directions of ['ltr', 'rtl']"
+                                                        value="{{directions}}">
+                                                        {{directions}}</option>
+                                                </select>
+                                            </div>
                                             <div class="mb-5"
                                                 *ngIf="form.get('view')?.value == 'slider' || ['products', 'aurora-slider', 'motion-canvas']?.includes(widgetDetails?.widgetType)">
                                                 <label for="slidesPerView" class="fs-5 mb-2">Slides Per View</label>

@@ -553,9 +553,19 @@
                                                     </option>
                                                 </select>
                                             </div>
+                                            <div class="form-group col-lg-6 mb-3"
+                                                *ngIf="!['aurora-slider', 'aurora-grid', 'motion-canvas']?.includes(widgetDetails?.widgetType)">
+                                                <label for="directions" class="fs-5 mb-3">Directions</label>
+                                                <select id="directions" class="form-select" formControlName="directions">
+                                                    <option value="" disabled>-- Select an option --</option>
+                                                    <option *ngFor="let directions of ['ltr', 'rtl']"
+                                                        value="{{directions}}">
+                                                        {{directions}}</option>
+                                                </select>
+                                            </div>
 
                                             <div class="mb-5"
-                                                *ngIf="form.get('view')?.value == 'slider' || ['products', 'aurora-slider', 'motion-canvas']?.includes(widgetDetails?.widgetType)">
+                                                *ngIf="form.get('view')?.value == 'slider' || ['aurora-slider', 'motion-canvas']?.includes(widgetDetails?.widgetType)">
                                                 <label for="slidesPerView" class="fs-5 mb-2">Slides Per View</label>
                                                 <div id="slidesPerView" class="row" formGroupName="slidesPerCount">
                                                     <div class="col-lg-4 form-group">

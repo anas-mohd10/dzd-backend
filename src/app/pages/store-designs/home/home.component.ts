@@ -1215,6 +1215,7 @@ export class HomeComponent implements OnInit {
       html: new FormControl(''),
       video: new FormControl(''),
       view: new FormControl('grid'),
+      directions: new FormControl('ltr'),
       textTwirlTitle: new FormControl(''),
       isReversed: new FormControl(false),
       textTwirlDescription: new FormControl(''),
