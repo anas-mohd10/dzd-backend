@@ -23,6 +23,7 @@ export class ShippingGatewaysComponent implements OnInit {
   form: FormGroup = new FormGroup({});
   shippingGateways: shippingGateways[] = [
     { title: 'Aramex', keyId: 'aramex' },
+    { title: 'Safexpress', keyId: 'safexpress' },
   ];
   activeDocId: string | null
   modalRef: BsModalRef | null;
@@ -44,6 +45,18 @@ export class ShippingGatewaysComponent implements OnInit {
       'exporterType',
       'services'
     ],
+    safexpress: [
+      'username',
+      'password',
+      'apiKey',
+      'branchCode',
+      'clientId',
+      'consignorId',
+      'dealerCode',
+      'groupCode',
+      'rateCard',
+      'sfxPrcCode'
+    ]
   };
   gateways: Array<any> = []
 
@@ -94,7 +107,15 @@ export class ShippingGatewaysComponent implements OnInit {
       paymentOptions: new FormControl(''),
       paymentType: new FormControl(''),
       exporterType: new FormControl(''),
-      services: new FormControl('')
+      services: new FormControl(''),
+      apiKey: new FormControl(''),
+      branchCode: new FormControl(''),
+      clientId: new FormControl(''),
+      consignorId: new FormControl(''),
+      dealerCode: new FormControl(''),
+      groupCode: new FormControl(''),
+      rateCard: new FormControl(''),
+      sfxPrcCode: new FormControl('')
     })
 
     Promise.all([
@@ -164,7 +185,15 @@ export class ShippingGatewaysComponent implements OnInit {
       'paymentType',
       'paymentOptions',
       'exporterType',
-      'services'
+      'services',
+      'apiKey',
+      'branchCode',
+      'clientId',
+      'consignorId',
+      'dealerCode',
+      'groupCode',
+      'rateCard',
+      'sfxPrcCode'
     ]
 
     fields.forEach((field) => {

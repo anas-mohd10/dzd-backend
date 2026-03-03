@@ -150,8 +150,8 @@
                 <div class="col-lg-6 form-group my-3"
                     *ngIf="shippingGatewayConfig[activeDocId]?.includes('paymentOptions')">
                     <label for="paymentOptions" class="fs-6 mb-3">Payment Options</label>
-                    <input type="text" id="paymentOptions" placeholder="Payment Options" formControlName="paymentOptions"
-                        class="form-control"
+                    <input type="text" id="paymentOptions" placeholder="Payment Options"
+                        formControlName="paymentOptions" class="form-control"
                         [ngClass]="{ 'is-invalid': (formControls.paymentOptions.touched || isSubmitted) && formControls.paymentOptions.errors?.required }">
                 </div>
                 <div class="col-lg-6 form-group my-3"
@@ -166,6 +166,59 @@
                     <input type="text" id="services" placeholder="Services" formControlName="services"
                         class="form-control"
                         [ngClass]="{ 'is-invalid': (formControls.services.touched || isSubmitted) && formControls.services.errors?.required }">
+                </div>
+
+                <!-- Safexpress Fields -->
+                <div class="col-lg-6 form-group my-3" *ngIf="shippingGatewayConfig[activeDocId]?.includes('apiKey')">
+                    <label for="apiKey" class="fs-6 mb-3">API Key (x-api-key)</label>
+                    <input type="text" id="apiKey" placeholder="API Key" formControlName="apiKey" class="form-control"
+                        [ngClass]="{ 'is-invalid': (formControls.apiKey.touched || isSubmitted) && formControls.apiKey.errors?.required }">
+                </div>
+                <div class="col-lg-6 form-group my-3"
+                    *ngIf="shippingGatewayConfig[activeDocId]?.includes('branchCode')">
+                    <label for="branchCode" class="fs-6 mb-3">Branch Code</label>
+                    <input type="text" id="branchCode" placeholder="Branch Code" formControlName="branchCode"
+                        class="form-control"
+                        [ngClass]="{ 'is-invalid': (formControls.branchCode.touched || isSubmitted) && formControls.branchCode.errors?.required }">
+                </div>
+                <div class="col-lg-6 form-group my-3" *ngIf="shippingGatewayConfig[activeDocId]?.includes('clientId')">
+                    <label for="clientId" class="fs-6 mb-3">Client ID (Safexpress)</label>
+                    <input type="text" id="clientId" placeholder="Client ID" formControlName="clientId"
+                        class="form-control"
+                        [ngClass]="{ 'is-invalid': (formControls.clientId.touched || isSubmitted) && formControls.clientId.errors?.required }">
+                </div>
+                <div class="col-lg-6 form-group my-3"
+                    *ngIf="shippingGatewayConfig[activeDocId]?.includes('consignorId')">
+                    <label for="consignorId" class="fs-6 mb-3">Consignor ID</label>
+                    <input type="text" id="consignorId" placeholder="Consignor ID" formControlName="consignorId"
+                        class="form-control"
+                        [ngClass]="{ 'is-invalid': (formControls.consignorId.touched || isSubmitted) && formControls.consignorId.errors?.required }">
+                </div>
+                <div class="col-lg-6 form-group my-3"
+                    *ngIf="shippingGatewayConfig[activeDocId]?.includes('dealerCode')">
+                    <label for="dealerCode" class="fs-6 mb-3">Dealer Code</label>
+                    <input type="text" id="dealerCode" placeholder="Dealer Code" formControlName="dealerCode"
+                        class="form-control"
+                        [ngClass]="{ 'is-invalid': (formControls.dealerCode.touched || isSubmitted) && formControls.dealerCode.errors?.required }">
+                </div>
+                <div class="col-lg-6 form-group my-3" *ngIf="shippingGatewayConfig[activeDocId]?.includes('groupCode')">
+                    <label for="groupCode" class="fs-6 mb-3">Group Code</label>
+                    <input type="text" id="groupCode" placeholder="Group Code" formControlName="groupCode"
+                        class="form-control"
+                        [ngClass]="{ 'is-invalid': (formControls.groupCode.touched || isSubmitted) && formControls.groupCode.errors?.required }">
+                </div>
+                <div class="col-lg-6 form-group my-3" *ngIf="shippingGatewayConfig[activeDocId]?.includes('rateCard')">
+                    <label for="rateCard" class="fs-6 mb-3">Rate Card</label>
+                    <input type="text" id="rateCard" placeholder="Rate Card" formControlName="rateCard"
+                        class="form-control"
+                        [ngClass]="{ 'is-invalid': (formControls.rateCard.touched || isSubmitted) && formControls.rateCard.errors?.required }">
+                </div>
+                <div class="col-lg-6 form-group my-3"
+                    *ngIf="shippingGatewayConfig[activeDocId]?.includes('sfxPrcCode')">
+                    <label for="sfxPrcCode" class="fs-6 mb-3">SFX PRC Code</label>
+                    <input type="text" id="sfxPrcCode" placeholder="SFX PRC Code" formControlName="sfxPrcCode"
+                        class="form-control"
+                        [ngClass]="{ 'is-invalid': (formControls.sfxPrcCode.touched || isSubmitted) && formControls.sfxPrcCode.errors?.required }">
                 </div>
             </div>
             <div class="d-flex justify-content-end gap-4">
