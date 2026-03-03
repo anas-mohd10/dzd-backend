@@ -1,5 +1,5 @@
 import { Component, OnInit, ChangeDetectorRef, ViewChild, TemplateRef, } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { appRoutes } from 'src/app/config/routes';
 import { OrdersService } from 'src/app/includes/services/orders.service';
@@ -74,6 +74,7 @@ export class UpdateOrdersComponent implements OnInit {
   shippingRef: BsModalRef | null
   shippingGateway: string | null
   shippingGateways: Array<any> = []
+  safexpressForm: FormGroup;
 
   constructor(
     private ShipmentService: ShipmentService,
@@ -88,10 +89,21 @@ export class UpdateOrdersComponent implements OnInit {
   ) { }
   // Create Shipment
   createShipment() {
-    this.ShipmentService.createShipment({
+    let payload: any = {
       orderId: this.slug,
       gateway: this.shippingGateway
-    }).subscribe({
+    }
+
+    if (this.shippingGateway === 'safexpress') {
+      if (this.safexpressForm.invalid) {
+        this.safexpressForm.markAllAsTouched()
+        this.HotToastService.error("Please fill all package details")
+        return
+      }
+      payload = { ...payload, ...this.safexpressForm.value }
+    }
+
+    this.ShipmentService.createShipment(payload).subscribe({
       next: (resp: any) => {
         if (resp && resp.errorCode == 0) {
           this.shippingRef?.hide()
@@ -231,6 +243,14 @@ export class UpdateOrdersComponent implements OnInit {
       paymentMessage: [''],
       transactionTime: [''],
       paymentId: [''],
+    });
+
+    this.safexpressForm = this.formBuilder.group({
+      numOfPackage: [1, [Validators.required, Validators.min(1)]],
+      pkgLength: [10, [Validators.required, Validators.min(1)]],
+      pkgBreadth: [10, [Validators.required, Validators.min(1)]],
+      pkgHeight: [10, [Validators.required, Validators.min(1)]],
+      totalWeight: [1, [Validators.required, Validators.min(0.1)]]
     });
   }
 
