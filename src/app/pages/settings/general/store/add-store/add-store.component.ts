@@ -18,6 +18,7 @@ export class AddStoreComponent implements OnInit {
   slots: Array<any> = []
   appRoute = appRoutes
   isValid: Boolean = true
+  storeImg: string = ''
 
   constructor(
     private StoresService: StoresService,
@@ -56,6 +57,8 @@ export class AddStoreComponent implements OnInit {
       startTime: new FormControl(''),
       endTime: new FormControl(''),
       city: new FormControl('', Validators.required),
+      state:new FormControl('',Validators.required),
+      pincode:new FormControl(''),
       map: new FormControl('', Validators.required),
       isActive: new FormControl(true),
       isClickPoint: new FormControl(false),
@@ -70,6 +73,18 @@ export class AddStoreComponent implements OnInit {
     if (newPattern) newValidators.push(Validators.pattern(newPattern));
     this.form.get('mobile')?.setValidators(newValidators);
     this.form.get('mobile')?.updateValueAndValidity();
+  }
+
+  handleStoreImage(event: any) {
+    this.storeImg = event.path
+    this.ChangeDetectorRef.markForCheck()
+  }
+
+  onRemove(mediaType: string) {
+    if (mediaType === 'storeImg') {
+      this.storeImg = ''
+    }
+    this.ChangeDetectorRef.markForCheck()
   }
 
   handleMobilePattern() {
@@ -98,6 +113,7 @@ export class AddStoreComponent implements OnInit {
     }
 
     this.StoresService.add({
+      storeImg: this.storeImg,
       name: this.form.get('name')?.value,
       contact: {
         email: this.form.get('email')?.value,
@@ -109,6 +125,8 @@ export class AddStoreComponent implements OnInit {
         firstlane: this.form.get('firstlane')?.value,
         secondlane: this.form.get('secondlane')?.value,
         city: this.form.get('city')?.value,
+        state:this.form.get('state')?.value,
+        pincode:this.form.get('pincode')?.value,
         area: this.form.get('area')?.value,
         landmark: this.form.get('landmark')?.value,
       },
