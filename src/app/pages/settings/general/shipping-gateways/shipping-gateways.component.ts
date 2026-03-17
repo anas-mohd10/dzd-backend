@@ -46,6 +46,9 @@ export class ShippingGatewaysComponent implements OnInit {
       'services'
     ],
     safexpress: [
+      'apiUrl',
+      'authUrl',
+      'consigneeUrl',
       'username',
       'password',
       'apiKey',
@@ -115,7 +118,9 @@ export class ShippingGatewaysComponent implements OnInit {
       dealerCode: new FormControl(''),
       groupCode: new FormControl(''),
       rateCard: new FormControl(''),
-      sfxPrcCode: new FormControl('')
+      sfxPrcCode: new FormControl(''),
+      authUrl: new FormControl(''),
+      consigneeUrl: new FormControl('')
     })
 
     Promise.all([
@@ -193,7 +198,9 @@ export class ShippingGatewaysComponent implements OnInit {
       'dealerCode',
       'groupCode',
       'rateCard',
-      'sfxPrcCode'
+      'sfxPrcCode',
+      'authUrl',
+      'consigneeUrl'
     ]
 
     fields.forEach((field) => {
