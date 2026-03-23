@@ -5,7 +5,11 @@ export const widgetProductTypes: Array<string> = [
     'aurora-slider',
     'aurora-grid',
     'products',
-    'motion-canvas',
+    'motion-canvas'
+];
+
+export const widgetLocationTypes: Array<string> = [
+    'locations-slider'
 ];
 
 export const widgetImageTypes: Array<string> = [
