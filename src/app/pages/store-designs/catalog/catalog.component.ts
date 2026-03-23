@@ -19,6 +19,7 @@ import { CollectionService } from 'src/app/includes/services/collection.service'
 import { ProductService } from 'src/app/includes/services/product.service';
 import { StaticPageService } from 'src/app/includes/services/static-page.service';
 import { TestimonialService } from 'src/app/includes/services/testimonial.service';
+import { StoresService } from 'src/app/includes/services/stores.service';
 
 interface WidgetProps {
   title: string;
@@ -397,6 +398,10 @@ export class CatalogComponent implements OnInit, OnDestroy {
     'motion-canvas',
   ];
 
+  widgetLocationTypes: Array<any> = [
+    'locations-slider',
+  ];
+
   widgetCollection: FormControl = new FormControl('');
   widgetBrand: FormControl = new FormControl('');
   widgetCategory: FormControl = new FormControl('');
@@ -408,7 +413,11 @@ export class CatalogComponent implements OnInit, OnDestroy {
   widgetImagePreviewIndex: any;
   smartTileProducts: Array<any> = []; // Smart tiles widgets
   tileProductsInput: FormControl = new FormControl('', Validators.required); // Smart tiles widgets
+  locationsInput: FormControl = new FormControl('', Validators.required);
   tileProducts: Array<any> = []; // Smart tiles widgets
+  locations: Array<any> = [];
+  allLocations: Array<any> = [];
+  selectedLocations: Array<any> = [];
   widgetImagePreview: any;
   confirmedWidget: any;
   confirmRef: BsModalRef<unknown>;
@@ -479,7 +488,8 @@ export class CatalogComponent implements OnInit, OnDestroy {
     private TestimonialService: TestimonialService,
     private ChangeDetectorRef: ChangeDetectorRef,
     private AppSettingsService: AppSettingsService,
-    private BlogService: BlogService
+    private BlogService: BlogService,
+    private StoresService: StoresService
   ) { }
 
   onChangeProductType() {
@@ -587,6 +597,52 @@ export class CatalogComponent implements OnInit, OnDestroy {
         this.Toast.error(err.error.message);
       },
     });
+  }
+
+  getLocations() {
+    if (this.allLocations.length === 0) {
+      this.StoresService.getStores().subscribe({
+        next: (res: any) => {
+          if (res?.errorCode == 0) {
+            this.allLocations = res?.result || [];
+            this.filterLocations();
+          } else {
+            this.Toast.error(res.message);
+          }
+        },
+        error: (err: any) => {
+          this.Toast.error(err.error?.message || 'Error occurred while fetching locations');
+        },
+      });
+    } else {
+      this.filterLocations();
+    }
+  }
+
+  filterLocations() {
+    const keyword = (this.locationsInput.value || '').toLowerCase();
+    if (keyword) {
+      this.locations = this.allLocations.filter((item: any) => 
+        item.name?.toLowerCase().includes(keyword) || 
+        item.email?.toLowerCase().includes(keyword)
+      );
+    } else {
+      this.locations = [...this.allLocations];
+    }
+    this.ChangeDetectorRef.markForCheck();
+  }
+
+  toggleLocation(location: any) {
+    const isExists = this.isLocationExists(location)
+    if (isExists) {
+      this.selectedLocations = this.selectedLocations.filter((item) => item?._id !== location?._id);
+    } else {
+      this.selectedLocations.push(location);
+    }
+  }
+
+  isLocationExists(location: any): boolean {
+    return this.selectedLocations.some((item: any) => item?._id === location?._id);
   }
 
   //Motion canvas
@@ -1414,6 +1470,18 @@ export class CatalogComponent implements OnInit, OnDestroy {
               ? (this.selectedProductType = 'products')
               : (this.selectedProductType = 'collections');
           }
+          if (this.widgetLocationTypes.includes(this.widgetDetails?.widgetType)) {
+            this.StoresService.getStores().subscribe((res: any) => {
+              if (res?.errorCode == 0) {
+                this.allLocations = res?.result || [];
+                const locationIds = this.widgetDetails?.locations || [];
+                this.selectedLocations = this.allLocations.filter((store: any) => 
+                  locationIds.some((loc: any) => (loc?._id || loc) === store._id)
+                );
+                this.ChangeDetectorRef.markForCheck();
+              }
+            });
+          }
           if (this.widgetDetails?.widgetType == 'hyperlinkhero') {
             this.hyperlinkheroForm.patchValue(this.widgetDetails);
             this.hyperLinkHeroThumbnail =
@@ -1437,7 +1505,7 @@ export class CatalogComponent implements OnInit, OnDestroy {
 
 
           if (
-            ['motion-canvas', 'aurora-grid', 'aurora-slider'].includes(
+            ['motion-canvas', 'aurora-grid', 'aurora-slider', 'locations-slider'].includes(
               this.widgetDetails?.widgetType
             )
           ) {
@@ -1503,6 +1571,14 @@ export class CatalogComponent implements OnInit, OnDestroy {
           ? this.saleForm.get('endDate')?.value
           : new Date(new Date().setHours(0, 0, 0, 0)).toISOString(),
       };
+    } else if (this.widgetLocationTypes.includes(this.widgetDetails?.widgetType)) {
+      widgetPayload = {
+        visibility: this.form.get('visibility')?.value,
+        refid: this.widgetDetails?.refid,
+        ...this.form.value,
+        widgetType: this.widgetDetails?.widgetType,
+        locations: this.selectedLocations.map((l: any) => l?._id),
+      };
     } else if (
       this.widgetProductTypes.includes(this.widgetDetails.widgetType)
     ) {
@@ -1527,7 +1603,7 @@ export class CatalogComponent implements OnInit, OnDestroy {
     type == 'styles' ? (widgetPayload['styles'] = this.designForm.value) : null;
 
     if (
-      ['motion-canvas', 'aurora-grid', 'aurora-slider'].includes(
+      ['motion-canvas', 'aurora-grid', 'aurora-slider', 'locations-slider'].includes(
         this.widgetDetails?.widgetType
       )
     ) {
