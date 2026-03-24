@@ -20,6 +20,7 @@ export class AddStoreComponent implements OnInit {
   isValid: Boolean = true
   storeImg: string = ''
 
+
   constructor(
     private StoresService: StoresService,
     private ChangeDetectorRef: ChangeDetectorRef,
@@ -63,7 +64,8 @@ export class AddStoreComponent implements OnInit {
       isActive: new FormControl(true),
       isClickPoint: new FormControl(false),
       countryCode: new FormControl('+971', Validators.required),
-      isFeatured: new FormControl(false)
+      isFeatured: new FormControl(false),
+      branches: new FormControl('')
     })
     this.handleMobilePattern()
   }
@@ -140,6 +142,7 @@ export class AddStoreComponent implements OnInit {
       isActive: this.form.get('isActive')?.value,
       isClickPoint: this.form.get('isClickPoint')?.value,
       isFeatured: this.form.get('isFeatured')?.value,
+      branches:this.form.get('branches')?.value,
     }).subscribe((res: any) => {
       if (res?.errorCode == 0) {
         this.Toast.success(res?.message)
