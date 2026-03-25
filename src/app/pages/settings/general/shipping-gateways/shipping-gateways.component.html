@@ -40,7 +40,7 @@
             <div *ngFor="let shippingGateway of shippingGateways"
                 class="h-auto h-100 cursor-pointer rounded bg-white p-4 border border-secondary"
                 (click)="open(details, shippingGateway.keyId)">
-                <img class="h-auto ratio ratio-1x1 h-100 object-fit-cover"
+                <img class="h-auto ratio ratio-1x1 h-100 object-fit-cover" style="margin-top: auto;"
                     src="{{'assets/shipping-gateways/' + shippingGateway.keyId + '.png'}}"
                     alt="{{shippingGateway.title}}">
                 <div class="text-center fs-5">{{shippingGateway.title}}</div>
@@ -174,13 +174,24 @@
                     <input type="text" id="apiKey" placeholder="API Key" formControlName="apiKey" class="form-control"
                         [ngClass]="{ 'is-invalid': (formControls.apiKey.touched || isSubmitted) && formControls.apiKey.errors?.required }">
                 </div>
-                <div class="col-lg-6 form-group my-3" *ngIf="shippingGatewayConfig[activeDocId]?.includes('authUrl')">
-                    <label for="authUrl" class="fs-6 mb-3">Auth URL <small class="text-muted">(leave empty for UAT default)</small></label>
-                    <input type="text" id="authUrl" placeholder="https://authapi-test.safexpress.com/oauth2/token" formControlName="authUrl" class="form-control">
+                <div class="col-lg-6 form-group my-3" *ngIf="shippingGatewayConfig[activeDocId]?.includes('authApiKey')">
+                    <label for="authApiKey" class="fs-6 mb-3">Auth API Key (x-api-key)</label>
+                    <input type="text" id="authApiKey" placeholder="Auth API Key" formControlName="authApiKey" class="form-control"
+                        [ngClass]="{ 'is-invalid': (formControls.authApiKey.touched || isSubmitted) && formControls.authApiKey.errors?.required }">
                 </div>
-                <div class="col-lg-6 form-group my-3" *ngIf="shippingGatewayConfig[activeDocId]?.includes('consigneeUrl')">
-                    <label for="consigneeUrl" class="fs-6 mb-3">Consignee API URL <small class="text-muted">(leave empty for UAT default)</small></label>
-                    <input type="text" id="consigneeUrl" placeholder="https://egwde0uu2g.execute-api.ap-south-1.amazonaws.com/uat/booking/consignor-consignee" formControlName="consigneeUrl" class="form-control">
+                <div class="col-lg-6 form-group my-3" *ngIf="shippingGatewayConfig[activeDocId]?.includes('authUrl')">
+                    <label for="authUrl" class="fs-6 mb-3">Auth URL <small class="text-muted">(leave empty for UAT
+                            default)</small></label>
+                    <input type="text" id="authUrl" placeholder="https://authapi-test.safexpress.com/oauth2/token"
+                        formControlName="authUrl" class="form-control">
+                </div>
+                <div class="col-lg-6 form-group my-3"
+                    *ngIf="shippingGatewayConfig[activeDocId]?.includes('consigneeUrl')">
+                    <label for="consigneeUrl" class="fs-6 mb-3">Consignee API URL <small class="text-muted">(leave empty
+                            for UAT default)</small></label>
+                    <input type="text" id="consigneeUrl"
+                        placeholder="https://egwde0uu2g.execute-api.ap-south-1.amazonaws.com/uat/booking/consignor-consignee"
+                        formControlName="consigneeUrl" class="form-control">
                 </div>
                 <div class="col-lg-6 form-group my-3"
                     *ngIf="shippingGatewayConfig[activeDocId]?.includes('branchCode')">

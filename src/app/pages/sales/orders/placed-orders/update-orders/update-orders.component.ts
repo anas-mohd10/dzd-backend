@@ -358,7 +358,40 @@ export class UpdateOrdersComponent implements OnInit {
             this.ShipmentService.trackShipment(this.slug).subscribe({
               next: (resp: any) => {
                 if (resp && resp.errorCode == 0) {
-                  console.log(resp)
+                  if (this.order.shippingGateway === 'safexpress' && resp.result?.response) {
+                    const trackingData = resp.result.response;
+                    
+                    // Safexpress tracking extraction
+                    let trackingStatus = trackingData?.status || trackingData?.currentStatus || trackingData?.trackingStatus || trackingData?.latestStatus;
+                    
+                    // Check if array
+                    if (!trackingStatus && Array.isArray(trackingData) && trackingData.length > 0) {
+                      trackingStatus = trackingData[0]?.status || trackingData[0]?.currentStatus || trackingData[0]?.milestone;
+                    }
+                    
+                    // Deep check if nested e.g., trackingData.response
+                    if (!trackingStatus && trackingData?.response && Array.isArray(trackingData.response) && trackingData.response.length > 0) {
+                      trackingStatus = trackingData.response[0]?.status || trackingData.response[0]?.currentStatus || "In Transit";
+                    } else if (!trackingStatus) {
+                      // Fallback status if we just know it succeeded
+                      trackingStatus = "Tracking Info Available";
+                    }
+
+                    if (trackingStatus) {
+                       const noteStr = `Safexpress Tracking [AWB: ${this.order.awbNumber}]: ${trackingStatus}`;
+                       const noteExists = this.order.orderNote && this.order.orderNote.some((n: any) => n.message === noteStr);
+                       
+                       // Add note if it doesn't already exist for this same status string
+                       if (!noteExists) {
+                         this.OrdersService.addOrderNote(this.slug, noteStr).subscribe({
+                           next: () => {
+                             // Re-fetch order so the new note shows up in UI
+                             this.getOrderDetails();
+                           }
+                         });
+                       }
+                    }
+                  }
                 } else {
                   this.HotToastService.error(resp.message)
                 }
