@@ -63,6 +63,13 @@ export class CatalogComponent implements OnInit, OnDestroy {
         'The widget can be used to showcase new brands or existing brands.The widget contains two section with image and description section on either side and vice-versa.The description box has a black border, with heading, subheading and button. <strong>Glamour Glaze - 800(w) x 697(h) - 1(Bigger one),390(w) x 220(h) - 3(Smaller ones) </strong>',
     },
     {
+      title: 'Timeline Slider',
+      type: 'timelineview-slider',
+      icon: 'assets/widgets/volta-lake.png',
+      description:
+        'The widget can be used to showcase new brands or existing brands.The widget contains two section with image and description section on either side and vice-versa.The description box has a black border, with heading, subheading and button. <strong>timelineview-slider - 800(w) x 697(h) - 1(Bigger one),390(w) x 220(h) - 3(Smaller ones) </strong>',
+    },
+    {
       title: 'Dazzle Design',
       type: 'dazzle-design',
       icon: 'assets/widgets/1x4.png',
@@ -307,6 +314,7 @@ export class CatalogComponent implements OnInit, OnDestroy {
     'magestic-mosaic',
     'text-twirl',
     'glamour-glaze',
+    'timelineview-slider',
     'dazzle-design',
     'grandeur-gallery',
     'celestial-canvas',
@@ -622,8 +630,8 @@ export class CatalogComponent implements OnInit, OnDestroy {
   filterLocations() {
     const keyword = (this.locationsInput.value || '').toLowerCase();
     if (keyword) {
-      this.locations = this.allLocations.filter((item: any) => 
-        item.name?.toLowerCase().includes(keyword) || 
+      this.locations = this.allLocations.filter((item: any) =>
+        item.name?.toLowerCase().includes(keyword) ||
         item.email?.toLowerCase().includes(keyword)
       );
     } else {
@@ -835,6 +843,8 @@ export class CatalogComponent implements OnInit, OnDestroy {
             for (let widgetImage of this.widgetDetails?.widgetImages) {
               this.widgetImages.push({
                 url: widgetImage?.media,
+                stepNumber: widgetImage?.stepNumber,
+                stepTitle: widgetImage?.stepTitle,
                 title: widgetImage?.title,
                 customStyles: widgetImage?.customStyles,
                 description: widgetImage?.description,
@@ -1376,6 +1386,8 @@ export class CatalogComponent implements OnInit, OnDestroy {
             for (let widgetImage of this.widgetDetails?.widgetImages) {
               this.widgetImages.push({
                 url: widgetImage?.media,
+                stepNumber: widgetImage?.stepNumber,
+                stepTitle: widgetImage?.stepTitle,
                 title: widgetImage?.title,
                 description: widgetImage?.description,
                 button: widgetImage?.button,
@@ -1475,7 +1487,7 @@ export class CatalogComponent implements OnInit, OnDestroy {
               if (res?.errorCode == 0) {
                 this.allLocations = res?.result || [];
                 const locationIds = this.widgetDetails?.locations || [];
-                this.selectedLocations = this.allLocations.filter((store: any) => 
+                this.selectedLocations = this.allLocations.filter((store: any) =>
                   locationIds.some((loc: any) => (loc?._id || loc) === store._id)
                 );
                 this.ChangeDetectorRef.markForCheck();
@@ -1993,7 +2005,7 @@ export class CatalogComponent implements OnInit, OnDestroy {
       html: new FormControl(''),
       video: new FormControl(''),
       view: new FormControl('grid'),
-      directions:new FormControl('ltr'),
+      directions: new FormControl('ltr'),
       textTwirlTitle: new FormControl(''),
       isReversed: new FormControl(false),
       textTwirlDescription: new FormControl(''),
@@ -2067,6 +2079,8 @@ export class CatalogComponent implements OnInit, OnDestroy {
     });
 
     this.widgetForm = new FormGroup({
+      stepNumber: new FormControl(''),
+      stepTitle: new FormControl(''),
       title: new FormControl(''),
       redirection: new FormControl(''),
       redirectionType: new FormControl(''),

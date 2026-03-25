@@ -309,8 +309,8 @@ export class HomeComponent implements OnInit {
   filterLocations() {
     const keyword = (this.locationsInput.value || '').toLowerCase();
     if (keyword) {
-      this.locations = this.allLocations.filter((item: any) => 
-        item.name?.toLowerCase().includes(keyword) || 
+      this.locations = this.allLocations.filter((item: any) =>
+        item.name?.toLowerCase().includes(keyword) ||
         item.email?.toLowerCase().includes(keyword)
       );
     } else {
@@ -580,6 +580,8 @@ export class HomeComponent implements OnInit {
             for (let widgetImage of this.widgetDetails?.widgetImages) {
               this.widgetImages.push({
                 url: widgetImage?.media,
+                stepNumber: widgetImage?.stepNumber,
+                stepTitle: widgetImage?.stepTitle,
                 title: widgetImage?.title,
                 customStyles: widgetImage?.customStyles,
                 description: widgetImage?.description,
@@ -679,7 +681,7 @@ export class HomeComponent implements OnInit {
               if (res?.errorCode == 0) {
                 this.allLocations = res?.result || [];
                 const locationIds = this.widgetDetails?.locations || [];
-                this.selectedLocations = this.allLocations.filter((store: any) => 
+                this.selectedLocations = this.allLocations.filter((store: any) =>
                   locationIds.some((loc: any) => (loc?._id || loc) === store._id)
                 );
                 this.ChangeDetectorRef.markForCheck();
@@ -1212,14 +1214,14 @@ export class HomeComponent implements OnInit {
         .toLowerCase()
         .startsWith(this.homeWidgetKeyword?.value.toLowerCase())
     );
-    
+
     // Apply mme-01 filter if applicable
     // if (environment.clientId === 'mme-01') {
     //   filteredWidgets = filteredWidgets.filter(widget => 
     //     defaultWidgets.includes(widget.type)
     //   );
     // }
-    
+
     this.homeWidgets = filteredWidgets;
   }
 
@@ -1293,6 +1295,8 @@ export class HomeComponent implements OnInit {
       view: new FormControl('grid'),
       directions: new FormControl('ltr'),
       textTwirlTitle: new FormControl(''),
+      stepNumber: new FormControl(''),
+      stepTitle: new FormControl(''),
       isReversed: new FormControl(false),
       textTwirlDescription: new FormControl(''),
       gridsPerCount: new FormGroup({
@@ -1386,6 +1390,8 @@ export class HomeComponent implements OnInit {
     });
 
     this.widgetForm = new FormGroup({
+      stepNumber: new FormControl(''),
+      stepTitle: new FormControl(''),
       title: new FormControl(''),
       titleType: new FormControl(''),
       description: new FormControl(''),

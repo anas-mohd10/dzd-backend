@@ -16,7 +16,15 @@ export const widgets: Array<WidgetProps> = [
         type: 'glamour-glaze',
         icon: 'assets/widgets/volta-lake.png',
         description: 'The widget can be used to showcase new brands or existing brands.The widget contains two section with image and description section on either side and vice-versa.The description box has a black border, with heading, subheading and button. <strong>Glamour Glaze - 800(w) x 697(h) - 1(Bigger one) ,390(w) x 220(h) - 3(Smaller ones)</strong>',
-    }, {
+    },
+    {
+        title: 'Timeline Slider',
+        type: 'timelineview-slider',
+        icon: 'assets/widgets/timelineview-slider.png',
+        description:
+            'The widget can be used to showcase new brands or existing brands.The widget contains two section with image and description section on either side and vice-versa.The description box has a black border, with heading, subheading and button. <strong>timelineview-slider - 800(w) x 697(h) - 1(Bigger one),390(w) x 220(h) - 3(Smaller ones) </strong>',
+    },
+    {
         title: 'Dazzle Design',
         type: 'dazzle-design',
         icon: 'assets/widgets/1x4.png',

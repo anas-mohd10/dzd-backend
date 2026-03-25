@@ -22,6 +22,7 @@ export const widgetImageTypes: Array<string> = [
     'classic-banners',
     'magestic-mosaic',
     'glamour-glaze',
+    'timelineview-slider',
     'dazzle-design',
     'grandeur-gallery',
     'celestial-canvas',
