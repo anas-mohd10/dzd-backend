@@ -325,7 +325,8 @@
                                             <div class="form-group col-lg-6 mb-3"
                                                 *ngIf="!['aurora-slider', 'aurora-grid', 'motion-canvas']?.includes(widgetDetails?.widgetType)">
                                                 <label for="directions" class="fs-5 mb-3">Directions</label>
-                                                <select id="directions" class="form-select" formControlName="directions">
+                                                <select id="directions" class="form-select"
+                                                    formControlName="directions">
                                                     <option value="" disabled>-- Select an option --</option>
                                                     <option *ngFor="let directions of ['ltr', 'rtl']"
                                                         value="{{directions}}">
@@ -659,6 +660,16 @@
                                             </div>
                                         </div>
                                         <div class="row">
+                                            <ng-container *ngIf="widgetDetails?.widgetType == 'timelineview-slider'">
+                                                <div class="form-group mb-3">
+                                                    <label for="title" class="form-label">Step Number</label>
+                                                    <input type="text" formControlName="stepNumber" class="form-control">
+                                                </div>
+                                                <div class="form-group mb-3">
+                                                    <label for="title" class="form-label">Step Title</label>
+                                                    <input type="text" formControlName="stepTitle" class="form-control">
+                                                </div>
+                                            </ng-container>
                                             <div class="form-group mb-3">
                                                 <label for="title" class="form-label">Title</label>
                                                 <input type="text" formControlName="title" class="form-control">
