@@ -553,9 +553,20 @@
                                                     </option>
                                                 </select>
                                             </div>
+                                            <div class="form-group col-lg-6 mb-3"
+                                                *ngIf="!['aurora-slider', 'aurora-grid', 'motion-canvas']?.includes(widgetDetails?.widgetType)">
+                                                <label for="directions" class="fs-5 mb-3">Directions</label>
+                                                <select id="directions" class="form-select"
+                                                    formControlName="directions">
+                                                    <option value="" disabled>-- Select an option --</option>
+                                                    <option *ngFor="let directions of ['ltr', 'rtl']"
+                                                        value="{{directions}}">
+                                                        {{directions}}</option>
+                                                </select>
+                                            </div>
 
                                             <div class="mb-5"
-                                                *ngIf="form.get('view')?.value == 'slider' || ['products', 'aurora-slider', 'motion-canvas']?.includes(widgetDetails?.widgetType)">
+                                                *ngIf="form.get('view')?.value == 'slider' || ['aurora-slider', 'motion-canvas']?.includes(widgetDetails?.widgetType)">
                                                 <label for="slidesPerView" class="fs-5 mb-2">Slides Per View</label>
                                                 <div id="slidesPerView" class="row" formGroupName="slidesPerCount">
                                                     <div class="col-lg-4 form-group">
@@ -838,6 +849,16 @@
                                             </div>
                                         </div>
                                         <div class="row">
+                                            <ng-container *ngIf="widgetDetails?.widgetType == 'timelineview-slider'">
+                                                <div class="form-group mb-3">
+                                                    <label for="title" class="form-label">Step Number</label>
+                                                    <input type="text" formControlName="stepNumber" class="form-control">
+                                                </div>
+                                                <div class="form-group mb-3">
+                                                    <label for="title" class="form-label">Step Title</label>
+                                                    <input type="text" formControlName="stepTitle" class="form-control">
+                                                </div>
+                                            </ng-container>
                                             <div class="form-group mb-3">
                                                 <label for="title" class="form-label">Title</label>
                                                 <input type="text" formControlName="title" class="form-control">
@@ -1247,6 +1268,71 @@
                             <label for="video" class="form-label">Past your video link</label>
                             <input type="text" placeholder="Video" formControlName="video" class="form-control">
                             <p class="text-muted">Kindly incorporate only the embedded URL.</p>
+                        </div>
+                    </div>
+
+                    <div *ngIf="widgetLocationTypes.includes(widgetDetails?.widgetType)">
+                        <div class="p-3">
+                            <div class="row align-items-center mb-3">
+                                <div class="col-lg-3">
+                                    <div class="ratio ratio-1x1">
+                                        <app-assets [previewDetails]="productsAdThumbnail"
+                                            (mediaClicked)="toggleMotionCanvasThumbnail($event)"></app-assets>
+                                    </div>
+                                </div>
+                                <div class="col-lg-9 form-group">
+                                    <label for="" class="form-label">Redirection</label>
+                                    <input type="text" [formControl]="productsAdRedirection" class="form-control">
+                                </div>
+                            </div>
+
+                            <div class="alert alert-info">
+                                Select the stores/locations you want to display in this widget.
+                            </div>
+
+                            <ng-container *ngIf="selectedLocations.length > 0">
+                                <div class="fs-4 fw-bold my-3">Featured Locations</div>
+                                <div class="my-4 mt-0 smart-tile-products row pt-0 p-3">
+                                    <ng-container *ngFor="let location of selectedLocations; let i = index">
+                                        <div (click)="toggleLocation(location)"
+                                            class="rounded cursor-pointer col-lg-4 p-4 border border-secondary d-flex align-items-center justify-content-start gap-3">
+                                            <div>
+                                                <div class="tile-product fw-bold fs-5">{{location?.name}}</div>
+                                                <div class="text-muted">{{location?.email}}</div>
+                                            </div>
+                                        </div>
+                                    </ng-container>
+                                </div>
+                            </ng-container>
+
+                            <div class="form-group">
+                                <label for="locationsInput" class="form-label">Locations</label>
+                                <input type="text" class="form-control" placeholder="Search locations"
+                                    [formControl]="locationsInput" (ngModelChange)="getLocations()">
+                            </div>
+
+                            <ng-container *ngIf="locations.length > 0">
+                                <div class="fs-5 mt-3" *ngIf="locationsInput.value">Showing results for <span
+                                        class="text-primary">{{locationsInput.value}} ( {{locations.length}}
+                                        locations
+                                        found )</span></div>
+                                <div class="my-3 row tile-products pt-0 p-3">
+                                    <ng-container *ngFor="let location of locations; let i = index">
+                                        <div (click)="toggleLocation(location)"
+                                            [ngClass]="{'border-primary' : isLocationExists(location), 'border-secondary':  !isLocationExists(location)}"
+                                            class="rounded cursor-pointer col-lg-4 p-4 border d-flex align-items-center justify-content-start gap-3">
+                                            <div>
+                                                <div class="tile-product fw-bold fs-5">{{location?.name}}</div>
+                                                <div class="text-muted">{{location?.email}}</div>
+                                            </div>
+                                        </div>
+                                    </ng-container>
+                                </div>
+                            </ng-container>
+
+                            <ng-container *ngIf="locations.length  == 0 && locationsInput?.value">
+                                <app-no-results></app-no-results>
+                            </ng-container>
                         </div>
                     </div>
 

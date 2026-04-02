@@ -331,6 +331,7 @@ export class UpdateAppSettingsComponent implements OnInit {
         this.form.get('isSocialLoginiOSEnabled')?.setValue(res?.result?.isSocialLoginiOSEnabled)
         this.form.get('isRelatedProductsCart')?.setValue(res?.result?.isRelatedProductsCart);
         this.form.get('isPlpPagination')?.setValue(res?.result?.isPlpPagination);
+        this.form.get('isGalleryEnabled')?.setValue(res?.result?.isGalleryEnabled);
         this.form.get('isBillingAddressEnabled')?.setValue(res?.result?.isBillingAddressEnabled)
         this.form.get('newUserCoupon')?.setValue(res?.result?.newUserCoupon)
         this.form.get('clarityAppId')?.setValue(res?.result?.clarityAppId)
@@ -457,6 +458,7 @@ export class UpdateAppSettingsComponent implements OnInit {
       isRelatedProductsCart: ['false'],
       isBillingAddressEnabled: ['false'],
       isPlpPagination: ['false'],
+      isGalleryEnabled: ['false'],
       newUserCoupon: [''],
       clarityAppId: ['']
     })
@@ -640,6 +642,7 @@ export class UpdateAppSettingsComponent implements OnInit {
       isSocialLoginiOSEnabled: this.form.get('isSocialLoginiOSEnabled')?.value,
       isRelatedProductsCart: this.form.get('isRelatedProductsCart')?.value,
       isPlpPagination: this.form.get('isPlpPagination')?.value,
+      isGalleryEnabled: this.form.get('isGalleryEnabled')?.value,
       isBillingAddressEnabled: this.form.get('isBillingAddressEnabled')?.value,
       newUserCoupon: this.form.get('newUserCoupon')?.value,
       clarityAppId: this.form.get('clarityAppId')?.value,
