@@ -31,6 +31,7 @@
         <th class="p-2">Phone</th>
         <th class="p-2">Email</th>
         <th class="p-2">Date</th>
+        <th class="p-2">Attachment</th>
         <th class="p-2">&nbsp;</th>
       </thead>
       <tbody>
@@ -38,7 +39,14 @@
           <td>{{ enquiry.firstname }} {{ enquiry.lastname }}</td>
           <td>{{ enquiry.countryCode }} {{ enquiry.mobile }}</td>
           <td>{{ enquiry.email }}</td>
-          <td>{{ enquiry.date }}</td>
+          <td>{{ enquiry.date | date:'d/M/yyyy, h:mm:ss a' }}</td>
+          <td>
+            <a *ngIf="enquiry.attachment" [href]="enquiry.attachment" target="_blank" rel="noopener noreferrer"
+              class="text-primary" title="Download attachment">
+              📎
+            </a>
+            <span *ngIf="!enquiry.attachment" class="text-muted">—</span>
+          </td>
           <td>
             <div (click)="open(template, enquiry)" class="cursor-pointer">
               <svg height="18" width="18" data-slot="icon" fill="none" stroke-width="1.5" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
@@ -86,7 +94,16 @@
       </div>
       <div class="col-lg-6 mb-3 form-group">
         <label class="form-label">Date and Time</label>
-        <input class="form-control" value="{{enquiry.date}}" />
+        <input class="form-control" value="{{enquiry.date | date:'d/M/yyyy, h:mm:ss a'}}" />
+      </div>
+      <div class="col-lg-6 mb-3 form-group" *ngIf="enquiry.attachment">
+        <label class="form-label">Attachment</label>
+        <div>
+          <a [href]="enquiry.attachment" target="_blank" rel="noopener noreferrer"
+            class="btn btn-outline-secondary btn-sm d-inline-flex align-items-center gap-1">
+            <span>📎</span> Download Attachment
+          </a>
+        </div>
       </div>
       <div class="col-lg-12 form-group">
         <label for="message" class="form-label">Message</label>

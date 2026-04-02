@@ -109,12 +109,13 @@
             <ng-container *ngFor="let media of medias; let i = index">
               <div
                 class="asset border border-secondary rounded position-relative"
+                (click)="onMediaClickedHandler(media)"
+                style="cursor: pointer;"
               >
                 <!-- Modified checkbox to show tick mark if selected -->
                 <div
                   class="position-absolute border border-secondary asset-checkbox rounded"
                   [ngClass]="{ 'selected-asset': isMediaSelected(media) }"
-                  (click)="onMediaClickedHandler(media)"
                 >
                   <!-- Show tick mark for selected items -->
                   <svg
@@ -145,7 +146,7 @@
                 />
 
                 <!-- Display video previews for video files -->
-                <video *ngIf="isVideoFile(media.path)" controls>
+                <video *ngIf="isVideoFile(media.path)">
                   <source
                     src="{{ base }}{{ media.path }}"
                     type="video/{{ getFileExtension(media.path) }}"

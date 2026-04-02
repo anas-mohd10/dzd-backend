@@ -15,7 +15,10 @@ import { AngularEditorConfig } from '@kolkov/angular-editor';
 import { StaticPageService } from 'src/app/includes/services/static-page.service';
 import { BrandService } from 'src/app/includes/services/brand.service';
 import { CatalogService } from 'src/app/includes/services/catalog.service';
+import { StoresService } from 'src/app/includes/services/stores.service';
 import { widgets } from './home.widgets';
+import { defaultWidgets } from 'src/app/config/constants/default-widgets';
+
 import {
   ClickPulsePanel,
   cmsPages,
@@ -26,7 +29,8 @@ import {
   searchRedirections,
   sortOptions,
   widgetImageTypes,
-  widgetProductTypes
+  widgetProductTypes,
+  widgetLocationTypes
 } from './home.constants';
 
 interface WidgetProps {
@@ -49,6 +53,7 @@ interface WidgetItem {
 export class HomeComponent implements OnInit {
   widgets: Array<WidgetProps> = widgets;
   widgetProductTypes: Array<any> = widgetProductTypes;
+  widgetLocationTypes: Array<any> = widgetLocationTypes;
   widgetImageTypes: Array<any> = widgetImageTypes;
   isWidgetLoaded: boolean = false;
   redirectionItems: Array<any> = redirectionItems;
@@ -78,6 +83,9 @@ export class HomeComponent implements OnInit {
   smartTileProducts: Array<any> = [];
   tileProducts: Array<any> = [];
   staticPages: Array<any> = [];
+  locations: Array<any> = [];
+  allLocations: Array<any> = [];
+  selectedLocations: Array<any> = [];
   keyPoints: Array<any> = []
   blogs: Array<any> = [];
   widgetBlogs: Array<any> = [];
@@ -133,6 +141,7 @@ export class HomeComponent implements OnInit {
   productKeyword: FormControl = new FormControl('', Validators.required);
   homeWidgetKeyword: FormControl = new FormControl('', Validators.required);
   tileProductsInput: FormControl = new FormControl('', Validators.required);
+  locationsInput: FormControl = new FormControl('', Validators.required);
   testimonialKeyword: FormControl = new FormControl('', Validators.required);
   tabs: Array<ClickPulsePanel> = [];
   videoLinkInput: string = '';
@@ -160,7 +169,8 @@ export class HomeComponent implements OnInit {
     private CategoryService: CategoryService,
     private TestimonialService: TestimonialService,
     private StaticPageService: StaticPageService,
-    private BrandService: BrandService
+    private BrandService: BrandService,
+    private StoresService: StoresService
   ) { }
   animationOptions: Array<{ key: string, value: string }> = [
     { key: 'Fade', value: 'fade' },
@@ -274,6 +284,52 @@ export class HomeComponent implements OnInit {
 
   isTileProductExists(productDetails: any) {
     return this.smartTileProducts.some((item: any) => item?._id == productDetails?._id) ? true : false;
+  }
+
+  getLocations() {
+    if (this.allLocations.length === 0) {
+      this.StoresService.getStores().subscribe({
+        next: (res: any) => {
+          if (res?.errorCode == 0) {
+            this.allLocations = res?.result || [];
+            this.filterLocations();
+          } else {
+            this.Toast.error(res.message);
+          }
+        },
+        error: (err: any) => {
+          this.Toast.error(err.error?.message || 'Error occurred while fetching locations');
+        },
+      });
+    } else {
+      this.filterLocations();
+    }
+  }
+
+  filterLocations() {
+    const keyword = (this.locationsInput.value || '').toLowerCase();
+    if (keyword) {
+      this.locations = this.allLocations.filter((item: any) =>
+        item.name?.toLowerCase().includes(keyword) ||
+        item.email?.toLowerCase().includes(keyword)
+      );
+    } else {
+      this.locations = [...this.allLocations];
+    }
+    this.ChangeDetectorRef.markForCheck();
+  }
+
+  toggleLocation(location: any) {
+    const isExists = this.isLocationExists(location);
+    if (isExists) {
+      this.selectedLocations = this.selectedLocations.filter((item) => item?._id !== location?._id);
+    } else {
+      this.selectedLocations.push(location);
+    }
+  }
+
+  isLocationExists(location: any): boolean {
+    return this.selectedLocations.some((item: any) => (item?._id || item) === location?._id);
   }
 
   handleInsightHubThumbnail(event: any, type: string) {
@@ -524,6 +580,8 @@ export class HomeComponent implements OnInit {
             for (let widgetImage of this.widgetDetails?.widgetImages) {
               this.widgetImages.push({
                 url: widgetImage?.media,
+                stepNumber: widgetImage?.stepNumber,
+                stepTitle: widgetImage?.stepTitle,
                 title: widgetImage?.title,
                 customStyles: widgetImage?.customStyles,
                 description: widgetImage?.description,
@@ -618,6 +676,19 @@ export class HomeComponent implements OnInit {
               : (this.selectedProductType = 'collections');
           }
 
+          if (this.widgetLocationTypes.includes(this.widgetDetails?.widgetType)) {
+            this.StoresService.getStores().subscribe((res: any) => {
+              if (res?.errorCode == 0) {
+                this.allLocations = res?.result || [];
+                const locationIds = this.widgetDetails?.locations || [];
+                this.selectedLocations = this.allLocations.filter((store: any) =>
+                  locationIds.some((loc: any) => (loc?._id || loc) === store._id)
+                );
+                this.ChangeDetectorRef.markForCheck();
+              }
+            });
+          }
+
           if (this.widgetDetails?.widgetType == 'hyperlinkhero') {
             this.hyperlinkheroForm.patchValue(this.widgetDetails);
             this.hyperLinkHeroThumbnail =
@@ -649,7 +720,7 @@ export class HomeComponent implements OnInit {
           this.isWidgetLoaded = true;
           this.ChangeDetectorRef.markForCheck();
           if (
-            ['motion-canvas', 'aurora-grid', 'aurora-slider'].includes(
+            ['motion-canvas', 'aurora-grid', 'aurora-slider', 'locations-slider'].includes(
               this.widgetDetails?.widgetType
             )
           ) {
@@ -899,6 +970,15 @@ export class HomeComponent implements OnInit {
           ? this.saleForm.get('endDate')?.value
           : new Date(new Date().setHours(0, 0, 0, 0)).toISOString(),
       };
+    } else if (this.widgetLocationTypes.includes(this.widgetDetails?.widgetType)) {
+      widgetPayload = {
+        visibility: this.form.get('visibility')?.value,
+        titleType: this.form.get('titleType')?.value,
+        refid: this.widgetDetails?.refid,
+        ...this.form.value,
+        widgetType: this.widgetDetails?.widgetType,
+        locations: this.selectedLocations.map((l: any) => l?._id),
+      };
     } else if (this.widgetProductTypes.includes(this.widgetDetails.widgetType)) {
       widgetPayload = {
         visibility: this.form.get('visibility')?.value,
@@ -928,7 +1008,7 @@ export class HomeComponent implements OnInit {
 
     type == 'styles' ? (widgetPayload['styles'] = this.designForm.value) : null;
 
-    if (['motion-canvas', 'aurora-grid', 'aurora-slider'].includes(this.widgetDetails?.widgetType)) {
+    if (['motion-canvas', 'aurora-grid', 'aurora-slider', 'locations-slider'].includes(this.widgetDetails?.widgetType)) {
       widgetPayload['productsAdThumbnail'] = this.productAd.value ? this.productAd.value : null;
       widgetPayload['productsAdRedirection'] = this.productsAdRedirection.value;
     }
@@ -1120,19 +1200,47 @@ export class HomeComponent implements OnInit {
   }
   //hyperlink hero
 
+  // searchWidgets(event: any) {
+  //   this.homeWidgets = this.widgets.filter((widget: any) =>
+  //     widget.title
+  //       .toLowerCase()
+  //       .startsWith(this.homeWidgetKeyword?.value.toLowerCase())
+  //   );
+  // }
+
   searchWidgets(event: any) {
-    this.homeWidgets = this.widgets.filter((widget: any) =>
+    let filteredWidgets = this.widgets.filter((widget: any) =>
       widget.title
         .toLowerCase()
         .startsWith(this.homeWidgetKeyword?.value.toLowerCase())
     );
+
+    // Apply mme-01 filter if applicable
+    // if (environment.clientId === 'mme-01') {
+    //   filteredWidgets = filteredWidgets.filter(widget => 
+    //     defaultWidgets.includes(widget.type)
+    //   );
+    // }
+
+    this.homeWidgets = filteredWidgets;
   }
 
   ngOnInit(): void {
+    console.log(environment, "defaultWidgets");
     this.homeWidgets = this.widgets;
+
+    // if (environment.clientId === 'mme-01') {
+    //   this.homeWidgets = this.homeWidgets.filter(widget => 
+    //     defaultWidgets.includes(widget.type)
+    //   );
+    // }
+
+    const customWidgets = this.homeWidgets.filter((w: any) => w.type.startsWith('custom-'));
+    const regularWidgets = this.homeWidgets.filter((w: any) => !w.type.startsWith('custom-'));
+
     // Separate custom widgets from regular widgets
-    const customWidgets = this.widgets.filter((w: any) => w.type.startsWith('custom-'));
-    const regularWidgets = this.widgets.filter((w: any) => !w.type.startsWith('custom-'));
+    // const customWidgets = this.widgets.filter((w: any) => w.type.startsWith('custom-'));
+    // const regularWidgets = this.widgets.filter((w: any) => !w.type.startsWith('custom-'));
 
     // Sort only regular widgets alphabetically
     regularWidgets.sort((a: any, b: any) => {
@@ -1185,7 +1293,10 @@ export class HomeComponent implements OnInit {
       html: new FormControl(''),
       video: new FormControl(''),
       view: new FormControl('grid'),
+      directions: new FormControl('ltr'),
       textTwirlTitle: new FormControl(''),
+      stepNumber: new FormControl(''),
+      stepTitle: new FormControl(''),
       isReversed: new FormControl(false),
       textTwirlDescription: new FormControl(''),
       gridsPerCount: new FormGroup({
@@ -1279,6 +1390,8 @@ export class HomeComponent implements OnInit {
     });
 
     this.widgetForm = new FormGroup({
+      stepNumber: new FormControl(''),
+      stepTitle: new FormControl(''),
       title: new FormControl(''),
       titleType: new FormControl(''),
       description: new FormControl(''),
