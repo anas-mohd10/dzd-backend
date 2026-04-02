@@ -16,7 +16,15 @@ export const widgets: Array<WidgetProps> = [
         type: 'glamour-glaze',
         icon: 'assets/widgets/volta-lake.png',
         description: 'The widget can be used to showcase new brands or existing brands.The widget contains two section with image and description section on either side and vice-versa.The description box has a black border, with heading, subheading and button. <strong>Glamour Glaze - 800(w) x 697(h) - 1(Bigger one) ,390(w) x 220(h) - 3(Smaller ones)</strong>',
-    }, {
+    },
+    {
+        title: 'Timeline Slider',
+        type: 'timelineview-slider',
+        icon: 'assets/widgets/timelineview-slider.png',
+        description:
+            'The widget can be used to showcase new brands or existing brands.The widget contains two section with image and description section on either side and vice-versa.The description box has a black border, with heading, subheading and button. <strong>timelineview-slider - 800(w) x 697(h) - 1(Bigger one),390(w) x 220(h) - 3(Smaller ones) </strong>',
+    },
+    {
         title: 'Dazzle Design',
         type: 'dazzle-design',
         icon: 'assets/widgets/1x4.png',
@@ -51,7 +59,14 @@ export const widgets: Array<WidgetProps> = [
         type: 'motion-canvas',
         icon: 'assets/widgets/regal-rolls.png',
         description: 'The following widget can be used to showcase products.The widget contains an image of the product and white descriptive box.The descriptive box contains name of the product, actual price and off price and off percentage, which are center aligned with respect to the box.',
-    }, {
+    },
+    {
+        title: 'Locations',
+        type: 'locations-slider',
+        icon: 'assets/widgets/regal-rolls.png',
+        description: 'The following widget can be used to showcase locations.The widget contains an image of the locations and white descriptive box.The descriptive box contains name of the location, actual price and off price and off percentage, which are center aligned with respect to the box.',
+    },
+    {
         title: 'Products',
         type: 'products',
         icon: 'assets/widgets/blogs.png',

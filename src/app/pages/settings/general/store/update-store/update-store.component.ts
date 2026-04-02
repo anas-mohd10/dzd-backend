@@ -29,7 +29,7 @@ export class UpdateStoreComponent implements OnInit {
     private Router: Router,
     private ToastrService: HotToastService,
     private ActivatedRoute: ActivatedRoute
-  ) {}
+  ) { }
 
   get fc() {
     return this.form.controls;
@@ -124,7 +124,6 @@ export class UpdateStoreComponent implements OnInit {
             this.form.get('pincode')?.setValue(res?.result?.address?.pincode);
             this.form.get('landmark')?.setValue(res?.result?.address?.landmark);
             this.form.get('isActive')?.setValue(res?.result?.isActive);
-
             this.form.get('lat')?.setValue(res?.result?.lat);
             this.form.get('lng')?.setValue(res?.result?.lng);
             this.form
@@ -138,6 +137,7 @@ export class UpdateStoreComponent implements OnInit {
             this.form.get('isClickPoint')?.setValue(res?.result?.isClickPoint);
             this.form.get('isDelete')?.setValue(res?.result?.isDelete);
             this.slots = res?.result?.slots;
+            this.form.get('branches')?.setValue(res?.result?.branches)
 
             this.storeImg = res?.result?.storeImg || '';
             this.ChangeDetectorRef.markForCheck();
@@ -168,8 +168,8 @@ export class UpdateStoreComponent implements OnInit {
       startTime: new FormControl(''),
       endTime: new FormControl(''),
       city: new FormControl('', Validators.required),
-      state:new FormControl('',Validators.required),
-      pincode:new FormControl(''),
+      state: new FormControl('', Validators.required),
+      pincode: new FormControl(''),
       map: new FormControl('', Validators.required),
       embedMap: new FormControl(''),
       countryCode: new FormControl('+971', Validators.required),
@@ -177,6 +177,7 @@ export class UpdateStoreComponent implements OnInit {
       isDelete: new FormControl(false),
       isClickPoint: new FormControl(false),
       isFeatured: new FormControl(false),
+      branches: new FormControl(""),
     });
   }
 
@@ -218,8 +219,8 @@ export class UpdateStoreComponent implements OnInit {
         firstlane: this.form.get('firstlane')?.value,
         secondlane: this.form.get('secondlane')?.value,
         city: this.form.get('city')?.value,
-        state:this.form.get('state')?.value,
-        pincode:this.form.get('pincode')?.value,
+        state: this.form.get('state')?.value,
+        pincode: this.form.get('pincode')?.value,
         area: this.form.get('area')?.value,
         landmark: this.form.get('landmark')?.value,
       },
@@ -233,6 +234,7 @@ export class UpdateStoreComponent implements OnInit {
       embedMap: this.form.get('embedMap')?.value,
       isActive: this.form.get('isActive')?.value,
       isFeatured: this.form.get('isFeatured')?.value,
+      branches: this.form.get('branches')?.value,
       isClickPoint: this.form.get('isClickPoint')?.value,
       isDelete: this.form.get('isDelete')?.value,
       storeImg: this.storeImg,
