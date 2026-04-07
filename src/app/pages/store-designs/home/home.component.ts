@@ -79,6 +79,8 @@ export class HomeComponent implements OnInit {
   settings: any = {};
   isDraft: boolean = false;
   widgetImages: Array<any> = [];
+  categoryTitleInput: string = '';
+  selectedCategoryTitle: string = '';
   videoLinks: Array<any> = [];
   smartTileProducts: Array<any> = [];
   tileProducts: Array<any> = [];
@@ -194,7 +196,6 @@ export class HomeComponent implements OnInit {
     this.ChangeDetectorRef.markForCheck();
   }
   // Clickpulse
-
 
   getDomain(domain: string) {
     return domain.endsWith('/') ? domain.slice(0, -1) : domain;
@@ -551,6 +552,14 @@ export class HomeComponent implements OnInit {
   }
 
   openDesign(template: TemplateRef<any>, widget: any) {
+    this.widgetImages = [];
+    this.videoLinks = [];
+    this.keyPoints = [];
+    this.widgetBlogs = [];
+    this.widgetTestimonials = [];
+    this.smartTileProducts = [];
+    this.selectedLocations = [];
+
     this.designRef = this.BsModalService.show(template, {
       class: 'modal-lg modal-dialog-centered',
       ignoreBackdropClick: true,
@@ -572,66 +581,121 @@ export class HomeComponent implements OnInit {
 
   getWidgetDetails(widget: any) {
     this.isWidgetLoaded = false;
+
+    // Reset all arrays to prevent duplicates
+    this.widgetImages = [];
+    this.videoLinks = [];
+    this.keyPoints = [];
+    this.widgetBlogs = [];
+    this.widgetTestimonials = [];
+    this.smartTileProducts = [];
+    this.selectedLocations = [];
+    this.categoryTitleInput = '';
+    this.selectedCategoryTitle = '';
+    this.widgetImagePreviewIndex = null;
+    this.widgetImagePreview = null;
+
     this.HomeWidgetsService.homeWidgetDetails(widget?.refid).subscribe({
       next: (res: any) => {
         if (res?.errorCode == 0) {
           this.widgetDetails = res?.result;
+
+          // Handle widget images based on type
           if (this.widgetImageTypes.includes(this.widgetDetails?.widgetType)) {
-            for (let widgetImage of this.widgetDetails?.widgetImages) {
-              this.widgetImages.push({
-                url: widgetImage?.media,
-                stepNumber: widgetImage?.stepNumber,
-                stepTitle: widgetImage?.stepTitle,
-                title: widgetImage?.title,
-                customStyles: widgetImage?.customStyles,
-                description: widgetImage?.description,
-                button: widgetImage?.button,
-                redirection: widgetImage?.redirection,
-              });
+
+            // For categorywise-product-show
+            if (this.widgetDetails?.widgetType === 'categorywise-product-show'){
+
+              // Transform widgetData into widgetImages format
+              const transformedImages = [];
+              for (let widgetGroup of (this.widgetDetails?.widgetData || [])) {
+                for (let widgetItem of (widgetGroup?.items || [])) {
+                  transformedImages.push({
+                    url: widgetItem?.media,
+                    stepTitle: widgetGroup?.stepTitle,
+                    title: widgetItem?.title,
+                    customStyles: widgetItem?.customStyles,
+                    description: widgetItem?.description,
+                    button: widgetItem?.button,
+                    redirection: widgetItem?.redirection,
+                    thumbnail: widgetItem?.thumbnail,
+                    categoryId: widgetItem?.categoryId,
+                    stepNumber: widgetGroup?.stepNumber
+                  });
+                }
+              }
+              this.widgetImages = transformedImages;
+
+              if (this.widgetImages.length > 0) {
+                this.selectedCategoryTitle = this.getCategoryTitles()?.[0] || '';
+              }
+
+            } else {
+              // For regular widget types
+              for (let widgetImage of this.widgetDetails?.widgetImages || []) {
+                this.widgetImages.push({
+                  url: widgetImage?.media,
+                  stepNumber: widgetImage?.stepNumber,
+                  stepTitle: widgetImage?.stepTitle,
+                  title: widgetImage?.title,
+                  customStyles: widgetImage?.customStyles,
+                  description: widgetImage?.description,
+                  button: widgetImage?.button,
+                  redirection: widgetImage?.redirection,
+                });
+              }
             }
-            this.widgetImagePreview = this.widgetImages[0];
-            this.widgetImagePreviewIndex = 0;
-            this.previewDetails = this.widgetImagePreview?.url ? this.widgetImagePreview?.url?.path : '';
-            this.widgetForm.patchValue(this.widgetImagePreview);
+
+            // Set preview for first image if exists
+            if (this.widgetImages.length > 0) {
+              this.widgetImagePreview = this.widgetImages[0];
+              this.widgetImagePreviewIndex = 0;
+              this.previewDetails = this.widgetImagePreview?.url ? this.widgetImagePreview?.url?.path : '';
+              this.widgetForm.patchValue(this.widgetImagePreview);
+            }
           }
 
           // Handle videoLinks for vibrant-video-banner
           if (this.widgetDetails?.widgetType === 'vibrant-video-banner') {
-            this.videoLinks = this.widgetDetails?.videoLinks || [];
+            this.videoLinks = [...(this.widgetDetails?.videoLinks || [])];
           }
 
+          // Handle blogs
           if (this.widgetDetails?.widgetType == 'blogs') {
-            this.widgetBlogs = this.widgetDetails?.blogs;
-          } else if (this.widgetDetails?.widgetType == 'stock-viewer') {
-            this.widgetImages = this.widgetDetails?.widgetImages;
+            this.widgetBlogs = [...(this.widgetDetails?.blogs || [])];
           }
 
-          if (this.widgetDetails?.widgetType == 'testimonial-cards') {
-            this.widgetTestimonials = this.widgetDetails?.testimonials;
+          // Handle stock-viewer
+          if (this.widgetDetails?.widgetType == 'stock-viewer') {
+            this.widgetImages = [...(this.widgetDetails?.widgetImages || [])];
           }
-          [
-            'smart-tiles',
-            'products',
-            'motion-canvas',
-            'aurora-grid',
-            'aurora-slider',
-          ]?.includes(this.widgetDetails?.widgetType)
-            ? (this.smartTileProducts = [...this.widgetDetails?.products])
-            : null;
+
+          // Handle testimonial-cards
+          if (this.widgetDetails?.widgetType == 'testimonial-cards') {
+            this.widgetTestimonials = [...(this.widgetDetails?.testimonials || [])];
+          }
+
+          // Handle product-based widgets
+          if (['smart-tiles', 'products', 'motion-canvas', 'aurora-grid', 'aurora-slider']
+            ?.includes(this.widgetDetails?.widgetType)) {
+            this.smartTileProducts = [...(this.widgetDetails?.products || [])];
+          }
+
+          // Handle background image
           if (this.widgetDetails?.styles?.backgroundImage)
-            this.backgroundDetails =
-              this.widgetDetails?.styles?.backgroundImage?.path;
+            this.backgroundDetails = this.widgetDetails?.styles?.backgroundImage?.path;
+
           this.form.patchValue(this.widgetDetails);
 
+          // Load collections, brands, categories
           this.getCollections();
           this.getBrands();
           this.getCategories();
 
+          // Set selected product type
           if (this.widgetDetails?.collections) {
             this.selectedProductType = 'collections';
-            this.widgetCollection.setValue(
-              this.widgetDetails?.collections?._id
-            );
+            this.widgetCollection.setValue(this.widgetDetails?.collections?._id);
           }
 
           if (this.widgetDetails?.productBrands) {
@@ -641,41 +705,41 @@ export class HomeComponent implements OnInit {
 
           if (this.widgetDetails?.productCategories) {
             this.selectedProductType = 'categories';
-            this.widgetCategory.setValue(
-              this.widgetDetails?.productCategories?._id
-            );
+            this.widgetCategory.setValue(this.widgetDetails?.productCategories?._id);
           }
 
+          // Handle time bound widget
           if (this.widgetDetails?.isTimeBoundWidget == true) {
             this.form.patchValue({
-              widgetStartTime:
-                this.widgetDetails?.widgetStartTime?.split('T')[0],
+              widgetStartTime: this.widgetDetails?.widgetStartTime?.split('T')[0],
               widgetEndTime: this.widgetDetails?.widgetEndTime?.split('T')[0],
             });
           }
 
+          // Handle title image
           if (this.widgetDetails?.titleImage) {
             this.titleThumbnailDetails = this.widgetDetails?.titleImage?.path;
           }
+
           this.saleForm.patchValue(this.widgetDetails);
+
+          // Handle sale thumbnail
           if (this.widgetDetails?.saleThumbnail) {
             this.saleThumbnailDetails = this.widgetDetails?.saleThumbnail?.path;
-            this.saleForm
-              .get('saleThumbnail')
-              ?.setValue(this.widgetDetails?.saleThumbnail?._id);
+            this.saleForm.get('saleThumbnail')?.setValue(this.widgetDetails?.saleThumbnail?._id);
           }
-          this.widgetDetails.collection
-            ? this.widgetCollection.setValue(
-              this.widgetDetails?.collection?._id
-            )
-            : null;
 
+          // Handle collection
+          if (this.widgetDetails.collection) {
+            this.widgetCollection.setValue(this.widgetDetails?.collection?._id);
+          }
+
+          // Handle product types
           if (this.widgetProductTypes.includes(this.widgetDetails.type)) {
-            this.widgetDetails.products.length > 0
-              ? (this.selectedProductType = 'products')
-              : (this.selectedProductType = 'collections');
+            this.selectedProductType = this.widgetDetails.products.length > 0 ? 'products' : 'collections';
           }
 
+          // Handle location-based widgets
           if (this.widgetLocationTypes.includes(this.widgetDetails?.widgetType)) {
             this.StoresService.getStores().subscribe((res: any) => {
               if (res?.errorCode == 0) {
@@ -689,46 +753,45 @@ export class HomeComponent implements OnInit {
             });
           }
 
+          // Handle hyperlinkhero
           if (this.widgetDetails?.widgetType == 'hyperlinkhero') {
             this.hyperlinkheroForm.patchValue(this.widgetDetails);
-            this.hyperLinkHeroThumbnail =
-              this.widgetDetails?.hyperLinkThumbnail?.path;
+            this.hyperLinkHeroThumbnail = this.widgetDetails?.hyperLinkThumbnail?.path;
           }
 
+          // Handle insight-hub
           if (this.widgetDetails?.widgetType == 'insight-hub') {
             this.insightHubForm.patchValue(this.widgetDetails);
-            this.insightHubThumbnailSmall =
-              this.widgetDetails?.insightHubThumbnailSmall?.path;
-            this.insightHubThumbnailLarge =
-              this.widgetDetails?.insightHubThumbnailLarge?.path;
+            this.insightHubThumbnailSmall = this.widgetDetails?.insightHubThumbnailSmall?.path;
+            this.insightHubThumbnailLarge = this.widgetDetails?.insightHubThumbnailLarge?.path;
           }
 
+          // Handle key-points-grid
           if (this.widgetDetails?.widgetType == 'key-points-grid') {
-            this.keyPoints = res?.result?.keyPoints
+            this.keyPoints = [...(res?.result?.keyPoints || [])];
           }
 
+          // Handle clickpulse-panel
           if (this.widgetDetails?.widgetType == 'clickpulse-panel') {
-            this.tabs = res?.result?.tabs;
+            this.tabs = [...(res?.result?.tabs || [])];
           }
 
-          this.widgetDetails?.endDate
-            ? this.saleForm
-              .get('endDate')
-              ?.setValue(new Date(this.widgetDetails?.endDate))
-            : null;
+          // Handle end date for sale
+          if (this.widgetDetails?.endDate) {
+            this.saleForm.get('endDate')?.setValue(new Date(this.widgetDetails?.endDate));
+          }
+
           this.designForm.patchValue(this.widgetDetails?.styles);
           this.isWidgetLoaded = true;
           this.ChangeDetectorRef.markForCheck();
-          if (
-            ['motion-canvas', 'aurora-grid', 'aurora-slider', 'locations-slider'].includes(
-              this.widgetDetails?.widgetType
-            )
-          ) {
+
+          // Handle motion-canvas, aurora-grid, aurora-slider, locations-slider
+          if (['motion-canvas', 'aurora-grid', 'aurora-slider', 'locations-slider'].includes(
+            this.widgetDetails?.widgetType
+          )) {
             this.productsAdThumbnail = this.widgetDetails?.productsAdThumbnail;
             this.productAd?.setValue(this.widgetDetails?.productsAdThumbnail);
-            this.productsAdRedirection?.setValue(
-              this.widgetDetails?.productsAdRedirection
-            );
+            this.productsAdRedirection?.setValue(this.widgetDetails?.productsAdRedirection);
           }
         } else {
           this.Toast.error(res?.message);
@@ -742,13 +805,20 @@ export class HomeComponent implements OnInit {
 
   closeDesign() {
     this.designRef?.hide();
+    // Reset all arrays
     this.widgetImages = [];
+    this.videoLinks = [];
+    this.keyPoints = [];
+    this.widgetBlogs = [];
+    this.widgetTestimonials = [];
+    this.smartTileProducts = [];
+    this.selectedLocations = [];
+    this.categoryTitleInput = '';
+    this.selectedCategoryTitle = '';
     this.widgetImagePreviewIndex = null;
     this.widgetImagePreview = null;
   }
-  //Design ends here
 
-  //Add widgets starts here
   openWidgets(template: TemplateRef<any>) {
     this.widgetsRef = this.BsModalService.show(template, {
       class: 'modal-xl modal-dialog-centered',
@@ -790,7 +860,6 @@ export class HomeComponent implements OnInit {
       },
     });
   }
-  //Add widgets ends here
 
   getHomeWidgets() {
     this.HomeWidgetsService.homeWidgets().subscribe({
@@ -843,27 +912,56 @@ export class HomeComponent implements OnInit {
   }
 
   mediaTriggered(event: any) {
-    this.widgetImages[this.widgetImagePreviewIndex] = {
-      ...this.widgetImagePreview,
-      url: event,
-    };
-    this.widgetImagePreview = this.widgetImages[this.widgetImagePreviewIndex];
-    this.widgetImagePreviewIndex = null;
-    this.widgetImagePreview = null;
-    this.ChangeDetectorRef.markForCheck();
+    if (this.widgetImagePreviewIndex !== null && this.widgetImagePreviewIndex >= 0) {
+      this.widgetImages[this.widgetImagePreviewIndex] = {
+        ...this.widgetImagePreview,
+        url: event,
+      };
+      this.widgetImagePreview = this.widgetImages[this.widgetImagePreviewIndex];
+      this.widgetImagePreviewIndex = null;
+      this.widgetImagePreview = null;
+      this.ChangeDetectorRef.markForCheck();
+    }
   }
 
   addMediaTriggered(event: any) {
-    this.widgetImages.push({ url: event, title: '', redirection: '' });
+    // Check for duplicates before adding
+    const isDuplicate = this.widgetImages.some(img =>
+      img.url?._id === event._id || img.url?.path === event.path
+    );
+
+    if (isDuplicate) {
+      this.Toast.error('This image has already been added');
+      return;
+    }
+
+    const isCategorywise = ['categorywise-product-show'].includes(this.widgetDetails?.widgetType);
+    if (isCategorywise && !this.selectedCategoryTitle) {
+      this.Toast.error('Please add/select a Category Title first');
+      return;
+    }
+    const categoryTitles = this.getCategoryTitles();
+    const stepNumber = isCategorywise
+      ? Math.max(categoryTitles.indexOf(this.selectedCategoryTitle), 0) + 1
+      : null;
+    this.widgetImages.push({
+      url: event,
+      title: '',
+      redirection: '',
+      stepTitle: isCategorywise ? this.selectedCategoryTitle : '',
+      stepNumber: isCategorywise ? stepNumber : null
+    });
     this.previewDetails = '';
     this.ChangeDetectorRef.markForCheck();
   }
 
   addWidgetDetails() {
-    this.widgetImages[this.widgetImagePreviewIndex] = {
-      ...this.widgetImages[this.widgetImagePreviewIndex],
-      ...this.widgetForm.value,
-    };
+    if (this.widgetImagePreviewIndex !== null && this.widgetImagePreviewIndex >= 0) {
+      this.widgetImages[this.widgetImagePreviewIndex] = {
+        ...this.widgetImages[this.widgetImagePreviewIndex],
+        ...this.widgetForm.value,
+      };
+    }
   }
 
   deleteWidgetImage(index: number, event: Event): void {
@@ -876,11 +974,65 @@ export class HomeComponent implements OnInit {
   getWidgetImagePreview(index: number) {
     this.widgetImagePreviewIndex = index;
     this.widgetImagePreview = this.widgetImages[index];
+    if (['categorywise-product-show'].includes(this.widgetDetails?.widgetType) && this.widgetImagePreview?.stepTitle) {
+      this.selectedCategoryTitle = this.widgetImagePreview?.stepTitle;
+    }
     this.previewDetails = this.widgetImagePreview.url
       ? this.widgetImagePreview.url?.path
       : '';
     this.ChangeDetectorRef.markForCheck();
     this.widgetForm.patchValue(this.widgetImagePreview);
+  }
+
+  getCategoryTitles(): Array<string> {
+    const titles = this.widgetImages
+      .map((item: any) => (item?.stepTitle || '').trim())
+      .filter((title: string) => !!title);
+    return [...new Set(titles)];
+  }
+
+  addCategoryTitle() {
+    const title = (this.categoryTitleInput || '').trim();
+    if (!title) return;
+
+    // Check if category title already exists
+    const existingTitles = this.getCategoryTitles();
+    if (existingTitles.includes(title)) {
+      this.Toast.error('Category title already exists');
+      return;
+    }
+
+    this.selectedCategoryTitle = title;
+    this.categoryTitleInput = '';
+    this.ChangeDetectorRef.markForCheck();
+  }
+
+  selectCategoryTitle(title: string) {
+    this.selectedCategoryTitle = title;
+    this.widgetImagePreviewIndex = null;
+    this.widgetImagePreview = null;
+    this.ChangeDetectorRef.markForCheck();
+  }
+
+  getCategoryImageItems(): Array<any> {
+    if (!['categorywise-product-show'].includes(this.widgetDetails?.widgetType)) {
+      return this.widgetImages;
+    }
+
+    if (!this.selectedCategoryTitle) {
+      return [];
+    }
+
+    return this.widgetImages
+      .filter((image: any) => (image?.stepTitle || '').trim() === this.selectedCategoryTitle);
+  }
+
+
+  openCategoryImage(image: any) {
+    const index = this.widgetImages.indexOf(image);
+    if (index >= 0) {
+      this.getWidgetImagePreview(index);
+    }
   }
 
   productMediaTriggered(event: any, type: string) {
@@ -889,8 +1041,16 @@ export class HomeComponent implements OnInit {
       : this.productForm.get('thumbnail')?.setValue(event?._id);
   }
 
-  //Update widgets starts here
   openUpdate(template: TemplateRef<any>, widget: any) {
+    // Reset arrays before opening update
+    this.widgetImages = [];
+    this.videoLinks = [];
+    this.keyPoints = [];
+    this.widgetBlogs = [];
+    this.widgetTestimonials = [];
+    this.smartTileProducts = [];
+    this.selectedLocations = [];
+
     this.updateRef = this.BsModalService.show(template, {
       class: 'modal-xl modal-dialog-centered',
       ignoreBackdropClick: true,
@@ -900,7 +1060,16 @@ export class HomeComponent implements OnInit {
 
   closeUpdate() {
     this.updateRef?.hide();
+    // Reset all arrays
     this.widgetImages = [];
+    this.videoLinks = [];
+    this.keyPoints = [];
+    this.widgetBlogs = [];
+    this.widgetTestimonials = [];
+    this.smartTileProducts = [];
+    this.selectedLocations = [];
+    this.categoryTitleInput = '';
+    this.selectedCategoryTitle = '';
     this.widgetImagePreviewIndex = null;
     this.widgetImagePreview = null;
     this.form.reset();
@@ -911,7 +1080,6 @@ export class HomeComponent implements OnInit {
     this.brands = [];
     this.categories = [];
     this.collections = [];
-    this.smartTileProducts = [];
     this.saleForm.reset();
     this.saleForm.get('saleButtonVisibility')?.setValue(true);
   }
@@ -944,6 +1112,28 @@ export class HomeComponent implements OnInit {
         widgetImages.push({ ...widgetImage, media: widgetImage?.url?._id });
       }
       widgetPayload['widgetImages'] = widgetImages;
+
+      // Send widgetData for categorywise-product-show only
+      if (['categorywise-product-show'].includes(this.widgetDetails?.widgetType)) {
+        const groups = new Map();
+        for (let item of widgetImages) {
+          const key = item.stepTitle || '';
+          if (!groups.has(key)) {
+            groups.set(key, { stepTitle: key, items: [] });
+          }
+          groups.get(key).items.push({
+            title: item?.title,
+            description: item?.description,
+            button: item?.button,
+            redirection: item?.redirection,
+            customStyles: item?.customStyles,
+            media: item?.media,
+            thumbnail: item?.thumbnail,
+            categoryId: item?.categoryId
+          });
+        }
+        widgetPayload['widgetData'] = Array.from(groups.values());
+      }
 
       // Add videoLinks to payload for vibrant-video-banner
       if (this.widgetDetails?.widgetType === 'vibrant-video-banner') {
@@ -1005,7 +1195,6 @@ export class HomeComponent implements OnInit {
       widgetPayload['widgetImages'] = widgetImages;
     }
 
-
     type == 'styles' ? (widgetPayload['styles'] = this.designForm.value) : null;
 
     if (['motion-canvas', 'aurora-grid', 'aurora-slider', 'locations-slider'].includes(this.widgetDetails?.widgetType)) {
@@ -1032,10 +1221,17 @@ export class HomeComponent implements OnInit {
           this.getHomeWidgets();
           this.count++;
           this.isDraft = true;
+
+          // Reset all form data and arrays
           this.tileProductsInput.setValue('');
           this.tileProducts = [];
           this.smartTileProducts = [];
           this.widgetImages = [];
+          this.videoLinks = [];
+          this.keyPoints = [];
+          this.widgetBlogs = [];
+          this.widgetTestimonials = [];
+          this.selectedLocations = [];
           this.screenLoad++;
           this.widgetImagePreviewIndex = null;
           this.widgetImagePreview = null;
@@ -1081,9 +1277,7 @@ export class HomeComponent implements OnInit {
       },
     });
   }
-  //Update widgets ends here
 
-  //Delete widgets starts here
   openConfirmation(template: TemplateRef<any>, widget: any) {
     this.confirmedWidget = widget;
     this.confirmRef = this.BsModalService.show(template, {
@@ -1119,9 +1313,7 @@ export class HomeComponent implements OnInit {
       }
     );
   }
-  //Delete widgets ends here
 
-  //Duplicate widgtes starts here
   openDuplication(template: TemplateRef<any>, widget: any) {
     this.duplicatedWidget = widget;
     this.duplicateRef = this.BsModalService.show(template, {
@@ -1158,10 +1350,9 @@ export class HomeComponent implements OnInit {
       },
     });
   }
-  //Duplicate widgets ends here
 
   drop(event: CdkDragDrop<string[]>) {
-    const existingWidgets = [...this.widgetItems]; // create a copy of the array
+    const existingWidgets = [...this.widgetItems];
     moveItemInArray(this.widgetItems, event.previousIndex, event.currentIndex);
 
     const isArraySuffled = JSON.stringify(this.widgetItems) !== JSON.stringify(existingWidgets);
@@ -1176,7 +1367,6 @@ export class HomeComponent implements OnInit {
     }
   }
 
-  //Title image
   onTitleImageTriggered(event: any) {
     this.titleThumbnailDetails = event.path;
     this.form.get('titleImage')?.setValue(event?._id);
@@ -1186,9 +1376,7 @@ export class HomeComponent implements OnInit {
     this.titleThumbnailDetails = '';
     this.form.get('titleImage')?.setValue(null);
   }
-  //Title image
 
-  //hyperlink hero
   onHyperlinkHeroTriggered(event: any) {
     this.hyperlinkheroForm.get('hyperLinkThumbnail')?.setValue(event?._id);
     this.hyperLinkHeroThumbnail = event.path;
@@ -1198,15 +1386,6 @@ export class HomeComponent implements OnInit {
     this.hyperlinkheroForm.get('hyperLinkThumbnail')?.setValue(null);
     this.hyperLinkHeroThumbnail = '';
   }
-  //hyperlink hero
-
-  // searchWidgets(event: any) {
-  //   this.homeWidgets = this.widgets.filter((widget: any) =>
-  //     widget.title
-  //       .toLowerCase()
-  //       .startsWith(this.homeWidgetKeyword?.value.toLowerCase())
-  //   );
-  // }
 
   searchWidgets(event: any) {
     let filteredWidgets = this.widgets.filter((widget: any) =>
@@ -1214,46 +1393,21 @@ export class HomeComponent implements OnInit {
         .toLowerCase()
         .startsWith(this.homeWidgetKeyword?.value.toLowerCase())
     );
-
-    // Apply mme-01 filter if applicable
-    // if (environment.clientId === 'mme-01') {
-    //   filteredWidgets = filteredWidgets.filter(widget => 
-    //     defaultWidgets.includes(widget.type)
-    //   );
-    // }
-
     this.homeWidgets = filteredWidgets;
   }
 
   ngOnInit(): void {
-    console.log(environment, "defaultWidgets");
     this.homeWidgets = this.widgets;
-
-    // if (environment.clientId === 'mme-01') {
-    //   this.homeWidgets = this.homeWidgets.filter(widget => 
-    //     defaultWidgets.includes(widget.type)
-    //   );
-    // }
 
     const customWidgets = this.homeWidgets.filter((w: any) => w.type.startsWith('custom-'));
     const regularWidgets = this.homeWidgets.filter((w: any) => !w.type.startsWith('custom-'));
 
-    // Separate custom widgets from regular widgets
-    // const customWidgets = this.widgets.filter((w: any) => w.type.startsWith('custom-'));
-    // const regularWidgets = this.widgets.filter((w: any) => !w.type.startsWith('custom-'));
-
-    // Sort only regular widgets alphabetically
     regularWidgets.sort((a: any, b: any) => {
-      if (a.title < b.title) {
-        return -1;
-      }
-      if (a.title > b.title) {
-        return 1;
-      }
+      if (a.title < b.title) return -1;
+      if (a.title > b.title) return 1;
       return 0;
     });
 
-    // Combine: sorted regular widgets first, then custom widgets at the end
     this.widgets = [...regularWidgets, ...customWidgets];
 
     this.hyperlinkheroForm = new FormGroup({
@@ -1300,32 +1454,14 @@ export class HomeComponent implements OnInit {
       isReversed: new FormControl(false),
       textTwirlDescription: new FormControl(''),
       gridsPerCount: new FormGroup({
-        mobile: new FormControl(2, [
-          Validators.required,
-          Validators.pattern('^[0-9]*$'),
-        ]),
-        tablet: new FormControl(3, [
-          Validators.required,
-          Validators.pattern('^[0-9]*$'),
-        ]),
-        desktop: new FormControl(4, [
-          Validators.required,
-          Validators.pattern('^[0-9]*$'),
-        ]),
+        mobile: new FormControl(2, [Validators.required, Validators.pattern('^[0-9]*$')]),
+        tablet: new FormControl(3, [Validators.required, Validators.pattern('^[0-9]*$')]),
+        desktop: new FormControl(4, [Validators.required, Validators.pattern('^[0-9]*$')]),
       }),
       spacing: new FormGroup({
-        mobile: new FormControl(2, [
-          Validators.required,
-          Validators.pattern('^[0-9]*$'),
-        ]),
-        tablet: new FormControl(3, [
-          Validators.required,
-          Validators.pattern('^[0-9]*$'),
-        ]),
-        desktop: new FormControl(4, [
-          Validators.required,
-          Validators.pattern('^[0-9]*$'),
-        ]),
+        mobile: new FormControl(2, [Validators.required, Validators.pattern('^[0-9]*$')]),
+        tablet: new FormControl(3, [Validators.required, Validators.pattern('^[0-9]*$')]),
+        desktop: new FormControl(4, [Validators.required, Validators.pattern('^[0-9]*$')]),
       }),
       pagination: new FormGroup({
         desktop: new FormControl(true),
@@ -1335,13 +1471,10 @@ export class HomeComponent implements OnInit {
         desktop: new FormControl(true),
         mobile: new FormControl(true),
       }),
-
       isAutoScroll: new FormControl(false),
-
       isTimeBoundWidget: new FormControl(false),
       widgetStartTime: new FormControl(''),
       widgetEndTime: new FormControl(''),
-
       sliderButtonPosition: new FormControl('relative'),
       paginationPosition: new FormControl('relative'),
       sortOptions: new FormControl('popularity'),
@@ -1352,18 +1485,9 @@ export class HomeComponent implements OnInit {
       buttonText: new FormControl(''),
       buttonLink: new FormControl(''),
       slidesPerCount: new FormGroup({
-        mobile: new FormControl(2, [
-          Validators.required,
-          Validators.pattern('^[0-9]*$'),
-        ]),
-        tablet: new FormControl(3, [
-          Validators.required,
-          Validators.pattern('^[0-9]*$'),
-        ]),
-        desktop: new FormControl(4, [
-          Validators.required,
-          Validators.pattern('^[0-9]*$'),
-        ]),
+        mobile: new FormControl(2, [Validators.required, Validators.pattern('^[0-9]*$')]),
+        tablet: new FormControl(3, [Validators.required, Validators.pattern('^[0-9]*$')]),
+        desktop: new FormControl(4, [Validators.required, Validators.pattern('^[0-9]*$')]),
       }),
     });
 
@@ -1450,7 +1574,6 @@ export class HomeComponent implements OnInit {
 
   customSearchFn = (term: string, item: any) => {
     term = term.toLowerCase();
-    // Search in both name and SKU
     return item.searchText.includes(term);
   }
 
@@ -1458,15 +1581,13 @@ export class HomeComponent implements OnInit {
     this.ProductService.getActiveProduct().subscribe({
       next: (res: any) => {
         if (res?.errorCode == 0) {
-          // Modify the products array to include a searchText and displayText property
           this.products = res?.result.map((product: any) => ({
             ...product,
-            slug: product.slug || product._id, // Fallback to ID if slug doesn't exist
-            searchText: `${product.name} ${product.sku}`.toLowerCase(), // Combined search text
-            displayText: `${product.name} (${product.sku})` // Combined display text
+            slug: product.slug || product._id,
+            searchText: `${product.name} ${product.sku}`.toLowerCase(),
+            displayText: `${product.name} (${product.sku})`
           }));
 
-          // If there's a selected product, update the form
           if (this.widgetDetails?.redirection) {
             const productSlug = this.widgetDetails.redirection.split('/p/')[1];
             if (productSlug) {
@@ -1586,12 +1707,11 @@ export class HomeComponent implements OnInit {
         this.designForm.get('isAnimation')?.setValue(event.toggleState);
         if (event.toggleState == false) {
           this.designForm.get('animationType')?.setValue('none');
-          break
+          break;
         }
     }
   }
 
-  // Video link management methods
   openVideoLinkModal(template: TemplateRef<any>, index?: number) {
     this.videoLinkForm.reset();
     this.editVideoLinkIndex = null;
@@ -1616,11 +1736,9 @@ export class HomeComponent implements OnInit {
   saveVideoLink() {
     if (this.videoLinkForm.valid) {
       if (this.editVideoLinkIndex !== null) {
-        // Edit existing link
         this.videoLinks[this.editVideoLinkIndex] = this.videoLinkForm.value;
         this.Toast.success('Video link updated successfully');
       } else {
-        // Add new link
         this.videoLinks.push(this.videoLinkForm.value);
         this.Toast.success('Video link added successfully');
       }
@@ -1654,9 +1772,9 @@ export class HomeComponent implements OnInit {
     this.deleteVideoLinkRef?.hide();
     this.deleteVideoLinkIndex = null;
   }
+
   widgetItemsChange(widgetItems: Array<WidgetItem>) {
     this.widgetImages = widgetItems;
     this.ChangeDetectorRef.markForCheck();
   }
-
 }

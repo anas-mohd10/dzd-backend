@@ -103,6 +103,13 @@ export class CatalogComponent implements OnInit, OnDestroy {
         'The following widget can be used to show images within a particular category.The widget contains images.',
     },
     {
+      title: 'Categorywise Product Show',
+      type: 'categorywise-product-show',
+      icon: 'assets/widgets/image-slider.png',
+      description:
+        'Same as Image Slider, with an additional Category Title (tabs). Use Step Title to group images under each category title.',
+    },
+    {
       title: 'Video',
       type: 'video',
       icon: 'assets/widgets/video.png',
@@ -306,6 +313,7 @@ export class CatalogComponent implements OnInit, OnDestroy {
   widgetDetails: any;
   widgetImageTypes: Array<any> = [
     'image-slider',
+    'categorywise-product-show',
     'radiant-rectangles',
     'quad-square',
     'prime-plates',
@@ -331,6 +339,8 @@ export class CatalogComponent implements OnInit, OnDestroy {
     'key-points-grid',
   ];
   widgetImages: Array<any> = [];
+  categoryTitleInput: string = '';
+  selectedCategoryTitle: string = '';
   sortOptions: Array<any> = [
     { key: 'Popularity', value: 'popularity' },
     { key: 'Newest', value: 'newest' },
@@ -851,6 +861,9 @@ export class CatalogComponent implements OnInit, OnDestroy {
                 button: widgetImage?.button,
                 redirection: widgetImage?.redirection,
               });
+            }
+            if (this.widgetDetails?.widgetType === 'categorywise-product-show') {
+              this.selectedCategoryTitle = this.getCategoryTitles()?.[0] || '';
             }
             this.widgetImagePreview =
               this.widgetImages?.length > 0 ? this.widgetImages[0] : null;
@@ -1395,6 +1408,9 @@ export class CatalogComponent implements OnInit, OnDestroy {
                 customStyles: widgetImage?.customStyles,
               });
             }
+            if (this.widgetDetails?.widgetType === 'categorywise-product-show') {
+              this.selectedCategoryTitle = this.getCategoryTitles()?.[0] || '';
+            }
             this.widgetImagePreview =
               this.widgetImages?.length > 0 ? this.widgetImages[0] : null;
             this.widgetImagePreviewIndex = 0;
@@ -1543,6 +1559,8 @@ export class CatalogComponent implements OnInit, OnDestroy {
   closeWidgetUpdate() {
     this.widgetDetailsRef?.hide();
     this.widgetImages = [];
+    this.categoryTitleInput = '';
+    this.selectedCategoryTitle = '';
     this.widgetImagePreviewIndex = null;
     this.widgetImagePreview = null;
     this.form.reset();
@@ -1815,7 +1833,22 @@ export class CatalogComponent implements OnInit, OnDestroy {
   }
 
   addMediaTriggered(event: any) {
-    this.widgetImages.push({ url: event, title: '', redirection: '' });
+    const isCategorywise = this.widgetDetails?.widgetType === 'categorywise-product-show';
+    if (isCategorywise && !this.selectedCategoryTitle) {
+      this.Toast.error('Please add/select a Category Title first');
+      return;
+    }
+    const categoryTitles = this.getCategoryTitles();
+    const stepNumber = isCategorywise
+      ? Math.max(categoryTitles.indexOf(this.selectedCategoryTitle), 0) + 1
+      : null;
+    this.widgetImages.push({
+      url: event,
+      title: '',
+      redirection: '',
+      stepTitle: isCategorywise ? this.selectedCategoryTitle : '',
+      stepNumber: isCategorywise ? stepNumber : null
+    });
     this.previewDetails = '';
     this.ChangeDetectorRef.markForCheck();
   }
@@ -1828,11 +1861,56 @@ export class CatalogComponent implements OnInit, OnDestroy {
   getWidgetImagePreview(index: number) {
     this.widgetImagePreviewIndex = index;
     this.widgetImagePreview = this.widgetImages[index];
+    if (this.widgetDetails?.widgetType === 'categorywise-product-show' && this.widgetImagePreview?.stepTitle) {
+      this.selectedCategoryTitle = this.widgetImagePreview?.stepTitle;
+    }
     this.previewDetails = this.widgetImagePreview.url
       ? this.widgetImagePreview.url?.path
       : '';
     this.widgetForm.patchValue(this.widgetImagePreview);
     this.ChangeDetectorRef.markForCheck();
+  }
+
+  getCategoryTitles(): Array<string> {
+    const titles = this.widgetImages
+      .map((item: any) => (item?.stepTitle || '').trim())
+      .filter((title: string) => !!title);
+    return [...new Set(titles)];
+  }
+
+  addCategoryTitle() {
+    const title = (this.categoryTitleInput || '').trim();
+    if (!title) return;
+    this.selectedCategoryTitle = title;
+    this.categoryTitleInput = '';
+    this.ChangeDetectorRef.markForCheck();
+  }
+
+  selectCategoryTitle(title: string) {
+    this.selectedCategoryTitle = title;
+    this.widgetImagePreviewIndex = null;
+    this.widgetImagePreview = null;
+    this.ChangeDetectorRef.markForCheck();
+  }
+
+  getCategoryImageItems(): Array<any> {
+    if (this.widgetDetails?.widgetType !== 'categorywise-product-show') {
+      return this.widgetImages;
+    }
+
+    if (!this.selectedCategoryTitle) {
+      return [];
+    }
+
+    return this.widgetImages
+      .filter((image: any) => (image?.stepTitle || '').trim() === this.selectedCategoryTitle);
+  }
+
+  openCategoryImage(image: any) {
+    const index = this.widgetImages.indexOf(image);
+    if (index >= 0) {
+      this.getWidgetImagePreview(index);
+    }
   }
 
   drop(event: CdkDragDrop<string[]>) {
