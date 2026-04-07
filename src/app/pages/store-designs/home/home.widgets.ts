@@ -50,6 +50,11 @@ export const widgets: Array<WidgetProps> = [
         icon: 'assets/widgets/image-slider.png',
         description: 'The following widget can be used to show images within a particular category.The widget contains images.',
     }, {
+        title: 'Categorywise Product Show',
+        type: 'categorywise-product-show',
+        icon: 'assets/widgets/image-slider.png',
+        description: 'Same as Image Slider, with an additional Category Title (tabs). Use Step Title to group images under each category title.',
+    }, {
         title: 'Video',
         type: 'video',
         icon: 'assets/widgets/video.png',
