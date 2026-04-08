@@ -551,6 +551,25 @@
                             In this section you can write content and upload images from your
                             computer or can use from variety of images from web.
                         </p>
+
+                        <div *ngIf="widgetDetails?.widgetType == 'categorywise-product-show'"
+                            class="mb-3 p-3 rounded border border-secondary">
+                            <label class="form-label mb-2">Category Titles</label>
+                            <div class="d-flex gap-2 mb-3">
+                                <input type="text" class="form-control" placeholder="Enter category title"
+                                    [(ngModel)]="categoryTitleInput" [ngModelOptions]="{standalone: true}">
+                                <button class="btn btn-primary" type="button" (click)="addCategoryTitle()">Add</button>
+                            </div>
+                            <div class="d-flex flex-wrap gap-2">
+                                <button type="button" class="btn"
+                                    *ngFor="let title of getCategoryTitles()"
+                                    [ngClass]="selectedCategoryTitle == title ? 'btn-primary' : 'btn-outline-secondary'"
+                                    (click)="selectCategoryTitle(title)">
+                                    {{ title }}
+                                </button>
+                            </div>
+                        </div>
+
                         <div *ngIf="widgetDetails?.widgetType == 'text-twirl'">
                             <div class="form-group mb-3">
                                 <label for="textTwirlTitle" class="fs-6 mb-3">Title</label>
