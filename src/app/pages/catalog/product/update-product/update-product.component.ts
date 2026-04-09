@@ -1554,6 +1554,8 @@ export class UpdateProductComponent implements OnInit {
       deliveryDays: new FormControl(0),
       ean: new FormControl(''),
       mpn: new FormControl(''),
+      weight: new FormControl(''),
+      cubicVolume: new FormControl(''),
       isCompareEnabled: new FormControl('false'),
     });
 

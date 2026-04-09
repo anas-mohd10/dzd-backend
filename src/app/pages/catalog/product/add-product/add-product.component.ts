@@ -1123,6 +1123,8 @@ export class AddProductComponent implements OnInit {
       codCharges: new FormControl(0),
       ean: new FormControl(''),
       mpn: new FormControl(''),
+      weight: new FormControl(''),
+      cubicVolume: new FormControl(''),
     });
 
     this.BrandService.getActiveBrands().subscribe({
