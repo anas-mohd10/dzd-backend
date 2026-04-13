@@ -49,6 +49,14 @@ export class ShippingChargeComponent implements OnInit {
         charge: null
       };
 
+  // Weight-based pricing ranges (kg)
+  weightRanges: Array<any> = [];
+  newWeightRange: any = { minWeight: null, maxWeight: null, charge: null };
+
+  // Volume-based pricing ranges (effective kg after dimensional weight factor)
+  volumeRanges: Array<any> = [];
+  newVolumeRange: any = { minVolume: null, maxVolume: null, charge: null };
+
   constructor(
     private BsModalService: BsModalService,
     private HotToastService: HotToastService,
@@ -159,6 +167,8 @@ export class ShippingChargeComponent implements OnInit {
       freeShippingThreshold: new FormControl('499', [
         Validators.pattern(/^\d+$/),
       ]),
+      weightFlatCharge: new FormControl('0', [Validators.pattern(/^\d+\.?\d*$/)]),
+      volumeFlatCharge: new FormControl('0', [Validators.pattern(/^\d+\.?\d*$/)]),
       // Remove these fields as we'll use freeAbove and orderAmount instead
       // minimumOrderAmount: new FormControl('', [
       //   Validators.pattern(/^\d+$/),
@@ -252,6 +262,10 @@ export class ShippingChargeComponent implements OnInit {
       methodData.chargeRanges = this.chargeRanges;
     }
 
+    // Always include weight/volume ranges (empty arrays are safe defaults)
+    methodData.weightRanges = this.weightRanges;
+    methodData.volumeRanges = this.volumeRanges;
+
     // For threshold shipping, map the fields for API compatibility
     if (shippingType === 'threshold') {
       // We're using orderAmount as minimumOrderAmount and freeAbove as fixedCharge
@@ -333,6 +347,11 @@ export class ShippingChargeComponent implements OnInit {
               this.chargeRanges = [];
             }
 
+            // Set weight ranges if available
+            this.weightRanges = res?.result?.weightRanges?.length > 0 ? [...res.result.weightRanges] : [];
+            // Set volume ranges if available
+            this.volumeRanges = res?.result?.volumeRanges?.length > 0 ? [...res.result.volumeRanges] : [];
+
             this.methodForm.patchValue(res?.result);
             this.ChangeDetectorRef.markForCheck();
           }
@@ -346,18 +365,20 @@ export class ShippingChargeComponent implements OnInit {
     this.methodIcon = '';
     this.isMethodUpdate = false;
     this.chargeRanges = [];
-    this.newChargeRange = {
-      minAmount: null,
-      maxAmount: null,
-      charge: null
-    };
+    this.newChargeRange = { minAmount: null, maxAmount: null, charge: null };
+    this.weightRanges = [];
+    this.newWeightRange = { minWeight: null, maxWeight: null, charge: null };
+    this.volumeRanges = [];
+    this.newVolumeRange = { minVolume: null, maxVolume: null, charge: null };
     this.methodRef?.hide();
     this.methodForm.reset();
     this.methodForm.patchValue({
       amountType: 'flat',
       applyOn: 'total',
       isActive: 'true',
-      shippingType: 'standard'
+      shippingType: 'standard',
+      weightFlatCharge: '0',
+      volumeFlatCharge: '0',
     });
   }
   deleteMethod(methodId: string) {
@@ -466,6 +487,44 @@ export class ShippingChargeComponent implements OnInit {
 
   removeChargeRange(index: number) {
     this.chargeRanges.splice(index, 1);
+    this.ChangeDetectorRef.markForCheck();
+  }
+
+  addWeightRange() {
+    if (this.newWeightRange.minWeight === null || this.newWeightRange.maxWeight === null || this.newWeightRange.charge === null) {
+      this.HotToastService.error('All weight range fields are required');
+      return;
+    }
+    if (Number(this.newWeightRange.minWeight) >= Number(this.newWeightRange.maxWeight)) {
+      this.HotToastService.error('Min weight must be less than max weight');
+      return;
+    }
+    this.weightRanges.push({ ...this.newWeightRange });
+    this.newWeightRange = { minWeight: null, maxWeight: null, charge: null };
+    this.ChangeDetectorRef.markForCheck();
+  }
+
+  removeWeightRange(index: number) {
+    this.weightRanges.splice(index, 1);
+    this.ChangeDetectorRef.markForCheck();
+  }
+
+  addVolumeRange() {
+    if (this.newVolumeRange.minVolume === null || this.newVolumeRange.maxVolume === null || this.newVolumeRange.charge === null) {
+      this.HotToastService.error('All volume range fields are required');
+      return;
+    }
+    if (Number(this.newVolumeRange.minVolume) >= Number(this.newVolumeRange.maxVolume)) {
+      this.HotToastService.error('Min volume must be less than max volume');
+      return;
+    }
+    this.volumeRanges.push({ ...this.newVolumeRange });
+    this.newVolumeRange = { minVolume: null, maxVolume: null, charge: null };
+    this.ChangeDetectorRef.markForCheck();
+  }
+
+  removeVolumeRange(index: number) {
+    this.volumeRanges.splice(index, 1);
     this.ChangeDetectorRef.markForCheck();
   }
 

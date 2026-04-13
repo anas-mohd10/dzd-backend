@@ -66,6 +66,32 @@ export class ShippingComponent implements OnInit {
   ]
   isShippingGateway: FormControl = new FormControl(false)
 
+  calculationBasisOptions = [
+    { label: 'Location Only (default)', value: 'location_only' },
+    { label: 'Weight Only',             value: 'weight_only' },
+    { label: 'Volume Only',             value: 'volume_only' },
+    { label: 'Location + Weight',       value: 'location+weight' },
+    { label: 'Location + Volume',       value: 'location+volume' },
+    { label: 'Weight + Volume',         value: 'weight+volume' },
+    { label: 'All Dimensions',          value: 'all' },
+  ]
+
+  resolutionRuleOptions = [
+    { label: 'Highest charge (recommended)', value: 'highest' },
+    { label: 'Lowest charge',               value: 'lowest' },
+    { label: 'Average',                     value: 'average' },
+  ]
+
+  get showResolutionRule(): boolean {
+    const v = this.form?.get('calculationBasis')?.value
+    return v && v !== 'location_only' && v !== 'weight_only' && v !== 'volume_only'
+  }
+
+  get showDimFactor(): boolean {
+    const v = this.form?.get('calculationBasis')?.value
+    return ['volume_only', 'location+volume', 'weight+volume', 'all'].includes(v)
+  }
+
   constructor(
     private ShippingService: ShippingService,
     private LocationService: LocationService,
@@ -149,7 +175,10 @@ export class ShippingComponent implements OnInit {
     this.form = new FormGroup({
       cost: new FormControl('', Validators.required),
       amount: new FormControl(499, Validators.pattern("^[0-9]*")),
-      charge: new FormControl(10, Validators.pattern("^[0-9]*"))
+      charge: new FormControl(10, Validators.pattern("^[0-9]*")),
+      calculationBasis: new FormControl('location_only', Validators.required),
+      resolutionRule: new FormControl('highest', Validators.required),
+      dimensionalWeightFactor: new FormControl(5000, Validators.pattern("^[0-9]*")),
     })
 
     this.addressForm = new FormGroup({
