@@ -89,6 +89,41 @@
         </div>
     </div>
 
+    <!-- Calculation Dimensions Card -->
+    <div class="card my-4" [formGroup]="form">
+        <div class="card-body">
+            <div class="d-flex align-items-center justify-content-between mb-4 pb-4 border-bottom border-secondary">
+                <div class="d-flex flex-column gap-2">
+                    <div class="fs-3 fw-bold">Calculation Dimensions</div>
+                    <div class="fs-6 text-muted">Choose which dimensions drive shipping cost and how conflicts are resolved. "Location Only" preserves the default behaviour.</div>
+                </div>
+                <button type="button" class="btn btn-primary" (click)="save()">Save Changes</button>
+            </div>
+            <div class="row">
+                <div class="col-lg-4 form-group mb-3">
+                    <label class="form-label fw-semibold">Calculation Basis</label>
+                    <select formControlName="calculationBasis" class="form-select">
+                        <option *ngFor="let o of calculationBasisOptions" [value]="o.value">{{o.label}}</option>
+                    </select>
+                    <div class="form-text text-muted">Select which dimensions contribute to the shipping charge.</div>
+                </div>
+                <div class="col-lg-4 form-group mb-3" *ngIf="showResolutionRule">
+                    <label class="form-label fw-semibold">Resolution Rule</label>
+                    <select formControlName="resolutionRule" class="form-select">
+                        <option *ngFor="let o of resolutionRuleOptions" [value]="o.value">{{o.label}}</option>
+                    </select>
+                    <div class="form-text text-muted">Determines the winning charge when multiple dimensions are active.</div>
+                </div>
+                <div class="col-lg-4 form-group mb-3" *ngIf="showDimFactor">
+                    <label class="form-label fw-semibold">Dimensional Weight Factor <span class="text-muted fw-normal">(cm³ ÷ kg)</span></label>
+                    <input type="number" class="form-control" formControlName="dimensionalWeightFactor" placeholder="5000" min="1"
+                        [ngClass]="{'is-invalid': formControls['dimensionalWeightFactor'].touched && formControls['dimensionalWeightFactor'].errors}">
+                    <div class="form-text text-muted">Standard: 5000 (air freight). A lower value makes volumetric shipments heavier.</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div class="card">
         <div class="card-body">
             <form (ngSubmit)="saveAddressForm()" [formGroup]="addressForm">

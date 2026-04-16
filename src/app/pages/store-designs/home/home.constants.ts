@@ -14,6 +14,7 @@ export const widgetLocationTypes: Array<string> = [
 
 export const widgetImageTypes: Array<string> = [
     'image-slider',
+    'categorywise-product-show',
     'radiant-rectangles',
     'quad-square',
     'prime-plates',

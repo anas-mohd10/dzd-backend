@@ -392,8 +392,110 @@
 
           </div>
 
+          <!-- Weight-Based Pricing (optional — used when calculationBasis includes weight) -->
+          <div class="mt-4 border-top pt-3">
+            <h6 class="fw-bold mb-1">Weight-Based Pricing <span class="text-muted fw-normal">(optional)</span></h6>
+            <p class="text-muted fs-6 mb-3">Define tiered rates by total cart weight (kg). Leave empty to use the flat per-kg charge below.</p>
+
+            <div class="row mb-3">
+              <div class="col-lg-6 form-group">
+                <label class="form-label">Flat Charge per kg</label>
+                <input type="number" class="form-control" formControlName="weightFlatCharge" placeholder="0" min="0">
+                <div class="form-text text-muted">Applied when no weight range matches, or as a per-kg multiplier.</div>
+              </div>
+            </div>
+
+            <div class="row mb-2 align-items-end">
+              <div class="col-lg-3 form-group">
+                <label class="form-label">Min Weight (kg)</label>
+                <input type="number" class="form-control" [(ngModel)]="newWeightRange.minWeight" [ngModelOptions]="{standalone: true}" placeholder="0" min="0">
+              </div>
+              <div class="col-lg-3 form-group">
+                <label class="form-label">Max Weight (kg)</label>
+                <input type="number" class="form-control" [(ngModel)]="newWeightRange.maxWeight" [ngModelOptions]="{standalone: true}" placeholder="10" min="0">
+              </div>
+              <div class="col-lg-4 form-group">
+                <label class="form-label">Charge</label>
+                <input type="number" class="form-control" [(ngModel)]="newWeightRange.charge" [ngModelOptions]="{standalone: true}" placeholder="50" min="0">
+              </div>
+              <div class="col-lg-2">
+                <button type="button" class="btn btn-primary w-100" (click)="addWeightRange()">+ Add</button>
+              </div>
+            </div>
+
+            <div class="table-responsive" *ngIf="weightRanges.length > 0">
+              <table class="table table-bordered table-sm">
+                <thead class="table-light">
+                  <tr><th>Min (kg)</th><th>Max (kg)</th><th>Charge</th><th></th></tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let r of weightRanges; let i = index">
+                    <td>{{r.minWeight}}</td>
+                    <td>{{r.maxWeight}}</td>
+                    <td>{{r.charge}}</td>
+                    <td><button type="button" class="btn btn-sm btn-danger" (click)="removeWeightRange(i)">Remove</button></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div *ngIf="weightRanges.length === 0" class="alert alert-light border text-muted fs-6">
+              No weight ranges configured. Add ranges above or set the flat per-kg charge.
+            </div>
+          </div>
+
+          <!-- Volume-Based Pricing (optional — used when calculationBasis includes volume) -->
+          <div class="mt-4 border-top pt-3">
+            <h6 class="fw-bold mb-1">Volume-Based Pricing <span class="text-muted fw-normal">(optional)</span></h6>
+            <p class="text-muted fs-6 mb-3">Ranges use <strong>effective kg</strong> = cm³ ÷ dimensional weight factor (configured in Shipping Settings). Leave empty to use the flat per-effective-kg charge below.</p>
+
+            <div class="row mb-3">
+              <div class="col-lg-6 form-group">
+                <label class="form-label">Flat Charge per effective kg (volume)</label>
+                <input type="number" class="form-control" formControlName="volumeFlatCharge" placeholder="0" min="0">
+                <div class="form-text text-muted">Applied when no volume range matches, or as a per-effective-kg multiplier.</div>
+              </div>
+            </div>
+
+            <div class="row mb-2 align-items-end">
+              <div class="col-lg-3 form-group">
+                <label class="form-label">Min (eff. kg)</label>
+                <input type="number" class="form-control" [(ngModel)]="newVolumeRange.minVolume" [ngModelOptions]="{standalone: true}" placeholder="0" min="0">
+              </div>
+              <div class="col-lg-3 form-group">
+                <label class="form-label">Max (eff. kg)</label>
+                <input type="number" class="form-control" [(ngModel)]="newVolumeRange.maxVolume" [ngModelOptions]="{standalone: true}" placeholder="10" min="0">
+              </div>
+              <div class="col-lg-4 form-group">
+                <label class="form-label">Charge</label>
+                <input type="number" class="form-control" [(ngModel)]="newVolumeRange.charge" [ngModelOptions]="{standalone: true}" placeholder="50" min="0">
+              </div>
+              <div class="col-lg-2">
+                <button type="button" class="btn btn-primary w-100" (click)="addVolumeRange()">+ Add</button>
+              </div>
+            </div>
+
+            <div class="table-responsive" *ngIf="volumeRanges.length > 0">
+              <table class="table table-bordered table-sm">
+                <thead class="table-light">
+                  <tr><th>Min (eff. kg)</th><th>Max (eff. kg)</th><th>Charge</th><th></th></tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let r of volumeRanges; let i = index">
+                    <td>{{r.minVolume}}</td>
+                    <td>{{r.maxVolume}}</td>
+                    <td>{{r.charge}}</td>
+                    <td><button type="button" class="btn btn-sm btn-danger" (click)="removeVolumeRange(i)">Remove</button></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div *ngIf="volumeRanges.length === 0" class="alert alert-light border text-muted fs-6">
+              No volume ranges configured. Add ranges above or set the flat per-effective-kg charge.
+            </div>
+          </div>
+
           <!-- Common fields for all shipping types - always visible -->
-          <div class="row">
+          <div class="row mt-4">
             <div class="col-lg-6 form-group mb-3">
               <label for="applyOn" class="form-label">Apply On</label>
               <select formControlName="applyOn" id="applyOn" class="form-select">

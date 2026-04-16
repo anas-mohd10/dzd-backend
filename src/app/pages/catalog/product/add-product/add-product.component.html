@@ -294,6 +294,16 @@
                         formControlName="mpn" />
                     </div>
                     <div class="mb-3 form-group">
+                      <label class="fs-6 mb-3">Weight</label>
+                      <input type="text" class="form-control fs-6" placeholder="100kg"
+                        formControlName="weight" />
+                    </div>
+                    <div class="mb-3 form-group">
+                      <label class="fs-6 mb-3">Cubic Volume</label>
+                      <input type="text" class="form-control fs-6" placeholder=""
+                        formControlName="cubicVolume" />
+                    </div>
+                    <div class="mb-3 form-group">
                       <label class="fs-6 mb-3">Boost Score</label>
                       <input type="text" class="form-control fs-6" formControlName="boostScore"
                         [ngClass]="{ 'is-invalid': (formControls.boostScore.touched || isSubmitted) && formControls.boostScore.errors?.pattern }" />
