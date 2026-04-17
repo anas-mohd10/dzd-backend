@@ -169,6 +169,10 @@ export class ShippingChargeComponent implements OnInit {
       ]),
       weightFlatCharge: new FormControl('0', [Validators.pattern(/^\d+\.?\d*$/)]),
       volumeFlatCharge: new FormControl('0', [Validators.pattern(/^\d+\.?\d*$/)]),
+      // Per-waybill surcharges (e.g. Safexpress: waybill ₹300, value ₹200, fuel 10%)
+      waybillCharge:        new FormControl('0', [Validators.pattern(/^\d+\.?\d*$/)]),
+      valueSurcharge:       new FormControl('0', [Validators.pattern(/^\d+\.?\d*$/)]),
+      fuelSurchargePercent: new FormControl('0', [Validators.pattern(/^\d+\.?\d*$/)]),
       // Remove these fields as we'll use freeAbove and orderAmount instead
       // minimumOrderAmount: new FormControl('', [
       //   Validators.pattern(/^\d+$/),
@@ -379,6 +383,9 @@ export class ShippingChargeComponent implements OnInit {
       shippingType: 'standard',
       weightFlatCharge: '0',
       volumeFlatCharge: '0',
+      waybillCharge: '0',
+      valueSurcharge: '0',
+      fuelSurchargePercent: '0',
     });
   }
   deleteMethod(methodId: string) {
