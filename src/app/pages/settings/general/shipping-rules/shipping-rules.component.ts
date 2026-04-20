@@ -7,12 +7,22 @@ import {
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { HotToastService } from '@ngneat/hot-toast';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
+import { forkJoin } from 'rxjs';
+import { appRoutes } from 'src/app/config/routes';
 import { indiaStates } from 'src/app/config/constants/country/india';
 import { iraqStates } from 'src/app/config/constants/country/iraq';
 import { uaeStates } from 'src/app/config/constants/country/uae';
-import { appRoutes } from 'src/app/config/routes';
 import { DeliveryMethodService } from 'src/app/includes/services/delivery-method.service';
+import { LocationService } from 'src/app/includes/services/location.service';
 import { ShippingService } from 'src/app/includes/services/shipping.service';
+
+const staticCountries = ['India', 'UAE', 'Iraq', 'Qatar', 'Bahrain', 'KSA', 'Oman', 'Kuwait'];
+
+const staticStatesFallback: Record<string, Array<{ name: string; cities: string[] }>> = {
+  India: indiaStates.map(s => ({ name: s.state, cities: s.cities })),
+  UAE: uaeStates.map(s => ({ name: s.state, cities: s.cities })),
+  Iraq: iraqStates.map(s => ({ name: s.state, cities: s.cities })),
+};
 
 @Component({
   selector: 'app-shipping-rules',
@@ -25,9 +35,11 @@ export class ShippingRulesComponent implements OnInit {
   shippingCharges: Array<any> = [];
   shippingDetails: any;
   modalRef?: BsModalRef;
-  countries: Array<any> = ['India', 'UAE', 'Iraq', 'Qatar', 'Bahrain', 'KSA', 'Oman', 'Kuwait'];
+  countries: Array<any> = [];
   states: Array<any> = [];
   cities: Array<any> = [];
+  selectedCountryId: string = '';
+  staticCitiesMap: Record<string, string[]> = {};
   holidays: Array<any> = [
     'Sunday',
     'Monday',
@@ -52,7 +64,8 @@ export class ShippingRulesComponent implements OnInit {
     private ChangeDetectorRef: ChangeDetectorRef,
     private HotToastService: HotToastService,
     private BsModalService: BsModalService,
-    private DeliveryMethodService: DeliveryMethodService
+    private DeliveryMethodService: DeliveryMethodService,
+    private LocationService: LocationService
   ) {}
 
   get formControls() {
@@ -60,24 +73,50 @@ export class ShippingRulesComponent implements OnInit {
   }
 
   onStateChange() {
-    if (this.selectedStates.includes(this.stateInput.value)) {
-      this.selectedStates = this.selectedStates.filter(
-        (state: any) => state != this.stateInput.value
-      );
+    const stateName = this.stateInput.value;
+    if (this.selectedStates.includes(stateName)) {
+      this.selectedStates = this.selectedStates.filter((s: any) => s !== stateName);
       this.HotToastService.success('State removed successfully');
     } else {
-      this.selectedStates.push(this.stateInput.value);
+      this.selectedStates.push(stateName);
       this.HotToastService.success('State added successfully');
     }
 
-    this.cities = []; //reset cities array
-    for (let state of this.selectedStates) {
-      let citiesInState = this.states.find(
-        (s: any) => s?.state == state
-      )?.cities;
-      this.cities = [...this.cities, ...citiesInState];
-    }
     this.stateInput.setValue('');
+    this.cities = [];
+
+    if (this.selectedStates.length === 0) return;
+
+    const apiStates = this.selectedStates.filter((sName: string) => {
+      const stateDoc = this.states.find((s: any) => s.name === sName);
+      return !!stateDoc?._id;
+    });
+
+    const staticCities = this.selectedStates
+      .filter((sName: string) => !this.states.find((s: any) => s.name === sName)?._id)
+      .reduce((acc: string[], sName: string) => [...acc, ...(this.staticCitiesMap[sName] ?? [])], []);
+
+    this.cities = [...staticCities];
+
+    if (apiStates.length === 0) {
+      this.ChangeDetectorRef.markForCheck();
+      return;
+    }
+
+    const cityRequests = apiStates.map((sName: string) => {
+      const stateDoc = this.states.find((s: any) => s.name === sName);
+      return this.LocationService.findCities(this.selectedCountryId, stateDoc?._id);
+    });
+
+    forkJoin(cityRequests).subscribe({
+      next: (results: any[]) => {
+        const apiCities = results
+          .filter((res: any) => res?.errorCode == 0)
+          .reduce((acc: string[], res: any) => [...acc, ...res.result.map((c: any) => c.name)], []);
+        this.cities = [...this.cities, ...apiCities];
+        this.ChangeDetectorRef.markForCheck();
+      },
+    });
   }
 
   removeState(state: any) {
@@ -116,17 +155,43 @@ export class ShippingRulesComponent implements OnInit {
   }
 
   onCountryChange() {
-    switch (this.form.get('country')?.value) {
-      case 'India':
-        this.states = indiaStates;
-        break;
-      case 'UAE':
-        this.states = uaeStates;
-        break;
-      case 'Iraq':
-        this.states = iraqStates;
-        break;
+    const countryName = this.form.get('country')?.value;
+    const countryDoc = this.countries.find((c: any) => c.name === countryName);
+    this.selectedCountryId = countryDoc?._id ?? '';
+    this.states = [];
+    this.cities = [];
+    this.selectedStates = [];
+    this.selectedCities = [];
+    this.staticCitiesMap = {};
+
+    if (!this.selectedCountryId) {
+      this.useStaticFallback(countryName);
+      return;
     }
+
+    this.LocationService.findStates(this.selectedCountryId).subscribe({
+      next: (res: any) => {
+        if (res?.errorCode == 0 && res.result?.length > 0) {
+          this.states = res.result;
+        } else {
+          this.useStaticFallback(countryName);
+        }
+        this.ChangeDetectorRef.markForCheck();
+      },
+      error: () => {
+        this.useStaticFallback(countryName);
+        this.ChangeDetectorRef.markForCheck();
+      },
+    });
+  }
+
+  private useStaticFallback(countryName: string) {
+    const fallback = staticStatesFallback[countryName] ?? [];
+    this.states = fallback.map(s => ({ name: s.name }));
+    this.staticCitiesMap = fallback.reduce((acc, s) => {
+      acc[s.name] = s.cities;
+      return acc;
+    }, {} as Record<string, string[]>);
   }
 
   ngOnInit(): void {
@@ -147,6 +212,19 @@ export class ShippingRulesComponent implements OnInit {
         Validators.required,
         Validators.pattern(/^\d+$/),
       ]),
+    });
+
+    this.LocationService.findCountries().subscribe({
+      next: (res: any) => {
+        if (res?.errorCode == 0) {
+          const apiCountryNames: string[] = res.result.map((c: any) => c.name);
+          const missingStatic = staticCountries
+            .filter(name => !apiCountryNames.includes(name))
+            .map(name => ({ name }));
+          this.countries = [...res.result, ...missingStatic];
+          this.ChangeDetectorRef.markForCheck();
+        }
+      },
     });
 
     this.ShippingService.shippingDetails().subscribe({
