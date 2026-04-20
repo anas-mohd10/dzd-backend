@@ -494,6 +494,33 @@
             </div>
           </div>
 
+          <!-- Surcharges (optional — per order / per waybill) -->
+          <div class="mt-4 border-top pt-3">
+            <h6 class="fw-bold mb-1">Surcharges <span class="text-muted fw-normal">(optional — per order)</span></h6>
+            <p class="text-muted fs-6 mb-3">
+              Applied on top of the resolved base freight.
+              Fuel % is calculated on base freight first, then fixed charges are added.
+              Leave at 0 if not applicable.
+            </p>
+            <div class="row g-3">
+              <div class="col-sm-4 form-group">
+                <label class="form-label fw-semibold">Waybill Charge (₹)</label>
+                <input type="number" class="form-control" formControlName="waybillCharge" placeholder="e.g. 300" min="0">
+                <div class="form-text text-muted">Fixed per-order docket / waybill fee.</div>
+              </div>
+              <div class="col-sm-4 form-group">
+                <label class="form-label fw-semibold">Value Surcharge (₹)</label>
+                <input type="number" class="form-control" formControlName="valueSurcharge" placeholder="e.g. 200" min="0">
+                <div class="form-text text-muted">Fixed per-order declared-value fee.</div>
+              </div>
+              <div class="col-sm-4 form-group">
+                <label class="form-label fw-semibold">Fuel Surcharge (%)</label>
+                <input type="number" class="form-control" formControlName="fuelSurchargePercent" placeholder="e.g. 10" min="0" max="100">
+                <div class="form-text text-muted">% applied on base freight only (e.g. 10 = 10%).</div>
+              </div>
+            </div>
+          </div>
+
           <!-- Common fields for all shipping types - always visible -->
           <div class="row mt-4">
             <div class="col-lg-6 form-group mb-3">
