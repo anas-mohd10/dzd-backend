@@ -41,13 +41,13 @@ export class ShippingChargeComponent implements OnInit {
   methodForm: FormGroup = new FormGroup({});
   countrySelected: FormControl = new FormControl('');
   defaultCountryAndState: FormControl = new FormControl('UAE,Dubai');
-      // Add new properties for charge ranges
-      chargeRanges: Array<any> = [];
-      newChargeRange: any = {
-        minAmount: null,
-        maxAmount: null,
-        charge: null
-      };
+  // Add new properties for charge ranges
+  chargeRanges: Array<any> = [];
+  newChargeRange: any = {
+    minAmount: null,
+    maxAmount: null,
+    charge: null
+  };
 
   // Weight-based pricing ranges (kg)
   weightRanges: Array<any> = [];
@@ -64,7 +64,7 @@ export class ShippingChargeComponent implements OnInit {
     private ShippingService: ShippingService,
     private DeliveryMethodService: DeliveryMethodService,
     private AppSettingsService: AppSettingsService
-  ) {}
+  ) { }
 
   toggleCountry() {
     if (this.selectedCountries.includes(this.countrySelected.value)) {
@@ -169,9 +169,10 @@ export class ShippingChargeComponent implements OnInit {
       ]),
       weightFlatCharge: new FormControl('0', [Validators.pattern(/^\d+\.?\d*$/)]),
       volumeFlatCharge: new FormControl('0', [Validators.pattern(/^\d+\.?\d*$/)]),
-      // Per-waybill surcharges (e.g. Safexpress: waybill ₹300, value ₹200, fuel 10%)
-      waybillCharge:        new FormControl('0', [Validators.pattern(/^\d+\.?\d*$/)]),
-      valueSurcharge:       new FormControl('0', [Validators.pattern(/^\d+\.?\d*$/)]),
+      // Per-order surcharges — fuel on subtotal (base + waybill + value + safextension)
+      waybillCharge: new FormControl('0', [Validators.pattern(/^\d+\.?\d*$/)]),
+      valueSurcharge: new FormControl('0', [Validators.pattern(/^\d+\.?\d*$/)]),
+      safextensionCharge: new FormControl('0', [Validators.pattern(/^\d+\.?\d*$/)]),
       fuelSurchargePercent: new FormControl('0', [Validators.pattern(/^\d+\.?\d*$/)]),
       // Remove these fields as we'll use freeAbove and orderAmount instead
       // minimumOrderAmount: new FormControl('', [
@@ -259,7 +260,7 @@ export class ShippingChargeComponent implements OnInit {
     }
 
     // Prepare the data to send to the API
-    const methodData = {...this.methodForm.value};
+    const methodData = { ...this.methodForm.value };
 
     // Add charge ranges for tiered pricing
     if (shippingType === 'tiered') {
@@ -277,7 +278,7 @@ export class ShippingChargeComponent implements OnInit {
       methodData.fixedCharge = methodData.freeAbove;
     }
 
-    if(shippingType === 'free'){
+    if (shippingType === 'free') {
       // We're using orderAmount as minimumOrderAmount and freeAbove as 0
       methodData.freeAbove = '0';
       methodData.amount = '0';
@@ -385,6 +386,7 @@ export class ShippingChargeComponent implements OnInit {
       volumeFlatCharge: '0',
       waybillCharge: '0',
       valueSurcharge: '0',
+      safextensionCharge: '0',
       fuelSurchargePercent: '0',
     });
   }
@@ -414,7 +416,7 @@ export class ShippingChargeComponent implements OnInit {
         } else {
         }
       },
-      error: (err: any) => {},
+      error: (err: any) => { },
     });
   }
 
@@ -455,41 +457,41 @@ export class ShippingChargeComponent implements OnInit {
 
   // Utility function to validate charge range values
   validateChargeRange(range: any): { isValid: boolean; errorMessage?: string } {
-  // Check if any field is null or undefined (allows zero values)
-  if (range.minAmount === null || range.minAmount === undefined ||
-  range.maxAmount === null || range.maxAmount === undefined ||
-  range.charge === null || range.charge === undefined) {
-  return { isValid: false, errorMessage: 'All fields are required for charge range' };
-  }
+    // Check if any field is null or undefined (allows zero values)
+    if (range.minAmount === null || range.minAmount === undefined ||
+      range.maxAmount === null || range.maxAmount === undefined ||
+      range.charge === null || range.charge === undefined) {
+      return { isValid: false, errorMessage: 'All fields are required for charge range' };
+    }
 
-  // Check if min amount is less than max amount
-  if (Number(range.minAmount) >= Number(range.maxAmount)) {
-  return { isValid: false, errorMessage: 'Min amount must be less than max amount' };
-  }
+    // Check if min amount is less than max amount
+    if (Number(range.minAmount) >= Number(range.maxAmount)) {
+      return { isValid: false, errorMessage: 'Min amount must be less than max amount' };
+    }
 
-  return { isValid: true };
+    return { isValid: true };
   }
 
   addChargeRange() {
-  // Use the utility function to validate
-  const validation = this.validateChargeRange(this.newChargeRange);
+    // Use the utility function to validate
+    const validation = this.validateChargeRange(this.newChargeRange);
 
-  if (!validation.isValid) {
-  this.HotToastService.error(validation.errorMessage || 'Invalid charge range');
-  return;
-  }
+    if (!validation.isValid) {
+      this.HotToastService.error(validation.errorMessage || 'Invalid charge range');
+      return;
+    }
 
-  // Add the new charge range
-  this.chargeRanges.push({...this.newChargeRange});
+    // Add the new charge range
+    this.chargeRanges.push({ ...this.newChargeRange });
 
-  // Reset the form
-  this.newChargeRange = {
-  minAmount: null,
-  maxAmount: null,
-  charge: null
-  };
+    // Reset the form
+    this.newChargeRange = {
+      minAmount: null,
+      maxAmount: null,
+      charge: null
+    };
 
-  this.ChangeDetectorRef.markForCheck();
+    this.ChangeDetectorRef.markForCheck();
   }
 
   removeChargeRange(index: number) {
@@ -561,7 +563,7 @@ export class ShippingChargeComponent implements OnInit {
         } else {
         }
       },
-      error: (err: any) => {},
+      error: (err: any) => { },
     });
   }
 }
