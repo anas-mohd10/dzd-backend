@@ -335,7 +335,7 @@ export class ShippingChargeComponent implements OnInit {
   // Update the openMethod function to handle existing charge ranges
   openMethod(template: TemplateRef<any>, mode?: string, methodId?: string) {
     this.methodRef = this.BsModalService.show(template, {
-      class: 'modal-lg modal-dialog-centered',
+      class: 'modal-xl modal-dialog-centered',
     });
     if (mode == 'update') {
       this.isMethodUpdate = true;
