@@ -326,6 +326,7 @@ export class UpdateAppSettingsComponent implements OnInit {
         this.form.get('defaultBanner')?.setValue(res?.result?.defaultBanner)
         this.form.get('defaultMobileBanner')?.setValue(res?.result?.defaultMobileBanner)
         this.form.get('verifyNumberWithTwilio')?.setValue(res?.result?.verifyNumberWithTwilio)
+        this.form.get('otpForNumberChange')?.setValue(res?.result?.otpForNumberChange)
         this.form.get('deliverSlotBufferTime')?.setValue(res?.result?.deliverSlotBufferTime || 60);
         this.form.get('isVoucherEnabled')?.setValue(res?.result?.isVoucherEnabled);
         this.form.get('isSocialLoginiOSEnabled')?.setValue(res?.result?.isSocialLoginiOSEnabled)
@@ -453,6 +454,7 @@ export class UpdateAppSettingsComponent implements OnInit {
       defaultMinimumCartAmount: ['0'],
       deliverSlotBufferTime: [60],
       verifyNumberWithTwilio: ['false'],
+      otpForNumberChange: ['false'],
       isVoucherEnabled: ['false'],
       isSocialLoginiOSEnabled: ['false'],
       isRelatedProductsCart: ['false'],
@@ -638,6 +640,7 @@ export class UpdateAppSettingsComponent implements OnInit {
       currencyLocation: this.form.get('currencyLocation')?.value,
       decimalValues: Number(this.form.get('decimalValues')?.value),
       verifyNumberWithTwilio: this.form.get('verifyNumberWithTwilio')?.value,
+      otpForNumberChange: this.form.get('otpForNumberChange')?.value,
       isVoucherEnabled: this.form.get('isVoucherEnabled')?.value,
       isSocialLoginiOSEnabled: this.form.get('isSocialLoginiOSEnabled')?.value,
       isRelatedProductsCart: this.form.get('isRelatedProductsCart')?.value,

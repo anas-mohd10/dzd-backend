@@ -15,6 +15,7 @@ export class EnquiresComponent implements OnInit {
   enquires: Array<any> = []
   keyword: FormControl = new FormControl('')
   isActive: FormControl = new FormControl('')
+  hasProduct: boolean = false
   limit: number = 30
   page: number = 1
   totalPages: number = 1
@@ -39,11 +40,18 @@ export class EnquiresComponent implements OnInit {
     this.isActive?.setValue('')
   }
 
+  toggleProductFilter() {
+    this.hasProduct = !this.hasProduct
+    this.page = 1
+    this.getEnquiries()
+  }
+
   getEnquiries() {
     setTimeout(() => {
       this.EnquiryService.searchEnquiry({
         keyword: this.keyword.value,
         isActive: this.isActive.value,
+        hasProduct: this.hasProduct,
         page: this.page,
         limit: this.limit
       }).subscribe((res: any) => {

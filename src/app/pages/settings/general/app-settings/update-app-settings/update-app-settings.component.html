@@ -457,14 +457,14 @@
               <select class="form-select mb-3" formControlName="newUserCoupon">
                 <option value="">-- Select a coupon --</option>
                 <option *ngFor="let coupon of couponsList" [value]="coupon?._id">
-                    {{coupon?.title}} ({{coupon?.code}})
+                  {{coupon?.title}} ({{coupon?.code}})
                 </option>
               </select>
             </div>
             <div class="mt-3 form-group">
               <label for="clarityAppId" class="fs-6 mb-3">App clarity key</label>
               <input type="text" id="clarityAppId" formControlName="clarityAppId" class="form-control" />
-          </div>
+            </div>
           </div>
         </div>
       </div>
@@ -473,9 +473,20 @@
         <div class="card-body">
           <div class="fs-3 fw-bold mb-2">Auth Settings</div>
           <div class="row">
-            <div class="col-lg-4">
+            <div class="col-lg-4 form-group mb-3">
               <label class="fs-6 mb-3">Verify number with twilio</label>
+              <p class="text-muted fs-6 mb-2">Verify number with twilio</p>
               <select class="form-select mb-3" formControlName="verifyNumberWithTwilio">
+                <option value="" disabled>-- Select an option --</option>
+                <option value="false">No</option>
+                <option value="true">Yes</option>
+              </select>
+            </div>
+            <div class="col-lg-6 form-group mb-3">
+              <label class="fs-6 mb-3">OTP verification on number change</label>
+              <p class="text-muted fs-6 mb-2">Require OTP verification when a user updates their phone number in profile
+              </p>
+              <select class="form-select mb-3" formControlName="otpForNumberChange">
                 <option value="" disabled>-- Select an option --</option>
                 <option value="false">No</option>
                 <option value="true">Yes</option>
@@ -637,7 +648,8 @@
               <div>
                 <label class="fs-5 mb-3">Display Label</label>
                 <app-switch (switchToggled)="toggleAddOnItems($event)"
-                  [isToggledProps]="form.get('isAddOnLabelEnabled')?.value" [switchId]="'isAddOnLabelEnabled'"></app-switch>
+                  [isToggledProps]="form.get('isAddOnLabelEnabled')?.value"
+                  [switchId]="'isAddOnLabelEnabled'"></app-switch>
               </div>
               <div>
                 <label class="fs-5 mb-3">Label</label>
