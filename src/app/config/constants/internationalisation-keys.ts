@@ -276,6 +276,8 @@ export const internationalisationKeys = {
     addressDeletedSuccessfully: 'addressDeletedSuccessfully',
     otpSendto: 'otpSendto',
     verifyOtp: 'verifyOtp',
+    verifyYourNewNumber: 'verifyYourNewNumber',
+    verifying: 'verifying',
     notRecievedCode: 'notRecievedCode',
     resendCode: 'resendCode',
     newArrivals: 'newArrivals',
