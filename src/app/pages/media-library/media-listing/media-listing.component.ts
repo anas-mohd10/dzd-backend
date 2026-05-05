@@ -1,7 +1,10 @@
-import { ChangeDetectorRef, Component, OnInit, TemplateRef } from '@angular/core';
+import { ChangeDetectorRef, Component, HostListener, OnDestroy, OnInit, TemplateRef } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
+import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 import { HotToastService } from '@ngneat/hot-toast';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
+import { Subject, from, of } from 'rxjs';
+import { catchError, concatMap, takeUntil, tap } from 'rxjs/operators';
 import { appRoutes } from 'src/app/config/routes';
 import { MediaService } from 'src/app/includes/services/media-library.service';
 import { environment } from 'src/environments/environment';
@@ -12,7 +15,7 @@ import { environment } from 'src/environments/environment';
   styleUrls: ['./media-listing.component.scss']
 })
 
-export class MediaListingComponent implements OnInit {
+export class MediaListingComponent implements OnInit, OnDestroy {
   appRoute = appRoutes
   page: number = 1
   limit: number = 20
@@ -31,11 +34,15 @@ export class MediaListingComponent implements OnInit {
   isUrlSubmitted: boolean = false
   files: Array<any> = []
   previews: Array<any> = []
+  isUploading: boolean = false
+  uploadProgress: { current: number; total: number; errors: number; errorFiles: string[] } = { current: 0, total: 0, errors: 0, errorFiles: [] }
+  private destroy$ = new Subject<void>()
   constructor(
     private MediaService: MediaService,
     private ChangeDetectorRef: ChangeDetectorRef,
     private Toast: HotToastService,
-    private BsModalService: BsModalService
+    private BsModalService: BsModalService,
+    private Sanitizer: DomSanitizer
   ) { }
 
   ngOnInit(): void {
@@ -113,70 +120,97 @@ export class MediaListingComponent implements OnInit {
     })
   }
 
+  @HostListener('window:beforeunload', ['$event'])
+  onBeforeUnload(e: BeforeUnloadEvent) {
+    if (this.isUploading) {
+      e.preventDefault();
+      e.returnValue = 'Files are still uploading. If you leave, the upload will be cancelled.';
+      return e.returnValue;
+    }
+    return;
+  }
+
   onMediaChange(event: any) {
     let files = event.target.files;
     for (let i = 0; i < files.length; i++) {
       let file = files[i];
       let isVideo = file.type.startsWith('video/');
-      
-      // Log file information
-      console.log(`File: ${file.name}, Type: ${file.type}, Size: ${file.size} bytes`);
-      
-      let reader = new FileReader();
-      reader.onload = (e) => {
-        this.previews.push({
-          url: e.target?.result,
-          title: file.name,
-          type: isVideo ? 'video' : 'image',
-          fileType: file.type
-        });
-        this.files.push(file);
-        this.ChangeDetectorRef.markForCheck();
-      };
-      reader.readAsDataURL(file);
+      // Use createObjectURL instead of FileReader to avoid loading all file data into memory.
+      // bypassSecurityTrustUrl is needed because Angular sanitizer blocks blob: URLs by default.
+      const objectUrl = URL.createObjectURL(file);
+      const safeUrl: SafeUrl = this.Sanitizer.bypassSecurityTrustUrl(objectUrl);
+      this.previews.push({
+        url: safeUrl,
+        _blobUrl: objectUrl,
+        title: file.name,
+        type: isVideo ? 'video' : 'image',
+        fileType: file.type
+      });
+      this.files.push(file);
     }
+    this.ChangeDetectorRef.markForCheck();
   }
 
   cancelMedias() {
+    for (const preview of this.previews) {
+      URL.revokeObjectURL(preview._blobUrl);
+    }
     this.files = []
     this.previews = []
   }
 
   deleteMedia(index: number) {
+    URL.revokeObjectURL(this.previews[index]._blobUrl);
     this.files.splice(index, 1)
     this.previews.splice(index, 1)
     this.ChangeDetectorRef.markForCheck()
   }
 
   addMedias() {
-    let formdata = new FormData();
-    
-    for (let file of this.files) {
-      console.log(`Adding file: ${file.name}, type: ${file.type}, size: ${file.size} bytes`);
-      formdata.append('file', file);
-    }
-    
-    this.MediaService.addMedias(formdata).subscribe({
-      next: (res: any) => {
-        console.log('Upload response:', res); // Log full response
-        if (res?.errorCode == 0) {
-          this.Toast.success(res.message);
-          this.modalRef?.hide();
-          this.files = [];
-          this.previews = [];
-          this.getMedias();
-        } else {
-          this.Toast.error(res.message);
-        }
-      }, 
-      error: (err: any) => {
-        console.error('Upload error:', err); // Log detailed error
-        this.Toast.error(err.error?.message || 'Failed to upload files');
-      }, 
+    if (!this.files.length) return;
+
+    this.isUploading = true;
+    this.uploadProgress = { current: 0, total: this.files.length, errors: 0, errorFiles: [] };
+    this.modalRef?.hide();
+
+    from(this.files).pipe(
+      concatMap((file) => {
+        const formdata = new FormData();
+        formdata.append('file', file);
+        return this.MediaService.addMedias(formdata).pipe(
+          catchError(() => {
+            this.uploadProgress.errors++;
+            this.uploadProgress.errorFiles.push(file.name);
+            return of(null);
+          })
+        );
+      }),
+      tap(() => {
+        this.uploadProgress.current++;
+        this.ChangeDetectorRef.markForCheck();
+      }),
+      takeUntil(this.destroy$)
+    ).subscribe({
       complete: () => {
+        this.isUploading = false;
+        for (const preview of this.previews) URL.revokeObjectURL(preview._blobUrl);
+        this.files = [];
+        this.previews = [];
+        this.getMedias();
+        if (this.uploadProgress.errors === 0) {
+          this.Toast.success(`${this.uploadProgress.total} file(s) uploaded successfully`);
+        } else {
+          this.Toast.warning(`${this.uploadProgress.total - this.uploadProgress.errors} uploaded, ${this.uploadProgress.errors} failed`);
+        }
         this.ChangeDetectorRef.markForCheck();
       }
     });
+  }
+
+  ngOnDestroy() {
+    this.destroy$.next();
+    this.destroy$.complete();
+    for (const preview of this.previews) URL.revokeObjectURL(preview._blobUrl);
   }
 
   clear() {
