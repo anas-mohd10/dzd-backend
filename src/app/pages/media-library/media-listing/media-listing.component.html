@@ -96,6 +96,28 @@
   </div>
 </div>
 
+<!-- Floating upload progress panel -->
+<div class="upload-progress-panel" *ngIf="isUploading">
+  <div class="upload-progress-header">
+    <span class="upload-icon">&#8679;</span>
+    <span>Uploading media...</span>
+  </div>
+  <div class="upload-progress-counter">
+    {{ uploadProgress.current }} / {{ uploadProgress.total }}
+  </div>
+  <div class="upload-progress-bar-wrap">
+    <div class="upload-progress-bar"
+      [style.width.%]="uploadProgress.total > 0 ? (uploadProgress.current / uploadProgress.total) * 100 : 0">
+    </div>
+  </div>
+  <div class="upload-progress-warning">
+    &#9888; Please don't close this tab
+  </div>
+  <div *ngIf="uploadProgress.errors > 0" class="upload-progress-errors">
+    {{ uploadProgress.errors }} file(s) failed to upload
+  </div>
+</div>
+
 <ng-template #template>
   <div class="modal-header">
     <h4 class="fs-2 fw-bold pull-left">Add new assets</h4>
