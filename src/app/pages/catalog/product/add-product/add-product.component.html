@@ -430,6 +430,53 @@
             </div>
           </tab>
 
+          <tab heading="Business Fields">
+            <div class="my-6">
+              <div class="row mb-3" *ngFor="let businessField of businessFields; let i = index">
+                <div class="col-lg-12 mb-4">
+                  <div class="card shadow-sm">
+                    <div class="card-body">
+                      <div class="d-flex justify-content-between align-items-center mb-4">
+                        <div class="form-group flex-grow-1 me-3">
+                          <label class="fs-6 mb-2 fw-bold">Title</label>
+                          <input type="text" class="form-control form-control-lg" [(ngModel)]="businessField.title"
+                            [ngModelOptions]="{standalone: true}" placeholder="Enter field title">
+                        </div>
+                        <button class="btn btn-danger mt-auto" (click)="removeBusinessField(i)">
+                          <svg height="16" width="16" data-slot="icon" fill="none" stroke-width="1.5"
+                            stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"
+                            aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12"></path>
+                          </svg>
+                        </button>
+                      </div>
+                      <div class="form-group">
+                        <label class="fs-6 mb-2 fw-bold">Description</label>
+                        <angular-editor [(ngModel)]="businessField.description" [ngModelOptions]="{standalone: true}"
+                          [config]="editorConfig"></angular-editor>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-lg-12">
+                  <button class="btn btn-primary d-flex align-items-center gap-2" (click)="addBusinessField()">
+                    <svg height="16" width="16" data-slot="icon" fill="none" stroke-width="1.5" stroke="currentColor"
+                      viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"></path>
+                    </svg>
+                    Add Business Field
+                  </button>
+                </div>
+              </div>
+            </div>
+            <div class="d-flex align-items-center justify-content-center gap-2 mt-4">
+              <button class="btn border border-primary bg-white text-primary" (click)="toggleTab(2)">Back</button>
+              <button class="btn btn-primary" (click)="toggleTab(4)">Continue</button>
+            </div>
+          </tab>
+
           <tab heading="Specifications">
             <form [formGroup]="form">
               <div class="my-6">
@@ -489,8 +536,8 @@
               </div>
 
               <div class="d-flex align-items-center justify-content-center gap-2">
-                <button class="btn border border-primary bg-white text-primary" (click)="toggleTab(2)">Back</button>
-                <button class="btn btn-primary" (click)="toggleTab(4)">Continue</button>
+                <button class="btn border border-primary bg-white text-primary" (click)="toggleTab(3)">Back</button>
+                <button class="btn btn-primary" (click)="toggleTab(5)">Continue</button>
               </div>
             </form>
           </tab>
@@ -597,8 +644,8 @@
                 </div>
               </div>
               <div class="d-flex align-items-center justify-content-center gap-2">
-                <button class="btn border border-primary bg-white text-primary" (click)="toggleTab(3)">Back</button>
-                <button class="btn btn-primary" (click)="toggleTab(5)">Continue</button>
+                <button class="btn border border-primary bg-white text-primary" (click)="toggleTab(4)">Back</button>
+                <button class="btn btn-primary" (click)="toggleTab(6)">Continue</button>
               </div>
             </form>
           </tab>
@@ -736,7 +783,7 @@
                 </div>
               </div>
               <div class="d-flex align-items-center justify-content-center gap-2">
-                <button class="btn border border-primary bg-white text-primary" (click)="toggleTab(4)">Back</button>
+                <button class="btn border border-primary bg-white text-primary" (click)="toggleTab(5)">Back</button>
                 <button class="btn btn-primary" [disabled]="isSaving" (click)="saveChanges()">
                   <span *ngIf="isSaving">
                     <i class="spinner-border spinner-border-sm me-1"></i>

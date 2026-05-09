@@ -31,6 +31,11 @@ interface StoreField {
   isVisible: boolean;
 }
 
+interface BusinessField {
+  title: string;
+  description: string;
+}
+
 interface AddOnOption {
   _id: string;
   name: string;
@@ -153,6 +158,7 @@ export class AddProductComponent implements OnInit {
   activeRelatedProducts: Array<any> = [];
   relatedProduct: FormControl = new FormControl('');
   storeFields: Array<StoreField> = [];
+  businessFields: BusinessField[] = [];
   storeFieldForm: FormGroup = new FormGroup({});
   isStoreSubmitted: boolean = false;
   modalRef?: BsModalRef;
@@ -459,6 +465,14 @@ export class AddProductComponent implements OnInit {
     }
   }
   // Add-Ons ends here
+
+  addBusinessField(): void {
+    this.businessFields.push({ title: '', description: '' });
+  }
+
+  removeBusinessField(index: number): void {
+    this.businessFields.splice(index, 1);
+  }
 
   get parentControls() {
     return this.parentForm.controls;
@@ -850,6 +864,7 @@ export class AddProductComponent implements OnInit {
       parentId: this.parentDetails?._id,
       productIcons: this.icons,
       storeFrontFields: this.storeFields,
+      businessFields: this.businessFields,
       categories: this.categories.map((category: any) => ({
         name: category.name,
         slug: category.slug,
